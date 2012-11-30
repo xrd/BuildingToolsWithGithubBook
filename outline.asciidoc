@@ -64,7 +64,7 @@
 
 * Comprehensive List of Git Clients (short description and link)
 
-  ** IDE Integration with Git: _Note: this is just a list with, more detail in the Client's chapter_
+  ** IDE Integration with Git: _Note: this is just a list with, more detail in the Clients chapter_
 
     *** Eclipse
     *** IntelliJ
@@ -73,7 +73,7 @@
     *** Netbeans
     *** Visual Studio
 
-  ** Alternative GUI Clients: _Note: this is just a list, more detail in the Client's chapter_
+  ** Alternative GUI Clients: _Note: this is just a list, more detail in the Clients chapter_
 
     *** Tower
     *** Gitbox
@@ -108,9 +108,29 @@
 
   ** How to Scale Open Source
 
-  ** Platform for Decentralized Collaboration
+    *** Remove Barriers to Participation
+
+      **** Sidebar: Quote from Apache Contributor fighting for Github
+
+    *** Encourage Forking
+
+      **** Sidebar: Is Forking "anti-community"?
+
+    *** Provide a Platform for Code Review
+
+    *** Platform for Decentralized Collaboration
 
 * Collaboration for other creative endeavors
+
+  ** Github for Graphic Designers
+
+  ** Github for Writers
+
+  ** Github for Musicians
+
+  ** Github for Legislators
+
+  ** Github for Makers (Hardware)
 
 * Alternatives to Github
 
@@ -128,6 +148,32 @@
     *** Gitorious (https://gitorious.org/)
     *** Gitblit (http://gitblit.com/)
 
+== Chapter 3: Creating a Github Account
+
+* Selecting a GitHub Plan
+
+  ** Types of Github Plans
+
+    *** Free
+
+    *** Personal
+
+    *** Organization
+
+* Setting Up Your Accounts
+
+  ** User Accounts versus Organization Accounts
+
+  ** Signing up for your User Account
+
+  ** Account Security
+
+    *** SSH vs HTTPS
+
+  ** Setting up an Organization Account
+
+
+== Chapter 5: Github Essentials
 
 * Useful GitHub-specific Terms
 
@@ -158,32 +204,35 @@
   ** Gist
 
 
-== Chapter 3: Creating a Github Account
+== Chapter 5: Github for Open Source Developers
 
-* Selecting a GitHub Plan
+Cover some of the basic use cases for an open source project both from
+the perspective of a project maintainer and a project participant.
 
-  ** Types of Github Plans
+== Chapter 6: Github at Work
 
-    *** Free
+How to use Github on a private project at work.  Hwo to integrate
+Github with internal issue tracking systems.
 
-    *** Personal
+== Chapter 7: Github is for Writing
 
-    *** Organization
+Discuss the several markdown formats Github supports in some detail.
 
-* Setting Up Your Accounts
+Compare and contrast these markdown formats.
 
-  ** User Accounts versus Organization Accounts
+Discuss two approaches: README.md files and Project Wikis
 
-  ** Signing up for your User Account
+Discuss Project Wikis in Details
 
-  ** Account Security
+Explore the Gollum project
 
-    *** SSH vs HTTPS
+== Chapter 8: Github is for Sharing
 
-  ** Setting up an Organization Account
+Dive into Gists
 
 
-== Chapter 4: Managing Your User Account
+
+== Chapter 9: Managing Your User Account
 
 * Overview of the User Dashboard
 
@@ -226,7 +275,7 @@
 _AO: I think an overview of all these elements of the dashboard is good, but when do you discuss use cases, which show how these things are valuable and how they're being used to enhance development by users now? That's the kind of meaty advice that makes people buy a book._
 
 
-== Chapter 5: Managing Your Organization Account
+== Chapter 10: Managing Your Organization Account
 
 * Overview of the Organization Dashboard
 
@@ -258,7 +307,7 @@ _AO: I think an overview of all these elements of the dashboard is good, but whe
 
     *** Repositories
 
-== Chapter 6: Overview of a Repository Dashboard
+== Chapter 11: Overview of a Repository Dashboard
 
 * The GitHub Command Bar
 
@@ -268,7 +317,7 @@ _AO: I think an overview of all these elements of the dashboard is good, but whe
 
   ** https://github.com/launch
 
-== Chapter 7: Developer Applications / API / OAuth
+== Chapter 12: Developer Applications / API / OAuth
 
 * [API Documentation](http://developer.github.com)
 
@@ -283,7 +332,7 @@ _AO: I think an overview of all these elements of the dashboard is good, but whe
   ** For sign-in to reputation services like [StackOverflow](http://stackoverflow.com)
 
 [[chapter-clients]]
-== Chapter 8: Graphical User Interfaces and Command Line Clients
+== Chapter 13: Graphical User Interfaces and Command Line Clients
 
 * Official GUI Clients
 
