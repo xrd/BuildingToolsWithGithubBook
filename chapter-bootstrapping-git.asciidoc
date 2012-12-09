@@ -5,64 +5,85 @@
 
 ==== History of Git
 
-===== BitKeeper and Linux Breakup
-===== Torvalds Creates Git
-===== Enter Github, Stage Left...
+BitKeeper and Linux Breakup.  Torvalds is motivated by efficiency and speed.  Unhappy with existing SCMs, Torvalds Creates Git
 
-==== The Distributed Revolution
+==== The Rise of Git: A Distributed Revolution
 
-===== Decentralized Collaboration
-===== Asynchronous Collaboration
-===== DVCS usage patterns - https://github.com/zkessin/dvcs-workflows
+By the time Torvalds created Git, large-scale open source project had been around for almost a decade.  The Apache Software Foundation had largely migrated to Subversion, Eclipse was continuing to use CVS, and the Free Software Foundation was using ???.   While Linux had been using a decentralized approach to development since its inception, many large open source projects were moving toward Subversion and more centralized, synchronous approaches to version control.
 
-==== Why Git?
+Mention that large-scale development efforts at companies like Google have been using a DVCS all along.    Torvalds decision to stick with a DVCS wasn't controversial, but Linux' use of a DVCS was certainly the exception in the OSS world.
 
-===== Git Features
-===== Popularity in Open Source
-===== Popularity in the Enterprise
-===== Summary Comparisons to Alternatives
+OSS efforts seemed to have a definite preference for central SCMs - Subversion, CVS.  Something happened in the last decade to challenge this approach to centralized development.  As Git became more capable, open source projects and commercial developers alike started to experiment with a more asynchronous approach to collaboration.   Why?  What drove this?   (My theory is Rails opened this door...)
+
+Make some mention of how OSS development changed dramatically - an influx of developers on projects such as Rails.  (Get stats from Github about early OSS adoption.)
+
+=== Why Git?
+
+==== Git Features
+
+Distributed, Efficient, Easy to Branch and Merge, Free and Open Source
+
+==== DVCS Usage Patterns
+
+Reference this book - DVCS usage patterns - https://github.com/zkessin/dvcs-workflows - create a list of various approaches and direct readers at zkessin.
+
+==== Popularity
+
+===== in Open Source
+
+===== in the Enterprise
+
+==== Comparisons to Alternatives
+
+Bzr, Hg
 
 === Installing Git
 
+Note: At this point, how much duplication are we comfortable with.  Other books tackle this topic exhaustively.
+
 ==== Windows
 
-===== Git Client 
-===== PowerShell vs Git Bash
-===== GitHub for Windows
+* Git Client 
+* PowerShell vs Git Bash
+* GitHub for Windows
 
 ==== Mac
 
-===== Git Client
-===== GitHub for Mac
+* Git Client
+* GitHub for Mac
 
 ==== Linux
 
-===== Git Client
+* Git Client
 
 === Git Usage Basics
 
+Note: Again, how much information are we planning here?
+
 ==== Git Cheat Sheet
+
+I'm assuming we're going to reference an existing Git Cheat Sheet here.
 
 === Comprehensive List of Git Clients (short description and link)
 
-==== IDE Integration with Git: _Note: this is just a list with, more detail in the Clients chapter_
+==== IDE Integration with Git
 
-===== Eclipse
-===== IntelliJ
-===== Rubymine
-===== XCode
-===== Netbeans
-===== Visual Studio
+* Eclipse
+* IntelliJ
+* Rubymine
+* XCode
+* Netbeans
+* Visual Studio
 
 ==== Alternative GUI Clients: _Note: this is just a list, more detail in the Clients chapter_
 
-===== Tower
-===== Gitbox
-===== GitX (L)
-===== Git Extensions
-===== SourceTree
-===== git-cola
-===== gitk
-===== SmartGit
+* Tower
+* Gitbox
+* GitX (L)
+* Git Extensions
+* SourceTree
+* git-cola
+* gitk
+* SmartGit
 
 === Where to learn more about Git
