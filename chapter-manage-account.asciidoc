@@ -1,0 +1,43 @@
+[[manage-account]]
+== Managing Your User Account
+
+* Overview of the User Dashboard
+
+* Your User Profile
+
+  ** Password Security
+
+  ** Gravatar
+
+  ** Email Addresses
+
+  ** What is a "Verified" email?
+
+  ** Notifications
+
+  ** Billing
+
+  ** Payment History
+
+  ** SSH Keys
+
+  ** When should I use SSH?
+
+  ** Security History
+
+  ** Applications
+
+  ** What is OAuth?
+
+  ** Authorized Applications
+
+  ** GitHub Applications
+
+  ** Repositories
+
+  ** Private vs Public
+
+  ** Organizations
+
+_AO: I think an overview of all these elements of the dashboard is good, but when do you discuss use cases, which show how these things are valuable and how they're being used to enhance development by users now? That's the kind of meaty advice that makes people buy a book._
+

@@ -1,0 +1,30 @@
+[[github-essentials]]
+== Chapter 5: Github Essentials
+
+* Useful GitHub-specific Terms
+
+  ** Pull Request
+
+  ** Fork
+
+  ** Team
+
+  ** Organization
+
+  ** GitHub Flavored Markdown
+
+    *** Emoji
+
+    *** Markdown
+
+  ** GitHub Pages
+
+  ** Wikis
+
+  ** @mention
+
+  ** Issues
+
+  ** Milestones
+
+  ** Gist

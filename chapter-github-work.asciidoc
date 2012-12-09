@@ -1,0 +1,5 @@
+[[github-work]]
+== Github at Work
+
+How to use Github on a private project at work.  Hwo to integrate
+Github with internal issue tracking systems.

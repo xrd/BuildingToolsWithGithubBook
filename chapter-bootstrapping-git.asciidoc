@@ -1,0 +1,68 @@
+[[bootstrapping-git]]
+== Bootstrapping Git
+
+* A (Very) Brief Introduction to Git
+
+  ** History of Git
+
+    *** BitKeeper and Linux Breakup
+    *** Torvalds Creates Git
+    *** Enter Github, Stage Left...
+
+  ** The Distributed Revolution
+
+    *** Decentralized Collaboration
+    *** Asynchronous Collaboration
+    *** DVCS usage patterns - https://github.com/zkessin/dvcs-workflows
+
+  ** Why Git?
+
+    *** Git Features
+    *** Popularity in Open Source
+    *** Popularity in the Enterprise
+    *** Summary Comparisons to Alternatives
+
+* Installing Git
+
+  ** Windows
+
+    *** Git Client 
+      **** PowerShell vs Git Bash
+    *** GitHub for Windows
+
+  ** Mac
+
+    *** Git Client
+    *** GitHub for Mac
+
+  ** Linux
+
+    *** Git Client
+
+* Git Usage Basics
+
+  ** Git Cheat Sheet
+
+* Comprehensive List of Git Clients (short description and link)
+
+  ** IDE Integration with Git: _Note: this is just a list with, more detail in the Clients chapter_
+
+    *** Eclipse
+    *** IntelliJ
+    *** Rubymine
+    *** XCode
+    *** Netbeans
+    *** Visual Studio
+
+  ** Alternative GUI Clients: _Note: this is just a list, more detail in the Clients chapter_
+
+    *** Tower
+    *** Gitbox
+    *** GitX (L)
+    *** Git Extensions
+    *** SourceTree
+    *** git-cola
+    *** gitk
+    *** SmartGit
+
+* Where to learn more about Git

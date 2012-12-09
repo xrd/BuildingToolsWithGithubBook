@@ -1,0 +1,26 @@
+[[creating-account]]
+== Creating a Github Account
+
+* Selecting a GitHub Plan
+
+  ** Types of Github Plans
+
+    *** Free
+
+    *** Personal
+
+    *** Organization
+
+* Setting Up Your Accounts
+
+  ** User Accounts versus Organization Accounts
+
+  ** Signing up for your User Account
+
+  ** Account Security
+
+    *** SSH vs HTTPS
+
+  ** Setting up an Organization Account
+
+

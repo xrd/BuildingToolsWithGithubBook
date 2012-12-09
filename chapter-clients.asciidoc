@@ -1,0 +1,26 @@
+[[chapter-clients]]
+== Graphical User Interfaces and Command Line Clients
+
+* Official GUI Clients
+
+  ** GitHub for Windows
+
+  ** GitHub for Mac
+
+* Unofficial GUI Clients
+
+  ** SourceTree
+
+  ** SmartGit
+
+* Command Line Tools
+
+  ** ghi
+
+  ** hub
+
+  ** github
+
+  ** gist
+
+  ** tig

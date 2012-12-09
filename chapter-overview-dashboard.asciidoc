@@ -1,0 +1,10 @@
+[[overview-dashboard]]
+== Overview of a Repository Dashboard
+
+* The GitHub Command Bar
+
+  ** Any GitHub page, then `s` key.
+
+* Launch Page
+
+  ** https://github.com/launch

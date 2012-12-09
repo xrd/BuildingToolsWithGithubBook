@@ -1,0 +1,62 @@
+[[started-github]]
+== Getting Started with Github
+
+* What is Github?
+
+  ** A (Very) Brief History of Github
+
+  ** Essential Features: What makes Github, Github?
+
+    *** Team Management
+
+    *** Code Review
+
+    *** Public/Private Project Hosting
+
+    *** Open Source Collaboration
+
+* Collaboration for code
+
+  ** An SCM does not a community create
+
+  ** How to Scale Open Source
+
+    *** Remove Barriers to Participation
+
+      **** Sidebar: Quote from Apache Contributor fighting for Github
+
+    *** Encourage Forking
+
+      **** Sidebar: Is Forking "anti-community"?
+
+    *** Provide a Platform for Code Review
+
+    *** Platform for Decentralized Collaboration
+
+* Collaboration for other creative endeavors
+
+  ** Github for Graphic Designers
+
+  ** Github for Writers
+
+  ** Github for Musicians
+
+  ** Github for Legislators
+
+  ** Github for Makers (Hardware)
+
+* Alternatives to Github
+
+  ** Can you Git without Github?
+
+  ** Hosted
+
+    *** Gitorious (https://gitorious.org/)
+    *** Bitbucket (https://bitbucket.org/)
+
+  ** On-premise
+
+    *** Github Enterprise (https://enterprise.github.com/)
+    *** GitlabHQ (http://gitlabhq.com/)
+    *** Gitorious (https://gitorious.org/)
+    *** Gitblit (http://gitblit.com/)

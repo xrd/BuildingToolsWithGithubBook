@@ -1,0 +1,32 @@
+[[manage-org]]
+== Managing Your Organization Account
+
+* Overview of the Organization Dashboard
+
+* The Organization Profile
+
+  ** Organization Account Security
+
+  ** Gravatar
+
+  ** Billing
+
+  ** Payment History
+
+  ** Security History
+
+  ** Applications _AO: I bet managmeent of applications is a topic worth highlighting somewhere, with lots of use cases as with the dashboard._
+
+  ** [User and Permission Grouping](http://vimeo.com/35539203)
+
+  ** Owners
+
+  ** Members
+
+  ** Teams
+
+    *** Permissions
+
+    *** Members
+
+    *** Repositories

@@ -1,0 +1,18 @@
+[[preface]]
+== Preface
+
+* Git, What is it?
+
+* Font Conventions
+
+* Github Writing Conventions
+
+* Downloading Code Examples
+
+* Using Code Examples
+
+* Safari Books Online
+
+* How to Contact Us
+
+* Acknowledgements
