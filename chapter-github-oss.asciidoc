@@ -1,5 +1,0 @@
-[[github-oss]]
-== Github for Open Source Developers
-
-Cover some of the basic use cases for an open source project both from
-the perspective of a project maintainer and a project participant.

@@ -1,4 +1,0 @@
-[[github-sharing]]
-== Github is for Sharing
-
-Dive into Gists
