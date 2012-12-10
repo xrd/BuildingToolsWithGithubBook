@@ -1,10 +1,16 @@
 [[overview-dashboard]]
 == Overview of a Repository Dashboard
 
-* The GitHub Command Bar
+=== Github Dashboard
+
+image::images/dashboard-personal.png[]
+
+==== The GitHub Command Bar
 
   ** Any GitHub page, then `s` key.
 
-* Launch Page
+==== Launch Page
 
-  ** https://github.com/launch
+https://github.com/launch
+
+image::images/dashboard-launch.png[]
