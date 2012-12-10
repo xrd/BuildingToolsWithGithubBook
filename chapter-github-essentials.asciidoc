@@ -1,30 +1,95 @@
 [[github-essentials]]
 == Github Essentials
 
-=== Useful GitHub-specific Terms
+Remember Github is not Git, and while you can certinaly Git without
+Github it just isn't the same.  This chapter is all about the
+essential features of Github that make it 
 
-==== Pull Request
+Github adds a social layer atop Git which many have come to confuse
+with Git itself.   For example, once you've used Github you'll be
+comfortable with forks and pull requests, you'll see line-level and
+commit-level comment threads as an expected feature of your SCM.  If,
+by chance, you ever use Git without Github, you'll realize what I'm
+talking about.
 
-==== Fork
+These "social" features of Github, the ability to map teams to
+repositories, and the ability to use your SCM system as a way to
+communicate with a group.  These are the features that make Github
+indispensible.
 
-==== Team
+=== Repositories in Github
 
-==== Organization
+"You don't have to be on my team.  Just go ahead, fork my repository,
+change whatever you want.  Once you are done just make a pull request.
+If I have any comments I'll update the pull request or I'll assign an
+issue to you.
 
-=== GitHub Flavored Markdown
+==== "Forking" a Repository
+
+Remember, a "fork" used to be viewed as a negative in some OSS
+communities.   If you had to fork a codebase it was because there was
+some intractable dispute or a schism within a community.   This is not
+the case at Github.
+
+==== Making a Pull Request
+
+If you've forked a repository and made some changes you can then make
+a pull request to the upstream repository. 
+
+==== Github Issues
+
+Repositories are associated with Issues.
+
+==== Milestones
+
+Repositories are associated with milestones
+
+==== Downloads
+
+Repositories can expose downloads.
+
+=== Users in Github
+
+==== Github Teams
+
+When you use a Github organization account you can group users into teams.
+
+==== Github Organizations
+
+An organization in Github is a way to organize repositories and group
+users into teams.
+
+==== @mention
+
+When a user is mentioned in a commit or a comment...
+
+=== Documentation in Github
+
+==== Lightweight Markup: Markdown
+
+Markdown, a lightweight markup language created by John Gruber and
+Aaron Swartz, was the markup language of choice for Github for many
+years.  Most project documentation was stored in Markdown, and it was
+customary for developers to have a README.md file which would be
+rendered as a Github project's default documentation.
+
+Note: Recent developments have made Github markup language agnostic.
+While Github once had a strong preference toward Markdown you can now
+author Wiki content in Asciidoc, Creole, Mediawiki, Org-mode, Pod,
+Rdoc, Textile, and reStructuredText.
 
 ==== Emoji
 
-==== Markdown
+Todo: Ping Matt about Emoji.
 
-=== GitHub Pages
+==== Gollum - Github Wikis
 
-==== Wikis
+Discuss Github's Wiki format.
 
-=== @mention
+==== Sharing Code with Gists
 
-=== Issues
+Gists are...
 
-=== Milestones
 
-=== Gist
+
+

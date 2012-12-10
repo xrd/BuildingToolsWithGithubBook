@@ -54,18 +54,30 @@ service called Github Enterprise.
 
 === Setting Up Your Accounts
 
+If you are new to Github, this section has been designed to walk you
+through the process of setting up an account.
+
 ==== User Accounts versus Organization Accounts
+
+The previous section goes into detail where to start
 
 ==== Signing up for your User Account
 
+How to sign up for an individual user account.
+
 ==== Setting up an Organization Account
 
+How to sign up for an organizational account.
 
 === Exploring Account Security
 
 ==== Reseting Your Password
 
+Simple screenshot and instructions.
+
 ==== SSH vs HTTPS
+
+Which one should you use?
 
 
 
