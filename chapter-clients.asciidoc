@@ -24,3 +24,24 @@
   ** gist
 
   ** tig
+
+==== IDE Integration with Git
+
+* Eclipse
+* IntelliJ
+* Rubymine
+* XCode
+* Netbeans
+* Visual Studio
+
+==== Alternative GUI Clients: _Note: this is just a list, more detail in the Clients chapter_
+
+* Tower
+* Gitbox
+* GitX (L)
+* Git Extensions
+* SourceTree
+* git-cola
+* gitk
+* SmartGit
+

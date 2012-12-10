@@ -1,21 +1,108 @@
 [[bootstrapping-git]]
 == Bootstrapping Git
 
-=== A (Very) Brief Introduction to Git
+This book focused on Github, but before we can explore Github you have
+to have understand Git.   This chapter provides a brief introduction
+to Git and provides some pointers to readers interested in learning
+more about this distributed version control system (DVCS).
 
-==== History of Git
+=== A Brief History of Git
 
-BitKeeper and Linux Breakup.  Torvalds is motivated by efficiency and speed.  Unhappy with existing SCMs, Torvalds Creates Git
+Linux has been using a decentralized approach to development since its
+inception: thousands of developers submit patches to the kernel
+through a list of maintainers.  If you have a change to the Linux
+kernel, the first step is to consult the linux/MAINTAINERS and then
+submit a patch to the appropriate individual.  Eventually, this patch
+is vetted, integrated into a particular component and then passed up
+to core contributors and integrated into the kernel distribution.
 
-==== The Rise of Git: A Distributed Revolution
+It's a busy, human process that relies on a busy mailing list named
+linux-kernel and a small team of core contributors. For more than a
+decade Torvalds was simply organizing the kernel with patchfiles and
+tarballs, and this process just wasn't scalable.  It was only in 2002
+that Torvalds decided to standardize his own workflow on a proprietary
+tool written by Larry McVoy named BitKeeper.  BitKeeper was something
+of a successor to an earlier DVCS named TeamWare.
 
-By the time Torvalds created Git, large-scale open source project had been around for almost a decade.  The Apache Software Foundation had largely migrated to Subversion, Eclipse was continuing to use CVS, and the Free Software Foundation was using ???.   While Linux had been using a decentralized approach to development since its inception, many large open source projects were moving toward Subversion and more centralized, synchronous approaches to version control.
+While Linus Torvalds was happy with BitKeeper core contibutors to the
+Linux Kernel, notably Alan Cox, refused to continue using a
+proprietary tool for Linux.  Fast forward through years of flamewars
+and in 2005 a developer named Andrew Tridgell created a tool
+(SourcePuller) which was compatible with the BitKeeper protocol.  This
+caused BitKeeper to rescind the free BitKeeper license and change
+licensing terms, making it impractical for Torvalds to continue to use
+BitKeeper for kernel development without requiring other developers to
+purchase a license.
 
-Mention that large-scale development efforts at companies like Google have been using a DVCS all along.    Torvalds decision to stick with a DVCS wasn't controversial, but Linux' use of a DVCS was certainly the exception in the OSS world.
+Torvalds, motivated by his desire for a DVCS that would allow for
+efficient and rapid merging, created a prototype of Git in 2005
+handing over the project to Git's current maintainer Junio Hamano
+later that year.
 
-OSS efforts seemed to have a definite preference for central SCMs - Subversion, CVS.  Something happened in the last decade to challenge this approach to centralized development.  As Git became more capable, open source projects and commercial developers alike started to experiment with a more asynchronous approach to collaboration.   Why?  What drove this?   (My theory is Rails opened this door...)
+==== Git: A Challenge to Central Authority
 
-Make some mention of how OSS development changed dramatically - an influx of developers on projects such as Rails.  (Get stats from Github about early OSS adoption.)
+By the time Torvalds created Git in 2005, the Linux Kernel had been at
+it for almost 15 years.  The decade-old Apache Software Foundation had
+largely finished a migration from CVS to Subversion, and the Eclipse
+was continuing to use CVS.  In the early part of the last decade
+centralized, client-server SCMs were the rule.  Proprietary systems
+such as Perforce, Clearcase, MKS Integrity, and (cringe) Visual
+SourcSafe along with the two main open source SCMs CVS and Subversion
+dominated the market.
+
+At the time, the VCS of choice for open source projects was
+Subversion, a centralized system, and there was some discussion on
+linux-kernel about using a tool like CVS or Subversion.  Torvalds
+decision to stick with a DVCS wasn't controversial, but Linux' use of
+a DVCS was certainly the exception in the OSS world. OSS efforts
+seemed to have a definite preference for central SCMs - Subversion,
+CVS.  Torvald's reaction to CVS and Subversion was telling, at the
+time he had some technical issues with the centralized version
+control, but his biggest objection to centralization was that they
+encouraged "politics around the question of who gets commit
+privileges".  Here is Torvald's reaction to CVS and Subversion in 2005
+from linux-kernel. http://marc.info/?l=git&m=113072612805233&w=2
+
+---- 
+The problem with a centralized model is that there's one point of
+contact: you can replicate the central database endlessly, but you can
+only really modify it in one place. Which means that anybody who wants
+to modify anything at all needs to have write access to that one
+repository.
+
+Now, you can limit write access in various ways ("user xyz can only
+write to these files"), but it still requires an a-priori trust
+network rather than a dynamic one. So every single CVS project (and
+SVN does zero in this regard) always ends up having politics around
+the question of who gets commit privileges, and what the rules for
+them are.
+
+So one of the worst downsides of CVS is _politics_. People, not
+technology.  
+----
+
+==== A Revolution, Distributed
+
+That simple observation that the downside of central SCM is "politics.
+People not technology." Was prescient as the next few years would see
+DVCS come to define the standard approach to OSS development.
+
+As Git became more capable, open source projects and commercial
+developers alike started to experiment with a more asynchronous
+approach to collaboration.  Git continued to develop for two years
+before the arrival of Github, founed in 2008.  It wasn't until Github
+arrived that Git started to convert more and more open source
+projects.  The Rails project moved four years of Subversion activity
+dating back to 2004 to Git in April of 2008, and the number of
+developers, forks, and projects on Git skyrocketed.
+
+The ease with which communities could collaborate and the ability for
+independent developers to create forks and issue pull requests started
+to put pressure on traditional open source forges like Apache and
+Eclipse.  While these forges are not running toward Github, Github
+played an important part in popularizing Git.  Don't mistake Github
+for Git, the two are separate and you can certainly use Git without
+using Github.
 
 === Why Git?
 
@@ -23,67 +110,91 @@ Make some mention of how OSS development changed dramatically - an influx of dev
 
 Distributed, Efficient, Easy to Branch and Merge, Free and Open Source
 
-==== DVCS Usage Patterns
+==== Flexibiity
 
-Reference this book - DVCS usage patterns - https://github.com/zkessin/dvcs-workflows - create a list of various approaches and direct readers at zkessin.
+Comment on the various usage pattens for Git.   If a Centralized SCM
+is your preference, you can use Git in much the same way...
+
+Reference this book - DVCS usage patterns -
+https://github.com/zkessin/dvcs-workflows - create a list of various
+approaches and direct readers at zkessin.
 
 ==== Popularity
 
 ===== in Open Source
 
+Show a figure of participation in Rails + Network graph from Node.
+
 ===== in the Enterprise
+
+Ask Github for a chart showing corporate adoption.
 
 ==== Comparisons to Alternatives
 
-Bzr, Hg
+Very brief explanation of difference between Git and Bzr, Hg, Darcs,
+Monotone, BitKeeper
 
 === Installing Git
 
-Note: At this point, how much duplication are we comfortable with.  Other books tackle this topic exhaustively.
+Point users to git-scm.org
 
 ==== Windows
 
+Brief instructions for installing Git Client.
+
 * Git Client 
 * PowerShell vs Git Bash
+
+Screenshot and install instructions for Github for Windows.
+
 * GitHub for Windows
 
 ==== Mac
 
+Brief instructions for installing Git Client.
+
 * Git Client
+
+Screenshot and install instructions for Github for Mac.
+
 * GitHub for Mac
 
 ==== Linux
 
+Brief instructions for installing Git client on Ubuntu and CentOS.
+
 * Git Client
+
+==== Graphical Git Clients
+
+Reference the larger chapter on Git clients.
 
 === Git Usage Basics
 
-Note: Again, how much information are we planning here?
+Very accelerated workflow for an individual developer.  It isn't our
+intention to demonstrate all features of Git.  All we need is a clone,
+change, add, commit, push, pull.   Anything beyond this and we need to
+refer to another book.
+
+=== Git Resources
+
+Create an exhaustive list of Git resources
+
+==== Git Books
+
+List all known Git books
 
 ==== Git Cheat Sheet
 
-I'm assuming we're going to reference an existing Git Cheat Sheet here.
+I'm assuming we're going to reference an existing Git Cheat Sheet
+here.  If not, we should create a single-page PDF.
 
-=== Comprehensive List of Git Clients (short description and link)
+==== Git Videos
 
-==== IDE Integration with Git
+Link to the O'Reilly Git videos
 
-* Eclipse
-* IntelliJ
-* Rubymine
-* XCode
-* Netbeans
-* Visual Studio
+Link to the Git screencasts from Github
 
-==== Alternative GUI Clients: _Note: this is just a list, more detail in the Clients chapter_
+==== Git Training
 
-* Tower
-* Gitbox
-* GitX (L)
-* Git Extensions
-* SourceTree
-* git-cola
-* gitk
-* SmartGit
-
-=== Where to learn more about Git
+Link to Github's Git Training services.

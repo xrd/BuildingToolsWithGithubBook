@@ -1,26 +1,71 @@
 [[creating-account]]
 == Creating a Github Account
 
-* Selecting a GitHub Plan
+It seems odd to have a whole chapter for this, but I'm assuming that
+this will be an 8 page chapter.
 
-  ** Types of Github Plans
+=== Selecting a GitHub Plan
 
-    *** Free
+Selecting the appropriate Github plan is...
 
-    *** Personal
+Sidebar: How most organizations signup for Github?
 
-    *** Organization
+==== Types of Github Plans
 
-* Setting Up Your Accounts
+Table Figure: Compare the Features of Each Plan
 
-  ** User Accounts versus Organization Accounts
+===== Free
 
-  ** Signing up for your User Account
+It costs nothing to sign-up for a Github account.
 
-  ** Account Security
+===== Personal
 
-    *** SSH vs HTTPS
+Once you start creating private repositories, you'll need a personal plan.
 
-  ** Setting up an Organization Account
+===== Organization
+
+If you need to share private projects with more than X people, you'll
+need an organization pan.
+
+==== Choosing the Right Plan for You
+
+Figure: A Decision Tree for What Plan to Choose
+
+===== Open Source Development
+
+If you are only contributing to open source projects, you can probably
+get by with a Free plan.
+
+===== Small Project Development
+
+Small teams of less than 10 people working as individuals are best
+served by personal plans.
+
+===== Startups, Small to Medium Businesses
+
+Once a company starts to depend on Github for coding and collaboration
+it will make sense to use an Organziation plan.
+
+===== Enterprise-scale Development
+
+If you have hundreds or thousands of developers, you may not want to
+use either of these plans.  In these situations, Github offers a
+service called Github Enterprise.
+
+=== Setting Up Your Accounts
+
+==== User Accounts versus Organization Accounts
+
+==== Signing up for your User Account
+
+==== Setting up an Organization Account
+
+
+=== Exploring Account Security
+
+==== Reseting Your Password
+
+==== SSH vs HTTPS
+
 
 
