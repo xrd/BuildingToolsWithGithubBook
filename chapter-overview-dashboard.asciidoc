@@ -1,5 +1,5 @@
 [[overview-dashboard]]
-== Overview of a Repository Dashboard
+== The Github Dashboard
 
 === Github Dashboard
 
