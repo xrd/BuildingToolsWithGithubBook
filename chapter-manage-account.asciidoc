@@ -1,43 +1,127 @@
 [[manage-account]]
 == Managing Your User Account
 
-* Overview of the User Dashboard
+=== Viewing a User Profile
 
-* Your User Profile
+image::images/user-profile.png[]
 
-  ** Password Security
+==== Follow Statistics and Stars
 
-  ** Gravatar
+This area advertises how many developers you are following as well as
+how many are following you.    
 
-  ** Email Addresses
+This section also shows others the list of repositories you have starred.
 
-  ** What is a "Verified" email?
+==== Repositories
 
-  ** Notifications
+Note that the previous figure displays repositories you have
+interacted with.
 
-  ** Billing
+==== Public Activity
 
-  ** Payment History
+image::images/user-public-activity.png[]
 
-  ** SSH Keys
+=== Editing a User Profile
 
-  ** When should I use SSH?
+image::images/user-edit-profile.png[]
 
-  ** Security History
+==== What is a Gravatar?
 
-  ** Applications
+Your image on Github, it is a Gravatar.   Don't be scared, go get one.
 
-  ** What is OAuth?
+=== Changing Account Settings
 
-  ** Authorized Applications
+image::images/user-account-settings.png[]
 
-  ** GitHub Applications
+==== Choosing a Good Password
 
-  ** Repositories
+About password security
 
-  ** Private vs Public
+==== Changing Your Username
 
-  ** Organizations
+Do you really want to do this?   Think twice, this has side-effects.
 
-_AO: I think an overview of all these elements of the dashboard is good, but when do you discuss use cases, which show how these things are valuable and how they're being used to enhance development by users now? That's the kind of meaty advice that makes people buy a book._
 
+=== Managing Email Addresses
+
+image::images/user-email-addresses.png[]
+
+==== What is a "Verified" email?
+
+=== Managing Notifications
+
+image::images/user-notifications.png[]
+
+==== Notifications for @mentions
+
+Whenever someone mentions...
+
+==== Notifications for Watching
+
+You may want to manage the emails...
+
+==== Custom Routing for Organizations
+
+If you are like me you have several email addresses...
+
+=== Github Billing Preferences
+
+image::images/user-billing.png[]
+
+==== Updating Your Credit Card Information
+
+image::images/user-billing-credit-card.png[]
+
+==== Payment History
+
+image::images/user-billing-history.png[]
+
+=== SSH Keys
+
+image::images/user-ssh.png[]
+
+==== When should I use SSH?
+
+Always, do it.
+
+=== Security History
+
+image::images/user-security-history.png[]
+
+=== Applications
+
+image::images/user-applications.png[]
+
+==== What is OAuth?
+
+image::images/user-applications-register.png[]
+
+==== Authorized Applications
+
+Be careful who you trust.
+
+==== GitHub Applications
+
+not sure *exactly* what Matt meant by this.
+
+=== Repositories
+
+==== Private vs Public
+
+Github is a great way to unintentionally make a bunch of code public
+by mistake.
+
+==== Leaving a Repository
+
+If you need to leave, here's the exit.
+
+=== Organizations
+
+==== Leaving an Organization
+
+Don't let the door hit you on the way out.
+
+=== Deleting Your Account
+
+Now why would you want to go and do a thing like that?   If you do,
+refer to the User Account Settings (xref).
