@@ -1,32 +1,74 @@
 [[manage-org]]
 == Managing Your Organization Account
 
-* Overview of the Organization Dashboard
+=== Overview of the Organization Dashboard
 
-* The Organization Profile
+==== The Organization Profile
 
-  ** Organization Account Security
+image::images/org-profile.png[]
 
-  ** Gravatar
+==== Organization Account Security
 
-  ** Billing
+Explain
 
-  ** Payment History
+==== Gravatar
 
-  ** Security History
+Wait, and organziation has a gravatar?
 
-  ** Applications _AO: I bet managmeent of applications is a topic worth highlighting somewhere, with lots of use cases as with the dashboard._
+==== Billing
 
-  ** [User and Permission Grouping](http://vimeo.com/35539203)
+image::images/org-billing.png[]
 
-  ** Owners
+==== Payment History
 
-  ** Members
+image::images/org-payment-history.png[]
 
-  ** Teams
+==== Security History
 
-    *** Permissions
+image::images/org-security-history.png[]
 
-    *** Members
+==== Organization Applications 
 
-    *** Repositories
+image::images/org-applications.png[]
+
+
+[User and Permission Grouping](http://vimeo.com/35539203)
+
+==== Organization Owners
+
+image::images/org-owners.png[]
+
+==== Organization Members
+
+image::images/org-members.png[]
+
+
+=== Manage Organization Teams
+
+image::images/org-team-overview.png[]
+
+==== Permissions
+
+Explain.
+
+image::images/org-team-detail.png[]
+
+==== Members
+
+Explain.
+
+==== Repositories
+
+Explain.
+
+=== Organization News Feed
+
+image::images/org-news.png[]
+
+=== Organization-wide Pull Requests
+
+image::images/org-pull.png[]
+
+=== Organization Issues
+
+image::images/org-issues.png[]
