@@ -1,0 +1,42 @@
+[[developer-api]]
+== The GitHub API
+
+=== API Overview
+
+==== Getting to Know One Another: OAuth
+
+* [OAuth](http://developer.github.com/v3/oauth/)
+
+  ** For discounts at business-affiliated services. (Publishers like O'Reilly Atlas, Prags, Pluralsight)
+
+  ** For automation integration like Travis-CI
+
+  ** For sign-in to credentialing services like [CoderWall](http://coderwall.com)
+
+  ** For sign-in to reputation services like [StackOverflow](http://stackoverflow.com)
+
+==== How to call the API
+
+* [API Documentation](http://developer.github.com)
+
+===== Media Types
+
+The content type for these requests and responses is almost always
+JSON, but there's a special format required for the media type:
+http://developer.github.com/v3/media/
+
+===== This Chapter's Samples: Javascript
+
+This chapter's samples are all written in Javascript, using a sample
+web site that you can use over ...here...
+
+===== Other Languages
+
+Refer reader to this page; http://developer.github.com/v3/libraries/
+
+
+
+
+
+
+
