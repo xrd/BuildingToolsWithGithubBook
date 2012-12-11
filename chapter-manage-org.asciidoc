@@ -29,8 +29,6 @@ image::images/org-security-history.png[]
 
 ==== Organization Applications 
 
-image::images/org-applications.png[]
-
 
 [User and Permission Grouping](http://vimeo.com/35539203)
 
