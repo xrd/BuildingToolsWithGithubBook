@@ -1,0 +1,162 @@
+[[repo-admin]]
+== Repository Administration
+
+image::images/repo-admin-link.png[]
+
+=== Repository Options
+
+image::images/repo-admin-options.png[]
+
+=== The Danger Zone
+
+image::images/repo-admin-danger.png[]
+
+The Danger Zone is just that - dangerous.   Here you can delete a project, give it away, or expose your code to the public.   Github understands the risk, and because of this every action in the Danger Zone requires explicit authorization and confirmation.
+
+==== Making a Repository Public
+
+Be careful, do you really want to do that?
+
+==== Transfer Repository Ownership
+
+Maybe you started out with a personal account and you want to transfer ownership or a repository to an organization?   Or, maybe you are just sick of a project and want to pass responsibility to someone else?
+
+==== Deleting a Repository
+
+If your project angers you, delete it.
+
+=== Repository Collaborators
+
+image::images/repo-admin-collaborators.png[]
+
+=== Repository Deploy Keys
+
+image::images/repo-admin-deploy-key.png[]
+
+=== Repository Service Hooks
+
+image::images/repo-admin-service-hooks.png[]
+
+Explain them all, do it...
+
+* WebHook URLs (0)
+* ActiveCollab
+* Acunote
+* AgileBench
+* AgileZen
+* AmazonSNS
+* AMQP
+* Apoio
+* AppHarbor
+* Asana
+* Backlog
+* Bamboo
+* BasecampClassic
+* Basecamp
+* Boxcar
+* buddycloud (GitHub plugin)
+* BugHerd
+* Bugly
+* Bugzilla
+* Buildcoin
+* Campfire
+* CIA
+* CodeClimate
+* CodePorting-C#2Java
+* CoffeeDoc.info
+* Co-Op
+* CopperEgg
+* Cube
+* Ducksboard
+* Email
+* Fisheye
+* Flowdock
+* FogBugz
+* Freckle
+* FriendFeed
+* Gemini
+* Gemnasium
+* geocommit
+* GetLocalization
+* gitlive
+* Grmble
+* GroupTalent
+* Grove
+* Habitualist
+* Hall
+* Harvest
+* HipChat
+* Hostedgraphite
+* Hubcap
+* HubCI
+* Humbug
+* IceScrum
+* IRC
+* Irker
+* Jabber
+* Jaconda
+* Jenkins (GitHub plugin)
+* Jenkins (Git plugin)
+* Jira
+* Kanbanery
+* Kickoff
+* Lean-To
+* Lighthouse
+* Lingohub
+* Loggly
+* MantisBT
+* Masterbranch
+* MQTT publish
+* Notify My Android
+* Nodejitsu
+* Notifo
+* OnTime
+* Pachube
+* Packagist
+* PivotalTracker
+* Planbox
+* Planio
+* Presently
+* Prowl
+* PuppetLinter
+* Pushover
+* PythonPackages
+* Railsbp
+* RailsBrakeman
+* Rally
+* RationalTeamConcert
+* Rdocinfo
+* ReadTheDocs
+* Redmine
+* Rubyforge
+* ScrumDo
+* ShiningPanda
+* Slatebox
+* SnowyEvening
+* Socialcast
+* SoftLayerMessaging
+* Sourcemint
+* SplendidBacon
+* Sprintly
+* SqsQueue
+* Stackmob
+* StatusNet
+* Talker
+* TargetProcess
+* TeamCity
+* Tender
+* TestPilot
+* Toggl
+* Trac
+* Trajectory
+* Travis
+* Trello
+* Twilio
+* Twitter
+* Unfuddle
+* Weblate
+* WebTranslateIt
+* Yammer
+* YouTrack
+* Zendesk
+* ZohoProjects

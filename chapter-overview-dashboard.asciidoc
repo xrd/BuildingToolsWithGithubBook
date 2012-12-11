@@ -1,16 +1,91 @@
 [[overview-dashboard]]
-== The Github Dashboard
+== The Github Dashboard Interface
 
 === Github Dashboard
 
 image::images/dashboard-personal.png[]
 
-==== The GitHub Command Bar
+==== Github Notifications
 
-  ** Any GitHub page, then `s` key.
+==== Account Context
 
-==== Launch Page
+==== Your News Feed
+
+==== Your Pull Requests
+
+==== Your Issues
+
+==== Your Stars
+
+=== The Launch Page
 
 https://github.com/launch
 
 image::images/dashboard-launch.png[]
+
+=== The GitHub Command Bar
+
+==== Keyboard Shortcur
+
+
+  ** Any GitHub page, then `s` key.
+
+
+==== Searching for Github Content
+
+* search
+
+==== User Commands
+
+* @user 
+
+* @user follow
+
+* @user unfollow
+
+==== "my" Commands
+
+* my dashboard
+
+* my issues
+
+* my notifications
+
+* my profile
+
+* my pulls
+
+* my settings
+
+* my stars
+
+==== Repository Commands
+
+* user/repo
+
+* user/repo #123
+
+* user/repo #search term
+
+* user/repo @branchname
+
+* user/repo admin
+
+* user/repo graphs
+
+* user/repo issues
+
+* user/repo issues #123
+
+* user/repo issues new 
+
+* user/repo network
+
+* user/repo pulls
+
+* user/repo unwatch
+
+* user/repo watch
+
+* user/repo wiki
+

@@ -1,0 +1,100 @@
+[[overview-dashboard]]
+== The Github Repository Interface
+
+=== Github Repository Code
+
+image::images/repo-overview.png[]
+
+==== Tracking a Repository
+
+image::images/repo-watching-starring-forking.png[]
+
+===== Watching a Repository
+
+When you watch a repository, you can be notified of changes.
+
+===== Starring a Repository
+
+Think of starring a repository as adding a repository to your public
+list of repositories you are "liking".
+
+==== Repository Commits
+
+image::images/repo-commits.png[]
+
+===== Commits Keyboard Shortcuts
+
+image::images/repo-commits-shortcuts.png[]
+
+==== Repository Branches
+
+image::images/repo-branches.png[]
+ 
+==== Repository Tags
+
+image::images/repo-tags.png[]
+
+==== Switching to a Branch or a Tag
+
+image::images/repo-branch-switch.png[]
+
+
+==== Repository Downloads
+
+image::images/repo-downloads.png[]
+
+=="git request-pull"= Github Repository Network
+
+==== Network Graph
+
+image::images/repo-network-graph.png[]
+
+===== Network Graph Keyboard Shortcuts
+
+image::images/repo-network-graph-shortcuts.png[]
+
+==== Network Members
+
+image::images/repo-network-members.png[]
+
+=== Repository Pull Requests
+
+image::images/repo-pull-requests.png[]
+
+==== Working with a Pull Request
+
+image::images/repo-pull-request.png[]
+
+=== Repository Issues
+
+image::images/repo-issues.png[]
+
+==== Creating a New Issue
+
+image::images/repo-create-new-issue.png[]
+
+==== Interacting with an Issue
+
+image::images/repo-issue-interact.png[]
+
+=== Repository Wiki
+
+image::images/repo-wiki.png[]
+
+=== Repository Graphs
+
+==== Contributors Graph
+
+image::images/repo-graph-contributors.png[]
+
+==== Commits Graph
+
+image::images/repo-graph-commits.png[]
+
+==== Code Frequency Graph
+
+image::images/repo-graph-code-frequency.png[]
+
+==== Punchcard Graph
+
+image::images/repo-graph-punchcard.png[]

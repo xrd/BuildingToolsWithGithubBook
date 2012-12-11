@@ -36,6 +36,12 @@ the case at Github.
 If you've forked a repository and made some changes you can then make
 a pull request to the upstream repository. 
 
+Note: Not everyone appreciates a pull request.  For an example, take a
+look at the user "torvalds" which is Linux Torvald's Github profile.
+If you follow his activity, you will see that the Linux Kernel does
+not accept Github pull requests - if you want to request a pull
+outside of Github you'll have to use "git request-pull"
+
 ==== Github Issues
 
 Repositories are associated with Issues.
