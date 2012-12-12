@@ -39,27 +39,161 @@ image::images/repo-admin-service-hooks.png[]
 
 Explain them all, do it...
 
+==== Simple Integration, REST, HTTP
+
 * WebHook URLs (0)
-* ActiveCollab
-* Acunote
-* AgileBench
-* AgileZen
-* AmazonSNS
-* AMQP
-* Apoio
-* AppHarbor
-* Asana
-* Backlog
-* Bamboo
+
+===== With Webhooks, the Possibilities are Endless
+
+Talk about how you could use Webhooks to write your own integrations.
+
+===== Integration Possibilities
+
+Create an idea list here.
+
+==== Project Management Tools
+
+* ActiveCollab - http://www.activecollab.com/
+* Acunote - http://www.acunote.com/
+* AgileBench - http://www.agilebench.com/
+* AgileZen - http://www.agilezen.com
+* Backlog - http://backlogtool.com/
 * BasecampClassic
 * Basecamp
-* Boxcar
-* buddycloud (GitHub plugin)
-* BugHerd
-* Bugly
+
+===== Keeping Management Happy with Github
+
+Talk about how managers often want to track progress and how Github
+adapts to the various tools
+
+===== Project Management Possibilities
+
+Create an idea list here.
+
+==== Infrastructure/Messaging
+
+* Amazon Simple Notification Service (SNS) -
+  http://www.activecollab.com/
+* AMQP - http://www.amqp.org/
+
+===== Github as a Gear in a Mighty Machine
+
+Discuss some of the uses for Github as a source of messages.  How you
+could use Github as a foundation for an asynchronous workflow.   
+
+===== Messaging Possibilities
+
+Create an idea list here.
+
+==== Customer Support
+
+* Apoio - http://www.apo.io/
+* Zendesk
+
+===== Github is for Customers?
+
+Yes, yes it is.
+
+===== Customer Service Possibilities
+
+Create an idea list here.
+
+==== Cloud and Platform-as-a-Service (PaaS)
+
+* AppHarbor
+
+===== Github is All Up in Your Cloud
+
+If you use a PaaS service like EC2 or AppHarbor discuss how Github can
+be integrated into your cloud deployment strategies.
+
+===== Cloud Possibilities
+
+Create an idea list here.
+
+==== Task/Issue Management
+
+* Asana - http://asana.com/
+* BugHerd - http://www.bugherd.com/
+* bug.ly - http://bug.ly/
 * Bugzilla
-* Buildcoin
+* FogBugz
+* Jira
+* Trac
+
+===== Issue Management Possibilities
+
+Users are looking for some guidance here.   Create an idea list that
+will get people thinking...
+
+==== Continuous Integration
+
+* Bamboo - http://www.atlassian.com/software/bamboo/overview
+* Jenkins (GitHub plugin)
+* Jenkins (Git plugin)
+* TeamCity
+
+===== When this Code Changes, Build!
+
+Discuss (briefly) the importance of CI systems and how a close
+connection between SCM and CI systems is essential.   Reference other
+O'Reilly books that cover CI.
+
+===== Continuous Integration Possibilities
+
+Users are looking for some guidance here.   Create an idea list that
+will get people thinking...
+
+==== Chat and Instant Messaging
+
+* Amazon Simple Notification Service (SNS) -
+  http://www.activecollab.com/
 * Campfire
+* IRC
+* Jabber
+
+===== Github us Just Another Member of Your Team
+
+Talk about how having persistent chat room is how things get done, and
+then talk about how a common pattern is to have Github sit in on your chatroom.
+
+==== Social Networks and Microblogging
+
+* buddycloud (Github plugin) - http://buddycloud.com/
+* Boxcar - http://boxcar.io/
+* FriendFeed
+* StatusNet - http://status.net/
+* Twitter
+* Yammer
+
+===== Everyone's all a-twitter about Your Repositories
+
+Talk about how Twitter is a popular way for people to discuss and
+reference code.     Discuss the emergence of these internal
+twitter-clones such as Yammer.  
+
+Briefly touch upon the fact that there's only an arbitrary difference
+between status and chat.
+
+===== Possibilities for Twitter, FriendFeed, etc.
+
+Create an idea list here.
+
+==== Build Gamification
+
+* Buildcoin - http://buildcoin.com/
+
+===== Development as a Game
+
+Well I certainly hope this doesn't catch on, but we should likely
+explain it a bit.
+
+===== Gamification Possibilities
+
+Create an idea list here.
+
+==== Uncategorized
+
 * CIA
 * CodeClimate
 * CodePorting-C#2Java
@@ -71,9 +205,7 @@ Explain them all, do it...
 * Email
 * Fisheye
 * Flowdock
-* FogBugz
 * Freckle
-* FriendFeed
 * Gemini
 * Gemnasium
 * geocommit
@@ -91,13 +223,8 @@ Explain them all, do it...
 * HubCI
 * Humbug
 * IceScrum
-* IRC
 * Irker
-* Jabber
 * Jaconda
-* Jenkins (GitHub plugin)
-* Jenkins (Git plugin)
-* Jira
 * Kanbanery
 * Kickoff
 * Lean-To
@@ -140,23 +267,17 @@ Explain them all, do it...
 * Sprintly
 * SqsQueue
 * Stackmob
-* StatusNet
 * Talker
 * TargetProcess
-* TeamCity
 * Tender
 * TestPilot
 * Toggl
-* Trac
 * Trajectory
 * Travis
 * Trello
 * Twilio
-* Twitter
 * Unfuddle
 * Weblate
 * WebTranslateIt
-* Yammer
 * YouTrack
-* Zendesk
 * ZohoProjects

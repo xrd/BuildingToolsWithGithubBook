@@ -3,17 +3,121 @@
 
 === API Overview
 
-==== Getting to Know One Another: OAuth
+An overview of the API with a diagram.
 
-* [OAuth](http://developer.github.com/v3/oauth/)
+==== High-level Areas 
 
-  ** For discounts at business-affiliated services. (Publishers like O'Reilly Atlas, Prags, Pluralsight)
+* Activity
+* Gists
+* Git Data
+* Issues
+* Orgs
+* Pull Requests
+* Repositories
+* Users
+* Search
 
-  ** For automation integration like Travis-CI
+==== How the Read the Github API Documentation
 
-  ** For sign-in to credentialing services like [CoderWall](http://coderwall.com)
+Just a pointing to the site with a quick overview of what everything
+means.
 
-  ** For sign-in to reputation services like [StackOverflow](http://stackoverflow.com)
+==== Following the examples in this chapter
+
+Discuss how this chapter uses Javascript examples
+
+==== What are the Limitations of the Github API?
+
+Discuss any limits on API usage.  Rate limits , etc.   What can the
+API be used for, and what can it not be used for.   Try to translate
+any licensing terms for this API into plainspeak.
+
+=== API Security
+
+How is a call to the API secured?
+
+==== Unauthenticated Usage
+
+Public usage of the API, briefly discuss any limitations for
+unauthenticated usage.
+
+==== Connecting as Yourself
+
+Just describe simple authentication, how can you make calls to Github
+as your own user.
+
+==== Connecting as Someone Else (OAuth)
+
+Reference the larger section on OAuth below.
+
+=== API Libraries
+
+There are already a number of API Libraries available for the Github
+API.  This section lists some of the major languages along with some
+of the options.
+
+==== Connecting to Github from Ruby
+
+Just have a simple example using the most popular library.  Simple ,
+then just some of the alternatives.
+
+==== Connecting to Github from Python
+
+Just have a simple example using the most popular library.  Simple ,
+then just some of the alternatives.
+
+==== Connecting to Github from Javascript
+
+Just have a simple example using the most popular library.  Simple ,
+then just some of the alternatives.
+
+==== Connecting to Github from Java
+
+Just have a simple example using the most popular library.  Simple ,
+then just some of the alternatives.
+
+==== Connecting to Github from a Billion Alternative Languages
+
+Here is where you can have a list of the availablt APIs, but not a big
+one.    We don't need to bother with langauges like Fortran 90.
+
+=== Developing Github Applications
+
+Building systems that interact with Github
+
+===== Example Use-cases for Github Applications
+
+* For discounts at business-affiliated services. (Publishers like O'Reilly Atlas, Prags, Pluralsight)
+
+* For automation integration like Travis-CI
+
+* For sign-in to credentialing services like [CoderWall](http://coderwall.com)
+
+* For sign-in to reputation services like [StackOverflow](http://stackoverflow.com)
+
+===== Authorizing Github Applications
+
+When you develop an application that needs to make use of Github they
+need to be authorized using an OAuth workflow...
+
+===== How does OAuth Work?
+
+ [OAuth](http://developer.github.com/v3/oauth/)
+
+===== OAuth Libraries for Github
+
+====== Ruby: Omniauth (with Devise)
+
+Omniauth already has a OAuth provider for Github.
+
+====== Python: ???
+
+Todo: I know that Django has an OAuth provider API, ask a Pythonista.
+
+====== Other Languages
+
+Figure out if there are any other pre-built OAuth integrations (like omniauth)
+
 
 ==== How to call the API
 

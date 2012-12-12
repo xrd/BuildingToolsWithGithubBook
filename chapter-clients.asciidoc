@@ -1,47 +1,138 @@
 [[chapter-clients]]
-== Graphical User Interfaces and Command Line Clients
+== Github Clients and Github Integration
 
-* Official GUI Clients
+=== Tools for Developers and Non-developers
 
-  ** GitHub for Windows
+Discuss the need to extend the idea of version control beyond
+technical users.
 
-  ** GitHub for Mac
+=== Github Clients
 
-* Unofficial GUI Clients
+While most developers tend to learn Git from the command-line, the
+Github official clients come in handy when you need to conduct a
+complex merging operation, or if you are just looking for a graphical
+interface to visualize repository activity.
 
-  ** SourceTree
+Another use for the official Github clients is for non-technical users
+who may be uncomfortable running git from the command line.    If
+you've ever tried to get a non-technical user to use Github, you
+understand the challenge of setting of SSH keys and explaining all the
+details.
 
-  ** SmartGit
+==== Official Github Clients
 
-* Command Line Tools
+Note: This isn't to say that these official clients are just for
+novices.  Advanced users benefit from the simplicity of these official clients.
 
-  ** ghi
+===== Use Github without Managing SSH Keys 
 
-  ** hub
+The official Github client's interact with Github via HTTPS not SSH.
+This means two things:  you won't have to maintain an SSH key to
+access Github, and Github will cache your credentials.
 
-  ** github
+===== Cloning a Repository with a Click
 
-  ** gist
+When a user needs to clone a repository, the official Github
+repositories take care of the details.
 
-  ** tig
+===== Easy Branches and Merges
 
-==== IDE Integration with Git
+Branching and merging via the command-line tools can be confusing.
+The official Github client reduces the complex and makes it easy to
+read diffs.
 
-* Eclipse
-* IntelliJ
-* Rubymine
-* XCode
-* Netbeans
-* Visual Studio
+===== Don't Pull and Push: Sync with Github
 
-==== Alternative GUI Clients: _Note: this is just a list, more detail in the Clients chapter_
+Sometimes the process of pulling before pushing, and merging changes
+into your local repository before pushing to a remote can grow
+confusing.   The official Github client simplifies this workflow by
+providing users with the ability to sync a repository.   Behind the
+scenes everything is still the same, the tool is pulling, merging,
+adding, commiting, and then pushing, but the interface does what a
+good interface is supposed to do - it simplifies the process and hides
+the complexity from the end-user.
 
-* Tower
-* Gitbox
-* GitX (L)
-* Git Extensions
-* SourceTree
-* git-cola
-* gitk
-* SmartGit
+==== Installing GitHub for Windows
 
+Simple installation instructions.
+
+==== Installing GitHub for Mac
+
+Simple installation instructions.
+
+=== Command Line Tools
+
+==== Working with Github Issues on the Command Line (ghi)
+
+https://github.com/stephencelis/ghi
+
+==== Extending Command Line Git for Github (hub)
+
+https://github.com/defunkt/hub
+
+==== Using Git from the Command Line: github Rubygem
+
+https://github.com/defunkt/github-gem
+
+==== Using gist from the Command Line (gist)
+
+https://github.com/defunkt/gist
+
+==== An NCurses Front-end to Github
+
+http://gitready.com/advanced/2009/07/31/tig-the-ncurses-front-end-to-git.html
+
+=== Mobile Applications for Github
+
+==== Using Github from an Android Device
+
+http://mobile.github.com/#android
+
+==== Working with Github Issues from an iOS Device
+
+http://mobile.github.com/#ios
+
+=== IDE Integration with Github
+
+==== Eclipse Integration: Mylyn Github Connector
+
+http://www.vogella.com/articles/EGit/article.html#github_mylyn
+
+==== IntelliJ Integration
+
+Includes Rubymine, PHPStorm and all of the other tools by the same
+company.
+
+http://blogs.jetbrains.com/idea/2010/10/github-integration-in-intellij-idea-base-features/
+
+==== XCode
+
+Objective-C developers can benefit from XCode integration with Git.
+
+https://developer.apple.com/technologies/tools/whats-new.html#version-editor
+
+==== Netbeans
+
+http://plugins.netbeans.org/plugin/38970/peek-into-github
+
+==== Visual Studio
+
+https://github.com/techtalk/SpecFlow/wiki/Visual-Studio-2012-Integration
+
+=== Development Infrastucture with Github
+
+==== Integrating Jenkins Builds with Github Projects
+
+https://wiki.jenkins-ci.org/display/JENKINS/GitHub+Plugin
+
+==== Integrating Bamboo Builds with Github Projects
+
+https://github.com/andypols/git-bamboo-plugin
+
+==== Using the Atlassian JIRA Github Connector
+
+https://marketplace.atlassian.com/plugins/com.atlassian.jira.plugins.github;jsessionid=15m4r6kul934rivrwt96h0lmr
+
+==== Integration with Travis-CI
+
+https://travis-ci.org/
