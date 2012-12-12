@@ -17,7 +17,7 @@ The Danger Zone is just that - dangerous.   Here you can delete a project, give 
 
 Be careful, do you really want to do that?
 
-==== Transfer Repository Ownership
+==== How to Transfer Repository Ownership
 
 Maybe you started out with a personal account and you want to transfer ownership or a repository to an organization?   Or, maybe you are just sick of a project and want to pass responsibility to someone else?
 
@@ -25,9 +25,14 @@ Maybe you started out with a personal account and you want to transfer ownership
 
 If your project angers you, delete it.
 
-=== Repository Collaborators
+=== Managing Access to an Individual Repository
 
 image::images/repo-admin-collaborators.png[]
+
+==== Teams vs. Individuals: What's Appropriate
+
+Discuss some of the decision process here.   When should somone use
+organization teams versus just granting individuals access to repositories.
 
 === Repository Deploy Keys
 
@@ -192,7 +197,14 @@ explain it a bit.
 
 Create an idea list here.
 
-==== Uncategorized
+==== TODO: Uncategorized
+
+Tim: I'm going to categorize all of these.   This has been something
+I've wanted to do for years now because I think it would be a valuable
+asset.  If we could work this into the book and make this section a
+sort of an "idea book" for how to integrate Github into your
+infrastruction it will move inventory.    I've been looking for this
+to help convince clients to adopt Github.
 
 * CIA
 * CodeClimate
