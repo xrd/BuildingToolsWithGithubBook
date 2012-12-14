@@ -101,11 +101,12 @@ an XREF to it.
 
 ===== Pull Request Etiquitte
 
-====== Clean Your Branches
 
-====== Document Your Changes
+===== Clean Your Branches
 
-====== Respond in Reasonable Time
+===== Document Your Changes
+
+===== Respond in Reasonable Time
 
 ===== Merging a Pull Request
 

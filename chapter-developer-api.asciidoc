@@ -106,15 +106,15 @@ need to be authorized using an OAuth workflow...
 
 ===== OAuth Libraries for Github
 
-====== Ruby: Omniauth (with Devise)
+===== Ruby: Omniauth (with Devise)
 
 Omniauth already has a OAuth provider for Github.
 
-====== Python: ???
+===== Python: ???
 
 Todo: I know that Django has an OAuth provider API, ask a Pythonista.
 
-====== Other Languages
+===== Other Languages
 
 Figure out if there are any other pre-built OAuth integrations (like omniauth)
 
