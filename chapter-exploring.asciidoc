@@ -1,0 +1,46 @@
+== Exploring and Searching Github
+
+=== Exploring Trends
+
+==== Trending Repositories
+
+Include a screenshot here.
+
+==== Featured Repositories
+
+Include a screenshot here.
+
+==== Language-specific Statistics
+
+What is the most popular repository for Java?  How about ADA?  All of this is available on Github.
+
+=== Searching for Repositories
+
+One of the reviewers mentioned that it was difficult to search Github.   This section should list all the ways you can search for a repository:
+
+* size:
+* forks:
+* fork:
+* pushed:
+* username:
+* language:
+* created:
+* followers:
+
+==== Evaluating Repositories 
+
+Some language about how to evaluate the results of a search.   what are the tell-tale signs that a repository isn't worth paying attention to.
+
+=== Searching for Code
+
+==== Searching a Single Repository
+
+You can search the code in a single repsitory.
+
+==== Searching through History
+
+Not really possible on Github, but the book should provide the simple bash script for doing this.
+
+=== Discovering Gists
+
+Gists can be searched, but there's also a simple page for discovering gists which was just launched.

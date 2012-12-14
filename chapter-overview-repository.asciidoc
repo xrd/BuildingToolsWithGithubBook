@@ -1,5 +1,5 @@
 [[overview-dashboard]]
-== The Github Repository Interface
+== The Github Repository
 
 Maybe the most important screen in Github is the interface for a
 single repository.
@@ -7,20 +7,6 @@ single repository.
 Here is the view of a single repository.
 
 image::images/repo-overview.png[]
-
-==== Watching and Starring a Repository
-
-Developers have a difficult task, they need to track several
-technologies at once and, very often, they have to make a trade off
-between being productive with the libraries and tools they depend on
-and being aware of a constant stream of changes to these same
-libraries and tools.  Watching and starring a repository let you...
-
-image::images/repo-watching-starring-forking.png[]
-
-Think of starring a repository as adding a repository to your public
-list of repositories you are "liking".
-
 
 === Repository Manipulation: Who Needs a Client?
 
@@ -107,6 +93,19 @@ image::images/repo-network-graph-shortcuts.png[]
 Pull requests are "the reason for the season."
 
 image::images/repo-pull-requests.png[]
+
+===== Making a Pull Request
+
+This section is covered in detail elsewhere in the book, this is just
+an XREF to it.
+
+===== Pull Request Etiquitte
+
+====== Clean Your Branches
+
+====== Document Your Changes
+
+====== Respond in Reasonable Time
 
 ===== Merging a Pull Request
 

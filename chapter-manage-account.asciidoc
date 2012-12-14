@@ -1,5 +1,5 @@
 [[manage-account]]
-== Managing Your Account
+== Profiles and Account Management
 
 In Github there are two types of accounts: individual and
 organization.  This chapter covers the management of individual accounts.
@@ -17,7 +17,7 @@ how many are following them.
 
 This section also shows others the list of repositories a user has starred.
 
-==== Github is a Genius Tracking Platform
+==== Tracking Platform
 
 This is the social aspect of Github that makes this platform very
 diferent from every other open source community that has came before
@@ -141,7 +141,6 @@ by mistake.
 ==== Leaving a Repository
 
 If you need to leave, here's the exit.
-
 
 === Deleting Your Account
 

@@ -111,4 +111,3 @@ point.  It contains only the Github command bar.
 https://github.com/launch
 
 image::images/dashboard-launch.png[]
-

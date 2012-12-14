@@ -39,7 +39,7 @@ efficient and rapid merging, created a prototype of Git in 2005
 handing over the project to Git's current maintainer Junio Hamano
 later that year.
 
-==== Git: A Challenge to Central Authority
+==== Git: Toward an Acceptance of DVCS
 
 By the time Torvalds created Git in 2005, the Linux Kernel had been at
 it for almost 15 years.  The decade-old Apache Software Foundation had

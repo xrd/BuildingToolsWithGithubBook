@@ -84,18 +84,11 @@ While Github once had a strong preference toward Markdown you can now
 author Wiki content in Asciidoc, Creole, Mediawiki, Org-mode, Pod,
 Rdoc, Textile, and reStructuredText.
 
-==== Emoji
-
-Todo: Ping Matt about Emoji.
-
 ==== Gollum - Github Wikis
 
 Discuss Github's Wiki format.
 
-==== Sharing Code with Gists
+==== Gists - Sharing Code 
 
 Gists are...
-
-
-
 

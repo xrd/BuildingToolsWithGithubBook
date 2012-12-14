@@ -145,7 +145,6 @@ Example diagram of teams
 
 === Organization Pull Requests
 
-
 image::images/org-pull.png[]
 
 === Organization Issues
