@@ -84,27 +84,32 @@ If you are like me you have several email addresses...
 
 image::images/user-notifications.png[]
 
-=== Github Billing Preferences
-
-image::images/user-billing.png[]
-
-==== Updating Your Credit Card Information
-
-image::images/user-billing-credit-card.png[]
-
-==== Payment History
-
-image::images/user-billing-history.png[]
-
 === Account Security
 
-==== SSH Keys
+==== Your SSH Keys
+
+Maybe a brief discussion of what an SSH Key is for those who don't yet know.
 
 image::images/user-ssh.png[]
 
-==== When should I use SSH?
+===== How to create an SSH Key
+
+Easy instructions, assume linux(-ish) instructions.
+
+Provide a pointer for Windows users.
+
+===== Do your SSH Keys have a Password? (ssh-agent)
+
+Briefly discuss the pros and cons of passwordless SSH keys.
+
+==== When should I use SSH vs HTTPS?
 
 Always, do it.
+
+===== Alternative: Official Github Client
+
+Remember that if you have to support non-technical users, the official
+Github client is a great option.
 
 ==== Security History
 
@@ -142,3 +147,20 @@ If you need to leave, here's the exit.
 
 Now why would you want to go and do a thing like that?   If you do,
 refer to the User Account Settings (xref).
+
+=== Github Billing Preferences
+
+If you are going to have private repositories with private
+contributors, Github is going to require a subscription plan.   To
+open your billing preferences, click...
+
+image::images/user-billing.png[]
+
+==== Payment History and Invoices
+
+If you need to obtain an invoice for your Github account (maybe
+because you need to convince your boss to pay for a Github account?).
+There is a helpful list of invoices.
+
+image::images/user-billing-history.png[]
+
