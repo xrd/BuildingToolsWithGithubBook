@@ -5,7 +5,9 @@ include::chapter-bootstrapping-git.asciidoc[]
 include::chapter-started-github.asciidoc[]
 include::chapter-github-essentials.asciidoc[]
 include::chapter-creating-account.asciidoc[] 
+
 include::chapter-patterns.asciidoc[]
+
 include::chapter-overview-dashboard.asciidoc[] 
 include::chapter-overview-repository.asciidoc[] 
 include::chapter-clients.asciidoc[] 
