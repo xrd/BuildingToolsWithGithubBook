@@ -27,7 +27,7 @@ Once you start creating private repositories, you'll need a personal plan.
 If you need to share private projects with more than X people, you'll
 need an organization pan.
 
-==== Choosing the Right Plan for You
+==== Choosing the Right Plan
 
 Figure: A Decision Tree for What Plan to Choose
 
@@ -78,6 +78,3 @@ Simple screenshot and instructions.
 ==== SSH vs HTTPS
 
 Which one should you use?
-
-
-
