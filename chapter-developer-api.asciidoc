@@ -138,6 +138,10 @@ web site that you can use over ...here...
 
 Refer reader to this page; http://developer.github.com/v3/libraries/
 
+=== A Sample Github Application
+
+This section would build out a sample application.
+
 === Organization Applications
 
 Registering an Organization's Application
