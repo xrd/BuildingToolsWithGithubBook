@@ -1,11 +1,38 @@
 [[repo-admin]]
 == Repository Administration
 
+Anyone who creates a repository will eventually have to configure
+them.  This chapter covers some of the common tasks you'll encounter
+as a repository administrator.
+
 image::images/repo-admin-link.png[]
 
-=== Repository Options
+=== Basic Administration
 
 image::images/repo-admin-options.png[]
+
+==== Selecting a Set of Features: Wikis and Issues
+
+Github provides a simple Wiki interface based on a projct called
+Gollum.    Discuss how sometimes it doesn't make sense to have a Wiki
+for every single project.  Also discuss the option of making your Wiki
+open to the public or only to repository collaborators.
+
+Everyone has issues, and if you'd like to track them for a repository,
+you can turn this feature on here.
+
+==== Renaming a Repository (if you must)
+
+Renaming a repository is generally a very bad idea.   When you rename
+a repository you break the existing URLs people have used to clone a
+repository and you are bound to confuse and upset anyone who depends
+on your repository.
+
+==== "master" just doesn't feel right
+
+Think about the consequences of changing the default branch before you
+just do this.  Again, you are changing your repository to present a
+different interface than the standard.
 
 === The Danger Zone
 
@@ -32,11 +59,30 @@ image::images/repo-admin-collaborators.png[]
 ==== Teams vs. Individuals: What's Appropriate
 
 Discuss some of the decision process here.   When should somone use
-organization teams versus just granting individuals access to repositories.
+organization teams versus just granting individuals access to
+repositories.
 
-=== Repository Deploy Keys
+==== Strategies for Managing Collaborators
+
+===== How to manage access to Open Source Projects
+
+Provide some guidance for people managing Open Source projects.
+
+===== How to manage access during Corporate Development
+
+Provide some guideance for people manging corporate projects.
+
+=== Robots with Keys: Deploy Keys
 
 image::images/repo-admin-deploy-key.png[]
+
+Discuss the idea that not every "user" of a repository has an
+identity.   Continuous Integration systems, Puppet, Chef, CFEngine -
+all of these systems may need to access a Github repository
+
+==== Should you use Deploy Keys or Role Accounts?
+
+==== Limitations on Deploy Keys
 
 === Repository Service Hooks
 
@@ -65,6 +111,9 @@ Create an idea list here.
 * Backlog - http://backlogtool.com/
 * BasecampClassic
 * Basecamp
+* ScrumDo
+* Trello - https://trello.com/
+* ZohoProjects
 
 ===== Keeping Management Happy with Github
 
@@ -80,6 +129,7 @@ Create an idea list here.
 * Amazon Simple Notification Service (SNS) -
   http://www.activecollab.com/
 * AMQP - http://www.amqp.org/
+* Email
 
 ===== Github as a Gear in a Mighty Machine
 
@@ -125,6 +175,8 @@ Create an idea list here.
 * FogBugz
 * Jira
 * Trac
+* Unfuddle - https://unfuddle.com/
+* YouTrack - http://www.jetbrains.com/youtrack/index.jsp
 
 ===== Issue Management Possibilities
 
@@ -137,6 +189,7 @@ will get people thinking...
 * Jenkins (GitHub plugin)
 * Jenkins (Git plugin)
 * TeamCity
+* Travis - https://travis-ci.org/
 
 ===== When this Code Changes, Build!
 
@@ -166,6 +219,7 @@ then talk about how a common pattern is to have Github sit in on your chatroom.
 
 * buddycloud (Github plugin) - http://buddycloud.com/
 * Boxcar - http://boxcar.io/
+* Co-Op - http://coopapp.com/
 * FriendFeed
 * StatusNet - http://status.net/
 * Twitter
@@ -197,6 +251,28 @@ explain it a bit.
 
 Create an idea list here.
 
+==== Infrastructure Monitoring
+
+* CopperEgg - http://copperegg.com
+
+==== Code Quality and Analysis
+
+* CodeClimate - https://codeclimate.com/
+
+==== Code Conversion
+
+* CodePorting-C#2Java  - http://codeporting.com/
+
+==== Documentation
+
+* CoffeeDoc.info - http://coffeedoc.info/
+* Weblate - http://weblate.org/en/
+* WebTranslateIt - https://webtranslateit.com/
+
+==== Telephony and Voice Systems
+
+* Twilio - http://www.twilio.com/
+
 ==== TODO: Uncategorized
 
 Tim: I'm going to categorize all of these.   This has been something
@@ -206,15 +282,13 @@ sort of an "idea book" for how to integrate Github into your
 infrastruction it will move inventory.    I've been looking for this
 to help convince clients to adopt Github.
 
-* CIA
-* CodeClimate
-* CodePorting-C#2Java
-* CoffeeDoc.info
-* Co-Op
-* CopperEgg
+
+
+
+
 * Cube
 * Ducksboard
-* Email
+
 * Fisheye
 * Flowdock
 * Freckle
@@ -268,7 +342,7 @@ to help convince clients to adopt Github.
 * ReadTheDocs
 * Redmine
 * Rubyforge
-* ScrumDo
+
 * ShiningPanda
 * Slatebox
 * SnowyEvening
@@ -285,11 +359,11 @@ to help convince clients to adopt Github.
 * TestPilot
 * Toggl
 * Trajectory
-* Travis
-* Trello
-* Twilio
-* Unfuddle
-* Weblate
-* WebTranslateIt
-* YouTrack
-* ZohoProjects
+
+
+  
+
+
+
+
+

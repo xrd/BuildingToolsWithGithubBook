@@ -1,33 +1,52 @@
 [[manage-account]]
-== Managing Your User Account
+== Managing Your Account
+
+In Github there are two types of accounts: individual and
+organization.  This chapter covers the management of individual accounts.
 
 === Viewing a User Profile
+
+To view your user profile, click on...
 
 image::images/user-profile.png[]
 
 ==== Follow Statistics and Stars
 
-This area advertises how many developers you are following as well as
-how many are following you.    
+This area advertises how many developers someone is following as well as
+how many are following them.    
 
-This section also shows others the list of repositories you have starred.
+This section also shows others the list of repositories a user has starred.
 
-==== Repositories
+==== Github is a Genius Tracking Platform
 
-Note that the previous figure displays repositories you have
-interacted with.
-
-==== Public Activity
+This is the social aspect of Github that makes this platform very
+diferent from every other open source community that has came before
+it.   The ability to keep track of interesting developers and find out
+what they are working on gives you the ability to follow particularly
+innovative people and find particularly innovative projects.
 
 image::images/user-public-activity.png[]
+
+For example, you can keep track of Linus Torvald's activity on the
+Linux Kernal while, at the same time, keeping track of the what the
+core Rails team is paying attention to.
 
 === Editing a User Profile
 
 image::images/user-edit-profile.png[]
 
-==== What is a Gravatar?
+==== Creating a Profile Picture with Gravatar
 
 Your image on Github, it is a Gravatar.   Don't be scared, go get one.
+
+==== Managing Your Organizational Associations
+
+Don't let the door hit you on the way out.
+
+==== To Advertise or Not to Advertise Organization Membership
+
+Just because you are associated with an organization, it doesn't mean
+that everyone needs to know about it.
 
 === Changing Account Settings
 
@@ -41,28 +60,29 @@ About password security
 
 Do you really want to do this?   Think twice, this has side-effects.
 
+=== Email and Notifications
 
-=== Managing Email Addresses
+There are some interesting nuances in Github when it comes to email
+addresses and notifications.    If you have to maintain multiple
+email addresses, say for work and then for personal OSS contributions,
+Github gives you the option to do this and then to route specific
+emails to specific accounts.  This section outlines how...
+
+==== Working with Multiple Email Addresses
 
 image::images/user-email-addresses.png[]
 
 ==== What is a "Verified" email?
 
-=== Managing Notifications
+If you don't verify your email...
 
-image::images/user-notifications.png[]
-
-==== Notifications for @mentions
-
-Whenever someone mentions...
-
-==== Notifications for Watching
-
-You may want to manage the emails...
-
-==== Custom Routing for Organizations
+==== Custom Email Routing for Organizations
 
 If you are like me you have several email addresses...
+
+==== Managing Notifications
+
+image::images/user-notifications.png[]
 
 === Github Billing Preferences
 
@@ -76,7 +96,9 @@ image::images/user-billing-credit-card.png[]
 
 image::images/user-billing-history.png[]
 
-=== SSH Keys
+=== Account Security
+
+==== SSH Keys
 
 image::images/user-ssh.png[]
 
@@ -84,29 +106,29 @@ image::images/user-ssh.png[]
 
 Always, do it.
 
-=== Security History
+==== Security History
 
 image::images/user-security-history.png[]
 
-=== Applications
+==== Applications
 
 image::images/user-applications.png[]
 
-==== What is OAuth?
+===== What is OAuth?
 
 image::images/user-applications-register.png[]
 
-==== Authorized Applications
+===== Authorized Applications
 
 Be careful who you trust.
 
-==== GitHub Applications
+=== Your Repositories
 
-not sure *exactly* what Matt meant by this.
+==== Creating a New Repository
 
-=== Repositories
+How to create a new repository.
 
-==== Private vs Public
+==== How to Decide: Private vs Public
 
 Github is a great way to unintentionally make a bunch of code public
 by mistake.
@@ -115,11 +137,6 @@ by mistake.
 
 If you need to leave, here's the exit.
 
-=== Organizations
-
-==== Leaving an Organization
-
-Don't let the door hit you on the way out.
 
 === Deleting Your Account
 
