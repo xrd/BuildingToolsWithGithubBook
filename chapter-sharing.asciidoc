@@ -1,0 +1,39 @@
+== Github Gists
+
+Discuss how important code sharing is for developers.   How developers are often trying to convey some idea that can easily be captured in a Snippet.
+
+Note: You could also say something important about pastebin and other services that so something similar.
+
+=== Sharing Code with Gist
+
+Walk the user through the process of sharing something with a Gist.
+
+==== Secret Gists vs. Public Gists
+
+Who is a secret gist shared with?   
+
+==== Anonymous Gists
+
+Sometimes you don't want anyone to know who you are.
+
+=== Working with Gists
+
+==== Editing Gists
+
+Github gives you the ability to edit a Gist in place.
+
+==== Cloning a Gist with Git (What?)
+
+Yes you can.  You can clone a gist into a little Git repository.  Undoubtedly this is going to lead to Gists that start to morph into Github repositories.
+
+==== Forking a Gist
+
+Yes, Gists are now forkable.
+
+=== Viewing a Gist's History
+
+Want to see how a Gist has evolved...
+
+=== Embed a Gist
+
+Gists are a great way to embed source code examples in blog posts, no?

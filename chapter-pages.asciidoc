@@ -1,0 +1,52 @@
+== Github Pages
+
+A very small chapter on Github Pages
+
+=== Hosting a Web Site with Github
+
+Hey, it's free, why not?
+
+==== Creating a gh-pages branch
+
+Here's how you do it...
+
+==== Pushing Content to a Github Site
+
+Walking people through the process...
+
+==== What is your URL?
+
+Your URL is your project name
+
+=== Customizing Your Github Site
+
+==== Using a Custom Domain with Github Pages
+
+simple instructions.
+
+==== Creating a custom 404 Page
+
+Simple instructions.
+
+==== Generating a Pages with Themes
+
+Simple instructions.
+
+=== Tools for Creating Github Pages
+
+These sections are just pointers.
+
+==== Using Jekyll
+
+Quick instructions: http://pages.github.com/
+
+Note: Do you know who used Jekyll?   Obama for America used Jekyll, you should too.
+
+==== prose.io a CMS for Github Pages
+
+http://prose.io/
+
+==== Octopress Blog (Jekyll)
+
+https://github.com/imathis/octopress
+
