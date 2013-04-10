@@ -1,72 +1,416 @@
 [[chapter-clients]]
-== Github Clients and Github Integration
+== GitHub Clients and GitHub Integration
+
+While GitHub's primary use-case is source code control, the utility of
+this tool reaches far beyond the specialized space of computer
+programmers.   GitHub's various clients were designed to both supprt
+developers who may prefer a more graphical experience as well as other
+users like graphic designers or writers who may want a friendlier
+interface that doesn't require the generation of SSH keypairs or the
+use of a command-line tool which can present an enigmatic interface to
+those unfamiliar with prompt.
 
 === Tools for Developers and Non-developers
 
-Discuss the need to extend the idea of version control beyond
-technical users.
+In a previous chapter, the utility of GitHub for non-developers was
+established.    Git, as a technology, is relevant to designers,
+legislators, musicians, writers, and a host of other areas all of
+which are generating content which can benefit from two aspects of
+Git: the distributed nature of collaboration in a DVCS and the
+creative freedom one gains when you are able to rely on a detail
+history of submissions and changes.
 
-=== Github Clients
+* A legislator or someone devoted to government transparency can use
+  GitHub to track changes in an important law or piece of
+  legislation.
+* A musician can load intermediate stages of a composition into a
+  software package and commit these works into a version control
+  system.
+* A graphic designer can work iteratively on design and provide
+  clients with periodic snapshots of both progress and history in the
+  form of a GitHub repository.
+
+These and many more use cases are demonstrating the value of GitHub
+beyond developed, but there are more than a few problems creating by
+the technical interface of Git.  Here are a few:
+
+* Non-developers are not used to using the command-line.  Most users
+  are likely unfamiliar with how to open up a shell, and asking them
+  to do so creates a host of issues.
+* Non-developers don't understand assymetric encryption.   "You need
+  an ssh key," is often met with a confused, "I need a what what?"
+  It isn't just difficult to understand what an ssh keypair is to
+  someone unfamiliar with technology, it creates a difficult and
+  intimidating interface to a first-time Git user.
+* Non-developers are often not interested in a text-only workflow.
+  For example, if I'm composing music with a tool that generates
+  source code for a musical score, I'm very uninterested in seeing a
+  unix-style "diff" between two versions.
+
+.What's an SSH Key?
+[NOTE]
+=====================================================================
+This is usually how it happens:   You start working on an important
+applications.   Maybe it is a web applicaiton or a modbile
+application, but as a developer, you assume Git by default given the
+various advantages of the tool and the popularity of Git throughout
+the open source community.     Then it comes time to integrate the
+work of a designer or a writer into the project, and you are faced
+with an interesting question.  You have to choose one of the following
+options:
+
+* Do you integrate this new designer or developer into the same
+version contol system used by the project?,
+* Do you isolate this new designer or developer from the version
+control and just ask them to send you content?
+
+Speaking from experience, it is always easier to work with a designer
+or a writer who can access your repositories directly.    These people
+are more integrated into the process.    Now, I'm not saying that
+designers and writes are incapable of generating SSH keypairs for
+authentication.  What I am saying is that most of the ones I've worked
+with give you a sort of blank stare when you inform them of this
+requirement to use GitHub.
+
+This is why I tend to first assess if a Git user is familiar with SSH
+before I decide which client to set them up with.   If they understand
+how SSH works, if they regularly use the command-line, and if they are
+experienced with a text editor like vi or emacs.    Then I feel free
+to let the loose on comand-line Git.    If they think the command-line
+is a band from the 90s, that's when I recommend the client.
+=====================================================================
+
+These three assumptions coupled with the difficulty of related
+technologies like SSH mean that the audience for Git is constrained by
+complexity.  To address this complexity, GitHub has create a number of
+GUI interfaces for GitHub which make using GitHub much easier for
+non-developers.  In this chapter, we provide an overview of these
+clients and give users some ideas for how they can be intergrated into
+a larger project's workflow.
+
+=== GitHub Clients
 
 While most developers tend to learn Git from the command-line, the
-Github official clients come in handy when you need to conduct a
+GitHub official clients come in handy when you need to conduct a
 complex merging operation, or if you are just looking for a graphical
-interface to visualize repository activity.
+interface to visualize repository activity.  This section introduces
+the official GitHub clients.
 
-Another use for the official Github clients is for non-technical users
-who may be uncomfortable running git from the command line.    If
-you've ever tried to get a non-technical user to use Github, you
-understand the challenge of setting of SSH keys and explaining all the
-details.
-
-==== Official Github Clients
+==== Official GitHub Clients
 
 Note: This isn't to say that these official clients are just for
 novices.  Advanced users benefit from the simplicity of these official clients.
 
-===== Use Github without Managing SSH Keys 
+===== Use GitHub without Managing SSH Keys 
 
-The official Github client's interact with Github via HTTPS not SSH.
+The official GitHub client's interact with GitHub via HTTPS not SSH.
 This means two things:  you won't have to maintain an SSH key to
-access Github, and Github will cache your credentials.
+access GitHub, and GitHub will cache your credentials.  
 
 ===== Cloning a Repository with a Click
 
-When a user needs to clone a repository, the official Github
+When a user needs to clone a repository, the official GitHub
 repositories take care of the details.
 
 ===== Easy Branches and Merges
 
 Branching and merging via the command-line tools can be confusing.
-The official Github client reduces the complex and makes it easy to
+The official GitHub client reduces the complex and makes it easy to
 read diffs.
 
-===== Don't Pull and Push: Sync with Github
+===== Don't Pull and Push: Sync with GitHub
 
 Sometimes the process of pulling before pushing, and merging changes
 into your local repository before pushing to a remote can grow
-confusing.   The official Github client simplifies this workflow by
+confusing.   The official GitHub client simplifies this workflow by
 providing users with the ability to sync a repository.   Behind the
 scenes everything is still the same, the tool is pulling, merging,
 adding, commiting, and then pushing, but the interface does what a
 good interface is supposed to do - it simplifies the process and hides
 the complexity from the end-user.
 
+=== GitHub for Windows
+
 ==== Installing GitHub for Windows
 
-Simple installation instructions.
+To download and install the GitHub for Windows client, follow these
+steps:
+
+* Go to http://windows.github.com/ to download the GitHub client.
+  There is a green download button in the upper right-hand corner of
+  the page.
+
+image::images/clients-windows-download.png[]
+
+You don't need to login to download the client, and the prerequisites
+are a Windows machine running either Windows XP, Vista, 7 or 8.
+
+*  Once you've installed GitHub for Windows, you will have a GitHub
+   icon on your desktop that looks like the following icon.
+   Double-click on this icon, or start GitHub for Windows via the
+   Start menu.
+
+image::images/clients-windows-icon.png[]
+
+* The first time you start GitHub for Windows it will ask you to
+  Connect GitHub for Windows to your GitHub account.   Login with your
+  GitHub username and GitHub password.  Click on Log In.
+
+image::images/clients-windows-login.png[]
+
+* Once you've logged in.   GitHub will then ask you to supply your
+  email address and your full name.    Supply these two pieces of
+  information and click on Continur.
+
+image::images/clients-windows-configure.png[]
+
+Once you've installed GitHub for Windows you can start copying (or
+cloning) repositories from GitHub to your local computer and start
+collaborating with others. 
+
+==== Working with GitHub for Windows
+
+When you start GitHub for Windows for the first time, you will a
+screen that resembles the following figure.  This is interface is
+unique to the GitHub for Windows tool and it is a simple view of the
+repositories you have access to. 
+
+===== Cloning  a Repository in GitHub for Windows
+
+The first step when working with GitHub for Windows is to clone a repository.
+
+image::images/clients-windows-cloning.png[]
+
+On the left-hand side of the interface you will see a link to your
+local repositories as well a link to your GitHub profile and a list of all of the organizations you
+are a member of.    The first time you need to work with a repository,
+you'll need to clone it.
+
+To clone a repository, simply select your organization or the
+organization it is a part of and then click on the "clone" button as
+shown in the previous figure.   Cloning a repository will copy it to
+your local computer where you can start making changes.     
+
+===== Viewing a Repository in GitHub for Windows
+
+Once you've cloned a repository, click on the repository in GitHub for
+Windows to explore the change history.
+
+image::images/clients-windows-repository.png[]
+
+This change history is a record of every commit that has been pushed
+to the master branch of the repository you've just cloned.   You can
+switch branches from this interface or you can inspect commits and see
+specific changes, but most users will want to know where the clone
+repository resides on disk.  
+
+===== Opening a Repository in Windows Explorer
+
+To open a repository either in Windows
+Explorer or a shell, click on the tools link as shown in the following figure.
+
+image::images/clients-windows-tools.png[]
+
+Once you've made changes to a project, you will return to GitHub for
+Windows and note that this repository has noticed an uncommitted
+change.   
+
+===== Commiting a Change to a Local Repository
+
+At this point you should supply a commit subject and a
+commit comment, and then click on the Commit button.  This operation
+doesn't commit a change to GitHub, it commits the change to your local repository.
+
+image::images/clients-windows-uncommitted.png[]
+
+===== Pushing Changes to GitHub
+
+You've cloned a repository, you've modified files on disk, and you've
+committed a change to your local repository.    It is important to
+realize that you haven't modified a remote repository.  You haven't
+sent your changes to the GitHub repository.
+
+While GitHub for Windows calls this operation a sync, what you are
+doing when you press on the sync button as shown in the following
+figure is performing a Git "push".  A Git push takes your repository
+and synchronizes it with a remote repository.
+
+image::images/clients-windows-sync.png[]
+
+When you sync a repository there are a few things that can happen.
+GitHub for Windows is communicating with the remote repository to
+figure out if there were any changes between the time you cloned the
+repository and the time you sync'd.
+
+=== GitHub for Mac
+
+GitHub for Mac was the original client-side GUI for GitHub, and it
+provides a much richer set of features than GitHub for Windows.
+While GitHub for windows is a capable tool, GitHub for Mac is a
+first-class GitHub client aimed at both novice and experience users of
+GitHub.
 
 ==== Installing GitHub for Mac
 
-Simple installation instructions.
+To download and install the GitHub for OSX client, follow these steps:
+
+* Go to http://mac.github.com/ to download the GitHub client.    There
+  is a bright orange download button in the uppoer right-hand corner
+  of the page.  Click on that.
+
+image::images/clients-osx-download.png[]
+
+* When you download GitHub for Mac you are downloading a ZIP file
+  containing a GitHub.app file.   Copy this file to your /Applications
+  directory and copy it to the OSX Dock so you can find it.
+
+* To start GitHub for Mac, click on the GitHub.app file in
+  /Applications, or in your Dock.
+
+* Once you've installed GitHub for Mac and started the application you
+  will see a window resembling the following figure.   This isn't very
+  helpful until you've connected GitHub for Mac to your GitHub account.
+
+image::images/clients-osx-start.png[]
+
+* To login to you GitHub account from GitHub for Mac you'll need to
+  open Preferences by selecting Preferences... from the GitHub menu.
+
+image::images/clients-osx-credentials.png[]
+
+* Supply you GitHub username and password in this dialog and then
+  click on Login. 
+
+At this point GitHub for Windows is installed and ready to use.  You
+are ready to start clone, collaborating, commiting, and syncing with a
+GitHub hosted Git repository.
+
+==== Working with GitHub for Mac
+
+The following sections outline tasks you will be performing when you
+use GitHub for Mac.  While this chapter doesn't give you an exhaustive
+overview of every possible GitHub for Mac task you may encounter, it
+does give you an overview of what this tool has to offer.
+
+===== Cloning a Git Repository
+
+The first thing you'll want to do is clone a repository from GitHub.
+When you clone a repository you are copying the repository to your
+local computer so you can modify files and commit them to your local
+copy of the repository.
+
+As shown in the figure below, to clone a repository, click on either
+your profile or an organization you are a member of and select the
+repository you want to clone.  In this case, I'm cloning the try-git
+repository a repository that is related to the GitHub training class.
+Find the repository you wan to clone and click on Clone Repository.
+
+image::images/clients-osx-clone.png[]
+
+Once you click on Clone Repository, GitHub for Mac will ask you to
+choose a destination directory for your cloned repository.    In the
+following figure, I'm asking GitHub for Mac to clone the try-git
+repository and place it in ~/try-git.
+
+image::images/clients-osx-clone-location.png[]
+
+Cloning a repository can take some time, but once it is done with this
+process you will see the repository in a list of cloned repositories.
+
+===== Reviewing Repository History
+
+Click on the cloned repository to see a list of changes and commits in
+a repository.  The following figure shows you  a few of the commits in
+a cloned try-git repository.  Here you can see the time of the commit
+and also the author of the commit.
+
+image::images/clients-osx-commits.png[]
+
+Click on a particular commit to see details about the contents of that
+commit.  Which files were affected by the commit and what changes were
+introduced by the commit. 
+
+image::images/clients-osx-history.png[]
+
+===== Working with a Local Repository
+
+If you've cloned a repository with GitHub for Mac, there's a good
+chance that you'll want to manipulate and edit these files.   GitHub
+for Mac makes it easy to open up a local repository in the Finder.
+Just right-click on a repository and select "Show in Finder".   This
+will load a New Finder window that displays the contents of the cloned
+repository.
+
+image::images/clients-osx-finder.png[]
+
+===== Commiting Changes to a Local Git Repository
+
+Let's assume that you've made changes to content in a local clone of a
+remote Git repository.  After you've made those changes you would then
+return to GitHub for Mac and see an indication that there are pending,
+uncommitted changes in the local filesystems.
+
+The following figure displays the interface.  If you've changed binary
+files, you won't see the same level of detail about what has changed,
+but in this figure you can see that a single file has been added to
+the project.   To commit the change to you local Git repository,
+supply a commit subject and a commit message and click on Commit.
+
+image::images/clients-osx-changes.png[]
+
+Note that you can get very detailed if you are trying to commit only
+specific lines, the GitHub for Mac interface provides you with a very
+detailed interface to make fine grained selections for a commit.   
+
+===== Syncing  a Local Repository with GitHub
+
+Committing to a local repository tracks changes in the local
+repository, but to collaborate with other content creators and
+developers you are going to want to synchronize your changes with the
+remote repository.   
+
+To synchronize (or push) your local Git repository with the server,
+click on the Changes panel of a repository and examine the lower
+section of the panel labeled "Unsynced Commits".   This area contains
+commits which have been committed locally, but which have yet to be
+synchronized with the server.
+
+To synchronize these commits, click on the "Sync" butten as shown in
+the following figure.   
+
+image::images/clients-osx-sync.png[]
+
+When you synchronize a local repository with a remote repository,
+GitHub for Mac will then attempt to write your changes to the remote
+repository.   Often if a change was made between the time you cloned
+the repository and the time you synchronized the repository, these
+changes may have introduced conflicts.   GitHub for Mac may prompt you
+to resolve any conflicts found during this process.
+
+===== Creating and Publishing Branches
+
+A common practice in GitHub is the creation of branches for both
+features and individuals.  While branches are very powerful tools to
+use when working on a large team, the command-line interface can be
+intimidating.   Luckily for users unfamiliar with the nuances of Git
+branching, there is the branching integration in GitHub for Mac.
+
+image::images/clients-osx-branches.png[]
+
+This interface allows you to very quickly create new branches, commit
+to new branches, and then publish these branches to a remote
+repository.
+
 
 === Command Line Tools
 
-==== Working with Github Issues on the Command Line (ghi)
+==== Working with GitHub Issues on the Command Line (ghi)
+
+
 
 https://github.com/stephencelis/ghi
 
-==== Extending Command Line Git for Github (hub)
+==== Extending Command Line Git for GitHub (hub)
 
 https://github.com/defunkt/hub
 
@@ -78,23 +422,23 @@ https://github.com/defunkt/github-gem
 
 https://github.com/defunkt/gist
 
-==== An NCurses Front-end to Github
+==== An NCurses Front-end to GitHub
 
 http://gitready.com/advanced/2009/07/31/tig-the-ncurses-front-end-to-git.html
 
-=== Mobile Applications for Github
+=== Mobile Applications for GitHub
 
-==== Using Github from an Android Device
+==== Using GitHub from an Android Device
 
 http://mobile.github.com/#android
 
-==== Working with Github Issues from an iOS Device
+==== Working with GitHub Issues from an iOS Device
 
 http://mobile.github.com/#ios
 
-=== IDE Integration with Github
+=== IDE Integration with GitHub
 
-==== Eclipse Integration: Mylyn Github Connector
+==== Eclipse Integration: Mylyn GitHub Connector
 
 http://www.vogella.com/articles/EGit/article.html#github_mylyn
 
@@ -119,17 +463,17 @@ http://plugins.netbeans.org/plugin/38970/peek-into-github
 
 https://github.com/techtalk/SpecFlow/wiki/Visual-Studio-2012-Integration
 
-=== Development Infrastucture with Github
+=== Development Infrastucture with GitHub
 
-==== Integrating Jenkins Builds with Github Projects
+==== Integrating Jenkins Builds with GitHub Projects
 
 https://wiki.jenkins-ci.org/display/JENKINS/GitHub+Plugin
 
-==== Integrating Bamboo Builds with Github Projects
+==== Integrating Bamboo Builds with GitHub Projects
 
 https://github.com/andypols/git-bamboo-plugin
 
-==== Using the Atlassian JIRA Github Connector
+==== Using the Atlassian JIRA GitHub Connector
 
 https://marketplace.atlassian.com/plugins/com.atlassian.jira.plugins.github;jsessionid=15m4r6kul934rivrwt96h0lmr
 
