@@ -2,23 +2,48 @@
 == GitHub Clients and GitHub Integration
 
 While GitHub's primary use-case is source code control, the utility of
-this tool reaches far beyond the specialized space of computer
-programmers.   GitHub's various clients were designed to both supprt
-developers who may prefer a more graphical experience as well as other
-users like graphic designers or writers who may want a friendlier
-interface that doesn't require the generation of SSH keypairs or the
-use of a command-line tool which can present an enigmatic interface to
-those unfamiliar with prompt.
+this tool reaches far beyond programming.  GitHub's various clients
+were designed to both support developers who may prefer a GUI as well
+as other users like graphic designers or writers who may want a
+friendlier interface that doesn't require the generation of SSH
+keypairs or the use of a command-line tool which can present an
+enigmatic interface to those unfamiliar with working on a
+command-line.   
+
+This isn't to say that the tools in this chapter are only for
+non-developers.   I happen to be a developer who uses the GitHub for
+Mac client almost as frequently as I use the command-line Git client.
+The value of having a GUI for a particularly complex branching
+operation or a merge is useful even if you already understand the
+detailed syntax on the command-line.
+
+GitHub understands that most organizations need an
+easier, non-developer focused interface for source control, and to
+support this requirement, they've developed a set of native GitHub
+clients for OSX and Windows as well as a few mobile applications that
+can be used to manage repositories, share code, and communcation about
+GitHub issues.   This chapter explores a few of these clients.
 
 === Tools for Developers and Non-developers
 
 In a previous chapter, the utility of GitHub for non-developers was
-established.    Git, as a technology, is relevant to designers,
-legislators, musicians, writers, and a host of other areas all of
-which are generating content which can benefit from two aspects of
-Git: the distributed nature of collaboration in a DVCS and the
-creative freedom one gains when you are able to rely on a detail
-history of submissions and changes.
+established.  Git, as a technology, is relevant to designers,
+legislators, musicians, writers, and a host of other areas, all of
+which are generating content that can benefit from source control.
+Two aspects of Git stand out as being useful to content creators who
+might not fall into the traditional "developer" category.  The
+distributed nature of collaboration in a DVCS lends itself to
+collaborative writing projects, and when you are able to rely on a
+detailed history of submissions and changes it buys you a sort of
+insurance against losing work.   
+
+Writers and artists who have mastered the art of version control often
+feel that they can take risks that wouldn't have made otherwise.  If
+an experiment fails, just revert back to a previous version.  This is
+a concept new to most non-developers, but GitHub's trying to help
+increase the potential audience for versioning content and
+information.   Here are a handful of potential use cases for GitHub
+outside of the traditional "developer" category:
 
 * A legislator or someone devoted to government transparency can use
   GitHub to track changes in an important law or piece of
@@ -29,63 +54,65 @@ history of submissions and changes.
 * A graphic designer can work iteratively on design and provide
   clients with periodic snapshots of both progress and history in the
   form of a GitHub repository.
+* Fiction writers can experiment with dueling narratives in multiple
+  branches of a novel written in Markdown or Asciidoc.
 
 These and many more use cases are demonstrating the value of GitHub
-beyond developed, but there are more than a few problems creating by
+beyond developers, but there are more than a few problems creating by
 the technical interface of Git.  Here are a few:
 
 * Non-developers are not used to using the command-line.  Most users
-  are likely unfamiliar with how to open up a shell, and asking them
-  to do so creates a host of issues.
+  are likely unfamiliar with how to open up a shell.  Without serious
+  training, this is a dead-end for many.
 * Non-developers don't understand assymetric encryption.   "You need
   an ssh key," is often met with a confused, "I need a what what?"
-  It isn't just difficult to understand what an ssh keypair is to
-  someone unfamiliar with technology, it creates a difficult and
+  This  creates a difficult and
   intimidating interface to a first-time Git user.
 * Non-developers are often not interested in a text-only workflow.
   For example, if I'm composing music with a tool that generates
   source code for a musical score, I'm very uninterested in seeing a
   unix-style "diff" between two versions.
 
-.What's an SSH Key?
+.Supporting a Diverse Audience
 [NOTE]
 =====================================================================
 This is usually how it happens:   You start working on an important
-applications.   Maybe it is a web applicaiton or a modbile
+application.   Maybe it is a web applicaiton or a modbile
 application, but as a developer, you assume Git by default given the
-various advantages of the tool and the popularity of Git throughout
-the open source community.     Then it comes time to integrate the
-work of a designer or a writer into the project, and you are faced
-with an interesting question.  You have to choose one of the following
-options:
+various advantages of the tool.
 
-* Do you integrate this new designer or developer into the same
-version contol system used by the project?,
+Then it comes time to integrate the work of a designer or a writer
+into the project, and you are faced with an interesting question.  You
+have to choose one of the following options:
+
+* Do you integrate this new designer into the same
+version contol system used by the project?, or
+
 * Do you isolate this new designer or developer from the version
 control and just ask them to send you content?
 
 Speaking from experience, it is always easier to work with a designer
-or a writer who can access your repositories directly.    These people
-are more integrated into the process.    Now, I'm not saying that
-designers and writes are incapable of generating SSH keypairs for
-authentication.  What I am saying is that most of the ones I've worked
-with give you a sort of blank stare when you inform them of this
-requirement to use GitHub.
+or a writer who can access your repositories directly.  Most
+non-developers (not all of them) I've worked with give you a blank
+stare when you inform them of this requirement to use GitHub and they
+will need to create an SSH keypair.  If you've done this a few times,
+you'll welcome these GUI tools as saving you from having to train
+people to use the command-line.
 
-This is why I tend to first assess if a Git user is familiar with SSH
+I assess if a Git user is familiar with SSH
 before I decide which client to set them up with.   If they understand
 how SSH works, if they regularly use the command-line, and if they are
 experienced with a text editor like vi or emacs.    Then I feel free
-to let the loose on comand-line Git.    If they think the command-line
-is a band from the 90s, that's when I recommend the client.
+to let them loose on comand-line Git.    If they think the "command-line"
+is a metal band from the 90s, that's when I recommend the client.
 =====================================================================
 
 These three assumptions coupled with the difficulty of related
 technologies like SSH mean that the audience for Git is constrained by
-complexity.  To address this complexity, GitHub has create a number of
-GUI interfaces for GitHub which make using GitHub much easier for
+complexity.  To address this complexity, GitHub has created a number
+of GUI interfaces for GitHub which make using GitHub much easier for
 non-developers.  In this chapter, we provide an overview of these
-clients and give users some ideas for how they can be intergrated into
+clients and give users some ideas for how they can be integrated into
 a larger project's workflow.
 
 === GitHub Clients
@@ -93,30 +120,37 @@ a larger project's workflow.
 While most developers tend to learn Git from the command-line, the
 GitHub official clients come in handy when you need to conduct a
 complex merging operation, or if you are just looking for a graphical
-interface to visualize repository activity.  This section introduces
-the official GitHub clients.
+interface to visualize repository activity.  For non-developers, these
+clients are essential to a workflow that involves GitHub.  The following
+sections introduce the official GitHub clients.
 
-==== Official GitHub Clients
+Both clients have the following features and motivations in common:
 
-Note: This isn't to say that these official clients are just for
-novices.  Advanced users benefit from the simplicity of these official clients.
+===== Use of GitHub without Managing SSH Keys 
 
-===== Use GitHub without Managing SSH Keys 
-
-The official GitHub client's interact with GitHub via HTTPS not SSH.
+The official GitHub clients interact with GitHub via HTTPS not SSH.
 This means two things:  you won't have to maintain an SSH key to
-access GitHub, and GitHub will cache your credentials.  
+access GitHub, and GitHub will cache your credentials.    This makes
+it easy for a new GitHub user to authenticate once and access
+repositories without distraction.
 
 ===== Cloning a Repository with a Click
 
 When a user needs to clone a repository, the official GitHub
-repositories take care of the details.
+repositories take care of the details.    You click on  repository and
+then instruct GitHub to create a local working copy.   To do this you
+don't have to fully understand the semantics of the clone operation to
+get started.  While it does help to have some understanding of the
+traditional Git workflow, it isn't essential for the GitHub clients.
 
 ===== Easy Branches and Merges
 
-Branching and merging via the command-line tools can be confusing.
-The official GitHub client reduces the complex and makes it easy to
-read diffs.
+Branching and merging via the command-line tools can be confusing even
+for the most experienced of GitHub experts (that's an understatement).
+The official GitHub client reduces this complex and makes it easy to
+read diffs, easy to create a branch, and exposes an interface gives
+users insight into local uncommited changes as well as various remote
+and local branches.
 
 ===== Don't Pull and Push: Sync with GitHub
 
