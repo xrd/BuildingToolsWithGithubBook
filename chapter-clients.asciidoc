@@ -404,27 +404,153 @@ repository.
 
 === Command Line Tools
 
+There are two good reasons to use command-line tools and adapters for
+GitHub.  The first is productivity and the second is that command-line
+utilities are easy to integrate with everything.
+
+Most people work best when they are free from distraction, and any
+ workflow that involves a browser-based tool often invites many
+ opportunities for lost time.   While a developer may be focused and
+ "in the zone" in an IDE or and Editor, as soon as they have to open
+ up a web browser and navigate to a web page, there's a real chance
+ that they will be distracted by Reddit, Facebook, or a thousand other
+ productivity-destroying web sites.  The species has perfected the art
+ of distraction and the most disruptive force in your organization is
+ the web browser.   It makes sense to do all you can to avoid it when
+ you have achieved that elusive state of "flow".
+
+The second reason to think about command-line alternatives to
+the GitHub web site is that command-line utillities are often much
+easier to integrate with existing development workflows.   If you need
+to list all the outstanding issues in a nightly email, or if you need
+to automate some process in a bash or Ruby script, a command-line
+utility is that missing piece of integration that makes it possible.   
+
+Most of the command-line utilities in this section make use of the
+rich GitHub API.  This API is described in a later chapter.   At least
+two of the tools described below are the product Chris Wanstrath
+(https://github.com/defunkt), a GitHub employee who appears to do
+nothing but create useful tools and extensions.   Wanstrath has even
+gone as far as creating a GitHub mode for Gists (https://github.com/defunkt/gist.el).
+
+
 ==== Working with GitHub Issues on the Command Line (ghi)
 
+If you rely on GitHub issues, Stephen Celis
+(https://github.com/stephencelis) has written a tool that allows you
+to browse, search, edit, and comment on GitHub issues from the
+command-line.  If you are a developer more used to working from an
+editor or the command-line, this tool can save you some considerable
+time.   
 
+The GitHub project for the GitHub utility can be found here: https://github.com/stephencelis/ghi
 
-https://github.com/stephencelis/ghi
+To install ghi run:
+
+----
+curl -s https://raw.github.com/stephencelis/ghi/master/ghi > ghi && \
+  chmod 755 ghi && \
+  mv ghi /usr/local/bin
+----
+
+Once you've installed ghi, you'll need to generate a token used by ghi
+to access the GitHub API.  To do this run "ghi config --auth" as shown
+below and enter your GitHub password:
+
+----
+$ ghi config --auth tobrien
+Enter tobrien's GitHub password (never stored): ******
+Your ~/.gitconfig has been modified by way of:
+
+  git config --global ghi.token <API_TOKEN>
+----
+
+With ghi you can show, list, open, close, and comment on GitHub issues
+directly from a cloned repository.   Here's an example of how ghi can
+be used on a cloned repository:
+
+----
+$ git clone git://github.com/libgit2/libgit2.git
+Cloning into 'libgit2'...
+Receiving objects: 100% (33140/33140), 8.82 MiB | 160 KiB/s, done.
+Resolving deltas: 100% (23654/23654), done.
+$ cd libgit2/
+$ ghi show 1403
+1403: Optional tracing back to consumers
+@ethomson opened this pull request 34 days ago.  closed  (4 comments)
+
+    We would like to have more diagnostic data coming out of libgit2 and going 
+    into our application logs.  We are particularly concerned with warnings and 
+----
 
 ==== Extending Command Line Git for GitHub (hub)
 
-https://github.com/defunkt/hub
+Hub (https://github.com/defunkt/hub) is a tool for to make wokring
+with GitHub easier by allowing you to skip some of the standard Git
+syntax in favor of using GitHub names and locations for repositories.
+For example, using Hub you can checkout the GitHub repository
+"libgit2/objective-git" by just running:
 
-==== Using Git from the Command Line: github Rubygem
+----
+$ hub clone libgit2/objective-git
+----
 
-https://github.com/defunkt/github-gem
+With standard Git the same clone command would be written as:
+
+----
+$ git clone git://github.com/libgit2/objective-git.git
+----
+
+There's an impressive list of abbreviated commands and syntax that
+reduces the amount of typing by making the assumption that your
+repositories are hosted on GitHub.  You can compare tags, clone
+repositories, checkout code, fork repositories, and more using Hub,
+and many people go as far as making "git" just an alias for Hub.
+
+To install Hub, run the following command:
+
+----
+$ curl http://defunkt.io/hub/standalone -sLo ~/bin/hub &&
+  chmod +x ~/bin/hub
+----
+
+The only downside of using Hub is that you will become used to the
+convenience and may start to mistake some of the time-saving Hub
+syntax as functionality that is built into Git.   This isn't the case,
+and if you ever need to interact with Git repositories not hosted on
+Git you may not want to go as far as aliasing 'git' to 'hub'.
 
 ==== Using gist from the Command Line (gist)
 
-https://github.com/defunkt/gist
+The Gist command-line client (https://github.com/defunkt/gist) makes
+the code snippet sharing service Gist accessible to be who would
+rather not have to fire up a browser to share simple snippets of
+code.  Here's how it works.
 
-==== An NCurses Front-end to GitHub
+While there are a number of ways to install the Gist command-line
+client, the most straightfoward is to run the following command:
 
-http://gitready.com/advanced/2009/07/31/tig-the-ncurses-front-end-to-git.html
+----
+$ curl -s https://raw.github.com/defunkt/gist/master/gist > gist &&
+  chmod 755 gist &&
+  mv gist /usr/local/bin/gist
+----
+
+Once you've installed Gist you can use it to share files or pipe
+something to standard input.  Here's an example which also shows you
+the (somewhat insecure) approach to configuring your crednetials for
+the Gist command-line client:
+
+----
+$ export GITHUB_USER=tobrien
+$ export GITHUB_PASSWORD=supersecret
+$ echo "1 2 3 4 5 6 7 8 9 10" | gist --private
+https://gist.github.com/5dd2e3351f641c73ff43
+----
+
+You can supply a description on the command-line or you create a
+public Gist using this tool.    You can control the syntax
+highlighting and other options. 
 
 === Mobile Applications for GitHub
 
@@ -434,7 +560,38 @@ http://mobile.github.com/#android
 
 ==== Working with GitHub Issues from an iOS Device
 
-http://mobile.github.com/#ios
+GitHub's mobile application on iOS emphasizes issues and the
+communication that surround GitHub issues.    When you log into the
+GitHub issues application, you will see a list of repositories and
+organizations you are a member of.
+
+image::images/clients-mobile-issues-home.png[]
+
+If you drill into a particular project, you will see a timeline of
+issues that have been recently updated.
+
+image::images/clients-mobile-issues-projects.png[]
+
+You can then drill into a particular issue and see the comment thread
+and any activity related to this issue.
+
+image::images/clients-mobile-issues-detail.png[]
+
+To find GitHub's applications in the Apple App Store or to learn more
+about the Issues application go to .http://mobile.github.com/#ios
+
+==== Finding a Job using GitHub Mobile Applications
+
+GitHub also publishes a mobile application to help job seekers find
+jobs posted on GitHub from various companies.  You can search by
+proximity to your device, and you can also search for specific terms.
+
+image::images/clients-mobile-job-list.png[]
+
+To find GitHub's Jobs application in the Apple App Store, open the App
+Store on an iOS device and search for "GitHub Jobs".
+
+image::images/clients-modile-jobs.png[]
 
 === IDE Integration with GitHub
 
@@ -454,10 +611,6 @@ http://blogs.jetbrains.com/idea/2010/10/github-integration-in-intellij-idea-base
 Objective-C developers can benefit from XCode integration with Git.
 
 https://developer.apple.com/technologies/tools/whats-new.html#version-editor
-
-==== Netbeans
-
-http://plugins.netbeans.org/plugin/38970/peek-into-github
 
 ==== Visual Studio
 
