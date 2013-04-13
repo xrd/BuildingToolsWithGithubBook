@@ -422,3 +422,4 @@ gist-region, gist-buffer, gist-region-or-buffer::
 gist-region-private,gist, git-buffer-private, git-region-or-buffer-private::
     Either copies a region (if a region is defined) or an entier
     buffer to a Secret Gist.
+
