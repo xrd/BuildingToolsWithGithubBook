@@ -314,8 +314,16 @@ Input Filters section.
 
 4. Once the plugin is activated you will need to configure Text
 formats to include the Gist Input Filter.   To configure Text formats
-visit /admin/config/content/formats on your Drupal site, and configure
-the HTML and Plain Text formats to enable the Gist filter.
+visit /admin/config/content/formats on your Drupal site.
+
+image::images/sharing-drupal-text-format.png[]
+
+5. Configure the HTML and Plain Text formats to enable the Gist
+filter.
+
+image::images/sharing-drupal-formats.png[]
+
+image::images/sharing-drupal-filter-config.png[]
 
 When configuring the Gist Input Filter for a Text Format you have an
 option to display a Gist as the following options:
