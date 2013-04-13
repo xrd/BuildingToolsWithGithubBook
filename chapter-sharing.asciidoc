@@ -282,3 +282,84 @@ a Gist, these might be signs that your Gist has exceeded the
 boundaries of a simple Gist and deserves to be pushed to a real GitHub
 repository. 
 
+=== Integrating Gists with Popular Site Tools
+
+Gists can easily be embedded in several populate blogging frameworks
+and web technologies.   This section outlines some of the options
+available to people using popular blogging or site maintenance
+solutions such as Drupal and Wordpress.
+
+==== Embedding Gists in Drupal
+
+The Gist Input Filter for Drupal
+(http://drupal.org/project/gist_filter) is a filter for text fields which
+allows you to embed a Gist with a simple code.   With this text filter
+you can embed a Gist with one of two approaches to syntax:
+
+* [gist:5376723] - This will embed an entire Gist by id number.
+
+* [gist:5376723:build.gradle] - This will embed a specific file from a
+  Gist.
+
+To install this Drupal module follow these steps:
+
+1. Download the Gist Input Filter from the module page here:
+http://drupal.org/project/gist_filter
+
+2. Unpack the module archive in Drupal's sites/all/modules directory.
+
+3. Activate the module by logging in as an Administrator and going to
+/admin/modules.    The "Gist Input Filter" will be listed until the
+Input Filters section.
+
+4. Once the plugin is activated you will need to configure Text
+formats to include the Gist Input Filter.   To configure Text formats
+visit /admin/config/content/formats on your Drupal site, and configure
+the HTML and Plain Text formats to enable the Gist filter.
+
+When configuring the Gist Input Filter for a Text Format you have an
+option to display a Gist as the following options:
+
+Code Tags::
+    This option will use the GitHub API to fetch the contents of the
+    Gist and include it directly in the page as HTML.
+
+Embed::
+    This option will use the default embed script tag shown earlier.
+    Users will see a neatly styled code snippet with line numbers and
+    a footer that links to the Gist.
+
+Link::
+    If Link is selected, no code will be included just a link to the Gist. 
+
+==== Embedding Gists in Wordpress
+
+The Embed Github Gist plugin for Wordpress
+(http://wordpress.org/extend/plugins/embed-github-gist/) makes it easy
+to embed a Gist with a very simple code
+
+----
+[gist id=5376723]
+[gist id=5376723 file=build.gradle]
+[gist]http://gist.github.com/5376723[/gist]
+----
+
+To install this Wordpress plugin follow these steps:
+
+1. Download the plugin from Wordpress.org, from this page:
+http://wordpress.org/extend/plugins/embed-github-gist/
+
+2. Unpack the plugin archive in the /wp-content/plugins directory.
+
+3. Activate the plugin as a WordPress administrator.
+
+==== Embedding Gists in Livejournal
+
+Embedding Gists in LiveJournal requires nothing more than the URL of
+the Gist.    If you use LiveJournal as your blog, all you are required
+to do to embed a Gist in a post is to reference the URL of the Gist.
+
+image::images/sharing-lj-embed.png[]
+
+When Livejournal loads your post, it will notice the Gist URL and
+replace it with an embedded Gist.
