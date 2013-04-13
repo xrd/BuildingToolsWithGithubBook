@@ -363,3 +363,62 @@ image::images/sharing-lj-embed.png[]
 
 When Livejournal loads your post, it will notice the Gist URL and
 replace it with an embedded Gist.
+
+=== Integrating Gists with Editors and IDEs
+
+As Gist is primarily focused on code sharing it would make sense that
+there are a series of editor and IDE integrations for Gists.
+
+==== Gist Integration with Vim
+
+Developers who are partial to Vi and Vim tend to live their entire
+lives within the boundaries of this power editor.  As they furiously
+tap efficient vi commands into their keyboards they can't be expected
+to pick up a mouse and use a GUI interface just to see a Gist.
+
+For this reason the Gist.vim script exists to provide vialiens with an
+efficient way to access GIsts.  To install the Gist.vim script:
+
+1. Visit the Gist.vim page here:
+http://www.vim.org/scripts/script.php?script_id=2423
+
+2. Download the latest version of the Gist.vim script from the page
+listed in the previous step.
+
+3. Copy the .vim file to your plugin directory.
+
+At this point, you'll be able to execute commands like: ":Gist
+5376723" in vi to retrieve the contents of a Gist without ever leaving
+your editor.  You are also able to publish the current buffer as a public Gist with ":Gist"
+and as a Secret Gist with ":Gist -p".  You can do much more than this
+with the Gist.vim script.  For more details see http://www.vim.org/scripts/script.php?script_id=2423
+
+==== Gist Integration with Emacs
+
+Of course there is a mode for GitHub Gists.  GitHub's very own Chris
+Wanstrath (defunkt) maintains this Emacs mode and it provides a full
+set of Emacs commands and 
+
+To install the Emacs mode for Gist:
+
+* Use Marmalade in Emacs 24 by pointing to http://marmalade-repo.org
+and executing "M-x package-install" with "gist" as an argument, or
+
+* Download gist.el from GitHub and configure your emacs configuration
+  to load "gist.el".  The details of this process are listed here:
+  https://github.com/defunkt/gist.el
+
+There are a few important commands that make this Gist model for Emacs
+very useful for developers who want to benefit from Gists without
+having to break their concentration.  Here are just a few of the
+commands:
+
+gist-list::
+    List all of your new Gists.
+
+gist-region, gist-buffer, gist-region-or-buffer::      
+    Posts either a region or an entire buffer to Gist
+
+gist-region-private,gist, git-buffer-private, git-region-or-buffer-private::
+    Either copies a region (if a region is defined) or an entier
+    buffer to a Secret Gist.
