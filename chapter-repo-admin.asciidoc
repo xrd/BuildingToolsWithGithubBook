@@ -15,7 +15,7 @@ image::images/repo-admin-link.png[]
 
 Once you click on Settings you'll see an interface which gives you the
 option to rename your repository, configure a Wiki or an issue
-tracker, and 
+tracker.
 
 image::images/repo-admin-options.png[]
 
@@ -73,51 +73,285 @@ are planning on renaming a public repository with active developers,
 you should likely provide notice of the change to people who may have
 cloned copies of a repository.
 
+==== Changing the Default Branch
 
+If you are familiar with Git you understand that "master" is the
+default branch for a new repository. If "master" just doesn't feel
+right or if you'd like pull requests to be made against a different
+branch, you can change the default branch.  To change the default
+branch your repository must already have the branch you want to switch
+to.  Just select the new default branch in the dropdown until the
+Repository Name field in Settings.
 
-==== "master" just doesn't feel right
+A note of caution: think about the consequences of changing the
+default branch before you just do this.  Again, you are changing your
+repository to present a different interface than the standard, and if
+you are not careful about communicating this to collaborators you may
+cause confusion. Most git users are so used to pushing to "master" it
+is burned in muscle memory. I may not make sense to fiddle with this
+setting unless you really know what you are doing.
 
-Think about the consequences of changing the default branch before you
-just do this.  Again, you are changing your repository to present a
-different interface than the standard.
+=== Automatic GitHub Page Generator
+
+GitHub is more than a source code management system for Git
+repositories. It provides wikis, issue management tools, and GitHub
+pages. A GitHub page is simply an HTML page that is served from GitHub
+at a URL following the pattern:
+http://<github_id>.github.io/<repository_id>.  For example, if the
+user "tobrien" published a set of GitHub pages for a repository with
+an id of "context", those pages would be served from
+http://tobrien.github.io/context/.
+
+You can create a set of GitHub pages for a repository by pushing HTML
+to a branch named jekyll, or you can use the Automatic Page Generator
+to get started.  To use the Automatic Page Generator, go to repository
+settings, and look for the GitHub Pages section.  Click on Automatic
+Page Generator as shown below.
+
+image::images/repo-admin-auto-page.png[]
+
+If you have already created a set of GitHub pages, this interface will
+look a little different.  Instead of a section for creating a new
+GitHub page, you'll see a section called "Update your site".  If you
+click on this button you can then edit an existing GitHub Page in an
+easy-to-use, web-based user interface.
+
+[NOTE]
+====
+When you use the automatic page generator on a private project you
+need to be aware that you are publishing a public web page for a
+project that is otherwise inaccessible. If you are working with a
+sensitive, private project be careful what buttons you press in this
+section as you could inadvertently expose private information to the public.
+====
+
+==== Creating or Updating a New GitHub Page
+
+If you are looking for a simple way to create a single page for your
+repository, GitHub Pages offers a very simple form asking you to set
+the Project Name, Tagline, Body, and Google Analytics ID.  Fill out
+this information and click on "Continue to Layouts".
+
+image::images/repo-admin-create-page.png[]
+
+Once you've created a page GitHub then presents you with a selection
+of themes to choose from.   Once you've selected a theme, click on
+"Publish" as shown in the following figure.
+
+image::images/repo-admin-theme-page.png[]
+
+Once your page is published you will see a notice the next time you
+view your repository in GitHub.  After you've created this site you
+can update it via the repository settings or you can just commit
+changes to the gh-pages branch of your repository.
 
 === The Danger Zone
 
+On the repository settings page, you'll notice a section that is set
+apart from the others with a bold red header that reads "The Danger
+Zone".  Take heed of these visual cues, because the Danger Zone is
+just that - dangerous.  Here you can delete a project, give it away,
+or expose your code to the public.  Github understands the risk, and
+because of this every action in the Danger Zone requires explicit
+authorization and confirmation.
+
 image::images/repo-admin-danger.png[]
 
-The Danger Zone is just that - dangerous.   Here you can delete a project, give it away, or expose your code to the public.   Github understands the risk, and because of this every action in the Danger Zone requires explicit authorization and confirmation.
+[NOTE]
+====
+Every time I have to edit a setting in this section, I start humming
+Kenny Loggins. Maybe you are not old enough to remember this?  Maybe
+you are?  Here's a link in case you need a refresher:
+http://open.spotify.com/track/2CJtimCSGAn8x6RE3irZFV
+====
 
-==== Making a Repository Public
+==== Making a Repository Public or Private
 
-Be careful, do you really want to do that?
+GitHub repositories are either public or private.  To transition a
+repository to public or private, click on either the "Make private" or
+the "Make public" button as shown in the Danger Zone.  To prevent an
+accidental state transition from either private to public or public to
+private GitHub will show you a modal dialog and ask you to type in the
+name of the repository.
+
+If your repository is public and you make it private you will
+permanently lose all stars and watchers of this repository. If your
+repository is private and you make it public it will be visible to
+everyone, other users will be able to clone and fork your repository,
+and your changes will be visible to others.  Here's another reminder
+to be careful - you are in the Danger Zone.
 
 ==== How to Transfer Repository Ownership
 
-Maybe you started out with a personal account and you want to transfer ownership or a repository to an organization?   Or, maybe you are just sick of a project and want to pass responsibility to someone else?
+Maybe you started out with a personal account and you want to transfer
+ownership of a repository to an organization? Or, maybe you are just
+sick of a project and want to pass responsibility to someone else?
+Whatever the reason GitHub makes it easy to transfer a repository from
+one acount to another.  Click on Transfer in the Danger Zone and you
+will be presented with the following dialog.
+
+image::images/repo-admin-transfer.png[]
+
+In this dialog box you will need to type in the name of the
+repository.  This precaution is necessary to make sure that you really
+intend to transfer ownership.  Once you've typed in the name of the
+repository supply the GitHub login id of the account you wish to
+transfer this repository to.
+
+[NOTE]
+====
+For years, GitHub was adopted by the industry through independent,
+"rough" developers just getting tired of working with internal source
+code management tools. These developers would often just develop on a
+private GitHub repository and then sync with an internal SCM when they
+were finished. When companies finally wake up to the glorious
+perfection of GitHub they usually want you to transfer ownership of a
+GitHub repository to a GitHub account - this is one example of when
+you would transfer 
+====
 
 ==== Deleting a Repository
 
-If your project angers you, delete it.
+Maybe you've forked a repository, made a pull request, and now you've
+decided that you are done with it?  Maybe you have decided that a
+repository is no longer necessary? or maybe your project angers you?
+In all of these cases the appropriate action may be to delete a GitHub
+repository.
+
+To delete a GitHub repository click "Delete" in the Danger Zone.  Note
+that this action isn't to be taken lightly.  If you do choose to
+condemn a repository to this fate you should know that this action is
+entirely irreverisible. If, moments after a successful deletion, you
+realize that you have just thrown out something of incredible value,
+you are out of luck.
+
+Nothing can be done to recover a deleted project.  So, be careful.  As
+with all other actions in the Danger Zone, GitHub will ask you to
+confirm the action by typing in the name of the repository.
 
 === Managing Access to an Individual Repository
 
+When you create a repository you are the only once who has push
+privileges to that repository.  To grant other GitHub users push
+privileges you will need to either configure a team for an
+organization that owns a repository or you will need to grant them
+access to a repository as a collaborator.
+
+To grant access to collaborators, click on Settings for your
+repository, then select "Collaborators" from the navigation menu on
+the left side of the interface.  You should then see an interface that
+resembles the following figure.
+
 image::images/repo-admin-collaborators.png[]
 
-==== Teams vs. Individuals: What's Appropriate
+To add a new collaborator, type the first few characters of the GitHub
+user's id into the text field next to the Add button. As GitHub
+locates a matching account it will display a list of accounts to
+choose from. Once you've located the appropriate acount click on the
+Add button. At this point, the collaborator will likely receive an
+email notifying them that you added them to a repository. These
+collaborators can now push to this repository.
 
-Discuss some of the decision process here.   When should somone use
-organization teams versus just granting individuals access to
-repositories.
+==== Teams vs. Individuals: What's Appropriate?
+
+Working with collaborators just won't scale beyond a handful of
+projects.  If you are working at a company that has many development
+teams with access to tens, hundreds, or thousands of projects,
+managing individual repository collaborator lists is going to get old, quick.
+
+If, on the other hand, you are working on one of two projects as an
+individual or you have an open source project with only a handful of
+contributors, you might not need the overhead of an organization.
+
+When you don't have an organization with teams there is no way for you
+as a repository owner to add a collaborator with administrator
+privileges to the repository. While it is possible to run an
+organization's GitHub activity from an individual's account the lack
+of teams and the inability to assign administrative access to any
+other user is often the factor that motivates a company to move from
+individual accounts to a shared, organization account.
 
 ==== Strategies for Managing Collaborators
 
+The following sections provide some guidance for configuring
+repository security in GitHub for different kinds of projects both
+open source and corporate.
+
 ===== How to manage access to Open Source Projects
 
-Provide some guidance for people managing Open Source projects.
+Whenever I'm in a meeting and some managers says something like, "Are we following
+open source best practices?" I can't help but snicker a bit. There is
+no such thing as "open source best practice" because there are a
+thousand different flavors of open source project.  There's everything
+from the one-person despotism model to projects run by open source
+foundations like Apache which can take years and years to make simple
+decisions by consensus.  I'll focus on these two extremes, but you
+should also understand that there are limitless shades of grey between
+these two options.
 
-===== How to manage access during Corporate Development
+Assume you run a one-person open source project.  You wrote an
+important piece of Ruby or Javascript code and you made it available
+to the world.  You don't operate the project under any sort of
+umbrella organization such as the Eclipse Foundation or the Free
+Software Foundation, and you are not writing this code on behalf of a
+company.  Unless you have a desire to share administrative privileges
+with another user, you can simply manage contributors using simple
+collaborators on the repository settings interface.   If you do want
+to spread out the responsibility for administration you should upgrade
+to a Bronze plan and create teams within an organization.
 
-Provide some guideance for people manging corporate projects.
+On the other end of the spectrum are projects at open source
+Foundations like Eclipse and Apache.  If you are running a project at
+one of these organizations it is very likely that there is already an
+organization on GitHub.  Most open source foundations exist to provide
+a neutral legal entity that to which intellectual proprty can be
+assigned which isn't under the specific control of a single commercial
+entity.  In these cases it is critical that your organization maintain
+a GitHub organization and that you avoid hosting repositories in
+individual accounts.
+
+===== How to manage access during Commercial Development
+
+If you work for a company that is using GitHub the decision is obvious
+- use an organization and create teams.  Software development teams
+are too numerous and constantly changing to have to worry about
+managing repository-specific collaborators.  And, no matter what the
+size of your teams, if you have two developers or 20,000, making the
+organization the owner of the repository is more stable than relying
+on individuals to be stewards of your code.
+
+What is meant by "commercial development"? In this section we're
+discuss any development in GitHub that is being done on behalf of a
+company. Although there is nothing explicit in the Terms of Service,
+in the opinion of this author, if you are using GitHub for a
+commercial purpose you should have an paid account with an
+organization. GitHub's free service is great for individuals and open
+source projects, but don't try to get around the limitations of
+personal accounts to take advantage of the platform for commercial
+purpose.  For starters, it's classless, GitHub is a company that has
+given back to the community and you should be supporting them if you
+use this platform to engage in commerce.  Second, you could get in
+trouble if you attempt to skirt the limitations of personal accounts
+for commercial use.
+
+[NOTE]
+====
+If you are planning on just using a single login to mimic the features
+of a corporate account you should know that GitHub's terms of service
+are very explicit about requiring every account to map to one and only
+one person.  If you were planning on creating an account for your
+company and just sharing the password, this is going to fall far
+outside the Terms of Service and you would be at risk of having this
+account suspended.  Here's the important passage from the Terms of
+Service:
+
+Term 4: "Your login may only be used by one person - a single login shared by
+multiple people is not permitted. You may create separate logins for
+as many people as your plan allows."
+
+Term 7: "One person or legal entity may not maintain more than one free account."
+
+====
 
 === Robots with Keys: Deploy Keys
 
