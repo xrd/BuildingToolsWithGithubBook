@@ -3,30 +3,77 @@
 
 Anyone who creates a repository will eventually have to configure
 them.  This chapter covers some of the common tasks you'll encounter
-as a repository administrator.
+as a repository administrator. 
+
+If you have administrative privileges for a repository will should see
+an "Settings" tab in the navigation area of the repository screen.  Click
+on "Settings" to access the repository administration interface.
 
 image::images/repo-admin-link.png[]
 
 === Basic Administration
 
+Once you click on Settings you'll see an interface which gives you the
+option to rename your repository, configure a Wiki or an issue
+tracker, and 
+
 image::images/repo-admin-options.png[]
 
 ==== Selecting a Set of Features: Wikis and Issues
 
-Github provides a simple Wiki interface based on a projct called
-Gollum.    Discuss how sometimes it doesn't make sense to have a Wiki
-for every single project.  Also discuss the option of making your Wiki
-open to the public or only to repository collaborators.
+Every repository can be associated with a Wiki and with a built-in
+Issue tracker.  To configure Issues or a Wiki for repository, simply
+select or deselect checkboxes in the Features section of your
+repository settings as shown in the following figure.
 
-Everyone has issues, and if you'd like to track them for a repository,
-you can turn this feature on here.
+image::images/repo-admin-features.png[]
+
+The following options are available:
+
+Wikis::
+        When you select this option a Wiki tab will be available to
+        users viewing your GitHub repository. Wikis are collaborative
+        documents which are ideal for project documentation and
+        planning purposes.
+
+Restrict edits to Collaborators only::
+         If this option is selected your Wiki will only be editable by
+         users who are listed as collaborators in this project. If
+         this option is not selected any user can make edits to your
+         repository's Wiki.
+
+Issues::
+        GitHub can associate an issue track with your repository. If
+        this option is selected an Issues tab will appear in this
+        repository's navigation bar.
+
+Github provides a simple Wiki interface based on a project called
+Gollum.    This Wiki can be edited either via the GitHub web interface
+or it can be cloned and managed as a Git repository separate from the
+repository it is associated with. 
+
+If you are developing open source software, it often makes good sense
+to allow anyone to contribute edits to your repository's Wiki.  This
+lowers the bar for users interested in contributing documentation to
+your project.
 
 ==== Renaming a Repository (if you must)
 
-Renaming a repository is generally a very bad idea.   When you rename
-a repository you break the existing URLs people have used to clone a
-repository and you are bound to confuse and upset anyone who depends
-on your repository.
+To rename a repository, simply change the name in the Repository Name
+field contained in Settings and click on Rename as shown in the
+following figure.
+
+image::images/repo-admin-rename.png[]
+
+If your repository is shared with others, renaming a repository is
+generally a very bad idea.  When you rename a repository you break the
+existing URLs people have used to clone a repository and you are bound
+to confuse and upset anyone who depends on your repository.  If you
+are planning on renaming a public repository with active developers,
+you should likely provide notice of the change to people who may have
+cloned copies of a repository.
+
+
 
 ==== "master" just doesn't feel right
 

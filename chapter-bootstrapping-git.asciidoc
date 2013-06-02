@@ -1,30 +1,66 @@
 [[bootstrapping-git]]
 == Bootstrapping Git
 
-This book focused on Github, but before we can explore Github you have
+This book is focused on Github, but before we can explore Github you have
 to have understand Git.   This chapter provides a brief introduction
 to Git and provides some pointers to readers interested in learning
 more about this distributed version control system (DVCS).
 
 === A Brief History of Git
 
-Linux has been using a decentralized approach to development since its
-inception: thousands of developers submit patches to the kernel
-through a list of maintainers.  If you have a change to the Linux
-kernel, the first step is to consult the linux/MAINTAINERS and then
-submit a patch to the appropriate individual.  Eventually, this patch
-is vetted, integrated into a particular component and then passed up
-to core contributors and integrated into the kernel distribution.
+Some of biggest Open Source projects, such as Linux, have been using a
+decentralized approach to development for decades.  In these projects
+hundreds, sometimes thousands, of developers collaborate on
+fast-moving projects without central direction.  While the Kernel
+project itself is maintained by a Linus Torvald and a handful of
+experts, there is no manager creating lists of priorities and
+tasks. There are no weekly status meetings to convey management
+priorities to compliant workers.  It is an ad-hoc process that relies
+on widely distributed individuals maintaining hundreds of different
+versions of the kernel.
+
+One developer may add a new driver to her fork of the kernel, and yet
+another may modify the behavior of the file system in another copy.
+These separate "forks" are typical in distributed version control and
+tools like git make it possible for anyone to take a project like
+Linux, fork it, and take it in whatever direction they prefer.  This
+distributed development is made possible by Git - a version control
+system which facilitates distributed development and places an
+emphasis on making merges between two separate forks easy.
+
+
+If you subscribe to a more corporate, a more "enterprisey" approach to
+development, an approach that involves strict control of code and a
+rigorous approach to project planning you may be skeptical of this
+ad-hoc, distributed approach to collaboration. There's no way it
+should work.  Linux is at the heart of most of the internet, and it
+powers the most popular mobile operating system in the world. Who's
+managing these developers?  How do they agree on standards?  How could
+this team of strangers ever create quality software?  Despite these
+concerns it works very and Linux is empirical proof that distributed
+development and distributed version control provide the appropriate
+background for wide-scale, open-source collaboration.
+
+==== If it works for Linux....
+
+Thousands of developers submit patches to the kernel through a list of
+maintainers.  If you have a change to the Linux kernel, the first step
+is to consult the linux/MAINTAINERS and then submit a patch to the
+appropriate individual.  Eventually, this patch is vetted, integrated
+into a particular component and then passed up to core contributors
+and integrated into the kernel distribution.
 
 It's a busy, human process that relies on a busy mailing list named
 linux-kernel and a small team of core contributors. For more than a
 decade Torvalds was simply organizing the kernel with patchfiles and
 tarballs, and this process just wasn't scalable.  It was only in 2002
 that Torvalds decided to standardize his own workflow on a proprietary
-tool written by Larry McVoy named BitKeeper.  BitKeeper was something
-of a successor to an earlier DVCS named TeamWare.
+tool written by Larry McVoy named BitKeeper.  BitKeeper was a
+successor to an earlier DVCS named TeamWare.
 
-While Linus Torvalds was happy with BitKeeper core contibutors to the
+==== The Birth of Git
+
+While Linus Torvalds was happy with BitKeeper, core contibutors to the
 Linux Kernel, notably Alan Cox, refused to continue using a
 proprietary tool for Linux.  Fast forward through years of flamewars
 and in 2005 a developer named Andrew Tridgell created a tool
@@ -37,7 +73,9 @@ purchase a license.
 Torvalds, motivated by his desire for a DVCS that would allow for
 efficient and rapid merging, created a prototype of Git in 2005
 handing over the project to Git's current maintainer Junio Hamano
-later that year.
+later that year.  In just eight years, Git has become the primary tool
+used in open source development, and it has made significant inroads
+into corporate development.
 
 ==== Git: Toward an Acceptance of DVCS
 
@@ -81,15 +119,11 @@ So one of the worst downsides of CVS is _politics_. People, not
 technology.  
 ----
 
-==== A Revolution, Distributed
-
-That simple observation that the downside of central SCM is "politics.
-People not technology." Was prescient as the next few years would see
-DVCS come to define the standard approach to OSS development.
+==== A Disributed Revolution
 
 As Git became more capable, open source projects and commercial
-developers alike started to experiment with a more asynchronous
-approach to collaboration.  Git continued to develop for two years
+developers alike started to experiment with more asynchronous
+approaches to collaboration.    Git continued to develop for two years
 before the arrival of Github, founed in 2008.  It wasn't until Github
 arrived that Git started to convert more and more open source
 projects.  The Rails project moved four years of Subversion activity
@@ -106,7 +140,55 @@ using Github.
 
 === Why Git?
 
+If you are reading this book there's a good chance that you've already
+decided to use Git. Despite this choice, it still makes sense to
+understand some of the reasons why Git has been so successful.
+
 ==== Git Features
+
+Git isn't the first distributed version control systems (DVCS) out
+there, but it is the most popular.  This section explores a few points
+that differentiate Git from the rest of the DVCS pack icluding: Arch,
+Monotone, Darcs, Mercurial, BitKeeper, and Bazaar.
+
+The project driving the requirements for Git is the largest, most
+complex collaborative effort in the history of the species. That may
+sound somewhat grandiose, but it's very much true. The Linux kernel is
+over 17 million lines of code and is growing at an average rate of
+3,500 lines per
+day:[http://royal.pingdom.com/2012/04/16/linux-kernel-development-numbers/].
+Nearly 1,300 developers contribute to Linux with versions like 2.6.25
+generating more than 12,000 patches. The Linux kernel powers over 93%
+of the TOP500
+Supercomputers:[http://en.wikipedia.org/wiki/Usage_share_of_operating_systems#Servers].
+The kernel is at the heart of the Android which has a nearly 60% share
+of the mobile operating system market with 1.5 million device
+activations a day. The kernel also powers millions of servers across
+companies that have helped transform the way we consume information
+and communicate with one another such as Yahoo, Google, Facebook, and
+Twitter.
+
+This project can be thought of as a multi-layered tree of
+collaborating developers. A patch submitted at the bottom of this tree
+might jump around in a non-linear path to inclusion in the
+kernel. Git supports this because it makes branching and merging
+easy.  In Git, a branch isn't a separate object, it is a reference to
+a commit.  Contrast this approach to that of Subversion where branchs
+and tags are distinct objects (in Subversion's case a branch is a
+directory).  That approach isn't nearly as flexible.  If a patch was
+thrown around to ten different developers over the course of several
+weeks, in Git you simply have a moving reference to a commit and the ability
+to integrate that commit into the end-product.  In Subversion
+individual developers would have to selectively merge specific commits
+across different branch directories.  It's a mess in anything other
+than Git.
+
+
+
+
+
+
+
 
 Distributed, Efficient, Easy to Branch and Merge, Free and Open Source
 
