@@ -3,44 +3,200 @@
 
 Remember Github is not Git, and while you can certinaly Git without
 Github it just isn't the same.  This chapter is all about the
-essential features of Github that make it 
+essential features of Github that make it worth using.  From the
+unique approach to pull requests, to line-level commenting, to emoji,
+this chapter explores the features that make GitHub GitHub.
 
 Github adds a social layer atop Git which many have come to confuse
-with Git itself.   For example, once you've used Github you'll be
+with Git itself.  For example, once you've used Github you'll be
 comfortable with forks and pull requests, you'll see line-level and
-commit-level comment threads as an expected feature of your SCM.  If,
-by chance, you ever use Git without Github, you'll realize what I'm
-talking about.
-
+commit-level comment threads as an expected feature of your SCM.
 These "social" features of Github, the ability to map teams to
 repositories, and the ability to use your SCM system as a way to
 communicate with a group.  These are the features that make Github
-indispensible.
+indispensible, and very often you'll note that GitHub users mistake
+these core features as core features of Git.  If you've ever used Git
+without GitHub you'll understand the confusion as Git without GitHub
+often feels underwhelming.
 
-=== Repositories in Github
+=== Repositories in GitHub
 
-"You don't have to be on my team.  Just go ahead, fork my repository,
-change whatever you want.  Once you are done just make a pull request.
-If I have any comments I'll update the pull request or I'll assign an
-issue to you.
+For many users the first impression of GitHub came via an open source
+project - a Rails gem or a Javascript library someone had created an
+published as a public repository. The first thing they likely noticed
+about GitHub wasn't the source code as much as it was the
+interface. Source Code Management (SCM) system have been around for
+decades, but when GitHub arrived on the scene it changed the
+relationship between a project's code, a project's community, and the
+infrastructure supporting open source collaboration.   In this
+section we explore some of these differences.
+
+
+==== Don't Ask Permission, this is GitHub
+
+The most important esssential idea to understand about Git and GitHub
+is that it is truly decentralized. Decentralized applies to more than
+just the mechanics of the source code management system it also
+applies to the political structure that manage a project in Git or
+GitHub.  With a DVCS you don't need to ask permission to fork a
+repository and start commiting to your own branch.
+
+Unlike other source code management systems you are also not beholden
+to the original project owners. You can fork a project, customize it,
+and then it is your prerogative to give back you changes to the
+original project. GitHub makes it easy to create your own fork of a
+repository and then track changes between your fork and the original
+repository.
 
 ==== "Forking" a Repository
 
-Remember, a "fork" used to be viewed as a negative in some OSS
-communities.   If you had to fork a codebase it was because there was
-some intractable dispute or a schism within a community.   This is not
-the case at Github.
+GitHub didn't invent the fork, but they did create a platform which
+has elevated the concept and transformed it - a "fork" used to be
+viewed as a negative in some OSS communities.  If you had to fork a
+codebase it was because there was some intractable dispute or a schism
+within a community.  Forking a project was often the result of a civil
+war within the project's members. This is not the case at Github. In
+fact, one sign of a project's health is how many forks of the project
+there are.
 
-==== Making a Pull Request
+===== Forking a Repository
 
-If you've forked a repository and made some changes you can then make
-a pull request to the upstream repository. 
+To fork a repository, open up a GitHub repository in a browser and
+then click on the "Fork" button as shown in the following figure.
 
-Note: Not everyone appreciates a pull request.  For an example, take a
+image::images/github-fork.png[]
+
+If you are a member of multiple organizations, you will then be asked
+which organization or account you wish to fork a repository to.
+Choose an account or organiztaion to continue.
+
+Once you've forked a repository it will appear under your account with
+a note that tells people what the upstream repository is (what
+repository it was forked from). The following figure shows you a
+forked tobrien/gradle repository from the gradle/gradle repository.
+ 
+image::images/github-forked.png[]
+
+===== Number of Forks as a Measure of Activity
+
+The list of the most forked repositories on GitHub when this
+section was originally written is a list of the most popular projects
+on GitHub:
+
+[cols=2, options="header"]
+|===
+|Project
+|# of Forks
+
+|Bootstrap
+|16,091
+
+|Spoon-Knife
+|15,356
+
+|homebrew
+|6,219
+
+|rails
+|5,807
+
+|html5-boilerplate
+|4,756
+
+|jquery
+|4,084
+
+|node
+|3,931
+
+|oh-my-zsh
+|3,843
+
+|hw3_rottenpotatoes
+|3,775
+
+|phonegap-start
+|3,503
+
+This is because "forking" in GitHub is really just the process of
+cloning someone else's repository and creating a new downstream
+repository in your own account.  When you fork someone else's
+repository, you have your own copy in which you can create new feature
+branches and take the project in whatever direction you would like.
+You can think of the number of forks as the number of interested (but
+maybe not active) contributors for a project. If 16,091 people have
+forked the CSS and Javascript framework Bootstrap, this means that
+16,091 people are interested enough in the project to create a
+maintain a separate fork of the project. In each of the independent
+copies, developers can create feature branches, push commits, and eventualy...
+
+==== Make a Pull Request
+
+If you've forked a repository and made some changes on a feature
+branch you can then make a pull request to the upstream repository.
+Now while it is entirely possible with "git request-pull" to ask
+someone to pull changes from a non-GitHub hosted Git repository, once
+you've sent and received pull requests from within the GitHub
+interface you'll wonder why anyone would ever want to do such a thing.
+
+===== Making a Pull Request
+
+If you've forked a repository and created a feature branch, GitHub
+will notice this new feature branch and ask if you want to make a pull
+request to the upstream repository with this branch.  When you make a
+pull request, you are asking the upstream project to incorporate the
+changes specific to your branch.  For example, the pull requests shown
+in the following figures up the README.md file of the tobrien/gradle
+repository in a branch named doc-improvements.  Here's what GitHub
+shows me when it notices that I've just pushed commits to a feature branch.
+
+image::images/github-recent-branch-prompt.png[]
+
+If you click on compare, GitHub will compare the changes in this
+branch with the default branch of the upstream repository.  In this
+example, since the default branch of the upstream gradle/gradle
+repository is master, the following figure shows a diff between
+tobrien/tobrien:doc-improvement and gradle/gradle:master. This pull
+request simply updates the README.md file of the project.
+
+Click on Pull Request to make a pull request and fill out the
+following form to send this request to the upstream project.
+
+image::images/github-pull-request.png[]
+
+===== Receiving a Pull Request
+
+On the other side of a Pull Requestion you will see that a user made a
+pull request in the GitHub interface.   Clicking on Pull Requests in
+the top navigation of a repository will shows a list of requests
+similar to that shown in the following figure.
+
+image::images/github-pull-requests.png[]
+
+You can comment on a pull request, you can reject a pull request, or
+you can merge a pull request via the GitHub interface, or you can
+cherry-pick specific commits from the command-line.   This mechanism
+of pull requests is relevant for more than just open source projects.
+With this mechanism you can implement a code-review system for a
+private project. 
+
+Some companies using GitHub take this model to an extreme, granting
+most internal developer read-only privileges and requiring all changes
+to be submitted to senior developers via pull requests. While this
+approach may seem inappropriate to developers accustomed to having
+read-write privileges to the repositories they work with, it does
+enforce a requirement for code reviews in order to integrate new code
+into master.
+
+
+[NOTE]
+====
+Not everyone on GitHub appreciates a pull request.  For an example, take a
 look at the user "torvalds" which is Linux Torvald's Github profile.
 If you follow his activity, you will see that the Linux Kernel does
 not accept Github pull requests - if you want to request a pull
 outside of Github you'll have to use "git request-pull"
+====
 
 ==== Github Issues
 
