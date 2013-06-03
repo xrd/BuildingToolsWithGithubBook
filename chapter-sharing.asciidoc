@@ -1,39 +1,433 @@
-== Github Gists
+== Sharing Code with Github Gists
 
-Discuss how important code sharing is for developers.   How developers are often trying to convey some idea that can easily be captured in a Snippet.
+When you are learning a new programming language or a new technology,
+you'll often learn in fits and starts.  Maybe you start by reading an
+introduction or a book, and while the syntax of a new programming
+language may be easy to comprehend, there are a thousand nuances and
+tricks that programmers can only learn from experience.   So you
+communicate with other, you exchange tips and tricks about how to do
+certain things.  
 
-Note: You could also say something important about pastebin and other services that so something similar.
+Good developers often don't memorize this information, they become
+expert collectors of answers to basic and arcane questions like these:
+
+How do I open a connection to the database in Java using JDBC?
+What's the easiest way to parse a JSON document in PHP?  How do I
+override a theme's hook in Drupal?  What was that Percona toolkit
+command that you ran yesterday to measure the IOPS on the SAN?  How
+did you change the column names of a dataset in R?
+
+For a developer that has mastered the basics of a language or a
+framework, the challenge then becomes one of figuring out how to
+perform these specific tasks.   That's where gist comes into play.
+Gist is similar to services like pastebin, it exists as a place for
+developers to share code snippets.   Using Gist you can quickly
+communicate an idea, illustrate an algorithm, or answer a question
+with a easily digestable chunk of code that can span one or more
+files.
+
+Some examples of Gists from my own use of the tool:
+
+* https://gist.github.com/tobrien/3959201 - This was a gist embedded
+  in a blog post on SQLAlchemy.
+
+* https://gist.github.com/tobrien/3334390/revisions - Another Gist
+  which captures the output of a program using PersistIt.
+
+* https://gist.github.com/tobrien/5dd2e3351f641c73ff43 - A secret Gist
+  created to illustrate secret gists for this book.
+
+* https://gist.github.com/tobrien/3083075 - A Gist containing a
+  substantial code listing of a Gradle build file which uses Nexus
+
+Some of my own examples were developed to be embedded into blog posts,
+but others were created simply as a convenient way to send another
+developer a URL capturing the "gist" of an approach to solving a
+problem.   Gists are not designed to be full projects, they are
+designed to provide a convenient mechanism for sharing ideas.
+
+.Gist's Focus is Code
+[NOTE]
+=============
+Gist is one of many code or text sharing services with the most
+popular being Pastebin (http://www.pastebin.com).  While Pastbin
+offers a similar set of features, there are some big differences
+between Pastebin and Gist.   Gist and Pastebin both offer support for
+code, but gist offers some Git-specific features including versioning
+and the ability to clone and edit a Gist with Git.  These features are
+explored in this chapter.
+=============
+
 
 === Sharing Code with Gist
 
-Walk the user through the process of sharing something with a Gist.
+==== Creating a Gist
+
+To create a Gist, go to: http://gist.github.com
+
+The Gist if you are logged into GitHub you'll see a list of your four
+previous Gists, a field for a Gist description, and a section for the
+contents of your Gist.  The following figure shows you the interface for creating a new Gist.
+
+image::images/sharing-gist-create.png[]
+
+The following fields are available when creating a new Gist:
+
+Description::
+    If you are logged in, you'll see space for a description next to
+    your profile picture.  If you are not logged in, you'll see a
+    description next to Github's anonymous Octocat profile image.
+    Fill out this field to describe your Gist.
+
+File Name::
+    Gist's are file-oriented things.  While you can leave this field
+    blank, giving your Gist a filename has two benefits: it makes it
+    easier for the reader of a Gist to understand the context of a
+    Gist and it also gives an important hint to Gist as to the
+    contents of the file.
+
+Language::
+    Gist supports syntax highlighting for over one hundred languages
+    and formats.  Everything from Ada to YAML can be highlighted
+    properly in a Gist, but don't feel compelled to select a
+    language.  If you've supplied a filename that provides an obvious
+    suffix like .xml or .rb, Gist will use that to figure out what the
+    contents are.
+
+ACE Editor Configuration::
+    The ACE editor provides Gist authors with syntax highlighting when
+    they are creating and editing Gists.    The features of the ACE
+    Editor include line numbers, syntax highlighting during edits, and
+    the ability to collapse functions and sections.   The ACE Editor
+    has the following configuration options:
+
+    ACE Editor Checkbox;;
+        Maybe the power of the ACE Editor is too much for you?  Maybe
+        you prefer the simplicity of a regular textbox?  If this is
+        you, turn off the ACE Editor with this checkbox.
+
+    Indent Mode and Size;; 
+        The endless argument over indentation policy has
+        been extended to Gist.  Your code uses indentation, but the
+        important question facing most development teams is whether to
+        use spaces or tabs.  Choose carefully (, but also understand
+        that spaces if the default because real developers use 4 spaces
+        for indentation.)
+
+The Gist::
+    This is where you paste the contents of your Gist.  I say "paste"
+    here for a reason.  Gists are almost always snippets of code you
+    are pasting from some other editor or IDE.
+
+"Add Another File" Button::
+    Gists are file-oriented, and a Gist on Github can contain more
+    than one file.  If your Gist has more than one file, click on "Add
+    Another File" and you'll see a second copy of the Gist input
+    asking for another filename.
+
+Create Gist Buttons::
+    You can a Gist as a public Gist that is visible and discoverable
+    to every, or you can create a secret Gist.  We'll discuss secret
+    Gists later in this chapter, but to summarize, a "Secret" Gist
+    isn't really protected.   It isn't privately visible to only you.
+    Think of secret more like a Gist that isn't advertised, anyone can
+    view it, but only if they have the URL.
+
+
+==== Viewing a Gist
+
+Once you create your Gist, you'll see the Gist page as shown
+below. The contents of the Gist are displayed along side options for
+sharing the Gist and editing the Gist.
+
+image::images/sharing-gist-created.png[]
+
+There are some important features to Gist that set it apart from other
+code sharing services.  Let's take a tour through some of the features
+visible on this Gist display.
+
+First, examine the Gist itself, the "build.gradle" file.  You can see
+two important links in the upper right-hand of each file in a Gist.
+
+* The chain icon provides a permalink, a permanent link to this
+  specific file.  If you need to direct someone's attention to a
+  particular file, copy this link and pass it on.
+
+* The angle bracket is a link to the raw content of a file from a
+  Gist.  This is important if you are going to copy the contents of a
+  Gist, or if you need to download the contents of a Gist from a
+  script and need the direct URL of a particular file without
+  decoration.
+
+When you loaded a Gist you were looking at the Gist Details, this view
+shows you the current state of a Gist.  If you select "Revisions" you
+will see another feature that distinguishes the Gist servce from other
+code sharing services.   Gist allows you to modify existing Gists and
+it keeps track of the various revisions of a Gist.  This can come in
+handy if you have a Gist needs to be updated for a new version of a
+piece of software.
+
+On the Gist view page you can Download a Gist which will product a
+tar.gz archive of the Gist's contents.   You can also comment on a
+Gist using Markdown syntax.
+
+==== Embedding a Gist
+
+The Gist view displays HTML you can use to embed a Gist in web page,
+this can come in handy if you need to insert a code sample into a blog
+or on another site.   
+
+To embed a Gist on a web site, copy the HTML from the "Embed this
+gist" field on the Gist view page.  The URL used in this embed code is
+just the URL of the Gist with ".js" added to the number at the end of
+the URL.  The Gist embed HTML script element is similar to the code
+shown in the following code listing.
+
+----
+<script src="https://gist.github.com/tobrien/5376723.js"></script>
+----
+
+An embedded Gist is rendered with line numbers, syntax highlighting
+and a footer which contains a direct link to the embedded file.  The
+end-result of an embedded Gist is shown in the following figure.
+
+image::images/sharing-gist-embedded.png[]
 
 ==== Secret Gists vs. Public Gists
 
-Who is a secret gist shared with?   
+If you are dealing with national secrets or seriously important
+private data like passwords or secret plans for political campaigns,
+maybe dropping them into a secret Gist doesn't make sense?   I
+certainly wouldn't put anything into a Gist if I wasn't comfortable
+with people I don't know seeing them.   It is true, the Gist is
+unlisted and there's little chance of someone stumbling upon it
+randomly, but there's always a possibility that someone guesses by
+random chance and stumbles upon your secret Gist.   Maybe someone
+else's browser is compromised?  Or, maybe someone inadvertently
+stumbles upon an email.
+
+Just be warned, Secret gists are a bit of a misnomer.   Secrets are
+meant to stay private, and Gists, by the very nature of the service,
+are meant to be shared.    Think of Secret Gists the same way you
+would think of an "Unlisted" YouTube video.   It isn't advertised, and
+there's no way that anyone without the URL will see 
 
 ==== Anonymous Gists
 
-Sometimes you don't want anyone to know who you are.
+If you visit Gist without logging into GitHub or Gist you are going to
+see a submission form for an anonymous Gist.    If what you are
+submitting as a Gist is controversial, or if you'd simply prefer not
+to be associated with a Gist then anonymous Gist posts give you the
+freedom to post without a Gist being associated with your identity.
+
+Anonymous Gists can be Public Gists or Secret Gists, and the important
+thing to remember about creating Anonymous Secret gists is that you
+can lose the URL if you don't record it in some way.  Secret gists
+don't show up in search, and they won't be advertised.  If you need to
+create a secret anonymous Gist take care to keep track of the URL.
 
 === Working with Gists
 
-==== Editing Gists
+While Github gives you the ability to edit a Gist in place.  It also
+provides some feautres that are specific to GitHub.   You can clone a
+Gist and you can Fork a Gist.
 
-Github gives you the ability to edit a Gist in place.
+==== Cloning a Gist
 
-==== Cloning a Gist with Git (What?)
+This is an important difference between a service like Pastebin and
+Gist.  A Gist is also a Git repository.   You can clone it, and you
+can edit a Gist on your local workstation as if it was just another
+Git repository.   To clone a Gist, view a Gist and look for the text
+field "Clone this Gist".  Copy the contents of that text field and
+execute a git clone command similar to the following command-line:
 
-Yes you can.  You can clone a gist into a little Git repository.  Undoubtedly this is going to lead to Gists that start to morph into Github repositories.
+----
+git clone https://gist.github.com/5376723.git
+----
+
+At this point, you will have a directory named "5376723" with the
+contents of this Gist.   you can edit this Gist, add files to the
+Gist, and treat the Gist as a normal Git repository.  Because you
+cloned the repository with an HTTPS URL, when you push this repository
+back to GitHub it will prompt you for both a user and password to use
+for authentication.
 
 ==== Forking a Gist
 
-Yes, Gists are now forkable.
+As Gists are really just Git repositories behind the scenes you can
+also fork a Gist to create your own revisions.  Someone else's Gist
+can be forked by viewing their Gist and clicking on the Fork button as
+shown in the following figure.
 
-=== Viewing a Gist's History
+image::images/sharing-gist-fork.png[]
 
-Want to see how a Gist has evolved...
+Once you have forked a Gist, your forked copy will include a reference
+back to the original source of the forked Gist as shown in the
+following figure.
 
-=== Embed a Gist
+image::images/sharing-gist-forked.png[]
 
-Gists are a great way to embed source code examples in blog posts, no?
+Your newly created fork will also be available to people looking at
+the original fork.  If you click on the number of forks for a Gist,
+you will see the following page which lists a reference to every fork
+of a Gist.
+
+image::images/sharing-gist-fork-list.png[]
+
+When you pair this ability to fork with the ability to clone you might
+ask yourself what the difference is between a Gist and a GitHub
+repository.   The answer is subjective.  If your Gist is starting to
+feel like a project, if you are starting to collaborate with others on
+a Gist, these might be signs that your Gist has exceeded the
+boundaries of a simple Gist and deserves to be pushed to a real GitHub
+repository. 
+
+=== Integrating Gists with Popular Site Tools
+
+Gists can easily be embedded in several populate blogging frameworks
+and web technologies.   This section outlines some of the options
+available to people using popular blogging or site maintenance
+solutions such as Drupal and Wordpress.
+
+==== Embedding Gists in Drupal
+
+The Gist Input Filter for Drupal
+(http://drupal.org/project/gist_filter) is a filter for text fields which
+allows you to embed a Gist with a simple code.   With this text filter
+you can embed a Gist with one of two approaches to syntax:
+
+* [gist:5376723] - This will embed an entire Gist by id number.
+
+* [gist:5376723:build.gradle] - This will embed a specific file from a
+  Gist.
+
+To install this Drupal module follow these steps:
+
+1. Download the Gist Input Filter from the module page here:
+http://drupal.org/project/gist_filter
+
+2. Unpack the module archive in Drupal's sites/all/modules directory.
+
+3. Activate the module by logging in as an Administrator and going to
+/admin/modules.    The "Gist Input Filter" will be listed until the
+Input Filters section.
+
+4. Once the plugin is activated you will need to configure Text
+formats to include the Gist Input Filter.   To configure Text formats
+visit /admin/config/content/formats on your Drupal site.
+
+image::images/sharing-drupal-text-format.png[]
+
+5. Configure the HTML and Plain Text formats to enable the Gist
+filter.
+
+image::images/sharing-drupal-formats.png[]
+
+image::images/sharing-drupal-filter-config.png[]
+
+When configuring the Gist Input Filter for a Text Format you have an
+option to display a Gist as the following options:
+
+Code Tags::
+    This option will use the GitHub API to fetch the contents of the
+    Gist and include it directly in the page as HTML.
+
+Embed::
+    This option will use the default embed script tag shown earlier.
+    Users will see a neatly styled code snippet with line numbers and
+    a footer that links to the Gist.
+
+Link::
+    If Link is selected, no code will be included just a link to the Gist. 
+
+==== Embedding Gists in Wordpress
+
+The Embed Github Gist plugin for Wordpress
+(http://wordpress.org/extend/plugins/embed-github-gist/) makes it easy
+to embed a Gist with a very simple code
+
+----
+[gist id=5376723]
+[gist id=5376723 file=build.gradle]
+[gist]http://gist.github.com/5376723[/gist]
+----
+
+To install this Wordpress plugin follow these steps:
+
+1. Download the plugin from Wordpress.org, from this page:
+http://wordpress.org/extend/plugins/embed-github-gist/
+
+2. Unpack the plugin archive in the /wp-content/plugins directory.
+
+3. Activate the plugin as a WordPress administrator.
+
+==== Embedding Gists in Livejournal
+
+Embedding Gists in LiveJournal requires nothing more than the URL of
+the Gist.    If you use LiveJournal as your blog, all you are required
+to do to embed a Gist in a post is to reference the URL of the Gist.
+
+image::images/sharing-lj-embed.png[]
+
+When Livejournal loads your post, it will notice the Gist URL and
+replace it with an embedded Gist.
+
+=== Integrating Gists with Editors and IDEs
+
+As Gist is primarily focused on code sharing it would make sense that
+there are a series of editor and IDE integrations for Gists.
+
+==== Gist Integration with Vim
+
+Developers who are partial to Vi and Vim tend to live their entire
+lives within the boundaries of this power editor.  As they furiously
+tap efficient vi commands into their keyboards they can't be expected
+to pick up a mouse and use a GUI interface just to see a Gist.
+
+For this reason the Gist.vim script exists to provide vialiens with an
+efficient way to access GIsts.  To install the Gist.vim script:
+
+1. Visit the Gist.vim page here:
+http://www.vim.org/scripts/script.php?script_id=2423
+
+2. Download the latest version of the Gist.vim script from the page
+listed in the previous step.
+
+3. Copy the .vim file to your plugin directory.
+
+At this point, you'll be able to execute commands like: ":Gist
+5376723" in vi to retrieve the contents of a Gist without ever leaving
+your editor.  You are also able to publish the current buffer as a public Gist with ":Gist"
+and as a Secret Gist with ":Gist -p".  You can do much more than this
+with the Gist.vim script.  For more details see http://www.vim.org/scripts/script.php?script_id=2423
+
+==== Gist Integration with Emacs
+
+Of course there is a mode for GitHub Gists.  GitHub's very own Chris
+Wanstrath (defunkt) maintains this Emacs mode and it provides a full
+set of Emacs commands and 
+
+To install the Emacs mode for Gist:
+
+* Use Marmalade in Emacs 24 by pointing to http://marmalade-repo.org
+and executing "M-x package-install" with "gist" as an argument, or
+
+* Download gist.el from GitHub and configure your emacs configuration
+  to load "gist.el".  The details of this process are listed here:
+  https://github.com/defunkt/gist.el
+
+There are a few important commands that make this Gist model for Emacs
+very useful for developers who want to benefit from Gists without
+having to break their concentration.  Here are just a few of the
+commands:
+
+gist-list::
+    List all of your new Gists.
+
+gist-region, gist-buffer, gist-region-or-buffer::      
+    Posts either a region or an entire buffer to Gist
+
+gist-region-private,gist, git-buffer-private, git-region-or-buffer-private::
+    Either copies a region (if a region is defined) or an entier
+    buffer to a Secret Gist.
+
