@@ -117,18 +117,19 @@ on GitHub:
 
 |phonegap-start
 |3,503
+|====
 
-This is because "forking" in GitHub is really just the process of
-cloning someone else's repository and creating a new downstream
-repository in your own account.  When you fork someone else's
-repository, you have your own copy in which you can create new feature
-branches and take the project in whatever direction you would like.
-You can think of the number of forks as the number of interested (but
-maybe not active) contributors for a project. If 16,091 people have
-forked the CSS and Javascript framework Bootstrap, this means that
-16,091 people are interested enough in the project to create a
-maintain a separate fork of the project. In each of the independent
-copies, developers can create feature branches, push commits, and eventualy...
+This is because "forking" in GitHub is really just cloning someone
+else's repository and creating a new downstream repository in your own
+account.  When you fork someone else's repository, you have your own
+copy in which you can create new feature branches and take the project
+in whatever direction you would like.  You can think of the number of
+forks as the number of interested (but maybe not active) contributors
+for a project. If 16,091 people have forked the CSS and Javascript
+framework Bootstrap, this means that 16,091 people are interested
+enough in the project to create a maintain a separate fork of the
+project. In each of the independent copies, developers can create
+feature branches, push commits, and eventualy...
 
 ==== Make a Pull Request
 
@@ -166,7 +167,7 @@ image::images/github-pull-request.png[]
 
 ===== Receiving a Pull Request
 
-On the other side of a Pull Requestion you will see that a user made a
+On the other side of a Pull Request you will see that a user made a
 pull request in the GitHub interface.   Clicking on Pull Requests in
 the top navigation of a repository will shows a list of requests
 similar to that shown in the following figure.
@@ -198,13 +199,38 @@ not accept Github pull requests - if you want to request a pull
 outside of Github you'll have to use "git request-pull"
 ====
 
-==== Github Issues
+==== GitHub Issues
 
-Repositories are associated with Issues.
+Repository administrators have the ability to turn on GitHub issues
+for a particular repository.  GitHub issues give you the ability to
+track "issues" within the GitHub interface.  Issues can be bugs, new
+features, ideas for new features, pull requests, or anything.
 
-==== Milestones
+image::images/github-issues.png[]
+
+
+
+[NOTE]
+====
+The industry has a excessive number of issue trackers: from Trac to
+Jira to Bugzilla we've grown used to issue trackers which provide an
+almost endless variety of options.  GitHub Issues is closer to Trac
+than Jira, it emphasizes a sort of radical simplicity as far as issue
+tracking is concerned.   You won't be defining custom workflow as you
+would in a tool like JIRA, and you won't have the ability to create
+custom graphs and reports.  GitHub issues is a simple issue tracker
+designed to integrate with GitHub.
+====
+
+===== GitHub Issue Milestones
 
 Repositories are associated with milestones
+
+image::images/github-create-milestone.png[]
+
+image::images/github-list-milestones.png[]
+
+image::image/github-view-milestone.png[]
 
 ==== Downloads
 
