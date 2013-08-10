@@ -1,5 +1,36 @@
 [[developer-api]]
 == The GitHub API
+Like most useful sites and services today, GitHub is less a site that
+you can visit and more a utility that has a habit of popping up just
+about everywhere.  As this book has mentioned previously, GitHub has
+been quickly becoming a "fixture" for developers.  If you develop in
+Ruby, Node.js, and, increasingly, Java you are going to encounter
+GitHub as the foundational SCM used by a number of leading projects
+and libraries available for your language or platform.  
+
+This ubiquitous presence continues to develop as GitHub's APIs have
+started to mature and offer basic utilities for sites that need to
+integrate with it. Just like you can sign on to many services with
+your Facebook or Twitter logins, GitHub has started to act as an
+OAuth 2 provider for many sites and services that depend on GitHub as
+a provider of both user identity and Git activity. 
+
+As more developer-focused sites start to offer the ability to "Login
+with GitHub", and as GitHub continues to offer more low-level
+infrastructure for development it changes from a simple service to a
+necessary infrastructure for collaboration. In more than a few ways, GitHub is
+to developers as Facebook is to social networks and the API is a
+critical component of that transformation.
+
+This chapter will supply three things: 
+
+* A language-neutral overview of the GitHub API along with an
+  explanation of basic interaction patterns and pointers toward more
+  detailed information.
+* A survey of libraries available to make interacting with the GitHub
+  APIs easier.
+* An exploration of intergration patterns for GitHub's OAuth
+  services.
 
 === API Overview
 
@@ -56,31 +87,44 @@ There are already a number of API Libraries available for the Github
 API.  This section lists some of the major languages along with some
 of the options.
 
+The first two sections of this chapter will deal with the official,
+GitHub-maintained client libraries. GitHub maintains two official
+libraries which are grouped under the name Octokit - a reference to
+Github's Feline Octopus mascot "Octocat".  Octokit maintains two
+projects on GitHub - octokit.rb and octokit.objc.
+
+image::images/developer-api-octokit.png[]
+
+
+
+==== Connecting to Github from Objective-C
+
+
+
+
+
+
 ==== Connecting to Github from Ruby
 
 Just have a simple example using the most popular library.  Simple ,
 then just some of the alternatives.
 
-==== Connecting to Github from Python
+https://github.com/octokit/octokit.rb
+
+gem install octokit
+
+==== Connecting to Github from Javascript (Client-side)
 
 Just have a simple example using the most popular library.  Simple ,
 then just some of the alternatives.
 
-@jacquev6
+The following example depends on jQuery, Underscore, and the gh3
+Javascript library maintained by Philippe Charriere (GitHub: @k33g) at
+GitHub here: https://github.com/k33g/gh3
 
-Vincent Jacques
-
-https://github.com/jacquev6/PyGithub
-
-==== Connecting to Github from Javascript
-
-Just have a simple example using the most popular library.  Simple ,
-then just some of the alternatives.
-
-Philippe CHARRIERE @k33g
-
-https://github.com/k33g/gh3
-
+To run the following example, download underscore-min.js from
+http://underscorejs.org/ and gh3.js from https://github.com/k33f/gh3, and
+place these files in the same directory as an HTML
 
 ----
 <html>
