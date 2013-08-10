@@ -91,6 +91,7 @@ cause confusion. Most git users are so used to pushing to "master" it
 is burned in muscle memory. I may not make sense to fiddle with this
 setting unless you really know what you are doing.
 
+[repo-admin-pages]
 === Automatic GitHub Page Generator
 
 GitHub is more than a source code management system for Git

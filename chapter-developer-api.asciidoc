@@ -66,15 +66,183 @@ then just some of the alternatives.
 Just have a simple example using the most popular library.  Simple ,
 then just some of the alternatives.
 
+@jacquev6
+
+Vincent Jacques
+
+https://github.com/jacquev6/PyGithub
+
 ==== Connecting to Github from Javascript
 
 Just have a simple example using the most popular library.  Simple ,
 then just some of the alternatives.
 
+Philippe CHARRIERE @k33g
+
+https://github.com/k33g/gh3
+
+
+----
+<html>
+  <head>
+    <title>GitHub Client Side Example</title>
+
+    <script type="text/javascript"
+      src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+    </script>
+    <script type="text/javascript" src="underscore-min.js"></script>
+    <script type="text/javascript" src="gh3.js"></script>
+
+    <script type="text/javascript">
+      $(document).ready( function() {
+        var tobrien = new Gh3.User("tobrien");
+        tobrien.fetch(function (err, user){
+          $('#id').append( user.id );
+          $('#login').append( user.login );
+          $('#blog').append( user.blog );
+          $('#name').append( user.name );
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>GitHub User Information</h1>
+    <ul>
+      <li id="id">ID: </li>
+      <li id="login">Login: </li>
+      <li id="blog">Blog: </li>
+      <li id="name">Name: </li>
+    </ul>
+  </body>
+</html>
+----
+
+----
+GitHub User Information
+
+ID: 36787
+Login: tobrien
+Blog: http://www.discursive.com
+Name: Tim O'Brien
+----
+
 ==== Connecting to Github from Java
 
-Just have a simple example using the most popular library.  Simple ,
-then just some of the alternatives.
+The Eclipse project's EGit project maintains a Java library named
+egit-github which can be usd independently of Eclipse to interact with
+the GitHub API.  The GitHub project page for this egit-github project
+can be found here: https://github.com/eclipse/egit-github
+
+If you are using Maven the dependency XML for egit-github is the
+following XML dependency.
+
+----
+<dependency>
+  <groupId>org.eclipse.mylyn.github</groupId>
+  <artifactId>org.eclipse.egit.github.core</artifactId>
+  <version>2.1.5</version>
+</dependency>
+----
+
+----
+package com.oreilly.github;
+
+import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.client.PageIterator;
+import org.eclipse.egit.github.core.event.Event;
+import org.eclipse.egit.github.core.service.EventService;
+import org.eclipse.egit.github.core.service.RepositoryService;
+import org.eclipse.egit.github.core.service.UserService;
+
+public class App
+{
+    public static void main( String[] args ) throws Exception
+    {
+        GitHubClient client = new GitHubClient();
+        EventService service = new EventService();
+        PageIterator<Event> iterator = service.pageUserEvents("tobrien");
+
+        for (Event event : iterator.next() )
+          System.out.printf( "%s %s\n", event.getType(), event.getCreatedAt());
+    }
+}
+----
+
+----
+WatchEvent Tue Aug 06 05:03:16 CDT 2013
+CreateEvent Sun Jul 21 19:57:14 CDT 2013
+IssuesEvent Mon Jun 03 09:33:51 CDT 2013
+IssuesEvent Mon Jun 03 09:32:54 CDT 2013
+PullRequestEvent Mon Jun 03 08:48:51 CDT 2013
+CreateEvent Mon Jun 03 08:39:09 CDT 2013
+MemberEvent Sun Jun 02 15:51:27 CDT 2013
+MemberEvent Sun Jun 02 15:51:18 CDT 2013
+MemberEvent Sun Jun 02 15:51:13 CDT 2013
+CreateEvent Sun Jun 02 15:51:02 CDT 2013
+PublicEvent Sun Jun 02 13:46:52 CDT 2013
+----
+
+
+
+==== Connecting to Github from Node.js
+There is a popular node library that provides access to the GitHub API
+developed by Mike de Boer (GitHub: @mikedeboer) this Node.js library
+can be found on GitHub here: https://github.com/mikedeboer/node-github
+
+To install the JavaScript GitHub API for Node.js.  Run the following
+command with npm - the Node.js package manager:
+
+----
+npm install github
+----
+
+Once you've installed the github package, you can reference the GitHub
+library in code like the following code listing.
+
+----
+var GitHubApi = require("github");
+var prettyjson = require( 'prettyjson' );
+
+var github = new GitHubApi({
+    version: "3.0.0",
+    timeout: 5000
+});
+
+github.events.getFromUser({
+    user: "tobrien"
+}, function(err, res) {
+    console.log(prettyjson.render(res));
+});
+----
+
+The code shown above connects to GitHub's API and requests recent
+events related to the user "tobrien".  The result of the API call is
+then printed out using a utility library named "prettyjson" which
+ensures that the JSON output is transformed into something easier to
+read. To run this code, you will need to run the following commands:
+
+----
+$ npm install github
+$ npm install prettyjson
+$ node github.js
+----
+
+Running this command should yield JSON output that contains a list of
+events and actions the user 'tobrien' has recently completed.
+
+For detailed document of Mike de Boer's JavaScript GitHub API, you can
+read the full library documentation here:
+http://mikedeboer.github.io/node-github/.
+
+While the simple example shown above is sufficient for read-only
+operations in the GitHub API, if you are planning on using this API
+for anything more than reading GitHub content, you will need to
+configure authentication options for this library.  A full discussion
+of authentication with the JavaScript GitHub API for Node.js can be
+found on the GitHub project page for this library here:
+https://github.com/mikedeboer/node-github
+
 
 ==== Connecting to Github from a Billion Alternative Languages
 
@@ -137,6 +305,9 @@ web site that you can use over ...here...
 ===== Other Languages
 
 Refer reader to this page; http://developer.github.com/v3/libraries/
+
+
+
 
 === A Sample Github Application
 

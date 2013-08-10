@@ -208,8 +208,6 @@ features, ideas for new features, pull requests, or anything.
 
 image::images/github-issues.png[]
 
-
-
 [NOTE]
 ====
 The industry has a excessive number of issue trackers: from Trac to
@@ -222,13 +220,57 @@ custom graphs and reports.  GitHub issues is a simple issue tracker
 designed to integrate with GitHub.
 ====
 
+===== Creating an Issue
+
+To create an issue click on "Issues" in the top-navigation of a
+repository and then click on the "New Issue" button.   You'll see the
+form shown in the following figure.
+
+image::images/github-create-issue.png[]
+
+Subject::
+        Every issue can have a simple one-line subject. This subject
+        serves to quickly identify an issue when this issue is
+        displayed in a list of issues.
+
+Body::
+        Issues are useless unless they provide enough information and
+        context to be implemented or addressed. The body of an issue
+        is where you should describe the problem or idea fully.
+
+Assigned To::
+         You can assign an issue to a single GitHub user account that
+         is associated with the project.
+
+Milestone::
+        If you have created milestones, you can associated a GitHub
+        issue with a specific milestone.
+
+Labels::
+        GitHub uses labels to classify issues as bugs, enchancements,
+        or questions. GitHub also gives you the opportunity to define
+        more issues labels if you need them. You can create new labels
+        for new issues types or labels for different components in a project.
+
 ===== GitHub Issue Milestones
 
-Repositories are associated with milestones
+Repositories are associated with milestones. Milestones are important
+events such as software releases or other events which are related to
+software development. In GitHub Issues you can create a milestone and
+then associate issues with a milestone.  To create a milestone, click
+on Issues in the top navigation area of a repository, then click on
+the Milestones tab.   On the milestones tab click on "Create
+Milestone" and fill out the interface shown in the following figure.
 
 image::images/github-create-milestone.png[]
 
+Once a milestone is created you can then see a list of open and closed
+milestones. The following screen shows a long overdue, open milestone.
+
 image::images/github-list-milestones.png[]
+
+Clicking on a milestone lets you see the issues that are associated
+with a milestone.
 
 image::image/github-view-milestone.png[]
 
