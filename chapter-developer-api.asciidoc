@@ -34,34 +34,263 @@ This chapter will supply three things:
 
 === API Overview
 
+The GitHub API is a set of REST services that speak JSON.  Some of
+these services are available anonymously without the need for
+authentication, while others require a set of credentials
+
+
 An overview of the API with a diagram.
+
+
 
 ==== High-level Areas 
 
-* Activity
-* Gists
-* Git Data
-* Issues
-* Orgs
-* Pull Requests
-* Repositories
-* Users
-* Search
+Activity::
+
+    Activity includes Events, Feeds, Notifications, Starring, and
+    Watching.  If you are building a site or service that is focused
+    on supporting developers this portion of the API lets us use the
+    GitHub API to display information about activity that affects
+    everything: users, repositories, and organizations.
+
+Gists::
+
+    Gists are code snippets that can be shared and embedded in other
+    sites. Using the GitHub API you can retrieve and populate Gist
+    content and use GitHub as the infrastructure for sharing pieces of code.
+
+Git Data::
+
+    This portion of the API allows you to do anything with the GitHub
+    API that you can do with the Git command.  If you are familiar
+    with the way that Git's plumbing (not the porcelain) works, you
+    could write systems that read, create, and manipulate the basic
+    building blocks of Git's content-addressable storage backend
+    including blobs, trees, tags, and commits.
+
+Issues::
+
+    GitHub's issues management systems is made fully availabel to you
+    via the GitHub API.  If you need to create custom systems to
+    create and read GitHub issues, issue comments, issues events,
+    issue labels, or if you want to see which issues relate to a
+    repository milestone the Issues section of the API is where you'll look.
+
+Orgs::
+
+    Repositoryies and individuals associated with organizations can be
+    read and manipualted from the Org Teams API.  If you wanted to
+    render a list of developers contributing to a repository on a web
+    site you could use this section of the API to obtain this information.
+
+Pull Requests::
+
+    With the Pull Requests section of the GitHub API you can create a
+    pull request, view a pull request, updated a pull request, comment
+    on a pull request, and merge a pull request.
+
+Repositories::
+
+    The Repos API gives you access to lists of repositories by user
+    and by organization. It also provides access to teams, tags,
+    branches, and contributors associated with a repository.
+
+Users::
+
+    You can read a user, read the current authenicated user, update
+    your own user, list a user's followers, update followers, and
+    check to see if a user if following another.  This section of the
+    API also allows you to see public keys for a user and 
+
+Search::
+
+    GitHub has spent a good amont of effort over the past few years
+    creating a very feature-rich search function and they've made this
+    search apability available via the GitHub API.
+
+In summary, you would have to work to figure out something that GitHub
+isn't making available via the GitHub API.  They done this for a few
+reasons, one is that GitHub has become an essential piece of
+infrastructure for a large portion of both open source and proprietary
+development.  Allowing other companies and sites to build upon GitHub
+via the API only guarantees that it will continue to provide these
+features and functions going forward.
+
+The other reason GitHub has invested in what some would consider a
+radically open approach to its API is that the founders of the company
+understand that they don't hold a monopoly on good ideas. Throughout
+its history GitHub has had a track record of nonchalantly allowing
+people to do what they will with the service.  By enabling others to
+build upon these APIs, GitHub understands that others may show up with
+better ideas of how to assemble these functions into viable products.
+
+This isn't to say that GitHub is disinterested in your use of the
+API.  The company exists to make money, but as money-making ventures
+go, GitHub has yet to exercise the sort of measured caution you would
+expect from other, more "corporate" attempts at providing an API.
+Nowhere in this API do you see anything that hints of GitHub
+attempting to hide a property or make something unavailable to attain
+a unique market advantage.  
+
+One thing to keep in mind, despite the current, ideal approach tht
+GitHub is taking to its API is that your use of this API is still
+subject to the arbitrary whim of a commercial entity.
 
 ==== How the Read the Github API Documentation
+
+A full exploration of the GitHub API and fine-grained details for each
+service is well beyond the scope of this chapter (or even this entire
+book).  For more information about the GitHub API, see the
+comprehensive GitHub API documentation here:
+http://developer.github.com/v3/
+
+
 
 Just a pointing to the site with a quick overview of what everything
 means.
 
-==== Following the examples in this chapter
-
-Discuss how this chapter uses Javascript examples
-
 ==== What are the Limitations of the Github API?
+GitHub tries to limit the rate at which users can make requests to the
+API.  Anonymous requests, requests that haven't authenticated with
+either a username/password or OAuth information, are limited to 60
+requests an hour. If you are developing a system to integrate with the
+GitHub API on behalf of users, clearly 60 requests per hour isn't
+going to be sufficient.
 
-Discuss any limits on API usage.  Rate limits , etc.   What can the
-API be used for, and what can it not be used for.   Try to translate
-any licensing terms for this API into plainspeak.
+This rate limit is increased to 5000 requests per hour if you are
+making an authenticated request to the GitHub API, and while this rate
+is two orders of magnitude larger than the anonymous rate limit, it
+still presents problems if you intend to use your own GitHub
+credentials when making requests on behalf of many users.
+
+For this reason, if your web site or service uses the GitHub API to
+request informatin from the GitHub API, you should consider using
+OAuth and make requests to the GitHub API using your user's shared
+authentication information. 
+
+[NOTE]
+There are actually two rate limits.  The "core" rate limit and the
+"search" rate limit.  The rate limits explained in the previous
+paragraphs were for the core rate limit.  For search, anonymous
+requests are limited at 20 requests per minute for authenticated user
+requests and 5 request per minute for anonymous requests. The
+assumption here is that search is a more infrastructure intensive
+request to satisfy and that tighter limits are placed on it's usage.
+
+===== Reading Your Rate Limits
+Reading your rate limit is straightforward, just make a GET request to
+/rate_limit.  This will return a JSON document which tells you the
+limit you are subject to, the number of requests you have remaining,
+and the timestamp (in seconds since 1970).  Note that this timestamp
+has a timezone in Coordinated Universal Time (UTC).
+
+The following command listing uses curl to retrieve the rate limit
+for an anonymous request.   This response is abbreviated to save space
+in this book, but you'll notice that the quota information is supplied
+twice: once in the HTTP response headers and again in the JSON
+response.  The rate limit headers are returned with every request to
+the GitHub API, so there is little need to make a direct call to the
+/rate_limit API.
+
+----
+$ curl -i https://api.github.com/rate_limit
+HTTP/1.1 200 OK
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 60
+X-RateLimit-Reset: 1376252013
+
+{
+  "rate": {
+    "limit": 60,
+    "remaining": 60,
+    "reset": 1376252013
+  }
+}
+----
+
+Again, 60 requests of the course of an hour isn't very much, and if
+you plan on doing anything interesting, you will likely exceed this
+limit quickly. If you are hitting up against the 60 requests per
+minute limit, you will likely want to investigate making authenticated
+requests to the GitHub API.
+
+The following command listing uses curl to retrieve the rate limit for
+an authenticated request.  Again, you will note that the rate limit
+information is present in both the response body and the HTTP response
+headers.
+
+----
+tmac:github-book Tim$ curl -i -u tobrien https://api.github.com/rate_limit
+Enter host password for user 'tobrien': xxxxxxxx
+HTTP/1.1 200 OK
+X-RateLimit-Limit: 5000
+X-RateLimit-Remaining: 4995
+X-RateLimit-Reset: 1376251941
+
+{
+  "rate": {
+    "limit": 5000,
+    "remaining": 4995,
+    "reset": 1376251941
+  }
+}
+----
+
+[NOTE]
+Calls to the Rate Limit API are not deducted from your Rate Limit.
+Isn't that nice of them?
+
+===== Conditional Requests to Avoid Rate Limits
+If you are querying the GitHub APIs to obtain activity data for a user
+or a repository, there's a good chance that mamy of your requests
+won't return much activity.  If you check for new activity once every
+few minutes, there will be time periods over which no activity has
+occurred.  These requests, these constant polls still use up requests
+in your rate limit even though there's no new activity to be
+delivered.
+
+In these cases, you can send conditional HTTP headers
+If-Modified-Since and If-None-Match to tell GitHub to return an HTTP
+304 response code telling you that nothing has been modified.  When
+you send a request with a conditional header and the GitHub responds
+with a HTTP 304 response code, this request is not deducted from your
+rate limit.
+
+ 
+
+
+////
+Maybe this needs more development?  - Tim
+////
+
+==== GitHub API Terms of Service
+Before you start building a system atop another service's API, it is
+always wide to understand what, if any, limitations are placed on that
+API's usage.Aside from the limitations on bandwidth, GitHub's API is also covered
+by the overall GitHub Terms of Service.   While you can read these terms of
+servic here: https://help.github.com/articles/github-terms-of-service
+- here is a summary of the terms.
+
+. GitHub isn't liable for any damages that result from youruse of the
+API.  You really can't blame GitHub for putting up this clause in
+today's litigious society.
+
+. If you abuse the API, GitHub can suspend your account's access to
+the API.  They will attempt to contact you before this happens.
+
+. They can change the API.  They can discontinue a part of the API.
+They can change it without notice.
+
+This is fairly standard stuff when it comes to terms for an API.
+We're not liable, don't abuse it, and we can change it or take it
+away.
+
+////
+We need guidance from GitHub here.  I don't see that the GitHub API
+has any explicit Terms of Service beyond the one every user agrees
+to.   It would be nice to know if there are any red lines that can't
+be crossed.
+////
 
 === API Security
 
