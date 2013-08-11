@@ -36,14 +36,17 @@ This chapter will supply three things:
 
 The GitHub API is a set of REST services that speak JSON.  Some of
 these services are available anonymously without the need for
-authentication, while others require a set of credentials
+authentication, while others require a set of credentials.  The API is
+easy to access, and this chapter will use a command-line utility named
+curl to demonstrate how to access this API.
 
+==== Accessing the GitHub API
 
-An overview of the API with a diagram.
+////
+TODO: Demonstrate how to access the API with curl
+////
 
-
-
-==== High-level Areas 
+==== High-level Areas of the GitHub API
 
 Activity::
 
@@ -144,12 +147,8 @@ book).  For more information about the GitHub API, see the
 comprehensive GitHub API documentation here:
 http://developer.github.com/v3/
 
-
-
-Just a pointing to the site with a quick overview of what everything
-means.
-
 ==== What are the Limitations of the Github API?
+
 GitHub tries to limit the rate at which users can make requests to the
 API.  Anonymous requests, requests that haven't authenticated with
 either a username/password or OAuth information, are limited to 60
@@ -241,6 +240,7 @@ Calls to the Rate Limit API are not deducted from your Rate Limit.
 Isn't that nice of them?
 
 ===== Conditional Requests to Avoid Rate Limits
+
 If you are querying the GitHub APIs to obtain activity data for a user
 or a repository, there's a good chance that mamy of your requests
 won't return much activity.  If you check for new activity once every
