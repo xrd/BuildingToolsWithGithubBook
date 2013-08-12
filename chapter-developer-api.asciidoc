@@ -653,7 +653,9 @@ image::images/developer-api-octokit.png[]
 
 ==== Connecting to Github from Objective-C
 
-
+////
+TBD
+////
 
 
 
@@ -666,6 +668,10 @@ then just some of the alternatives.
 https://github.com/octokit/octokit.rb
 
 gem install octokit
+
+////
+TBD
+////
 
 ==== Connecting to Github from Javascript (Client-side)
 
@@ -883,28 +889,6 @@ Todo: I know that Django has an OAuth provider API, ask a Pythonista.
 ===== Other Languages
 
 Figure out if there are any other pre-built OAuth integrations (like omniauth)
-
-
-==== How to call the API
-
-* [API Documentation](http://developer.github.com)
-
-===== Media Types
-
-The content type for these requests and responses is almost always
-JSON, but there's a special format required for the media type:
-http://developer.github.com/v3/media/
-
-===== This Chapter's Samples: Javascript
-
-This chapter's samples are all written in Javascript, using a sample
-web site that you can use over ...here...
-
-===== Other Languages
-
-Refer reader to this page; http://developer.github.com/v3/libraries/
-
-
 
 
 === A Sample Github Application
