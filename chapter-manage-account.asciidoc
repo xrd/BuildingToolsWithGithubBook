@@ -2,13 +2,37 @@
 == Profiles and Account Management
 
 In Github there are two types of accounts: individual and
-organization.  This chapter covers the management of individual accounts.
+organization.  Most GitHub users will only ever have an individual
+account this is the account you created when you signed up for GitHub,
+selected a username and a password, and it is associated with a
+profile which is your identity in GitHub.  This chapter covers the
+management of this profile and the various options that are available
+for individual accounts.
 
 === Viewing a User Profile
 
-To view your user profile, click on...
+Viewing anyone's profile is easy, just append a user's username to the
+GitHub URL.  For example, to laod the profile page for Linux Torvalds
+go to http://www.github.com/torvalds.  The creator of the Linux Kernel
+will be staring back at you alongside his popular repositories,
+location, most used languages, organization, number of followers, and developer
+contribution activity.  You can learn quite a bit about a developer
+from a GitHub profile, and the public profile has been designed to
+feature a user's open source contributions.
 
 image::images/user-profile.png[]
+
+The amount of information displayed on a user profile changes depending
+on the relationship you have with another user and depending on what
+he or she is sharing with you.  For example, if you load your own
+GitHub profile, you'll see everything including private repositories
+and a list of contributions that spans both public and private
+repositories.  The information displayed on a user's profile changes
+depending on the level of access a user has to information about a
+user.  For example, if you are a member of an Organization's team
+which grants access to a collection of private repositories, you will
+be able to view another user's contributions to this library on the
+GitHub user profile page.
 
 ==== Follow Statistics and Stars
 
@@ -28,8 +52,24 @@ innovative people and find particularly innovative projects.
 image::images/user-public-activity.png[]
 
 For example, you can keep track of Linus Torvald's activity on the
-Linux Kernal while, at the same time, keeping track of the what the
+Linux Kernel while, at the same time, keeping track of the what the
 core Rails team is paying attention to.
+
+.Leaking Information, GitHub-style
+[NOTE]
+If you use GitHub for a combination of both open source and
+proprietary development, you should take time every few weeks to make
+sure that your public profile isn't leaking proprietary information or
+information that was never mean to be shared. Shortly after GitHub
+released its powerful Search API in 2013, there was a controversy when
+people started searching for private SSH keys (files which are never
+meant to be shared with anyone). Many users were versioning a home
+directory and inadvertenty sharing very private information in a
+public repository. When using a platform that straddles both the
+private and the public, you'll want to make sure that you take some
+time to view your own profiles and repositories as an unauthenticated,
+anonymous user.
+
 
 === Editing a User Profile
 
