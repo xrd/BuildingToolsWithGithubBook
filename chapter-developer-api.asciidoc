@@ -38,9 +38,108 @@ The GitHub API is a set of REST services that speak JSON.  Some of
 these services are available anonymously without the need for
 authentication, while others require a set of credentials.  The API is
 easy to access, and this chapter will use a command-line utility named
-curl to demonstrate how to access this API.
+cURL to demonstrate how to access this API.
+
+.Installing cURL
+[NOTE]
+If you are running these examples on a Linux box, you should be able
+use your native package management tool to install cURL - either a
+"sudo yum install curl*" on a RedHat variant or a "sudo apt-get
+install curl".  If you are on any recent version of OSX, you already
+have cURL installed, but it you can't find it, take a look at the
+MacPorts project (http://www.macports.org/).  If you are running on
+Windows or another operating system, you best bet is to download cURL
+from the cURL web site here: http://curl.haxx.se/download.html
 
 ==== Accessing the GitHub API
+
+It's easy, just run curl and hit the API URL as shown in the following
+command listing.  Throughout this chapter, we're going to show a
+number of command listings that have been edited help us save space in
+the book.   I've left the output of this particular call unedited so
+we can walk through the response headers and so you can see how the
+GitHub tells you where to look for all of the other services it
+provides.
+
+----
+$ curl -i https://api.github.com/
+HTTP/1.1 200 OK
+Server: GitHub.com
+Date: Sun, 11 Aug 2013 22:37:26 GMT
+Content-Type: application/json; charset=utf-8
+Status: 200 OK
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 57
+X-RateLimit-Reset: 1376262655
+X-GitHub-Media-Type: github.beta
+X-Content-Type-Options: nosniff
+Content-Length: 1776
+Access-Control-Allow-Credentials: true
+Access-Control-Expose-Headers: ETag, Link, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes
+Access-Control-Allow-Origin: *
+ETag: "d20e5cc244a6cdb4056579e47e839e36"
+Cache-Control: max-age=0, private, must-revalidate
+Vary: Accept-Encoding
+----
+
+Let's do a quick walkthrough of this response.   The first thing we
+see is a response code.  In this case, our response code is 200 which
+signals to us that the request was a success.  Later in this chapter
+you will see how GitHub uses other response codes such as HTTP 304 to
+send signals to a client.   After the response code, you'll see other
+standard headers one would expect in any HTTP response such as the
+server sending the response, the date of the response, the Status
+header, the Content-Length, and the Content-Type of the response.
+
+Three headers are present in every GitHub API response which tell you
+about the GitHub API rate limits.  They are X-RateLimit-Limit,
+X-RateLimit-Remaining, and X-RateLimit-Reset.   These limits are
+explained in detail in <<developer-api-rates>>.
+
+The X-GitHub-Media-Type header contains information that will come in
+handy when you are starting to retrieve text or blob content from the
+API.  when you make a request to the GitHub API you can specify the
+format you want to work with by sending an Accept header with your request.
+
+
+After the HTTP response headers shown above, the root directory of the
+GitHub API helpfully returns a JSON document listing all of the
+services available via the GitHub API.  You can print this out and use
+it as a map to the GitHub API.  We're going to run through most of
+these services in this chapter, but this is a helpful list to have
+access to, and to get it, just go to https://api.github.com/
+
+----
+{
+  "current_user_url": "https://api.github.com/user",
+  "authorizations_url": "https://api.github.com/authorizations",
+  "emails_url": "https://api.github.com/user/emails",
+  "emojis_url": "https://api.github.com/emojis",
+  "events_url": "https://api.github.com/events",
+  "feeds_url": "https://api.github.com/feeds",
+  "following_url": "https://api.github.com/user/following{/target}",
+  "gists_url": "https://api.github.com/gists{/gist_id}",
+  "hub_url": "https://api.github.com/hub",
+  "issue_search_url": "https://api.github.com/legacy/issues/search/{owner}/{repo}/{state}/{keyword}",
+  "issues_url": "https://api.github.com/issues",
+  "keys_url": "https://api.github.com/user/keys",
+  "notifications_url": "https://api.github.com/notifications",
+  "organization_repositories_url": "https://api.github.com/orgs/{org}/repos/{?type,page,per_page,sort}",
+  "organization_url": "https://api.github.com/orgs/{org}",
+  "public_gists_url": "https://api.github.com/gists/public",
+  "rate_limit_url": "https://api.github.com/rate_limit",
+  "repository_url": "https://api.github.com/repos/{owner}/{repo}",
+  "repository_search_url": "https://api.github.com/legacy/repos/search/{keyword}{?language,start_page}",
+  "current_user_repositories_url": "https://api.github.com/user/repos{?type,page,per_page,sort}",
+  "starred_url": "https://api.github.com/user/starred{/owner}{/repo}",
+  "starred_gists_url": "https://api.github.com/gists/starred",
+  "team_url": "https://api.github.com/teams",
+  "user_url": "https://api.github.com/users/{user}",
+  "user_organizations_url": "https://api.github.com/user/orgs",
+  "user_repositories_url": "https://api.github.com/users/{user}/repos{?type,page,per_page,sort}",
+  "user_search_url": "https://api.github.com/legacy/user/search/{keyword}"
+}
+----
 
 ////
 TODO: Demonstrate how to access the API with curl
@@ -147,7 +246,8 @@ book).  For more information about the GitHub API, see the
 comprehensive GitHub API documentation here:
 http://developer.github.com/v3/
 
-==== What are the Limitations of the Github API?
+[developer-api-rates]
+==== GitHub API Rate Limits
 
 GitHub tries to limit the rate at which users can make requests to the
 API.  Anonymous requests, requests that haven't authenticated with
@@ -340,7 +440,148 @@ asked to generated content unnecessarily.
 Maybe this needs more development?  - Tim
 ////
 
+[developer-api-accept]
+==== Specifying Response Content Format
+
+When you send a request to the GitHub API, you have some ability to
+specify the format of the response you expect.  For example, if you
+are requesting content that contains text from a commit's comment
+thread, you can use the Accept header to ask for the raw markdown or
+for the HTML this markdown generates.  You also have the ability to
+specify this version of the GitHub API you are using.  At this point,
+you can specify either version 3 or beta of the API.
+
+To demonstrate the specification of the Accept header, let's take a
+look at what happens when we request something without the Accept
+header:
+
+----
+$ curl -i https://api.github.com/
+Content-Type: application/json; charset=utf-8
+X-GitHub-Media-Type: github.beta
+----
+
+You can see that GitHub API assumes that you are requesting the
+beta version and for results to be returned as JSON. This is the
+default behavior of the GitHub API. GitHub is currently developing v3
+of the GitHub API and has marked the current version of this stable
+API as "beta".  This is the default version that it returned.  At some
+point in the future, GitHub may decide to release a final version of
+v3 and move to a new version identifier.
+
+When making an individual service call you can specify the version of
+the API as follows:
+
+----
+$ curl -i https://api.github.com/ \
+          -H "Accept: application/vnd.github.v3+json"
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+X-GitHub-Media-Type: github.v3; format=json
+----
+
+Note how the content of the X-GitHub-Media-Type header changed to
+reflect the newly specified version number.  In addition to these
+changes, the following sections outline further customization of
+response format with the Accept Header.
+
+////
+Fact check GitHub v3 assertion above.
+////
+
+===== Retrieving Formatted Text Content
+
+The Accept header you send with a request can affect the format of
+text returned by the GitHub API.  As an example, let's assume you
+wanted to read the body of a GitHub Issue. An Issue's body is stored
+in Markdown and can be retrieved with the following request by sending
+"application/vnd.github.beta.raw+json" as the Accept header.
+
+----
+$ curl -i https://api.github.com/repos/rails/rails/issues/11819 \
+          -H "Accept: application/vnd.github.beta.raw+json"
+Content-Type: application/json; charset=utf-8
+X-GitHub-Media-Type: github.beta; param=raw; format=json
+
+...Content Removed...
+
+  "body": "Hi, \r\n\r\nI have a problem with strong parameters in
+  rails 4. \r\n\r\nI have a one-to-many association that accept nested
+  attributes.\r\n\r\nI try to permit nested attributes with following
+  line :\r\n\r\n```ruby\r\nevent_params =
+  params.require(:event).permit(:description,
+  \r\nevent_parts_attributes: [:start_date,
+  :start_time])\r\n```\r\n\r\ndescription is present but
+  event_parts_attributes aren't added to event_params. They are well
+  present in params.\r\n\r\nWhen I remove require(:event) it's
+  work. \r\n\r\nThanks",
+----
+
+As you can see in the response returned above, the body of this Issue
+is returned in a raw, unformatted response. If you were consuming this
+and displaying it to users, it would be up to you to parse and render
+the Markdown in this Issue body.  If you were attempted to retrieve an
+Issue body with Javascript to display to an end-user, you might want
+to retrieve the body as rendered HTML content.  Here's how you would
+do that with the Accept header passing in
+"application:vnd.github.beta.html+json" in the Accept header.
+
+----
+$ curl -i https://api.github.com/repos/rails/rails/issues/11819 \
+          -H "Accept: application/vnd.github.beta.html+json"
+Content-Type: application/json; charset=utf-8
+X-GitHub-Media-Type: github.beta; param=html; format=json
+
+  ...Content Removed...
+
+  "body_html": "<p>Hi, </p>\n\n<p>I have a problem with strong
+  parameters in rails 4. </p>\n\n<p>I have a one-to-many association
+  that accept nested attributes.</p>\n\n<p>I try to permit nested
+  attributes with following line :</p>\n\n<div
+  class=\"highlight\"><pre><span class=\"n\">event_params</span> <span
+  class=\"o\">=</span> <span class=\"n\">params</span><span
+  class=\"o\">.</span><span class=\"n\">require</span><span
+  class=\"p\">(</span><span class=\"ss\">:event</span><span
+  class=\"p\">)</span><span class=\"o\">.</span><span
+  class=\"n\">permit</span><span class=\"p\">(</span><span
+  class=\"ss\">:description</span><span class=\"p\">,</span> \n<span
+  class=\"n\">event_parts_attributes</span><span class=\"p\">:</span>
+  <span class=\"o\">[</span><span class=\"ss\">:start_date</span><span
+  class=\"p\">,</span> <span class=\"ss\">:start_time</span><span
+  class=\"o\">]</span><span
+  class=\"p\">)</span>\n</pre></div>\n\n<p>description is present but
+  event_parts_attributes aren't added to event_params. They are well
+  present in params.</p>\n\n<p>When I remove require(:event) it's
+  work. </p>\n\n<p>Thanks</p>",
+
+----
+
+Besides "raw" and "html" there are two other format options that
+influence how Markdown content is delivered via the GitHub API.  If
+you specify "text" as a format, the issue body would have been
+returned as plaintext.   If you specify "full" then the content will
+be rendered multiple times including the raw Markdown, rendered HTML,
+and rendered plaintext.
+
+===== Preview Version Required for Search API
+
+Note that the Search API is a separate version.  To use the Search API
+you must specify the Accept header in your request as
+"application/vnd.github.preview+json".  The following command listing
+demonstrates the use of curl to search repositories while specifying
+the appropriate Media type.
+
+----
+$ curl -i https://api.github.com/search/repositories?q=@tobrien \
+          -H "Accept: application/vnd.github.preview+json"
+----
+
+Failure to specify the preview version in the Accept header will
+result in an HTTP 404 Not Found result.
+
+[developer-api-terms]
 ==== GitHub API Terms of Service
+
 Before you start building a system atop another service's API, it is
 always wide to understand what, if any, limitations are placed on that
 API's usage.Aside from the limitations on bandwidth, GitHub's API is also covered
