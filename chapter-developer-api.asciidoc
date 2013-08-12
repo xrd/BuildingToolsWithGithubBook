@@ -489,7 +489,7 @@ response format with the Accept Header.
 Fact check GitHub v3 assertion above.
 ////
 
-===== Retrieving Formatted Text Content
+===== Retrieving Formatted Content
 
 The Accept header you send with a request can affect the format of
 text returned by the GitHub API.  As an example, let's assume you
@@ -562,6 +562,13 @@ you specify "text" as a format, the issue body would have been
 returned as plaintext.   If you specify "full" then the content will
 be rendered multiple times including the raw Markdown, rendered HTML,
 and rendered plaintext.
+
+In addition to controlling the format of text content, you can also
+retrieve GitHub blobs either as raw binary or as a BASE64 encoded
+text.   When retrieving commits, you can also specify that the content
+be returned either as a diff or as a patch.  For more information
+about these fine-grained controls for formatting, see the GitHub API
+documentation here: http://developer.github.com
 
 ===== Preview Version Required for Search API
 
