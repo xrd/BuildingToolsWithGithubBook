@@ -122,7 +122,7 @@ available immediately.
 ==== What is your URL?
 
 You now have a web site available at 
-http://<user-name>.github.io/<project-name>.  If your user name is
+http://:user.github.io/:project.  If your user name is
 "tobrien" and the project is "github-test", the URL of this site would 
 be http://tobrien.github.io/github-test.
 
