@@ -1,6 +1,19 @@
 == Exploring and Searching Github
 
+This chapter takes you on a tour of one of the most valuable features
+of GitHub the ability to explore trends and search for code across
+repositories.  
+
+
 === Exploring Trends
+
+GitHub  has established itself as the center of open source
+development for a number of languages.  This started with newer
+scripting languages like Ruby and Python, but GitHub as the central
+"watering hole" for open source developer has since expanded to other
+langauges such as Java and, most recently, Node.js.  While there are
+still anachronistic hold outs that prefer to host code on difficult to
+use SCM systems in difficult to access physical infrastructure.
 
 ==== Trending Repositories
 
