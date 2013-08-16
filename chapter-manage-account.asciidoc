@@ -338,21 +338,76 @@ to use your personal address.  On the other hand, if you are
 contributing to a project via an organization that you work for,
 you'll want GitHub to send notifications to your work email.
 
+To manage your email address, go to your Account Settings then click
+on Emails.   On this screen you will see a list of all email address
+associated with your account and a green "Primary" badge next to the
+email that is to be used as your primary email address.
+
 image::images/user-email-addresses.png[]
 
-==== What is a "Verified" email?
+When you add a new email address to your GitHub account you will be
+asked to verify that email address.   GitHub will send you an email
+with a confirmation, once you verify an email address it can be used
+in GitHub as a primary or as an email to route organization activity to.
 
-If you don't verify your email...
 
-==== Custom Email Routing for Organizations
+.Keeping Your Email Private
+[NOTE]
+Some people don't want the whole world to know an email address.  If
+you are want to keep prying eyes away from your email address. Check
+the "Keep my email address private". When GitHub sends out an email on
+your behalf it will use a bogus email address instead of your real
+email address.
 
-If you are like me you have several email addresses...
 
 ==== Managing Notifications
 
+Depending on how popular you are with the developers, GitHub can be a
+very chatty source of email.  Every time someone mentions you in a
+comment or a commit with an @ sign in front of your GitHub username
+GitHub's default configuration will send you a notification email and
+also notify you via the browser. If people are constantly mentioning
+you, you may want to disable this notification preference.
+
+You are also sent and email and a web notification anytime a
+repository you are watching changes.  If you are watching a lot of
+repositories, this steady stream of email notifications can quickly
+grow to be unmangeable and overwhelming.   To manage your notification
+preferences, go to Account Settings and then click on Nofitication
+Center in the left-hand navigation menu.
+
 image::images/user-notifications.png[]
 
+From this interface, you can configure GitHub not to send
+notifications of these events.  You can also configure GitHub not to
+send a browser alert in the event of a notification.
+
+==== Custom Email Routing for Organizations
+
+When you are associated with many organizations and when you have
+multiple emails that correspond to these organizations it makes good
+sense to route organization-specific notifications to your verified
+organization email address.  For example, if you have a personal email
+address for your own projects and a work email for your work
+organization's project you can configure GitHub to send any
+notifications dealing with your work organization to your work email
+address.
+
+In the Nofication Center shown in the previous section there is a
+space for custom routing rules.  A custom routing rule associates all
+notifications that original from an organization's repositories with a
+specific email.
+
 === Account Security
+
+There are two ways to use Git with GitHub, you can use the HTTP
+protocol to clone and push to repositories, or you can use git over
+SSH.  When you use HTTP, you are asked to supply a username and
+password with your request, and for many non-technical users, this is
+the best approach to GitHub security. 
+
+For more technical users of Git and GitHub, ssh keys provide the
+safest approach to authorization against a GitHub hosted repository.
 
 ==== Your SSH Keys
 
@@ -361,6 +416,12 @@ Maybe a brief discussion of what an SSH Key is for those who don't yet know.
 image::images/user-ssh.png[]
 
 ===== How to create an SSH Key
+
+If you have ssh installed on a unix-variant such as OSX or Linux, the
+command to generate a new SSH key is:
+
+----
+$ sss-keygen -t rsa
 
 Easy instructions, assume linux(-ish) instructions.
 
