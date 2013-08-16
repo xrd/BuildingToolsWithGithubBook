@@ -69,7 +69,6 @@ is constantly focused on how many Facebook, Twitter, GitHub followers
 you have, but when you are looking at someone's collected body of work
 on GitHub it helps to also understand that they have attracted a large following.
 
-
 ==== Tracking Platform
 
 This is the social aspect of Github that makes this platform very
@@ -311,17 +310,33 @@ your magical username change, please understand that this is going to
 change your interface to the public.  Think twice, this has some real
 side-effects.
 
-
-
 === Email and Notifications
 
 There are some interesting nuances in Github when it comes to email
 addresses and notifications.    If you have to maintain multiple
 email addresses, say for work and then for personal OSS contributions,
 Github gives you the option to do this and then to route specific
-emails to specific accounts.  This section outlines how...
+emails to specific accounts. 
 
 ==== Working with Multiple Email Addresses
+
+It isn't uncommon for people to have multiple addresses for a number
+of reasons.  Consultants who work on long-term projects often get an
+email address under a client's domain, developers who contribute to
+open source projects often have an email address specific to a
+foundation such as Apache or Eclipse, and almost everyone has at least
+two email addresses - a personal email address and a work email
+address.
+
+GitHub is smart enough to understand that your GitHub identity, you
+profile, needs to be flexible enough to allow for multiple email
+addresses.  GitHub also needs to make sure that your identity, your
+email address remains consistent when you are contributing to
+different projects in different organizations. For example, if you are
+working on a personal, hobby project you need to able to tell GitHub
+to use your personal address.  On the other hand, if you are
+contributing to a project via an organization that you work for,
+you'll want GitHub to send notifications to your work email.
 
 image::images/user-email-addresses.png[]
 
@@ -382,37 +397,88 @@ Be careful who you trust.
 
 === Your Repositories
 
-==== Creating a New Repository
-
-How to create a new repository.
-
-==== How to Decide: Private vs Public
-
-Github is a great way to unintentionally make a bunch of code public
-by mistake.
+One important aspect of managing your GitHub account is managing the
+repositories you call your own.  In GitHub your repository are
+comprised of the repositories you have created alongside the
+repositories you have forked into your own account.  In addition,
+GitHub will also show you the private individual repositories which
+others have shared with you.
 
 ==== Leaving a Repository
 
-If you need to leave, here's the exit.
+If another user with an individual plan creates a repository and lists
+you as a collaborator there may be times when you want to leave that
+repository. This action has the effect of removing you from the list
+of collaborators on a repository.  To leave a repository, open your
+Account Settings, and then click on Repositories in the left-hand
+navigation menu.
+
+image::images/user-leave-repo.png[]
+
+This list contains all of your repositories, both public and private,
+as well as individual repositories other have added you to.  To leave
+a repository, click on the Leave button.  This will remove you as a
+collaborator for that repository.
 
 === Deleting Your Account
 
-Now why would you want to go and do a thing like that?   If you do,
-refer to the User Account Settings (xref).
+Now why would you want to go and do a thing like that?   Maybe you set
+up two accounts for yourself and you want to merge them into a single
+account and delete the old one? Maybe you woke up today and realized that
+you wanted nothing to do with software development, version control,
+or GitHub? Maybe you've gone mad and you think GitHub is a part of a
+global conspiracy to keep track of your every move? Whatever your
+reasons, know that GitHub has a delete account button waiting for you
+in the your Account Settings.
+
+To delete your account, load your account settings, and then click on
+Account Settings in the left-hand navigation menu.  Once you do this,
+you'll see a red section that should remind you of The Danger Zone. To
+delete your account click on "Delete your account".
+
+image::images/user-delete-account.png[]
+
+But, wait!  Not to fast, take your mouse off of that button, and don't
+do anything brash.  Don't make a decision in anger. Understand that
+you are about to do something that cannot be undone. If you ahve
+repositories, they will be lost. All of those people following you on
+GitHub, they will have one less person to follow. Every issue with
+your name on it will point to an empty user no longer using
+GitHub. Maybe you should take a day and think about this
+decision.
 
 === Github Billing Preferences
 
-If you are going to have private repositories with private
-contributors, Github is going to require a subscription plan.   To
-open your billing preferences, click...
+GitHub has an interesting business model.  You can use the system to
+create as many public repositories as you wish with no limits, but if
+you want private repositories with private contributors, Github is
+going to require a subscription plan.
+
+To open your billing preferences, click on the acount settings icon in
+the upper right-hand side of the GitHub interface.  This is the icon
+with a wrench and a screwdriver.  Once you can see account settings,
+click on Billing in the left-hand navigation menu.
 
 image::images/user-billing.png[]
 
+From this screen you can upgrade or downgrade to a different plan and
+you can update your credit card information.  You can redeem a coupon,
+and you can also supply any additional contact information you need to
+list on your receipts.
+
+Plans range from Free which allows for no private repositories to
+Large which allows for 50 private repositories.  If your requirements
+exceed 50 private repositories you can request a higher limit, but at
+that point you should really consider upgrading to an Organization.
+Managing 20+ private repositories with multiple contributors isn't
+easy without the benefit of Organization teams.
+
 ==== Payment History and Invoices
 
-If you need to obtain an invoice for your Github account (maybe
-because you need to convince your boss to pay for a Github account?).
-There is a helpful list of invoices.
+If you need to obtain an invoice for your Github account.  Open open
+your account settings and click on Payment History.  From this screen
+you can download receipts and see just how much your GitHub habit is
+costing you.
 
 image::images/user-billing-history.png[]
 
