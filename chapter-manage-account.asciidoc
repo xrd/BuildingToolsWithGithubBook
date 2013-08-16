@@ -422,6 +422,7 @@ command to generate a new SSH key is:
 
 ----
 $ sss-keygen -t rsa
+----
 
 Easy instructions, assume linux(-ish) instructions.
 
