@@ -44,7 +44,7 @@ cURL to demonstrate how to access this API.
 [NOTE]
 If you are running these examples on a Linux box, you should be able
 use your native package management tool to install cURL - either a
-"sudo yum install curl*" on a RedHat variant or a "sudo apt-get
+"sudo yum install curl*" on a RedHat variant or "sudo apt-get
 install curl" on an Ubuntu (or Debian) system.  If you are on any recent version of OSX, you already
 have cURL installed, but it you can't find it, take a look at the
 MacPorts project (http://www.macports.org/).  If you are running on
