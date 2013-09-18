@@ -1,9 +1,47 @@
 [[started-github]]
 == Getting Started with Github
 
+
 === What is Github?
 
 A (Very) Brief History of Github
+
+They started with keyboard shortcuts
+https://github.com/blog/1
+
+Then, went on to pull requests
+https://github.com/blog/3
+
+Then, activity feeds
+https://github.com/blog/4
+
+Influencers started noticiing, and joining (https://github.com/rtomayko).
+https://github.com/blog/7
+
+Pricing came late in the game. They had 2000 users before they even started talking 
+about pricing publicly
+https://github.com/blog/7
+
+Engaged thought leaders in a nascent service (technoweenie, Matt Aimonetti: rails core)
+https://github.com/blog/13
+
+API. But, not enough of an API that they could not launch it ASAP. 
+https://github.com/blog/21
+
+Then, they launched.
+https://github.com/blog/40-we-launched
+
+To summarize, GitHub did things the way that most *funded* startups do. Except, they did
+it entirely by bootstrapping. 
+
+GitHub built features by being closely in communication
+with their users. They built features for power users (keyboard shortcuts and pull requests).
+They energized thought leaders (rails core team).
+They thought of revenue as a secondary concern.
+
+Is GitHub a new model of business? Or, simply the way the smartest people (lean startup and 
+angels) in the room have been telling startups they should build their businesses? And, does 
+using GitHub prompt you to adopt these same methods in your startup?
 
 ==== Essential Features: What makes Github, Github?
 
