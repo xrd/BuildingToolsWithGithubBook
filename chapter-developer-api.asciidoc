@@ -82,7 +82,7 @@ Cache-Control: max-age=0, private, must-revalidate
 Vary: Accept-Encoding
 ----
 
-Let's do a quick walkthrough of this response.   The first thing we
+Let's do a quick walkthrough of this response.  The first thing we
 see is a response code.  In this case, our response code is 200 which
 signals to us that the request was a success.  Later in this chapter
 you will see how GitHub uses other response codes such as HTTP 304 to
