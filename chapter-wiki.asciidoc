@@ -2,6 +2,10 @@
 
 TBD
 
+https://news.ycombinator.com/item?id=6404847[GitHub for Everything comments on Hacker News]
+
+Did you know Wikis stored on GitHub are git repositories? Easy to backup.
+
 image::images/repo-wiki.png[]
 
 === Github Wikis
