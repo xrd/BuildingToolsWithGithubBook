@@ -465,7 +465,7 @@ rich GitHub API.  This API is described in a later chapter.   At least
 two of the tools described below are the product Chris Wanstrath
 (https://github.com/defunkt), a GitHub employee who appears to do
 nothing but create useful tools and extensions.   Wanstrath has even
-gone as far as creating a GitHub mode for Gists (https://github.com/defunkt/gist.el).
+gone as far as creating a GitHub Emacs mode for Gists (https://github.com/defunkt/gist.el).
 
 
 ==== Working with GitHub Issues on the Command Line (ghi)
