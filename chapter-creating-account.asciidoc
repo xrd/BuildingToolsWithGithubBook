@@ -77,4 +77,97 @@ Simple screenshot and instructions.
 
 ==== SSH vs HTTPS
 
-Which one should you use?
+There are two transport options for loading code from GitHub: SSH and HTTPS.
+
+Actually, at the time of this writing there are really three protocols: SSH, 
+HTTPS and Subversion. Subversion is there for backwards compatibility with older 
+workflows, and actually just maps the SVN protocol on top of Git. The only reason
+you would use Subversion ith GitHub is that you work in an organization that
+requires use of Subversion but also wants to host their code on GitHub. If you work
+for such an schizophrenic organization, you might want to start looking for another job right 
+away.
+
+Both HTTPS and SSH operate over a secure encrypted channel, but beyond this commonality 
+there are very different reasons for using each.
+
+Of the two, SSH is the best option. Whenever you can, use SSH.
+
+===== HTTPS
+
+The only reason you might prefer HTTPS is that this protocol can be useful if you are
+inside a very restrictive firewall.
+HTTPS traffic is almost always permitted (port 443 is a common "secure" port on almost 
+any firewall). If you use HTTPS, the "git clone" command will use a URL which starts 
+with https://. For example, to load the Ruby on Rails repository from GitHub you would 
+use the command "git clone https://github.com/rails/rails.git".
+
+===== HTTPS Downsides
+
+When you use the HTTPS protocol, note that you will need to enter in
+your password to authenticate. The command line git client (which might be what your
+editor is using underneath the graphical interface you use to code) does not
+have an ability to cache this password. This means each time you push code, or pull 
+the latest changes, you will need to re-enter your password. Git is a protocol which 
+supports making lots of little changes, so a requirement that you must add another ten 
+seconds to your workflow makes HTTPS quickly unusable. GitHub has released a Ruby gem called "hub"
+which you can alias so that you actually use the ruby gem client instead of the native 
+command line client; this ruby gem client can cache and use HTTPS passwords. But, this requires
+additional setup, convolutes your workflow, and SSH still offers more benefits. 
+
+HTTPS is
+also a less efficient protocol for transferring files; cloning and interacting with repositories
+using HTTPS is slower for you. 
+
+The only real benefit for HTTPS is for server administrators: it 
+is marginally easier to configure a server to provide HTTPS than SSH access. However, GitHub
+is doing the work of hosting your git repositories for you so this is not a compelling 
+reason to consider HTTPS.
+
+===== SSH 
+
+SSH offers the same level of security but is much more convenient, more flexible and 
+keeps access more secure. You will notice that GitHub offers SSH as the default
+
+At the center of SSH is a concept called asymmetric cryptography also called 
+public key cryptography. To use SSH you generate a public/private keypair. Then, you 
+upload the public key into GitHub. You keep the private key on your machine, and 
+you keep it private (meaning, don't send it over email, or post it on Facebook.)
+
+======= A brief tutorial on using SSH keys
+
+If this all sounds complicated, it is not. To generate a public/private keypair, 
+you just need to run this command from a terminal:
+
+[source,bash]
+$ ssh-keygen 
+Generating public/private rsa key pair.
+Enter file in which to save the key (/Users/xrdawson/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+
+This generates two files, a file called ~/.ssh/id_rsa and another called ~/.ssh/id_rsa.pub. 
+The first file is the private file and the second (with an abbreviation of the word "public")
+is the public file. 
+
+You will be asked if you want to enter a passphrase which protects usage of your keypair. If
+you believe your machine is secure (for example, this is a laptop which uses fingerprint 
+recognition to unlock the screen), then you can hit enter and not protect your private key
+with a passphrase. If the key is sitting in a less secure position, such as a server on the 
+Internet, then you might want to protect the key with a passphrase. If you lose the passphrase, 
+you cannot use the key. However, this is an easy problem to rectify.
+
+===== Putting your SSH public key on GitHub 
+
+To store a 
+
+===== The big reason why SSH trumps HTTPS
+
+If you takeaway one thing about why SSH is better than HTTPS, let it be this: both HTTPS and SSH make
+it easy to add access to your repositories. However, HTTPS makes it really hard to revoke that
+access.
+
+With HTTPS managing and securing access to your repository becomes *your* problem. With SSH, 
+secure access is *GitHub's* problem. And, they've been thinking about the right ways to do this: 
+from requiring re-entry of your password whenever a key is added, to 2 factor authentication 
+(utilizing email and your cell phone to verify your identity), GitHub has spent lots of time and
+money making sure your source code is protected from rogue access.
