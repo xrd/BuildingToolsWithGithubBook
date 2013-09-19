@@ -539,7 +539,8 @@ There's an impressive list of abbreviated commands and syntax that
 reduces the amount of typing by making the assumption that your
 repositories are hosted on GitHub.  You can compare tags, clone
 repositories, checkout code, fork repositories, and more using Hub,
-and many people go as far as making "git" just an alias for Hub.
+and many people go as far as making "git" just an alias for Hub. Hub 
+even has integration with command autocompletion in ZSH and Bash.
 
 To install Hub, run the following command:
 
