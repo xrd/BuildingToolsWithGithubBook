@@ -114,26 +114,24 @@ which you can alias so that you actually use the ruby gem client instead of the 
 command line client; this ruby gem client can cache and use HTTPS passwords. But, this requires
 additional setup, convolutes your workflow, and SSH still offers more benefits. 
 
-HTTPS is
-also a less efficient protocol for transferring files; cloning and interacting with repositories
-using HTTPS is slower for you. 
+HTTPS is also a less efficient protocol for transferring files; cloning and interacting with 
+repositories using HTTPS is slower for you. 
 
 The only real benefit for HTTPS is for server administrators: it 
-is marginally easier to configure a server to provide HTTPS than SSH access. However, GitHub
-is doing the work of hosting your git repositories for you so this is not a compelling 
-reason to consider HTTPS.
+is easier to configure a server to provide HTTPS to git repositories than it is to provide those
+repositories over SSH. However, GitHub is doing the work of hosting your git repositories for you so this is not a compelling reason to consider HTTPS.
 
 ===== SSH 
 
 SSH offers the same level of security but is much more convenient, more flexible and 
-keeps access more secure. You will notice that GitHub offers SSH as the default
+keeps access more secure. You will notice that GitHub offers SSH as the default protocol.
 
 At the center of SSH is a concept called asymmetric cryptography also called 
 public key cryptography. To use SSH you generate a public/private keypair. Then, you 
 upload the public key into GitHub. You keep the private key on your machine, and 
 you keep it private (meaning, don't send it over email, or post it on Facebook.)
 
-======= A brief tutorial on using SSH keys
+===== A brief tutorial on using SSH keys
 
 If this all sounds complicated, it is not. To generate a public/private keypair, 
 you just need to run this command from a terminal:
@@ -158,7 +156,26 @@ you cannot use the key. However, this is an easy problem to rectify.
 
 ===== Putting your SSH public key on GitHub 
 
-To store a 
+To store an SSH public key, copy the key contents into your clipboard. On an OSX machine, you 
+could use this command:
+
+[source,bash]
+$ cat ~/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDG56LecqP2ip/odHzAkM3F/TyL5TjS0m6bNEo3p+m7KEU/eJ+ZvrF1/4ALPk59+Ca2NtOwewVs1RZNuV9BuMesTHFAxev6Zx4R56fwL45UuDm1gjpwevxwHe8aS0elek94OcgxYomnnnmB4Og/OIbVYICfaQ4VhE+xVVOF/TXIGkndZG/wBLFg9QwPTQKhOIgVDoTzdj0FZ9qXfhvc7AhGkeOAO+dyeNgfk8ghzRPqyztd14tq6gOVPAMce3mGQsugbcKxgRBbd/7VaWT5hQl5YVtLlcAvM1gHgvU8MNVhrJTKzZxlTNBVBnYy1QxPtB3LF25YL7jAjtMYkuEjmZff xrdawson@Chriss-MacBook-Pro-2.local
+
+Select everything from the "ssh-rsa" to and including the "xrdawson@Chriss-MacBook-Pro-2.local" (which is the name of my MacBook Pro) and then copy it to your clipboard. Then, go to GitHub, click on the "Account Settings" button:
+
+image::images/account-settings.png[]
+
+Then, click on the "SSH" item in the navigation bar on the left. You'll see a list of SSH keys already in the system. You might not have any if you just setup your account. In my account, I have many SSH keys.
+
+image::images/ssh-keylist.png[]
+
+As you can see, I have a key for my OSX Laptop. I have another key for an Ubuntu server I manage, a server which has a user which has access to my repositories. Then, I have another server, this time running on Amazon Web Services, which also has access to my repositories. I have an Android machine which has access, as well as a Chromebook running developer mode that has access to my GitHub repositories. Finally, I have a virtual machine (using Vagrant) on my OSX laptop, and this machine has its own access. 
+
+To add your key, click on the "Add SSH Key" button at the very top right of the list of SSH keys. This action will open a form underneath into which you can choose a title for the SSH key and then the contents which you copied to the clipboard. Once the form looks something like this you can click the "Add Key" button.
+
+image::images/ssh-add-key.png[]
 
 ===== The big reason why SSH trumps HTTPS
 
@@ -168,6 +185,5 @@ access.
 
 With HTTPS managing and securing access to your repository becomes *your* problem. With SSH, 
 secure access is *GitHub's* problem. And, they've been thinking about the right ways to do this: 
-from requiring re-entry of your password whenever a key is added, to 2 factor authentication 
-(utilizing email and your cell phone to verify your identity), GitHub has spent lots of time and
-money making sure your source code is protected from rogue access.
+from requiring re-entry of your password whenever a new SSH public key is added, 
+to 2 factor authentication (utilizing email and your cell phone to verify your identity), GitHub has spent lots of time and money making sure your source code is protected from rogue access.
