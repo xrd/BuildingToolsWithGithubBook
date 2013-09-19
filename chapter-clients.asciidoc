@@ -519,7 +519,7 @@ $ ghi show 1403
 
 ==== Extending Command Line Git for GitHub (hub)
 
-Hub (https://github.com/defunkt/hub) is a tool for to make wokring
+Hub (https://github.com/defunkt/hub) is a tool to make working
 with GitHub easier by allowing you to skip some of the standard Git
 syntax in favor of using GitHub names and locations for repositories.
 For example, using Hub you can checkout the GitHub repository
