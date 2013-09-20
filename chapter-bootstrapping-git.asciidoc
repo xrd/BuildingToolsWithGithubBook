@@ -39,7 +39,12 @@ managing these developers?  How do they agree on standards?  How could
 this team of strangers ever create quality software?  Despite these
 concerns it works very and Linux is empirical proof that distributed
 development and distributed version control provide the appropriate
-background for wide-scale, open-source collaboration.
+background for wide-scale, open-source collaboration. And, the people
+idealogically invested in the more corporate approach to development 
+never seem to talk about the downsides of a strictly controlled 
+development process, namely a tendency to lose track of the voice of the
+customer and the ability to pivot rapidly when those voices finally 
+become heard.
 
 ==== If it works for Linux....
 
