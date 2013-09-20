@@ -193,11 +193,6 @@ end-result of an embedded Gist is shown in the following figure.
 
 image::images/sharing-gist-embedded.png[]
 
-It is no suprise the GitHub has strong support for gist integrated
-into their Jekyll blog hosting. If you are using Jekyll and hosting 
-your blog on GitHub, you can embed a gist into your Jekyll blog post with 
-the "{% gist ABC12345 %}" shortcode, where ABC12345 is the SHA hash of 
-the gist on GitHub.
 
 ==== Secret Gists vs. Public Gists
 
@@ -391,6 +386,14 @@ image::images/sharing-lj-embed.png[]
 
 When Livejournal loads your post, it will notice the Gist URL and
 replace it with an embedded Gist.
+
+==== Embedding Gists in Jekyll on GitHub
+
+It is no suprise the GitHub has strong support for gist integrated
+into their Jekyll blog hosting. If you are using Jekyll and hosting 
+your blog on GitHub, you can embed a gist into your Jekyll blog post with 
+the "{% gist ABC12345 %}" shortcode, where ABC12345 is the SHA hash of 
+the gist on GitHub.
 
 === Integrating Gists with Editors and IDEs
 
