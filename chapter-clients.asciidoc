@@ -573,7 +573,7 @@ $ curl -s https://raw.github.com/defunkt/gist/master/gist > gist &&
 
 Once you've installed Gist you can use it to share files or pipe
 something to standard input.  Here's an example which also shows you
-the (somewhat insecure) approach to configuring your crednetials for
+the (somewhat insecure) approach to configuring your credentials for
 the Gist command-line client:
 
 ----
@@ -588,6 +588,8 @@ public Gist using this tool.    You can control the syntax
 highlighting and other options. 
 
 === Mobile Applications for GitHub
+
+
 
 ==== Using GitHub from an Android Device
 
