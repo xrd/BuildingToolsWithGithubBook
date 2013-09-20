@@ -260,6 +260,19 @@ cloned the repository with an HTTPS URL, when you push this repository
 back to GitHub it will prompt you for both a user and password to use
 for authentication.
 
+This facet, cloning a gist, takes sharing code to a new level. With pastebin
+or other services, the URL you share is fixed forever, and by extension, so is the 
+code content that you shared. Different services
+have some alternative ways to direct you to updated revisions, but only
+gist supports an easy way to modify and update code snippets that you
+share. If you take the gist you just made, modify it, and then push back
+to the repository, you can update the code that others see without
+updating them of a new URL and cluttering up their inbox. The reality 
+of software development is that code is living and constantly changing. 
+You need a service which supports sharing living code snippets, and gist
+is one of the best such services out there due to gists incorporating
+repositories and not just existing as simple web pages.
+
 ==== Forking a Gist
 
 As Gists are really just Git repositories behind the scenes you can
