@@ -14,7 +14,7 @@ image::images/org-billing.png[]
 
 ==== Selecting the Appropriate Account
 
-The driving factors for organziation accounts are the number of
+The driving factors for organization accounts are the number of
 private repositories you'll need to track in an organization's
 account.    Note that there is no fee per contributor, all of the
 billing is based on private repositories which means that you can have
