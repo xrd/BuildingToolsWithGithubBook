@@ -162,11 +162,13 @@ picture is already populated.  Maybe you haven't.  If you understand
 what Gravatar is, you'll understand why your profile picture is
 already populated.  If you don't know what Gravatar is, read on.
 
-Your image on Github, it is from Gravatar.   Gravatar is a just that a
-Globally Recognized Avatar.  An iconic picture which is associated
+Your image on Github, it is from Gravatar.   Gravatar is an abbreviation for
+a "Globally Recognized Avatar."  An iconic picture which is associated
 with your email address.  Gravatar (http://www.gravatar.com) is a
 service from The Automattic Team - the team behind Wordpress, Akismet,
-IntenseDebate, and a number of other popular services.
+IntenseDebate, and a number of other popular services. Oh, and Automattic 
+got this service by purchasing it from Tom Preston Warner, the founder 
+of GitHub.
 
 To upload a new avatar associated with your email address follow these
 steps:
