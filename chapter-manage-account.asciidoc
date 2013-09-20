@@ -502,7 +502,7 @@ image::images/user-delete-account.png[]
 
 But, wait!  Not to fast, take your mouse off of that button, and don't
 do anything brash.  Don't make a decision in anger. Understand that
-you are about to do something that cannot be undone. If you ahve
+you are about to do something that cannot be undone. If you have
 repositories, they will be lost. All of those people following you on
 GitHub, they will have one less person to follow. Every issue with
 your name on it will point to an empty user no longer using
