@@ -191,6 +191,10 @@ An embedded Gist is rendered with line numbers, syntax highlighting
 and a footer which contains a direct link to the embedded file.  The
 end-result of an embedded Gist is shown in the following figure.
 
+Also, if you are using Jekyll and hosting your blog on Git, you can embed 
+a gist into your Jekyll blog post with the "{% gist ABC12345 %}" shortcode, 
+where ABC12345 is the SHA hash of the gist on GitHub.
+
 image::images/sharing-gist-embedded.png[]
 
 ==== Secret Gists vs. Public Gists
