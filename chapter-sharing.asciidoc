@@ -216,7 +216,9 @@ Just be warned, Secret gists are a bit of a misnomer.   Secrets are
 meant to stay private, and Gists, by the very nature of the service,
 are meant to be shared.    Think of Secret Gists the same way you
 would think of an "Unlisted" YouTube video.   It isn't advertised, and
-there's no way that anyone without the URL will see 
+there's no way that anyone without the URL will accidentally come across
+it, but anyone who finds themselves with the URL has full access to
+everything in that gist.
 
 ==== Anonymous Gists
 
