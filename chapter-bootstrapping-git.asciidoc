@@ -86,7 +86,7 @@ into corporate development.
 
 By the time Torvalds created Git in 2005, the Linux Kernel had been at
 it for almost 15 years.  The decade-old Apache Software Foundation had
-largely finished a migration from CVS to Subversion, and the Eclipse
+largely finished a migration from CVS to Subversion, and the Eclipse Foundation
 was continuing to use CVS.  In the early part of the last decade
 centralized, client-server SCMs were the rule.  Proprietary systems
 such as Perforce, Clearcase, MKS Integrity, and (cringe) Visual
@@ -210,7 +210,20 @@ approaches and direct readers at zkessin.
 
 ===== in Open Source
 
-Show a figure of participation in Rails + Network graph from Node.
+image::images/bootstrapping-git-rails-network.png[]
+
+These graphs display the network of participation for the popular web framework 
+"Ruby on Rails." Rails migrated from Subversion (SVN) to Git in 2008 at the moment when 
+GitHub launched as a company. Without reading too much into the graphs, notice a slight 
+upward trend the begins in 2008 and continues to today, and also notice a slight downward trend 
+from the inception of the project in 2005 until right before switching to Git. 
+Was there stagnation in the Rails project as it grew to have more developer fingers in the pie?
+Did switching to Git improve the workflow for developers and make it a more 
+frictionless process for making additions? One of the benefits and designs of Git has been
+that it is suitable for "programming in the large," that development should be fluid even as team size grows, and the health of the Rails project seems to have benefitted (or at least 
+encountered no stumbling blocks) since switching to Git.
+
+
 
 ===== in the Enterprise
 
