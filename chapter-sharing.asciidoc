@@ -195,7 +195,7 @@ image::images/sharing-gist-embedded.png[]
 
 It is no suprise the GitHub has strong support for gist integrated
 into their Jekyll blog hosting. If you are using Jekyll and hosting 
-your blog on Git, you can embed a gist into your Jekyll blog post with 
+your blog on GitHub, you can embed a gist into your Jekyll blog post with 
 the "{% gist ABC12345 %}" shortcode, where ABC12345 is the SHA hash of 
 the gist on GitHub.
 
