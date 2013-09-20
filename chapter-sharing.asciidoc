@@ -110,7 +110,7 @@ ACE Editor Configuration::
         The endless argument over indentation policy has
         been extended to Gist.  Your code uses indentation, but the
         important question facing most development teams is whether to
-        use spaces or tabs.  Choose carefully (, but also understand
+        use spaces or tabs.  Choose carefully (but also understand
         that spaces if the default because real developers use 4 spaces
         for indentation.)
 
