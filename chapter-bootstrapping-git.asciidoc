@@ -231,7 +231,7 @@ with a set of tools for developing responsive and high performance applications 
 underneath the project level commit graph, you see the project's creator, Ryan Dahl, initially
 made a large majority of the changes in the project. As he has stepped back, others like "isaacs"
 and "bnoordhuis" have taken over and are now making the majority of changes. Git and GitHub
-make these transitions of ownership seamless and without conflict.
+make these transitions of ownership and contribution levels seamless and without conflict.
 
 ===== in the Enterprise
 
