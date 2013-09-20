@@ -260,18 +260,6 @@ cloned the repository with an HTTPS URL, when you push this repository
 back to GitHub it will prompt you for both a user and password to use
 for authentication.
 
-This facet, cloning a gist, takes sharing code to a new level. With pastebin
-or other services, the URL you share is fixed forever, and by extension, so is the 
-code content that you shared. Different services
-have some alternative ways to direct you to updated revisions, but only
-gist supports an easy way to modify and update code snippets that you
-share. If you take the gist you just made, modify it, and then push back
-to the repository, you can update the code that others see without
-updating them of a new URL and cluttering up their inbox. The reality 
-of software development is that code is living and constantly changing. 
-You need a service which supports sharing living code snippets, and gist
-is one of the best such services out there due to gists incorporating
-repositories and not just existing as simple web pages.
 
 ==== Forking a Gist
 
@@ -302,6 +290,17 @@ feel like a project, if you are starting to collaborate with others on
 a Gist, these might be signs that your Gist has exceeded the
 boundaries of a simple Gist and deserves to be pushed to a real GitHub
 repository. 
+
+This facet, that a gist is a full repository, takes sharing code to a new level. 
+You can slowly
+develop a piece of code, editing and modifying it, and maintain full 
+revisions of that code. You could start with a simple piece of code, discussing
+and modifying it, with others forking and editing it with you. At some point, 
+your gist could become a working piece of software, and you would have the
+full repository history already there. More often than not, a gist will not
+become anything more than a discussion point. But, when and if you do decide
+to make it a first class repository, you don't have to go back and recover the
+history it took to get there. It is all there in the repository.
 
 === Integrating Gists with Popular Site Tools
 
