@@ -598,7 +598,7 @@ http://mobile.github.com/#android
 ==== Working with GitHub Issues from an iOS Device
 
 GitHub's mobile application on iOS emphasizes issues and the
-communication that surround GitHub issues.    When you log into the
+communication that surround GitHub issues.  When you log into the
 GitHub issues application, you will see a list of repositories and
 organizations you are a member of.
 
@@ -615,7 +615,7 @@ and any activity related to this issue.
 image::images/clients-mobile-issues-detail.png[]
 
 To find GitHub's applications in the Apple App Store or to learn more
-about the Issues application go to .http://mobile.github.com/#ios
+about the Issues application go to http://mobile.github.com/#ios
 
 ==== Finding a Job using GitHub Mobile Applications
 
