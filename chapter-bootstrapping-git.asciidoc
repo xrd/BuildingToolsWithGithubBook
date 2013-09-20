@@ -223,7 +223,15 @@ frictionless process for making additions? One of the benefits and designs of Gi
 that it is suitable for "programming in the large," that development should be fluid even as team size grows, and the health of the Rails project seems to have benefitted (or at least 
 encountered no stumbling blocks) since switching to Git.
 
+image::images/bootstrapping-git-node-network.png[]
 
+Node is another popular project on GitHub, allowing an author to run JavaScript, 
+traditionally a web client-side language, on the server side, emphasizing providing developers
+a set of tools for developing speedy and familiar web applications. Peering into the graphs 
+underneath the project level commit graph, you see the project's creator, Ryan Dahl, initially
+made a large majority of the changes in the project. As he has stepped back, others like "isaacs"
+and "bnoordhuis" have taken over and are now making the majority of changes. Git and GitHub
+make these transitions of ownership seamless and without argument.
 
 ===== in the Enterprise
 
