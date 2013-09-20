@@ -105,7 +105,7 @@ an id of "context", those pages would be served from
 http://tobrien.github.io/context/.
 
 You can create a set of GitHub pages for a repository by pushing HTML
-to a branch named jekyll, or you can use the Automatic Page Generator
+to a branch named "gh-pages", or you can use the Automatic Page Generator
 to get started.  To use the Automatic Page Generator, go to repository
 settings, and look for the GitHub Pages section.  Click on Automatic
 Page Generator as shown below.
