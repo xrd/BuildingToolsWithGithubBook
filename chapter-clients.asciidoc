@@ -80,7 +80,7 @@ the technical interface of Git.  Here are a few:
   will improve their support for the files and tools these communities
   require.
   
-  
+image::images/clients-3d-diff.png[]
 
 .Supporting a Diverse Audience
 [NOTE]
@@ -156,8 +156,8 @@ traditional Git workflow, it isn't essential for the GitHub clients.
 
 Branching and merging via the command-line tools can be confusing even
 for the most experienced of GitHub experts (that's an understatement).
-The official GitHub client reduces this complex and makes it easy to
-read diffs, easy to create a branch, and exposes an interface gives
+The official GitHub client reduces this complexity and makes it easy to
+read diffs, easy to create a branch, and exposes an interface that gives
 users insight into local uncommited changes as well as various remote
 and local branches.
 
