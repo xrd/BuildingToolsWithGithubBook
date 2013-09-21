@@ -203,7 +203,7 @@ image::images/clients-windows-login.png[]
 
 * Once you've logged in.   GitHub will then ask you to supply your
   email address and your full name.    Supply these two pieces of
-  information and click on Continur.
+  information and click on "Continue."
 
 image::images/clients-windows-configure.png[]
 
