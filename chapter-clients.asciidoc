@@ -71,7 +71,16 @@ the technical interface of Git.  Here are a few:
 * Non-developers are often not interested in a text-only workflow.
   For example, if I'm composing music with a tool that generates
   source code for a musical score, I'm very uninterested in seeing a
-  unix-style "diff" between two versions.
+  unix-style "diff" between two versions. GitHub seems interested in 
+  improving their support for a larger variety of file formats outside
+  of the traditional programming language domain. At the time of this 
+  writing GitHub had just released a 3D file specification graphical diffing
+  tool. This allows a user to view the changes in a 3D schematic over time. 
+  As the diversity of GitHub users grows, expect the smart folks at GitHub
+  will improve their support for the files and tools these communities
+  require.
+  
+  
 
 .Supporting a Diverse Audience
 [NOTE]
