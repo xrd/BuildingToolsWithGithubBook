@@ -234,7 +234,7 @@ Nowhere in this API do you see anything that hints of GitHub
 attempting to hide a property or make something unavailable to attain
 a unique market advantage.  
 
-One thing to keep in mind, despite the current, ideal approach tht
+One thing to keep in mind, despite the current, ideal approach that
 GitHub is taking to its API is that your use of this API is still
 subject to the arbitrary whim of a commercial entity.
 
