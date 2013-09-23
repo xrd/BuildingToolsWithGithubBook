@@ -590,13 +590,13 @@ result in an HTTP 404 Not Found result.
 ==== GitHub API Terms of Service
 
 Before you start building a system atop another service's API, it is
-always wide to understand what, if any, limitations are placed on that
-API's usage.Aside from the limitations on bandwidth, GitHub's API is also covered
+always wise to understand what, if any, limitations are placed on that
+API's usage. Aside from the limitations on bandwidth, GitHub's API is also covered
 by the overall GitHub Terms of Service.   While you can read these terms of
 servic here: https://help.github.com/articles/github-terms-of-service
 - here is a summary of the terms.
 
-. GitHub isn't liable for any damages that result from youruse of the
+. GitHub isn't liable for any damages that result from your use of the
 API.  You really can't blame GitHub for putting up this clause in
 today's litigious society.
 
@@ -850,8 +850,8 @@ https://github.com/mikedeboer/node-github
 
 ==== Connecting to Github from a Billion Alternative Languages
 
-Here is where you can have a list of the availablt APIs, but not a big
-one.    We don't need to bother with langauges like Fortran 90.
+Here is where you can have a list of the available APIs, but not a big
+one.  We don't need to bother with langauges like Fortran 90.
 
 === Developing Github Applications
 
