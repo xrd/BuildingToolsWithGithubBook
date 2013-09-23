@@ -274,7 +274,7 @@ paragraphs were for the core rate limit.  For search, anonymous
 requests are limited at 20 requests per minute for authenticated user
 requests and 5 request per minute for anonymous requests. The
 assumption here is that search is a more infrastructure intensive
-request to satisfy and that tighter limits are placed on it's usage.
+request to satisfy and that tighter limits are placed on its usage.
 
 ===== Reading Your Rate Limits
 Reading your rate limit is straightforward, just make a GET request to
