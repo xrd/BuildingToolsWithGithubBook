@@ -82,7 +82,7 @@ There are two transport options for loading code from GitHub: SSH and HTTPS.
 Actually, at the time of this writing there are really three protocols: SSH, 
 HTTPS and Subversion. Subversion is there for backwards compatibility with older 
 workflows, and actually just maps the SVN protocol on top of Git. The only reason
-you would use Subversion ith GitHub is that you work in an organization that
+you would use Subversion with GitHub is that you work in an organization that
 requires use of Subversion but also wants to host their code on GitHub. If you work
 for such an schizophrenic organization, you might want to start looking for another job right 
 away.
@@ -119,7 +119,7 @@ repositories using HTTPS is slower for you.
 
 The only real benefit for HTTPS is for server administrators: it 
 is easier to configure a server to provide HTTPS to git repositories than it is to provide those
-repositories over SSH. However, GitHub is doing the work of hosting your git repositories for you so this is not a compelling reason to consider HTTPS.
+repositories over SSH. GitHub is doing the work of hosting your git repositories for you, however, so this is not a compelling reason to consider HTTPS.
 
 ===== SSH 
 
