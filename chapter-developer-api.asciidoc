@@ -307,7 +307,7 @@ X-RateLimit-Reset: 1376252013
 }
 ----
 
-Again, 60 requests of the course of an hour isn't very much, and if
+60 requests over the course of an hour isn't very much, and if
 you plan on doing anything interesting, you will likely exceed this
 limit quickly. If you are hitting up against the 60 requests per
 minute limit, you will likely want to investigate making authenticated
