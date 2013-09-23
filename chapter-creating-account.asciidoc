@@ -129,7 +129,7 @@ keeps access more secure. You will notice that GitHub offers SSH as the default 
 At the center of SSH is a concept called asymmetric cryptography also called 
 public key cryptography. To use SSH you generate a public/private keypair. Then, you 
 upload the public key into GitHub. You keep the private key on your machine, and 
-you keep it private (meaning, don't send it over email, or post it on Facebook.)
+you keep it private (meaning, don't send it over email, or post it on Facebook).
 
 ===== A brief tutorial on using SSH keys
 
