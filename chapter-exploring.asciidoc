@@ -242,7 +242,7 @@ image::images/explore-search-code.png[]
 
 === Drilling down into a recently discovered repository
 
-Once you have a found a repository which fits your needs based on the exploration tactics described above, how do you assess whether it is right for you beyond just its popularity?
+Once you have a found a repository which fits your needs based on the exploration tactics described above, how do you assess whether it is right for you beyond just its popularity among other developers? These additional pieces of information found on the front page of a repository can give you more insight into the value of a project on GitHub.
 
 * When was the last commit? If the project has no recent commits on the master branch, then the community around it may be dead, and the person maintaining it may have moved on to other projects. Or, this may indicate that people have found another project that fulfills better the needs of this project. Just because a project has many forks does not always indicate that it is currently useful.
 * Does the project have tests? A good rule of thumb (on projects with more than one person at least) is that the strength of a project correlates with the test suite. Tests allow others to contribute to a project with the maintainer keeping confidence that the changes don't break any the other functionality of the project without having to understand everything about the new code. GitHub integrates well with continuous integration services, and many projects now publicly post a widget in the README of their project page which provides a quick view into the health of their test suite.
