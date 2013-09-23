@@ -133,7 +133,7 @@ you keep it private (meaning, don't send it over email, or post it on Facebook).
 
 ===== A brief tutorial on using SSH keys
 
-If this all sounds complicated, it is not. To generate a public/private keypair, 
+If using SSH sounds complicated, don't fret. To generate a public/private keypair, 
 you just need to run this command from a terminal:
 
 [source,bash]
@@ -144,15 +144,14 @@ Enter passphrase (empty for no passphrase):
 Enter same passphrase again: 
 
 This generates two files, a file called ~/.ssh/id_rsa and another called ~/.ssh/id_rsa.pub. 
-The first file is the private file and the second (with an abbreviation of the word "public")
-is the public file. 
+The first file is the private file and the second (ending with a suffix abbreviation of the word "public") is the public file. 
 
 You will be asked if you want to enter a passphrase which protects usage of your keypair. If
 you believe your machine is secure (for example, this is a laptop which uses fingerprint 
 recognition to unlock the screen), then you can hit enter and not protect your private key
 with a passphrase. If the key is sitting in a less secure position, such as a server on the 
 Internet, then you might want to protect the key with a passphrase. If you lose the passphrase, 
-you cannot use the key. However, this is an easy problem to rectify.
+you cannot use the key. However, replacing a key is an easy problem to rectify.
 
 ===== Putting your SSH public key on GitHub 
 
