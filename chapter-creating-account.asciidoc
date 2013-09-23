@@ -155,7 +155,7 @@ you cannot use the key. However, replacing a key is an easy problem to rectify.
 
 ===== Putting your SSH public key on GitHub 
 
-To store an SSH public key, copy the key contents into your clipboard. On an OSX machine, you 
+To store an SSH public key on GitHub, copy the key contents into your clipboard. On an OSX machine, you 
 could use this command:
 
 [source,bash]
@@ -170,7 +170,7 @@ Then, click on the "SSH" item in the navigation bar on the left. You'll see a li
 
 image::images/ssh-keylist.png[]
 
-As you can see, I have a key for my OSX Laptop. I have another key for an Ubuntu server I manage, a server which has a user which has access to my repositories. Then, I have another server, this time running on Amazon Web Services, which also has access to my repositories. I have an Android machine which has access, as well as a Chromebook running developer mode that has access to my GitHub repositories. Finally, I have a virtual machine (using Vagrant) on my OSX laptop, and this machine has its own access. 
+As you can see, I have a key for my OSX Laptop. I have another key for an Ubuntu server I manage, a server which has a user which has access to my repositories. Then, I have another server, this time running on Amazon Web Services, which also has access to my repositories. I have an Android device which has access, as well as a Chromebook running developer mode that has access to my GitHub repositories. Finally, I have a virtual machine (using Vagrant) on my OSX laptop, and this machine has its own access. 
 
 To add your key, click on the "Add SSH Key" button at the very top right of the list of SSH keys. This action will open a form underneath into which you can choose a title for the SSH key and then the contents which you copied to the clipboard. Once the form looks something like this you can click the "Add Key" button.
 
