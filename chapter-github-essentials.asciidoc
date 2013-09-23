@@ -129,7 +129,9 @@ for a project. If 16,091 people have forked the CSS and Javascript
 framework Bootstrap, this means that 16,091 people are interested
 enough in the project to create a maintain a separate fork of the
 project. In each of the independent copies, developers can create
-feature branches, push commits, and eventualy...
+feature branches, push commits, and eventually... 
+
+A word of caution when looking at forks, however: forks on GitHub represent the lifetime count of forks, and as of right now, GitHub does not assign a value to recent forks over forks made long ago. As GitHub is a relatively new organization, most forks have been made recently, but as GitHub grows older, I imagine they will start to display an assessment of the age of a fork beyond just the fact that it was forked. Another way of saying this is that forks represent interest in a project at some point, but not whether that interest has waned at all.
 
 ==== Make a Pull Request
 
