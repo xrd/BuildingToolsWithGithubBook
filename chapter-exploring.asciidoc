@@ -31,7 +31,7 @@ Developers::
 
 Open Source Projects::
 
-    Some people jsut create open source projects because they have an
+    Some people just create open source projects because they have an
     itch to scratch while others do it for the immediate glory and fame that
     usually accompanies all open source development. If you develop
     open source software it often gives you a "warm fuzzy" to know
@@ -79,7 +79,7 @@ not.  Instead of relying on technology news websites to track open source
 You can get a snapshot over a day,  a week, or a month of the
 repositories that have had the most meteroic rise over that
 period. This trending repository report will show you the repositories
-that have had the largest change in forks, starrs, commits or a
+that have had the largest change in forks, stars, commits or a
 particular time period.  To load this report, click on Explore, the
 click on the Trending tab in the uppoer right-hand of the interface.
 Once the trending report is located, it will show trending
@@ -187,7 +187,7 @@ been downloaded.  This
 
 image::images/explore-node-js.png[]
 
-If you drill a particular Node.JS module like Coffeescript, you'll see
+If you drill down into a particular Node.JS module like Coffeescript, you'll see
 that the number of forks and the number of stars is shown on this site
 as key metric to help developers make a decision about which modules
 to integrate.  You can see that this particular module has 7,943 stars
@@ -239,6 +239,15 @@ they face, but GitHub's code search should be something that you
 consult when you are looking for examples to follow.
 
 image::images/explore-search-code.png[]
+
+=== Drilling down into a recently discovered repository
+
+Once you have a found a repository which fits your needs based on the exploration tactics described above, how do you assess whether it is right for you beyond just its popularity?
+
+* When was the last commit? If the project has no recent commits on the master branch, then the community around it may be dead, and the person maintaining it may have moved on to other projects. Or, this may indicate that people have found another project that fulfills better the needs of this project.
+* Does the project have tests? A good rule of thumb (on projects with more than one person at least) is that the strength of a project correlates with the test suite. Tests allow others to contribute to a project with the maintainer keeping confidence that the changes don't break any the other functionality of the project without having to understand everything about the new code. GitHub integrates well with continuous integration services, and many projects now publicly post a widget in the README of their project page which provides a quick view into the health of their test suite.
+
+image::images/exploration-tests-twitter.png[]
 
 .Can you search History?
 [NOTE]
