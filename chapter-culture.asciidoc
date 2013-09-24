@@ -4,7 +4,7 @@ GitHub is an impressive collection of services to make you more productive as a 
 
 I asked Ben Straub from GitHub: "do you do code reviews?" He then gently reminded me that pull requests are at the center of almost all software development at GitHub. Internally, people will choose things they want to fix or build, and start by submitting a pull request, often with only a brief sketch of what the feature or change will look like. Others with an interest in the idea will then chime in on the pull request and offer their opinions on what needs to be different, the efficacy of the idea and implementation. The idea may radically change from the original intention during this process.
 
-I asked if this meant people were less ego driven at GitHub. And, I asked if people used softer language when critiquing ideas? Were GitHubbers trained to respect people more because social norms are often forgone when working over electronic mediums?
+I asked if this meant people were less ego driven at GitHub. And, I asked if people used softer language when critiquing ideas? Were GitHubbers trained to use more respectful language because social norms are often forgone when working over electronic mediums?
 
 At GitHub, people don't pull punches when it comes to critiquing code or ideas. Ben noted that because people do all of this over electronic communication that the sting of criticism might be less than if it were happening in a face to face meeting. And, that because their is no hierarchy at GitHub, no one's opinion matters more than someone less senior. Ideas are debated out in the open on their merit entirely. 
 
