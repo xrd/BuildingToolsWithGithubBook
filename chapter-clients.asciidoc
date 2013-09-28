@@ -304,8 +304,9 @@ To download and install the GitHub for OSX client, follow these steps:
 image::images/clients-osx-download.png[]
 
 * When you download GitHub for Mac you are downloading a ZIP file
-  containing a GitHub.app file.   Copy this file to your /Applications
-  directory and copy it to the OSX Dock so you can find it.
+  containing a GitHub.app file.  You can copy this file to your /Applications
+  directory and copy it to the OSX Dock so you can find it, but the application will 
+  do this for you the first time you lauch it.
 
 * To start GitHub for Mac, click on the GitHub.app file in
   /Applications, or in your Dock.
@@ -323,8 +324,10 @@ image::images/clients-osx-credentials.png[]
 
 * Supply you GitHub username and password in this dialog and then
   click on Login. 
+  
+GitHub for Mac supports regular password authentication and even works with two factor authentication if you have this enabled.
 
-At this point GitHub for Windows is installed and ready to use.  You
+At this point GitHub for Mac is installed and ready to use.  You
 are ready to start clone, collaborating, commiting, and syncing with a
 GitHub hosted Git repository.
 
