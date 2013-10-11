@@ -65,10 +65,6 @@ The previous section goes into detail where to start
 
 How to sign up for an individual user account.
 
-==== Using 2 Factor Authentication
-
-When and why to use 2 Factor authentication.
-
 ==== Setting up an Organization Account
 
 How to sign up for an organizational account.
@@ -78,6 +74,10 @@ How to sign up for an organizational account.
 ==== Reseting Your Password
 
 Simple screenshot and instructions.
+
+==== Using 2 Factor Authentication
+
+When and why to use 2 Factor authentication.
 
 ==== SSH vs HTTPS
 
