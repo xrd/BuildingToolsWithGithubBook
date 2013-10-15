@@ -241,6 +241,20 @@ Ask Github for a chart showing corporate adoption.
 Very brief explanation of difference between Git and Bzr, Hg, Darcs,
 Monotone, BitKeeper
 
+Git is not the only popular DVCS, but it is the most popular. Here is a quick comparison of the other major DVCS, both technically and culturally.
+
+===== Darcs
+
+Darcs supports the same set of basic operations as Git does, but differs internally in that it manages a set of patches indepedently rather than as a connected distributed acrylic graph (DAG). In other words, darcs allows you to create a set of changes and then push individual patches without the need to rewrite the history graph. This internal structure makes branching even cheaper than with git, one of the most touted benefits of using git. There is controversy around "cherry-picking" within the world of DVCS, but this part of darcs makes cherry picking trivial. Darcs is written in Haskell. Unfortunately, as of this writing, there is no strong equivalent for darcs hosting. The leading candidate "darcsden.com" has a copyright notice from 2011 and it looks like it was built using GeoCities. Darcs uses the GPL license.
+
+===== Bazaar (bzr)
+
+Bazaar (which uses the command line command "bzr") is an open source DVCS that offers the majority of operations that Git offers. Bazaar is sponsored by Canonical, the company which develops Ubuntu, the most popular distribution of Linux. Canonical offers a functional hosting service called Launchpad.net which offers good code management across teams but does not have near the polish of GitHub. Bazaar uses sequential commit numbers (1,2,3) rather than git-style SHA hashes (d670460b4b4a..., 1f7a7a472abf...), which means it is easier to tell which commit comes before or after another; you are simply comparing an integer to another integer, but this does add complexity (handled by the bzr tools generally) to managing these commit numbers when you start introducing other team member commits. Another technical difference is that directories are first class objects, meaning bzr can rename directories and this operation is stored as a rename operation in the commit log. Compare this to Git which does not store directories inside commit history and notice how git requires you to place files like ".gitkeep" in order to maintain empty directories. Mark Shuttlesworth, the founder of Ubuntu, has written at length about the benefits of renaming and how bzr wins against other DVCS, including git. Bzr is written in Python and licensed under the GPLv2. 
+
+===== Mercurial
+
+Mercurial is another DVCS offer much of the same functionality as git. Unlike git, Mercurial is distributed as a single monolithic binary instead of multiple git commands (over 140 individual commands, depending on which build version you are using of git). You can tell git came from the Linux world which favors small chainable commands, but let's not go so far to say that Mercurial was designed in the basements of Redmond, WA. Mercurial also uses a DAG to keep change history, like Git. Mercurial favors immutable histories, meaning there are no tools to rewrite history like the "git revert" command.
+
 === Installing Git
 
 Point users to git-scm.org
