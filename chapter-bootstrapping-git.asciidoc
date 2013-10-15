@@ -123,7 +123,7 @@ So one of the worst downsides of CVS is _politics_. People, not
 technology.  
 ----
 
-==== A Disributed Revolution
+==== A Distributed Revolution
 
 As Git became more capable, open source projects and commercial
 developers alike started to experiment with more asynchronous
@@ -177,7 +177,7 @@ collaborating developers. A patch submitted at the bottom of this tree
 might jump around in a non-linear path to inclusion in the
 kernel. Git supports this because it makes branching and merging
 easy.  In Git, a branch isn't a separate object, it is a reference to
-a commit.  Contrast this approach to that of Subversion where branchs
+a commit.  Contrast this approach to that of Subversion where branches
 and tags are distinct objects (in Subversion's case a branch is a
 directory).  That approach isn't nearly as flexible.  If a patch was
 thrown around to ten different developers over the course of several
@@ -214,7 +214,7 @@ image::images/bootstrapping-git-rails-network.png[]
 These graphs display the network of participation for the popular web framework 
 "Ruby on Rails." Rails migrated from Subversion (SVN) to Git in 2008 at the moment when 
 GitHub launched as a company. Without reading too much into the graphs, notice a slight 
-upward trend the begins in 2008 and continues to today, and also notice a slight downward trend 
+upward trend that begins in 2008 and continues to today, and also notice a slight downward trend 
 from the inception of the project in 2005 until right before switching to Git. 
 Was there stagnation in the Rails project as it grew to have more developer fingers in the pie?
 Did switching to Git improve the workflow for developers and make it a more 
@@ -228,8 +228,8 @@ Node is another popular project on GitHub, allowing an author to run JavaScript,
 traditionally a web client-side language, on the server side. Node emphasizes providing developers
 with a set of tools for developing responsive and high performance applications with a familiar language. Peering into the graphs 
 underneath the project level commit graph, you see the project's creator, Ryan Dahl, initially
-made a large majority of the changes in the project. As he has stepped back, others like "isaacs"
-and "bnoordhuis" have taken over and are now making the majority of changes. Git and GitHub
+made a large majority of the changes in the project. As he has stepped back, others like "isaacs" (Isaac Z. Schlueter)
+and "bnoordhuis" (Ben Noordhuis) have taken over and are now making the majority of changes. Git and GitHub
 make these transitions of ownership and contribution levels seamless and without conflict.
 
 ===== in the Enterprise
