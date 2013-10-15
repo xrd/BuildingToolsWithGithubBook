@@ -258,7 +258,7 @@ If a movie studio ever decides to remake "Back to the Future" with the main char
 
 ===== BitKeeper
 
-BitKeeper was the inspiration for many of these open source DVCSes. The maintainers of the Linux kernel used BitKeeper for a short while, but differences over the closed source licensing inspired Linux kernel developers to seek out an alternative and resulted in Linus building his own, now called Git.
+BitKeeper was the inspiration for many of these open source DVCSes. The maintainers of the Linux kernel used BitKeeper for a short while, but differences over the closed source licensing inspired Linux kernel developers to seek out an alternative and resulted in Linus building his own, now called Git. Unfortunately, for many developers these days, a closed source system which manages their source code, is a no go, and there are many viable alternatives offering the same features as BitKeeper.
 
 === Installing Git
 
