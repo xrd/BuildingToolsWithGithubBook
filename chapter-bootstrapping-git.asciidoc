@@ -301,7 +301,7 @@ There are over a hundred individual git commands, each with dozens of switches. 
 
 `git init`: init creates a new git repository for you. This command creates a directory called .git which stores information about the repository.
 
-`git add`: add does as you might expect, adds files to your working index. Typing `git add .` adds all files in the current working directory to your index.
+`git add`: add does as you might expect, adding files to your index. Typing `git add .` adds all files in the current working directory to your index.
 
 `git commit`: commit creates a commit for you, which means it takes the current contents of the index and bakes a commit object for you, along with a log message. If you use `git commit` without any switches it will open an editor for you to enter the commit message; if you use the -m switch, you can type in the commit message between quotes to save a little bit of time.
 
