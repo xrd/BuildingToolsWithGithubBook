@@ -303,7 +303,7 @@ There are over a hundred individual git commands, each with dozens of switches. 
 
 `git add`: add does as you might expect, adds files to your working index. Typing `git add .` adds all files in the current working directory to your index.
 
-`git commit`: commit creates a commit for you, which means it takes the current contents of the index and bakes a commit object for you, along with a log message. 
+`git commit`: commit creates a commit for you, which means it takes the current contents of the index and bakes a commit object for you, along with a log message. If you use `git commit` without any switches it will open an editor for you to enter the commit message; if you use the -m switch, you can type in the commit message between quotes to save a little bit of time.
 
 `git push`: push sends the changes you have made up to a remote server.
 
@@ -329,6 +329,8 @@ The last command will fail because you don't have write access to this repositor
 Here is the workflow to create a new repository and push the files into GitHub. There are ways to create a repository from the command line (using the `hub` command or `curl`, mentioned later in this book), but not using the git tool itself, so imagine you have just created a repository named "MyFirstProject" using the GitHub website. 
 
 +
+mkdir MyFirstRepository
+cd MyFirstRepository
 echo "My first git repository" > README
 git init
 git add .
@@ -337,6 +339,7 @@ git remote add origin git@github.com:xrd/MyFirstRepository.git
 git push -u origin master
 +
 
+The only thing unmentioned so far is the -u switch for the `git push` command. The -u switch sets up tracking so that using a `git push` subsequently does not require specifying the remote. In other words, when we do a `git push` the next time, git knows to push into GitHub without us typing out the full command `git push origin master`.
 
 === Git Resources
 
