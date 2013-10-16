@@ -297,11 +297,6 @@ Reference the larger chapter on Git clients.
 
 === Git Usage Basics
 
-Very accelerated workflow for an individual developer.  It isn't our
-intention to demonstrate all features of Git.  All we need is a clone,
-change, add, commit, push, pull.   Anything beyond this and we need to
-refer to another book.
-
 There are over a hundred individual git commands, each with dozens of switches. The countless permutations of commands can be daunting, but to be productive in git you really only need to know a few commands. These commands should be run from a shell, like bash on Mac OSX or Linux, or cygwin on Windows.
 
 git init: init creates a new git repository for you. This command creates a directory called .git which stores information about the repository.
@@ -312,11 +307,13 @@ git commit: commit creates a commit for you, which means it takes the current co
 
 git push: push sends the changes you have made up to a remote server.
 
+git pull: pull retrieves changes from a remote repository and syncs your local repository with them.
+
 git clone: clone makes a local copy of a remote git repository on your local machine.
 
 git remote: remote allows you to manage the remote repositories. When you create a new repository on GitHub, GitHub will instruct you to run a command like "git remote add origin git@github.com/xrd/mynewrepo.git" to establish a connection between your local git repository and where you will store the code remotely. Once you have established this connection, git push will push your objects into GitHub.
 
-To take a real world example, to clone and edit a set of files stored on GitHub, you could run these commands. Remember the "#" symbol indicates a comment, but you can copy these lines in completely and your shell will ignore anything past the "#".
+Taking a real world example, to clone and edit a set of files stored on GitHub, you could run these commands. Remember the "#" symbol indicates a comment, but you can copy these lines in completely and your shell will ignore anything past the "#".
 
 +
 git clone git@github.com:xrd/ng-rails-csrf.git # make a local copy
