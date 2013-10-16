@@ -297,7 +297,7 @@ Reference the larger chapter on Git clients.
 
 === Git Usage Basics
 
-There are over a hundred individual git commands, each with dozens of switches. The countless permutations of commands can be daunting, but to be productive in git you really only need to know a few commands. These commands should be run from a shell, like bash on Mac OSX or Linux, or cygwin on Windows.
+There are over a hundred individual git commands, each with dozens of switches. The countless permutations of commands can be daunting, but to be immediately productive in git you really only need to know a few commands. These commands should be run from a shell, like bash on Mac OSX or Linux, or cygwin on Windows.
 
 `git init`: init creates a new git repository for you. This command creates a directory called .git which stores information about the repository.
 
