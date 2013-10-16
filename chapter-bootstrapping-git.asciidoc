@@ -299,32 +299,44 @@ Reference the larger chapter on Git clients.
 
 There are over a hundred individual git commands, each with dozens of switches. The countless permutations of commands can be daunting, but to be productive in git you really only need to know a few commands. These commands should be run from a shell, like bash on Mac OSX or Linux, or cygwin on Windows.
 
-git init: init creates a new git repository for you. This command creates a directory called .git which stores information about the repository.
+`git init`: init creates a new git repository for you. This command creates a directory called .git which stores information about the repository.
 
-git add: add does as you might expect, adds files to your working index. Typing "git add ." adds all files in the current working directory to your index.
+`git add`: add does as you might expect, adds files to your working index. Typing `git add .` adds all files in the current working directory to your index.
 
-git commit: commit creates a commit for you, which means it takes the current contents of the index and bakes a commit object for you, along with a log message. 
+`git commit`: commit creates a commit for you, which means it takes the current contents of the index and bakes a commit object for you, along with a log message. 
 
-git push: push sends the changes you have made up to a remote server.
+`git push`: push sends the changes you have made up to a remote server.
 
-git pull: pull retrieves changes from a remote repository and syncs your local repository with them.
+`git pull`: pull retrieves changes from a remote repository and syncs your local repository with them.
 
-git clone: clone makes a local copy of a remote git repository on your local machine.
+`git clone`: clone makes a local copy of a remote git repository on your local machine.
 
-git remote: remote allows you to manage the remote repositories. When you create a new repository on GitHub, GitHub will instruct you to run a command like "git remote add origin git@github.com/xrd/mynewrepo.git" to establish a connection between your local git repository and where you will store the code remotely. Once you have established this connection, git push will push your objects into GitHub.
+`git remote`: remote allows you to manage the remote repositories. When you create a new repository on GitHub, GitHub will instruct you to run a command like `git remote add origin git@github.com/xrd/mynewrepo.git` to establish a connection between your local git repository and where you will store the code remotely. Once you have established this connection, git push will push your objects into GitHub.
 
 Taking a real world example, to clone and edit a set of files stored on GitHub, you could run these commands. Remember the "#" symbol indicates a comment, but you can copy these lines in completely and your shell will ignore anything past the "#".
 
 +
 git clone git@github.com:xrd/ng-rails-csrf.git # make a local copy
 cd ng-rails-csrf # Enter the directory
-echo "Adding my thoughts to this..." > README.md # make a change
+echo "Nicely done. Comment by Chris Dawson, esq." >> README.md # make a change
 git add . # Add the changes to the index
 git commit -m "Add thoughts" # Make commit from index
 git push # Try to push up to GitHub.
 +
 
 The last command will fail because you don't have write access to this repository. If this were a repository you created from scratch on GitHub, the same set of commands (with a different clone URL, of course), would work. 
+
+Here is the workflow to create a new repository and push the files into GitHub. There are ways to create a repository from the command line (using the `hub` command or `curl`, mentioned later in this book), but not using the git tool itself, so imagine you have just created a repository named "MyFirstProject" using the GitHub website. 
+
++
+echo "My first git repository" > README
+git init
+git add .
+git commit -m "My first commit"
+git remote add origin git@github.com:xrd/MyFirstRepository.git
+git push -u origin master
++
+
 
 === Git Resources
 
