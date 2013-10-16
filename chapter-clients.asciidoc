@@ -77,7 +77,7 @@ the technical interface of Git.  Here are a few:
   writing GitHub had just released a 3D file specification graphical diffing
   tool. This allows a user to view the changes in a 3D schematic over time. 
   As the diversity of GitHub users grows, expect the smart folks at GitHub
-  will improve their support for the files and tools these communities
+  to improve their support for the files and tools these communities
   require.
   
 image::images/clients-3d-diff.png[]
