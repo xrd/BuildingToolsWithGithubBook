@@ -86,7 +86,7 @@ image::images/clients-3d-diff.png[]
 [NOTE]
 =====================================================================
 This is usually how it happens:   You start working on an important
-application.   Maybe it is a web applicaiton or a modbile
+application.   Maybe it is a web applicaiton or a mobile
 application, but as a developer, you assume Git by default given the
 various advantages of the tool.
 
