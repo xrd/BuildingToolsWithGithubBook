@@ -1,8 +1,9 @@
 [[creating-account]]
 == Creating a Github Account
 
-It seems odd to have a whole chapter for this, but I'm assuming that
-this will be an 8 page chapter.
+To create an account on GitHub, just go to GitHub. They make it easy to sign up, with a form on the front page. Enter your preferred username, your email address, and a password, and you have created an account. GitHub is smart with their signup in that you don't need to agonize over choosing a plan when signing up. You just enter in three pieces of information, and you are a GitHub member.
+
+GitHub does ask you to verify your email address once you have created an account. At the top of the page you'll see a notification that asks you to verify your email address. Doing so is simple: follow the link to "Emails" in your Account Settings, and then click the button "Verify." You should immediately receive an email with a link; clicking on this link takes you to a a verify button, and if you click this, you'll have verified your email address. Your GitHub account is fully functional even without doing completing this step, but verifying your email maintains a high identity integrity of users within GitHub.
 
 === Selecting a GitHub Plan
 
