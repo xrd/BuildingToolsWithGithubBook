@@ -1,13 +1,13 @@
 [[creating-account]]
 == Creating a Github Account
 
-To create an account on GitHub, just go to GitHub. They make it easy to sign up, with a form on the front page. Enter your preferred username, your email address, and a password, and you have created an account. GitHub is smart with their signup in that you don't need to agonize over choosing a plan when signing up. You just enter in three pieces of information, and you are a GitHub member.
+To create an account on GitHub, just go to GitHub.com. They make it easy to sign up, with a signup form right on the front page. Enter your preferred username, your email address, and a password, and you will have created an account. GitHub is smart with their signup in that you don't need to agonize over choosing a plan when signing up. You just enter in three pieces of information, and you are a GitHub member.
 
 GitHub does ask you to verify your email address once you have created an account. At the top of the page you'll see a notification that asks you to verify your email address. Doing so is simple: follow the link to "Emails" in your Account Settings, and then click the button "Verify." You should immediately receive an email with a link; clicking on this link takes you to a a verify button, and if you click this, you'll have verified your email address. Your GitHub account is fully functional even without doing completing this step, but verifying your email maintains a high identity integrity of users within GitHub.
 
 === Selecting a GitHub Plan
 
-Selecting the appropriate Github plan is...
+You are not asked to choose a plan immediately upon signing up at GitHub.com. Pricing is solely dependent on the number of private repositories you need. If you plan on contributing only open source, you might not need any private repositories. If you plan on building the next Facebook or Google, you may want to keep your source code private to protect yourself from competitors, and in this case you'll need to upgrade to a paid plan with private repositories. Plans start at $7 for the micro plan with 5 private repositories, and go up in price with more private repositories. GitHub makes it very easy to upgrade to a larger plan and add private repositories, and if you ever need to save money you can remove private repostories from your account (or open source them and make them public repositories) and downgrade your account to a smaller and cheaper plan. It is a very flexible payment structure and this simplicity is probably one of the reasons GitHub is well loved by its users. 
 
 Sidebar: How most organizations signup for Github?
 
