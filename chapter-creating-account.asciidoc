@@ -19,6 +19,18 @@ GitHub plans differ in only one way: they are priced by the number of private re
 
 It costs nothing to sign-up for a Github account and use it with your own completely public repositories. You can contribute to private repositories, but cannot own private repositories or create them until you upgrade to a paid plan.
 
+===== Downgrading your plan
+
+One day your wife comes into your office and says: "After reviewing our expenses, I am going to need you to purchase one less latte this month." One less latte! But, you are committed to living a life of financial responsibility, so you counter offer and say "How about I downgrade my GitHub account to a micro plan from my current small plan? That will save us $5!" She agrees to your counter offer and you set about figuring out how you are going to do downgrade your plan.
+
+At first glance, you realize you are in trouble. The micro plan has a limitation of five private repositories. You currently have 9 private repositories in your GitHub account, and you believe at least seven of the projects will turn into businesses larger than Apple, Facebook and Google combined. So, you are loathe to just delete the repositories and lose all the work you have put in to building these business applications. There are two repositories which contain code that you no longer believe to be convertible into viable businesses. You need to get your private repositories down to just five in total. What to do?
+
+For the two businesses which you no longer need to keep private, just visit the repository page, and then click the "Settings" link on the right hand sidebar. Once you are in settings, scroll all the way down to the section at the very bottom marked "Danger Zone." In there you will see a button labeled "Make Public." Clicking this button will convert this repository to a public repository. This means anyone can view the contents on GitHub.com, clone it for themselves, and even fork it to make their own copy inside GitHub. If you make two of your private repositories public, you will have only seven private repositories, that much closer to your goal of five private repositories.
+
+image::images/creating-account-make-public.png[]
+
+To take your account down to five repositories in total, simply clone two of the repositories onto your laptop or desktop computer. Remember that when you do a clone of a repository, you are cloning the entire history of this repository. If you clone the repository, therefore, you have exactly the same information on your local machine as GitHub has on their servers. You can then safely delete the repository on GitHub, knowing that you have a full copy of the code on your local machine. This means that you will need to make sure you keep a backup of this code somewhere else in case you have a hard disk failure, or lose the laptop due to theft. Normally when you are working on code that backup is GitHub, but now you'll need to find an alternative. And, if your wife ever decides that you can spend an additional $5 a month again, you can simply recreate the repository on GitHub and `git push` to publish it right back with no difference at all.
+
 ===== Personal
 
 Once you start creating private repositories, you'll need a personal plan.
