@@ -1,8 +1,7 @@
 [[developer-api]]
 == The GitHub API
 Like most useful sites and services today, GitHub is less a site that
-you can visit and more a utility that has a habit of popping up just
-about everywhere.  As this book has mentioned previously, GitHub has
+you can visit and more and more becoming a utility intertwined and integrated with other developer-centered sites on the Internet. As this book has mentioned previously, GitHub has
 been quickly becoming a "fixture" for developers.  If you develop in
 Ruby, Node.js, and, increasingly, Java you are going to encounter
 GitHub as the foundational SCM used by a number of leading projects
@@ -47,9 +46,7 @@ use your native package management tool to install cURL - either a
 "sudo yum install curl*" on a RedHat variant or "sudo apt-get
 install curl" on an Ubuntu (or Debian) system.  If you are on any recent version of OSX, you already
 have cURL installed, but it you can't find it, take a look at the
-MacPorts project (http://www.macports.org/).  If you are running on
-Windows or another operating system, you best bet is to download cURL
-from the cURL web site here: http://curl.haxx.se/download.html
+HomeBrew project (http://brew.sh/) or MacPorts project (http://www.macports.org/).  If you are running on Windows or another operating system, you best bet is to download cURL from the cURL web site here: http://curl.haxx.se/download.html
 
 ==== Accessing the GitHub API
 
@@ -141,9 +138,36 @@ access to, and to get it, just go to https://api.github.com/
 }
 ----
 
-////
-TODO: Demonstrate how to access the API with curl
-////
+Any of these service URLs can be used with the cURL tool to pull more specific information from the GitHub API. For example, if we wanted to know more about the "github" organization, we could use the following cURL command:
+
+----
+$ curl https://api.github.com/orgs/github
+{
+  "login": "github",
+  "id": 9919,
+  "url": "https://api.github.com/orgs/github",
+  "repos_url": "https://api.github.com/orgs/github/repos",
+  "events_url": "https://api.github.com/orgs/github/events",
+  "members_url": "https://api.github.com/orgs/github/members{/member}",
+  "public_members_url": "https://api.github.com/orgs/github/public_members{/member}",
+  "avatar_url": "https://0.gravatar.com/avatar/61024896f291303615bcd4f7a0dcfb74?d=https%3A%2F%2Fidenticons.github.com%2Fae816a80e4c1c56caa2eb4e1819cbb2f.png",
+  "name": "GitHub",
+  "company": null,
+  "blog": "https://github.com/about",
+  "location": "San Francisco, CA",
+  "email": "support@github.com",
+  "public_repos": 114,
+  "public_gists": 0,
+  "followers": 12,
+  "following": 0,
+  "html_url": "https://github.com/github",
+  "created_at": "2008-05-11T04:37:31Z",
+  "updated_at": "2013-10-18T23:55:02Z",
+  "type": "Organization"
+}
+----
+
+We've removed the `-i` switch from the cURL command so that we no longer see the headers. We took the URL named "organization_url" and added the parameter of "github" (replacing the {org} placeholder) to generate the full URL to the GitHub organization. 
 
 ==== High-level Areas of the GitHub API
 
