@@ -31,6 +31,8 @@ image::images/creating-account-make-public.png[]
 
 To take your account down to five repositories in total, simply clone two of the repositories onto your laptop or desktop computer. Remember that when you do a clone of a repository, you are cloning the entire history of this repository. If you clone the repository, therefore, you have exactly the same information on your local machine as GitHub has on their servers. You can then safely delete the repository on GitHub, knowing that you have a full copy of the code on your local machine. This means that you will need to make sure you keep a backup of this code somewhere else in case you have a hard disk failure, or lose the laptop due to theft. Normally when you are working on code that backup is GitHub, but now you'll need to find an alternative. And, if your wife ever decides that you can spend an additional $5 a month again, you can simply recreate the repository on GitHub and `git push` to publish it right back with no difference at all.
 
+If you take these two steps of making two repositories public, and delete from GitHub two which you have backed up on your personal laptop, you'll be down to five private repositories. And, you can then switch your plan down to the micro plan.
+
 ===== Personal
 
 Once you start creating private repositories, you'll need a personal plan.
