@@ -1,13 +1,13 @@
 [[creating-account]]
 == Creating a Github Account
 
-To create an account on GitHub, just go to GitHub.com. They make it easy to sign up, with a signup form right on the front page. Enter your preferred username, your email address, and a password, and you will have created an account. GitHub is smart with their signup in that you don't need to agonize over choosing a plan when signing up. You just enter in three pieces of information, and you are a GitHub member.
+To create an account on GitHub, just go to GitHub.com. They make it easy to sign up, with a signup form right on the front page. Enter your preferred username, your email address, and a password, and you will have created an account. GitHub is smart with their signup in that they don't force you to agonize over choosing a plan when signing up. You just enter in three pieces of information, and you are a GitHub member.
 
 GitHub does ask you to verify your email address once you have created an account. At the top of the page you'll see a notification that asks you to verify your email address. Doing so is simple: follow the link to "Emails" in your Account Settings, and then click the button "Verify." You should immediately receive an email with a link; clicking on this link takes you to a a verify button, and if you click this, you'll have verified your email address. Your GitHub account is fully functional even without doing completing this step, but verifying your email maintains a high identity integrity of users within GitHub.
 
 === Selecting a GitHub Plan
 
-You are not asked to choose a plan immediately upon signing up at GitHub.com. Pricing is solely dependent on the number of private repositories you need. If you plan on contributing only open source, you might not need any private repositories. If you plan on building the next Facebook or Google, you may want to keep your source code private to protect yourself from competitors, and in this case you'll need to upgrade to a paid plan with private repositories. Plans start at $7 for the micro plan with 5 private repositories, and go up in price with more private repositories. GitHub makes it very easy to upgrade to a larger plan and add private repositories, and if you ever need to save money you can remove private repostories from your account (or open source them and make them public repositories) and downgrade your account to a smaller and cheaper plan. It is a very flexible payment structure and this simplicity is probably one of the reasons GitHub is well loved by its users. 
+You are not asked to choose a plan immediately upon signing up at GitHub.com. Pricing is solely dependent on the number of private repositories you need. If you plan on contributing only open source code, you might not need any private repositories. If you plan on building the next Facebook or Google, you may want to keep your source code private to protect yourself from competitors, and in this case you'll need to upgrade to a paid plan with private repositories. Plans start at $7 for the micro plan with 5 private repositories, and go up in price with more private repositories. GitHub makes it very easy to upgrade to a larger plan and add private repositories, and if you ever need to save money you can remove private repostories from your account (or open source them and make them public repositories) and downgrade your account to a smaller and cheaper plan. It is a very flexible payment structure and this simplicity is probably one of the reasons GitHub is well loved by its users. 
 
 Sidebar: How most organizations signup for Github?
 
@@ -92,6 +92,16 @@ Simple screenshot and instructions.
 ==== Using 2 Factor Authentication
 
 When and why to use 2 Factor authentication.
+
+GitHub takes the "octocat" as its mascot, and not so surprisingly their technologies have crept like tentacles into many other sites. One example is the availability of "Login via GitHub" buttons, which permit a third-party site to delegate login and credentialing to GitHub using a technology called oAuth. Less technically, a site can ask users to login on the GitHub site, and then ask GitHub to validate that user's identity to permit access to the services of the third-party site. When third party sites start trusting GitHub for authentication, it becomes more and more important to protect the credibility of a GitHub login. For various reasons, protecting access with a username and passwords is often an easy attack vector. And, for this reason, GitHub offers, like many other site offering login services for third party sites, what is commonly referred to as "two factor authentication."
+
+If you are not using two factor authentication on your GitHub account, the theft of your username and password is all that is required to break into your account. And, if you have logged into any other sites using GitHub's login delegation services, then those accounts are as good as compromised as well. 
+
+Two factor authentication simply means that login to GitHub can require two different unconnected methods of authentication to prove you are who you say you are. If you have enabled two factor authentication, an attacker cannot access your GitHub account with only your username and password. The first time you login to GitHub with 2-factor authentication enabled, you will start by entering in the username and password. After this GitHub will, typically, send you a text message with a special one time code required to complete the login process. Without this code, the username and password do no good to a malicious attacker. 
+
+It can be easy to steal a username and password through brute force attacks, the fact that many people reuse of passwords across accounts (so when one is compromised an attacker can start testing the password on any other account the person might own), or even good old fashioned social hacking where a person is tricked into revealing their password over the phone. All of these attacks can made on the other side of the world. But, it is much harder for a hacker to obtain physical access to your cell phone. Two factor authentication does not completely prevent unauthorized access to your GitHub account, but it reduces the chances monumentally. 
+
+Spend the time to enable two factor authentication on your GitHub account. It only takes a minute to set up, and the piece of mind is worth it.
 
 ==== SSH vs HTTPS
 
