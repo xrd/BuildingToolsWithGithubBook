@@ -323,7 +323,7 @@ Teddy Hyde is a free Android client for GitHub specifically well suited for edit
 
 ===== iOctocat
 
-iOctocat can be found at http://ioctocat.com/
+iOcotocat is a paid app for viewing code on GitHub using your iOS (iPhone or iPad) devices. iOctocat is developed by Dennis Reimann. iOctocat can provide notifications on events within repositories you follow or own, and has news and activity feeds. iOctocat is a well designed GitHub client, with beautiful views on your repository data and allows you to comment on commits made to your repositories. You can view pull requests and merge them from within the client. iOctocat can be found at http://ioctocat.com/
 
 ==== Graphical Git Clients
 
