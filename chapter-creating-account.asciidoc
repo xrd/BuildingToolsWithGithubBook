@@ -91,7 +91,7 @@ To change your password, click on the "Accounting settings" icon at the top righ
 
 image::images/creating-account-change-password.png[]
 
-Remember: if you are using HTTPS (instead of SSH) with your GitHub clients (meaning, the programs you use to access files within GitHub, like GitHub for Mac or GitHub for Windows), changing your password on GitHub will mean you need to update your password within those clients as well. If you are using SSH to access files on GitHub (you have setup public/private SSH keys) then you can change your password without worry.
+Remember: if you are using HTTPS (instead of SSH) with your GitHub clients (meaning, the programs you use to access files within GitHub, like GitHub for Mac or GitHub for Windows), changing your password on GitHub will mean you need to update your password within those clients as well. If you are using SSH to access files on GitHub (you have setup public/private SSH keys) then you can change your password without worry. We detail this distinction and how to handle setting things up below.
 
 ==== Using 2 Factor Authentication
 
