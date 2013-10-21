@@ -319,7 +319,7 @@ The BFG is a much simpler and faster alternative to using git-filter-branch, and
 
 ===== Teddy Hyde
 
-Teddy Hyde is a free Android client for GitHub specifically well suited for editing Jekyll blogs. Teddy Hyde is a read-write client, allowing you to edit files on GitHub using this client. Teddy Hyde is first and foremost a Jekyll blog editor: it knows how to generate the right file paths for Jekyll blog posts, can preview Markdown files via a swipe and knows about the proper branching structure for publishing Jekyll blogs into GitHub. Learn more about Teddy Hyde at TeddyHyde.com. Teddy Hyde was also written by one of the authors of this book, Chris Dawson. 
+Teddy Hyde is a free Android client for GitHub specifically well suited for editing Jekyll blogs. Teddy Hyde is a read-write client, allowing you to edit any files on GitHub using this client. Teddy Hyde is first and foremost a Jekyll blog editor: it knows how to generate the right file paths for Jekyll blog posts, can preview Markdown files via a swipe and knows about the proper branching structure for publishing Jekyll blogs into GitHub. Learn more about Teddy Hyde at TeddyHyde.com. Teddy Hyde was developed by one of the authors of this book, Chris Dawson. 
 
 ===== iOctocat
 
