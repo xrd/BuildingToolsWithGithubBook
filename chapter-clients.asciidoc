@@ -642,7 +642,7 @@ image::images/clients-modile-jobs.png[]
 
 ==== Private GitHub Mobile Clients
 
-GitHub has a well developed and powerful API and there are several privately developed mobile clients using this API.
+GitHub has a well developed and powerful API and this has permitted the growth of several privately developed mobile clients built on top of this API.
 
 ===== Agit
 
@@ -681,7 +681,7 @@ Teddy Hyde is a free Android client for GitHub specifically well suited for edit
 
 ===== iOctocat
 
-iOcotocat is a paid app for viewing code on GitHub using your iOS (iPhone or iPad) devices.iOctocat can provide notifications on events within repositories you follow or own, and has news and activity feeds. iOctocat is a well designed GitHub client, with beautiful views on your repository data and allows you to comment on commits made to your repositories. You can view pull requests and merge them from within the client. iOctocat can be found at http://ioctocat.com/. iOctocat is developed by Dennis Reimann. 
+iOcotocat is a paid app for viewing code on GitHub using your iOS (iPhone or iPad) devices. iOctocat can provide notifications on events within repositories you follow or own, and has news and activity feeds. iOctocat is a well designed GitHub client, with beautiful views on your repository data and allows you to comment on commits made to your repositories. You can view pull requests and merge them from within the client. iOctocat can be found at http://ioctocat.com/. iOctocat is developed by Dennis Reimann. 
 
 === IDE Integration with GitHub
 
