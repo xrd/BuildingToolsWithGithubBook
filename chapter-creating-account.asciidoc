@@ -87,7 +87,9 @@ How to sign up for an organizational account.
 
 ==== Reseting Your Password
 
-Simple screenshot and instructions.
+To change your password, click on the "Accounting settings" icon at the top right corner within GitHub. You will be taken to the "Profile" section of the account settings; click on the "Account Settings" item within the list on the left and you will see a form in which you can enter a new password and confirmation, plus the old password. If you enter these correctly you will update your password on GitHub.
+
+Remember: if you are using HTTPS instead of SSH with your GitHub clients (meaning, the programs you use to access files within GitHub, like GitHub for Mac or GitHub for Windows), changing your password on GitHub will mean you need to update your password within those clients as well. If you are using SSH to access files on GitHub (you have setup public/private SSH keys) then you can change your password without worry.
 
 ==== Using 2 Factor Authentication
 
