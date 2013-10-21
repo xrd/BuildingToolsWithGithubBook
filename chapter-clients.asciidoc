@@ -601,8 +601,6 @@ highlighting and other options.
 
 === Mobile Applications for GitHub
 
-
-
 ==== Using GitHub from an Android Device
 
 http://mobile.github.com/#android
@@ -641,6 +639,49 @@ To find GitHub's Jobs application in the Apple App Store, open the App
 Store on an iOS device and search for "GitHub Jobs".
 
 image::images/clients-modile-jobs.png[]
+
+==== Private GitHub Mobile Clients
+
+GitHub has a well developed and powerful API and there are several privately developed mobile clients using this API.
+
+===== Agit
+
+Agit is an inexpensive Android client for GitHub that has been released as an open source project on GitHub. Agit is a read-only client, loading the entirety of any repository available to you on GitHub onto your phone. Agit displays diffs within the repository, and allows you to view branches within any repository you have cloned. Agit is developed by Roberto Tyley, who was then was hired by GitHub (though he has since left for the Guardian Media).  
+
+image::images/bootstrapping-gitjs-branches.png[]
+
+image::images/bootstrapping-gitjs-commit-log.png[]
+
+++++
+
+From the Google Play Store:
+
+Agit is a Git client for Android devices, allowing you to checkout the entire history of a Git repository while on the move, review changes and store for full offline access.
+• Clone remote Git repositories onto your phone!
+• Just like regular Git, the full history is stored for offline access.
+• Animated Diffs - Watch diffs smoothly transition from Before to After - and back again. I'm using 'smooth' figuratively here. It's still pretty cool.
+• Supports git, http, https, ssh protocols:
+- see https://github.com/rtyley/agit/wiki/HTTP for details about HTTP authentication
+- see https://github.com/rtyley/agit/wiki/SSH or watch http://youtu.be/6YXR-ZhZ1Qk for SSH setup instructions
+• Pull-to-refresh fetching 
+• Currently this is a 'read-only' client. You can clone & fetch, but not commit and push. I haven't yet had time to build all the user interface around that - but I reckon implementing pinch-gesture-branch-merge would be fun.
+• Periodic sync enabled on Android 2.2 and later - latest commits fetched quarter-hourly.
+• Cloning substantial projects (eg Mongo, JQuery) will take a few minutes to perform - fortunately subsequent fetches will be much faster.
+• Due to limitations in Java/JGit (the underlying library used by Agit for Git support) the following features are unfortunately unsupported: submodules, symbolic links.
+Android devices have limited memory, and due to the nature of Git delta-packing individual large files in your repo (eg around 5MB or above) can cause unavoidable out-of-memory errors, even on modern devices. This doesn't constrain overall repository size - which can be much bigger - it only constrains the *largest files* you can have in your repository's history. More information here:
+https://github.com/rtyley/agit/wiki/Memory
+To help users fix the large-file repos that Agit has trouble with, I've developed a The BFG, a command line tool purpose-built for slimming down Git repositories:
+http://rtyley.github.com/bfg-repo-cleaner/
+The BFG is a much simpler and faster alternative to using git-filter-branch, and makes it easy to clean up repositories so that they can be read by Agit.
+++++
+
+===== Teddy Hyde
+
+Teddy Hyde is a free Android client for GitHub specifically well suited for editing Jekyll blogs. Teddy Hyde is a read-write client, allowing you to edit any files on GitHub using this client. Teddy Hyde is first and foremost a Jekyll blog editor: it knows how to generate the right file paths for Jekyll blog posts, can preview Markdown files via a swipe and knows about the proper branching structure for publishing Jekyll blogs into GitHub. Learn more about Teddy Hyde at TeddyHyde.com. Teddy Hyde was developed by one of the authors of this book, Chris Dawson. 
+
+===== iOctocat
+
+iOcotocat is a paid app for viewing code on GitHub using your iOS (iPhone or iPad) devices.iOctocat can provide notifications on events within repositories you follow or own, and has news and activity feeds. iOctocat is a well designed GitHub client, with beautiful views on your repository data and allows you to comment on commits made to your repositories. You can view pull requests and merge them from within the client. iOctocat can be found at http://ioctocat.com/. iOctocat is developed by Dennis Reimann. 
 
 === IDE Integration with GitHub
 
