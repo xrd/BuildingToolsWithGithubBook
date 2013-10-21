@@ -152,7 +152,7 @@ understand some of the reasons why Git has been so successful.
 
 Git isn't the first distributed version control systems (DVCS) out
 there, but it is the most popular.  This section explores a few points
-that differentiate Git from the rest of the DVCS pack icluding: Arch,
+that differentiate Git from the rest of the DVCS pack icluding: 
 Monotone, Darcs, Mercurial, BitKeeper, and Bazaar.
 
 The project driving the requirements for Git is the largest, most
@@ -186,13 +186,6 @@ to integrate that commit into the end-product.  In Subversion
 individual developers would have to selectively merge specific commits
 across different branch directories.  It's a mess in anything other
 than Git.
-
-
-
-
-
-
-
 
 Distributed, Efficient, Easy to Branch and Merge, Free and Open Source
 
