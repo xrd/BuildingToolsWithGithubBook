@@ -288,7 +288,7 @@ Brief instructions for installing Git client on Ubuntu and CentOS.
 
 ===== Agit
 
-Agit is an open source Android client for GitHub. Agit is developed by Roberto Tyley who built this client and then was hired by GitHub (and has since left for the Guardian). Agit is a read-only client, loading the entirety of any repository available to you on GitHub onto your phone. Agit displays diffs within the repository, and allows you to view branches within any repository you have cloned. 
+Agit is an inexpensive Android client for GitHub that has been released as an open source project on GitHub. Agit is developed by Roberto Tyley who built this client and then was hired by GitHub (and has since left for the Guardian). Agit is a read-only client, loading the entirety of any repository available to you on GitHub onto your phone. Agit displays diffs within the repository, and allows you to view branches within any repository you have cloned. 
 
 image::images/bootstrapping-gitjs-branches.png[]
 
@@ -319,7 +319,7 @@ The BFG is a much simpler and faster alternative to using git-filter-branch, and
 
 ===== Teddy Hyde
 
-Teddy Hyde is an Android client for GitHub specifically well suited for editing Jekyll blogs. Teddy Hyde was also written by one of the authors of this book, Chris Dawson. Teddy Hyde is a read-write client, and 
+Teddy Hyde is a free Android client for GitHub specifically well suited for editing Jekyll blogs. Teddy Hyde is a read-write client, allowing you to edit files on GitHub using this client. Teddy Hyde is first and foremost a Jekyll blog editor: it knows how to generate the right file paths for Jekyll blog posts, can preview Markdown files via a swipe and knows about the proper branching structure for publishing Jekyll blogs into GitHub. Learn more about Teddy Hyde at TeddyHyde.com. Teddy Hyde was also written by one of the authors of this book, Chris Dawson. 
 
 ===== iOctocat
 
