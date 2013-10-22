@@ -143,11 +143,6 @@ someone to pull changes from a non-GitHub hosted Git repository, once
 you've sent and received pull requests from within the GitHub
 interface you'll wonder why anyone would ever want to do such a thing.
 
-[NOTE]
-Pull requests on GitHub are streamlined, API available and widely used internally at GitHub when building features. Not everyone loves the way GitHub built their web-enabled pull request mechanism. One such person is Linus Torvalds, the inventor of Git, who wrote `github throws away all the relevant information, like having even a
-valid email address for the person asking me to pull. The diffstat is
-also deficient and useless.` In a long thread, posted ironically on GitHub, Torvalds makes some comments about how the GitHub pull request workflow misses several critical elements, like signed identities. When you are dealing with a codebase as vital as Linux, you need to have high standards. For many people, fortunately, GitHub's pull requests are sufficient and get the job done.
-
 ===== Making a Pull Request
 
 If you've forked a repository and created a feature branch, GitHub
@@ -197,15 +192,12 @@ read-write privileges to the repositories they work with, it does
 enforce a requirement for code reviews in order to integrate new code
 into master.
 
-
 [NOTE]
-====
-Not everyone on GitHub appreciates a pull request.  For an example, take a
-look at the user "torvalds" which is Linux Torvald's Github profile.
-If you follow his activity, you will see that the Linux Kernel does
-not accept Github pull requests - if you want to request a pull
-outside of Github you'll have to use "git request-pull"
-====
+===
+Pull requests on GitHub are streamlined, API available and widely used internally at GitHub when building features. Not everyone loves the way GitHub built their web-enabled pull request mechanism. One such person is Linus Torvalds, the inventor of Git, who wrote `github throws away all the relevant information, like having even a
+valid email address for the person asking me to pull. The diffstat is
+also deficient and useless.` In a long thread, posted ironically on GitHub, Torvalds makes some comments about how the GitHub pull request workflow misses several critical elements, like signed identities. When you are dealing with a codebase as vital as Linux, you need to have high standards. For many people, fortunately, GitHub's pull requests are sufficient and get the job done.
+===
 
 ==== GitHub Issues
 
