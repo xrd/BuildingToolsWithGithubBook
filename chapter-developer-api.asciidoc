@@ -1,7 +1,7 @@
 [[developer-api]]
 == The GitHub API
 Like most useful sites and services today, GitHub is less a site that
-you can visit and more and more becoming a utility intertwined and integrated with other developer-centered sites on the Internet. As this book has mentioned previously, GitHub has
+you simply visit in isolation and more and more becoming a utility intertwined and integrated with other developer-centered sites on the Internet. As this book has mentioned previously, GitHub has
 been quickly becoming a "fixture" for developers.  If you develop in
 Ruby, Node.js, and, increasingly, Java you are going to encounter
 GitHub as the foundational SCM used by a number of leading projects
