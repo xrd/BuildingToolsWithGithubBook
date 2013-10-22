@@ -143,6 +143,11 @@ someone to pull changes from a non-GitHub hosted Git repository, once
 you've sent and received pull requests from within the GitHub
 interface you'll wonder why anyone would ever want to do such a thing.
 
+[NOTE]
+Pull requests on GitHub are streamlined, API available and widely used internally at GitHub when building features. Not everyone loves the way GitHub built their web-enabled pull request mechanism. One such person is Linus Torvalds, the inventor of Git, who wrote `github throws away all the relevant information, like having even a
+valid email address for the person asking me to pull. The diffstat is
+also deficient and useless.` 
+
 ===== Making a Pull Request
 
 If you've forked a repository and created a feature branch, GitHub
