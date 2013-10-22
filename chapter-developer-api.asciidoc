@@ -16,7 +16,7 @@ a provider of both user identity and Git activity.
 
 As more developer-focused sites start to offer the ability to "Login
 with GitHub", and as GitHub continues to offer more low-level
-infrastructure for development it changes from a simple service to a
+infrastructure for development GitHub goes from just a simple service to a
 necessary infrastructure for collaboration. In more than a few ways, GitHub is
 to developers as Facebook is to social networks and the API is a
 critical component of that transformation.
@@ -167,7 +167,7 @@ $ curl https://api.github.com/orgs/github
 }
 ----
 
-We've removed the `-i` switch from the cURL command so that we no longer see the headers. We took the URL named "organization_url" and added the parameter of "github" (replacing the {org} placeholder) to generate the full URL to the GitHub organization. 
+We've removed the `-i` switch from the cURL command so that we no longer see the headers. We took the URL named "organization_url" and added the parameter of "github" (replacing the {org} placeholder) to generate the full URL to the GitHub organization. You can see this tells us the company blog (https://github.com/about), that the company is located in San Francisco, and the creation date (which strangely does not match their blog post which states April 10th was their official launch date [https://github.com/blog/40-we-launched]).
 
 ==== High-level Areas of the GitHub API
 
@@ -287,7 +287,7 @@ still presents problems if you intend to use your own GitHub
 credentials when making requests on behalf of many users.
 
 For this reason, if your web site or service uses the GitHub API to
-request informatin from the GitHub API, you should consider using
+request information from the GitHub API, you should consider using
 OAuth and make requests to the GitHub API using your user's shared
 authentication information. 
 
