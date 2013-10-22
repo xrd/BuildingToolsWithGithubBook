@@ -194,7 +194,7 @@ into master.
 
 [NOTE]
 ===
-Pull requests on GitHub are streamlined, API available and widely used internally at GitHub when building features. Not everyone loves the way GitHub built their web-enabled pull request mechanism. One such person is Linus Torvalds, the inventor of Git, who wrote `github throws away all the relevant information, like having even a
+Pull requests on GitHub are streamlined, available via the GitHub API, and widely used internally at GitHub when building features. Not everyone loves the way GitHub built their web-enabled pull request mechanism. One such person is Linus Torvalds, the inventor of Git, who wrote `github throws away all the relevant information, like having even a
 valid email address for the person asking me to pull. The diffstat is
 also deficient and useless.` In a long thread, posted ironically on GitHub, Torvalds makes some comments about how the GitHub pull request workflow misses several critical elements, like signed identities. When you are dealing with a codebase as vital as Linux, you need to have high standards. For many people, fortunately, GitHub's pull requests are sufficient and get the job done.
 ===
