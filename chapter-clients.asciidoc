@@ -664,7 +664,7 @@ Agit is a Git client for Android devices, allowing you to checkout the entire hi
 ** see https://github.com/rtyley/agit/wiki/HTTP for details about HTTP authentication
 ** see https://github.com/rtyley/agit/wiki/SSH or watch http://youtu.be/6YXR-ZhZ1Qk for SSH setup instructions
 * Pull-to-refresh fetching 
-* Currently this is a read-only client. You can clone & fetch, but not commit and push. I haven't yet had time to build all the user interface around that - but I reckon implementing pinch-gesture-branch-merge would be fun.
+* Currently this is a read-only client. You can clone and fetch, but not commit and push. I haven't yet had time to build all the user interface around that - but I reckon implementing pinch-gesture-branch-merge would be fun.
 * Periodic sync enabled on Android 2.2 and later - latest commits fetched quarter-hourly.
 * Cloning substantial projects (eg Mongo, JQuery) will take a few minutes to perform - fortunately subsequent fetches will be much faster.
 * Due to limitations in Java/JGit (the underlying library used by Agit for Git support) the following features are unfortunately unsupported: submodules, symbolic links.
