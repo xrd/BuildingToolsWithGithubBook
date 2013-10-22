@@ -454,7 +454,7 @@ can use a caching HTTP proxy like Squid to take care of automatically
 caching content, storing content alongside ETags, and injecting the
 "If-None-Match" header into GitHub API requests. If you do this,
 you'll be automating the injection of conditional headers and helping
-to reduce the overall load on the GitHub API.
+to reduce the overall load on the GitHub API. If you use an API library, like Octokit for Ruby, there are some tricks we'll detail later which can assist in staying beneath the limits.
 
 Use of conditional request headers is encouraged to conserve resources
 and make sure that the infrastructure that supports GitHub's API isn't
