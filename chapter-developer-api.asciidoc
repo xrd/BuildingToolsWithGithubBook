@@ -294,7 +294,7 @@ authentication information.
 [NOTE]
 There are actually two rate limits.  The "core" rate limit and the
 "search" rate limit.  The rate limits explained in the previous
-paragraphs were for the core rate limit.  For search, anonymous
+paragraphs were for the core rate limit.  For search,
 requests are limited at 20 requests per minute for authenticated user
 requests and 5 request per minute for anonymous requests. The
 assumption here is that search is a more infrastructure intensive
