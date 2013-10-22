@@ -376,7 +376,7 @@ delivered.
 In these cases, you can send conditional HTTP headers
 If-Modified-Since and If-None-Match to tell GitHub to return an HTTP
 304 response code telling you that nothing has been modified.  When
-you send a request with a conditional header and the GitHub responds
+you send a request with a conditional header and the GitHub API responds
 with a HTTP 304 response code, this request is not deducted from your
 rate limit.
 
