@@ -381,7 +381,7 @@ with a HTTP 304 response code, this request is not deducted from your
 rate limit.
 
 The following command listing is an example of passing in the
-If-Modified-Since HTTP header to the GitHub API.   Here's we've
+If-Modified-Since HTTP header to the GitHub API.   Here we've
 specified that we're only interested in receiving content if the
 Twitter Boostrap repositories has been altered after 7:49 PM GMT on
 Sunday, August 11, 2013.  The GitHub API responds with a HTTP 304
