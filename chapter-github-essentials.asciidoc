@@ -127,9 +127,10 @@ in whatever direction you would like.  You can think of the number of
 forks as the number of interested (but maybe not active) contributors
 for a project. If 16,091 people have forked the CSS and Javascript
 framework Bootstrap, this means that 16,091 people are interested
-enough in the project to create a maintain a separate fork of the
+enough in the project to create and maintain a separate fork of the
 project. In each of the independent copies, developers can create
-feature branches, push commits, and eventually... 
+feature branches, and push commits. Eventually developers with their own
+fork can even create a pull request asking the upstream repository maintainer to integrate changes back into the original repository.
 
 A word of caution when looking at forks, however: forks on GitHub represent the lifetime count of forks, and as of right now, GitHub does not assign a value to recent forks over forks made long ago. As GitHub is a relatively new organization, most forks have been made recently, but as GitHub grows older, I imagine they will start to display an assessment of the age of a fork beyond just the fact that it was forked. Another way of saying this is that forks represent interest in a project at some point, but not whether that interest has waned at all.
 
