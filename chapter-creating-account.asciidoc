@@ -223,4 +223,4 @@ access.
 With HTTPS managing and securing access to your repository becomes *your* problem. With SSH, 
 secure access is *GitHub's* problem. And, they've been thinking about the right ways to do this: 
 from requiring re-entry of your password whenever a new SSH public key is added, 
-to 2 factor authentication (utilizing email and your cell phone to verify your identity), GitHub has spent lots of time and money making sure your source code is protected from rogue access.
+to two factor authentication (utilizing email and your cell phone to verify your identity), GitHub has spent lots of time and money making sure your source code is protected from rogue access.
