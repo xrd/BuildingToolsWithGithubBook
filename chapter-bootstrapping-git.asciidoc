@@ -308,20 +308,19 @@ There are over a hundred individual git commands, each with dozens of switches. 
 
 Taking a real world example, to clone and edit a set of files stored on GitHub, you could run these commands. Remember the "#" symbol indicates a comment, but you can copy these lines in completely and your shell will ignore anything past the "#".
 
-+
+[source,bash]
 git clone git@github.com:xrd/ng-rails-csrf.git # make a local copy
 cd ng-rails-csrf # Enter the directory
 echo "Nicely done. Comment by Chris Dawson, esq." >> README.md # make a change
 git add . # Add the changes to the index
 git commit -m "Add thoughts" # Make commit from index
 git push # Try to push up to GitHub.
-+
 
 The last command will fail because you don't have write access to this repository. If this were a repository you created from scratch on GitHub, the same set of commands (with a different clone URL, of course), would work. 
 
 Here is the workflow to create a new repository and push the files into GitHub. There are ways to create a repository from the command line (using the `hub` command or `curl`, mentioned later in this book), but not using the git tool itself, so imagine you have just created a repository named "MyFirstProject" using the GitHub website. 
 
-+
+[source,bash]
 mkdir MyFirstRepository
 cd MyFirstRepository
 echo "My first git repository" > README
@@ -330,7 +329,6 @@ git add .
 git commit -m "My first commit"
 git remote add origin git@github.com:xrd/MyFirstRepository.git
 git push -u origin master
-+
 
 The only thing unmentioned so far is the -u switch for the `git push` command. The -u switch sets up tracking so that using a `git push` subsequently does not require specifying the remote. In other words, when we do a `git push` the next time, git knows to push into GitHub without us typing out the full command `git push origin master`.
 
