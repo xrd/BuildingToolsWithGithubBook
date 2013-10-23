@@ -35,7 +35,7 @@ If you take these two steps of making two repositories public, and delete from G
 
 ===== Personal
 
-Once you start creating private repositories, you'll need a personal plan.
+If you are new to software development or working on projects mainly by yourself, you will be fine starting with a personal plan. Once you start creating private repositories, you'll need a paid personal plan, which start at $7/mo for 5 private repositories and go up to $50/mo for the large plan with 50 private repositories.
 
 ===== Organization
 
