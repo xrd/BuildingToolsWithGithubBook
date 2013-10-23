@@ -13,7 +13,13 @@ Sidebar: How most organizations signup for Github?
 
 ==== Types of Github Plans
 
-GitHub plans differ in only one way: they are priced by the number of private repositories you have available. Micro plans start at $7 a month and have 5 private repositories. Small plans are $12 a month and have 10 private repositories. Medium plans have 20 private repositories and cost $22 a month. If you are working within an organization, you might consider the business plans. Business plans have a slightly higher cost with fewer repositories per dollar, but they are designed for organizational usage. This means that you can assign permissions to private repositories based on groups of users within the organization rather than individually as you would with a standard user plan. Business plans start at the bronze level with $25 a month for 10 private repositories, silver plans are $50/mo for 20 private repositories, gold plans are $100/mo for 50 private repositories, with platinum plans rounding out the list at $200 for 100 private repositories.
+GitHub plans differ in only two ways: there are personal plans and there are business plans, and the plans are priced by the number of private repositories you have available. 
+
+Personal plans are for personal users, users operating indepedently of a corporate entity. Business plans have an additional set of features useful for managing members of an organization. Any personal plan can be a member of an organization, so you can safely sign up as a personal plan user and later join an organization.
+
+There are currently five types of personal plans. Free plans cost nothing and, like all plans, have an unlimited number of public repositories and zero private repositories. Micro plans start at $7 a month and have 5 private repositories. Small plans are $12 a month and have 10 private repositories. Medium plans have 20 private repositories and cost $22 a month. 
+
+If you are working within an organization, you might consider the business plans. Business plans have a slightly higher cost with fewer repositories per dollar, but they are designed for organizational usage. This means that you can assign permissions to private repositories based on groups of users within the organization rather than individually as you would with a standard user plan. Business plans start at the bronze level with $25 a month for 10 private repositories, silver plans are $50/mo for 20 private repositories, gold plans are $100/mo for 50 private repositories, with platinum plans rounding out the list at $200 for 100 private repositories.
 
 ===== Free
 
@@ -142,7 +148,7 @@ have an ability to cache this password. This means each time you push code, or p
 the latest changes, you will need to re-enter your password. Git is a protocol which 
 supports making lots of little changes, so a requirement that you must add another ten 
 seconds to your workflow makes HTTPS quickly unusable. GitHub has released a Ruby gem called "hub"
-which you can alias so that you actually use the ruby gem client instead of the native 
+which you can alias in your shell so that when typing "git" your shell actually uses the ruby gem client instead of the native 
 command line client; this ruby gem client can cache and use HTTPS passwords. But, this requires
 additional setup, convolutes your workflow, and SSH still offers more benefits. 
 
