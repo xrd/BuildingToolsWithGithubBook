@@ -88,7 +88,7 @@ default branch before you just do this.  Again, you are changing your
 repository to present a different interface than the standard, and if
 you are not careful about communicating this to collaborators you may
 cause confusion. Most git users are so used to pushing to "master" it
-is burned in muscle memory. I may not make sense to fiddle with this
+is burned in muscle memory. It may not make sense to fiddle with this
 setting unless you really know what you are doing.
 
 [repo-admin-pages]
