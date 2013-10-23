@@ -143,6 +143,8 @@ access GitHub, and GitHub will cache your credentials.    This makes
 it easy for a new GitHub user to authenticate once and access
 repositories without distraction.
 
+IMPORTANT: If you plan on using multiple clients to access GitHub (for example, a desktop Git client on your OSX laptop, and an IDE like Eclipse from your Windows machine) then you might want to consider using SSH keys. If you use HTTPS and you change the password, then you will need to change it with all your clients. If you use SSH, changing a password does not affect your SSH key access. Read the section on "Using SSH Keys" to learn more about how and why to use SSH keys.
+
 ===== Cloning a Repository with a Click
 
 When a user needs to clone a repository, the official GitHub
