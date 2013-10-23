@@ -98,10 +98,10 @@ GitHub is more than a source code management system for Git
 repositories. It provides wikis, issue management tools, and GitHub
 pages. A GitHub page is simply an HTML page that is served from GitHub
 at a URL following the pattern:
-http://github_id.github.io/repository_id
+http://github_id.github.io/repository_name
 
 For example, if the user "tobrien" published a set of GitHub pages for a repository with
-an id of "context", those pages would be served from
+a name of "context", those pages would be served from
 http://tobrien.github.io/context/.
 
 You can create a set of GitHub pages for a repository by pushing HTML
