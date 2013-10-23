@@ -306,7 +306,7 @@ There are over a hundred individual git commands, each with dozens of switches. 
 
 `git remote`: remote allows you to manage the remote repositories. When you create a new repository on GitHub, GitHub will instruct you to run a command like `git remote add origin git@github.com/xrd/mynewrepo.git` to establish a connection between your local git repository and where you will store the code remotely. Once you have established this connection, git push can be used to push your objects into GitHub.
 
-Taking a real world example, to clone and edit a set of files stored on GitHub, you could run these commands. Remember the "#" symbol indicates a comment, but you can copy these lines in completely and your shell will ignore anything past the "#".
+Taking a real world example, to clone and edit a set of files stored on GitHub, you could run these commands. Remember the "#" symbol indicates a comment, but you can copy these lines in completely and your shell will ignore anything past the "\#".
 
 [source,bash]
 git clone git@github.com:xrd/ng-rails-csrf.git # make a local copy
