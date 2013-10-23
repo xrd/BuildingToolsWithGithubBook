@@ -112,8 +112,8 @@ I assess if a Git user is familiar with SSH
 before I decide which client to set them up with.   If they understand
 how SSH works, if they regularly use the command-line, and if they are
 experienced with a text editor like vi or emacs.    Then I feel free
-to let them loose on comand-line Git.    If they think the "command-line"
-is a metal band from the 90s, that's when I recommend the client.
+to let them loose on command-line Git.    If they think the "command-line"
+is a metal band from the 90s, that's when I recommend a graphical client.
 =====================================================================
 
 These three assumptions coupled with the difficulty of related
