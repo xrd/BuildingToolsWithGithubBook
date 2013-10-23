@@ -208,8 +208,7 @@ code management tools. These developers would often just develop on a
 private GitHub repository and then sync with an internal SCM when they
 were finished. When companies finally wake up to the glorious
 perfection of GitHub they usually want you to transfer ownership of a
-GitHub repository to a GitHub account - this is one example of when
-you would transfer 
+GitHub repository to a GitHub account - this is one example displaying the utility of the transfer feature.
 ====
 
 ==== Deleting a Repository
@@ -306,7 +305,7 @@ On the other end of the spectrum are projects at open source
 Foundations like Eclipse and Apache.  If you are running a project at
 one of these organizations it is very likely that there is already an
 organization on GitHub.  Most open source foundations exist to provide
-a neutral legal entity that to which intellectual proprty can be
+a neutral legal entity that to which intellectual property can be
 assigned which isn't under the specific control of a single commercial
 entity.  In these cases it is critical that your organization maintain
 a GitHub organization and that you avoid hosting repositories in
