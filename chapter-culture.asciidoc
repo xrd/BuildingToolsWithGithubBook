@@ -1,3 +1,5 @@
+[[chapter-culture]]
+
 GitHub is an impressive collection of services to make you more productive as a software developer. And, the company itself is consistently the topic of conversation as a leader in creating a company culture which is financially viable and keeps developers happy (a notoriously difficult combination). Are there lessons to be learned from the company itself that can make your organization happier and more productive? Are these cultural traits ingrained in the people at GitHub in a special way, and are these cultural practices embedded into the public and private technologies that GitHub uses internally and externally?
 
 === Pull Requests replace code reviews
