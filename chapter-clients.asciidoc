@@ -148,7 +148,7 @@ IMPORTANT: If you plan on using multiple clients to access GitHub (for example, 
 ===== Cloning a Repository with a Click
 
 When a user needs to clone a repository, the official GitHub
-repositories take care of the details.    You click on  repository and
+repositories take care of the details. You click on repository and
 then instruct GitHub to create a local working copy.   To do this you
 don't have to fully understand the semantics of the clone operation to
 get started.  While it does help to have some understanding of the
@@ -644,7 +644,7 @@ image::images/clients-modile-jobs.png[]
 
 ==== Private GitHub Mobile Clients
 
-GitHub has a well developed and powerful API and this has permitted the growth of several privately developed mobile clients built on top of this API.
+GitHub has a highly functional and powerful API and this has stimulated development of several privately developed mobile clients built on top of this API.
 
 ===== Agit
 
