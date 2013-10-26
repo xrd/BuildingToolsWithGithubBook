@@ -648,7 +648,7 @@ GitHub has a highly functional and powerful API and this has stimulated developm
 
 ===== Agit
 
-Agit is an inexpensive Android client for GitHub that has been released as an open source project on GitHub. Agit is a read-only client, loading the entirety of any repository available to you on GitHub onto your phone. Agit displays diffs within the repository, and allows you to view branches within any repository you have cloned. Agit is developed by Roberto Tyley, who was then was hired by GitHub (though he has since left for the Guardian Media).  
+Agit is an inexpensive Android client for GitHub that has been released as an open source project on GitHub. Agit is a read-only client, loading the entirety of any repository, making it available to you on your phone. Agit displays diffs within the repository, and allows you to view branches within any repository you have cloned. Agit is developed by Roberto Tyley, who was then was hired by GitHub (though he has since left for the Guardian Media).  
 
 image::images/bootstrapping-gitjs-branches.png[]
 
@@ -679,7 +679,7 @@ The BFG is a much simpler and faster alternative to using git-filter-branch, and
 
 ===== Teddy Hyde
 
-Teddy Hyde is a free Android client for GitHub specifically well suited for editing Jekyll blogs. Teddy Hyde is a read-write client, allowing you to edit any files on GitHub using this client. Teddy Hyde is first and foremost a Jekyll blog editor: it knows how to generate the right file paths for Jekyll blog posts, can preview Markdown files via a swipe and knows about the proper branching structure for publishing Jekyll blogs into GitHub. Learn more about Teddy Hyde at TeddyHyde.com. Teddy Hyde was developed by one of the authors of this book, Chris Dawson. 
+Teddy Hyde is a free Android client for GitHub specifically well suited for editing Jekyll blogs. Teddy Hyde is a read-write client, allowing you to edit any files on GitHub. Teddy Hyde is first and foremost a Jekyll blog editor: it knows how to generate the right file paths for Jekyll blog posts, can preview Markdown files via a swipe and knows about the proper branching structure for publishing Jekyll blogs into GitHub. Learn more about Teddy Hyde at TeddyHyde.com. Teddy Hyde was developed by one of the authors of this book, Chris Dawson. 
 
 ===== iOctocat
 
