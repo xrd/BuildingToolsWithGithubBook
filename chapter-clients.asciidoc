@@ -78,7 +78,8 @@ the technical interface of Git.  Here are a few:
   tool. This allows a user to view the changes in a 3D schematic over time. 
   As the diversity of GitHub users grows, expect the smart folks at GitHub
   to improve their support for the files and tools these communities
-  require.
+  require, but for now, there is a barrier to non-technical users, especially those 
+  using GitHub outside of the software development world.
   
 image::images/clients-3d-diff.png[]
 
