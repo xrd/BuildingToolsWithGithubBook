@@ -106,9 +106,10 @@ or a writer who can access your repositories directly. For one thing,
 as a software developer you are using Git to manage the complexity of 
 tracking changes, and if your designer won't use Git, then you 
 have just assumed responsibility for managing *their* changes, essentially
-offering to do what you don't want to manually without Git's help. There 
-is almost nothing more complicated than trying to keep track of another
-person's mess. Most non-developers (not all of them) I've worked with give you a blank
+offering to do what you yourself don't want to do without Git's help. You have
+assumed responsibility for unzipping files via email, copying and pasting 
+snippets from files, all things that humans do poorly and that tools like
+Git were designed to do. Most non-developers (not all of them) I've worked with give you a blank
 stare when you inform them of this requirement to use GitHub and they
 will need to create an SSH keypair.  If you've done this a few times,
 you'll welcome these GUI tools as saving you from having to train
