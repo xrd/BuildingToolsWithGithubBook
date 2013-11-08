@@ -22,3 +22,28 @@ Ben's point was that often a conversation will take place between two people, an
 
 Email is used within GitHub as a broadcast notification mechanism. People don't expect conversations to occur in email. With all the emphasis on "inbox zero" and people overwhelmed by communication noise, GitHub has a culture which enables wide involvement in conversations in a responsible and open way and one that minimizes the tendency of email to quickly become an untenable task management solution. Many companies use email in the wrong way, and GitHub appears to have consciously thought of how to manage complex software projects without email, but still provide the asynchronous benefits of it.
 
+==== Notes from interviews:
+
+===== Chris Hunt
+
+===== Dan Herrera (Simple.com)
+
+Notes from co-worker:
+"Would be nice to see and comment on individual commits inside a PR."
+"Make sure that each commit has at least one comment (LGTM)."
+
+Opportunity to do this from API.
+
+===== Brandon Saunders (AboutUs.org)
+
+Use Pivotal Tracker to create stories.
+All devs have admin privs on each repo
+Feature branch for each story.
+Once feature branch completed, issue PR
+Other devs comment using +1, "shipit", etc.
+Big items, other than code owner merges and deploy  (not hard and fast)
+Small items, code owner merges and deploys (nhaf)
+Use PT to automatically add comments and finish stories using integration
+Campfire hook to notify people in the chat room
+
+
