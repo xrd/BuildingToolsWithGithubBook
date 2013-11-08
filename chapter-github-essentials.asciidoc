@@ -78,11 +78,11 @@ image::images/github-fork.png[]
 
 If you are a member of multiple organizations, you will then be asked
 which organization or account you wish to fork a repository to.
-Choose an account or organiztaion to continue.
+Choose an account or organization to continue.
 
 Once you've forked a repository it will appear under your account with
-a note that tells people what the upstream repository is (what
-repository it was forked from). The following figure shows you a
+a note that tells people what the upstream repository is (from which
+repository it was forked originally). The following figure shows you a
 forked tobrien/gradle repository from the gradle/gradle repository.
  
 image::images/github-forked.png[]
