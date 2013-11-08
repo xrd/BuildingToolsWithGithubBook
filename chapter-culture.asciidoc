@@ -26,6 +26,12 @@ Email is used within GitHub as a broadcast notification mechanism. People don't 
 
 ===== Chris Hunt
 
+"People don't expect you to respond to email."
+
+"In open source, I always produced a polished gem as a PR. With GitHub, I did that the first time and someone told me: 'Hey, push it up earlier.'" Living the "fail fast" ideology.
+
+"You are expected to shepherd your ideas through to the end."
+
 ===== Dan Herrera (Simple.com)
 
 Notes from co-worker:
