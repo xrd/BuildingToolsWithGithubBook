@@ -1,7 +1,7 @@
 [[github-essentials]]
 == Github Essentials
 
-Remember Github is not Git, and while you can certinaly Git without
+Remember Github is not Git, and while you can certainly Git without
 Github it just isn't the same.  This chapter is all about the
 essential features of Github that make it worth using.  From the
 unique approach to pull requests, to line-level commenting, to emoji,
@@ -22,7 +22,7 @@ often feels underwhelming.
 === Repositories in GitHub
 
 For many users the first impression of GitHub came via an open source
-project - a Rails gem or a Javascript library someone had created an
+project - a Rails gem or a Javascript library someone had created and
 published as a public repository. The first thing they likely noticed
 about GitHub wasn't the source code as much as it was the
 interface. Source Code Management (SCM) system have been around for
@@ -46,7 +46,17 @@ to the original project owners. You can fork a project, customize it,
 and then it is your prerogative to give back you changes to the
 original project. GitHub makes it easy to create your own fork of a
 repository and then track changes between your fork and the original
-repository.
+repository. 
+
+Going beyond simply contributing back to the original project, as a Git
+repository is a complete set of all changes made to the project since its 
+inception, you could even take the project in an entirely new direction
+without connection to the original upstream repository. Git makes it possible
+for a project to take completely unexpected directions, which makes it
+scary for anyone wanting complete control. But, as "information wants
+to be free" this flexibility puts Git at an exciting crossroads where
+new ideas can flourish independently of original intentions. In fact, this 
+innate freedom (as in free speech) was what produced GitHub itself.
 
 ==== "Forking" a Repository
 
