@@ -286,7 +286,7 @@ image::image/github-view-milestone.png[]
 
 ==== Tight integration with GitHub
 
-The GitHub issues tracker is a capable issues tracker on its own. Other issues trackers may have more overall features, but the GitHub issues tool is free and available for you to use when you become a GitHub member, and has a feature set that competes with many issue trackers out there. 
+The GitHub issues tracker is a capable issues tracker on its own. Other issues trackers may have more overall features, but the GitHub issues tool is free and available for you to use simply by becoming a GitHub member, and has a feature set that competes with many issue trackers out there. 
 
 Where the issue tracker really starts to shine is in the tight integration with the rest of GitHub. Once you have created issues for your project, you get these additions to your project automatically
 
