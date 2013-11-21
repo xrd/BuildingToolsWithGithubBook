@@ -124,7 +124,7 @@ away.
 Both HTTPS and SSH operate over a secure encrypted channel, but beyond this commonality 
 there are very different reasons for using each.
 
-Of the two, SSH is the best option. Whenever you can, use SSH.
+Of the two, SSH is the more secure option. If you are willing to tackle the slight complexity that comes with using SSH, we recommend it. If not, use HTTPS. GitHub recommends HTTPS as their preferred method, but we differ in believing that you'll rest more easily in the long run if you take the trouble to set up SSH access.
 
 ===== HTTPS
 
