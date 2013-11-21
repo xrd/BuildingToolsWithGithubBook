@@ -326,6 +326,8 @@ years.  Most project documentation was stored in Markdown, and it was
 customary for developers to have a README.md file which would be
 rendered as a Github project's default documentation.
 
+GitHub has their own flavor of Markdown referred to as "GitHub Flavored Markdown" (GFM) addressing features Markdown neglects to offer. GFM adds formatting options for strikethroughs, fenced code blocks (start and end code blocks with \`\`\` characters rather than using indentation), syntax highlighting for fenced code blocks, and a few other features which offer powerful integration with other GitHub services, like the ability to "@mention" another user (mentioned previously, a mechanism to automatically notify that user), build todo lists inside GitHub issues, emoji support and more.
+
 Note: Recent developments have made Github markup language agnostic.
 While Github once had a strong preference toward Markdown you can now
 author Wiki content in Asciidoc, Creole, Mediawiki, Org-mode, Pod,
