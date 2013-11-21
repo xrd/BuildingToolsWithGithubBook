@@ -27,7 +27,6 @@ distributed development is made possible by Git - a version control
 system which facilitates distributed development and places an
 emphasis on making merges between two separate forks easy.
 
-
 If you subscribe to a more corporate, a more "enterprisey" approach to
 development, an approach that involves strict control of code and a
 rigorous approach to project planning you may be skeptical of this
@@ -89,7 +88,7 @@ largely finished a migration from CVS to Subversion, and the Eclipse Foundation
 was continuing to use CVS.  In the early part of the last decade
 centralized, client-server SCMs were the rule.  Proprietary systems
 such as Perforce, Clearcase, MKS Integrity, and (cringe) Visual
-SourcSafe along with the two main open source SCMs CVS and Subversion
+SourceSafe along with the two main open source SCMs CVS and Subversion
 dominated the market.
 
 At the time, the VCS of choice for open source projects was
