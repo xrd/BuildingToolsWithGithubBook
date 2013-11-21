@@ -335,15 +335,22 @@ Rdoc, Textile, and reStructuredText.
 
 ==== Gollum - Github Wikis
 
-Gollum is GitHub's contribution to an open source wiki. A wiki is defined by "a website that allows collaborative editing of its content and structure by its users." Just as Git has revolutionized collaborative editing of code, Gollum wiki's layer the benefits of Git onto a proven publishing system. 
+Gollum is GitHub's contribution to an open source wiki. A wiki is defined as "a website that allows collaborative editing of its content and structure by its users." Just as Git has revolutionized collaborative editing of code, Gollum wiki's layer the benefits of Git onto a proven publishing system. 
 
-Gollum wikis can be edited using a web browser by running the `gollum` command locally on your laptop or as a repository on GitHub, or they can be edited using your favorite editor as just another file inside your Git repository. 
+Gollum wikis are editable from within a web browser by running the `gollum` command locally on your laptop and then browsing to http://localhost:4567, editable within GitHub as just another repository using the standard GitHub online editors, or using your favorite editor as you might edit any other file within a local repository. 
 
-You might use a hybrid approach to editing your Gollum wiki, switching back and forth  between editing within the web browser interface and jumping into the command line and using your favorite editor to create or modify files when you need to use power commands. If you do this, remember that Gollum only processes files that have been checked into the repository; files which are only in the working directory or which have been added to the index but not yet commited are *not* processed by gollum. So, if you add a file using your editor or from the command line, make sure you `git add` and `git commit` the files to see them to make sure you see them in the browser interface.
+You might use a hybrid approach to editing your Gollum wiki, switching back and forth  between editing within the web browser interface and jumping into the command line and using your editor to create or modify files when you need to use "power commands." If you do this, remember that Gollum only processes files that have been checked into the repository; files which are only in the working directory or which have been added to the index but not yet commited are *not* processed by gollum. So, if you add a file using your editor or from the command line, make sure you `git add` and `git commit` the files to see them to make sure you see them in the browser interface.
 
 As a concrete example of this, let's imagine adding a sidebar to our wiki. To do this, you need to create a file called _Sidebar.md. This is a special file which Gollum recognizes and generates a sidebar for you; the first part of the name is fixed, but you can change the extension to whatever extension you prefer for your wiki files.
 
-
+```
+$ echo "## Warning\nPlease note this is subject to change" > _Sidebar.md
+$ open http://localhost:4567/ # We won't see our sidebar yet.
+$ git add _Sidebar.md # if we refresh 
+$ open http://localhost:4567/ # We still wont' see our sidebar
+$ git commit -m "Add sidebar"
+$ open http://localhost:4567/ # Eureka, now we will see our sidebar
+```
 
 ==== Gists - Sharing Code 
 
