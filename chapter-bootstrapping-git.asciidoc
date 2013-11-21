@@ -190,12 +190,11 @@ Distributed, Efficient, Easy to Branch and Merge, Free and Open Source
 
 ==== Flexibility
 
-Comment on the various usage pattens for Git.   If a Centralized SCM
-is your preference, you can use Git in much the same way...
+Git does not force you into a completely different mode of development, regardless of where your development process is centered now. Neither Git nor GitHub force you to change your workflow if your development team philosophies are currently "centralized" rather than "distributed." You can still make GitHub (or another Git hosting service) act as the centralized repository and require team members to push changes into the service. 
 
-Reference this book - DVCS usage patterns -
-https://github.com/zkessin/dvcs-workflows - create a list of various
-approaches and direct readers at zkessin.
+Zachary Kessin has created an eBook, hosted on GitHub, which documents various patterns of DVCSes, and it is especially relevant to teams coming from a centralized model and trying out Git and GitHub. The book describes several workflows fitting many standard team member paradigms from the Linux Kernel development team to the "solo-coder" with or without clients. If you have concerns about how to map your existing workflow to GitHub, or how to transition from a centralized system to a distributed system, this book is worth a look.
+
+https://github.com/zkessin/dvcs-workflows
 
 ==== Popularity
 
