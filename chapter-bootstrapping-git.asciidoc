@@ -188,7 +188,7 @@ than Git.
 
 Distributed, Efficient, Easy to Branch and Merge, Free and Open Source
 
-==== Flexibiity
+==== Flexibility
 
 Comment on the various usage pattens for Git.   If a Centralized SCM
 is your preference, you can use Git in much the same way...
