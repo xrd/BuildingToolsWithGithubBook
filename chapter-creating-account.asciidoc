@@ -128,7 +128,7 @@ Of the two, SSH is the more secure option. If you are willing to tackle the slig
 
 ===== HTTPS
 
-The only reason you might prefer HTTPS is that this protocol can be useful if you are
+The only reason you might be unable to use SSH and have no option other than HTTPS is that this protocol can be useful if you are
 inside a very restrictive firewall.
 HTTPS traffic is almost always permitted (port 443 is a common "secure" port on almost 
 any firewall). If you use HTTPS, the "git clone" command will use a URL which starts 
