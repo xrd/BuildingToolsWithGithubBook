@@ -68,7 +68,7 @@ IMPORTANT: Remember that *GitHub access* is all you control with organizational 
 
 If you have hundreds or thousands of developers, you may not want to
 use either of these plans.  In these situations, Github offers a
-service called Github Enterprise.
+service called Github Enterprise. GitHub Enterprise is a hosted version of GitHub, offering all the same features of GitHub, but running on your own private server. If pushing your source code into GitHub's data center is a concern for you, then consider using GitHub Enterprise. GitHub Enterprise means you need a server administrator to manage your server installation, and if the server goes down for any reason, your staff are on the hook, not GitHub's. GitHub Enterprise is unconnected to GitHub.com, and has no ability to "phone home" which means files sitting inside of GitHub Enterprise are protected by whatever security layers you deem necessary, if you have stricter requirements for hosting your source code than those of GitHub.  
 
 === Setting Up Your Accounts
 
