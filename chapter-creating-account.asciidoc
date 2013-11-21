@@ -47,10 +47,6 @@ If you are new to software development or working on projects mainly by yourself
 
 If you are a doing software development within an organizational structure, then you will probably want to start or join an organizational plan. Regardless of whether your plan is personal or organizational, you can invite people to any private repository as long as they are members of GitHub, paid or unpaid. However, if you want to make them owners of the repository, or you want to institute team based permissions for access on any public or private repositories then you will need to migrate to a business plan
 
-==== Choosing the Right Plan
-
-Figure: A Decision Tree for What Plan to Choose
-
 ===== Open Source Development
 
 If you are only contributing to open source projects, you can probably
@@ -66,7 +62,7 @@ With teams larger than 10 people, it is worth considering an organizational plan
 
 With employees wearing more and more hats every day, this can often save a lot of time: imagine you just hired a software developer who also has design skills and that you intend to have her work on many facets of your business. Let's say you have ten repositories for the software developers on your team, and another set of five repositories for the designers on the team. If you were using a personal plan, you would need to add the new hire to a total of fifteen repositories, painstakingly clicking "add user" to each repository, one by one. Stop and think for a moment how easy it would be to forget to add them to one of the repositories, blocking them from their work while you are on vacation. With an organizational plan, you add them to the "developer" group and the "designer" group and they get access to all those repositories at once. Going further, if another engineer adds a new repository and you need to give access to all the engineers on your team, you just add that repository to the "developers" group and all developers get immediate access. Finally, if you ever fire someone, you can easily remove their name from all groups and remove their GitHub access entirely.
 
-IMPORTANT: Remember that *GitHub access* is all you control with organizational access controls. You don't control access to source code that is sitting on an employee's laptop. DVCSes like git allow people to code untethered from an airplane, vastly increasing productivity. With this increased productivity comes a loss of control. There is no way to use GitHub's access controls to remove the source code from a remote worker upon termination, so deletion of source code upon termination should be something written into the contractual agreements before an employee starts work.
+IMPORTANT: Remember that *GitHub access* is all you control with organizational access controls. You don't control access to source code that is sitting on an employee's laptop. DVCSes like Git allow people to code untethered from an airplane, vastly increasing productivity. With this increased productivity comes a loss of control. There is no way to use GitHub's access controls to remove the source code from a remote worker upon termination, so deletion of source code upon termination should be something written into the contractual agreements before an employee starts work.
 
 ===== Enterprise-scale Development
 
