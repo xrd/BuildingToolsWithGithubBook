@@ -259,10 +259,9 @@ Git-scm.org also offers links to the full source code to Git (if you wanted to c
 
 There are also package managers which can manage downloading binaries or even installing from source code. On Mac, you can try HomeBrew, a package management system (which incidentally uses Git under the hood as well). For example, to install HomeBrew and then install Git, use these commands:
 
-```
+[source,bash]
 $ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
 $ brew install git
-```
 
 Brew is a useful tool for installing lots of developer centric software. And, many of these components require installation of Apple's XCode development environment. Unless you feel comfortable with 
 
@@ -305,12 +304,11 @@ The `sudo` command means "run the following command as the super-user" so be pre
 
 If you are committed to building a binary optimized to your exact machine, you can build Git from source. To do this, run these commands from a terminal:
 
-```
+[source,bash]
 $ git clone git@github.com:git/git.git
 $ cd git
 $ make 
 $ make install
-```
 
 These commands can be customized with specific compile options, such as choosing a special directory into which you want Git installed; read the file called INSTALL for more details on these compile flags. If you needed to install a cutting edge version of Git, you could keep your package manager installed version of Git in the normal location and then install a second version into a special path and use each when appropriate.
 
