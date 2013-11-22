@@ -174,9 +174,8 @@ Activity::
 
     Activity includes Events, Feeds, Notifications, Starring, and
     Watching.  If you are building a site or service that is focused
-    on supporting developers this portion of the API lets us use the
-    GitHub API to display information about activity that affects
-    everything: users, repositories, and organizations.
+    on supporting developers this portion of the API provides information about 
+    activity that affects everything: users, repositories, and organizations.
 
 Gists::
 
