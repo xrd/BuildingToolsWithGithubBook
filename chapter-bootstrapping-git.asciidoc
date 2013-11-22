@@ -253,7 +253,18 @@ BitKeeper was the early inspiration for many of these open source DVCSes. The ma
 
 === Installing Git
 
-Point users to git-scm.org
+The definitive resource for installing *command-line* versions of Git is from the site http://git-scm.com/ (SCM stands for "Source Code Management"). If you visit this site, regardless of your platform, you will be presented with a download link to the appropriate binary for your system. For example, on my system, I get a link to download a binary for Git version 1.8.4.3 (the latest stable version). 
+
+Git-scm.org also offers links to the full source code to Git (if you wanted to compile a release candidate version) or other GUI clients. 
+
+There are also package managers which can manage downloading binaries or even installing from source code. On Mac, you can try HomeBrew, a package management system (which incidentally uses Git under the hood as well). For example, to install HomeBrew and then install Git, use these commands:
+
+```
+$ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
+$ brew install git
+```
+
+Brew is a useful tool for installing lots of developer centric software. And, many of these components require installation of Apple's XCode development environment. Unless you feel comfortable with 
 
 ==== Windows
 
@@ -274,6 +285,7 @@ image::images/mac_client_install.png[]
 
 Click on the download button, and once you've downloaded the ZIP file, open it in the finder. Most browsers will save this to your "Downloads" folder. If you open the ZIP file, you'll see a single binary inside it: the GitHub for Mac client. You can simply open this to begin. GitHub for Mac will ask if you want to move it to the Applications folder, and you should do this.
 
+image::images/mac.github.com.png[]
 
 * Git Client
 
@@ -283,9 +295,15 @@ Screenshot and install instructions for Github for Mac.
 
 ==== Linux
 
-Brief instructions for installing Git client on Ubuntu and CentOS.
+Linux systems make installation of Git a breeze. Most Linux systems use a package management system like dpkg (the Debian packaging, favored by Ubuntu and Debian) or RPM (the RedHat Package Manager, used by CentOS and RedHat variants).
 
-* Git Client
+To install Git on a Debian/Ubuntu system, run this command
+
+`sudo apt-get install git-core`
+
+To install Git on a RedHat variant, run this command:
+
+`sudo yum install git`
 
 ==== Graphical Git Clients
 
