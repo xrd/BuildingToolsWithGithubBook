@@ -268,7 +268,12 @@ Screenshot and install instructions for Github for Windows.
 
 ==== Mac
 
-Brief instructions for installing Git Client.
+To install the GitHub for Mac Client, go to mac.github.com. You'll see a page like the following.
+
+image::images/mac_client_install.png[]
+
+Click on the download button, and once you've downloaded the ZIP file, open it in the finder. Most browsers will save this to your "Downloads" folder. If you open the ZIP file, you'll see a single binary inside it: the GitHub for Mac client. You can simply open this to begin. GitHub for Mac will ask if you want to move it to the Applications folder, and you should do this.
+
 
 * Git Client
 
