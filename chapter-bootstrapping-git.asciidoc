@@ -303,7 +303,7 @@ The `sudo` command means "run the following command as the super-user" so be pre
 
 ==== Installation from source
 
-If you are committed to 
+If you are committed to building a binary specific for your exact machine, you 
 
 ==== Graphical Git Clients
 
