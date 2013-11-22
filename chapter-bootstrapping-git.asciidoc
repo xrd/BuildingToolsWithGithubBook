@@ -229,7 +229,7 @@ Ask Github for a chart showing corporate adoption.
 
 ==== Comparisons to Alternatives
 
-Git is not the only popular DVCS, but it is the most popular. Here is a quick comparison of the other major DVCS, both technically and culturally.
+Git is not the only popular DVCS, but it is the most popular. Here is a quick comparison of the other major DVCSes, both technically and culturally.
 
 ===== Darcs
 
