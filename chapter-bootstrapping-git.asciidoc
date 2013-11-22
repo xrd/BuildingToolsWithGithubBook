@@ -303,7 +303,16 @@ The `sudo` command means "run the following command as the super-user" so be pre
 
 ==== Installation from source
 
-If you are committed to building a binary specific for your exact machine, you 
+If you are committed to building a binary optimized to your exact machine, you can build Git from source. To do this, run these commands from a terminal:
+
+```
+$ git clone git@github.com:git/git.git
+$ cd git
+$ make 
+$ make install
+```
+
+These commands can be customized for specific compile options; read the file called INSTALL for more details on these compile flags.
 
 ==== Graphical Git Clients
 
