@@ -287,12 +287,6 @@ Click on the download button, and once you've downloaded the ZIP file, open it i
 
 image::images/mac.github.com.png[]
 
-* Git Client
-
-Screenshot and install instructions for Github for Mac.
-
-* GitHub for Mac
-
 ==== Linux
 
 Linux systems make installation of Git a breeze. Most Linux systems use a package management system like dpkg (the Debian packaging, favored by Ubuntu and Debian) or RPM (the RedHat Package Manager, used by CentOS and RedHat variants).
