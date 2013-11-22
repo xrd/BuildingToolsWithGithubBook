@@ -289,7 +289,7 @@ image::images/mac.github.com.png[]
 
 ==== Linux
 
-Linux systems make installation of Git a breeze. Most Linux systems use a package management system like dpkg (the Debian packaging, favored by Ubuntu and Debian) or RPM (the RedHat Package Manager, used by CentOS and RedHat variants).
+Linux systems make installation of Git a breeze. Most Linux systems use a package management system like dpkg (the Debian packaging, favored by Ubuntu and Debian) or RPM (the RedHat Package Manager, used by CentOS and other RedHat variants).
 
 To install Git on a Debian/Ubuntu system, run this command
 
@@ -298,6 +298,12 @@ To install Git on a Debian/Ubuntu system, run this command
 To install Git on a RedHat variant, run this command:
 
 `sudo yum install git`
+
+The `sudo` command means "run the following command as the super-user" so be prepared to enter in your password to escalate to super user.
+
+==== Installation from source
+
+If you are committed to 
 
 ==== Graphical Git Clients
 
