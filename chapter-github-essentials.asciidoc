@@ -301,20 +301,9 @@ something available to someone without the technical chops to access the files
 via Git. And, there are some software systems that don't know about the "git" protocol
 but which can pull files as a tarball (a compressed archive) and install or otherwise process them.
 
-=== Users in Github
-
-==== Github Teams
-
-When you use a Github organization account you can group users into teams.
-
-==== Github Organizations
-
-An organization in Github is a way to organize repositories and group
-users into teams.
-
 ==== @mention
 
-When a user is mentioned in a commit or a comment...
+GitHub calls itself "social coding" and the site really promotes the people as much as the code. When adding any kind of comment or documentation, you can enter in "@username" (called an "at-mention") to automatically associate another user with the issue or pull request. This person is then automatically subscribed to notifications for that issue or pull request. Internally GitHubber prefer notifications over email; subscribing to information rather than expecting an email saying "Hey, I just fixed this bug." Of course, if you are the recipient of an at-mention, you have full control in unsubscribing from those notifications, and you can globally assert that you don't want to be included in mentions if you find yourself overwhelmed by this method of communication. For most people inundated by massive amounts of email, "at-mentions" are a better way to involve people than sending yet another email.
 
 === Documentation in Github
 
