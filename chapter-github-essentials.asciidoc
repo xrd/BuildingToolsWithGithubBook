@@ -303,9 +303,9 @@ but which can pull files as a tarball (a compressed archive) and install or othe
 
 ==== @mention
 
-GitHub is "social coding" and really promotes the people behind the code. If you use the GitHub web based tools to add an issue, comment or documentation, you can enter in "@username" (called an "at-mention") to automatically associate a user with the issue or pull request. The mentioned party is then automatically subscribed to notifications for that issue or pull request. Internally at GitHub, GitHubbers prefer notifications over email; subscribing to information rather than expecting an email saying "Hey, I just fixed this bug." Of course, if you are the recipient of an at-mention, you have full control in unsubscribing from those notifications, and you can globally assert that you don't want to be included in mentions if you find yourself overwhelmed by this method of communication. For most people inundated by massive amounts of email, "at-mentions" are a better way to involve people than sending yet another email.
+GitHub is "social coding" and really promotes the people behind the code. If you use the GitHub web based tools to add an issue, comment or documentation, you can enter in "@username" (called an "at-mention") to automatically associate a user with the issue or pull request. The mentioned party is then automatically subscribed to notifications for that issue or pull request. Internally at GitHub, GitHubbers prefer notifications over email; subscribing to informational updates rather than expecting an email saying "Hey, I just fixed this bug." Of course, if you are the recipient of an at-mention, you have full control in unsubscribing from those notifications, and you can globally assert that you don't want to be included in mentions if you find yourself overwhelmed by this method of communication. For most people inundated by massive amounts of email, "at-mentions" are a better way to involve people than sending yet another email.
 
-
+image::images/essentials-at-mention.png[]
 
 === Documentation in Github
 
