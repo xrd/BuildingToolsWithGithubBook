@@ -86,6 +86,8 @@ image::images/new_organization.png[]
 
 This will navigate you to the new organization page. Here you will enter in the organization name and other details, and then choose a payment plan. There is a free plan for open source organizations as well.
 
+image::images/organization_setup.png[]
+
 === Exploring Account Security
 
 ==== Reseting Your Password
