@@ -207,7 +207,7 @@ These graphs display the network of participation for the popular web framework
 GitHub launched as a company. Without reading too much into the graphs, notice a slight 
 upward trend that begins in 2008 and continues to today, and also notice a slight downward trend 
 from the inception of the project in 2005 until right before switching to Git. 
-Was there stagnation in the Rails project as it grew to have more developer fingers in the pie?
+Was there stagnation in the Rails project as it grew, and more developer finger started poking in the pie?
 Did switching to Git improve the workflow for developers and make it a more 
 frictionless process for making additions? One of the benefits and designs of Git has been
 that it is suitable for "programming in the large," that development should be fluid even as team size grows, and the health of the Rails project seems to have benefitted (or at least 
