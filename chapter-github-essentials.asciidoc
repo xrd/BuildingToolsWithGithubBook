@@ -360,5 +360,38 @@ Gists can created with public or private access. Public Gists are available for 
 
 Gists are there for sharing and GitHub offers several ways to do this. You can share a link to the Gist as a URL; find this URL to the left of the Gist once you have created it. You can embed the Gist inside any web page using the JavaScript widget code; copy and paste this widget code into an HTML page and GitHub will build out a pretty Gist snippet inside that page for you. And, you can pass around the repository details to that anyone can clone the Gist onto their local machine. 
 
+image::images/essentials-gist-sharing.png[]
 
+Gist repositories are fully functioning repositories. You can clone them and make changes to them using any of the standard editor tools at your disposal. You can even push your changes back into gist.github.com, though this process is not straightforward. If you clone a repository, gist.github.com will tell you to use a HTTPS URL like this with your clone command:
 
+[code,bash]
+$ git clone https://gist.github.com/9dea434f30e5fafc4c3c.git
+
+This will work to clone, but if you try to push back into gist.github.com, you'll see an error like this, even if you enter the proper credentails
+
+[code,bash]
+$ git push origin master
+Username for 'https://gist.github.com': xrd
+Password for 'https://xrd@gist.github.com': 
+remote: Anonymous access to gist/9dea434f30e5fafc4c3c.git denied.
+$ git remote -v
+origin    https://gist.github.com/9dea434f30e5fafc4c3c.git (fetch)
+origin	https://gist.github.com/9dea434f30e5fafc4c3c.git (push)
+
+To fix this, you will need to edit the remote push URL. It is simple to do; just take the URL and modify to use the SSH protocol, which is associated with the git username. In more concrete terms, take a URL like https://gist.github.com/abcdef.git and convert it to git@gist.github.com:abcdef.git. Change the protocol from `https://` to `git@` and change the forward slash after the gist.github.com to a colon.  
+
+[code,bash]
+$ git remote remove origin
+$ git remote add origin git@gist.github.com:9dea434f30e5fafc4c3c.git
+$ git push -u origin master
+The authenticity of host 'gist.github.com (192.30.252.141)' can't be established.
+RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'gist.github.com,192.30.252.141' (RSA) to the list of known hosts.
+Counting objects: 5, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 342 bytes | 0 bytes/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To git@gist.github.com:9dea434f30e5fafc4c3c.git
+   7cf4a87..c5129ff  master -> master
