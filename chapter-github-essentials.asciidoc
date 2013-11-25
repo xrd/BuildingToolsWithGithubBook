@@ -326,7 +326,7 @@ Rdoc, Textile, and reStructuredText.
 
 ==== Gollum - Github Wikis
 
-Gollum is the GitHub contribution to open source wikis. A wiki is defined as "a website that allows collaborative editing of its content and structure by its users." Just as Git has revolutionized collaborative editing of code, Gollum wiki's layer the benefits of Git onto a proven publishing system. 
+Gollum is the GitHub contribution to open source wikis. A wiki is defined as "a website that allows collaborative editing of its content and structure by its users." Just as Git has revolutionized collaborative editing of code, Gollum wikis layer the benefits of Git onto a proven publishing system.
 
 Gollum wikis are editable locally within a web browser: run the `gollum` command locally on your laptop (which spawns a mini web server hosting your wiki) and then browse to http://localhost:4567. Gollum wikis are editable remotely using a web browser: edit on GitHub as just another repository using the standard GitHub web enabled editor tools. And, gollum wikis are editable locally using your favorite editor and tools, allowing you the flexibility of staying within the same workflow you use to edit any other file within a local repository. 
 
