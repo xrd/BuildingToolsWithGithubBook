@@ -82,6 +82,10 @@ through the process of setting up an account.
 As detailed above, setting up a personal account is very straightforward. If you want to create an organizational account, go to your "Account Settings" page and then look for "Organizations" on
 the very bottom of the list on the left. Once you have clicked on "Organizations" you can create a new organization by clicking the "Create new organization" button.
 
+image::images/new_organization.png[]
+
+This will navigate you to the new organization page. Here you will enter in the organization name and other details, and then choose a payment plan. There is a free plan for open source organizations as well.
+
 === Exploring Account Security
 
 ==== Reseting Your Password
