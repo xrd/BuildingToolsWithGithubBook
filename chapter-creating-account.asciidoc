@@ -64,6 +64,8 @@ With employees wearing more and more hats every day, this can often save a lot o
 
 IMPORTANT: Remember that *GitHub access* is all you control with organizational access controls. You don't control access to source code that is sitting on an employee's laptop. DVCSes like Git allow people to code untethered from an airplane, vastly increasing productivity. With this increased productivity comes a loss of control. There is no way to use GitHub's access controls to remove the source code from a remote worker upon termination, so deletion of source code upon termination should be something written into the contractual agreements before an employee starts work.
 
+To setup an organizational plan, go to your settings page
+
 ===== Enterprise-scale Development
 
 If you have hundreds or thousands of developers, you may not want to
@@ -75,17 +77,10 @@ service called Github Enterprise. GitHub Enterprise is a hosted version of GitHu
 If you are new to Github, this section has been designed to walk you
 through the process of setting up an account.
 
-==== User Accounts versus Organization Accounts
+==== Personal Accounts versus Organization Accounts
 
-The previous section goes into detail where to start
-
-==== Signing up for your User Account
-
-How to sign up for an individual user account.
-
-==== Setting up an Organization Account
-
-How to sign up for an organizational account.
+As detailed above, setting up a personal account is very straightforward. If you want to create an organizational account, go to your "Account Settings" page and then look for "Organizations" on
+the very bottom of the list on the left. Once you have clicked on "Organizations" you can create a new organization by clicking the "Create new organization" button.
 
 === Exploring Account Security
 
