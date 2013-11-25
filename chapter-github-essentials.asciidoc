@@ -352,5 +352,7 @@ A word of caution when using the gollum command in server mode to edit files loc
 
 ==== Gists - Sharing Code 
 
-Gists are...
+There are many code snippet sharing services on the web. Examples include the venerable "pastebin" which has spawned a healthy litter of copycats, each offering their own brand of minimalism or adding features for code execution. Gist offers a very simple featureset: you simply share snippets and pastes with others. You can associate more than one file with a gist. And, as you would expect from GitHub, Gists are "Git enabled" which means that every Gist is a Gist repository, carrying a full history with it and "forkable."
+
+To create a new Gist, visit gist.github.com. There you will be prompted to enter in 
 
