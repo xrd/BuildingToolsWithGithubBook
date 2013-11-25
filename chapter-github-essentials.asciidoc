@@ -354,5 +354,11 @@ A word of caution when using the gollum command in server mode to edit files loc
 
 There are many code snippet sharing services on the web. Examples include the venerable "pastebin" which has spawned a healthy litter of copycats, each offering their own brand of minimalism or adding features for code execution. Gist offers a very simple featureset: you simply share snippets and pastes with others. You can associate more than one file with a gist. And, as you would expect from GitHub, Gists are "Git enabled" which means that every Gist is a Gist repository, carrying a full history with it and "forkable."
 
-To create a new Gist, visit gist.github.com. There you will be prompted to enter in 
+To create a new Gist, visit gist.github.com. There you will be prompted to enter in a description and contents of the Gist. You may choose to indicate the file type and the Gist will be rendered for display with the proper syntax highlighting. You are not limited to adding a single file; you can add multiple files. As Gists are full repositories, you could even build out an entire filesystem inside the Gist repository, and could build a functional application with many cooperating files within your Gist. However, Gist filenames cannot have directory delimiters in them, so your filesystem is completely flat. And, the ability to have multiple files and the fact that Gists are fully functioning repositories makes Gists go beyond just code sharing into powerful simple app prototyping. 
+
+Gists can created with public or private access. Public Gists are available for anyone to see when they browse your activity stream. Private Gists do not show in your activity stream, but be aware they are only as private as a secret is private; once you share the URL, anyone else who finds themselves in possession of the URL can access the Gist contents without restriction.
+
+Gists are there for sharing and GitHub offers several ways to do this. You can share a link to the Gist as a URL; find this URL to the left of the Gist once you have created it. You can embed the Gist inside any web page using the JavaScript widget code; copy and paste this widget code into an HTML page and GitHub will build out a pretty Gist snippet inside that page for you. And, you can pass around the repository details to that anyone can clone the Gist onto their local machine. 
+
+
 
