@@ -1,22 +1,9 @@
 = The GitHub Book
 
-include::preface.asciidoc[]
 include::chapter-bootstrapping-git.asciidoc[]
-include::chapter-started-github.asciidoc[]
+
 include::chapter-github-essentials.asciidoc[]
-include::chapter-creating-account.asciidoc[] 
 
-include::chapter-patterns.asciidoc[]
+include::chapter-creating-account.asciidoc[]
 
-include::chapter-overview-dashboard.asciidoc[] 
-include::chapter-overview-repository.asciidoc[] 
-include::chapter-clients.asciidoc[] 
 include::chapter-exploring.asciidoc[]
-include::chapter-manage-account.asciidoc[]
-include::chapter-manage-org.asciidoc[]
-include::chapter-repo-admin.asciidoc[]
-include::chapter-sharing.asciidoc[]
-include::chapter-wiki.asciidoc[]
-include::chapter-pages.asciidoc[]
-include::chapter-developer-api.asciidoc[]
-
