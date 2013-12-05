@@ -1,0 +1,113 @@
+[[overview-dashboard]]
+== The Github Dashboard
+
+=== Your View of Github
+
+==== Selecting a Context
+
+The section should lead with this because it is an often overlooked
+dropdown.   When you are looking at the dashboard you have the option
+of looking at it from the perspective of your own personal account or
+from the perspective of an organization.
+
+==== The Github Dashboard
+
+image::images/dashboard-personal.png[]
+
+==== Quickly Locating Your Repositories
+
+Discuss the interface for navigating your repositories on the
+dashboard.  Color coding hints, what repositories are included.
+
+=== News, Issues, and Activity
+
+The more you use Github, the more you may find ourself overwhlemed by
+your news feed and activity stream.   This section outlines some ways
+to help manage these streams of information.
+
+==== Your News Feed
+
+Briefly explain the format of the news feed.  Listing icons for
+commits and comments.
+
+==== Viewing Github Broadcasts
+
+Make a comment about how Github is constantly adding new features and
+announcing them via Broadcasts.  (Also discuss how to turn off broadcasts.)
+
+==== Managing Github Notifications
+
+How does one reduce the amount of activity in the News Feed.
+
+==== External Tools for Understanding Your Github News Stream
+
+Give the reader some tips for reducing the amount of noise in this
+news stream.
+
+=== The GitHub Command Bar
+
+==== Keyboard Shortcuts are Everywhere
+
+On any GitHub page, then `s` key.
+
+==== Searching for Github Content
+
+Really you could just search in the command bar by typing in a search
+term, but if you really want to be explicit preface your search term
+with 'search'.
+
+* search
+
+==== User Commands
+
+If you are interested in a viewing a user's profile, following or
+unfollowing a user the @user command is a command bar shortcut for
+these operations.
+
+* @user 
+* @user follow
+* @user unfollow
+
+For example, to following Linus Torvalds, type in "@torvalds follow".
+
+==== "my" Commands
+
+Only interested in your own repositories and activities?    Use the
+"my" commands to jump to your own pages.
+
+* my dashboard
+* my issues
+* my notifications
+* my profile
+* my pulls
+* my settings
+* my stars
+
+==== Repository Commands
+
+If you need to view information about a specific repository, just
+preface one of the following commands with "user/repo". 
+
+* user/repo
+* user/repo #123
+* user/repo #search term
+* user/repo @branchname
+* user/repo admin
+* user/repo graphs
+* user/repo issues
+* user/repo issues #123
+* user/repo issues new 
+* user/repo network
+* user/repo pulls
+* user/repo unwatch
+* user/repo watch
+* user/repo wiki
+
+=== The Launch Page
+
+The Launch Page is a simple page that you can use as a starting
+point.  It contains only the Github command bar.
+
+https://github.com/launch
+
+image::images/dashboard-launch.png[]

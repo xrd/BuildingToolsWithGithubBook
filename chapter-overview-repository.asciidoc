@@ -1,0 +1,152 @@
+[[overview-dashboard]]
+== The Github Repository
+
+Maybe the most important screen in Github is the interface for a
+single repository.
+
+Here is the view of a single repository.
+
+image::images/repo-overview.png[]
+
+=== Repository Manipulation: Who Needs a Client?
+
+This is one of the most valuable features...
+
+==== Creating New Files
+
+See that document with a plus sign in it?   Click it.   Yes, you can
+create files in Github.
+
+==== Editing Files in the Github Interface
+
+If Github thinks it can help you edit a file, it will show you an Edit
+button on a file.
+
+==== In-place Edits and Your Teams
+
+Does your project include any documentation, how about a README.   You
+can use in-place editing...
+
+
+=== Repository Activity
+
+==== Repository Commits
+
+The most basic task an SCM tool can do is provide a view into how a
+repository is changing over time.  The following sections outline the
+various tools for exploring repository activity.
+
+image::images/repo-commits.png[]
+
+===== Commits Keyboard Shortcuts
+
+Almost every important screen in Github has a set of keyboard
+shortcuts.   If you are looking at the commit history of a repository,
+these are the...
+
+image::images/repo-commits-shortcuts.png[]
+
+==== Repository Branches and Tags
+
+Git is all about the branches.    
+
+image::images/repo-branches.png[]
+ 
+===== Switching to a Branch or a Tag
+
+image::images/repo-branch-switch.png[]
+
+==== Repository Downloads
+
+image::images/repo-downloads.png[]
+
+===== Download a Repository as a ZIP
+
+In addition to providing a mechanism to upload files, you can also
+download an entire repository as a ZIP.   This is a cheap mechanism
+for exporting a repository without the .git directory.
+
+=== Distributed Collaboration
+
+==== Viewing a Repository's Network
+
+When you have a public Github repository that other developers are
+interested in they will fork it and customize your code.   You can see
+a diagram of these repositories by clicking on...
+
+image::images/repo-network-graph.png[]
+
+This list of repositories is called a network, and you can see a list
+of indivudla members here:
+
+image::images/repo-network-members.png[]
+
+===== Network Graph Keyboard Shortcuts
+
+Network graphs can be very details and can strech back years.   To
+navigate these graphs, here are a set of keyboard shortcuts.
+
+image::images/repo-network-graph-shortcuts.png[]
+
+==== Repository Pull Requests
+
+Pull requests are "the reason for the season."
+
+image::images/repo-pull-requests.png[]
+
+===== Making a Pull Request
+
+This section is covered in detail elsewhere in the book, this is just
+an XREF to it.
+
+===== Pull Request Etiquitte
+
+
+===== Clean Your Branches
+
+===== Document Your Changes
+
+===== Respond in Reasonable Time
+
+===== Merging a Pull Request
+
+image::images/repo-pull-request.png[]
+
+===== How to Encourage Pull Requests
+
+I almost wrote this title as "how to not discourage pull requests".
+What you need to know about pull requests is that no one is forcing
+you to accept a pull request.   If you disagree with a pull request,
+do so politely and also understand that, this is git, whoever forked
+your repository didn't have to ask permission to do so, and the pull
+request was really just a courtesy.
+
+=== Repository Issues
+
+image::images/repo-issues.png[]
+
+==== Creating a New Issue
+
+image::images/repo-create-new-issue.png[]
+
+==== Interacting with an Issue
+
+image::images/repo-issue-interact.png[]
+
+=== Repository Graphs
+
+==== Contributors Graph
+
+image::images/repo-graph-contributors.png[]
+
+==== Commits Graph
+
+image::images/repo-graph-commits.png[]
+
+==== Code Frequency Graph
+
+image::images/repo-graph-code-frequency.png[]
+
+==== Punchcard Graph
+
+image::images/repo-graph-punchcard.png[]

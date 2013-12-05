@@ -1,0 +1,199 @@
+== Github Pages
+
+GitHub Pages are really a very simple idea.  Any 
+GitHub-hosted Git repository can be augmented with a branch called gh-pages. If this branch exists, everything in that branch is published automatically.  This content is then served from GitHub giving you a very
+quick and easy way to serve web pages and other information from
+GitHub.  Various people use this or different reasons.  Some users
+host entire company web sites from GitHub, while other create a web
+site for a specific project or repository.
+
+As with most things GitHub, this feature is as useful as you make it,
+and there are many examples of projects and organizations that use
+GitHub pages to provide compelling web content.  In this chapter,
+we're going to explore a few, simple use cases for GitHub pages as
+well as some advanced approaches to managing and publishing GitHub
+pages with Jekyll.  Jekyll is a static site generator which is used as
+a simple templating engine for publishing web sites and blogs.
+
+=== Hosting a Web Site with Github
+
+When you create an open source project or even a project that isn't
+open source there's always some infrastructure required.  First, if
+you are developing something with source code, you will need a source
+code repository, and there's a good chance that if you are reading
+this book you would choose GitHub to host your project's source.
+
+Now, with a source code repository you can push source, you can keep
+track of changes, and do any number of the things related to your
+project, but source control isn't enough. If you want users and
+community members, if you want to be found, you'll need a web site of
+some sort that tells people what your project does, how to download
+and use it, and how to participate in the project if you have an itch
+to scratch.
+
+Before GitHub, you would need to go find a place to host your
+website. If you were developing the project under an open source
+organization like Apache, you would publish the site on an Apache web
+server, or if you were developing a project for a company, maybe the
+company would stand up a simple web server to host open source
+projects it was sponsoring. Before GitHub you had to worry about
+maintaining a separate piece of infrastructure to host a project's web
+site.
+
+With GitHub Pages, you don't need to worry about another
+piece of infrastructure to host a simple web page.  All you need to do
+is push content to a specially named branch and this content will then
+be published on a website that is then associated with your user,
+organization, of project. While this seems like a simple improvement,
+it saves a ton of effort, and makes it easier for open source
+developers to focus on coding and communicating instead of wasting
+precious cycles on worrying about infrastructure.
+
+There are a number of high profile open source projects which rely on
+GitHub Pages to host project web sites including: Twitter's Bootstrap
+CSS and Javascript library, <Fill this in>
+
+==== Creating a gh-pages branch
+
+The first step to publishing content on GitHub Pages is to create a
+gh-pages branch for a GitHub repository.  This is an easy operation to
+do either from the command-line with Git or from the GitHub web
+interface.
+
+To create the gh-pages branch from the GitHub web interface, see
+<<repo-admin-pages>>.
+
+To create the gh-pages branch from the command-line, run the following
+from your Git repository:
+
+[source,bash]
+.Creating a gh-pages Branch
+----
+$ git checkout --orphan gh-pages
+$ git rm -rf .
+----
+
+Once you execute these two commands, you've switched to a new branch named
+gh-pages. This is a specially named branch for GitHub which will hold
+the contents of your repository's web site. Now, this is something of
+an odd concept, but this is a branch in your repository that is
+designed to hold something entirely different from your code. Usually
+branches are designed to hold related content. For example, you may
+create a feature branch to capture a few days of work on a piece of
+code, or you may create a branch for difference versions of content
+that need to be updated independently.  In this case, it is almost
+like you are creating a separate repository within your repository
+that lives on a specially named repository.
+
+Let me explain? When you run "git checkout" with the "--orphan" flag
+you are creating a new branch "gh-pages" that is an "orphan" commit.
+It is a commit that doesn't have any parents and it entirely
+disconnected from history. After you create this branch with a
+parent-less commit that is entirely disconnected from history, you run
+"git rm -rf ." which removes everything from the Git repository. The
+end result is that the branch gh-pages is now completely detached from
+history and contains nothing. gh-pages is a blank slate to be filled
+with your website content.
+
+==== Pushing Content to a Github Site
+
+Once you've created a gh-pages branch, you'll need to put your site's
+content in this branch.   Here are some commands to publish a simple,
+"Hello, world." web page.  Execute the following commands in your Git
+repository after running the commands to create gh-pages from the
+previous section.
+
+[source,bash]
+.Pushing Content to the gh-pages branch
+----
+$ echo "Hello, world. I am a web page." > index.html 
+$ git add index.html 
+$ git push origin gh-pages
+----
+
+These commands populate a simple HTML page, add it to your git
+repository, and then push your working copy to the gh-pages branch on
+GitHub.  Once this is done, your web site will be available within 10
+minutes.  While GitHub says that sites will be available within 10
+minutes, my own experience suggests that the changes may also be
+available immediately.
+
+==== What is your URL?
+
+You now have a web site available at 
+http://:user.github.io/:project.  If your user name is
+"tobrien" and the project is "github-test", the URL of this site would 
+be http://tobrien.github.io/github-test.
+
+=== Customizing Your Github Site
+
+Now that you know how to create the gh-pages branch and populate your
+site with content let's move on to customizing your GitHub Pages
+site.  In the following sections, you will learn how to serve the site
+from a custom domain, create a custom error page, and generate pages
+with GitHub Pages themes.
+
+==== Using a Custom Domain with Github Pages
+
+Sometimes a URL like http://tobrien.github.io/super-important-project
+just doesn't work for you.  Maybe you want to host your project's web
+site on a custom domain?  If you control the DNS for a domain name,
+all you need to do is create an A record and/or a CNAME record and
+GitHub will happily serve your web site from any domain you desire.
+
+Here are the steps to configuring GitHub Pages to serve content from a
+custom domain.  In the next few sections, let's assume that you are
+attempting to serve your site from the URL http://www.fancyproject.com
+
+Step 1: Create a CNAME File::
+
+    Create a file in the root of your repository in the gh-pages
+    branch named CNAME.  In this file you only need a single line that
+    contains the domain name you are pointing at GitHub.   In this
+    case, you need to put "fancyproject.com" in this file.
+
+Step 2: Create an A Record for Your Site::
+
+    Next, create an A record that points your domain to the IP address
+    "204.232.175.78".  This IP address points at GitHub pages. If you
+    create an A record for "fancyproject.com", GitHub will
+    automatically redirect "www.fancyproject.com" to
+    "fancyproject.com".
+
+Step 3: Wait, then Load Your Custom Domain in a Browser::
+
+    When you change DNS you may have to wait a while for your DNS
+    provider to implement the changes and for these changes to
+    propagate over the Internet. After you are certain that the DNS
+    change in in effect, you can then load your GitHub pages website
+    using your custom domain.   Note that if you are certain your DNS
+    changes were immediate, it'll take GitHub a few minutes to catch
+    up with these DNS changes. If you don't see your custom domain on
+    GitHub just give it 10 minutes and try again.
+    
+==== Creating a custom 404 Page
+
+Simple instructions.
+
+==== Generating a Pages with Themes
+
+Simple instructions.
+
+=== Tools for Creating Github Pages
+
+These sections are just pointers.
+
+==== Using Jekyll
+
+Quick instructions: http://pages.github.com/
+
+Note: Do you know who used Jekyll?   Obama for America used Jekyll, you should too.
+
+==== prose.io a CMS for Github Pages
+
+http://prose.io/
+
+==== Octopress Blog (Jekyll)
+
+https://github.com/imathis/octopress
+

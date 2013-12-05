@@ -1,0 +1,154 @@
+[[started-github]]
+== Getting Started with Github
+
+
+=== What is Github?
+
+A (Very) Brief History of Github
+
+They started with keyboard shortcuts
+https://github.com/blog/1
+
+Then, went on to pull requests
+https://github.com/blog/3
+
+Then, activity feeds
+https://github.com/blog/4
+
+Influencers started noticiing, and joining (https://github.com/rtomayko).
+https://github.com/blog/7
+
+Pricing came late in the game. They had 2000 users before they even started talking 
+about pricing publicly
+https://github.com/blog/7
+
+Engaged thought leaders in a nascent service (technoweenie, Matt Aimonetti: rails core)
+https://github.com/blog/13
+
+API. But, not enough of an API that they could not launch it ASAP. 
+https://github.com/blog/21
+
+Then, they launched.
+https://github.com/blog/40-we-launched
+
+To summarize, GitHub did things the way that most *funded* startups do. Except, they did
+it entirely by bootstrapping. 
+
+GitHub built features by being closely in communication
+with their users. They built features for power users (keyboard shortcuts and pull requests).
+They energized thought leaders (rails core team).
+They thought of revenue as a secondary concern.
+
+Is GitHub a new model of business? Or, simply the way the smartest people (lean startup and 
+angels) in the room have been telling startups they should build their businesses? And, does 
+using GitHub prompt you to adopt these same methods in your startup?
+
+==== Essential Features: What makes Github, Github?
+
+* Team Management
+
+* Code Review
+
+* Public/Private Project Hosting
+
+* Open Source Collaboration
+
+=== Collaboration for Code
+
+==== An SCM does not a community create
+
+Traditional approaches to SCM are decoupled from communication.
+Email, issues trackers, all of these are afterthoughts.  On Github,
+communication and collaboration are part of the platform.
+
+==== How to Scale Open Source
+
+Refer to Torvalds initial response to CVS and Subversion.    The
+problem with centralization is politics not people.
+
+Remove Barriers to Participation
+
+==== Encourage Forking
+
+No one needs permission to scratch an itch.  In a scalable OSS effort
+the ability to not only fork but to continue to incorporate changes is essential.
+
+Sidebar: Is Forking "anti-community"?  Reference this idea from
+Cathedral + Bazaar that forking is seen as a failure.  (It isn't,
+times have changed.)
+
+==== Provide a Platform for Code Review
+
+There is still one distribution of Rails or Node, and an important
+part of distributed development is how changes are evaluated and
+incorporated into these projects.  Github provides a platform for pull
+requests, responses, and code-level comments.
+
+=== Github is for Open Source
+
+The idea of this section is to present a list of important OSS
+projects and make the case that Github has become the center of most
+things interesting in the last decade.
+
+Todo: Ask Edd Dumbhill for a list of important OSS Github repositories.
+
+=== Collaboration for other creative endeavors
+
+This section extends the previous.  Not only is Github starting to
+drive code, it is started to expand into other areas: design, writing,
+government, hardware, and data.
+
+Others?  Music?
+
+==== Github for Graphic Designers
+
+Todo: Ask Rune Madsen for a list of important Github repositories for design.
+
+==== Github for Writers
+
+Todo: Ask Andrew Savikas and Keith Fahlgren for a list of important Github
+repositories in publishing.
+
+==== Github for Legislators
+
+Todo: Ask Alex Howard and Carl Malamud for a list of important Github
+repositories for Government "code".
+
+==== Github for Makers (Hardware)
+
+Todo: Ask Jake Spurlock (?) for some repositories important for Makers.
+
+==== Github for Data
+
+Todo: Ask Julie Steele for a list of important Github repositories in
+the data space.
+
+=== Can you Git without Github?
+
+Sure you can.  Just so that people don't call us unfair, here are some alternatives:
+
+==== Hosted Git Services
+
+* Gitorious (https://gitorious.org/)
+* Bitbucket (https://bitbucket.org/)
+
+==== On-premise Git
+
+* Github Enterprise (https://enterprise.github.com/)
+* GitlabHQ (http://gitlabhq.com/)
+* Gitorious (https://gitorious.org/)
+* Gitblit (http://gitblit.com/)
+
+==== Using Github with other SCMs
+
+Remember, Github is distributed, even if you standardize on another
+SCM, you can still use Git.
+
+* Git as a Local SCM
+* Synchronizing to a Git Repository
+
+Casestudy: The Apache Software Foundation doesn't use Github, but you
+can easily fork and make pull requests via a set of repositories the
+ASF pushes to Github
+
+Briefly talk about the SVN-Git bridge, but don't dwell on it.

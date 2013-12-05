@@ -1,0 +1,730 @@
+[[repo-admin]]
+== Repository Administration
+
+Anyone who creates a repository will eventually have to configure
+them.  This chapter covers some of the common tasks you'll encounter
+as a repository administrator. 
+
+If you have administrative privileges for a repository will should see
+an "Settings" tab in the navigation area of the repository screen.  Click
+on "Settings" to access the repository administration interface.
+
+image::images/repo-admin-link.png[]
+
+=== Basic Administration
+
+Once you click on Settings you'll see an interface which gives you the
+option to rename your repository, configure a Wiki or an issue
+tracker.
+
+image::images/repo-admin-options.png[]
+
+==== Selecting a Set of Features: Wikis and Issues
+
+Every repository can be associated with a Wiki and with a built-in
+Issue tracker.  To configure Issues or a Wiki for repository, simply
+select or deselect checkboxes in the Features section of your
+repository settings as shown in the following figure.
+
+image::images/repo-admin-features.png[]
+
+The following options are available:
+
+Wikis::
+        When you select this option a Wiki tab will be available to
+        users viewing your GitHub repository. Wikis are collaborative
+        documents which are ideal for project documentation and
+        planning purposes.
+
+Restrict edits to Collaborators only::
+         If this option is selected your Wiki will only be editable by
+         users who are listed as collaborators in this project. If
+         this option is not selected any user can make edits to your
+         repository's Wiki.
+
+Issues::
+        GitHub can associate an issue track with your repository. If
+        this option is selected an Issues tab will appear in this
+        repository's navigation bar.
+
+Github provides a simple Wiki interface based on a project called
+Gollum.    This Wiki can be edited either via the GitHub web interface
+or it can be cloned and managed as a Git repository separate from the
+repository it is associated with. 
+
+If you are developing open source software, it often makes good sense
+to allow anyone to contribute edits to your repository's Wiki.  This
+lowers the bar for users interested in contributing documentation to
+your project.
+
+==== Renaming a Repository (if you must)
+
+To rename a repository, simply change the name in the Repository Name
+field contained in Settings and click on Rename as shown in the
+following figure.
+
+image::images/repo-admin-rename.png[]
+
+If your repository is shared with others, renaming a repository is
+generally a very bad idea.  When you rename a repository you break the
+existing URLs people have used to clone a repository and you are bound
+to confuse and upset anyone who depends on your repository.  If you
+are planning on renaming a public repository with active developers,
+you should likely provide notice of the change to people who may have
+cloned copies of a repository.
+
+==== Changing the Default Branch
+
+If you are familiar with Git you understand that "master" is the
+default branch for a new repository. If "master" just doesn't feel
+right or if you'd like pull requests to be made against a different
+branch, you can change the default branch.  To change the default
+branch your repository must already have the branch you want to switch
+to.  Just select the new default branch in the dropdown until the
+Repository Name field in Settings.
+
+A note of caution: think about the consequences of changing the
+default branch before you just do this.  Again, you are changing your
+repository to present a different interface than the standard, and if
+you are not careful about communicating this to collaborators you may
+cause confusion. Most git users are so used to pushing to "master" it
+is burned in muscle memory. It may not make sense to fiddle with this
+setting unless you really know what you are doing.
+
+[repo-admin-pages]
+=== Automatic GitHub Page Generator
+
+GitHub is more than a source code management system for Git
+repositories. It provides wikis, issue management tools, and GitHub
+pages. A GitHub page is simply an HTML page that is served from GitHub
+at a URL following the pattern:
+http://github_id.github.io/repository_name
+
+For example, if the user "tobrien" published a set of GitHub pages for a repository with
+a name of "context", those pages would be served from
+http://tobrien.github.io/context/.
+
+You can create a set of GitHub pages for a repository by pushing HTML
+to a branch named "gh-pages", or you can use the Automatic Page Generator
+to get started.  To use the Automatic Page Generator, go to repository
+settings, and look for the GitHub Pages section.  Click on Automatic
+Page Generator as shown below.
+
+image::images/repo-admin-auto-page.png[]
+
+If you have already created a set of GitHub pages, this interface will
+look a little different.  Instead of a section for creating a new
+GitHub page, you'll see a section called "Update your site".  If you
+click on this button you can then edit an existing GitHub Page in an
+easy-to-use, web-based user interface.
+
+[NOTE]
+====
+When you use the automatic page generator on a private project you
+need to be aware that you are publishing a public web page for a
+project that is otherwise inaccessible. If you are working with a
+sensitive, private project be careful what buttons you press in this
+section as you could inadvertently expose private information to the public.
+====
+
+==== Creating or Updating a New GitHub Page
+
+If you are looking for a simple way to create a single page for your
+repository, GitHub Pages offers a very simple form asking you to set
+the Project Name, Tagline, Body, and Google Analytics ID.  Fill out
+this information and click on "Continue to Layouts".
+
+image::images/repo-admin-create-page.png[]
+
+Once you've created a page GitHub then presents you with a selection
+of themes to choose from.   Once you've selected a theme, click on
+"Publish" as shown in the following figure.
+
+image::images/repo-admin-theme-page.png[]
+
+Once your page is published you will see a notice the next time you
+view your repository in GitHub.  After you've created this site you
+can update it via the repository settings or you can just commit
+changes to the gh-pages branch of your repository.
+
+=== The Danger Zone
+
+On the repository settings page, you'll notice a section that is set
+apart from the others with a bold red header that reads "The Danger
+Zone".  Take heed of these visual cues, because the Danger Zone is
+just that - dangerous.  Here you can delete a project, give it away,
+or expose your code to the public.  Github understands the risk, and
+because of this every action in the Danger Zone requires explicit
+authorization and confirmation.
+
+image::images/repo-admin-danger.png[]
+
+[NOTE]
+====
+Every time I have to edit a setting in this section, I start humming
+Kenny Loggins. Maybe you are not old enough to remember this?  Maybe
+you are?  Here's a link in case you need a refresher:
+http://open.spotify.com/track/2CJtimCSGAn8x6RE3irZFV
+====
+
+==== Making a Repository Public or Private
+
+GitHub repositories are either public or private.  To transition a
+repository to public or private, click on either the "Make private" or
+the "Make public" button as shown in the Danger Zone.  To prevent an
+accidental state transition from either private to public or public to
+private GitHub will show you a modal dialog and ask you to type in the
+name of the repository.
+
+If your repository is public and you make it private you will
+permanently lose all stars and watchers of this repository. If your
+repository is private and you make it public it will be visible to
+everyone, other users will be able to clone and fork your repository,
+and your changes will be visible to others.  Here's another reminder
+to be careful - you are in the Danger Zone.
+
+==== How to Transfer Repository Ownership
+
+Maybe you started out with a personal account and you want to transfer
+ownership of a repository to an organization? Or, maybe you are just
+sick of a project and want to pass responsibility to someone else?
+Whatever the reason GitHub makes it easy to transfer a repository from
+one acount to another.  Click on Transfer in the Danger Zone and you
+will be presented with the following dialog.
+
+image::images/repo-admin-transfer.png[]
+
+In this dialog box you will need to type in the name of the
+repository.  This precaution is necessary to make sure that you really
+intend to transfer ownership.  Once you've typed in the name of the
+repository supply the GitHub login id of the account you wish to
+transfer this repository to.
+
+[NOTE]
+====
+For years, GitHub was adopted by the industry through independent,
+"rough" developers just getting tired of working with internal source
+code management tools. These developers would often just develop on a
+private GitHub repository and then sync with an internal SCM when they
+were finished. When companies finally wake up to the glorious
+perfection of GitHub they usually want you to transfer ownership of a
+GitHub repository to a GitHub account - this is one example displaying the utility of the transfer feature.
+====
+
+==== Deleting a Repository
+
+Maybe you've forked a repository, made a pull request, and now you've
+decided that you are done with it?  Maybe you have decided that a
+repository is no longer necessary? or maybe your project angers you?
+In all of these cases the appropriate action may be to delete a GitHub
+repository.
+
+To delete a GitHub repository click "Delete" in the Danger Zone.  Note
+that this action isn't to be taken lightly.  If you do choose to
+condemn a repository to this fate you should know that this action is
+entirely irreverisible. If, moments after a successful deletion, you
+realize that you have just thrown out something of incredible value,
+you are out of luck.
+
+Nothing can be done to recover a deleted project.  So, be careful.  As
+with all other actions in the Danger Zone, GitHub will ask you to
+confirm the action by typing in the name of the repository.
+
+=== Managing Access to an Individual Repository
+
+When you create a repository you are the only once who has push
+privileges to that repository.  To grant other GitHub users push
+privileges you will need to either configure a team for an
+organization that owns a repository or you will need to grant them
+access to a repository as a collaborator.
+
+To grant access to collaborators, click on Settings for your
+repository, then select "Collaborators" from the navigation menu on
+the left side of the interface.  You should then see an interface that
+resembles the following figure.
+
+image::images/repo-admin-collaborators.png[]
+
+To add a new collaborator, type the first few characters of the GitHub
+user's id into the text field next to the Add button. As GitHub
+locates a matching account it will display a list of accounts to
+choose from. Once you've located the appropriate acount click on the
+Add button. At this point, the collaborator will likely receive an
+email notifying them that you added them to a repository. These
+collaborators can now push to this repository.
+
+==== Teams vs. Individuals: What's Appropriate?
+
+Working with collaborators just won't scale beyond a handful of
+projects.  If you are working at a company that has many development
+teams with access to tens, hundreds, or thousands of projects,
+managing individual repository collaborator lists is going to get old, quick.
+
+If, on the other hand, you are working on one of two projects as an
+individual or you have an open source project with only a handful of
+contributors, you might not need the overhead of an organization.
+
+When you don't have an organization with teams there is no way for you
+as a repository owner to add a collaborator with administrator
+privileges to the repository. While it is possible to run an
+organization's GitHub activity from an individual's account the lack
+of teams and the inability to assign administrative access to any
+other user is often the factor that motivates a company to move from
+individual accounts to a shared, organization account.
+
+==== Strategies for Managing Collaborators
+
+The following sections provide some guidance for configuring
+repository security in GitHub for different kinds of projects both
+open source and corporate.
+
+===== How to manage access to Open Source Projects
+
+Whenever I'm in a meeting and some managers says something like, "Are we following
+open source best practices?" I can't help but snicker a bit. There is
+no such thing as "open source best practice" because there are a
+thousand different flavors of open source project.  There's everything
+from the one-person despotism model to projects run by open source
+foundations like Apache which can take years and years to make simple
+decisions by consensus.  I'll focus on these two extremes, but you
+should also understand that there are limitless shades of grey between
+these two options.
+
+Assume you run a one-person open source project.  You wrote an
+important piece of Ruby or Javascript code and you made it available
+to the world.  You don't operate the project under any sort of
+umbrella organization such as the Eclipse Foundation or the Free
+Software Foundation, and you are not writing this code on behalf of a
+company.  Unless you have a desire to share administrative privileges
+with another user, you can simply manage contributors using simple
+collaborators on the repository settings interface.   If you do want
+to spread out the responsibility for administration you should upgrade
+to a Bronze plan and create teams within an organization.
+
+On the other end of the spectrum are projects at open source
+Foundations like Eclipse and Apache.  If you are running a project at
+one of these organizations it is very likely that there is already an
+organization on GitHub.  Most open source foundations exist to provide
+a neutral legal entity that to which intellectual property can be
+assigned which isn't under the specific control of a single commercial
+entity.  In these cases it is critical that your organization maintain
+a GitHub organization and that you avoid hosting repositories in
+individual accounts.
+
+===== How to manage access during Commercial Development
+
+If you work for a company that is using GitHub the decision is obvious
+- use an organization and create teams.  Software development teams
+are too numerous and constantly changing to have to worry about
+managing repository-specific collaborators.  And, no matter what the
+size of your teams, if you have two developers or 20,000, making the
+organization the owner of the repository is more stable than relying
+on individuals to be stewards of your code.
+
+What is meant by "commercial development"? In this section we're
+discuss any development in GitHub that is being done on behalf of a
+company. Although there is nothing explicit in the Terms of Service,
+in the opinion of this author, if you are using GitHub for a
+commercial purpose you should have an paid account with an
+organization. GitHub's free service is great for individuals and open
+source projects, but don't try to get around the limitations of
+personal accounts to take advantage of the platform for commercial
+purpose.  For starters, it's classless, GitHub is a company that has
+given back to the community and you should be supporting them if you
+use this platform to engage in commerce.  Second, you could get in
+trouble if you attempt to skirt the limitations of personal accounts
+for commercial use.
+
+[NOTE]
+====
+If you are planning on just using a single login to mimic the features
+of a corporate account you should know that GitHub's terms of service
+are very explicit about requiring every account to map to one and only
+one person.  If you were planning on creating an account for your
+company and just sharing the password, this is going to fall far
+outside the Terms of Service and you would be at risk of having this
+account suspended.  Here's the important passage from the Terms of
+Service:
+
+Term 4: "Your login may only be used by one person - a single login shared by
+multiple people is not permitted. You may create separate logins for
+as many people as your plan allows."
+
+Term 7: "One person or legal entity may not maintain more than one free account."
+
+====
+
+=== Managing Repository Deploy Keys
+
+Deploy keys are SSH keys created for systems, scripts, and other
+systems that need to be granted read-write privileges to your
+repository.  Deploy keys can be useful in any of the following
+situations (and many more)
+
+Continuous Integration Servers::
+           Continuous Integration Servers are servers which watch your
+           repository and trigger builds in response to commit
+           activity.  They can be used to run the entire build and any
+           accompanying tests continuously - this means that you are
+           always making sure that your codebase is ready to be
+           deployed and it also helps to identify problems as soon as
+           they have been introduced into a system. It is common for
+           continuous integration servers to both read Git
+           repositories during a build, but it is also common for
+           Continuous Servers such as Jenkins to offer the ability to
+           automate and test branch merges pushing the resulting
+           branch back to GitHub when the process is completed.
+
+Automated Build and Release Scripts::
+          Maybe you have a shell script that automates a build and
+          deploys a system to production? Or, maybe GitHub is at the
+          center of a custom approach to managing infrastructure. In
+          these cases you may have scripts which require both read and
+          write access to a GitHub repository.
+
+Deployment Automation Tools::
+           Tools such as Chef, Puppet, and CFEngine are increasingly
+           configured to interact with Git as a source of code to
+           compile and deploy or configuration stored in Git. These
+           tools will often need both read and write access to GitHub,
+           and deploy keys give you this option without having to copy
+           a user's private key.
+
+Both of the situations outline above could easily be solved by simply
+copying your own, personal SSH key to some server and just configuring
+a continuous integration server or a script to assume your
+identity. The problem with this approach is that, in doing so, you've
+created a security risk. Instead of locking down access to a single
+repository, you've simply extended your own access rights to a shared,
+automated system. If someone wanted to compromise all of your
+repositories they could simply copy your SSH key and use it to access
+everything else you have access to. 
+
+In general, it is a bad idea to distribute your personal SSH key to
+anyone, and it is a very bad idea to lend your identity to a piece of
+infrastructure or a release script.  What if someone compromises this
+script? In this world the only real thing you have is your good name,
+why lend it to Jenkins?  If you are going to give access to something
+like a CI server you'll need to either create a role account or use a
+Deploy Key.
+
+For this reason, GitHub gives you the ability to store a Deploy Key.
+To use a Deploy Key for a server you will need to create a new SSH key
+and configure the server to use this key.   Once you've created a new
+public and private SSH key pair, navigate to your repository's settings and
+click on "Deploy Keys" in the settings navigation menu on the left
+side of the interface.  You will see a form that accepts a Deploy Key
+name as well as the contents of your newly created SSH public key.
+Store the deploy key here and your continuous integration server or
+custom release script will then have the ability to clone, pull, and
+push to your GitHub repository.
+
+image::images/repo-admin-deploy-key.png[]
+
+Should you use Deploy Keys or Role Accounts? If you have hundreds of
+projects and you need to manage programmatic access to these
+repositories, you may want to simply create a role account.  This will
+be a separate identity on GitHub and you can freely add this identity
+to any organization teams you have created to manage access to your
+repositories.
+
+[NOTE]
+====
+Role accounts are against the GitHub Terms of Service, but
+they've stated explicitly that they are acceptable. Even though your
+lawyer will tell you to believe the Terms of Service, I believe the
+GitHub documentation.
+====
+
+Once of the downsides of deploy keys is that you cannot use the same
+key twice in two different repositories.  If you try to you will get
+an error "Key already in use", and you will then have to create a
+different, unique deploy key for every repository you'll need to
+access programmatically. If you are using more than a single
+repository this isn't just a pain in the neck, it is an unmanageable
+situation.  If managing deploy keys becomes a hassle, create an
+organization and a role account to manage programmatic access with teams.
+
+=== Repository Service Hooks
+
+image::images/repo-admin-service-hooks.png[]
+
+Explain them all, do it...
+
+==== Simple Integration, REST, HTTP
+
+* WebHook URLs (0)
+
+===== With Webhooks, the Possibilities are Endless
+
+Talk about how you could use Webhooks to write your own integrations.
+
+===== Integration Possibilities
+
+Create an idea list here.
+
+==== Project Management Tools
+
+* ActiveCollab - http://www.activecollab.com/
+* Acunote - http://www.acunote.com/
+* AgileBench - http://www.agilebench.com/
+* AgileZen - http://www.agilezen.com
+* Backlog - http://backlogtool.com/
+* BasecampClassic
+* Basecamp
+* ScrumDo
+* Trello - https://trello.com/
+* ZohoProjects
+
+===== Keeping Management Happy with Github
+
+Talk about how managers often want to track progress and how Github
+adapts to the various tools
+
+===== Project Management Possibilities
+
+Create an idea list here.
+
+==== Infrastructure/Messaging
+
+* Amazon Simple Notification Service (SNS) -
+  http://www.activecollab.com/
+* AMQP - http://www.amqp.org/
+* Email
+
+===== Github as a Gear in a Mighty Machine
+
+Discuss some of the uses for Github as a source of messages.  How you
+could use Github as a foundation for an asynchronous workflow.   
+
+===== Messaging Possibilities
+
+Create an idea list here.
+
+==== Customer Support
+
+* Apoio - http://www.apo.io/
+* Zendesk
+
+===== Github is for Customers?
+
+Yes, yes it is.
+
+===== Customer Service Possibilities
+
+Create an idea list here.
+
+==== Cloud and Platform-as-a-Service (PaaS)
+
+* AppHarbor
+
+===== Github is All Up in Your Cloud
+
+If you use a PaaS service like EC2 or AppHarbor discuss how Github can
+be integrated into your cloud deployment strategies.
+
+===== Cloud Possibilities
+
+Create an idea list here.
+
+==== Task/Issue Management
+
+* Asana - http://asana.com/
+* BugHerd - http://www.bugherd.com/
+* bug.ly - http://bug.ly/
+* Bugzilla
+* FogBugz
+* Jira
+* Trac
+* Unfuddle - https://unfuddle.com/
+* YouTrack - http://www.jetbrains.com/youtrack/index.jsp
+
+===== Issue Management Possibilities
+
+Users are looking for some guidance here.   Create an idea list that
+will get people thinking...
+
+==== Continuous Integration
+
+* Bamboo - http://www.atlassian.com/software/bamboo/overview
+* Jenkins (GitHub plugin)
+* Jenkins (Git plugin)
+* TeamCity
+* Travis - https://travis-ci.org/
+
+===== When this Code Changes, Build!
+
+Discuss (briefly) the importance of CI systems and how a close
+connection between SCM and CI systems is essential.   Reference other
+O'Reilly books that cover CI.
+
+===== Continuous Integration Possibilities
+
+Users are looking for some guidance here.   Create an idea list that
+will get people thinking...
+
+==== Chat and Instant Messaging
+
+* Amazon Simple Notification Service (SNS) -
+  http://www.activecollab.com/
+* Campfire
+* IRC
+* Jabber
+
+===== Github us Just Another Member of Your Team
+
+Talk about how having persistent chat room is how things get done, and
+then talk about how a common pattern is to have Github sit in on your chatroom.
+
+==== Social Networks and Microblogging
+
+* buddycloud (Github plugin) - http://buddycloud.com/
+* Boxcar - http://boxcar.io/
+* Co-Op - http://coopapp.com/
+* FriendFeed
+* StatusNet - http://status.net/
+* Twitter
+* Yammer
+
+===== Everyone's all a-twitter about Your Repositories
+
+Talk about how Twitter is a popular way for people to discuss and
+reference code.     Discuss the emergence of these internal
+twitter-clones such as Yammer.  
+
+Briefly touch upon the fact that there's only an arbitrary difference
+between status and chat.
+
+===== Possibilities for Twitter, FriendFeed, etc.
+
+Create an idea list here.
+
+==== Build Gamification
+
+* Buildcoin - http://buildcoin.com/
+
+===== Development as a Game
+
+Well I certainly hope this doesn't catch on, but we should likely
+explain it a bit.
+
+===== Gamification Possibilities
+
+Create an idea list here.
+
+==== Infrastructure Monitoring
+
+* CopperEgg - http://copperegg.com
+
+==== Code Quality and Analysis
+
+* CodeClimate - https://codeclimate.com/
+
+==== Code Conversion
+
+* CodePorting-C#2Java  - http://codeporting.com/
+
+==== Documentation
+
+* CoffeeDoc.info - http://coffeedoc.info/
+* Weblate - http://weblate.org/en/
+* WebTranslateIt - https://webtranslateit.com/
+
+==== Telephony and Voice Systems
+
+* Twilio - http://www.twilio.com/
+
+==== TODO: Uncategorized
+
+Tim: I'm going to categorize all of these.   This has been something
+I've wanted to do for years now because I think it would be a valuable
+asset.  If we could work this into the book and make this section a
+sort of an "idea book" for how to integrate Github into your
+infrastruction it will move inventory.    I've been looking for this
+to help convince clients to adopt Github.
+
+
+
+
+
+* Cube
+* Ducksboard
+
+* Fisheye
+* Flowdock
+* Freckle
+* Gemini
+* Gemnasium
+* geocommit
+* GetLocalization
+* gitlive
+* Grmble
+* GroupTalent
+* Grove
+* Habitualist
+* Hall
+* Harvest
+* HipChat
+* Hostedgraphite
+* Hubcap
+* HubCI
+* Humbug
+* IceScrum
+* Irker
+* Jaconda
+* Kanbanery
+* Kickoff
+* Lean-To
+* Lighthouse
+* Lingohub
+* Loggly
+* MantisBT
+* Masterbranch
+* MQTT publish
+* Notify My Android
+* Nodejitsu
+* Notifo
+* OnTime
+* Pachube
+* Packagist
+* PivotalTracker
+* Planbox
+* Planio
+* Presently
+* Prowl
+* PuppetLinter
+* Pushover
+* PythonPackages
+* Railsbp
+* RailsBrakeman
+* Rally
+* RationalTeamConcert
+* Rdocinfo
+* ReadTheDocs
+* Redmine
+* Rubyforge
+
+* ShiningPanda
+* Slatebox
+* SnowyEvening
+* Socialcast
+* SoftLayerMessaging
+* Sourcemint
+* SplendidBacon
+* Sprintly
+* SqsQueue
+* Stackmob
+* Talker
+* TargetProcess
+* Tender
+* TestPilot
+* Toggl
+* Trajectory
+
+
+  
+
+
+
+
+

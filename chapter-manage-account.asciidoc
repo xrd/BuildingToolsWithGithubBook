@@ -1,0 +1,548 @@
+[[manage-account]]
+== Profiles and Account Management
+
+In Github there are two types of accounts: individual and
+organization.  Most GitHub users will only ever have an individual
+account this is the account you created when you signed up for GitHub,
+selected a username and a password, and it is associated with a
+profile which is your identity in GitHub.  This chapter covers the
+management of this profile and the various options that are available
+for individual accounts.
+
+=== Viewing a User Profile
+
+Viewing anyone's profile is easy, just append a user's username to the
+GitHub URL.  For example, to laod the profile page for Linux Torvalds
+go to http://www.github.com/torvalds.  The creator of the Linux Kernel
+will be staring back at you alongside his popular repositories,
+location, most used languages, organization, number of followers, and developer
+contribution activity.  You can learn quite a bit about a developer
+from a GitHub profile, and the public profile has been designed to
+feature a user's open source contributions.
+
+image::images/user-profile.png[]
+
+The amount of information displayed on a user profile changes depending
+on the relationship you have with another user and depending on what
+he or she is sharing with you.  For example, if you load your own
+GitHub profile, you'll see everything including private repositories
+and a list of contributions that spans both public and private
+repositories.  The information displayed on a user's profile changes
+depending on the level of access a user has to information about a
+user.  For example, if you are a member of an Organization's team
+which grants access to a collection of private repositories, you will
+be able to view another user's contributions to this library on the
+GitHub user profile page.
+
+==== Follow Statistics and Stars
+
+This area advertises how many developers someone is following as well as
+how many are following them.  It also lists the repositories a
+particular user has starred.
+
+Followers::
+
+    Clicking on followers will show you a list of the users who have
+    decided to follow this user.
+
+Starred::
+
+   Click on "starred" will display a list of repositories this use r
+   has "starred".  What is the significance of a star? The definition
+   is really up to you.  Some users may think they are providing a personal
+   endorsement to a particular repository while others may hand out
+   stars for anything they are interested in.  Think of staring as a
+   repository as you would a Facebook "like" or a Google+ "+1".
+
+Following::
+
+   Click on following will show you which users this user is
+   interested in enough to follow.
+
+[NOTE] 
+Now statistics like "How many followers" does so-and-so have
+and "How many are they following" always remind me of middle school,
+but there is some value to the metric.  Just look at systems like
+Stack Overflow which have succeeded at turning expertise into a
+measurable statistic. Clearly you can get carried away in a world that
+is constantly focused on how many Facebook, Twitter, GitHub followers
+you have, but when you are looking at someone's collected body of work
+on GitHub it helps to also understand that they have attracted a large following.
+
+==== Tracking Platform
+
+This is the social aspect of Github that makes this platform very
+diferent from every other open source community that has came before
+it.   The ability to keep track of interesting developers and find out
+what they are working on gives you the ability to follow particularly
+innovative people and find particularly innovative projects.
+
+image::images/user-public-activity.png[]
+
+For example, you can keep track of Linus Torvald's activity on the
+Linux Kernel while, at the same time, keeping track of the what the
+core Rails team is paying attention to.   Not only can you track how
+many followers a particular user or project has amassed, you can also
+drill into the list of followers.  On GitHub there is no ability to
+follow a user privately. When you follow or star a project, you do so
+publicly.
+
+This ability to measure different kinds of activity and interest in
+repositories means that you can start to learn from the wisdom of
+GitHub's crowd. In an industry that can change on a dime this ability
+to see what the crowd is watching helps you identify trending
+languages and libraries in a way that is empircal.  You don't have to
+rely on seeing an article published by a company in an
+advertising-driven web site to understand that there is a huge number
+of projects and people paying attention to Twitter Bootstrap.  No, the
+number of forks and the fact that it is the most forked project on
+GitHub are all the proof you need that something about that project is
+worth paying attention ti.
+
+.Leaking Information, GitHub-style
+[NOTE]
+A word of caution: If you use GitHub for a combination of both open
+source and proprietary development, you should take time every few
+weeks to make sure that your public profile isn't leaking proprietary
+information or information that was never mean to be shared. Shortly
+after GitHub released its powerful Search API in 2013, there was a
+controversy when people started searching for private SSH keys (files
+which are never meant to be shared with anyone). Many users were
+versioning a home directory and inadvertantly sharing very private
+information in a public repository. When using a platform that
+straddles both the private and the public, you'll want to make sure
+that you take some time to view your own profiles and repositories as
+an unauthenticated, anonymous user.
+
+
+=== Editing Your User Profile
+
+To edit your profile, click on your username in the upper right-hand
+corner of the GitHub interface.  This will show you your own profile,
+at this point click on the "Edit Your Profile" button and you will see
+a form resembling the one shown below.
+
+image::images/user-edit-profile.png[]
+
+The Public Profile form contains the following fields, many of which
+are self-explanatory.
+
+Name::
+    Your name if you have one.  (An important thing to know is that
+    you've agreed to supply your full name as a part of the GitHub
+    terms of service.)
+
+Email::
+    GitHub allows you to specify any number of email addresses.  If
+    you are a member of several organizations in GitHub, you will
+    frequently have various email addresses associated with a single
+    GitHub account.  This field on the Public Profile page is for the
+    email address which will be listed as your one, public emails
+    address.
+
+URL::
+    This is a URL that will be associated with your account. Often
+    users will list a personal blog or a company website.
+
+Company::
+    If you choose to associate your GitHub account with a company, you
+    can list it here.  Not that you may also be a member of one or
+    more GitHub organization teams.  Your members on these teams
+    doesn't have to line up with the Company listed on your profile.
+
+Location::
+    Should you choose to share it, you can supply a Location to
+    GitHub.  Most people either list a country, a city, a state, or a
+    combination thereof.
+
+==== Creating a Profile Picture with Gravatar
+
+Maybe you've updated the Gravatar Email and noticed that your profile
+picture is already populated.  Maybe you haven't.  If you understand
+what Gravatar is, you'll understand why your profile picture is
+already populated.  If you don't know what Gravatar is, read on.
+
+Your image on Github, it is from Gravatar.   Gravatar is an abbreviation for
+a "Globally Recognized Avatar."  An iconic picture which is associated
+with your email address.  Gravatar (http://www.gravatar.com) is a
+service from The Automattic Team - the team behind Wordpress, Akismet,
+IntenseDebate, and a number of other popular services. Oh, and Automattic 
+got this service by purchasing it from Tom Preston Warner, the founder 
+of GitHub.
+
+To upload a new avatar associated with your email address follow these
+steps:
+
+. Go to Gravatar in a browser at http://www.gravatar.com
+
+. Type in your email in the text-field shown on Gravatar's site
+
+. Click on "Get Your Gravatar" and follow the instructions
+
+At this point, you will be able to upload one or more images to your
+Gravatar account and assign a content rating to your newly uploaded
+avatar.  This image will follow you around the web whenever you use
+services that are integrated with Gravatar including GitHub,
+WordPress, Hootsuite, and StackOverflow.  If you don't have one, go
+get one. People want to know what you look like.
+
+Gravatar Email::
+    This field is available on your GitHub profile and it is the email
+    address GitHub uses to retrieve your avatar from Gravatar.  Note
+    that the contents of this field are not shared on your public
+    profile.  If you want to list a public email on your GitHub
+    profile that is different from your Gravatar email address, go
+    right ahead.
+
+==== Managing Your Organizational Associations
+
+While you are editing your profile, take a look at the left-hand menu
+and you will see a link for Organizations.  While the Profile option is
+the first item in this menu, the Organizations item is the last option
+in this menu. Click on this menu item and you will see a list of
+organizations that list you as a member.
+
+When you maintain an organization you have the power to add any GitHub
+user to a team, and teams are used to group people and assign
+privileges to specific repositories. Organization administrators have
+the ability to associate you with any organization, but what if you
+want to leave an organization?   That's where this interface comes
+into play.  This organizations page exists for you to see a list of
+the organizations that include you on a team and allow you to leave an
+organization.
+
+Maybe you are a consultant that works for many clients and your time
+with a particular time has come to an end?  Maybe you are a consultant
+trying to send a message to a client that has decided not to pay your
+bill on time?  Maybe you are looking for a creative way to quit your
+current job?  If you want to leave an organization, click the Leave
+button and enjoy, and don't let the door hit you on the way out.
+
+image::images/user-orgs.png[]
+
+[NOTE]
+Leaving an organization is a dramatic thing.  When you leave an
+organization, GitHub is going to remove from all Organization teams
+and you'll be unable to see any private activity within that
+organization.  Don't play with this button and don't leave an
+organization unless you know what you are doing. One wonders why this
+button isn't in the Danger Zone?
+
+==== Advertising Organization Membership
+
+Your association with an organization is two-way street.  Just because
+an organization has included you on a team, this doesn't mean that
+your associate with this organization is going to appear on your
+public profile. For this to happen, one of two things will have to
+happen:
+
+. One of the Owners of the Organization will need to publicize your
+membership in the organization.
+
+. You will need to publicize your membership in an organization.
+
+To publicize your membership in an organization, go to the members
+page of this organization.  For example, I'm a member of the Tomitribe
+organization, to publicize my membership I would go to
+https://github.com/tomitribe?tab=members and then click on Publicize
+Membership.
+
+image::images/user-publicize.png[]
+
+Once I clicked on that button, an event would be added to my timeline,
+and the Tomitribe membership would then be listed on my public
+profile.  If I changed my mine and wanted to conceal my membership in
+the Tomitribe organization I would return to the same page:
+https://github.com/tomitribe?tab=members - and I would then click on
+the Conceal Membership button.
+
+.To Advertise or Not to Advertise Organization Membership
+[NOTE]
+Just because you are associated with an organization, it doesn't mean
+that everyone needs to know about it. If you are working for an open
+source company - a company that supports open source development via
+commercial support - it makes perfect sense to advertise your
+association with an organization.  If you are associated with an open
+source foundation, it makes perfect sense to advertise that. On the
+other hand, if you are a member of an organization that is doing work
+for the CIA, you may not wish to advertise that association.  GitHub
+built in the ability to publicize or conceal membership in
+organizations because it respects the idea that everyone should be
+able to exert some control of the public interface they provide to the world.
+
+=== Changing Account Settings
+
+In the previous section you learned how to change the information in
+your profile, in this section you'll learn how to change your account
+settings, your password, and your username.
+
+To edit your account settings, click on the tool icon in the upper
+right-hand of the GitHub interface.  This will load the Edit Profile
+page.  In left-hand navigation menu, click on Account Settings.  Now
+the Account Settings form is a bit of a dangerous place, here you can
+change your password, your username, or, if you really want to, delete
+your account.
+
+image::images/user-account-settings.png[]
+
+To change your password, you'll need to supply your current password
+once and your new password twice for confirmation.  Once you've
+supplied your new password twice, click on Update Password to change
+your password.  This section of the form also provides a password
+recovery link - if you need to recovery your password, click on the "I
+forgot my password" link next to the Update Password button.
+
+.Choose a Good Password
+[NOTE]
+GitHub isn't picky about passwords, and it is up to you to choose a
+good password.  GitHub's minimum standards are seven characters with
+at least one number. Don't let GitHub's reliance on SSH keys convince
+you that it is security, if someone were to gain access to your GitHub
+password they could exact some real damage. Choose a strong password.
+
+
+==== Changing Your Username
+
+Do you really want to do this?  No, really? You change your name on
+GitHub and everyone who knows you as "razzmatazz" is going to have to
+learn to call you "b1gdawg". Everyone who has grown used to seeing
+your commits is going to have to learn to recognize under this new use
+name.  Really, even if you think things are going to be better after
+your magical username change, please understand that this is going to
+change your interface to the public.  Think twice, this has some real
+side-effects.
+
+=== Email and Notifications
+
+There are some interesting nuances in Github when it comes to email
+addresses and notifications.    If you have to maintain multiple
+email addresses, say for work and then for personal OSS contributions,
+Github gives you the option to do this and then to route specific
+emails to specific accounts. 
+
+==== Working with Multiple Email Addresses
+
+It isn't uncommon for people to have multiple addresses for a number
+of reasons.  Consultants who work on long-term projects often get an
+email address under a client's domain, developers who contribute to
+open source projects often have an email address specific to a
+foundation such as Apache or Eclipse, and almost everyone has at least
+two email addresses - a personal email address and a work email
+address.
+
+GitHub is smart enough to understand that your GitHub identity, you
+profile, needs to be flexible enough to allow for multiple email
+addresses.  GitHub also needs to make sure that your identity, your
+email address remains consistent when you are contributing to
+different projects in different organizations. For example, if you are
+working on a personal, hobby project you need to able to tell GitHub
+to use your personal address.  On the other hand, if you are
+contributing to a project via an organization that you work for,
+you'll want GitHub to send notifications to your work email.
+
+To manage your email address, go to your Account Settings then click
+on Emails.   On this screen you will see a list of all email address
+associated with your account and a green "Primary" badge next to the
+email that is to be used as your primary email address.
+
+image::images/user-email-addresses.png[]
+
+When you add a new email address to your GitHub account you will be
+asked to verify that email address.   GitHub will send you an email
+with a confirmation, once you verify an email address it can be used
+in GitHub as a primary or as an email to route organization activity to.
+
+
+.Keeping Your Email Private
+[NOTE]
+Some people don't want the whole world to know an email address.  If
+you are want to keep prying eyes away from your email address. Check
+the "Keep my email address private". When GitHub sends out an email on
+your behalf it will use a bogus email address instead of your real
+email address.
+
+
+==== Managing Notifications
+
+Depending on how popular you are with the developers, GitHub can be a
+very chatty source of email.  Every time someone mentions you in a
+comment or a commit with an @ sign in front of your GitHub username
+GitHub's default configuration will send you a notification email and
+also notify you via the browser. If people are constantly mentioning
+you, you may want to disable this notification preference.
+
+You are also sent and email and a web notification anytime a
+repository you are watching changes.  If you are watching a lot of
+repositories, this steady stream of email notifications can quickly
+grow to be unmangeable and overwhelming.   To manage your notification
+preferences, go to Account Settings and then click on Nofitication
+Center in the left-hand navigation menu.
+
+image::images/user-notifications.png[]
+
+From this interface, you can configure GitHub not to send
+notifications of these events.  You can also configure GitHub not to
+send a browser alert in the event of a notification.
+
+==== Custom Email Routing for Organizations
+
+When you are associated with many organizations and when you have
+multiple emails that correspond to these organizations it makes good
+sense to route organization-specific notifications to your verified
+organization email address.  For example, if you have a personal email
+address for your own projects and a work email for your work
+organization's project you can configure GitHub to send any
+notifications dealing with your work organization to your work email
+address.
+
+In the Nofication Center shown in the previous section there is a
+space for custom routing rules.  A custom routing rule associates all
+notifications that original from an organization's repositories with a
+specific email.
+
+=== Account Security
+
+There are two ways to use Git with GitHub, you can use the HTTP
+protocol to clone and push to repositories, or you can use git over
+SSH.  When you use HTTP, you are asked to supply a username and
+password with your request, and for many non-technical users, this is
+the best approach to GitHub security. 
+
+For more technical users of Git and GitHub, ssh keys provide the
+safest approach to authorization against a GitHub hosted repository.
+
+==== Your SSH Keys
+
+Maybe a brief discussion of what an SSH Key is for those who don't yet know.
+
+image::images/user-ssh.png[]
+
+===== How to create an SSH Key
+
+If you have ssh installed on a unix-variant such as OSX or Linux, the
+command to generate a new SSH key is:
+
+----
+$ sss-keygen -t rsa
+----
+
+Easy instructions, assume linux(-ish) instructions.
+
+Provide a pointer for Windows users.
+
+===== Do your SSH Keys have a Password? (ssh-agent)
+
+Briefly discuss the pros and cons of passwordless SSH keys.
+
+==== When should I use SSH vs HTTPS?
+
+Always, do it.
+
+===== Alternative: Official Github Client
+
+Remember that if you have to support non-technical users, the official
+Github client is a great option.
+
+==== Security History
+
+image::images/user-security-history.png[]
+
+==== Applications
+
+image::images/user-applications.png[]
+
+===== What is OAuth?
+
+image::images/user-applications-register.png[]
+
+===== Authorized Applications
+
+Be careful who you trust.
+
+=== Your Repositories
+
+One important aspect of managing your GitHub account is managing the
+repositories you call your own.  In GitHub your repository are
+comprised of the repositories you have created alongside the
+repositories you have forked into your own account.  In addition,
+GitHub will also show you the private individual repositories which
+others have shared with you.
+
+==== Leaving a Repository
+
+If another user with an individual plan creates a repository and lists
+you as a collaborator there may be times when you want to leave that
+repository. This action has the effect of removing you from the list
+of collaborators on a repository.  To leave a repository, open your
+Account Settings, and then click on Repositories in the left-hand
+navigation menu.
+
+image::images/user-leave-repo.png[]
+
+This list contains all of your repositories, both public and private,
+as well as individual repositories other have added you to.  To leave
+a repository, click on the Leave button.  This will remove you as a
+collaborator for that repository.
+
+=== Deleting Your Account
+
+Now why would you want to go and do a thing like that?   Maybe you set
+up two accounts for yourself and you want to merge them into a single
+account and delete the old one? Maybe you woke up today and realized that
+you wanted nothing to do with software development, version control,
+or GitHub? Maybe you've gone mad and you think GitHub is a part of a
+global conspiracy to keep track of your every move? Whatever your
+reasons, know that GitHub has a delete account button waiting for you
+in the your Account Settings.
+
+To delete your account, load your account settings, and then click on
+Account Settings in the left-hand navigation menu.  Once you do this,
+you'll see a red section that should remind you of The Danger Zone. To
+delete your account click on "Delete your account".
+
+image::images/user-delete-account.png[]
+
+But, wait!  Not to fast, take your mouse off of that button, and don't
+do anything brash.  Don't make a decision in anger. Understand that
+you are about to do something that cannot be undone. If you have
+repositories, they will be lost. All of those people following you on
+GitHub, they will have one less person to follow. Every issue with
+your name on it will point to an empty user no longer using
+GitHub. Maybe you should take a day and think about this
+decision.
+
+=== Github Billing Preferences
+
+GitHub has an interesting business model.  You can use the system to
+create as many public repositories as you wish with no limits, but if
+you want private repositories with private contributors, Github is
+going to require a subscription plan.
+
+To open your billing preferences, click on the acount settings icon in
+the upper right-hand side of the GitHub interface.  This is the icon
+with a wrench and a screwdriver.  Once you can see account settings,
+click on Billing in the left-hand navigation menu.
+
+image::images/user-billing.png[]
+
+From this screen you can upgrade or downgrade to a different plan and
+you can update your credit card information.  You can redeem a coupon,
+and you can also supply any additional contact information you need to
+list on your receipts.
+
+Plans range from Free which allows for no private repositories to
+Large which allows for 50 private repositories.  If your requirements
+exceed 50 private repositories you can request a higher limit, but at
+that point you should really consider upgrading to an Organization.
+Managing 20+ private repositories with multiple contributors isn't
+easy without the benefit of Organization teams.
+
+==== Payment History and Invoices
+
+If you need to obtain an invoice for your Github account.  Open open
+your account settings and click on Payment History.  From this screen
+you can download receipts and see just how much your GitHub habit is
+costing you.
+
+image::images/user-billing-history.png[]
+

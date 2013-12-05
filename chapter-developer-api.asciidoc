@@ -1,0 +1,932 @@
+[[developer-api]]
+== The GitHub API
+Like most useful sites and services today, GitHub is less a site that
+you simply visit in isolation and more and more becoming a utility intertwined and integrated with other developer-centered sites on the Internet. If you develop in
+Ruby, Node.js, and, increasingly, Java you are going to encounter
+GitHub as the foundational SCM used by a number of leading projects
+and libraries available for your language or platform.  
+
+This ubiquitous presence continues to develop as GitHub's APIs have
+started to mature and offer basic utilities for sites that need to
+integrate with it. Just like you can sign on to many services with
+your Facebook or Twitter logins, GitHub has started to act as an
+OAuth 2 provider for many sites and services that depend on GitHub as
+a provider of both user identity and Git activity. 
+
+As more developer-focused sites start to offer the ability to "Login
+with GitHub", and as GitHub continues to offer more low-level
+infrastructure for development GitHub goes from just a simple service to a
+necessary infrastructure for collaboration. In more than a few ways, GitHub is
+to developers as Facebook is to social networks and the API is a
+critical component of that transformation.
+
+This chapter will supply three things: 
+
+* A language-neutral overview of the GitHub API along with an
+  explanation of basic interaction patterns and pointers toward more
+  detailed information.
+* A survey of libraries available to make interacting with the GitHub
+  APIs easier.
+* An exploration of intergration patterns for GitHub's OAuth
+  services.
+
+=== API Overview
+
+The GitHub API is a set of REST services that speak JSON.  Some of
+these services are available anonymously without the need for
+authentication, while others require a set of credentials.  The API is
+easy to access, and this chapter will use a command-line utility named
+cURL to demonstrate how to access this API.
+
+.Installing cURL
+[NOTE]
+If you are running these examples on a Linux box, you should be able
+use your native package management tool to install cURL - either a
+"sudo yum install curl*" on a RedHat variant or "sudo apt-get
+install curl" on an Ubuntu (or Debian) system.  If you are on any recent version of OSX, you already
+have cURL installed, but it you can't find it, take a look at the
+HomeBrew project (http://brew.sh/) or MacPorts project (http://www.macports.org/).  If you are running on Windows or another operating system, you best bet is to download cURL from the cURL web site here: http://curl.haxx.se/download.html
+
+==== Accessing the GitHub API
+
+It's easy, just run curl and hit the API URL as shown in the following
+command listing.  Throughout this chapter, we're going to show a
+number of command listings that have been edited help us save space in
+the book.   I've left the output of this particular call unedited so
+we can walk through the response headers and so you can see how the
+GitHub tells you where to look for all of the other services it
+provides.
+
+----
+$ curl -i https://api.github.com/
+HTTP/1.1 200 OK
+Server: GitHub.com
+Date: Sun, 11 Aug 2013 22:37:26 GMT
+Content-Type: application/json; charset=utf-8
+Status: 200 OK
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 57
+X-RateLimit-Reset: 1376262655
+X-GitHub-Media-Type: github.beta
+X-Content-Type-Options: nosniff
+Content-Length: 1776
+Access-Control-Allow-Credentials: true
+Access-Control-Expose-Headers: ETag, Link, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes
+Access-Control-Allow-Origin: *
+ETag: "d20e5cc244a6cdb4056579e47e839e36"
+Cache-Control: max-age=0, private, must-revalidate
+Vary: Accept-Encoding
+----
+
+Let's do a quick walkthrough of this response.  The first thing we
+see is a response code.  In this case, our response code is 200 which
+signals to us that the request was a success.  Later in this chapter
+you will see how GitHub uses other response codes such as HTTP 304 to
+send signals to a client.   After the response code, you'll see other
+standard headers one would expect in any HTTP response such as the
+server sending the response, the date of the response, the Status
+header, the Content-Length, and the Content-Type of the response.
+
+Three headers are present in every GitHub API response which tell you
+about the GitHub API rate limits.  They are X-RateLimit-Limit,
+X-RateLimit-Remaining, and X-RateLimit-Reset.   These limits are
+explained in detail in <<developer-api-rates>>.
+
+The X-GitHub-Media-Type header contains information that will come in
+handy when you are starting to retrieve text or blob content from the
+API.  when you make a request to the GitHub API you can specify the
+format you want to work with by sending an Accept header with your request.
+
+
+After the HTTP response headers shown above, the root directory of the
+GitHub API helpfully returns a JSON document listing all of the
+services available via the GitHub API.  You can print this out and use
+it as a map to the GitHub API.  We're going to run through most of
+these services in this chapter, but this is a helpful list to have
+access to, and to get it, just go to https://api.github.com/
+
+----
+{
+  "current_user_url": "https://api.github.com/user",
+  "authorizations_url": "https://api.github.com/authorizations",
+  "emails_url": "https://api.github.com/user/emails",
+  "emojis_url": "https://api.github.com/emojis",
+  "events_url": "https://api.github.com/events",
+  "feeds_url": "https://api.github.com/feeds",
+  "following_url": "https://api.github.com/user/following{/target}",
+  "gists_url": "https://api.github.com/gists{/gist_id}",
+  "hub_url": "https://api.github.com/hub",
+  "issue_search_url": "https://api.github.com/legacy/issues/search/{owner}/{repo}/{state}/{keyword}",
+  "issues_url": "https://api.github.com/issues",
+  "keys_url": "https://api.github.com/user/keys",
+  "notifications_url": "https://api.github.com/notifications",
+  "organization_repositories_url": "https://api.github.com/orgs/{org}/repos/{?type,page,per_page,sort}",
+  "organization_url": "https://api.github.com/orgs/{org}",
+  "public_gists_url": "https://api.github.com/gists/public",
+  "rate_limit_url": "https://api.github.com/rate_limit",
+  "repository_url": "https://api.github.com/repos/{owner}/{repo}",
+  "repository_search_url": "https://api.github.com/legacy/repos/search/{keyword}{?language,start_page}",
+  "current_user_repositories_url": "https://api.github.com/user/repos{?type,page,per_page,sort}",
+  "starred_url": "https://api.github.com/user/starred{/owner}{/repo}",
+  "starred_gists_url": "https://api.github.com/gists/starred",
+  "team_url": "https://api.github.com/teams",
+  "user_url": "https://api.github.com/users/{user}",
+  "user_organizations_url": "https://api.github.com/user/orgs",
+  "user_repositories_url": "https://api.github.com/users/{user}/repos{?type,page,per_page,sort}",
+  "user_search_url": "https://api.github.com/legacy/user/search/{keyword}"
+}
+----
+
+Any of these service URLs can be used with the cURL tool to pull more specific information from the GitHub API. For example, if we wanted to know more about the "github" organization, we could use the following cURL command:
+
+----
+$ curl https://api.github.com/orgs/github
+{
+  "login": "github",
+  "id": 9919,
+  "url": "https://api.github.com/orgs/github",
+  "repos_url": "https://api.github.com/orgs/github/repos",
+  "events_url": "https://api.github.com/orgs/github/events",
+  "members_url": "https://api.github.com/orgs/github/members{/member}",
+  "public_members_url": "https://api.github.com/orgs/github/public_members{/member}",
+  "avatar_url": "https://0.gravatar.com/avatar/61024896f291303615bcd4f7a0dcfb74?d=https%3A%2F%2Fidenticons.github.com%2Fae816a80e4c1c56caa2eb4e1819cbb2f.png",
+  "name": "GitHub",
+  "company": null,
+  "blog": "https://github.com/about",
+  "location": "San Francisco, CA",
+  "email": "support@github.com",
+  "public_repos": 114,
+  "public_gists": 0,
+  "followers": 12,
+  "following": 0,
+  "html_url": "https://github.com/github",
+  "created_at": "2008-05-11T04:37:31Z",
+  "updated_at": "2013-10-18T23:55:02Z",
+  "type": "Organization"
+}
+----
+
+We've removed the `-i` switch from the cURL command so that we no longer see the headers. We took the URL named "organization_url" and added the parameter of "github" (replacing the {org} placeholder) to generate the full URL to the GitHub organization. You can see this tells us the company blog (https://github.com/about), that the company is located in San Francisco, and the creation date (which strangely does not match their blog post which states April 10th was their official launch date [https://github.com/blog/40-we-launched]).
+
+==== High-level Areas of the GitHub API
+
+Activity::
+
+    Activity includes Events, Feeds, Notifications, Starring, and
+    Watching.  If you are building a site or service that is focused
+    on supporting developers this portion of the API provides information about 
+    activity that affects everything: users, repositories, and organizations.
+
+Gists::
+
+    Gists are code snippets that can be shared and embedded in other
+    sites. Using the GitHub API you can retrieve and populate Gist
+    content and use GitHub as the infrastructure for sharing pieces of code.
+
+Git Data::
+
+    This portion of the API allows you to do anything with the GitHub
+    API that you can do with the Git command.  If you are familiar
+    with the way that Git's plumbing (not the porcelain) works, you
+    could write systems that read, create, and manipulate the basic
+    building blocks of Git's content-addressable storage backend
+    including blobs, trees, tags, and commits.
+
+Issues::
+
+    GitHub's issues management systems is made fully availabel to you
+    via the GitHub API.  If you need to create custom systems to
+    create and read GitHub issues, issue comments, issues events,
+    issue labels, or if you want to see which issues relate to a
+    repository milestone the Issues section of the API is where you'll look.
+
+Orgs::
+
+    Repositoryies and individuals associated with organizations can be
+    read and manipualted from the Org Teams API.  If you wanted to
+    render a list of developers contributing to a repository on a web
+    site you could use this section of the API to obtain this information.
+
+Pull Requests::
+
+    With the Pull Requests section of the GitHub API you can create a
+    pull request, view a pull request, updated a pull request, comment
+    on a pull request, and merge a pull request.
+
+Repositories::
+
+    The Repos API gives you access to lists of repositories by user
+    and by organization. It also provides access to teams, tags,
+    branches, and contributors associated with a repository.
+
+Users::
+
+    You can read a user, read the current authenicated user, update
+    your own user, list a user's followers, update followers, and
+    check to see if a user if following another.  This section of the
+    API also allows you to see public keys for a user and 
+
+Search::
+
+    GitHub has spent a good amont of effort over the past few years
+    creating a very feature-rich search function and they've made this
+    search apability available via the GitHub API.
+
+In summary, you would have to work to figure out something that GitHub
+isn't making available via the GitHub API.  They done this for a few
+reasons, one is that GitHub has become an essential piece of
+infrastructure for a large portion of both open source and proprietary
+development.  Allowing other companies and sites to build upon GitHub
+via the API only guarantees that it will continue to provide these
+features and functions going forward.
+
+The other reason GitHub has invested in what some would consider a
+radically open approach to its API is that the founders of the company
+understand that they don't hold a monopoly on good ideas. Throughout
+its history GitHub has had a track record of nonchalantly allowing
+people to do what they will with the service.  By enabling others to
+build upon these APIs, GitHub understands that others may show up with
+better ideas of how to assemble these functions into viable products.
+
+This isn't to say that GitHub is disinterested in your use of the
+API.  The company exists to make money, but as money-making ventures
+go, GitHub has yet to exercise the sort of measured caution you would
+expect from other, more "corporate" attempts at providing an API.
+Nowhere in this API do you see anything that hints of GitHub
+attempting to hide a property or make something unavailable to attain
+a unique market advantage.  
+
+One thing to keep in mind, despite the current, ideal approach that
+GitHub is taking to its API is that your use of this API is still
+subject to the arbitrary whim of a commercial entity.
+
+==== How the Read the Github API Documentation
+
+A full exploration of the GitHub API and fine-grained details for each
+service is well beyond the scope of this chapter (or even this entire
+book).  For more information about the GitHub API, see the
+comprehensive GitHub API documentation here:
+http://developer.github.com/v3/
+
+[developer-api-rates]
+==== GitHub API Rate Limits
+
+GitHub tries to limit the rate at which users can make requests to the
+API.  Anonymous requests, requests that haven't authenticated with
+either a username/password or OAuth information, are limited to 60
+requests an hour. If you are developing a system to integrate with the
+GitHub API on behalf of users, clearly 60 requests per hour isn't
+going to be sufficient.
+
+This rate limit is increased to 5000 requests per hour if you are
+making an authenticated request to the GitHub API, and while this rate
+is two orders of magnitude larger than the anonymous rate limit, it
+still presents problems if you intend to use your own GitHub
+credentials when making requests on behalf of many users.
+
+For this reason, if your web site or service uses the GitHub API to
+request information from the GitHub API, you should consider using
+OAuth and make requests to the GitHub API using your user's shared
+authentication information. 
+
+[NOTE]
+There are actually two rate limits.  The "core" rate limit and the
+"search" rate limit.  The rate limits explained in the previous
+paragraphs were for the core rate limit.  For search,
+requests are limited at 20 requests per minute for authenticated user
+requests and 5 request per minute for anonymous requests. The
+assumption here is that search is a more infrastructure intensive
+request to satisfy and that tighter limits are placed on its usage.
+
+===== Reading Your Rate Limits
+Reading your rate limit is straightforward, just make a GET request to
+/rate_limit.  This will return a JSON document which tells you the
+limit you are subject to, the number of requests you have remaining,
+and the timestamp (in seconds since 1970).  Note that this timestamp
+has a timezone in Coordinated Universal Time (UTC).
+
+The following command listing uses curl to retrieve the rate limit
+for an anonymous request.   This response is abbreviated to save space
+in this book, but you'll notice that the quota information is supplied
+twice: once in the HTTP response headers and again in the JSON
+response.  The rate limit headers are returned with every request to
+the GitHub API, so there is little need to make a direct call to the
+/rate_limit API.
+
+----
+$ curl -i https://api.github.com/rate_limit
+HTTP/1.1 200 OK
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 60
+X-RateLimit-Reset: 1376252013
+
+{
+  "rate": {
+    "limit": 60,
+    "remaining": 60,
+    "reset": 1376252013
+  }
+}
+----
+
+60 requests over the course of an hour isn't very much, and if
+you plan on doing anything interesting, you will likely exceed this
+limit quickly. If you are hitting up against the 60 requests per
+minute limit, you will likely want to investigate making authenticated
+requests to the GitHub API.
+
+The following command listing uses curl to retrieve the rate limit for
+an authenticated request.  Again, you will note that the rate limit
+information is present in both the response body and the HTTP response
+headers.
+
+----
+$ curl -i -u tobrien https://api.github.com/rate_limit
+Enter host password for user 'tobrien': xxxxxxxx
+HTTP/1.1 200 OK
+X-RateLimit-Limit: 5000
+X-RateLimit-Remaining: 4995
+X-RateLimit-Reset: 1376251941
+
+{
+  "rate": {
+    "limit": 5000,
+    "remaining": 4995,
+    "reset": 1376251941
+  }
+}
+----
+
+[NOTE]
+Calls to the Rate Limit API are not deducted from your Rate Limit.
+Isn't that nice of them?
+
+===== Conditional Requests to Avoid Rate Limits
+
+If you are querying the GitHub APIs to obtain activity data for a user
+or a repository, there's a good chance that mamy of your requests
+won't return much activity.  If you check for new activity once every
+few minutes, there will be time periods over which no activity has
+occurred.  These requests, these constant polls still use up requests
+in your rate limit even though there's no new activity to be
+delivered.
+
+In these cases, you can send conditional HTTP headers
+If-Modified-Since and If-None-Match to tell GitHub to return an HTTP
+304 response code telling you that nothing has been modified.  When
+you send a request with a conditional header and the GitHub API responds
+with a HTTP 304 response code, this request is not deducted from your
+rate limit.
+
+The following command listing is an example of passing in the
+If-Modified-Since HTTP header to the GitHub API.   Here we've
+specified that we're only interested in receiving content if the
+Twitter Boostrap repositories has been altered after 7:49 PM GMT on
+Sunday, August 11, 2013.  The GitHub API responds with a HTTP 304
+response code which also tells us that the last time this repository
+changed was a minute earlier than our cutoff date.
+
+----
+$ curl -i https://api.github.com/repos/twbs/bootstrap \
+          -H "If-Modified-Since: Sun, 11 Aug 2013 19:48:59 GMT"
+HTTP/1.1 304 Not Modified
+Server: GitHub.com
+Date: Sun, 11 Aug 2013 20:11:26 GMT
+Status: 304 Not Modified
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 46
+X-RateLimit-Reset: 1376255215
+Cache-Control: public, max-age=60, s-maxage=60
+Last-Modified: Sun, 11 Aug 2013 19:48:39 GMT
+----
+
+The GitHub API also understands HTTP caching tags. An ETag, or Entity Tag, is an HTTP
+header that is used to control whether or not content that you have
+previously cached is the most recent version.  Here's how your systems
+would use ETag:
+
+. Your server requests information from an HTTP server.
+
+.  Server returns an ETag header for a version of a content item.
+
+. Your server includes this ETag in all subsequent requests.
+
+.. If the server has a newer version it returns new content + a new
+   ETag
+
+.. If the server doesn't have a newer version it returns an HTTP 304
+
+The following command listing demonstrates to commands.  The first
+curl call to the GitHub API generates an ETag value, and the second
+value passes this ETag value as an If-None-Match header.  You'll note
+that the second response is an HTTP 304 which tells the caller that
+there is no new content available.
+
+----
+$ curl -i https://api.github.com/repos/twbs/bootstrap
+HTTP/1.1 200 OK
+Cache-Control: public, max-age=60, s-maxage=60
+Last-Modified: Sun, 11 Aug 2013 20:25:37 GMT
+ETag: "462c74009317cf64560b8e395b9d0cdd"
+
+{
+  "id": 2126244,
+  "name": "bootstrap",
+  "full_name": "twbs/bootstrap",
+  ....
+}
+
+$ curl -i https://api.github.com/repos/twbs/bootstrap \
+          -H 'If-None-Match: "462c74009317cf64560b8e395b9d0cdd"' 
+
+HTTP/1.1 304 Not Modified
+Status: 304 Not Modified
+Cache-Control: public, max-age=60, s-maxage=60
+Last-Modified: Sun, 11 Aug 2013 20:25:37 GMT
+ETag: "462c74009317cf64560b8e395b9d0cdd"
+----
+
+If you are developing an application that needs to make a significant
+number of requests to the GitHub API over a long period of time, you
+can use a caching HTTP proxy like Squid to take care of automatically
+caching content, storing content alongside ETags, and injecting the
+"If-None-Match" header into GitHub API requests. If you do this,
+you'll be automating the injection of conditional headers and helping
+to reduce the overall load on the GitHub API. If you use an API library, like Octokit for Ruby, there are some tricks we'll detail later which can assist in staying beneath the limits.
+
+Use of conditional request headers is encouraged to conserve resources
+and make sure that the infrastructure that supports GitHub's API isn't
+asked to generated content unnecessarily.
+
+////
+Maybe this needs more development?  - Tim
+////
+
+[developer-api-accept]
+==== Specifying Response Content Format
+
+When you send a request to the GitHub API, you have some ability to
+specify the format of the response you expect.  For example, if you
+are requesting content that contains text from a commit's comment
+thread, you can use the Accept header to ask for the raw markdown or
+for the HTML this markdown generates.  You also have the ability to
+specify this version of the GitHub API you are using.  At this point,
+you can specify either version 3 or beta of the API.
+
+To demonstrate the specification of the Accept header, let's take a
+look at what happens when we request something without the Accept
+header:
+
+----
+$ curl -i https://api.github.com/
+Content-Type: application/json; charset=utf-8
+X-GitHub-Media-Type: github.beta
+----
+
+You can see that GitHub API assumes that you are requesting the
+beta version and for results to be returned as JSON. This is the
+default behavior of the GitHub API. GitHub is currently developing v3
+of the GitHub API and has marked the current version of this stable
+API as "beta".  This is the default version that it returned.  At some
+point in the future, GitHub may decide to release a final version of
+v3 and move to a new version identifier.
+
+When making an individual service call you can specify the version of
+the API as follows:
+
+----
+$ curl -i https://api.github.com/ \
+          -H "Accept: application/vnd.github.v3+json"
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+X-GitHub-Media-Type: github.v3; format=json
+----
+
+Note how the content of the X-GitHub-Media-Type header changed to
+reflect the newly specified version number.  In addition to these
+changes, the following sections outline further customization of
+response format with the Accept Header.
+
+////
+Fact check GitHub v3 assertion above.
+////
+
+===== Retrieving Formatted Content
+
+The Accept header you send with a request can affect the format of
+text returned by the GitHub API.  As an example, let's assume you
+wanted to read the body of a GitHub Issue. An Issue's body is stored
+in Markdown and can be retrieved with the following request by sending
+"application/vnd.github.beta.raw+json" as the Accept header.
+
+----
+$ curl -i https://api.github.com/repos/rails/rails/issues/11819 \
+          -H "Accept: application/vnd.github.beta.raw+json"
+Content-Type: application/json; charset=utf-8
+X-GitHub-Media-Type: github.beta; param=raw; format=json
+
+...Content Removed...
+
+  "body": "Hi, \r\n\r\nI have a problem with strong parameters in
+  rails 4. \r\n\r\nI have a one-to-many association that accept nested
+  attributes.\r\n\r\nI try to permit nested attributes with following
+  line :\r\n\r\n```ruby\r\nevent_params =
+  params.require(:event).permit(:description,
+  \r\nevent_parts_attributes: [:start_date,
+  :start_time])\r\n```\r\n\r\ndescription is present but
+  event_parts_attributes aren't added to event_params. They are well
+  present in params.\r\n\r\nWhen I remove require(:event) it's
+  work. \r\n\r\nThanks",
+----
+
+As you can see in the response returned above, the body of this Issue
+is returned in a raw, unformatted response. If you were consuming this
+and displaying it to users, it would be up to you to parse and render
+the Markdown in this Issue body.  If you were attempted to retrieve an
+Issue body with Javascript to display to an end-user, you might want
+to retrieve the body as rendered HTML content.  Here's how you would
+do that with the Accept header passing in
+"application:vnd.github.beta.html+json" in the Accept header.
+
+----
+$ curl -i https://api.github.com/repos/rails/rails/issues/11819 \
+          -H "Accept: application/vnd.github.beta.html+json"
+Content-Type: application/json; charset=utf-8
+X-GitHub-Media-Type: github.beta; param=html; format=json
+
+  ...Content Removed...
+
+  "body_html": "<p>Hi, </p>\n\n<p>I have a problem with strong
+  parameters in rails 4. </p>\n\n<p>I have a one-to-many association
+  that accept nested attributes.</p>\n\n<p>I try to permit nested
+  attributes with following line :</p>\n\n<div
+  class=\"highlight\"><pre><span class=\"n\">event_params</span> <span
+  class=\"o\">=</span> <span class=\"n\">params</span><span
+  class=\"o\">.</span><span class=\"n\">require</span><span
+  class=\"p\">(</span><span class=\"ss\">:event</span><span
+  class=\"p\">)</span><span class=\"o\">.</span><span
+  class=\"n\">permit</span><span class=\"p\">(</span><span
+  class=\"ss\">:description</span><span class=\"p\">,</span> \n<span
+  class=\"n\">event_parts_attributes</span><span class=\"p\">:</span>
+  <span class=\"o\">[</span><span class=\"ss\">:start_date</span><span
+  class=\"p\">,</span> <span class=\"ss\">:start_time</span><span
+  class=\"o\">]</span><span
+  class=\"p\">)</span>\n</pre></div>\n\n<p>description is present but
+  event_parts_attributes aren't added to event_params. They are well
+  present in params.</p>\n\n<p>When I remove require(:event) it's
+  work. </p>\n\n<p>Thanks</p>",
+
+----
+
+Besides "raw" and "html" there are two other format options that
+influence how Markdown content is delivered via the GitHub API.  If
+you specify "text" as a format, the issue body would have been
+returned as plaintext.   If you specify "full" then the content will
+be rendered multiple times including the raw Markdown, rendered HTML,
+and rendered plaintext.
+
+In addition to controlling the format of text content, you can also
+retrieve GitHub blobs either as raw binary or as a BASE64 encoded
+text.   When retrieving commits, you can also specify that the content
+be returned either as a diff or as a patch.  For more information
+about these fine-grained controls for formatting, see the GitHub API
+documentation here: http://developer.github.com
+
+===== Preview Version Required for Search API
+
+Note that the Search API is a separate version.  To use the Search API
+you must specify the Accept header in your request as
+"application/vnd.github.preview+json".  The following command listing
+demonstrates the use of curl to search repositories while specifying
+the appropriate Media type.
+
+----
+$ curl -i https://api.github.com/search/repositories?q=@tobrien \
+          -H "Accept: application/vnd.github.preview+json"
+----
+
+Failure to specify the preview version in the Accept header will
+result in an HTTP 404 Not Found result.
+
+[developer-api-terms]
+==== GitHub API Terms of Service
+
+Before you start building a system atop another service's API, it is
+always wise to understand what, if any, limitations are placed on that
+API's usage. Aside from the limitations on bandwidth, GitHub's API is also covered
+by the overall GitHub Terms of Service.   While you can read these terms of
+servic here: https://help.github.com/articles/github-terms-of-service
+- here is a summary of the terms.
+
+. GitHub isn't liable for any damages that result from your use of the
+API.  You really can't blame GitHub for putting up this clause in
+today's litigious society.
+
+. If you abuse the API, GitHub can suspend your account's access to
+the API.  They will attempt to contact you before this happens.
+
+. They can change the API.  They can discontinue a part of the API.
+They can change it without notice.
+
+This is fairly standard stuff when it comes to terms for an API.
+We're not liable, don't abuse it, and we can change it or take it
+away.
+
+////
+We need guidance from GitHub here.  I don't see that the GitHub API
+has any explicit Terms of Service beyond the one every user agrees
+to.   It would be nice to know if there are any red lines that can't
+be crossed.
+////
+
+=== API Security
+
+How is a call to the API secured?
+
+==== Unauthenticated Usage
+
+Public usage of the API, briefly discuss any limitations for
+unauthenticated usage.
+
+==== Connecting as Yourself
+
+Just describe simple authentication, how can you make calls to Github
+as your own user.
+
+==== Connecting as Someone Else (OAuth)
+
+Reference the larger section on OAuth below.
+
+=== API Libraries
+
+There are already a number of API Libraries available for the Github
+API.  This section lists some of the major languages along with some
+of the options.
+
+The first two sections of this chapter will deal with the official,
+GitHub-maintained client libraries. GitHub maintains two official
+libraries which are grouped under the name Octokit - a reference to
+Github's Feline Octopus mascot "Octocat".  Octokit maintains two
+projects on GitHub - octokit.rb and octokit.objc.
+
+image::images/developer-api-octokit.png[]
+
+
+
+==== Connecting to Github from Objective-C
+
+////
+TBD
+////
+
+
+
+
+==== Connecting to Github from Ruby
+
+Just have a simple example using the most popular library.  Simple ,
+then just some of the alternatives.
+
+https://github.com/octokit/octokit.rb
+
+gem install octokit
+
+////
+TBD
+////
+
+==== Connecting to Github from Javascript (Client-side)
+
+Just have a simple example using the most popular library.  Simple ,
+then just some of the alternatives.
+
+The following example depends on jQuery, Underscore, and the gh3
+Javascript library maintained by Philippe Charriere (GitHub: @k33g) at
+GitHub here: https://github.com/k33g/gh3
+
+To run the following example, download underscore-min.js from
+http://underscorejs.org/ and gh3.js from https://github.com/k33f/gh3, and
+place these files in the same directory as an HTML
+
+----
+<html>
+  <head>
+    <title>GitHub Client Side Example</title>
+
+    <script type="text/javascript"
+      src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+    </script>
+    <script type="text/javascript" src="underscore-min.js"></script>
+    <script type="text/javascript" src="gh3.js"></script>
+
+    <script type="text/javascript">
+      $(document).ready( function() {
+        var tobrien = new Gh3.User("tobrien");
+        tobrien.fetch(function (err, user){
+          $('#id').append( user.id );
+          $('#login').append( user.login );
+          $('#blog').append( user.blog );
+          $('#name').append( user.name );
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>GitHub User Information</h1>
+    <ul>
+      <li id="id">ID: </li>
+      <li id="login">Login: </li>
+      <li id="blog">Blog: </li>
+      <li id="name">Name: </li>
+    </ul>
+  </body>
+</html>
+----
+
+----
+GitHub User Information
+
+ID: 36787
+Login: tobrien
+Blog: http://www.discursive.com
+Name: Tim O'Brien
+----
+
+==== Connecting to Github from Java
+
+The Eclipse project's EGit project maintains a Java library named
+egit-github which can be usd independently of Eclipse to interact with
+the GitHub API.  The GitHub project page for this egit-github project
+can be found here: https://github.com/eclipse/egit-github
+
+If you are using Maven the dependency XML for egit-github is the
+following XML dependency.
+
+----
+<dependency>
+  <groupId>org.eclipse.mylyn.github</groupId>
+  <artifactId>org.eclipse.egit.github.core</artifactId>
+  <version>2.1.5</version>
+</dependency>
+----
+
+----
+package com.oreilly.github;
+
+import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.client.PageIterator;
+import org.eclipse.egit.github.core.event.Event;
+import org.eclipse.egit.github.core.service.EventService;
+import org.eclipse.egit.github.core.service.RepositoryService;
+import org.eclipse.egit.github.core.service.UserService;
+
+public class App
+{
+    public static void main( String[] args ) throws Exception
+    {
+        GitHubClient client = new GitHubClient();
+        EventService service = new EventService();
+        PageIterator<Event> iterator = service.pageUserEvents("tobrien");
+
+        for (Event event : iterator.next() )
+          System.out.printf( "%s %s\n", event.getType(), event.getCreatedAt());
+    }
+}
+----
+
+----
+WatchEvent Tue Aug 06 05:03:16 CDT 2013
+CreateEvent Sun Jul 21 19:57:14 CDT 2013
+IssuesEvent Mon Jun 03 09:33:51 CDT 2013
+IssuesEvent Mon Jun 03 09:32:54 CDT 2013
+PullRequestEvent Mon Jun 03 08:48:51 CDT 2013
+CreateEvent Mon Jun 03 08:39:09 CDT 2013
+MemberEvent Sun Jun 02 15:51:27 CDT 2013
+MemberEvent Sun Jun 02 15:51:18 CDT 2013
+MemberEvent Sun Jun 02 15:51:13 CDT 2013
+CreateEvent Sun Jun 02 15:51:02 CDT 2013
+PublicEvent Sun Jun 02 13:46:52 CDT 2013
+----
+
+
+
+==== Connecting to Github from Node.js
+There is a popular node library that provides access to the GitHub API
+developed by Mike de Boer (GitHub: @mikedeboer) this Node.js library
+can be found on GitHub here: https://github.com/mikedeboer/node-github
+
+To install the JavaScript GitHub API for Node.js.  Run the following
+command with npm - the Node.js package manager:
+
+----
+npm install github
+----
+
+Once you've installed the github package, you can reference the GitHub
+library in code like the following code listing.
+
+----
+var GitHubApi = require("github");
+var prettyjson = require( 'prettyjson' );
+
+var github = new GitHubApi({
+    version: "3.0.0",
+    timeout: 5000
+});
+
+github.events.getFromUser({
+    user: "tobrien"
+}, function(err, res) {
+    console.log(prettyjson.render(res));
+});
+----
+
+The code shown above connects to GitHub's API and requests recent
+events related to the user "tobrien".  The result of the API call is
+then printed out using a utility library named "prettyjson" which
+ensures that the JSON output is transformed into something easier to
+read. To run this code, you will need to run the following commands:
+
+----
+$ npm install github
+$ npm install prettyjson
+$ node github.js
+----
+
+Running this command should yield JSON output that contains a list of
+events and actions the user 'tobrien' has recently completed.
+
+For detailed document of Mike de Boer's JavaScript GitHub API, you can
+read the full library documentation here:
+http://mikedeboer.github.io/node-github/.
+
+While the simple example shown above is sufficient for read-only
+operations in the GitHub API, if you are planning on using this API
+for anything more than reading GitHub content, you will need to
+configure authentication options for this library.  A full discussion
+of authentication with the JavaScript GitHub API for Node.js can be
+found on the GitHub project page for this library here:
+https://github.com/mikedeboer/node-github
+
+
+==== Connecting to Github from a Billion Alternative Languages
+
+Here is where you can have a list of the available APIs, but not a big
+one.  We don't need to bother with langauges like Fortran 90.
+
+=== Developing Github Applications
+
+Building systems that interact with Github
+
+===== Example Use-cases for Github Applications
+
+* For discounts at business-affiliated services. (Publishers like O'Reilly Atlas, Prags, Pluralsight)
+
+* For automation integration like Travis-CI
+
+* For sign-in to credentialing services like [CoderWall](http://coderwall.com)
+
+* For sign-in to reputation services like [StackOverflow](http://stackoverflow.com)
+
+===== Authorizing Github Applications
+
+When you develop an application that needs to make use of Github they
+need to be authorized using an OAuth workflow...
+
+===== How does OAuth Work?
+
+ [OAuth](http://developer.github.com/v3/oauth/)
+
+===== OAuth Libraries for Github
+
+===== Ruby: Omniauth (with Devise)
+
+Omniauth already has a OAuth provider for Github.
+
+===== Python: ???
+
+Todo: I know that Django has an OAuth provider API, ask a Pythonista.
+
+===== Other Languages
+
+Figure out if there are any other pre-built OAuth integrations (like omniauth)
+
+
+=== A Sample Github Application
+
+This section would build out a sample application.
+
+=== Organization Applications
+
+Registering an Organization's Application
+
+
+
+
+
+
+
+
+
+

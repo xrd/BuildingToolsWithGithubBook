@@ -1,0 +1,397 @@
+[[github-essentials]]
+== Github Essentials
+
+Remember Github is not Git, and while you can certainly Git without
+Github it just isn't the same.  This chapter is all about the
+essential features of Github that make it worth using.  From the
+unique approach to pull requests, to line-level commenting, to emoji,
+this chapter explores the features that make GitHub GitHub.
+
+Github adds a social layer atop Git which many have come to confuse
+with Git itself.  For example, once you've used Github you'll be
+comfortable with forks and pull requests, you'll see line-level and
+commit-level comment threads as an expected feature of your SCM.
+These "social" features of Github, the ability to map teams to
+repositories, and the ability to use your SCM system as a way to
+communicate with a group.  These are the features that make Github
+indispensible, and very often you'll note that GitHub users mistake
+these core features as core features of Git.  If you've ever used Git
+without GitHub you'll understand the confusion as Git without GitHub
+often feels underwhelming.
+
+=== Repositories in GitHub
+
+For many users the first impression of GitHub came via an open source
+project - a Rails gem or a Javascript library someone had created and
+published as a public repository. The first thing they likely noticed
+about GitHub wasn't the source code as much as it was the
+interface. Source Code Management (SCM) system have been around for
+decades, but when GitHub arrived on the scene it changed the
+relationship between a project's code, a project's community, and the
+infrastructure supporting open source collaboration.   In this
+section we explore some of these differences.
+
+
+==== Don't Ask Permission, this is GitHub
+
+The most important esssential idea to understand about Git and GitHub
+is that it is truly decentralized. Decentralized applies to more than
+just the mechanics of the source code management system it also
+applies to the political structure that manage a project in Git or
+GitHub.  With a DVCS you don't need to ask permission to fork a
+repository and start commiting to your own branch.
+
+Unlike other source code management systems you are also not beholden
+to the original project owners. You can fork a project, customize it,
+and then it is your prerogative to give back you changes to the
+original project. GitHub makes it easy to create your own fork of a
+repository and then track changes between your fork and the original
+repository. 
+
+Going beyond simply contributing back to the original project, as a Git
+repository is a complete set of all changes made to the project since its 
+inception, you could even take the project in an entirely new direction
+without connection to the original upstream repository. Git makes it possible
+for a project to take completely unexpected directions, which makes it
+scary for anyone wanting complete control. But, as "information wants
+to be free" this flexibility puts Git at an exciting crossroads where
+new ideas can flourish independently of original intentions. In fact, this 
+innate freedom (as in free speech) was what produced GitHub itself.
+
+==== "Forking" a Repository
+
+GitHub didn't invent the fork, but they did create a platform which
+has elevated the concept and transformed it - a "fork" used to be
+viewed as a negative in some OSS communities.  If you had to fork a
+codebase it was because there was some intractable dispute or a schism
+within a community.  Forking a project was often the result of a civil
+war within the project's members. This is not the case at Github. In
+fact, one sign of a project's health is how many forks of the project
+there are.
+
+===== Forking a Repository
+
+To fork a repository, open up a GitHub repository in a browser and
+then click on the "Fork" button as shown in the following figure.
+
+image::images/github-fork.png[]
+
+If you are a member of multiple organizations, you will then be asked
+which organization or account you wish to fork a repository to.
+Choose an account or organization to continue.
+
+Once you've forked a repository it will appear under your account with
+a note that tells people what the upstream repository is (from which
+repository it was forked originally). The following figure shows you a
+forked tobrien/gradle repository from the gradle/gradle repository.
+ 
+image::images/github-forked.png[]
+
+===== Number of Forks as a Measure of Activity
+
+The list of the most forked repositories on GitHub when this
+section was originally written is a list of the most popular projects
+on GitHub:
+
+[cols=2, options="header"]
+|===
+|Project
+|# of Forks
+
+|Bootstrap
+|16,091
+
+|Spoon-Knife
+|15,356
+
+|homebrew
+|6,219
+
+|rails
+|5,807
+
+|html5-boilerplate
+|4,756
+
+|jquery
+|4,084
+
+|node
+|3,931
+
+|oh-my-zsh
+|3,843
+
+|hw3_rottenpotatoes
+|3,775
+
+|phonegap-start
+|3,503
+|====
+
+This is because "forking" in GitHub is really just cloning someone
+else's repository and creating a new downstream repository in your own
+account.  When you fork someone else's repository, you have your own
+copy in which you can create new feature branches and take the project
+in whatever direction you would like.  You can think of the number of
+forks as the number of interested (but maybe not active) contributors
+for a project. If 16,091 people have forked the CSS and Javascript
+framework Bootstrap, this means that 16,091 people are interested
+enough in the project to create and maintain a separate fork of the
+project. In each of the independent copies, developers can create
+feature branches, and push commits. Eventually developers with their own
+fork can even create a pull request asking the upstream repository maintainer to integrate changes back into the original repository.
+
+A word of caution when looking at forks, however: forks on GitHub represent the lifetime count of forks, and as of right now, GitHub does not distinguish between recent forks and forks made long ago. As GitHub is a relatively new organization, most forks have been made recently, but as GitHub grows older, I imagine they will start to display an assessment of the age of a fork beyond just the fact that it was forked. Another way of saying this is that forks represent interest in a project at some point, but not whether that interest has waned at all.
+
+==== Make a Pull Request
+
+If you've forked a repository and made some changes on a feature
+branch you can then make a pull request to the upstream repository.
+Now while it is entirely possible with "git request-pull" to ask
+someone to pull changes from a non-GitHub hosted Git repository, once
+you've sent and received pull requests from within the GitHub
+interface you'll wonder why anyone would ever want to do such a thing.
+
+===== Making a Pull Request
+
+If you've forked a repository and created a feature branch, GitHub
+will notice this new feature branch and ask if you want to make a pull
+request to the upstream repository with this branch.  When you make a
+pull request, you are asking the upstream project to incorporate the
+changes specific to your branch.  For example, the pull requests shown
+in the following figures up the README.md file of the tobrien/gradle
+repository in a branch named doc-improvements.  Here's what GitHub
+shows me when it notices that I've just pushed commits to a feature branch.
+
+image::images/github-recent-branch-prompt.png[]
+
+If you click on compare, GitHub will compare the changes in this
+branch with the default branch of the upstream repository.  In this
+example, since the default branch of the upstream gradle/gradle
+repository is master, the following figure shows a diff between
+tobrien/tobrien:doc-improvement and gradle/gradle:master. This pull
+request simply updates the README.md file of the project.
+
+Click on Pull Request to make a pull request and fill out the
+following form to send this request to the upstream project.
+
+image::images/github-pull-request.png[]
+
+===== Receiving a Pull Request
+
+On the other side of a Pull Request you will see that a user made a
+pull request in the GitHub interface.   Clicking on Pull Requests in
+the top navigation of a repository will shows a list of requests
+similar to that shown in the following figure.
+
+image::images/github-pull-requests.png[]
+
+You can comment on a pull request, you can reject a pull request, or
+you can merge a pull request via the GitHub interface, or you can
+cherry-pick specific commits from the command-line.   This mechanism
+of pull requests is relevant for more than just open source projects.
+With this mechanism you can implement a code-review system for a
+private project. 
+
+Some companies using GitHub take this model to an extreme, granting
+most internal developer read-only privileges and requiring all changes
+to be submitted to senior developers via pull requests. While this
+approach may seem inappropriate to developers accustomed to having
+read-write privileges to the repositories they work with, it does
+enforce a requirement for code reviews in order to integrate new code
+into master.
+
+[NOTE]
+===
+Pull requests on GitHub are streamlined, available via the GitHub API, and used widely internally at GitHub for discussions and feature development. Not everyone loves the way GitHub built their web-enabled pull request mechanism. One such person is Linus Torvalds, the inventor of Git, who wrote `github throws away all the relevant information, like having even a
+valid email address for the person asking me to pull. The diffstat is
+also deficient and useless.` In a long thread, posted ironically on GitHub, Torvalds makes some comments about how the GitHub pull request workflow misses several critical elements, like signed identities. When you are dealing with a codebase as vital as Linux, you need to have high standards. For many people, fortunately, GitHub's pull requests are sufficient and get the job done.
+===
+
+==== GitHub Issues
+
+Repository administrators have the ability to turn on GitHub issues
+for a particular repository.  GitHub issues give you the ability to
+track "issues" within the GitHub interface.  Issues can be bugs, new
+features, ideas for new features, pull requests, or anything.
+
+image::images/github-issues.png[]
+
+[NOTE]
+====
+The industry has a excessive number of issue trackers: from Trac to
+Jira to Bugzilla we've grown used to issue trackers which provide an
+almost endless variety of options.  GitHub Issues is closer to Trac
+than Jira, it emphasizes a sort of radical simplicity as far as issue
+tracking is concerned.   You won't be defining custom workflow as you
+would in a tool like JIRA, and you won't have the ability to create
+custom graphs and reports.  GitHub issues is a simple issue tracker
+designed to integrate with GitHub.
+====
+
+===== Creating an Issue
+
+To create an issue click on "Issues" in the top-navigation of a
+repository and then click on the "New Issue" button.   You'll see the
+form shown in the following figure.
+
+image::images/github-create-issue.png[]
+
+Subject::
+        Every issue can have a simple one-line subject. This subject
+        serves to quickly identify an issue when this issue is
+        displayed in a list of issues.
+
+Body::
+        Issues are useless unless they provide enough information and
+        context to be implemented or addressed. The body of an issue
+        is where you should describe the problem or idea fully.
+
+Assigned To::
+         You can assign an issue to a single GitHub user account that
+         is associated with the project.
+
+Milestone::
+        If you have created milestones, you can associate a GitHub
+        issue with a specific milestone.
+
+Labels::
+        GitHub uses labels to classify issues as bugs, enchancements,
+        or questions. GitHub also gives you the opportunity to define
+        more issues labels if you need them. You can create new labels
+        for new issues types or labels for different components in a project.
+
+===== GitHub Issue Milestones
+
+Repositories are associated with milestones. Milestones are important
+events such as software releases or other events which are related to
+software development. In GitHub Issues you can create a milestone and
+then associate issues with a milestone.  To create a milestone, click
+on Issues in the top navigation area of a repository, then click on
+the Milestones tab.   On the milestones tab click on "Create
+Milestone" and fill out the interface shown in the following figure.
+
+image::images/github-create-milestone.png[]
+
+Once a milestone is created you can then see a list of open and closed
+milestones. The following screen shows a long overdue, open milestone.
+
+image::images/github-list-milestones.png[]
+
+Clicking on a milestone lets you see the issues that are associated
+with a milestone.
+
+image::image/github-view-milestone.png[]
+
+==== Tight integration with GitHub
+
+The GitHub issues tracker is a capable issues tracker on its own. Other issues trackers may have more overall features, but the GitHub issues tool is free and available for usage simply by virtue of your GitHub membership, and has a feature set that competes with many issue trackers out there. 
+
+Where the issue tracker really starts to shine is in the tight integration with the rest of GitHub. Once you have created issues for your project, you get these additions to your project automatically
+
+* Automatic loading of issues comments when you reference an issue in a commit. If your commit message looks like "Addressing problem #54321" then GitHub will load a discussion view of the issues into that commit view.
+* Automatic closing of issues from commit issues: if your commit message says "Closes #54321" then pushing that commit to GitHub will automatically close the issue in the issue tracker. GitHub supports aliases for closing issues, so you can use "fix" (or "fixes" or "fixed") and the same permutations of the word "close."
+* Email support: issues are broadcast as notifications over email, in much the same way as other parts of GitHub broadcast notifications of events. You can respond to these emails and track the responses right inside the issue tracker.
+
+==== Downloads
+
+Repositories can expose downloads. Downloads are useful when you need to make
+something available to someone without the technical chops to access the files
+via Git. And, there are some software systems that don't know about the "git" protocol
+but which can pull files as a tarball (a compressed archive) and install or otherwise process them.
+
+==== @mention
+
+GitHub is "social coding" and really promotes the people behind the code. If you use the GitHub web based tools to add an issue, comment or documentation, you can enter in "@username" (called an "at-mention") to automatically associate a user with the issue or pull request. The mentioned party is then automatically subscribed to notifications for that issue or pull request. Internally at GitHub, GitHubbers prefer notifications over email; subscribing to informational updates rather than expecting an email saying "Hey, I just fixed this bug." Of course, if you are the recipient of an at-mention, you have full control in unsubscribing from those notifications, and you can globally assert that you don't want to be included in mentions if you find yourself overwhelmed by this method of communication. For most people inundated by massive amounts of email, "at-mentions" are a better way to involve people than sending yet another email.
+
+image::images/essentials-at-mention.png[]
+
+=== Documentation in Github
+
+==== Lightweight Markup: Markdown
+
+Markdown, a lightweight markup language created by John Gruber and
+Aaron Swartz, was the markup language of choice for Github for many
+years.  Most project documentation was stored in Markdown, and it was
+customary for developers to have a README.md file which would be
+rendered as a Github project's default documentation.
+
+GitHub has their own flavor of Markdown referred to as "GitHub Flavored Markdown" (GFM) addressing features Markdown neglects to offer. GFM adds formatting options for strikethroughs, fenced code blocks (start and end code blocks with \`\`\` characters rather than using indentation), syntax highlighting for fenced code blocks, and a few other features which offer powerful integration with other GitHub services, like the ability to "@mention" another user (mentioned previously, a mechanism to automatically notify that user), build todo lists inside GitHub issues, emoji support and more.
+
+Note: Recent developments have made Github markup language agnostic.
+While Github once had a strong preference toward Markdown you can now
+author Wiki content in Asciidoc, Creole, Mediawiki, Org-mode, Pod,
+Rdoc, Textile, and reStructuredText.
+
+==== Gollum - Github Wikis
+
+Gollum is the GitHub contribution to open source wikis. A wiki is defined as "a website that allows collaborative editing of its content and structure by its users." Just as Git has revolutionized collaborative editing of code, Gollum wikis layer the benefits of Git onto a proven publishing metaphor.
+
+Editing Gollum content is flexible. Gollum wikis are editable locally within a web browser: run the `gollum` command locally on your laptop (which spawns a mini web server hosting your wiki) and then browse to http://localhost:4567. Gollum wikis are editable remotely using a web browser: edit on GitHub as just another repository using the standard GitHub web enabled editor tools. And, gollum wikis are editable locally using your favorite editor and tools, allowing you the flexibility of staying within the same workflow you use to edit any other file within a local repository. 
+
+You might use a hybrid approach to editing your Gollum wiki, switching back and forth  between editing within the web browser interface and jumping into the command line and using your editor to create or modify files when you need to use "power commands." If you do this, remember that Gollum only processes files that have been checked into the repository; files which are only in the working directory or which have been added to the index but not yet commited are *not* processed by gollum. So, if you add a file using your editor or from the command line, make sure you `git add` and `git commit` the files to see them to make sure you see them in the browser interface.
+
+To illustrate this "gotcha" let's imagine adding a sidebar to our wiki. Adding a sidebar means you need to create a file called _Sidebar.md. This is a special file which Gollum recognizes and generates a sidebar for you; the first part of the name is fixed, but you can change the extension to whatever extension you prefer for your wiki files. If we use the "open" command (available on Mac or Linux) to open the Wiki in our default browser, you will see that only once we have committed the change to our repository do we actually see the sidebar.
+
+```
+$ gollum & # Start gollum, will run on port 4567.
+$ echo "## Warning\nPlease note this is subject to change" > _Sidebar.md
+$ open http://localhost:4567/ # We won't see our sidebar yet...
+$ git add _Sidebar.md 
+$ open http://localhost:4567/ # We still don't see our sidebar...
+$ git commit -m "Add sidebar"
+$ open http://localhost:4567/ # Eureka, now we will see our sidebar!
+```
+
+If you edit within the web browser interface, the underlying grit libraries do all the work to place files into the repository. If you use the command line, you'll need to remember to do this manually.
+
+Gollum adds all the powerful features that automatically come with usage of a DCVS; you can edit your files offline, which is simply not the case with most wikis. If you check out your gollum repository and then hop on a plane without a wifi connection, you can edit files as you would any other Git repository. Once you have landed, you do the normal pull/push sequence as you would do with any other repository. If others have modified the repository, you use your standard tools to merge those changes and deal with conflicts. 
+
+A word of caution when using the gollum command in server mode to edit files locally inside a web browser. If you start the gollum server from the command line you do have the capability to edit the files from any computer within the same network. In other words, you could find your IP address and use that address from your Chromebook or your tablet to view and edit your wiki. However, remember that the gollum server command does not have an authentication system built into it, which means that gollum thinks anyone accessing the wiki is the same user that started the gollum command. This is fine if you are in the other room editing on your tablet while gollum runs on your work laptop. However, the gollum server is not a good solution for offering a wiki up to many people within a subnet. If multiple people edit files, there is no way that gollum can track the different user contributions in the change log. This is not a problem when editing your Gollum wiki inside GitHub.com: the GitHub site knows who you are and properly assigns your changes to your username inside the change log.
+
+==== Gists - Sharing Code 
+
+There are many code snippet sharing services on the web. Examples include the venerable "pastebin" which has spawned a healthy litter of copycats, each offering their own brand of minimalism or adding features for code execution. Gist offers a very simple featureset: you simply share snippets and pastes with others. You can associate more than one file with a gist. And, as you would expect from GitHub, Gists are "Git enabled" which means that every Gist is a Gist repository, carrying a full history with it and "forkable."
+
+To create a new Gist, visit gist.github.com. There you will be prompted to enter in a description and contents of the Gist. You may choose to indicate the file type and the Gist will be rendered for display with the proper syntax highlighting. You are not limited to adding a single file; you can add multiple files. As Gists are full repositories, you could even build out an entire filesystem inside the Gist repository, and could build a functional application with many cooperating files within your Gist. However, Gist filenames cannot have directory delimiters in them, so your filesystem is completely flat. And, the ability to have multiple files and the fact that Gists are fully functioning repositories makes Gists go beyond just code sharing into powerful simple app prototyping. 
+
+Gists can created with public or private access. Public Gists are available for anyone to see when they browse your activity stream. Private Gists do not show in your activity stream, but be aware they are only as private as a secret is private; once you share the URL, anyone else who finds themselves in possession of the URL can access the Gist contents without restriction.
+
+Gists are there for sharing and GitHub offers several ways to do this. You can share a link to the Gist as a URL; find this URL to the left of the Gist once you have created it. You can embed the Gist inside any web page using the JavaScript widget code; copy and paste this widget code into an HTML page and GitHub will build out a pretty Gist snippet inside that page for you. And, you can pass around the repository details to that anyone can clone the Gist onto their local machine. 
+
+image::images/essentials-gist-sharing.png[]
+
+Gist repositories are fully functioning repositories. You can clone them and make changes to them using any of the standard editor tools at your disposal. You can even push your changes back into gist.github.com, though this process is not straightforward. If you clone a repository, gist.github.com will tell you to use a HTTPS URL like this with your clone command:
+
+[code,bash]
+$ git clone https://gist.github.com/9dea434f30e5fafc4c3c.git
+
+This will work to clone, but if you try to push back into gist.github.com, you'll see an error like this, even if you enter the proper credentails
+
+[code,bash]
+$ git push origin master
+Username for 'https://gist.github.com': xrd
+Password for 'https://xrd@gist.github.com': 
+remote: Anonymous access to gist/9dea434f30e5fafc4c3c.git denied.
+$ git remote -v
+origin    https://gist.github.com/9dea434f30e5fafc4c3c.git (fetch)
+origin	https://gist.github.com/9dea434f30e5fafc4c3c.git (push)
+
+To fix this, you will need to edit the remote push URL. It is simple to do; just take the URL and modify to use the SSH protocol, which is associated with the git username. In more concrete terms, take a URL like https://gist.github.com/abcdef.git and convert it to git@gist.github.com:abcdef.git. Change the protocol from `https://` to `git@` and change the forward slash after the gist.github.com to a colon.  
+
+[code,bash]
+$ git remote remove origin
+$ git remote add origin git@gist.github.com:9dea434f30e5fafc4c3c.git
+$ git push -u origin master
+The authenticity of host 'gist.github.com (192.30.252.141)' can't be established.
+RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'gist.github.com,192.30.252.141' (RSA) to the list of known hosts.
+Counting objects: 5, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 342 bytes | 0 bytes/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To git@gist.github.com:9dea434f30e5fafc4c3c.git
+   7cf4a87..c5129ff  master -> master

@@ -1,0 +1,384 @@
+[[bootstrapping-git]]
+== Bootstrapping Git
+
+This book is focused on Github, but before we can explore Github it is helpful to understand Git.   This chapter provides a brief introduction
+to Git and provides some pointers to readers interested in learning
+more about this distributed version control system (DVCS).
+
+=== A Brief History of Git
+
+Some of biggest Open Source projects, such as Linux, have been using a
+decentralized approach to development for decades.  In these projects
+hundreds, sometimes thousands, of developers collaborate on
+fast-moving projects without central direction.  While the Kernel
+project itself is maintained by a Linus Torvald and a handful of
+experts, there is no manager creating lists of priorities and
+tasks. There are no weekly status meetings to convey management
+priorities to compliant workers.  It is an ad-hoc process that relies
+on widely distributed individuals maintaining hundreds of different
+versions of the kernel.
+
+One developer may add a new driver to her fork of the kernel, and yet
+another may modify the behavior of the file system in another copy.
+These separate "forks" are typical in distributed version control and
+tools like git make it possible for anyone to take a project like
+Linux, fork it, and take it in whatever direction they prefer.  This
+distributed development is made possible by Git - a version control
+system which facilitates distributed development and places an
+emphasis on making merges between two separate forks easy.
+
+If you subscribe to a more corporate, a more "enterprisey" approach to
+development, an approach that involves strict control of code and a
+rigorous approach to project planning you may be skeptical of this
+ad-hoc, distributed approach to collaboration. There's no way it
+should work.  Linux is at the heart of most of the internet, and it
+powers the most popular mobile operating system in the world. Who's
+managing these developers?  How do they agree on standards?  How could
+this team of strangers ever create quality software?  Despite these
+concerns it works very and Linux is empirical proof that distributed
+development and distributed version control provide the appropriate
+background for wide-scale, open-source collaboration. And, the people
+idealogically invested in the more corporate approach to development 
+never seem to talk about the downsides of a strictly controlled 
+development process, namely a tendency to lose track of the voice of the
+customer and the ability to pivot rapidly when those voices finally 
+become heard.
+
+==== If it works for Linux....
+
+Thousands of developers submit patches to the kernel through a list of
+maintainers.  If you have a change to the Linux kernel, the first step
+is to consult the linux/MAINTAINERS and then submit a patch to the
+appropriate individual.  Eventually, this patch is vetted, integrated
+into a particular component and then passed up to core contributors
+and integrated into the kernel distribution.
+
+It's a busy, human process that relies on a busy mailing list named
+linux-kernel and a small team of core contributors. For more than a
+decade Torvalds was simply organizing the kernel with patchfiles and
+tarballs, and this process just wasn't scalable.  It was only in 2002
+that Torvalds decided to standardize his own workflow on a proprietary
+tool written by Larry McVoy named BitKeeper.  BitKeeper was a
+successor to an earlier DVCS named TeamWare.
+
+==== The Birth of Git
+
+While Linus Torvalds was happy with BitKeeper, core contibutors to the
+Linux Kernel, notably Alan Cox, refused to continue using a
+proprietary tool for Linux.  Fast forward through years of flamewars
+and in 2005 a developer named Andrew Tridgell created a tool
+(SourcePuller) which was compatible with the BitKeeper protocol.  This
+caused BitKeeper to rescind the free BitKeeper license and change
+licensing terms, making it impractical for Torvalds to continue to use
+BitKeeper for kernel development without requiring other developers to
+purchase a license.
+
+Torvalds, motivated by his desire for a DVCS that would allow for
+efficient and rapid merging, created a prototype of Git in 2005
+handing over the project to Git's current maintainer Junio Hamano
+later that year.  In just eight years, Git has become the primary tool
+used in open source development, and it has made significant inroads
+into corporate development.
+
+==== Git: Toward an Acceptance of DVCS
+
+By the time Torvalds created Git in 2005, the Linux Kernel had been at
+it for almost 15 years.  The decade-old Apache Software Foundation had
+largely finished a migration from CVS to Subversion, and the Eclipse Foundation
+was continuing to use CVS.  In the early part of the last decade
+centralized, client-server SCMs were the rule.  Proprietary systems
+such as Perforce, Clearcase, MKS Integrity, and (cringe) Visual
+SourceSafe along with the two main open source SCMs CVS and Subversion
+dominated the market.
+
+At the time, the VCS of choice for open source projects was
+Subversion, a centralized system, and there was some discussion on
+linux-kernel about using a tool like CVS or Subversion.  Torvalds
+decision to stick with a DVCS wasn't controversial, but Linux' use of
+a DVCS was certainly the exception in the OSS world. OSS efforts
+seemed to have a definite preference for central SCMs - Subversion,
+CVS.  Torvald's reaction to CVS and Subversion was telling, at the
+time he had some technical issues with the centralized version
+control, but his biggest objection to centralization was that they
+encouraged "politics around the question of who gets commit
+privileges".  Here is Torvald's reaction to CVS and Subversion in 2005
+from linux-kernel. http://marc.info/?l=git&m=113072612805233&w=2
+
+---- 
+The problem with a centralized model is that there's one point of
+contact: you can replicate the central database endlessly, but you can
+only really modify it in one place. Which means that anybody who wants
+to modify anything at all needs to have write access to that one
+repository.
+
+Now, you can limit write access in various ways ("user xyz can only
+write to these files"), but it still requires an a-priori trust
+network rather than a dynamic one. So every single CVS project (and
+SVN does zero in this regard) always ends up having politics around
+the question of who gets commit privileges, and what the rules for
+them are.
+
+So one of the worst downsides of CVS is _politics_. People, not
+technology.  
+----
+
+==== A Distributed Revolution
+
+As Git became more capable, open source projects and commercial
+developers alike started to experiment with more asynchronous
+approaches to collaboration.    Git continued to develop for two years
+before the arrival of Github, founed in 2008.  It wasn't until Github
+arrived that Git started to convert more and more open source
+projects.  The Rails project moved four years of Subversion activity
+dating back to 2004 to Git in April of 2008, and the number of
+developers, forks, and projects on Git skyrocketed.
+
+The ease with which communities could collaborate and the ability for
+independent developers to create forks and issue pull requests started
+to put pressure on traditional open source forges like Apache and
+Eclipse.  While these forges are not running toward Github, Github
+played an important part in popularizing Git.  Don't mistake Github
+for Git, the two are separate and you can certainly use Git without
+using Github.
+
+=== Why Git?
+
+If you are reading this book there's a good chance that you've already
+decided to use Git. Despite this choice, it still makes sense to
+understand some of the reasons why Git has been so successful.
+
+==== Git Features
+
+Git isn't the first distributed version control systems (DVCS) out
+there, but it is the most popular.  This section explores a few points
+that differentiate Git from the rest of the DVCS pack icluding: 
+Monotone, Darcs, Mercurial, BitKeeper, and Bazaar.
+
+The project driving the requirements for Git is the largest, most
+complex collaborative effort in the history of the species. That may
+sound somewhat grandiose, but it's very much true. The Linux kernel is
+over 17 million lines of code and is growing at an average rate of
+3,500 lines per
+day:[http://royal.pingdom.com/2012/04/16/linux-kernel-development-numbers/].
+Nearly 1,300 developers contribute to Linux with versions like 2.6.25
+generating more than 12,000 patches. The Linux kernel powers over 93%
+of the TOP500
+Supercomputers:[http://en.wikipedia.org/wiki/Usage_share_of_operating_systems#Servers].
+The kernel is at the heart of the Android which has a nearly 60% share
+of the mobile operating system market with 1.5 million device
+activations a day. The kernel also powers millions of servers across
+companies that have helped transform the way we consume information
+and communicate with one another such as Yahoo, Google, Facebook, and
+Twitter.
+
+This project can be thought of as a multi-layered tree of
+collaborating developers. A patch submitted at the bottom of this tree
+might jump around in a non-linear path to inclusion in the
+kernel. Git supports this because it makes branching and merging
+easy.  In Git, a branch isn't a separate object, it is a reference to
+a commit.  Contrast this approach to that of Subversion where branches
+and tags are distinct objects (in Subversion's case a branch is a
+directory).  That approach isn't nearly as flexible.  If a patch was
+thrown around to ten different developers over the course of several
+weeks, in Git you simply have a moving reference to a commit and the ability
+to integrate that commit into the end-product.  In Subversion
+individual developers would have to selectively merge specific commits
+across different branch directories.  It's a mess in anything other
+than Git.
+
+Distributed, Efficient, Easy to Branch and Merge, Free and Open Source
+
+==== Flexibility
+
+Git does not force you into a completely different mode of development, regardless of where your development process is centered now. Neither Git nor GitHub force you to change your workflow if your development team philosophies are currently "centralized" rather than "distributed." You can still make GitHub (or another Git hosting service) act as the centralized repository and require team members to push changes into the service. 
+
+Zachary Kessin has created an eBook, hosted on GitHub, which documents various patterns of DVCSes, and it is especially relevant to teams coming from a centralized model and trying out Git or GitHub. The book describes several workflows fitting many standard team member paradigms from the Linux Kernel development team to the "solo-coder" with or without clients. If you have concerns about how to map your existing workflow to GitHub, or how to transition from a centralized system to a distributed system, this book is worth a look.
+
+https://github.com/zkessin/dvcs-workflows
+
+==== Popularity
+
+===== in Open Source
+
+image::images/bootstrapping-git-rails-network.png[]
+
+These graphs display the network of participation for the popular web framework 
+"Ruby on Rails." Rails migrated from Subversion (SVN) to Git in 2008 at the moment when 
+GitHub launched as a company. Without reading too much into the graphs, notice a slight 
+upward trend that begins in 2008 and continues to today, and also notice a slight downward trend 
+from the inception of the project in 2005 until right before switching to Git. 
+Was there stagnation in the Rails project as it grew, and more developer finger started poking in the pie?
+Did switching to Git improve the workflow for developers and make it a more 
+frictionless process for making additions? One of the benefits and designs of Git has been
+that it is suitable for "programming in the large," that development should be fluid even as team size grows, and the health of the Rails project seems to have benefitted (or at least 
+encountered no stumbling blocks) since switching to Git.
+
+image::images/bootstrapping-git-node-network.png[]
+
+Node is another popular project on GitHub, allowing an author to run JavaScript, 
+traditionally a web client-side language, on the server side. Node emphasizes providing developers
+with a set of tools for developing responsive and high performance applications with a familiar language. Peering into the graphs 
+underneath the project level commit graph, you see the project's creator, Ryan Dahl, initially
+made a large majority of the changes in the project. As he has stepped back, others like "isaacs" (Isaac Z. Schlueter)
+and "bnoordhuis" (Ben Noordhuis) have taken over and are now making the majority of changes. Git and GitHub
+make these transitions of ownership and contribution levels seamless and without conflict.
+
+===== in the Enterprise
+
+Ask Github for a chart showing corporate adoption.
+
+==== Comparisons to Alternatives
+
+Git is not the only popular DVCS, but it is the most popular. Here is a quick comparison of the other major DVCSes, from both technical and cultural viewpoints.
+
+===== Darcs
+
+Darcs supports the same set of basic operations as Git does, but differs internally in that it manages a set of patches independently rather than as a connected directed acyclic graph (DAG). In other words, darcs allows you to create a set of changes and then push individual patches from that set without the need to rewrite the history graph. This internal structure makes branching even cheaper than with git, one of the most touted benefits of using git. There is controversy around "cherry-picking" within the world of DVCS, but this part of darcs makes cherry picking trivial. Darcs is written in Haskell. Unfortunately, as of this writing, there is no strong equivalent to GitHub for darcs hosting. The leading candidate "darcsden.com" has a copyright notice from 2011 and most projects show activity no later than 2011 as well. Darcs uses the GPL license.
+
+===== Bazaar (bzr)
+
+Bazaar (which uses the command line command "bzr") is an open source DVCS that offers the majority of operations that Git offers. Bazaar is sponsored by Canonical, the company which develops Ubuntu, the most popular distribution of Linux. Canonical offers a functional hosting service called Launchpad.net which offers good code management across teams but does not have near the polish of GitHub. Bazaar uses sequential commit numbers (1,2,3) rather than git-style SHA hashes (d670460b4b4a..., 1f7a7a472abf...), which means it is easier to tell which commit comes before or after another; you are simply comparing an integer to another integer, but this does add complexity (handled by the bzr tools generally) to managing these commit numbers when you start introducing other team member commits. Another technical difference is that directories are first class objects, meaning bzr can rename directories and this operation is stored as a rename operation in the commit log. Compare this to Git which does not store directories inside commit history and notice how git requires you to place files like ".gitkeep" in order to maintain empty directories. Mark Shuttlesworth, the founder of Ubuntu, has written at length about the benefits of renaming and how bzr wins against other DVCS, including git. Bzr is written in Python and licensed under the GPLv2. Bazaar was originally forked from the arch DVCS.
+
+===== Mercurial (hg)
+
+Mercurial (which uses the command line command "hg") is another DVCS, offering much of the same functionality as git. Unlike git, Mercurial is distributed as a single monolithic binary instead of multiple git commands (over 140 individual commands, depending on which build version you are using of git). You can tell git came from the Linux world which favors small chainable commands, but let's not go so far to say that Mercurial was designed in the basements of Redmond, WA. Mercurial also uses a DAG to keep change history, like Git. Mercurial favors immutable histories, meaning there are no tools to rewrite history like the "git revert" command. Mercurial has the best code hosting alternative to GitHub in BitBucket.org, a service of Atlassian. Mercurial is licensed under the GPLv2 and is written in Python.
+
+===== Monotone
+
+If a movie studio ever decides to remake "Back to the Future" with the main character named Git instead of Marty, there will be a scene where Git sees his hand disappearing in front of his eyes while strumming a guitar, as Linus Torvalds dances and falls in love with Monotone, dooming us all to a future world without Git. Fortunately, right as Linus is about to falls deeply in love with Monotone, she says: "So, you know, my father Bjarne Stroustrup said..." Looking incredulous, Linus interrupts her and says: "Wait! You're C\+\+?!?!" And, he rushes out, leaving Monotone alone on the dance floor, securing our future with Git and GitHub. Back to reality, Monotone was initially favored by Linus as the replacement to BitKeeper and CVS within the Linux kernel community, but Linus could never overcome his revulsion to C++, the language in which Monotone was written. Ideologically, Linus agrees with the ommission of cherry picking in Monotone, though ironically this is a feature available in the git of today. Unfortunately, Monotone has lost momentum; for example, the mailing list for the Monotone Eclipse plugin has seen no activity since 2008. Monotone is licensed under the GPL.
+
+===== BitKeeper
+
+BitKeeper was the early inspiration for many of these open source DVCSes. The maintainers of the Linux kernel used BitKeeper for a short while, but differences over its closed source licensing inspired Linux kernel developers to seek out an alternative and resulted in Linus building his own, now called Git. Unfortunately, for many open source developers, a closed source system which manages their source code is a no go, and there are many viable alternatives offering the same features as BitKeeper, so while BitKeeper continues to have some traction in the enterprise, there are very few open source projects using it.
+
+=== Installing Git
+
+The definitive resource for installing *command-line* versions of Git is from the site http://git-scm.com/ (SCM stands for "Source Code Management"). If you visit this site, regardless of your platform, you will be presented with a download link to the appropriate binary for your system. For example, on my system, I get a link to download a binary for Git version 1.8.4.3 (the latest stable version). 
+
+Git-scm.org also offers links to the full source code to Git (if you wanted to compile a release candidate version) or other GUI clients. 
+
+There are also package managers which can manage downloading binaries or even installing from source code. On Mac, you can try HomeBrew, a package management system (which incidentally uses Git under the hood as well). For example, to install HomeBrew and then install Git, use these commands:
+
+[source,bash]
+$ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
+$ brew install git
+
+Brew is a useful tool for installing lots of developer centric software. And, many of these components require installation of Apple's XCode development environment. Unless you feel comfortable with 
+
+==== Windows
+
+Brief instructions for installing Git Client.
+
+* Git Client 
+* PowerShell vs Git Bash
+
+Screenshot and install instructions for Github for Windows.
+
+* GitHub for Windows
+
+==== Mac
+
+To install the GitHub for Mac Client, go to mac.github.com. You'll see a page like the following.
+
+image::images/mac_client_install.png[]
+
+Click on the download button, and once you've downloaded the ZIP file, open it in the finder. Most browsers will save this to your "Downloads" folder. If you open the ZIP file, you'll see a single binary inside it: the GitHub for Mac client. You can simply open this to begin. GitHub for Mac will ask if you want to move it to the Applications folder, and you should do this.
+
+image::images/mac.github.com.png[]
+
+==== Linux
+
+Linux systems make installation of Git a breeze. Most Linux systems use a package management system like dpkg (the Debian packaging, favored by Ubuntu and Debian) or RPM (the RedHat Package Manager, used by CentOS and other RedHat variants).
+
+To install Git on a Debian/Ubuntu system, run this command
+
+`sudo apt-get install git-core`
+
+To install Git on a RedHat variant, run this command:
+
+`sudo yum install git`
+
+The `sudo` command means "run the following command as the super-user" so be prepared to enter in your password to escalate to super user.
+
+==== Installation from source
+
+If you are committed to building a binary optimized to your machine, you can build Git from source. To do this, run these commands from a terminal:
+
+[source,bash]
+$ git clone git@github.com:git/git.git
+$ cd git
+$ make 
+$ make install
+
+These commands can be customized with specific compile options, such as choosing a special directory into which you want Git installed; read the file called INSTALL for more details on these compile flags. If you needed to install a cutting edge version of Git, you could keep your package manager installed version of Git in the normal location and then install a second version into a special path and use each when appropriate.
+
+==== Graphical Git Clients
+
+Reference the larger chapter on Git clients.
+
+=== Git Usage Basics
+
+There are over a hundred individual git commands, each with dozens of switches. The countless permutations of commands can be daunting, but to be immediately productive in git you really only need to know a few commands. These commands should be run from a shell, like bash on Mac OSX or Linux, or cygwin on Windows.
+
+`git init`: init creates a new git repository for you. This command creates a directory called .git which stores information about the repository.
+
+`git add`: add does as you might expect, adding files to your index. Typing `git add .` adds all files in the current working directory and below to your index.
+
+`git commit`: commit creates a commit for you, which means it takes the current contents of the index and bakes a commit object for you, along with a log message. If you use `git commit` without any switches git will open an editor for you to enter the commit message; if you use the -m switch, you can type in the commit message between quotes to save a little bit of time.
+
+`git push`: push sends the changes you have made up to a remote server.
+
+`git pull`: pull retrieves changes from a remote repository and syncs your local repository with them.
+
+`git clone`: clone makes a local copy of a remote git repository on your local machine.
+
+`git remote`: remote allows you to manage the remote repositories. When you create a new repository on GitHub, GitHub will instruct you to run a command like `git remote add origin git@github.com/xrd/mynewrepo.git` to establish a connection between your local git repository and where you will store the code remotely. Once you have established this connection, git push can be used to push your objects into GitHub.
+
+Taking a real world example, to clone and edit a set of files stored on GitHub, you could run these commands. Remember the "\$" symbol indicates a shell prompt (meaning you don't need to copy this character in) and the "#" symbol indicates a comment, but you can copy these lines in completely and your shell will ignore anything past the "\#".
+
+[source,bash]
+$ git clone git@github.com:xrd/ng-rails-csrf.git # make a local copy
+$ cd ng-rails-csrf # Enter the directory
+$ echo "Nicely done. Comment by Chris Dawson, esq." >> README.md # make a change
+$ git add . # Add the changes to the index
+$ git commit -m "Add thoughts" # Make commit from index
+$ git push # Try to push up to GitHub.
+
+The last command will fail because you don't have write access to this repository. If this were a repository you created from scratch on GitHub, the same set of commands (with a different clone URL, of course), would work. 
+
+Here is the workflow to create a new repository and push the files into GitHub. There are ways to create a repository from the command line (using the `hub` command or `curl`, mentioned later in this book), but not using the git tool itself, so imagine you have just created a repository named "MyFirstProject" using the GitHub website. 
+
+[source,bash]
+mkdir MyFirstRepository
+cd MyFirstRepository
+echo "My first git repository" > README
+git init
+git add .
+git commit -m "My first commit"
+git remote add origin git@github.com:xrd/MyFirstRepository.git
+git push -u origin master
+
+The only thing unmentioned so far is the -u switch for the `git push` command. The -u switch sets up tracking so that using a `git push` subsequently does not require specifying the remote. In other words, when we do a `git push` the next time, git knows to push into GitHub without us typing out the full command `git push origin master`.
+
+=== Git Resources
+
+Create an exhaustive list of Git resources
+
+==== Git Books
+
+List all known Git books
+
+==== Git Cheat Sheet
+
+I'm assuming we're going to reference an existing Git Cheat Sheet
+here.  If not, we should create a single-page PDF.
+
+==== Git Videos
+
+Link to the O'Reilly Git videos
+
+Link to the Git screencasts from Github
+
+==== Git Training
+
+Link to Github's Git Training services.

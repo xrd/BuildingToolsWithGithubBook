@@ -1,0 +1,115 @@
+== Github Interaction Patterns
+
+This will be a step-by-step chapter that will guide users through three simple interaction patterns which demonstrate the interface.
+
+=== Simple Github Pattern
+
+First we need to walk a user through the basics.  This pattern isn't Github specific, but we'll demonstrate some Github-specific features.
+
+==== Create a New Repository
+
+Click on the create button, demonstrate that Github can prepopulate a .gitignore and a README.md.
+
+==== Clone New Repository
+
+Do this with the Github Client.
+
+==== Add Code to a Repository
+
+Gloss over the details, language, editor, just change a single file.
+
+==== Commit and Push to Master
+
+Commit that file to local, demonstrate that local is separate from remote and push to Github.
+
+==== Comment on Github Commit
+
+Demonstrate the ability to leave a line-level commit comment.
+
+==== Discussion
+
+Discuss the simplicity of this interaction, and you you demonstrated the use of Git without having to create an SSH key or use the command-line.
+
+=== A Simple Forking Pattern
+
+A simple forking pattern intro
+
+==== Fork an Open Source Repository
+
+Let's choose an open source repository that isn't going to mind thousands of forks and pull requests.  Maybe we should create one for the book.  Or, maybe Matt and Tim have one we can use.
+
+==== Clone Your Fork
+
+Bring your fork down to your local workstation.
+
+==== Create a Feature Branch
+
+Demonstrate the best practice of creating a feature branch to isolate changes for a pull request.
+
+==== Modify Source
+
+Describe
+
+==== Push to Your Fork's Branch
+
+Describe
+
+==== Make a Pull Request to the Original Repository
+
+This will demonstrate how to use the interface to make a pull request.
+
+==== Discussion
+
+Discuss how this is the standard pattern on Github for interacting with an OSS repo.
+
+=== Private Fork Pattern
+
+This is something of an advanced trick, but let's say you want to maintain a private "fork" of a public project.   In this case, you don't use the Fork feature, you simply clone local and push to another remote.
+
+==== Clone a Public OSS Project
+
+Clone an OSS Project to your local workstation.
+
+==== Create a New Private Repository
+
+Now, go back to Github and create a private repository.
+
+==== Add a New Remote
+
+Add your new private as a remote repo
+
+==== Push to Your Private Repository
+
+Push to your new private repository.
+
+==== Discussion
+
+Discuss how this is sometimes an interesting option if you want to take an OSS project and customize it without that work being visible to the world.
+
+=== Github Pages Pattern
+
+This pattern explores the use of Github Pages.
+
+==== Create a gh-pages Branch
+
+Create this branch via the interface to show how the Web UI can be used to create a branch.
+
+==== Clone the gh-pages Branch
+
+Clone just this branch to a project.
+
+==== Use Jekyll
+
+Setup a project using Jekyll.
+
+==== Push to gh-pages Branch
+
+Push to the pages branch.
+
+==== View Project Site
+
+View the awesome web site.
+
+==== Discussion
+
+Discuss the use of GH Pages.

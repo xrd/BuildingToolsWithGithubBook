@@ -1,0 +1,223 @@
+[[creating-account]]
+== Creating a Github Account
+
+To create an account on GitHub, just go to GitHub.com. They make it easy to sign up, with a signup form right on the front page. Enter your preferred username, your email address, and a password, and you will have created an account. GitHub is smart with their signup in that they don't force you to agonize over choosing a plan when signing up. You just enter in three pieces of information, and you are a GitHub member.
+
+GitHub does ask you to verify your email address once you have created an account. At the top of the page you'll see a notification that asks you to verify your email address. Doing so is simple: follow the link to "Emails" in your Account Settings, and then click the button "Verify." You should immediately receive an email with a link; clicking on this link takes you to a a verify button, and if you click this, you'll have verified your email address. Your GitHub account is fully functional even without doing completing this step, but verifying your email maintains a high identity integrity of users within GitHub.
+
+=== Selecting a GitHub Plan
+
+You are not asked to choose a plan immediately upon signing up at GitHub.com. Pricing is solely dependent on the number of private repositories you need. If you plan on contributing only open source code, you might not need any private repositories. If you plan on building the next Facebook or Google, you may want to keep your source code private to protect yourself from competitors, and in this case you'll need to upgrade to a paid plan with private repositories. Plans start at $7 for the micro plan with 5 private repositories, and go up in price with more private repositories. GitHub makes it very easy to upgrade to a larger plan and add private repositories, and if you ever need to save money you can remove private repostories from your account (or open source them and make them public repositories) and downgrade your account to a smaller and cheaper plan. It is a very flexible payment structure and this simplicity is probably one of the reasons GitHub is well loved by its users. 
+
+Sidebar: How most organizations signup for Github?
+
+==== Types of Github Plans
+
+GitHub plans differ in only two ways: there are personal plans and there are business plans, and the plans are priced by the number of private repositories you have available. 
+
+Personal plans are for personal users, users operating indepedently of a corporate entity. Business plans have an additional set of features useful for managing members of an organization. Any personal plan can be a member of an organization, so you can safely sign up as a personal plan user and later join an organization.
+
+There are currently five types of personal plans. Free plans cost nothing and, like all plans, have an unlimited number of public repositories and zero private repositories. Micro plans start at $7 a month and have 5 private repositories. Small plans are $12 a month and have 10 private repositories. Medium plans have 20 private repositories and cost $22 a month. 
+
+If you are working within an organization, you might consider the business plans. Business plans have a slightly higher cost with fewer repositories per dollar, but they are designed for organizational usage. This means that you can assign permissions to private repositories based on groups of users within the organization rather than individually as you would with a standard user plan. Business plans start at the bronze level with $25 a month for 10 private repositories, silver plans are $50/mo for 20 private repositories, gold plans are $100/mo for 50 private repositories, with platinum plans rounding out the list at $200 for 100 private repositories.
+
+===== Free
+
+It costs nothing to sign-up for a Github account and use it with your own public repositories. You can contribute to private repositories, but cannot own private repositories or create them until you upgrade to a paid plan.
+
+===== Downgrading your plan
+
+One day your wife comes into your office and says: "After reviewing our expenses, I am going to need you to purchase one less latte this month." One less latte! But, you are committed to living a life of financial responsibility, so you counter offer and say "How about I downgrade my GitHub account to a micro plan from my current small plan? That will save us $5!" She agrees to your counter offer and you set about figuring out how you are going to do downgrade your plan.
+
+At first glance, you realize you might be in trouble. The micro plan has a limitation of five private repositories. You currently have nine private repositories in your GitHub account, and you believe at least seven of the projects will turn into businesses larger than Apple, Facebook and Google combined. So, you are loathe to just delete the repositories and lose all the work you have put in to building these business applications. There are two repositories which contain code that you no longer believe to be convertible into viable businesses. You need to get your private repositories down to just five in total. What to do?
+
+For the two businesses which you no longer need to keep private, just visit the repository page, and then click the "Settings" link on the right hand sidebar. Once you are in settings, scroll all the way down to the section at the very bottom marked "Danger Zone." In there you will see a button labeled "Make Public." Clicking this button will convert this repository to a public repository. This means anyone can view the contents on GitHub.com, clone it for themselves, and even fork it to make their own copy inside GitHub. If you make two of your private repositories public, you will have only seven private repositories, that much closer to your goal of five private repositories.
+
+image::images/creating-account-make-public.png[]
+
+Now that you have seven private repositories, you just need to take one more step to take your account down to five repositories in total. First, simply clone two of the repositories onto your laptop or desktop computer. Remember that when you do a clone of a repository, you are cloning the entire history of this repository. If you clone the repository, therefore, you have exactly the same information on your local machine as GitHub has on their servers. You can then safely delete the repository on GitHub, knowing that you have a full copy of the code on your local machine. This means that you will need to make sure you keep a backup of this code somewhere else in case you have a hard disk failure, or lose the laptop due to theft. Normally when you are working on code that backup is GitHub, but now you'll need to find an alternative. And, if your wife ever decides that you can spend an additional $5 a month again, you can simply recreate the repository on GitHub and `git push` to publish it right back with no difference at all.
+
+If you take these two steps of making two repositories public, and delete from GitHub two which you have backed up on your personal laptop, you'll be down to five private repositories. And, you can then switch your plan down to the micro plan. You'll likely find that spending a few extra dollars a month is well worth it for the piece of mind that your precious code will be kept safe, but if your partner can't be convinced of the expense, then GitHub makes it easy to go up and down plan levels.
+
+===== Personal
+
+If you are new to software development or working on projects mainly by yourself, you will be fine starting with a personal plan. Once you start creating private repositories, you'll need a paid personal plan, which start at $7/mo for 5 private repositories and go up to $50/mo for the large plan with 50 private repositories.
+
+===== Organization
+
+If you are a doing software development within an organizational structure, then you will probably want to start or join an organizational plan. Regardless of whether your plan is personal or organizational, you can invite people to any private repository as long as they are members of GitHub, paid or unpaid. However, if you want to make them owners of the repository, or you want to institute team based permissions for access on any public or private repositories then you will need to migrate to a business plan
+
+===== Open Source Development
+
+If you are only contributing to open source projects, you can probably
+get by with the free personal plan. You can have as many public repositories as you want with the free plan. If you decide later you need private repositories, you can upgrade your account to a paid plan.
+
+===== Small Project Development
+
+If your team is small, with less than 10 people, then you can be successful using GitHub with personal plans for the entire team. The overhead in providing team member repository access is manageable with this size of team. 
+
+===== Startups, Small to Medium Businesses
+
+With teams larger than 10 people, it is worth considering an organizational plan. Organizational plans make it far easier to add members to repositories than personal plans. For example, if you have an organization plan, you can add a new employee to the organizational group and they then get access to all repositories for this organization. You can have multiple groups within an organization, so if a new employee fits into multiple groups, you can quickly add them to the groups for which they need access. 
+
+With employees wearing more and more hats every day, this can often save a lot of time: imagine you just hired a software developer who also has design skills and that you intend to have her work on many facets of your business. Let's say you have ten repositories for the software developers on your team, and another set of five repositories for the designers on the team. If you were using a personal plan, you would need to add the new hire to a total of fifteen repositories, painstakingly clicking "add user" to each repository, one by one. Stop and think for a moment how easy it would be to forget to add them to one of the repositories, blocking them from their work while you are on vacation. With an organizational plan, you add them to the "developer" group and the "designer" group and they get access to all those repositories at once. Going further, if another engineer adds a new repository and you need to give access to all the engineers on your team, you just add that repository to the "developers" group and all developers get immediate access. Finally, if you ever fire someone, you can easily remove their name from all groups and remove their GitHub access entirely.
+
+IMPORTANT: Remember that *GitHub access* is all you control with organizational access controls. You don't control access to source code that is sitting on an employee's laptop. DVCSes like Git allow people to code untethered from an airplane, vastly increasing productivity. With this increased productivity comes a loss of control. There is no way to use GitHub's access controls to remove the source code from a remote worker upon termination, so deletion of source code upon termination should be something written into the contractual agreements before an employee starts work.
+
+To setup an organizational plan, go to your settings page
+
+===== Enterprise-scale Development
+
+If you have hundreds or thousands of developers, you may not want to
+use either of these plans.  In these situations, Github offers a
+service called Github Enterprise. GitHub Enterprise is a hosted version of GitHub, offering all the same features of GitHub, but running on your own private server. If pushing your source code into GitHub's data center is a concern for you, then consider using GitHub Enterprise. GitHub Enterprise means you need a server administrator to manage your server installation, and if the server goes down for any reason, your staff are on the hook, not GitHub's. GitHub Enterprise is unconnected to GitHub.com, and has no ability to "phone home" which means files sitting inside of GitHub Enterprise are protected by whatever security layers you deem necessary, if you have stricter requirements for hosting your source code than those of GitHub.  
+
+=== Setting Up Your Accounts
+
+If you are new to Github, this section has been designed to walk you
+through the process of setting up an account.
+
+==== Personal Accounts versus Organization Accounts
+
+As detailed above, setting up a personal account is very straightforward. If you want to create an organizational account, go to your "Account Settings" page and then look for "Organizations" on
+the very bottom of the list on the left. Once you have clicked on "Organizations" you can create a new organization by clicking the "Create new organization" button.
+
+image::images/new_organization.png[]
+
+This will navigate you to the new organization page. Here you will enter in the organization name and other details, and then choose a payment plan. There is a free plan for open source organizations as well.
+
+image::images/organization_setup.png[]
+
+=== Exploring Account Security
+
+==== Reseting Your Password
+
+To change your password, click on the "Accounting settings" icon at the top right corner within GitHub. You will be taken to the "Profile" section of the account settings; click on the "Account Settings" item within the list on the left and you will see a form in which you can enter a new password and confirmation, plus the old password. If you enter these correctly you will update your password on GitHub.
+
+image::images/creating-account-change-password.png[]
+
+Remember: if you are using HTTPS (instead of SSH) with your GitHub clients (meaning, the programs you use to access files within GitHub, like GitHub for Mac or GitHub for Windows), changing your password on GitHub will mean you need to update your password within those clients as well. If you are using SSH to access files on GitHub (you have setup public/private SSH keys) then you can change your password without worry. We detail this distinction and how to handle setting things up below.
+
+==== Using 2 Factor Authentication
+
+GitHub takes the "octocat" as its mascot, and not so surprisingly their technologies have crept like tentacles into many other sites. One example is the availability of "Login via GitHub" buttons, which permit a third-party site to delegate login and credentialing to GitHub using a technology called oAuth. Less technically, a site can ask users to login on the GitHub site, and then ask GitHub to validate that user's identity and then provide access to the services of the third-party site. When third party sites start trusting GitHub for authentication, it becomes more and more important to protect the credibility of a GitHub login. For various reasons, protecting access with a username and passwords is often an easy attack vector. And, for this reason, GitHub offers, like many other sites offering login services for third party sites, what is commonly referred to as "two factor authentication."
+
+If you are not using two factor authentication on your GitHub account, the theft of your username and password is all that is required to break into your account. And, if you have logged into any other sites using GitHub's login delegation services, then those accounts are as good as compromised as well when someone breaks into your GitHub account. 
+
+Two factor authentication simply means that login to GitHub can require two different unconnected methods of authentication to prove you are who you say you are. If you have enabled two factor authentication, an attacker cannot access your GitHub account with only your username and password. The first time you login to GitHub with two-factor authentication enabled, you will start by entering in the username and password. After this GitHub will, typically, send you a text message with a special one time code required to complete the login process. Without this code, the username and password do no good to a malicious attacker. 
+
+It can be easy to steal a username and password through brute force attacks, or due to the fact that many people reuse passwords across different accounts (so when one is compromised an attacker can start testing the password on any other account the person might own), or even good old fashioned social hacking where a person is tricked into revealing their password over the phone or inside an cleverly worded email. All of these attacks can made on the other side of the world. But, it is much harder for a hacker to obtain physical access to your cell phone, especially when they are halfway around the world. Two factor authentication does not completely prevent unauthorized access to your GitHub account, but it reduces the chances monumentally. 
+
+Spend the time to enable two factor authentication on your GitHub account. It only takes a minute to set up, and the piece of mind is worth it.
+
+==== SSH vs HTTPS
+
+There are two transport options for loading code from GitHub: SSH and HTTPS.
+
+Actually, at the time of this writing there are really three protocols: SSH, 
+HTTPS and Subversion. Subversion is there for backwards compatibility with older 
+workflows, and actually just maps the SVN protocol on top of Git. The only reason
+you would use Subversion with GitHub is that you work in an organization that
+requires use of Subversion but also wants to host their code on GitHub. If you work
+for such an schizophrenic organization, you might want to start looking for another job right 
+away.
+
+Both HTTPS and SSH operate over a secure encrypted channel, but beyond this commonality 
+there are very different reasons for using each.
+
+Of the two, SSH is the more secure option. If you are willing to tackle the slight complexity that comes with using SSH, we recommend it. If not, use HTTPS. GitHub recommends HTTPS as their preferred method, but we differ in believing that you'll rest more easily in the long run if you take the trouble to set up SSH access.
+
+===== HTTPS
+
+The only reason you might be unable to use SSH and have no option other than HTTPS is that this protocol can be useful if you are
+inside a very restrictive firewall.
+HTTPS traffic is almost always permitted (port 443 is a common "secure" port on almost 
+any firewall). If you use HTTPS, the "git clone" command will use a URL which starts 
+with https://. For example, to load the Ruby on Rails repository from GitHub you would 
+use the command `git clone https://github.com/rails/rails.git`.
+
+===== HTTPS Downsides
+
+When you use the HTTPS protocol, note that you will need to enter in
+your password to authenticate. The command line git client (which might be what your
+editor is using underneath the graphical interface you use to code) does not
+have an ability to cache this password. This means each time you push code, or pull 
+the latest changes, you will need to re-enter your password. Git is a protocol which 
+supports making lots of little changes, so a requirement that you must add another ten 
+seconds to your workflow makes HTTPS quickly unusable. GitHub has released a Ruby gem called "hub"
+which you can alias in your shell so that when typing "git" your shell actually uses the ruby gem client instead of the native 
+command line client; this ruby gem client can cache and use HTTPS passwords. But, this requires
+additional setup, convolutes your workflow, and SSH still offers more benefits. 
+
+HTTPS is also a less efficient protocol for transferring files; cloning and interacting with 
+repositories using HTTPS is slower for you. 
+
+The only real benefit for HTTPS is for server administrators: it 
+is easier to configure a server to provide HTTPS to git repositories than it is to provide those
+repositories over SSH. GitHub is doing the work of hosting your git repositories for you, however, so this is not a compelling reason to consider HTTPS.
+
+===== SSH 
+
+SSH offers the same level of security but is much more convenient, more flexible and 
+keeps access more secure. You will notice that GitHub offers SSH as the default protocol.
+
+At the center of SSH is a concept called asymmetric cryptography also called 
+public key cryptography. To use SSH you generate a public/private keypair. Then, you 
+upload the public key into GitHub. You keep the private key on your machine, and 
+you keep it private (meaning, don't send it over email, or post it on Facebook).
+
+===== A brief tutorial on using SSH keys
+
+If using SSH sounds complicated, don't fret. To generate a public/private keypair, 
+you just need to run this command from a terminal:
+
+[source,bash]
+$ ssh-keygen 
+Generating public/private rsa key pair.
+Enter file in which to save the key (/Users/xrdawson/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+
+This generates two files, a file called ~/.ssh/id_rsa and another called ~/.ssh/id_rsa.pub. 
+The first file is the private file and the second (ending with a suffix abbreviation of the word "public") is the public file. 
+
+You will be asked if you want to enter a passphrase which protects usage of your keypair. If
+you believe your machine is secure (for example, this is a laptop which uses fingerprint 
+recognition to unlock the screen), then you can hit enter and not protect your private key
+with a passphrase. If the key is sitting in a less secure position, such as a server on the 
+Internet, then you might want to protect the key with a passphrase. If you lose the passphrase, 
+you cannot use the key. However, replacing a key is an easy problem to rectify.
+
+===== Putting your SSH public key on GitHub 
+
+To store an SSH public key on GitHub, copy the key contents into your clipboard. On an OSX machine, you 
+could use this command:
+
+[source,bash]
+$ cat ~/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDG56LecqP2ip/odHzAkM3F/TyL5TjS0m6bNEo3p+m7KEU/eJ+ZvrF1/4ALPk59+Ca2NtOwewVs1RZNuV9BuMesTHFAxev6Zx4R56fwL45UuDm1gjpwevxwHe8aS0elek94OcgxYomnnnmB4Og/OIbVYICfaQ4VhE+xVVOF/TXIGkndZG/wBLFg9QwPTQKhOIgVDoTzdj0FZ9qXfhvc7AhGkeOAO+dyeNgfk8ghzRPqyztd14tq6gOVPAMce3mGQsugbcKxgRBbd/7VaWT5hQl5YVtLlcAvM1gHgvU8MNVhrJTKzZxlTNBVBnYy1QxPtB3LF25YL7jAjtMYkuEjmZff xrdawson@Chriss-MacBook-Pro-2.local
+
+Select everything from the "ssh-rsa" to and including the "xrdawson@Chriss-MacBook-Pro-2.local" (which is the name of my MacBook Pro) and then copy it to your clipboard. Then, go to GitHub, click on the "Account Settings" button:
+
+image::images/account-settings.png[]
+
+Then, click on the "SSH" item in the navigation bar on the left. You'll see a list of SSH keys already in the system. You might not have any if you just setup your account. In my account, I have many SSH keys.
+
+image::images/ssh-keylist.png[]
+
+As you can see, I have a key for my OSX Laptop. I have another key for an Ubuntu server I manage, a server which has a user which has access to my repositories. Then, I have another server, this time running on Amazon Web Services, which also has access to my repositories. I have an Android device which has access, as well as a Chromebook running developer mode that has access to my GitHub repositories. Finally, I have a virtual machine (using Vagrant) on my OSX laptop, and this machine has its own access. 
+
+To add your key, click on the "Add SSH Key" button at the very top right of the list of SSH keys. This action will open a form underneath into which you can choose a title for the SSH key and then the contents which you copied to the clipboard. Once the form looks something like this you can click the "Add Key" button.
+
+image::images/ssh-add-key.png[]
+
+===== The big reason why SSH trumps HTTPS
+
+If you takeaway one thing about why SSH is better than HTTPS, let it be this: both HTTPS and SSH make
+it easy to add access to your repositories. However, HTTPS makes it really hard to revoke that
+access.
+
+With HTTPS managing and securing access to your repository becomes *your* problem. With SSH, 
+secure access is *GitHub's* problem. And, they've been thinking about the right ways to do this: 
+from requiring re-entry of your password whenever a new SSH public key is added, 
+to two factor authentication (utilizing email and your cell phone to verify your identity), GitHub has spent lots of time and money making sure your source code is protected from rogue access.

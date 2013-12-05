@@ -1,0 +1,152 @@
+[[manage-org]]
+== Managing Your Organization Account
+
+If you are using Github to for internal development, or if your open
+source project grows larger enough to benefit from the structure
+provided by an organization you'll need to know how to manage one.
+
+=== Organization Accounts
+
+Organization accounts are billing separately from individual accounts,
+ and the following figure shows the various plans that are available.
+ 
+image::images/org-billing.png[]
+
+==== Selecting the Appropriate Account
+
+The driving factors for organization accounts are the number of
+private repositories you'll need to track in an organization's
+account.    Note that there is no fee per contributor, all of the
+billing is based on private repositories which means that you can have
+any number of contributors..
+
+* Free
+* Bronze
+* Silver
+* Gold
+* Platinum
+* Diamond
+* Holmium
+* Fermium
+* Einsteinium
+* Mendelevium
+
+Credit card information.
+
+==== Upgrading and Downgrading Your Account
+
+Right, so what happens if I downgrade my Holmium account to a Diamond
+account and I exceed the number of allowed repositories?
+
+==== Viewing Invoices and Payment History
+
+Click on Payment History to view a list of completed transactions, and
+then click on an individual month to get an invoice.
+
+image::images/org-payment-history.png[]
+
+Note: This is an important section.   If you are anything like me, you
+never asked your boss for permission to use Github.   You simply
+signed up for an organization account at the Bronze level and you've
+been expensing it for a few years.  Eventually someone is going to
+catch on that we're using Github and want to transition this to a
+company credit card, but, in the meantime, you'll need to find those
+invoices once a month.
+
+=== Managing The Profile
+
+There's nothing surprising on this page, you can edit name, email,
+location.
+
+image::images/org-profile.png[]
+
+==== Renaming an Organization (and Why You Should Avoid Doing So)
+
+Just like renaming a user account or a repository, these actions often
+have unintended side effects
+
+==== How to Change Your Organization's Picture
+
+When you updated your organization's profile, you supplied a publicly
+visible email address - a Gravatar Email address.  If this address has
+a Gravatar, it will be used as your organization's profile picture.
+
+"What's a Gravatar?", you ask.   Gravatar: http://www.gravatar.com
+
+==== This is the End.  Deleting and Organization
+
+Maybe your startup is no more?  Maybe you decided to call it quits.
+Whatever the reason, the organization profile screen has a danger zone
+with a single option - "Delete Account".
+
+=== Keeping Your Organization Secure
+
+A company's source code is often one of its most closely guarded
+secrets.    This section outlines the various controls Github users
+have over the code that is stored on Github.
+
+==== User and Permission Grouping
+
+[User and Permission Grouping](http://vimeo.com/35539203)
+
+==== Owners Manage Organizations
+
+Only Owners have access to manage and organization, create new
+organization repositories, and manage organiztion teams.    If you are
+securing your organization's data you will want to make sure that you
+only grant ownership status to a small set of internal administrators.
+
+image::images/org-owners.png[]
+
+==== Security History / Audit Log
+
+A comprehensive security policy also involves tracking and auditing
+the changes made to security.  To view the audit log for changes to
+your organization's securty, click...
+
+image::images/org-security-history.png[]
+
+==== Manage Organization Teams
+
+image::images/org-team-overview.png[]
+
+===== Managing Permissions and Members
+
+Explain.
+
+image::images/org-team-detail.png[]
+
+==== Strategies for Organization Security
+
+There are a few approaches to organization security that depend on the
+kind of organiztion your are running as well as the nature of the code
+that is being produced.
+
+===== Internal Corporate: Private Repositories, Private Contributors
+
+This is a common pattern, a company hosts internal code on Github and
+establishes one or more internal teams.
+
+Example diagram of teams
+
+===== Open Source: Public Repositories, Public Contributors
+
+Very often an OSS foundation will create a Github account to manage a
+set of open source projects.
+
+Example diagram of teams
+
+===== Mixed Public/Private Development
+
+In this scenario you will need to be very deliberate about the Teams
+you create and the permissions you grant to these teams.
+
+Example diagram of teams
+
+=== Organization Pull Requests
+
+image::images/org-pull.png[]
+
+=== Organization Issues
+
+image::images/org-issues.png[]

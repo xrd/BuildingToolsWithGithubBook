@@ -85,3 +85,24 @@ Watch us on YouTube: link:$$http://www.youtube.com/oreillymedia$$[]
 ++++
 <remark>Fill in...</remark>
 ++++
+=======
+[[preface]]
+== Preface
+
+* Git, What is it?
+
+* Github, What is it?
+
+* Font Conventions
+
+* Github Writing Conventions
+
+* Downloading Code Examples
+
+* Using Code Examples
+
+* Safari Books Online
+
+* How to Contact Us
+
+* Acknowledgements

@@ -1,0 +1,55 @@
+[[chapter-culture]]
+
+GitHub is an impressive collection of services to make you more productive as a software developer. And, the company itself is consistently the topic of conversation as a leader in creating a company culture which is financially viable and keeps developers happy (a notoriously difficult combination). Are there lessons to be learned from the company itself that can make your organization happier and more productive? Are these cultural traits ingrained in the people at GitHub in a special way, and are these cultural practices embedded into the public and private technologies that GitHub uses internally and externally?
+
+=== Pull Requests replace code reviews
+
+I asked Ben Straub from GitHub: "do you do code reviews?" He then gently reminded me that pull requests are at the center of almost all software development at GitHub. Internally, people will choose things they want to fix or build, and start by submitting a pull request, often with only a brief sketch of what the feature or change will look like. Others with an interest in the idea will then chime in on the pull request and offer their opinions on what needs to be different, the efficacy of the idea and implementation. The idea may radically change from the original intention during this process.
+
+I asked if this meant people were less ego driven at GitHub. And, I asked if people used softer language when critiquing ideas? Were GitHubbers trained to use more respectful language because social norms are often forgone when working over electronic mediums?
+
+At GitHub, people don't pull punches when it comes to critiquing code or ideas. Ben noted that because people do all of this over electronic communication that the sting of criticism might be less than if it were happening in a face to face meeting. And, that because their is no hierarchy at GitHub, no one's opinion matters more than someone less senior. Ideas are debated out in the open on their merit entirely. 
+
+Pull requests are an example of "fail fast" methodology. Ben described the "solo engineer hidden in his cubicle tinkering away for three months" as an anti-pattern which GitHubbers actively seek to root out. By starting work with a pull request encapsulating often not much more than an idea, everyone with an interest is engaged to iterate on it. This ferrets out many more problems than would be found by an isolated engineer with tunnel vision. As Eric Raymond asserts in his famous essay: "with many eyes, all bugs are shallow." In the same way, GitHub builds software quickly without excess process and management layers.
+
+Code reviews are controversial in many development shops. You need to allocate time for them, you need to have mentors who can align around standards and you need to have employees who are willing to take criticism in front of their peers. By cleverly reframing code reviews as pull requests and putting them inside a dynamic electronic context, GitHub has built a powerful new way to improve the quality of the software and their engineers.
+
+=== Issues replace email.
+
+"When we think about communication, we think about how wide the scope should be of that communication."  Ben Straub, GitHubber working on the libgit2 library.  
+
+Ben's point was that often a conversation will take place between two people, and there is no consideration for whether there is a need for this conversation to go wider than those two people. Email is typically like this. Other "old world" companies often worry about restricting access to communication; they want to control who sees and knows about what. You might look at this as the difference between companies that use Subversion (which has a tight centralized center of control) and Git (which is a dynamic system where any node can become the center of activity). Subversion companies want control over their communication, while Git companies accept that "information wants to be free" or at least accept that a wider scope should be considered. For example, email conversations are not searchable by others who might need to reference this communication. When two GitHubbers begin a discussion face to face, often one of them will insist that they take this communication into a chat room. This conversation then becomes a searchable living record of that conversation. It has a canonical URL which anyone can reference in other conversations. 
+
+Email is used within GitHub as a broadcast notification mechanism. People don't expect conversations to occur in email. With all the emphasis on "inbox zero" and people overwhelmed by communication noise, GitHub has a culture which enables wide involvement in conversations in a responsible and open way and one that minimizes the tendency of email to quickly become an untenable task management solution. Many companies use email in the wrong way, and GitHub appears to have consciously thought of how to manage complex software projects without email, but still provide the asynchronous benefits of it.
+
+==== Notes from interviews:
+
+===== Chris Hunt
+
+"People don't expect you to respond to email."
+
+"In open source, I always produced a polished gem as a PR. With GitHub, I did that the first time and someone told me: 'Hey, push it up earlier.'" Living the "fail fast" ideology.
+
+"You are expected to shepherd your ideas through to the end."
+
+===== Dan Herrera (Simple.com)
+
+Notes from co-worker:
+"Would be nice to see and comment on individual commits inside a PR."
+"Make sure that each commit has at least one comment (LGTM)."
+
+Opportunity to do this from API.
+
+===== Brandon Saunders (AboutUs.org)
+
+Use Pivotal Tracker to create stories.
+All devs have admin privs on each repo
+Feature branch for each story.
+Once feature branch completed, issue PR
+Other devs comment using +1, "shipit", etc.
+Big items, other than code owner merges and deploy  (not hard and fast)
+Small items, code owner merges and deploys (nhaf)
+Use PT to automatically add comments and finish stories using integration
+Campfire hook to notify people in the chat room
+
+
