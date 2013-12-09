@@ -15,7 +15,9 @@ GitHub
 
 * Audience for this book
 
-This book should be an interesting source of information for people who have used Git or GitHub and want to take the next step in their usage. Perhaps you feel constrained by using Git only within a certain toolset; for example, if you are an Eclipse developer using Git to manage your Android source code and want to unlock Git in other places in your life as a developer, this book is for you. If you have fallen into using Git on your own and are now interested in using Git within a larger community, this book can teach you about what GitHub calls "social coding." This book provides a stepping stone for software developers who have used other distributed version control systems and are looking for a bridge to using their skills with Git and within a web service like GitHub. 
+This book should be an interesting source of information for people who have used Git or GitHub and want to take the next step in their usage. Perhaps you feel constrained by using Git only from within a certain toolset; for example, if you are an Eclipse developer accidentally using Git to manage your Android source code and want to unlock Git in other places in your life as a developer, this book provides a wider vista to learn about the power of Git and GitHub. If you have fallen into using Git on your own and are now interested in using Git within a larger community, this book can teach you all about "social coding." This book provides a stepping stone for software developers who have used other distributed version control systems and are looking for a bridge to using their skills with Git and within a web service like GitHub. Like any seasoned developer, automation of your tools is important to you, and this book provides recipes for taking mundane tasks and converting them into automated services, and we show how to do this using a variety of languages talking to the GitHub API. 
+
+
 
 * Font Conventions
 
