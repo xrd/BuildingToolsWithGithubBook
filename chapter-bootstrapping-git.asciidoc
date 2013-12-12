@@ -265,15 +265,6 @@ image::images/bootstrapping-windows-client.png[]
 
 Click on the download button, and once you've downloaded the EXE file, start the installation by clicking on the binary. 
 
-Brief instructions for installing Git Client.
-
-* Git Client 
-* PowerShell vs Git Bash
-
-Screenshot and install instructions for Github for Windows.
-
-* GitHub for Windows
-
 ==== Mac GUI Client
 
 To install the GitHub for Mac Client, go to mac.github.com. You'll see a page like the following.
