@@ -315,10 +315,6 @@ $ make install
 
 These commands can be customized with specific compile options, such as choosing a special directory into which you want Git installed; read the file called INSTALL for more details on these compile flags. If you needed to install a cutting edge version of Git, you could keep your package manager installed version of Git in the normal location and then install a second version into a special path and use each when appropriate.
 
-==== Graphical Git Clients
-
-Reference the larger chapter on Git clients.
-
 === Git Usage Basics
 
 There are over a hundred individual git commands, each with dozens of switches. The countless permutations of commands can be daunting, but to be immediately productive in git you really only need to know a few commands. These commands should be run from a shell, like bash on Mac OSX or Linux, or cygwin on Windows.
