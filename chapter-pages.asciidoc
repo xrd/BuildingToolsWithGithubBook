@@ -1,7 +1,9 @@
 == Github Pages
 
 GitHub Pages are really a very simple idea.  Any 
-GitHub-hosted Git repository can be augmented with a branch called gh-pages. If this branch exists, everything in that branch is published automatically.  This content is then served from GitHub giving you a very
+GitHub-hosted Git repository can be augmented with a branch called gh-pages. 
+If this branch exists, everything in that branch is published automatically.  
+This content is then served from GitHub giving you a very
 quick and easy way to serve web pages and other information from
 GitHub.  Various people use this or different reasons.  Some users
 host entire company web sites from GitHub, while other create a web
