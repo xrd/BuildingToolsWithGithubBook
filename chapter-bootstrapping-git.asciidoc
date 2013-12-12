@@ -263,7 +263,7 @@ There are also package managers which can manage downloading binaries or even in
 $ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
 $ brew install git
 
-Brew is a useful tool for installing lots of developer centric software. These components require installation of Apple's XCode development environment which can be installed from the Apple App Store.
+Brew is a useful tool for installing lots of developer centric software. These components require installation of Apple's XCode development environment which can be installed from the Apple App Store. Xcode is free as in beer.
 
 ==== Windows
 
