@@ -263,8 +263,7 @@ To install the GitHub for Windows Client, go to windows.github.com. You'll see a
 
 image::images/bootstrapping-windows-client.png[]
 
-Click on the download button, and once you've downloaded the ZIP file, open it in the finder. Most browsers will save this to your "Downloads" folder. If you open the ZIP file, you'll see a single binary inside it: the GitHub for Mac client. You can simply open this to begin. GitHub for Mac will ask if you want to move it to the Applications folder, and you should do this.
-
+Click on the download button, and once you've downloaded the EXE file, start the installation by clicking on the binary. 
 
 Brief instructions for installing Git Client.
 
