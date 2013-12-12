@@ -284,7 +284,7 @@ Screenshot and install instructions for Github for Windows.
 
 * GitHub for Windows
 
-==== Mac
+==== Mac GUI Client
 
 To install the GitHub for Mac Client, go to mac.github.com. You'll see a page like the following.
 
