@@ -245,7 +245,7 @@ Mercurial (which uses the command line command "hg") is another DVCS, offering m
 
 ===== Monotone
 
-If a movie studio ever decides to remake "Back to the Future" with the main character named Git instead of Marty, there will be a scene where Git sees his hand disappearing in front of his eyes while strumming a guitar, as Linus Torvalds dances and falls in love with Monotone, dooming us all to a future world without Git. Fortunately, right as Linus is about to falls deeply in love with Monotone, she says: "So, you know, my father Bjarne Stroustrup said..." Looking incredulous, Linus interrupts her and says: "Wait! You're C\+\+?!?!" And, he rushes out, leaving Monotone alone on the dance floor, securing our future with Git and GitHub. Back to reality, Monotone was initially favored by Linus as the replacement to BitKeeper and CVS within the Linux kernel community, but Linus could never overcome his revulsion to C++, the language in which Monotone was written. Ideologically, Linus agrees with the ommission of cherry picking in Monotone, though ironically this is a feature available in the git of today. Unfortunately, Monotone has lost momentum; for example, the mailing list for the Monotone Eclipse plugin has seen no activity since 2008. Monotone is licensed under the GPL.
+If a movie studio ever decides to remake "Back to the Future" with the main character named Git instead of Marty, there will be a scene where Git sees his hand disappearing in front of his eyes while strumming a guitar, as Linus Torvalds dances and falls in love with Monotone, dooming us all to a future world without Git. Fortunately, right as Linus is about to falls deeply in love with Monotone, she says: "So, you know, my father Bjarne Stroustrup said..." Looking incredulous, Linus interrupts her and says: "Wait! You're C\+\+?!?!" And, he rushes out, leaving Monotone alone on the dance floor, securing our future with Git and GitHub. Back to reality, Monotone was initially favored by Linus as the replacement to BitKeeper and CVS within the Linux kernel community, but Linus could never overcome his revulsion to the performance of C++, the language in which Monotone was written. Ideologically, Linus agrees with the ommission of cherry picking in Monotone, though ironically this is a feature available in the git of today. Unfortunately, Monotone has lost momentum; for example, the mailing list for the Monotone Eclipse plugin has seen no activity since 2008. Monotone is licensed under the GPL.
 
 ===== BitKeeper
 
@@ -263,7 +263,7 @@ There are also package managers which can manage downloading binaries or even in
 $ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
 $ brew install git
 
-Brew is a useful tool for installing lots of developer centric software. And, many of these components require installation of Apple's XCode development environment. Unless you feel comfortable with 
+Brew is a useful tool for installing lots of developer centric software. These components require installation of Apple's XCode development environment which can be installed from the Apple App Store.
 
 ==== Windows
 
