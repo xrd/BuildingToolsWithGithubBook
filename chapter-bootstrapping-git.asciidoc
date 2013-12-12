@@ -259,6 +259,13 @@ Git comes in several flavors, depending on your your Git skill level and general
 
 ==== Windows GUI Client
 
+To install the GitHub for Windows Client, go to windows.github.com. You'll see a page like the following.
+
+image::images/mac_client_install.png[]
+
+Click on the download button, and once you've downloaded the ZIP file, open it in the finder. Most browsers will save this to your "Downloads" folder. If you open the ZIP file, you'll see a single binary inside it: the GitHub for Mac client. You can simply open this to begin. GitHub for Mac will ask if you want to move it to the Applications folder, and you should do this.
+
+
 Brief instructions for installing Git Client.
 
 * Git Client 
@@ -305,7 +312,6 @@ $ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
 $ brew install git
 
 Brew is a useful tool for installing lots of developer centric software. These components require installation of Apple's XCode development environment which can be installed from the Apple App Store. Xcode is free as in beer.
-
 
 ==== Installation from source
 
