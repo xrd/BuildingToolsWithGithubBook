@@ -273,8 +273,6 @@ Brew is a useful tool for installing lots of developer centric software. These c
 
 ==== Windows GUI Client
 
-
-
 Brief instructions for installing Git Client.
 
 * Git Client 
