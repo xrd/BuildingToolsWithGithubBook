@@ -271,7 +271,7 @@ $ brew install git
 
 Brew is a useful tool for installing lots of developer centric software. These components require installation of Apple's XCode development environment which can be installed from the Apple App Store. Xcode is free as in beer.
 
-==== Windows
+==== Windows GUI Client
 
 
 
