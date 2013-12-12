@@ -1,8 +1,8 @@
 [[bootstrapping-git]]
 == Bootstrapping Git
 
-This book is focused on Github, but before we can explore Github it is helpful to understand Git.   This chapter provides a brief introduction
-to Git and provides some pointers to readers interested in learning
+This book is focused on Github, but before we can explore Github it is helpful to understand Git.   
+This chapter provides a brief introduction to Git and provides some pointers to readers interested in learning
 more about this distributed version control system (DVCS).
 
 === A Brief History of Git
