@@ -253,6 +253,10 @@ BitKeeper was the early inspiration for many of these open source DVCSes. The ma
 
 === Installing Git
 
+==== Git Client Options
+
+Git comes in several flavors, depending on your comfort and skill level. For users new to the software developer world, it is best to use the Windows or Mac Clients, which are graphical clients that simplify using Git through smart graphical layouts with fancy buttons, colorful labels and 
+
 The definitive resource for installing *command-line* versions of Git is from the site http://git-scm.com/ (SCM stands for "Source Code Management"). If you visit this site, regardless of your platform, you will be presented with a download link to the appropriate binary for your system. For example, on my system, I get a link to download a binary for Git version 1.8.4.3 (the latest stable version). 
 
 Git-scm.org also offers links to the full source code to Git (if you wanted to compile a release candidate version) or other GUI clients. 
@@ -266,6 +270,8 @@ $ brew install git
 Brew is a useful tool for installing lots of developer centric software. These components require installation of Apple's XCode development environment which can be installed from the Apple App Store. Xcode is free as in beer.
 
 ==== Windows
+
+
 
 Brief instructions for installing Git Client.
 
