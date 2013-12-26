@@ -1,0 +1,93 @@
+=== Gists
+
+Gists are great for code sharing. To create one, you can go to gist.github.com and enter in some code. You 
+then choose public or private and create the gist.
+
+==== Gists are repositories
+
+Every gist created is a tiny repository. You can update gists and see the history.
+
+==== Caveats: flat file structure
+
+You can use gists to store entire functioning apps. Let's create a simple Sinatra app.
+
+Sinatra is a ruby library for creating dead-simple web servers. A sinatra program looks as
+simple as this:
+
+[code,ruby]
+require 'sinatra'
+
+get '/hi' do
+  "Hello World!"
+end
+
+Create a gist for this by visiting gist.github.com. Enter in the text exactly as above and then choose
+public gist.
+
+You now have a shareable gist of code, which anyone can use to review this code. More importantly, this
+is an executable piece of code. To use it, click into the "Clone this gist" box to the left of the body of 
+content. You'll get a URL which looks something like this:
+
+https://gist.github.com/8138797.git
+
+Copy this and then enter a terminal program and enter this command:
+
+[source,bash]
+$ git clone https://gist.github.com/8138797.git
+$ cd 8138797
+
+Now, you are inside the gist repository. If you look inside the repository you'll see a list of files, which 
+right now numbers only one.
+
+[source,bash]
+$ ls
+hi.rb
+
+To run this code, enter `ruby hi.rb`
+
+If you had not used ruby before, this will cause an error. This program requires a library called "sinatra" and
+you have not yet installed it. We could write a README, or add documentation into this file itself. Another
+way to guarantee the user has the proper files installed is to use a "Gemfile" which is a file that tells
+which libraries are installed and from where. Let's add this:
+
+[source,bash]
+$ echo "source 'https://rubygems.org'; gem 'sinatra'" > Gemfile
+
+This is a quick way to add content to the file named Gemfile. To install the libraries required here, we run
+the bundler command
+
+[source,bash]
+$ bundle
+Using rack (1.5.2) 
+Using rack-protection (1.5.1) 
+Using tilt (1.4.1) 
+Using sinatra (1.4.4) 
+Using bundler (1.3.5) 
+Your bundle is complete!
+Use `bundle show [gemname]` to see where a bundled gem is installed.
+
+This shows that we installed the library "sinatra" and the associated dependencies (rack, tilt and other associated
+libraries). 
+
+Why did we do things this way? Because now we can add this file to our repository locally, and then publish
+into our gist for sharing on the web.
+
+First, we need to update the "remote". Run this command:
+
+[source,bash]
+$ git remote -v
+origin       https://gist.github.com/8138797.git (fetch)
+origin       https://gist.github.com/8138797.git (push)
+
+Your results will be slightly different, but this output displays our remote repository; in other words, where
+we pull and push our code changes. If you are familiar with the
+
+=== Discovering Gists
+
+Gists can be searched, but the interface is must simpler than the
+interface for the search interface discussed previously in this
+chapter.  To get the Gists search feature, go to
+https://gist.github.com/search - type in a search term and the only
+filtering function you'll be able to see is a filter by Gist language.
+
+image::images/explore-search-gists.png[]
