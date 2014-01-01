@@ -6,3 +6,5 @@ Now that you know the basics of the GitHub API, let's build something interestin
 
 This chapter focuses on using the GitHub API with client side JavaScript. JavaScript is the lingua franca of the web, invented in 2011 as a scripting language embedded inside the first web browsers. JavaScript has recently found its way to the server side as well with NodeJS, an innovative toolkit for building high performance network servers. JavaScript is a useful language to know no matter where your interests lie, whether they be on the server side or strictly client side development.
 
+===== Building our coffee shop database
+
