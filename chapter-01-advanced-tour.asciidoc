@@ -2,7 +2,7 @@
 === GitHub.com: a town square for the coder community.
 There were other Git hosting services before GitHub.com. But, GitHub was the first to build a rabid community
 around Git. GitHub.com became the town square where the coding cognoscenti gathered to discuss, where the 
-coding enfants played with new ideas that would become the future of our world. GitHub.com has become 
+enfants informatiques played with new ideas that would become the future of our world. GitHub.com has become 
 the playground and the guild where ideas flourish and grow like no other online community for software developers.
 As such, it is important to give a tour of GitHub.com and learn how to navigate like a member of the inner circle.
 
