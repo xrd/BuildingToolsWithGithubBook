@@ -8,3 +8,4 @@ This chapter focuses on using the GitHub API with client side JavaScript. JavaSc
 
 ===== Building our coffee shop database
 
+Let's build a coffee shop web app, hosting all the files on GitHub and using the GitHub API to allow contributors to add data to our database, also hosted on GitHub. 
