@@ -8,4 +8,9 @@ This chapter focuses on using the GitHub API with client side JavaScript. JavaSc
 
 ===== Building our coffee shop database
 
-Let's build a coffee shop web app, hosting all the files on GitHub and using the GitHub API to allow contributors to add data to our database, also hosted on GitHub. 
+The Japanese have a word "otaku" which means a person obsessed with something, often computers or technology. Many software developers would call themselves otaku if they really thought about it. Interestingly, in many of the software development shops where I have worked in Portland, there is an equally, almost disturbing, obsession with good coffee. I suffer from the same malady, and it means I will drag my poor wife and infant son with me as I visit new cities, through the slime and filth of strange neighborhoods, just to find the perfect brew and complementary gluten free desserts. Google Maps is a great help with my quests, in that it will find me a coffee shop and reviews, but the granularity of information about that coffee shop is often poor and limited in scope. Let's fix that.
+
+We'll build a coffee shop single page web app which allows us to search and filter for properties about a coffee shop. All files, such as the HTML, images and JavaScript will be hosted on GitHub. And, we'll be using the GitHub API to allow contributors to add data to our database, a database which we will also host on GitHub.
+
+More specifically, we'll use these technologies:
+
