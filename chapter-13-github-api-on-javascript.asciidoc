@@ -1,0 +1,7 @@
+==== Single Page Apps using the GitHub API
+
+Now that you know the basics of the GitHub API, let's build something interesting with it. GitHub offers libraries which work within other programming languages and frameworks, and later we will talk about using the GitHub API on the server side. To start, however, let's build a single page app with everything hosted on GitHub and using the GitHub API. You've already learned about the gh-pages branch and now know about how the API works and we'll use that background knowledge as a foundation for this next chapter.
+
+===== Using the GitHub API with JavaScript
+
+This chapter focuses on using the GitHub API with client side JavaScript. JavaScript is the lingua franca of the web, invented in 2011 as a scripting language embedded inside the first web browsers. JavaScript has recently found its way to the server side as well with NodeJS, an innovative toolkit for building high performance network servers. JavaScript is a useful language to know.
