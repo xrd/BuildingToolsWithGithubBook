@@ -27,8 +27,11 @@ $ mkdir coffeete.ch
 $ cd coffeete.ch
 $ git init 
 $ git checkout -b gh-pages
+$ echo "<html><body>Hello from CoffeeTe.ch</body></html>" > index.html
+$ git commit -m "Add starting point index.html"
+$ git config 
 
-Notice that we created a new repository, and then created and entered the gh-pages branch. We'll do all our work there.
+Notice that we created a new repository, and then created and entered the gh-pages branch. We'll do all our work there. 
 
 ===== Advanced
 
