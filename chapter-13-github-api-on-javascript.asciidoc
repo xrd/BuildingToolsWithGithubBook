@@ -18,3 +18,20 @@ More specifically, we'll use these technologies:
 * AngularJS: a superpowered framework for writing JS applications
 * Bootstrap: a CSS library which simplifies building beautiful (or at least tolerable) webapps
 
+===== Bootstrapping
+
+To create our app, let's first create our main web page and push it into our repository.
+
+[source,bash]
+$ mkdir coffeete.ch
+$ cd coffeete.ch
+$ git init 
+$ git checkout -b gh-pages
+
+Notice that we created a new repository, and then created and entered the gh-pages branch. We'll do all our work there.
+
+===== Advanced
+
+We want to make our webapp as fast as possible. So, let's do some minimization of the assets.
+
+[source,bash]
