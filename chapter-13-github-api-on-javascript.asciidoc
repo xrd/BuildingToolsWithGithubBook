@@ -35,7 +35,7 @@ Notice that we created a new repository, and then created and entered the gh-pag
 
 ===== Everything on GitHub, except for one piece
 
-
+We would like to host everything on GitHub, but sadly there is one piece which we cannot host there: the authentication component. Somehow we need to safely authenticate our user into the GitHub and retrieve an oAuth token. There is currently no way to do this strictly client side (using only static HTML and JavaScript running in the browser). So, we need to have a tiny server side component 
 
 ===== Advanced
 
