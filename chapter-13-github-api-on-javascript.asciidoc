@@ -33,6 +33,10 @@ $ git config push.default gh-pages
 
 Notice that we created a new repository, and then created and entered the gh-pages branch. We'll do all our work there. And, by using the git config command, we specified that we want the default push branch to be gh-pages. This allows us to use `git push` instead of the longer `git push origin gh-pages`.
 
+===== Everything on GitHub, except for one piece
+
+
+
 ===== Advanced
 
 We want to make our webapp as fast as possible. So, let's do some minimization of the assets.
