@@ -33,7 +33,7 @@ $ echo "<html><body>Hello from CoffeeTe.ch</body></html>" > index.html
 $ git commit -m "Add starting point index.html" -a
 $ git config push.default gh-pages
 
-Notice that we created a new repository, and then created and entered the gh-pages branch. We'll do all our work there. And, by using the git config command, we specified that we want the default push branch to be gh-pages. This allows us to use `git push` instead of the longer `git push origin gh-pages`.
+Notice that we created a new repository, and then created and entered the gh-pages branch. We'll do all our work there. And, by using the git config command, we specified that we want the default push branch to be gh-pages. This allows us to use `git push` to push our branch up instead of the longer `git push origin gh-pages`.
 
 ===== Safely implementing login
 
