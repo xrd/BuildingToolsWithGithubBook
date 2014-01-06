@@ -39,7 +39,19 @@ Notice that we created a new repository, and then created and entered the gh-pag
 
 As we discussed in the Jekyll chapter, to connect this site to a real hostname, we need to do two things:
 
-* Add a CNAME file which . And, once the CNAME file is posted to GitHub, we need to
+* Add a CNAME file which tells GitHub under which server name this service should resolve. 
+* Setup DNS records so that the hostname maps to the correct IP address at GitHub.
+
+If you want to use your own hostname (perhaps one you purchased and are not using), go right ahead. And, for the purposes of this book, we've setup *.oreilly.coffeete.ch as a wildcard CNAME, so that you can simply push up a CNAME file with your GitHub username plus .oreilly.coffeete.ch. So, for me, my domain would be xrd.oreilly.coffeete.ch. If you want to use one of these domains, just set the CNAME file contents to be that, and push it up.
+
+[source,bash]
+$ echo 'xrd.oreilly.coffeete.ch' > CNAME
+$ git commit -m "Added CNAME mapping" -a
+$ git push
+
+Remember that you need to wait about ten minutes before GitHub regenerates their database to establish the connection between your gh-pages site and the mapping on their front end servers. But, this method of mapping the site is often quicker than setting up your own DNS, so if you are in a rush to play with this, try this method.
+
+And, once the CNAME file is posted to GitHub, we need to
 
 ===== Safely implementing login
 
