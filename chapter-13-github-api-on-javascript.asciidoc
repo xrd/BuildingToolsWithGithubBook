@@ -18,6 +18,8 @@ More specifically, we'll use these technologies:
 * AngularJS: a superpowered framework for writing JS applications
 * Bootstrap: a CSS library which simplifies building beautiful (or at least tolerable) webapps
 
+You don't need to know these technologies in advance of working on this chapter.
+
 ===== Bootstrapping
 
 To create our app, let's first create our main web page and push it into our repository.
