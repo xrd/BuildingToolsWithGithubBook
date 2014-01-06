@@ -35,6 +35,12 @@ $ git config push.default gh-pages
 
 Notice that we created a new repository, and then created and entered the gh-pages branch. We'll do all our work there. And, by using the git config command, we specified that we want the default push branch to be gh-pages. This allows us to use `git push` to push our branch up instead of the longer `git push origin gh-pages`.
 
+===== Mapping our site to a live hostname
+
+As we discussed in the Jekyll chapter, to connect this site to a real hostname, we need to do two things:
+
+* Add a CNAME file which . And, once the CNAME file is posted to GitHub, we need to
+
 ===== Safely implementing login
 
 If I saw this app in the wild and knew nothing about the authors, I would never use it to submit data. The app asks for my GitHub username and password. Given that I usually assign a random password which I have no hope of remembering, it is almost impossible that I could authentication. Additionally, and more importantly, asking for my username and password implicitly asks me to trust the authors of this application. Trust in this case means that I trust them to not maliciously use my credentials for nefarious purposes, and also asks me to trust that they are not doing something stupid which would allow an attacker to insert themselves into the middle of the authentication process and steal my crendentials. It seems like every day we hear of a break-in at a major internet service; I want to believe that most people are out to do good in the world, so I am less worried about the provider of such a service maliciously stealing my crendentials, but I am worried about a script kiddie attacking the service for fun and stealing my crendentials. At any rate, I would never use a service which requires me to give up my username and password to another service, especially one which is as important as GitHub is to me.
