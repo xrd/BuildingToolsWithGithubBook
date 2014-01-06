@@ -51,7 +51,32 @@ $ git push
 
 Remember that you need to wait about ten minutes before GitHub regenerates their database to establish the connection between your gh-pages site and the mapping on their front end servers. But, this method of mapping the site is often quicker than setting up your own DNS, so if you are in a rush to play with this, try this method.
 
-And, once the CNAME file is posted to GitHub, we need to
+===== Adding the support libraries
+
+As we mentioned we will use the GitHub.js library, AngularJS, and Bootstrap. Let's add those to our project now. Using whatever editor you prefer, edit the index.html file to look like this:
+
+[source,html]
+<html>
+<head>
+<title>CoffeeTe.ch</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body ng-app>
+<div class="container">
+{{'Welcome to Coffeete.ch'}}
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
+<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"></script>
+<script src="github.js"></script>
+</body>
+</html>
+
+Then, download the GitHub.js file locally using this command:
+
+[source,bash]
+$ curl https://github.com/michael/github/raw/master/github.js
+
+Now, to explain a few of these additions: first, the 
 
 ===== Safely implementing login
 
