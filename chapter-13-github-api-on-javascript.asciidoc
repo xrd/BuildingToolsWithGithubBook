@@ -18,8 +18,6 @@ More specifically, we'll use these technologies:
 * AngularJS: a superpowered framework for writing JS applications
 * Bootstrap: a CSS library which simplifies building beautiful (or at
   least tolerable) webapps
-* Ruby: almost all GitHubbers use Ruby, and it will simplify our life
-  here as we develop this app. Use rvm.io to install it.
 
 You don't need to know these technologies in advance of working on this chapter.
 
@@ -38,43 +36,21 @@ $ git config push.default gh-pages
 
 Notice that we created a new repository, and then created and entered the gh-pages branch. We'll do all our work there. And, by using the git config command, we specified that we want the default push branch to be gh-pages. This allows us to use `git push` to push our branch up instead of the longer `git push origin gh-pages`.
 
-===== Developing and using our site locally
-
-====== Using Pow
-
-If you are working on a Mac, you have the easiest setup. Mac users
-have a superb simple webserver setup called `pow`. Pow facilitates
-setting up rack compatible servers with a few commands and maps them
-to a hostname running locally on your computer. If you feel
-uncomfortable installing this software, use the commands for Windows
-or Linux users.
-
-[source,bash]
-$ curl get.pow.cx | sh
-$ gem install powder
-
-====== Without Pow (Linux or Windows)
-
-If you don't have a Mac or are unable or uncomfortable using Pow, then
-just use a ruby one liner to serve all the files. This is a little
-less efficient, but works.
-
-[source,bash]
-$ ruby -run -e httpd . -p 5000
-
-Then, hit `http://localhost:5000/` with your browser to see the files.
-
 ===== Mapping our site to a live hostname
 
-As we discussed in the Jekyll chapter, to connect this site to a real hostname, we need to do two things:
+As we discussed in the Jekyll chapter, once we publish these files
+into GitHub inside a repository we can connect the repository to a
+real hostname. There are two things to do:
 
 * Add a CNAME file which tells GitHub under which server name this service should resolve. 
 * Setup DNS records so that the hostname maps to the correct IP address at GitHub.
 
-If you want to use your own hostname (perhaps one you purchased and are not using), go right ahead. And, for the purposes of this book, we've setup *.oreilly.coffeete.ch as a wildcard CNAME, so that you can simply push up a CNAME file with your GitHub username plus .oreilly.coffeete.ch. So, for me, my domain would be xrd.oreilly.coffeete.ch. If you want to use one of these domains, just set the CNAME file contents to be that, and push it up.
+Imagine you have the hostname myspecialhostname.com. If you map this
+repository to a subdomain called coffeetech, then you would do
+something like this.
 
 [source,bash]
-$ echo 'xrd.oreilly.coffeete.ch' > CNAME
+$ echo 'coffeetech.myspecialhostname.com' > CNAME
 $ git commit -m "Added CNAME mapping" -a
 $ git push
 
@@ -96,16 +72,22 @@ As we mentioned we will use the GitHub.js library, AngularJS, and Bootstrap. Let
 </div>
 <script src="angular.min.js"></script>
 <stylesheet src="bootstrap.min.css"></stylesheet>
+<script src="underscore.js"></script>
+<script src="base64.js"></script>
 <script src="github.js"></script>
 </body>
 </html>
 
-Then, download the necessary files locally using these commands:
+Then, download the necessary files locally using these commands. We
+include AngularJS, Bootstrap CSS, Underscore.js and Base64.js which
+are support files required for Github.js, and GitHub.js.
 
 [source,bash]
-$ curl https://github.com/michael/github/raw/master/github.js
 $ curl https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js
 $ curl https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css
+$ curl https://github.com/michael/github/raw/master/github.js
+$ curl http://underscorejs.org/underscore-min.js
+$ curl https://raw.github.com/dankogai/js-base64/master/base64.min.js
 
 I am assuming you have a firm grasp on most HTML concepts, but a few
 of the advanced topics here:
@@ -127,7 +109,7 @@ Create a new file called `coffeetech.js` in the root of your repository
 
 [source,javascript coffeetech.js]
 var mod = angular.module( 'coffeetech', [] )
-mod.controller( 'user', function( $scope ) {
+mod.controller( 'SampleCtrl', function( $scope ) {
   var github = new Github({} );
   var repo = github.getRepo( "gollum", "gollum" );
   repo.show( function(err, repo) {
@@ -139,7 +121,7 @@ mod.controller( 'user', function( $scope ) {
 Add it to the repository
 
 [source,bash]
-$ git commit -m "Adding user information JS controller" -a
+$ git commit -m "Adding sample repository information JS controller" -a
 
 Then, let's modify our `index.html` to utilize this new code
 
@@ -150,11 +132,13 @@ Then, let's modify our `index.html` to utilize this new code
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body ng-app="coffeetech">
-<div class="container">
+<div class="container" ng-controller="SampleCtrl">
 {{ repo | json }}
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
-<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"></script>
+<script src="angular.min.js"></script>
+<stylesheet src="bootstrap.min.css"></stylesheet>
+<script src="underscore.js"></script>
+<script src="base64.js"></script>
 <script src="github.js"></script>
 <script src="coffeetech.js"></script>
 </body>
@@ -172,8 +156,8 @@ module we defined in our `coffeetech.js` file.
 
 If you have never used AngularJS before, you are probably thoroughly
 confused about the `coffeetech.js` file. Before we dive into the
-syntax, understand these features AngularJS, and then understand the 
-problems solved by those features:
+syntax, understand the following features of AngularJS, and then
+you'll understand the significant problems solved by those same features:
 
 * AngularJS utilizes something called two-way databinding. AngularJS
   solves the problem you have with building JS apps: marshalling data
@@ -187,12 +171,13 @@ problems solved by those features:
   return from the show() method callback in the Github.js API call.
 * Inspecting a JS object inside your webpage can be complicated; do
   you extract information from the object, put them into <div>s, doing
-  all the marshalling we just realized is a sore point for most modern
-  JavaScript developer lives? If we are using AngularJS it does not
+  all the marshalling we just realized is a royal pain in the lives of
+  most modern JavaScript developers? If we are using AngularJS it does not
   have to be.
-  AngularJS provides a filter which you can apply with the pipe
-  character that produces a pretty printed object in your webpage. You
-  see that with the `repo | json` code.
+  AngularJS provides a filter which you can apply (using the pipe
+  character) that produces a pretty printed object in your webpage. You
+  see that with the `repo | json` code. `json` is a filter AngularJS
+  provides by default.
 * Many people see this kind of two way databinding and assume it
   cannot be performant, arguing that AngularJS must be polling the JavaScript
   objects to see changes. Not true! AngularJS is written in a smart
@@ -201,7 +186,12 @@ problems solved by those features:
   scope, AngularJS will handle tracking changes for you. If you use a
   third party library which uses callbacks, like the Github.js library
   does, then you need to notify AngularJS that there has been a change
-  by manually calling the $digest function on the $scope object.
+  by manually calling the $digest function on the $scope object once
+  you have completed adding data to the scope.
+* AngularJS allows you to break application functionality into
+  isolated components which makes your application more testable. When
+  we call `angular.controller` we are creating a controller which has
+  functionality defined on it and encapsulated inside itself.
 
 Now that we understand the benefits of using AngularJS, a few more
 specifics about the implementation details of our `coffeetech.js`
@@ -221,11 +211,144 @@ file.
 So, Github.js handles making the proper request to Github for us, and
 AngularJS handles putting the results into our web page.
 
-If you load this up in your browser
+If you load this up in your browser, you will see something like this:
+
+image::images/javascript-gollum.png[]
+
+Yikes, that is a lot of data. AngularJS's JSON filter pretty printed
+it for us, but this is a bit too much. Modify it to show just a few
+pieces of information.
+
+[source,html index.html]
+<html>
+<head>
+<title>CoffeeTe.ch</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body ng-app="coffeetech">
+<div class="container" ng-controller="SampleCtrl">
+<div>Subscriber count: {{ repo.subscribers_count }}</div>
+<div>Network count: {{ repo.network_count }}</div>
+</div>
+<script
+src="angular.min.js"></script>
+<stylesheet
+src="bootstrap.min.css"></stylesheet>
+<script src="underscore.js"></script>
+<script src="base64.js"></script>
+<script src="github.js"></script>
+<script src="coffeetech.js"></script>
+</body>
+</html>
+
+No we see something more palatable.
+
+image::images/javascript-gollum-precise.png[]
+
+We've just extracted the subscriber and network count from the gollum
+repository hosted on GitHub using the GitHub API and placed it into
+our single page app.
+
+===== Visualize Application Data Structure
+
+Now, let's build our application. First, consider how we
+will structure our data. We are going to use GitHub as our data store.
+GitHub is built on top of Git, a technology that could not be better suited for
+storing content. However, there is a major difference between
+accessing data stored inside a Git repository and a traditional database:
+searchability. Git repositories are great for storing data, and
+GitHub exposes storing data through their API. While Git itself
+has many ways to search and retrieve data, the GitHub API does not
+easily allow searching our repository data. Let's make sure to
+design and store the data in a structured way so that we can search
+it on the client side.
+
+This application allows us to search coffee shops. These coffee shops
+will be, for the most part, in larger cities. If we keep all the data 
+stored as JSON files named after the city, we can keep data located in
+a file named after the city, and then either use geolocation on the
+client side to retrieve a set of the data, or ask the user to choose
+their city manually.
+
+First, add some data about coffee shops manually by creating the file
+`portland.json`:
+
+[source,json portland.json]
+{ "name" : "Heart Coffee", "lat" : 45.52292,  "lng" : -122.643074 },
+{ "name" : "Crema", "lat" : 45.522181, "lng" : -122.63709 },
+{ "name" : "Fresh Pot", "lat" : 45.520437, "lng" : -122.67846 }
+
+Add and commit it
+
+[source,bash]
+$ git commit -m "Add Portland.json data" -a
+
+Change our controller method to retrieve it:
+
+[source,javascript coffeetech.js]
+var mod = angular.module( 'coffeetech', [] )
+mod.controller( 'ShopsCtrl', function( $scope ) {
+  var github = new Github({} );
+  var repo = github.getRepo( "xrd", "coffeete.ch" ); # <1>
+  repo.read( "gh-pages", "portland.json", function(err, data) { # <2>
+    $scope.shops = JSON.parse( data );
+    $scope.$digest();
+  }, false );
+})
+
+<1> Update the username and repository. If you are putting this into
+your own repository, modify this appropriately.
+<2> We now use the `read` method to pull file contents from the
+repository. Notice we use the gh-pages branch since we are storing our
+single page app and all the data there.
+
+Now, let's expose it inside the `index.html` file like so:
+
+[source,html index.html]
+<html>
+<head>
+<title>CoffeeTe.ch</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body ng-app="coffeetech">
+<div class="container" ng-controller="ShopsCtrl">
+<div class="row" ng-repeat="shop in shops"> # <1>
+<div class="col-md-6"> {{ shop.name }} </div>  # <2>
+<div class="col-md-6"> {{ shop.lat }} {{ shop.lng }} </div> # <3>
+</div>
+</div>
+<script
+src="angular.min.js"></script>
+<stylesheet
+src="bootstrap.min.css"></stylesheet>
+<script src="underscore.js"></script>
+<script src="base64.js"></script>
+<script src="github.js"></script>
+<script src="coffeetech.js"></script>
+</body>
+</html>
+
+<1> `ng-repeat` is an AngluarJS directive which iterates over an array
+of items. Here we use it to iterate over the items in our
+`portland.json` file and insert a snippet of HTML with our data
+interpolated from each item in the iteration.
+<2> We are now using Bootstrap to establish structure in our HTML. The
+`col-md-6` class tells Bootstrap to build a column sized at 50% of our 12
+column layout. We setup two adjacent columns this way. And, if we are 
+inside a mobile device, it properly stacks these columns.
+<3> Notice how we bind to data from the JSON file.
 
 ===== Safely implementing login
 
-If I saw this app in the wild and knew nothing about the authors, I would never use it to submit data. The app asks for my GitHub username and password. Given that I usually assign a random password which I have no hope of remembering, it is almost impossible that I could authentication. Additionally, and more importantly, asking for my username and password implicitly asks me to trust the authors of this application. Trust in this case means that I trust them to not maliciously use my credentials for nefarious purposes, and also asks me to trust that they are not doing something stupid which would allow an attacker to insert themselves into the middle of the authentication process and steal my crendentials. It seems like every day we hear of a break-in at a major internet service; I want to believe that most people are out to do good in the world, so I am less worried about the provider of such a service maliciously stealing my crendentials, but I am worried about a script kiddie attacking the service for fun and stealing my crendentials. At any rate, I would never use a service which requires me to give up my username and password to another service, especially one which is as important as GitHub is to me.
+If I saw this app in the wild and knew nothing about the authors, I
+would never use it to submit data. The app asks for my GitHub username
+and password. Given that I usually assign a random password which I
+have no hope of remembering, it is almost impossible that I could
+authenticate at all. Additionally, and more importantly, asking for my
+username and password implicitly asks me to trust the authors of this
+application. Trust in this case means that I trust them to not
+maliciously use my credentials for nefarious purposes, and also asks
+me to trust that they are not doing something stupid which would allow an attacker to insert themselves into the middle of the authentication process and steal my crendentials. It seems like every day we hear of a break-in at a major internet service; I want to believe that most people are out to do good in the world, so I am less worried about the provider of such a service maliciously stealing my crendentials, but I am worried about a script kiddie attacking the service for fun and stealing my crendentials. At any rate, I would never use a service which requires me to give up my username and password to another service, especially one which is as important as GitHub is to me.
 
 So, let's use oAuth instead and resolve these problems.
 
