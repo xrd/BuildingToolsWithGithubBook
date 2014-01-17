@@ -65,13 +65,13 @@ As we mentioned we will use the GitHub.js library, AngularJS, and Bootstrap. Let
 <head>
 <title>CoffeeTe.ch</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
 </head>
 <body ng-app>
 <div class="container">
 {{'Welcome to Coffeete.ch'}}
 </div>
 <script src="angular.min.js"></script>
-<stylesheet src="bootstrap.min.css"></stylesheet>
 <script src="underscore.js"></script>
 <script src="base64.js"></script>
 <script src="github.js"></script>
@@ -130,13 +130,13 @@ Then, let's modify our `index.html` to utilize this new code
 <head>
 <title>CoffeeTe.ch</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
 </head>
 <body ng-app="coffeetech">
 <div class="container" ng-controller="SampleCtrl">
 {{ repo | json }}
 </div>
 <script src="angular.min.js"></script>
-<stylesheet src="bootstrap.min.css"></stylesheet>
 <script src="underscore.js"></script>
 <script src="base64.js"></script>
 <script src="github.js"></script>
@@ -224,6 +224,7 @@ pieces of information.
 <head>
 <title>CoffeeTe.ch</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
 </head>
 <body ng-app="coffeetech">
 <div class="container" ng-controller="SampleCtrl">
@@ -232,8 +233,6 @@ pieces of information.
 </div>
 <script
 src="angular.min.js"></script>
-<stylesheet
-src="bootstrap.min.css"></stylesheet>
 <script src="underscore.js"></script>
 <script src="base64.js"></script>
 <script src="github.js"></script>
@@ -274,9 +273,9 @@ First, add some data about coffee shops manually by creating the file
 `portland.json`:
 
 [source,json portland.json]
-{ "name" : "Heart Coffee", "lat" : 45.52292,  "lng" : -122.643074 },
+[ { "name" : "Heart Coffee", "lat" : 45.52292,  "lng" : -122.643074 },
 { "name" : "Crema", "lat" : 45.522181, "lng" : -122.63709 },
-{ "name" : "Fresh Pot", "lat" : 45.520437, "lng" : -122.67846 }
+{ "name" : "Fresh Pot", "lat" : 45.520437, "lng" : -122.67846 } ]
 
 Add and commit it
 
@@ -289,9 +288,9 @@ Change our controller method to retrieve it:
 var mod = angular.module( 'coffeetech', [] )
 mod.controller( 'ShopsCtrl', function( $scope ) {
   var github = new Github({} );
-  var repo = github.getRepo( "xrd", "coffeete.ch" ); # <1>
+  var repo = github.getRepo( "xrd", "spa.coffeete.ch" ); # <1>
   repo.read( "gh-pages", "portland.json", function(err, data) { # <2>
-    $scope.shops = JSON.parse( data );
+    $scope.shops = JSON.parse( data ); # <3>
     $scope.$digest();
   }, false );
 })
@@ -301,6 +300,9 @@ your own repository, modify this appropriately.
 <2> We now use the `read` method to pull file contents from the
 repository. Notice we use the gh-pages branch since we are storing our
 single page app and all the data there.
+<3> Once our data is returned to us, it is simply a string. We need to
+reconstitute this data back into a JavaScript object using the
+`JSON.parse` method.
 
 Now, let's expose it inside the `index.html` file like so:
 
@@ -309,6 +311,7 @@ Now, let's expose it inside the `index.html` file like so:
 <head>
 <title>CoffeeTe.ch</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
 </head>
 <body ng-app="coffeetech">
 <div class="container" ng-controller="ShopsCtrl">
@@ -319,8 +322,6 @@ Now, let's expose it inside the `index.html` file like so:
 </div>
 <script
 src="angular.min.js"></script>
-<stylesheet
-src="bootstrap.min.css"></stylesheet>
 <script src="underscore.js"></script>
 <script src="base64.js"></script>
 <script src="github.js"></script>
