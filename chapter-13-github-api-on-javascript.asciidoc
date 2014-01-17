@@ -16,7 +16,10 @@ More specifically, we'll use these technologies:
 
 * GitHub API JavaScript library:https://github.com/michael/github
 * AngularJS: a superpowered framework for writing JS applications
-* Bootstrap: a CSS library which simplifies building beautiful (or at least tolerable) webapps
+* Bootstrap: a CSS library which simplifies building beautiful (or at
+  least tolerable) webapps
+* Ruby: almost all GitHubbers use Ruby, and it will simplify our life
+  here as we develop this app. Use rvm.io to install it.
 
 You don't need to know these technologies in advance of working on this chapter.
 
@@ -34,6 +37,32 @@ $ git commit -m "Add starting point index.html" -a
 $ git config push.default gh-pages
 
 Notice that we created a new repository, and then created and entered the gh-pages branch. We'll do all our work there. And, by using the git config command, we specified that we want the default push branch to be gh-pages. This allows us to use `git push` to push our branch up instead of the longer `git push origin gh-pages`.
+
+===== Developing and using our site locally
+
+====== Using Pow
+
+If you are working on a Mac, you have the easiest setup. Mac users
+have a superb simple webserver setup called `pow`. Pow facilitates
+setting up rack compatible servers with a few commands and maps them
+to a hostname running locally on your computer. If you feel
+uncomfortable installing this software, use the commands for Windows
+or Linux users.
+
+[source,bash]
+$ curl get.pow.cx | sh
+$ gem install powder
+
+====== Without Pow (Linux or Windows)
+
+If you don't have a Mac or are unable or uncomfortable using Pow, then
+just use a ruby one liner to serve all the files. This is a little
+less efficient, but works.
+
+[source,bash]
+$ ruby -run -e httpd . -p 5000
+
+Then, hit `http://localhost:5000/` with your browser to see the files.
 
 ===== Mapping our site to a live hostname
 
@@ -55,7 +84,7 @@ Remember that you need to wait about ten minutes before GitHub regenerates their
 
 As we mentioned we will use the GitHub.js library, AngularJS, and Bootstrap. Let's add those to our project now. Using whatever editor you prefer, edit the index.html file to look like this:
 
-[source,html]
+[source,html index.html]
 <html>
 <head>
 <title>CoffeeTe.ch</title>
@@ -65,18 +94,134 @@ As we mentioned we will use the GitHub.js library, AngularJS, and Bootstrap. Let
 <div class="container">
 {{'Welcome to Coffeete.ch'}}
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
-<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"></script>
+<script src="angular.min.js"></script>
+<stylesheet src="bootstrap.min.css"></stylesheet>
 <script src="github.js"></script>
 </body>
 </html>
 
-Then, download the GitHub.js file locally using this command:
+Then, download the necessary files locally using these commands:
 
 [source,bash]
 $ curl https://github.com/michael/github/raw/master/github.js
+$ curl https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js
+$ curl https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css
 
-Now, to explain a few of these additions: first, the 
+I am assuming you have a firm grasp on most HTML concepts, but a few
+of the advanced topics here:
+
+* The `meta` tag makes our page work well with mobile browsers and
+  complements the resposive features of Bootstrap.
+* The `ng-app` attribute in the body tag tells AngularJS to initialize
+  and compile our page from the body tag downward. 
+* The `{{ }}` (double brackets) are an AngularJS two-way data binding
+  directive. This sanity checks whether AngularJS is working for us;
+  if we see "Welcome to Coffeete.ch" then we know AngularJS is loading
+  and working properly.
+
+===== Adding GitHub to our Single Page App
+
+Now that we have our page setup, let's add some GitHub data to it.
+
+Create a new file called `coffeetech.js` in the root of your repository
+
+[source,javascript coffeetech.js]
+var mod = angular.module( 'coffeetech', [] )
+mod.controller( 'user', function( $scope ) {
+  var github = new Github({} );
+  var repo = github.getRepo( "gollum", "gollum" );
+  repo.show( function(err, repo) {
+    $scope.repo = repo;
+    $scope.$digest();
+  });
+})
+
+Add it to the repository
+
+[source,bash]
+$ git commit -m "Adding user information JS controller" -a
+
+Then, let's modify our `index.html` to utilize this new code
+
+[source,html index.html]
+<html>
+<head>
+<title>CoffeeTe.ch</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body ng-app="coffeetech">
+<div class="container">
+{{ repo | json }}
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
+<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"></script>
+<script src="github.js"></script>
+<script src="coffeetech.js"></script>
+</body>
+</html>
+
+Let's talk about these changes starting with the HTML file first.
+
+We added or changed just three lines. In reverse geographic order, we
+added a reference to our `coffeetech.js` file beneath our other JS
+references. And, then we removed our databinding to the `Welcome to
+CoffeeTech` string and replaced it with a binding to the variable
+`repo` filtered by the JSON filter which is in our AngularJS
+controller. Finally, we changed the `ng-app` reference to use the
+module we defined in our `coffeetech.js` file.
+
+If you have never used AngularJS before, you are probably thoroughly
+confused about the `coffeetech.js` file. Before we dive into the
+syntax, understand these features AngularJS, and then understand the 
+problems solved by those features:
+
+* AngularJS utilizes something called two-way databinding. AngularJS
+  solves the problem you have with building JS apps: marshalling data
+  from your JS code into your HTML templates, marshalling data from
+  your AJAX calls into your JS code and then marshalling that into
+  your HTML templates. Marcia, Marcia, Marcia! Enough already; let's
+  allow AngularJS to do this heavy lifting for us. To use it, we just
+  define a variable on the AngularJS scope, and then place a reference
+  to the scope in our HTML using the `{{ }}` databinding directives.
+  In this case we set a variable called `repo` on our scope once we
+  return from the show() method callback in the Github.js API call.
+* Inspecting a JS object inside your webpage can be complicated; do
+  you extract information from the object, put them into <div>s, doing
+  all the marshalling we just realized is a sore point for most modern
+  JavaScript developer lives? If we are using AngularJS it does not
+  have to be.
+  AngularJS provides a filter which you can apply with the pipe
+  character that produces a pretty printed object in your webpage. You
+  see that with the `repo | json` code.
+* Many people see this kind of two way databinding and assume it
+  cannot be performant, arguing that AngularJS must be polling the JavaScript
+  objects to see changes. Not true! AngularJS is written in a smart
+  way and only processes and changes the DOM when changes are noticed
+  inside a digest cycle. If you put all your code properly into your
+  scope, AngularJS will handle tracking changes for you. If you use a
+  third party library which uses callbacks, like the Github.js library
+  does, then you need to notify AngularJS that there has been a change
+  by manually calling the $digest function on the $scope object.
+
+Now that we understand the benefits of using AngularJS, a few more
+specifics about the implementation details of our `coffeetech.js`
+file. 
+
+* We create a new Github() object using the constructor. This
+  constructor can take user credentials, but for now, we can just
+  create it witout those.
+* Once we have our `github` object, we call the method `getRepo()` with
+  a owner and a name. This returns our repository object. To actually
+  load the data for this repository object, we call the show method
+  and pass it a callback which uses the two parameters `err` and
+  `repo` to handle errors or otherwise provide us with details of the
+  repository specified. In this case we are using the Gollum wiki
+  public repository to display some sample data.
+
+So, Github.js handles making the proper request to Github for us, and
+AngularJS handles putting the results into our web page.
+
+If you load this up in your browser
 
 ===== Safely implementing login
 
@@ -84,11 +229,22 @@ If I saw this app in the wild and knew nothing about the authors, I would never 
 
 So, let's use oAuth instead and resolve these problems.
 
-If we use oAuth, we enter our credentials directly into GitHub. We can take advantage of 2-factor authentication. Once we have entered our crendetials, GitHub decides whether we are who we say we are, and then returns us to the application which requested access. And, GitHub provides the application with what is called an oAuth token that encapsulates exactly what services on GitHub we have access to, and whether that access is read-only or whether we can add data in a read-write manner. This means our requesting service can ask to modify only parts of our data within GitHub; this provides a much higher level of trust to users as they know the application cannot touch the more private parts within GitHub. Specifically, this means we could ask for access only to gists and not request access to our repositories, for example. And, finally, one important point about oAuth tokens is that they can be revoked. So, once a specific action has been taken, we can destroy the token and revoke access. With simple username and password access, the only way to revoke access is to change the password, which means any place you have saved that password (password managers or other applications which login via username and password) need to update their settings as well. With oAuth we can revoke a single token at any time (and GitHub makes it easy to do this) without affecting access to other services.
+If we use oAuth, we enter our credentials directly into GitHub. We can take advantage of 2-factor authentication. Once we have entered our credentials, GitHub decides whether we are who we say we are, and then returns us to the application which requested access. And, GitHub provides the application with what is called an oAuth token that encapsulates exactly what services on GitHub we have access to, and whether that access is read-only or whether we can add data in a read-write manner. This means our requesting service can ask to modify only parts of our data within GitHub; this provides a much higher level of trust to users as they know the application cannot touch the more private parts within GitHub. Specifically, this means we could ask for access only to gists and not request access to our repositories, for example. And, finally, one important point about oAuth tokens is that they can be revoked. So, once a specific action has been taken, we can destroy the token and revoke access. With simple username and password access, the only way to revoke access is to change the password, which means any place you have saved that password (password managers or other applications which login via username and password) need to update their settings as well. With oAuth we can revoke a single token at any time (and GitHub makes it easy to do this) without affecting access to other services.
 
 ===== Everything on GitHub, except for one piece
 
-We would like to host everything on GitHub, but sadly there is one piece which we cannot host there: the authentication component. Somehow we need to safely authenticate our user into the GitHub and retrieve an oAuth token. There is currently no way to do this strictly client side (using only static HTML and JavaScript running in the browser). So, we need to have a tiny server side component which handles the authentication and then provides the auth token to the GitHub hosted components. We'll write this in JavaScript as a NodeJS application running on NodeJitsu.
+We would like to host everything on GitHub, but sadly there is one piece which we cannot host there: the authentication component. 
+Somehow we need to safely authenticate our user into the GitHub and retrieve an oAuth token. There is currently no way to do this 
+strictly client side (using only static HTML and JavaScript running in the browser). 
+
+Instead, we will delegate authentication to Firebase. Firebase is a real time communication toolset which integrates
+well with our choice of AngularJS. Delegation of our authentication
+component is easy with Firebase: we just create a GitHub application,
+provide the credentials and GitHub oAuth scope to Firebase, and then our
+application offloads user management to Firebase. 
+
+To start, we need to create a new GitHub application.
+
 
 ===== Advanced
 

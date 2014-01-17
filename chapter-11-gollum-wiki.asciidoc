@@ -64,3 +64,5 @@ since GitHub has its own editing modality.)
 
 Gollum is built on ruby and uses the grit library underneath. It is simplest to use Ruby to build this, so let's 
 use the most popular Ruby web server library, Ruby on Rails. 
+
+[source,ruby]
