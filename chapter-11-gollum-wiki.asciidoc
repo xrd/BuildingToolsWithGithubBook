@@ -18,7 +18,7 @@ $ git commit -m "Add sidebar"
 $ open http://localhost:4567/ # Eureka, now we will see our sidebar!
 ```
 
-If you edit within the web browser interface, the underlying grit libraries do all the work to place files into the repository. If you use the command line, you'll need to remember to do this manually.
+If you edit within the web browser interface, the underlying grit libraries do all the work to commit new files into the repository. If you use the command line, you'll need to remember to do this manually.
 
 Gollum adds all the powerful features that automatically come with usage of a DCVS; you can edit your files offline, which is simply not the case with most wikis. If you check out your gollum repository and then hop on a plane without a wifi connection, you can edit files as you would any other Git repository. Once you have landed, you do the normal pull/push sequence as you would do with any other repository. If others have modified the repository, you use your standard tools to merge those changes and deal with conflicts. 
 
@@ -63,6 +63,83 @@ And all of it can be published into GitHub for review (though we won't allow edi
 since GitHub has its own editing modality.)
 
 Gollum is built on ruby and uses the grit library underneath. It is simplest to use Ruby to build this, so let's 
-use the most popular Ruby web server library, Ruby on Rails. 
+use Sinatra, a super simple web server framework for Ruby.
 
-[source,ruby]
+Again, this is a dual purpose repository. We can use it with gollum as
+a standard wiki. And, we can use it with our application to enter data
+in a more powerful way than gollum permits from its default interface.
+The data will still be compatible with gollum and will be hosted on
+GitHub.
+
+To begin, initialize our repository.
+
+[source,bash]
+$ mkdir images
+$ cd images
+$ git init .
+$ echo > "### Our home" > Home.md
+$ git commit -m "Initial checking" -a
+
+We've just created a wiki compatible with gollum. Let's see what it
+looks like inside gollum. run the `gollum` command then open
+`http://localhost:4567/` in your browser.
+
+image::images/gollum-first-view.png[]
+
+As you can see, this built a starting point for our gollum wiki.
+Gollum 
+
+Create our sinatra script called `image.rb`, and then we can install the necessary gems
+and run our server application.
+
+[source,ruby image.rb]
+require 'sinatra'
+require 'gollum-lib'
+wiki = Gollum::Wiki.new(".")
+get '/pages' do
+  "All pages: \n" + wiki.pages.collect { |p| p.path }.join( "\n" )
+end
+
+[source,bash]
+$ gem install sinatra gollum-lib
+$ ruby image.rb
+$ open http://localhost:4567 # or whatever URL is reported from Sinatra
+
+Once you open this in your browser, you'll see a report of the files
+that exist in our Gollum wiki right now. We've only added one file,
+the `Home.md` file.
+
+Let's add to our server. We want to support uploading ZIP files into
+our system that we will then unpack and add to our repository, as well
+as adding a list of these files to our wiki. Modify our image.rb
+script to look like this:
+
+[source,ruby image.rb]
+require 'sinatra'
+require 'gollum-lib'
+require 'tempfile'
+require 'zip/zip'
+wiki = Gollum::Wiki.new(".")
+get '/' do
+  render File.open( "index.html" )
+end
+post '/unpack' do
+  zip = params[:zip]
+  Zip::ZipFile.open(zip) { |zipfile|
+    # rename all files not in the root
+    files = zipfile.glob("*")
+    files.each do |f|
+      # Extract files into our images directory
+      zipfile.extract f, f.gsub( /\/([^\/]*)$/, "images/#{$1}" )
+    end 
+  }
+  zipfile.mkdir("a_dir")
+  render json: { success: 'ok' }
+end  
+
+Update the required gems using the following commands, and then re-run
+our Sinatra server script.
+
+[source,bash]
+$ gem install rubyzip 
+$ ruby image.rb

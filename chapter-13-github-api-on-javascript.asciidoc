@@ -71,9 +71,7 @@ As we mentioned we will use the GitHub.js library, AngularJS, and Bootstrap. Let
 <div class="container">
 {{'Welcome to Coffeete.ch'}}
 </div>
-<script src="angular.min.js"></script>
-<script src="underscore.js"></script>
-<script src="base64.js"></script>
+<script src="angular.js"></script>
 <script src="github.js"></script>
 </body>
 </html>
@@ -83,11 +81,9 @@ include AngularJS, Bootstrap CSS, Underscore.js and Base64.js which
 are support files required for Github.js, and GitHub.js.
 
 [source,bash]
-$ curl https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js
+$ curl https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.js
 $ curl https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css
 $ curl https://github.com/michael/github/raw/master/github.js
-$ curl http://underscorejs.org/underscore-min.js
-$ curl https://raw.github.com/dankogai/js-base64/master/base64.min.js
 
 I am assuming you have a firm grasp on most HTML concepts, but a few
 of the advanced topics here:
@@ -112,10 +108,9 @@ var mod = angular.module( 'coffeetech', [] )
 mod.controller( 'SampleCtrl', function( $scope ) {
   var github = new Github({} );
   var repo = github.getRepo( "gollum", "gollum" );
-  repo.show( function(err, repo) {
-    $scope.repo = repo;
-    $scope.$digest();
-  });
+  $scope.$apply( function() { repo.show( function(err, repo) {
+      $scope.repo = repo;
+  })});
 })
 
 Add it to the repository
@@ -136,9 +131,7 @@ Then, let's modify our `index.html` to utilize this new code
 <div class="container" ng-controller="SampleCtrl">
 {{ repo | json }}
 </div>
-<script src="angular.min.js"></script>
-<script src="underscore.js"></script>
-<script src="base64.js"></script>
+<script src="angular.js"></script>
 <script src="github.js"></script>
 <script src="coffeetech.js"></script>
 </body>
@@ -232,9 +225,7 @@ pieces of information.
 <div>Network count: {{ repo.network_count }}</div>
 </div>
 <script
-src="angular.min.js"></script>
-<script src="underscore.js"></script>
-<script src="base64.js"></script>
+src="angular.js"></script>
 <script src="github.js"></script>
 <script src="coffeetech.js"></script>
 </body>
@@ -321,9 +312,7 @@ Now, let's expose it inside the `index.html` file like so:
 </div>
 </div>
 <script
-src="angular.min.js"></script>
-<script src="underscore.js"></script>
-<script src="base64.js"></script>
+src="angular.js"></script>
 <script src="github.js"></script>
 <script src="coffeetech.js"></script>
 </body>
@@ -338,6 +327,75 @@ interpolated from each item in the iteration.
 column layout. We setup two adjacent columns this way. And, if we are 
 inside a mobile device, it properly stacks these columns.
 <3> Notice how we bind to data from the JSON file.
+
+====== Errors Already?
+
+If you run this in your browser, nothing will happen. Something is
+broken. Let's investigate. I recommend using the Chrome browser to
+debug this, but you can use any browser and set of developer tools you
+like. They all have similar tools.
+
+Pop over the browser tools, and jump to the console window. Refresh
+the window, and you'll see this in the console:
+
+[source,error]
+Uncaught TypeError: Cannot call method 'select' of undefined 
+
+If you click on the link to the right for github.js, you'll see this.
+
+image::images/javascript-underscore-missing.png[]
+
+You see at the point of error that we are calling select on tree. What
+is happening under the hood of this library is that we are
+pulling the entire tree from the repository, then iterating over each
+item in the tree, then 
+selecting the item from the tree which matches the name of the
+file we have requested. This is a performance implication we should at
+least consider. If we look at the "Network" tab in the Chrome
+Developer tools, and then click on the last item in the list, we see a
+reference to a URL something like
+`https://api.github.com/repos/xrd/spa.coffeete.ch/git/trees/gh-pages?recursive=true&1389996312519`
+
+image::images/javascript-get-tree.png[]
+
+The iteration is done using underscore (we can see an
+the underscore character as the object of the `select` method), and it looks like this is
+failing because the '_' is undefined. 
+
+When I first wrote this, I had not seen the reference to underscore.js
+noted as a requirement of using github.js. Github.js also requires
+base64.js. To include these, run these commands from the console:
+
+[source,bash]
+$ curl http://underscorejs.org/underscore-min.js
+$ curl https://raw.github.com/dankogai/js-base64/master/base64.min.js
+
+Then, make your index.html look like this:
+
+[source,html index.html]
+<html>
+<head>
+<title>CoffeeTe.ch</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
+</head>
+<body ng-app="coffeetech">
+<div class="container" ng-controller="ShopsCtrl">
+<div class="row" ng-repeat="shop in shops"> # <1>
+<div class="col-md-6"> {{ shop.name }} </div>  # <2>
+<div class="col-md-6"> {{ shop.lat }} {{ shop.lng }} </div> # <3>
+</div>
+</div>
+<script
+src="angular.js"></script>
+<script src="underscore.js"></script>
+<script src="base64.js"></script>
+<script src="github.js"></script>
+<script src="coffeetech.js"></script>
+</body>
+</html>
+
+
 
 ===== Safely implementing login
 
