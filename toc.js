@@ -2,7 +2,7 @@ var toc = false;
 var lookup = {};
 
 $(document).ready( function() {
-    $('body').prepend( "<button class='toc'>Toggle TOC Mode</button>" );
+    $('body').prepend( "<button class='toc' style='position: fixed; top: 10px; left: 10px;'>Toggle TOC Mode</button>" );
     console.log( "Inside the ready event" );
     $('.toc').click( function() {
         console.log( "Got the click event" );
