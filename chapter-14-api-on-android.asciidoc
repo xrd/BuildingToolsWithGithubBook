@@ -59,16 +59,46 @@ prompts.
 
 image::images/android-new-avd.png[]
 
+You are generally free to choose whatever settings you like. Google
+produces a real device called the Nexus 5. This is the Android
+reference device, and is a good option for a generic device with good
+support across all features. You can choose this one if you are
+confused about which to use. 
+
+Once you have created an AVD, start it up. It will take a few minutes
+to boot; AVDs are actually emulating the chipset in software and
+booting up can take a few minutes unfortunately. There are ways to
+speed up AVD boot time, like the Genymotion tool, but they are outside
+of the scope of this book. After your AVD has completed booting, you
+can test to see if it is correctly started and available using the adb
+command line tool.
+
+[source,bash]
+$ adb devices -l
+* daemon not running. starting it now on port 5037 *
+* daemon started successfully *
+List of devices attached 
+0222fdc60910aede       device usb:1D110000 product:hammerhead model:Nexus_5 device:hammerhead
+
+Running the adb command starts a daemon service which communicates
+with your device. In this case the daemon reported that I have a
+single device attached via USB which is a Nexus 5 device.
 
 ==== Creating a New Project
 
 [source,bash]
 $ mkdir ghoa # GitHub On Android == ghoa
 $ cd ghoa
-$ android create project --target 13 --name 
---path path/to/your/project \
---activity <your_activity_name> \
---package <your_package_namespace>
+$ android create project --target 13 --name Ghoa --path . --activity MainActivity --package com.example.ghoa 
+
+These three commands create a new directory `ghoa`, enter the
+directory, and then build a simple Android directory structure with
+the proper files.
+
+If you have the ant tool installed, you can build this new project
+with the `ant debug` command. This will create an APK in the bin
+directory called `./bin/Ghoa-debug-unaligned.apk`. To install it on
+your device.
 
 ===== Adding Gradle support
 
@@ -76,7 +106,10 @@ Gradle is a new build system for Java and works well with Android.
 Using a simple `build.gradle` file we can build an entire Android
 application from the command line. Gradle is well supported with more
 advanced editors, so you can always import an Android project using
-Gradle and use it with editors like Eclipse or Android Studio.
+Gradle and use it with editors like Eclipse or Android Studio. Ant
+used to be the default and preferred method of building Java projects
+from the command line, but gradle syntax is so simple and powerful and
+lightweight that it is now the preferred build system by the Android team.
 
 Our gradle script allows us to pull in external libraries. We want to
 use the egit library which allows us to talk to the GitHub API. Adding
@@ -122,7 +155,10 @@ editor and write pure code.
 We've finally assemble the proper UI for our application. Our last
 step is to write the code which handles putting content into GitHub.
 This is not a simple function, because the GitHub API requires you
-build out the objects required
+build out the objects required.
+
+This code was refactored from https://gist.github.com/Detelca/2337731.
+Who is this mysterious user Detelca? 
 
 [source,java]
 -----
