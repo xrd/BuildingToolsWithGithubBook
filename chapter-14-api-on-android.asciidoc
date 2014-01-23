@@ -1,0 +1,226 @@
+==== GitHub API on Android
+
+Android is currentyly the most popular operating system for mobile
+devices, overtaking Symbian in 2010, experiencing incredible growth
+since its release in 2008. Many software developers would not consider
+a mobile device to worthwhile for software developer tool creation,
+but as more and more people shift to using mobile devices, we will see
+demand for tools on mobile devices. The GitHub API has a good set of
+bindings for developing Java and Android applications. We'll use the
+egit libraries to develop a small Android application which posts to
+our blog hosted on GitHub.
+
+We will build an application which uses one of the unique features of a
+mobile device: GPS. Our blogging application will allow us to login to
+GitHub, determine our location, and then ask us for a quick note
+describing what we are doing. The application will then compose a
+Jekyll blog post for us and push the post into our blog on GitHub.
+
+==== Prerequisites
+
+If you don't have a physical Android device, don't fret. This chapter
+can be followed along without having an actual Android device. You can
+do all this development from a virtual device. 
+
+===== Installing the Java SDK
+
+Unfortunately there is no simple shell command to install Java in the
+same way as there is for Ruby and NodeJS using RVM or NVM. 
+Oracle controls the Java language and distribution of officials SDKs,
+and they restrict access to downloads other than from java.oracle.com.
+Java is freely available, but you need to visit java.oracle.com and
+find the correct download for your needs. Android works with either
+the 1.6 or 1.7 versions of Java, but it is probably best to get the
+newest version you can find.
+
+===== Installing the Android SDK
+===== Creating AVDs for Development
+
+Once you have installed the SDK, you can create a virtual device
+called an AVD. AVDs are very useful because you can see any screen
+resolution, any SDK version, and can quickly delete and reset the
+devices. In addition, AVDs are created "rooted" by default, which
+allows you to view the contents of all files, a capability which is
+not available on non-rooted devices. This makes debugging AVDs much
+easier because, for example, you can inspect SQLite databases using
+command line tools rather than from within a compiled Java
+application. Even if you have a physical device, it is worth learning
+about AVD management.
+
+To create an AVD, run the `android avd` command from a shell prompt.
+You'll see the AVD manager, and can create new devices and manage
+existing ones. Mine has multiple AVDs already created; yours will be
+empty the first time.
+
+image::images/android-avd.png[]
+
+To create a new AVD, click on the "New.." button and follow the
+prompts.
+
+image::images/android-new-avd.png[]
+
+
+==== Creating a New Project
+
+[source,bash]
+$ mkdir ghoa # GitHub On Android == ghoa
+$ cd ghoa
+$ android create project --target 13 --name 
+--path path/to/your/project \
+--activity <your_activity_name> \
+--package <your_package_namespace>
+
+===== Adding Gradle support
+
+Gradle is a new build system for Java and works well with Android.
+Using a simple `build.gradle` file we can build an entire Android
+application from the command line. Gradle is well supported with more
+advanced editors, so you can always import an Android project using
+Gradle and use it with editors like Eclipse or Android Studio.
+
+Our gradle script allows us to pull in external libraries. We want to
+use the egit library which allows us to talk to the GitHub API. Adding
+this library to our project is as simple as adding a single dependency
+to our project as you see below.
+
+[source,groovy]
+----
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { 
+               url 'https://oss.sonatype.org/content/repositories/snapshots/'
+         }     
+    }
+}
+
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 18
+    buildToolsVersion "18.0.1"
+    dependencies {
+    'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
+    }
+}
+----
+
+===== Imperative UI versus Declarative UI
+
+Normally when you create an android application you use a files layout
+which simplify creating user interfaces, allow you to easily localize
+(offer your application in multiple languages). These files are called
+resource files, and are written in XML. These files make great sense
+when you have a graphical editor to manage them as much people use
+when developing Android applications. In our case, our application is
+simple enough that we can manage all of our UI imperatively from
+within our application. This allows us to not rely on a graphical
+editor and write pure code.
+
+===== Code to talk to GitHub
+
+We've finally assemble the proper UI for our application. Our last
+step is to write the code which handles putting content into GitHub.
+This is not a simple function, because the GitHub API requires you
+build out the objects required
+
+[source,java]
+-----
+
+String username = getUsername();
+String password = getPassword();
+RepositoryService rs = getRepositoryService( username, password );
+RepositoryBranch rb = getCorrectBranch( rs );
+String baseCommitSha = getBaseCommitSha( rb );
+commitContents( baseCommitSha, contents );
+
+// create needed services
+private RepositoryService getRepositoryService( String username, String password ) {
+  RepositoryService repositoryService = new RepositoryService();
+  repositoryService.getClient().setOAuth2Token(authToken);
+  CommitService commitService = new CommitService();
+  commitService.getClient().setOAuth2Token(authToken);
+  DataService dataService = new DataService();
+  dataService.getClient().setOAuth2Token(authToken);
+}
+
+private RepositoryBranch getCorrectBranch( RepositoryService ) {
+  // get some sha's from current state in git
+  Repository repository =  repositoryService.getRepository(login, repoName);
+ List<RepositoryBranch> branches = repositoryService.getBranches(repository);
+  RepositoryBranch theBranch = null;
+  RepositoryBranch master = null;
+  // Iterate over the branches and find gh-pages or master
+  for( RepositoryBranch i : branches ) {
+      String theName = i.getName().toString();
+      if( theName.equalsIgnoreCase("gh-pages") ) {
+          theBranch = i;
+      }
+      else if( theName.equalsIgnoreCase("master") ) {
+          master = i;
+      }
+  }
+  if( null == theBranch ) {
+      theBranch = master;
+  }
+  return theBranch;
+}
+
+private String getBaseCommitSha( RepositoryBranch rb ) {
+  String baseCommitSha = rb.getCommit().getSha();
+}
+
+private void commitContents( String baseCommitSha, String contents ) {
+  String newSha = null;
+  // create new blob with data
+  
+  Random random = new Random();
+  Blob blob = new Blob();
+  blob.setContent(contentsBase64);
+  blob.setEncoding(Blob.ENCODING_BASE64);
+  String blob_sha = dataService.createBlob(repository, blob);
+  Tree baseTree = dataService.getTree(repository, baseCommitSha);
+  
+  // create new tree entry
+  TreeEntry treeEntry = new TreeEntry();
+  treeEntry.setPath(filename);
+  treeEntry.setMode(TreeEntry.MODE_BLOB);
+  treeEntry.setType(TreeEntry.TYPE_BLOB);
+  
+  treeEntry.setSha(blob_sha);
+  treeEntry.setSize(blob.getContent().length());
+  Collection<TreeEntry> entries = new ArrayList<TreeEntry>();
+  entries.add(treeEntry);
+  Tree newTree = dataService.createTree(repository, entries, baseTree.getSha());
+  
+  // create commit
+  Commit commit = new Commit();
+  commit.setMessage( commitMessage );
+  commit.setTree(newTree);
+  List<Commit> listOfCommits = new ArrayList<Commit>();
+  listOfCommits.add(new Commit().setSha(baseCommitSha));
+  // listOfCommits.containsAll(base_commit.getParents());
+  commit.setParents(listOfCommits);
+  // commit.setSha(base_commit.getSha());
+  Commit newCommit = dataService.createCommit(repository, commit);
+  
+  // create resource
+  TypedResource commitResource = new TypedResource();
+  commitResource.setSha(newCommit.getSha());
+  commitResource.setType(TypedResource.TYPE_COMMIT);
+  commitResource.setUrl(newCommit.getUrl());
+  
+  // get master reference and update it
+  Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
+  reference.setObject(commitResource);
+  Reference response = dataService.editReference(repository, reference, true) ;
+  newSha = treeEntry.getSha();
+  }
+  catch( IOException ieo ) {
+      ieo.printStackTrace();
+  }
+  
+  return newSha;
+}
+
+-----
