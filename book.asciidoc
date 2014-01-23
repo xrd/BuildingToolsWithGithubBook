@@ -4,36 +4,28 @@ include::book-docinfo.xml[]
 
 include::preface.asciidoc[]
 
-include::chapter-bootstrapping-git.asciidoc[]
+include::chapter-00-tools.asciidoc[]
 
-include::chapter-github-essentials.asciidoc[]
+include::chapter-01-advanced-tour.asciidoc[]
 
-include::chapter-creating-account.asciidoc[]
+include::chapter-02-gist.asciidoc[]
 
-include::chapter-manage-account.asciidoc[]
+include::chapter-06-issues.asciidoc[]
 
-include::chapter-manage-org.asciidoc[]
+include::chapter-07-pull-requests.asciidoc[]
 
-include::chapter-started-github.asciidoc[]
+include::chapter-08-hubot.asciidoc[]
 
-include::chapter-sharing.asciidoc[]
+include::chapter-09-github-pages.asciidoc[]
 
-include::chapter-clients.asciidoc[]
+include::chapter-10-jekyll.asciidoc[]
 
-include::chapter-overview-dashboard.asciidoc[]
+include::chapter-11-gollum-wiki.asciidoc[]
 
-include::chapter-repo-admin.asciidoc[]
+include::chapter-12-api-introduction.asciidoc[]
 
-include::chapter-patterns.asciidoc[]
+include::chapter-13-github-api-on-javascript.asciidoc[]
 
-include::chapter-overview-repository.asciidoc[]
+include::chapter-14-api-on-android.asciidoc[]
 
-include::chapter-wiki.asciidoc[]
-
-include::chapter-pages.asciidoc[]
-
-include::chapter-exploring.asciidoc[]
-
-include::chapter-culture.asciidoc[]
-
-include::chapter-developer-api.asciidoc[]
+include::chapter-15-api-on-rails.asciidoc[]
