@@ -51,7 +51,7 @@ way to guarantee the user has the proper files installed is to use a "Gemfile" w
 which libraries are installed and from where. Let's add this:
 
 [source,bash]
-$ echo "source 'https://rubygems.org'; gem 'sinatra'" > Gemfile
+$ printf "source 'https://rubygems.org'\ngem 'sinatra'" > Gemfile
 
 This is a quick way to add content to the file named Gemfile. To install the libraries required here, we run
 the bundler command

@@ -1,3 +1,82 @@
+==== Introduction
+==== Markdown
+
+Markdown is a readable markup language. HTML was designed for
+computers to read and interpret. Many people have trained themselves
+to read and write literally in HTML, but most people use editors to
+convert their designs and ideas into HTML code. 
+
+Markdown is another way of writing HTML. Markdown is a language which
+converts into HTML and is entirely readable by humans. 
+
+You can embed regular HTML snippets into Markdown. There are a few gotchas, however:
+
+You cannot wrap markdown inside of HTML tags. If you want to use a
+tag and enclose content inside it, you need to embed pure HTML code.
+
+Well, this is not entirely true. use a combination of includes and capturing
+content. 
+
+[source,html]
+{% capture sidebar %}{% include blog.md %}{% endcapture %}
+<div style="text-align: left">
+{{ sidebar | markdownify }}
+</div>
+
+==== Branches
+=====  Detached "Orphan" branches
+
+[source,bash]
+$ git checkout --orphan gh-pages
+$ git rm -rf .
+
+Once you execute these two commands, you've switched to a new branch named
+gh-pages. This is a specially named branch for GitHub which will hold
+the contents of your repository's web site. Now, this is something of
+an odd concept, but this is a branch in your repository that is
+designed to hold something entirely different from your code. Usually
+branches are designed to hold related content. For example, you may
+create a feature branch to capture a few days of work on a piece of
+code, or you may create a branch for difference versions of content
+that need to be updated independently.  In this case, it is almost
+like you are creating a separate repository within your repository
+that lives on a specially named repository.
+
+Let me explain? When you run "git checkout" with the "--orphan" flag
+you are creating a new branch "gh-pages" that is an "orphan" commit.
+It is a commit that doesn't have any parents and it entirely
+disconnected from history. After you create this branch with a
+parent-less commit that is entirely disconnected from history, you run
+"git rm -rf ." which removes everything from the Git repository. The
+end result is that the branch gh-pages is now completely detached from
+history and contains nothing. gh-pages is a blank slate to be filled
+with your website content.
+
+==== Editing inline on github
+==== Using categories
+==== Using tags
+==== Using themes
+==== Ignoring files
+==== Published versus unpublished
+==== File naming conventions
+==== Using rake
+==== Jekyll serve
+=====  Watch
+=====  Live reload
+==== Cname file
+==== Configuration file
+==== Using liquid tags
+=====  Safety
+=====  Loops
+=====  Variables
+==== Matching gems with github
+==== Scraping and converting a site
+===== Using the VCR gem to minimize requests
+===== Writing Tests
+===== GeoCoding from the command line
+===== Embedding AngularJS Directives
+
+
 == Github Pages
 
 GitHub Pages are really a very simple idea.  Any 
@@ -70,32 +149,7 @@ from your Git repository:
 
 [source,bash]
 .Creating a gh-pages Branch
-----
-$ git checkout --orphan gh-pages
-$ git rm -rf .
-----
 
-Once you execute these two commands, you've switched to a new branch named
-gh-pages. This is a specially named branch for GitHub which will hold
-the contents of your repository's web site. Now, this is something of
-an odd concept, but this is a branch in your repository that is
-designed to hold something entirely different from your code. Usually
-branches are designed to hold related content. For example, you may
-create a feature branch to capture a few days of work on a piece of
-code, or you may create a branch for difference versions of content
-that need to be updated independently.  In this case, it is almost
-like you are creating a separate repository within your repository
-that lives on a specially named repository.
-
-Let me explain? When you run "git checkout" with the "--orphan" flag
-you are creating a new branch "gh-pages" that is an "orphan" commit.
-It is a commit that doesn't have any parents and it entirely
-disconnected from history. After you create this branch with a
-parent-less commit that is entirely disconnected from history, you run
-"git rm -rf ." which removes everything from the Git repository. The
-end result is that the branch gh-pages is now completely detached from
-history and contains nothing. gh-pages is a blank slate to be filled
-with your website content.
 
 ==== Pushing Content to a Github Site
 
@@ -205,3 +259,4 @@ Remember that things can get broken if you use the wrong Jekyll versions:
 https://github.com/github/pages-gem/blob/master/lib/github-pages.rb#L10-L16
 
 `gem install github-pages` will keep things up to date.
+

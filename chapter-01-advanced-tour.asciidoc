@@ -1,5 +1,6 @@
 
 === GitHub.com: a town square for the coder community.
+
 There were other Git hosting services before GitHub.com. But, GitHub was the first to build a rabid community
 around Git. GitHub.com became the town square where the coding cognoscenti gathered to discuss, where the 
 enfants informatiques played with new ideas that would become the future of our world. GitHub.com has become 
@@ -29,8 +30,6 @@ on the same machine. This is useful when you are testing against many different 
 but the biggest benefit is a side effect of this: RVM allows you to guarantee which version of Ruby you are using
 at any given moment. This removes a barrier to running code: anyone can use the exact same version you use without
 having to uninstall and developers can stay in sync without onerous installation requirements.
-
-
 
 * Bash (or your favorite shell) and the command line
 

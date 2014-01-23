@@ -5,24 +5,23 @@ We intentionally wrote this book to assist any developer, regardless of the lang
 with which you are familiar, in understanding GitHub . Our goal is to teach you the technologies
 and philosophies behind GitHub, not specific syntax in any particular language. 
 
-===== However: Ruby
+===== GitHub started with Ruby
 
 Many of the tools written and used at GitHub are written in specific languages, Ruby being
 the primary one. To be successful with this book, you should at least
 have Ruby installed. 
 
-I came to Ruby from my own unique path. Living in Japan during high
-school and college, I found Ruby over a decade ago, before Rails, and
-was excited about this very unique language, that found roots in Perl,
-the first language I learned. I was excited about Ruby because I
-wanted to peer into the mindset of a language designed outside of the existing US
-developer communities. When Ruby on Rails emerged, interest in Ruby
-exploded. 
-
-There are many ways to use Ruby. And, as a long time user I have
+There are many ways to get Ruby. And, as a long time user I have
 experienced the pain of using it in suboptimal ways. If you are not
 familiar with Ruby, use this chapter to install it with the least
 friction and trouble.
+
+You might already have a version of Ruby installed. Mac OSX comes
+bundled with Ruby and various flavors of Linux do as well. However, I
+recommend that you use the method of installation described here. You
+can guarantee you are using the correct version, and the method
+described here will not interfere with any other previously installed
+version of Ruby you have already on your system.
 
 ==== Why Ruby at GitHub
 
@@ -71,7 +70,7 @@ Virtual Machine (VM). Windows is sadly a second class citizen with
 Ruby and RVM and for this reason, it is often better to install RVM
 inside a host system like Linux which has a wider community around it
 to support you. Virtual Box and Linux are free as in beer and as in
-speech, so you can try them out without cost other than your time.
+speech, so you can try them out without cost (other than your time).
 
 ===== Important Ruby and RVM Concepts
 
@@ -109,7 +108,14 @@ Here are a few tips when using Ruby and RVM.
   build tools you will ever need using this command: `sudo apt-get
   install build-essential`. This can take a while, but will ensure you
   have all the tools necessary for building RVM and any binary gems.
-* Missing 
+* Missing developer libraries: There are some libraries which support
+  Ruby (readline support, as an example, which allows you to use
+  command line history inside of an interactive Ruby shell) that are
+  not always installed or available to the RVM tool. RVM has greatly
+  improved in detecting the correct libraries, and there are often
+  notes which tell you how to properly configure these libraries. Make
+  sure to read the output printed to the screen as you install Ruby
+  using RVM for special instructions specific to your platform.
 
 ==== Other Languages
 
@@ -117,7 +123,7 @@ Here are a few tips when using Ruby and RVM.
 
 NodeJS has gained immense popularity in the last few years. JavaScript
 is the language of client-side development on the web, and many people
-are excited about running the same language on the server side. One of
+are excited about developing in the same language on the server side. One of
 the chapters in this book discusses Hubot, GitHub's "devops" chatbot.
 Hubot is written in NodeJS. Fortunately, installing NodeJS is simple
 using NVM.
@@ -128,7 +134,7 @@ to RVM. To install it run these commands from a shell prompt:
 [source,bash]
 $ curl https://raw.github.com/creationix/nvm/master/install.sh | sh
 
-===== package.json and Gemfile
+===== package.json
 
 Much like Ruby has a Gemfile which indicates required libraries, so
 too does NodeJS have an equivalent file. In NodeJS, this file is

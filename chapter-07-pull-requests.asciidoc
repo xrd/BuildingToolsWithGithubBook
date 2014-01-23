@@ -1,0 +1,6 @@
+===== Pull requests
+===== Demonstrates: the way GitHub works as a company, and a powerful new way to interact with your code and coworkers
+===== Strategies for managing your development
+===== Asynchronous communication
+===== Remove managers
+===== Coaching and code reviews for free

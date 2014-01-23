@@ -30,7 +30,7 @@ $ mkdir coffeete.ch
 $ cd coffeete.ch
 $ git init 
 $ git checkout -b gh-pages
-$ echo "<html><body>Hello from CoffeeTe.ch</body></html>" > index.html
+$ printf "<html>\n<body>Hello from CoffeeTe.ch</body>\n</html>\n" > index.html
 $ git commit -m "Add starting point index.html" -a
 $ git config push.default gh-pages
 
