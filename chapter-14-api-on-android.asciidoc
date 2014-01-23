@@ -160,6 +160,7 @@ build out the objects required.
 This code was refactored from https://gist.github.com/Detelca/2337731.
 Who is this mysterious user Detelca? 
 
+
 [source,java]
 -----
 
@@ -209,8 +210,6 @@ private String getBaseCommitSha( RepositoryBranch rb ) {
 private void commitContents( String baseCommitSha, String contents ) {
   String newSha = null;
   // create new blob with data
-  
-  Random random = new Random();
   Blob blob = new Blob();
   blob.setContent(contentsBase64);
   blob.setEncoding(Blob.ENCODING_BASE64);
@@ -259,4 +258,41 @@ private void commitContents( String baseCommitSha, String contents ) {
   return newSha;
 }
 
+-----
+
+===== Writing Tests
+
+Once we have written our application, we need to write tests to verify
+things work as we expect them to. There are many options for writing
+tests on Java and Android. JUnit is a popular testing tool which
+permits writing unit tests. Robotium is another testing tool which
+focuses on a different aspect of testing, user interface tests. We'll
+use a wrapper around Robotium called Calabash for Android which allows
+us to write in a high level domain specific language. I find that
+writing Calabash tests is a simpler way to write tests using APIS
+because Calabash tests interact with the entire application, rather
+than internals like unit testing. With unit testing you can be
+required to mock out network interactions, and as such, often miss
+subtle changes in APIs. Calabash also uses a simple DSL which is not
+compiled, so refactoring and changing tests is a simple matter.
+Calabash makes testing easy; your code can be complicated, but tests
+should not be an onerous task.
+
+Calabash runs using ruby. You already have ruby installed, so to
+install calabash, run these commands:
+
+[source,bash]
+$ printf "source 'https://rubygems.org'\n\ngem 'calabash-android'" >> Gemfile
+$ bundle install
+$ calabash-android gen
+
+We've now installed calabash and created the folder structure to hold
+our tests along with some helper scripts. Let's write a simple test for our
+application. 
+
+[source,yaml features/login.feature]
+-----
+feature: Login
+  scenario: A user can login
+    Given I have logged in
 -----
