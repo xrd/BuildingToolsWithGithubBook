@@ -25,14 +25,14 @@ version of Ruby you have already on your system.
 
 ==== Why Ruby at GitHub
 
-GitHub is a company that was largely started using Ruby. Tom Preston
+GitHub is a company with its foundations sitting on top of the Ruby language. Tom Preston
 Warner built the initial libraries for using git with Ruby, a library
 called Grit. You can host blogs on GitHub for free, and this tool
 called Jekyll is built using Ruby. Gollum, the technology which powers
 GitHub wikis, is built using Grit and runs on Ruby.
 
 To understand GitHub, it is best to understand a little bit of Ruby.
-You can use many of the tools used at GitHub by simply installing it,
+You can use many of the tools used at GitHub by simply installing Ruby,
 and not knowing any Ruby syntax. This book will not require you to
 code in Ruby, but will ask you to read through Ruby code. We write in
 a literal, readable way, so that anyone with basic software developer
