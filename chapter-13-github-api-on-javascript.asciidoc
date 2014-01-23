@@ -1,8 +1,8 @@
-==== Single Page Apps using the GitHub API
+== A Single Page App using the GitHub API with JavaScript
 
 Now that you know the basics of the GitHub API, let's build something interesting with it. GitHub offers libraries which work within other programming languages and frameworks, and later we will talk about using the GitHub API on the server side. To start, however, let's build a single page app with everything hosted on GitHub and using the GitHub API. You've already learned about the gh-pages branch and now know about how the API works and we'll use that background knowledge as a foundation for this next chapter.
 
-===== Using the GitHub API with JavaScript
+=== Using the GitHub API with JavaScript
 
 This chapter focuses on using the GitHub API with client side JavaScript. JavaScript is the lingua franca of the web, invented in 2011 as a scripting language embedded inside the first web browsers. JavaScript has recently found its way to the server side as well with NodeJS, an innovative toolkit for building high performance network servers. JavaScript is a useful language to know no matter where your interests lie, whether they be on the server side or strictly client side development.
 
@@ -395,8 +395,6 @@ src="angular.js"></script>
 </body>
 </html>
 
-
-
 ===== Safely implementing login
 
 If I saw this app in the wild and knew nothing about the authors, I
@@ -413,7 +411,7 @@ So, let's use oAuth instead and resolve these problems.
 
 If we use oAuth, we enter our credentials directly into GitHub. We can take advantage of 2-factor authentication. Once we have entered our credentials, GitHub decides whether we are who we say we are, and then returns us to the application which requested access. And, GitHub provides the application with what is called an oAuth token that encapsulates exactly what services on GitHub we have access to, and whether that access is read-only or whether we can add data in a read-write manner. This means our requesting service can ask to modify only parts of our data within GitHub; this provides a much higher level of trust to users as they know the application cannot touch the more private parts within GitHub. Specifically, this means we could ask for access only to gists and not request access to our repositories, for example. And, finally, one important point about oAuth tokens is that they can be revoked. So, once a specific action has been taken, we can destroy the token and revoke access. With simple username and password access, the only way to revoke access is to change the password, which means any place you have saved that password (password managers or other applications which login via username and password) need to update their settings as well. With oAuth we can revoke a single token at any time (and GitHub makes it easy to do this) without affecting access to other services.
 
-===== Everything on GitHub, except for one piece
+==== Everything on GitHub, except for one piece
 
 We would like to host everything on GitHub, but sadly there is one piece which we cannot host there: the authentication component. 
 Somehow we need to safely authenticate our user into the GitHub and retrieve an oAuth token. There is currently no way to do this 
@@ -427,6 +425,14 @@ application offloads user management to Firebase.
 
 To start, we need to create a new GitHub application.
 
+===== Our own NodeJS Application
+
+Requires a hosting provider, like Nodejitsu. Not too complicated, but
+do we want to do devops?
+
+===== Firebase App
+
+By far the simplest option.
 
 ===== Advanced
 
