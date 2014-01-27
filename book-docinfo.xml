@@ -1,5 +1,14 @@
 
-
+  <isbn>9781449368012</isbn>
+  <edition>1</edition>
+  <author>
+    <firstname>Chris</firstname>
+    <surname>Dawson</surname>
+  </author>
+  <author>
+    <firstname>Timothy M.</firstname>
+    <surname>O’Brien</surname>
+  </author>
   <othercredit role="proofreader">
     <firstname>FIX</firstname>
     <surname>ME!</surname>
@@ -101,3 +110,4 @@
    </editor>
 
    <othercredit role="indexer"><firstname/><surname/></othercredit><printhistory><formalpara><title>First Edition</title><para>July, 2013</para></formalpara></printhistory><revhistory><revision><date>YYYY-MM-DD</date><revremark>First release</revremark></revision></revhistory><legalnotice role="perfect"><para/></legalnotice>
+
