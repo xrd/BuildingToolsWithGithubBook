@@ -1,23 +1,62 @@
 == A Single Page App using the GitHub API with JavaScript
 
-Now that you know the basics of the GitHub API, let's build something interesting with it. GitHub offers libraries which work within other programming languages and frameworks, and later we will talk about using the GitHub API on the server side. To start, however, let's build a single page app with everything hosted on GitHub and using the GitHub API. You've already learned about the gh-pages branch and now know about how the API works and we'll use that background knowledge as a foundation for this next chapter.
+Now that you know the basics of the GitHub API, let's build something
+interesting with it. GitHub offers libraries which work within other
+programming languages and frameworks, and later we will talk about
+using the GitHub API on the server side. To start, however, let's
+build a single page app with everything hosted on GitHub and using the
+GitHub API. You've already learned about the `gh-pages` branch and now
+know about how the API works and we'll use that background knowledge
+as a foundation for this next chapter. 
 
 === Using the GitHub API with JavaScript
 
-This chapter focuses on using the GitHub API with client side JavaScript. JavaScript is the lingua franca of the web, invented in 2011 as a scripting language embedded inside the first web browsers. JavaScript has recently found its way to the server side as well with NodeJS, an innovative toolkit for building high performance network servers. JavaScript is a useful language to know no matter where your interests lie, whether they be on the server side or strictly client side development.
+This chapter focuses on using the GitHub API with client side
+JavaScript. JavaScript is the lingua franca of the web, invented in
+1995 as a scripting language embedded inside the first web browsers.
+JavaScript has recently found its way to the server side as well with
+NodeJS, an innovative toolkit for building high performance network
+servers. JavaScript is a useful language to know no matter where your
+interests lie, whether they be on the server side or strictly client
+side web development.
 
 ===== Building our coffee shop database
 
-The Japanese have a word "otaku"; it describes a person obsessed with something, often computers or technology. Many software developers would happily call themselves otaku. Interestingly, in many of the software development shops where I have worked in Portland, there is an equally, almost disturbing, obsession with coffee. I suffer from the same malady, and it means I will drag my poor wife and infant son with me as I visit new cities, through the slime and filth of strange neighborhoods, just to find the perfect brew and complementary gluten free desserts. Google Maps is a great help with my quests, in that it will find me a coffee shop and reviews, but the granularity of information about that coffee shop is often poor and limited in scope. Let's fix that.
+The Japanese have a word "otaku"; it describes a person obsessed with
+something, often computers or technology. Many software developers
+would happily call themselves otaku. Interestingly, in many of the
+software development shops where I have worked in Portland, there is
+an equally, almost disturbing, obsession with coffee. I suffer from
+the same malady, and it means I will drag my poor wife and infant son
+with me as I visit new cities, through the slime and filth of strange
+neighborhoods, just to find the perfect brew and complementary gluten
+free desserts. 
 
-We'll build a coffee shop single page web app which allows us to search and filter for properties about a coffee shop. All files, such as the HTML, images and JavaScript will be hosted on GitHub. And, we'll be using the GitHub API to allow contributors to add data to our database, a database which we will also host on GitHub.
+Google Maps is a great help on these quests, in that it will find me a
+coffee shop and reviews, but the granularity of information about that
+coffee shop is often poor and limited in scope. Do they offer rice
+milk as a dairy free alternative?  What special details should I know when considering a place?
+Many guidance and mapping applications exist, but if they don't fit my
+own personalized informational niche, I might miss a unique
+experience. With such a pressing and dire problem in front of us, let's use
+the GitHub API to solve it.
+
+We'll build a coffee shop single page web app which allows anyone to add
+information on coffee shops, information which is flexible and
+dynamic, and search and filter through that information about a coffee
+shop. All files, such as the HTML, images  and JavaScript will be
+hosted on GitHub. And, we'll be using the GitHub API to allow
+contributors to add data to our database, a database which we will
+also host on GitHub. And, as GitHub developers write code with tests,
+we will write tests to validate our JavaScript code as well as the
+expectations we have of the GitHub API.
 
 More specifically, we'll use these technologies:
 
 * GitHub API JavaScript library:https://github.com/michael/github
-* AngularJS: a superpowered framework for writing JS applications
-* Bootstrap: a CSS library which simplifies building beautiful (or at
-  least tolerable) webapps
+* AngularJS: a superpowered framework for writing JS applications that
+  are testable
+* Bootstrap: a CSS library which simplifies building beautiful webapps
 
 You don't need to know these technologies in advance of working on this chapter.
 
@@ -40,10 +79,13 @@ Notice that we created a new repository, and then created and entered the gh-pag
 
 As we discussed in the Jekyll chapter, once we publish these files
 into GitHub inside a repository we can connect the repository to a
-real hostname. There are two things to do:
+real hostname. There are two steps to take to do this:
 
 * Add a CNAME file which tells GitHub under which server name this service should resolve. 
-* Setup DNS records so that the hostname maps to the correct IP address at GitHub.
+* Setup DNS records so that the hostname maps to the correct IP
+  address at GitHub. [TODO: add specific information on IP address
+  according to this link:
+  https://help.github.com/articles/setting-up-a-custom-domain-with-pages ]
 
 Imagine you have the hostname myspecialhostname.com. If you map this
 repository to a subdomain called coffeetech, then you would do
@@ -54,11 +96,18 @@ $ echo 'coffeetech.myspecialhostname.com' > CNAME
 $ git commit -m "Added CNAME mapping" -a
 $ git push
 
-Remember that you need to wait about ten minutes before GitHub regenerates their database to establish the connection between your gh-pages site and the mapping on their front end servers. But, this method of mapping the site is often quicker than setting up your own DNS, so if you are in a rush to play with this, try this method.
+Remember that you need to wait about ten minutes before GitHub
+regenerates their database to establish the connection between your
+gh-pages site and the mapping on their front end servers. Also,
+generally it takes several hours to even a few days to propagate DNS
+settings out into the wild, so make sure you choose and setup a
+hostname far in advance of needing a site live.
 
 ===== Adding the support libraries
 
-As we mentioned we will use the GitHub.js library, AngularJS, and Bootstrap. Let's add those to our project now. Using whatever editor you prefer, edit the index.html file to look like this:
+As we mentioned we will use the GitHub.js library, AngularJS, and
+Bootstrap. Let's add those to our project now. Using whatever editor
+you prefer, edit the index.html file to look like this:
 
 [source,html index.html]
 <html>
@@ -81,9 +130,9 @@ include AngularJS, Bootstrap CSS, Underscore.js and Base64.js which
 are support files required for Github.js, and GitHub.js.
 
 [source,bash]
-$ curl https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.js
-$ curl https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css
-$ curl https://github.com/michael/github/raw/master/github.js
+$ wget https://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.js
+$ wget https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css
+$ wget https://github.com/michael/github/raw/master/github.js
 
 I am assuming you have a firm grasp on most HTML concepts, but a few
 of the advanced topics here:
@@ -94,8 +143,9 @@ of the advanced topics here:
   and compile our page from the body tag downward. 
 * The `{{ }}` (double brackets) are an AngularJS two-way data binding
   directive. This sanity checks whether AngularJS is working for us;
-  if we see "Welcome to Coffeete.ch" then we know AngularJS is loading
-  and working properly.
+  if we see "Welcome to Coffeete.ch" without the braces then we know
+  AngularJS is loading and working properly. If we see the braces,
+  then there is some error in our setup to resolve.
 
 ===== Adding GitHub to our Single Page App
 
@@ -104,21 +154,19 @@ Now that we have our page setup, let's add some GitHub data to it.
 Create a new file called `coffeetech.js` in the root of your repository
 
 [source,javascript coffeetech.js]
+-----
 var mod = angular.module( 'coffeetech', [] )
-mod.controller( 'SampleCtrl', function( $scope ) {
+mod.controller( 'GithubCtrl', function( $scope ) {
   var github = new Github({} );
   var repo = github.getRepo( "gollum", "gollum" );
-  $scope.$apply( function() { repo.show( function(err, repo) {
-      $scope.repo = repo;
-  })});
+  repo.show( function(err, repo) {
+    $scope.repo = repo;
+    $scope.$apply();
+  }); 
 })
+-----
 
-Add it to the repository
-
-[source,bash]
-$ git commit -m "Adding sample repository information JS controller" -a
-
-Then, let's modify our `index.html` to utilize this new code
+Modify our `index.html` to utilize this new code
 
 [source,html index.html]
 <html>
@@ -128,7 +176,7 @@ Then, let's modify our `index.html` to utilize this new code
 <link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
 </head>
 <body ng-app="coffeetech">
-<div class="container" ng-controller="SampleCtrl">
+<div class="container" ng-controller="GithubCtrl">
 {{ repo | json }}
 </div>
 <script src="angular.js"></script>
@@ -143,9 +191,8 @@ We added or changed just three lines. In reverse geographic order, we
 added a reference to our `coffeetech.js` file beneath our other JS
 references. And, then we removed our databinding to the `Welcome to
 CoffeeTech` string and replaced it with a binding to the variable
-`repo` filtered by the JSON filter which is in our AngularJS
-controller. Finally, we changed the `ng-app` reference to use the
-module we defined in our `coffeetech.js` file.
+`repo` filtered by the JSON filter. Finally, we changed the `ng-app`
+reference to use the module we defined in our `coffeetech.js` file.
 
 If you have never used AngularJS before, you are probably thoroughly
 confused about the `coffeetech.js` file. Before we dive into the
@@ -156,31 +203,37 @@ you'll understand the significant problems solved by those same features:
   solves the problem you have with building JS apps: marshalling data
   from your JS code into your HTML templates, marshalling data from
   your AJAX calls into your JS code and then marshalling that into
-  your HTML templates. Marcia, Marcia, Marcia! Enough already; let's
-  allow AngularJS to do this heavy lifting for us. To use it, we just
+  your HTML templates. Marcia, Marcia, Marcia! Enough already:
+  allow AngularJS to do this heavy lifting. To use it, we just
   define a variable on the AngularJS scope, and then place a reference
   to the scope in our HTML using the `{{ }}` databinding directives.
   In this case we set a variable called `repo` on our scope once we
   return from the show() method callback in the Github.js API call.
+  Notice we don't have to do anything to place data inside the HTML
+  once the `repo.show()` callback has completed other than notifying
+  AngularJS that data has changed using the `$apply()` method. We only
+  need to call `$apply()` if we are using a third party library that
+  uses callbacks, anything defined within AngularJS is wrapped inside
+  the `$apply()` block.
 * Inspecting a JS object inside your webpage can be complicated; do
   you extract information from the object, put them into <div>s, doing
   all the marshalling we just realized is a royal pain in the lives of
   most modern JavaScript developers? If we are using AngularJS it does not
-  have to be.
-  AngularJS provides a filter which you can apply (using the pipe
+  have to be. AngularJS provides a filter which you can apply (using the pipe
   character) that produces a pretty printed object in your webpage. You
   see that with the `repo | json` code. `json` is a filter AngularJS
-  provides by default.
+  provides by default. We'll use filters later in a powerful way.
 * Many people see this kind of two way databinding and assume it
   cannot be performant, arguing that AngularJS must be polling the JavaScript
   objects to see changes. Not true! AngularJS is written in a smart
   way and only processes and changes the DOM when changes are noticed
   inside a digest cycle. If you put all your code properly into your
-  scope, AngularJS will handle tracking changes for you. If you use a
+  scope, AngularJS will handle tracking changes for you. As we
+  mentioned briefly above, if you use a
   third party library which uses callbacks, like the Github.js library
   does, then you need to notify AngularJS that there has been a change
-  by manually calling the $digest function on the $scope object once
-  you have completed adding data to the scope.
+  by manually calling the `$apply` function on the `$scope` object once
+  you have completed adding data to the scope inside the callback.
 * AngularJS allows you to break application functionality into
   isolated components which makes your application more testable. When
   we call `angular.controller` we are creating a controller which has
@@ -192,7 +245,7 @@ file.
 
 * We create a new Github() object using the constructor. This
   constructor can take user credentials, but for now, we can just
-  create it witout those.
+  create it without those since we are accessing a public repository.
 * Once we have our `github` object, we call the method `getRepo()` with
   a owner and a name. This returns our repository object. To actually
   load the data for this repository object, we call the show method
@@ -209,8 +262,9 @@ If you load this up in your browser, you will see something like this:
 image::images/javascript-gollum.png[]
 
 Yikes, that is a lot of data. AngularJS's JSON filter pretty printed
-it for us, but this is a bit too much. Modify it to show just a few
-pieces of information.
+it for us, but this is a bit too much. 
+
+Modify the HTML to show just a few vital pieces of information.
 
 [source,html index.html]
 <html>
@@ -220,7 +274,7 @@ pieces of information.
 <link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
 </head>
 <body ng-app="coffeetech">
-<div class="container" ng-controller="SampleCtrl">
+<div class="container" ng-controller="GithubCtrl">
 <div>Subscriber count: {{ repo.subscribers_count }}</div>
 <div>Network count: {{ repo.network_count }}</div>
 </div>
@@ -260,44 +314,275 @@ a file named after the city, and then either use geolocation on the
 client side to retrieve a set of the data, or ask the user to choose
 their city manually.
 
-First, add some data about coffee shops manually by creating the file
-`portland.json`:
+If we look at the Github.js javascript documentation on Github
+[https://github.com/michael/github] we can see that there are some
+options for us to pull content from a repository. We'll store a data
+file in JSON named after the city inside our repository and retrieve
+this from that repository. It looks like the calls we need to use are
+`github.getRepo( username, reponame )` and once we have retrieved the
+repository, `repo.contents( branch, path, callback )`. 
 
-[source,json portland.json]
-[ { "name" : "Heart Coffee", "lat" : 45.52292,  "lng" : -122.643074 },
-{ "name" : "Crema", "lat" : 45.522181, "lng" : -122.63709 },
-{ "name" : "Fresh Pot", "lat" : 45.520437, "lng" : -122.67846 } ]
+==== Writing tests
 
-Add and commit it
+Before we get deep into writing the code to pull this data, let's add
+some tests. Testing not only builds better code by making us think
+clearly about how our code will be used from the outside, but makes it
+easier for an outsider (meaning other team members) to use our code.
+Testing facilitates "social coding."
+
+We'll use a tool called `karma`. Karma simplifies writing JavaScript
+tests. We need to first install the tool, then write a test or two.
+Karma can easily be installed using NPM, which we document in the
+first chapter.
 
 [source,bash]
-$ git commit -m "Add Portland.json data" -a
+-----
+$ npm install karma -g
+$ karma init karma.conf.js
+$ wget https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-mocks.js
+-----
 
-Change our controller method to retrieve it:
+Then, create a file called `karma.config.js` and enter the following contents:
 
-[source,javascript coffeetech.js]
-var mod = angular.module( 'coffeetech', [] )
-mod.controller( 'ShopsCtrl', function( $scope ) {
-  var github = new Github({} );
-  var repo = github.getRepo( "xrd", "spa.coffeete.ch" ); # <1>
-  repo.read( "gh-pages", "portland.json", function(err, data) { # <2>
-    $scope.shops = JSON.parse( data ); # <3>
-    $scope.$digest();
-  }, false );
-})
+[source,javascript karma.config.js]
+----
+module.exports = function(config) {
+  config.set({
+    basePath: '',
+    frameworks: ['jasmine'],
+    files: [
+        'angular.js',
+        'cities.js',
+        'angular-mocks.js',
+        'github.js', 
+        '*.js'
+    ],
+    reporters: ['progress'],
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
+    browsers: ['Chrome'],
+    captureTimeout: 60000,
+    singleRun: false
+  });
+};
+----
 
-<1> Update the username and repository. If you are putting this into
-your own repository, modify this appropriately.
-<2> We now use the `read` method to pull file contents from the
-repository. Notice we use the gh-pages branch since we are storing our
+To write the test, let's clarify what we want our code to do:
+
+* When a user first visits the application, we should use the
+  geolocation features of their browser to determine their location.
+* Pull a file from our repository which contains general latitude and
+  longitude locations of different cities.
+* Iterate over the list of cities and see if we are within 25 miles of
+  any of the cities. If so, set the current city to the first match.
+
+We'll use a `ng-init` directive which simply tells AngularJS to call the
+function specified when the controller has finished loading. We'll
+call this function `init` so let's test it below.
+
+[source,javascript coffeetech.spec.js]
+-----
+describe( "GithubCtrl", function() {
+    var scope = undefined;
+    var ctrl = undefined;
+    var gh  = undefined;
+    var repo = undefined;
+    var geo = undefined;
+
+    function generateMockGeolocationSupport( lat, lng ) {
+        response = ( lat && lng ) ? { coords: { lat: lat, lng: lng } } : { coords: CITIES[0] };
+        geo = { getCurrentPosition: function( success, failure ) {
+            success( response );
+        } };
+        spyOn( geo, "getCurrentPosition" ).andCallThrough();
+    }
+
+    function generateMockRepositorySupport() {
+        repo = { read: function( branch, filename, cb ) {
+            cb( undefined, JSON.stringify( CITIES ) );
+        } };
+        spyOn( repo, "read" ).andCallThrough();
+
+        gh = new Github({});
+        spyOn( gh, "getRepo" ).andCallFake( function() {
+            return repo;
+        } );
+    }
+
+    beforeEach( module( "coffeetech" ) );
+
+    beforeEach( inject( function ($controller, $rootScope ) {
+            generateMockGeolocationSupport();
+            generateMockRepositorySupport();
+            scope = $rootScope.$new();
+            ctrl = $controller( "GithubCtrl", { $scope: scope, Github: gh, Geo: geo } );
+        } )
+    );
+
+    describe( "#init", function() {
+        it( "should initialize, grabbing current city", function() {
+            scope.init();
+            expect( geo.getCurrentPosition ).toHaveBeenCalled();
+            expect( gh.getRepo ).toHaveBeenCalled();
+            expect( repo.read ).toHaveBeenCalled();
+            expect( scope.cities.length ).toEqual( 2 );
+            expect( scope.city.name ).toEqual( "portland" );
+        });                                                                                                                                                                                                 
+    });
+});
+-----
+
+This JS test file has the boilerplate code used in any AngularJS test.
+You setup the scope and instantiate the
+controller with that scope, and then can manually call the methods on
+the scope to simulate interaction with our app. As we are calling into
+a JavaScript function inside of the Github JS object which uses an
+asynchronous callback, we will likely have to wait for an AJAX call to
+return. Simulating this is difficult in a test, so instead we will
+create a mock object for Github and then inject it into our
+`GithubCtrl` controller. Instead of having our controller make real
+calls to Github, we can call into our mock object and verify the
+correct calls are made. The real meat of of
+our test is inside the `describe` and `it` blocks: we initialize the
+scope. We then expect that the functions on our mocked objects will be
+executed. And, we verify the data is correctly set on our scope.
+
+Specifically, our test does these things:
+
+* Calls the `init` function defined in our controller (which will be
+  handled using our `ng-init` directive in the HTML).
+* Verify that the geolocation service was called.
+* Verify that we called `getRepo` on our mocked Github object.
+* Verify that we called `read` on the repo we returned from the
+  `getRepo` call.
+* Verify that we used the data returned from the read to fill our
+  cities object inside our scope object.
+* Verify that we calculated the correct current city as Portland.
+
+Now that we have a set of tests, run the test suite from the command
+line and watch them fail.
+
+[source,bash]
+------
+$ karma start karma.conf.js
+Chrome 32.0.1700 (Mac OS X 10.9.1) GithubCtrl #init should initialize, grabbing current city FAILED
+	Error: [$injector:modulerr] Failed to instantiate module coffeetech due to:
+	Error: [$injector:nomod] Module 'coffeetech' is not available! You either misspelled the module name or forgot to load it. If registering a module ensure that you specify the dependencies as the second argument.
+	http://errors.angularjs.org/1.2.10/$injector/nomod?p0=coffeetech
+	    at /Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:78:12
+	    at /Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:1529:17
+	    at ensure (/Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:1454:38)
+	    at module (/Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:1527:14)
+	    at /Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:3620:22
+	    at Array.forEach (native)
+	    at forEach (/Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:303:11)
+	    at loadModules (/Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:3614:5)
+	    at Object.createInjector [as injector] (/Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:3554:11)
+	    at workFn (/Users/xrdawson/Projects/GithubBook/github.js.test/angular-mocks.js:2101:52)
+	http://errors.angularjs.org/1.2.10/$injector/modulerr?p0=coffeetech&p1=Error%3A%20%5B%24injector%3Anomod%5D%20Module%20'coffeetech'%20is%20not%20available!%20You%20either%20misspelled%20the%20module%20name%20or%20forgot%20to%20load%20it.%20If%20registering%20a%20module%20ensure%20that%20you%20specify%20the%20dependencies%20as%20the%20second%20argument.%0Ahttp%3A%2F%2Ferrors.angularjs.org%2F1.2.10%2F%24injector%2Fnomod%3Fp0%3Dcoffeetech%0A%20%20%20%20at%20http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular.js%3F1390611446000%3A78%3A12%0A%20%20%20%20at%20http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular.js%3F1390611446000%3A1529%3A17%0A%20%20%20%20at%20ensure%20(http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular.js%3F1390611446000%3A1454%3A38)%0A%20%20%20%20at%20module%20(http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular.js%3F1390611446000%3A1527%3A14)%0A%20%20%20%20at%20http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular.js%3F1390611446000%3A3620%3A22%0A%20%20%20%20at%20Array.forEach%20(native)%0A%20%20%20%20at%20forEach%20(http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular.js%3F1390611446000%3A303%3A11)%0A%20%20%20%20at%20loadModules%20(http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular.js%3F1390611446000%3A3614%3A5)%0A%20%20%20%20at%20Object.createInjector%20%5Bas%20injector%5D%20(http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular.js%3F1390611446000%3A3554%3A11)%0A%20%20%20%20at%20workFn%20(http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular-mocks.js%3F1388779666000%3A2101%3A52)
+	    at /Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:78:12
+	    at /Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:3648:15
+	    at Array.forEach (native)
+	    at forEach (/Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:303:11)
+	    at loadModules (/Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:3614:5)
+	    at Object.createInjector [as injector] (/Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:3554:11)
+	    at workFn (/Users/xrdawson/Projects/GithubBook/github.js.test/angular-mocks.js:2101:52)
+	TypeError: Cannot call method 'init' of undefined
+	    at null.<anonymous> (/Users/xrdawson/Projects/GithubBook/github.js.test/coffeetech.spec.js:40:19)
+------
+
+Now we can write the code to support the tests we have written.
+
+[source,javascript]
+----
+var mod = angular.module( 'coffeetech', [] );
+
+mod.factory( 'Github', function() {
+    return new Github({});
+});
+
+mod.factory( 'Geo', [ '$window', function( $window ) {
+    return $window.navigator.geolocation;
+} ] );
+
+mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', function( $scope, ghs, Geo ) {
+    $scope.init = function() {
+        $scope.getCurrentLocation( function( position ) {
+            $scope.latitude = position.coords.latitude;
+            $scope.longitude = position.coords.longitude;
+            $scope.repo = ghs.getRepo( "xrd", "spa.coffeete.ch" ); // # <1>
+            $scope.repo.read( "gh-pages", "cities.json", function(err, data) { // # <2>
+                $scope.cities = JSON.parse( data ); // # <3>
+                // Determine our current city
+                $scope.detectCurrentCity();
+                $scope.$apply();
+            });
+        });
+    };
+
+    $scope.getCurrentLocation = function( cb ) {
+        if( undefined != Geo ) {
+            Geo.getCurrentPosition( cb, $scope.geolocationError );
+        } else {
+            console.error('not supported');
+        }
+        
+    };
+
+    $scope.detectCurrentCity = function() {
+        // Calculatitudee the distance from our current position and use
+        // this to determine which city we are closest to and within
+        // 25 miles
+        for( var i = 0; i < $scope.cities.length; i++ ) {
+            var dist = calculateDistance( $scope.latitude, $scope.longitude, $scope.cities[i].latitude, $scope.cities[i].longitude );
+            if( dist < 25 ) {
+                $scope.city = $scope.cities[i];
+                break;
+            }
+        }
+    }
+
+    toRad = function(Value) {
+        return Value * Math.PI / 180;
+    };
+    
+    calculateDistance = function( latitude1, longitude1, latitude2, longitude2 ) {
+        R = 6371;
+        dLatitude = toRad(latitude2 - latitude1);
+        dLongitude = toRad(longitude2 - longitude1);
+        latitude1 = toRad(latitude1);
+        latitude2 = toRad(latitude2);
+        a = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) + Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) * Math.cos(latitude1) * Math.cos(latitude2);
+        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        d = R * c;
+        return d;
+    }
+
+----
+
+
+<1> We extract the Github library into an AngularJS factory. This
+allows us to inject our mocked GitHub object inside our tests; if we
+had placed the GitHub instance creation code inside our controller,
+we would not have been able to easily mock it out in our tests.
+<2> Set the username and repository. If you are putting this into
+your own repository, modify this appropriately, but you can use these
+arguments until you do post this into your own repository.
+<3> We use the `read` method to pull file contents from the
+repository. Notice we use the `gh-pages` branch since we are storing our
 single page app and all the data there.
-<3> Once our data is returned to us, it is simply a string. We need to
+<4> Once our data is returned to us, it is simply a string. We need to
 reconstitute this data back into a JavaScript object using the
 `JSON.parse` method.
+<5> Since we are calling outside of AngularJS and returning inside a
+callback, we need to call `scope.$apply()` like we showed in prior examples.
 
-Now, let's expose it inside the `index.html` file like so:
+Now, let's expose the new data inside the `index.html` file like so:
 
 [source,html index.html]
+-----
 <html>
 <head>
 <title>CoffeeTe.ch</title>
@@ -305,7 +590,7 @@ Now, let's expose it inside the `index.html` file like so:
 <link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
 </head>
 <body ng-app="coffeetech">
-<div class="container" ng-controller="ShopsCtrl">
+<div class="container" ng-controller="GithubCtrl">
 <div class="row" ng-repeat="shop in shops"> # <1>
 <div class="col-md-6"> {{ shop.name }} </div>  # <2>
 <div class="col-md-6"> {{ shop.lat }} {{ shop.lng }} </div> # <3>
@@ -317,8 +602,9 @@ src="angular.js"></script>
 <script src="coffeetech.js"></script>
 </body>
 </html>
+-----
 
-<1> `ng-repeat` is an AngluarJS directive which iterates over an array
+<1> `ng-repeat` is an AngularJS directive which iterates over an array
 of items. Here we use it to iterate over the items in our
 `portland.json` file and insert a snippet of HTML with our data
 interpolated from each item in the iteration.
@@ -330,49 +616,54 @@ inside a mobile device, it properly stacks these columns.
 
 ====== Errors Already?
 
-If you run this in your browser, nothing will happen. Something is
-broken. Let's investigate. I recommend using the Chrome browser to
+If you run this in your browser, you will not see the Portland coffee
+shops data placed into the proper format. Something is broken, so
+let's investigate. I recommend using the Chrome browser to
 debug this, but you can use any browser and set of developer tools you
-like. They all have similar tools.
-
-Pop over the browser tools, and jump to the console window. Refresh
-the window, and you'll see this in the console:
+like. For Chrome, right clicking on the
+page anywhere and selecting "Inspect Element" at the bottom (or by
+the keyboard shortcut "F12" or "Ctrl + Shift
++ I" on Windows or Linux or "Cmd + Opt + I" on Mac ) will bring up
+the developer console. Then select the
+console window. Refresh the browser window, and you'll see this in the
+console: 
 
 [source,error]
+------
 Uncaught TypeError: Cannot call method 'select' of undefined 
+------
 
 If you click on the link to the right for github.js, you'll see this.
 
 image::images/javascript-underscore-missing.png[]
 
-You see at the point of error that we are calling select on tree. What
-is happening under the hood of this library is that we are
-pulling the entire tree from the repository, then iterating over each
-item in the tree, then 
-selecting the item from the tree which matches the name of the
-file we have requested. This is a performance implication we should at
-least consider. If we look at the "Network" tab in the Chrome
-Developer tools, and then click on the last item in the list, we see a
-reference to a URL something like
-`https://api.github.com/repos/xrd/spa.coffeete.ch/git/trees/gh-pages?recursive=true&1389996312519`
+You see at the point of error that we are calling `select` on the tree.
+Select appears to be a method defined on an underscore character. If
+you use JavaScript frequently, you'll recognize that the underscore
+variable comes from the Underscore library, and `select` is a method
+which detects the first matching instance inside an array. Under the
+hood, the Github.js library is pulling the entire tree from the
+repository, then iterating over each item in the tree, then selecting
+the item from the tree which matches the name of the file we have
+requested. This is an important performance implication to consider;
+the GitHub API does not provide a way to directly request content by
+the path name. Instead, you pull a list of files and then request the
+file by the SHA hash.
 
-image::images/javascript-get-tree.png[]
-
-The iteration is done using underscore (we can see an
-the underscore character as the object of the `select` method), and it looks like this is
-failing because the '_' is undefined. 
-
-When I first wrote this, I had not seen the reference to underscore.js
-noted as a requirement of using github.js. Github.js also requires
-base64.js. To include these, run these commands from the console:
+However, we get an error telling us select is undefined. Did we forget
+to include underscore.js? Reviewing the documentation on Github.js, we
+see that it states underscore.js and base64.js are required. We did
+not see the issue when we pulled the information To
+include these, run these commands from the console: 
 
 [source,bash]
-$ curl http://underscorejs.org/underscore-min.js
-$ curl https://raw.github.com/dankogai/js-base64/master/base64.min.js
+$ wget http://underscorejs.org/underscore-min.js
+$ wget https://raw.github.com/dankogai/js-base64/master/base64.min.js
 
 Then, make your index.html look like this:
 
 [source,html index.html]
+-----
 <html>
 <head>
 <title>CoffeeTe.ch</title>
@@ -380,7 +671,7 @@ Then, make your index.html look like this:
 <link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
 </head>
 <body ng-app="coffeetech">
-<div class="container" ng-controller="ShopsCtrl">
+<div class="container" ng-controller="GithubCtrl">
 <div class="row" ng-repeat="shop in shops"> # <1>
 <div class="col-md-6"> {{ shop.name }} </div>  # <2>
 <div class="col-md-6"> {{ shop.lat }} {{ shop.lng }} </div> # <3>
@@ -394,6 +685,225 @@ src="angular.js"></script>
 <script src="coffeetech.js"></script>
 </body>
 </html>
+-----
+
+===== Find our current geolocation
+
+OK, so we have successfully pulled data from the GitHub API and placed
+it into our app. But, we want to make it so that we can detect where a
+user is located and give them the right data. Let's add this to our
+controller, and we'll start by adding a test to make sure we do it correctly.
+
+===== Lookup our current city
+
+Searchability of data stored within a GitHub repository is not a forte
+of the GitHub API. Afterall, Git excels in storing data
+efficiently, never promising to understand that data. Adding search to the client 
+side is not much work, fortunately. We'll use the latitude and longitude to
+calculate which city we are in, and if we find one, then request the
+data from GitHub specifically for that JSON file. Once we have a
+succinct and compact set of data local to our city, we can perform the
+searching right inside our app with little overhead.
+
+Practicing test driven development, let's add tests for our code. Add
+this to the bottom of our coffeetech.spec.js file.
+
+[source,javascript]
+-----
+
+describe( "#getCity", function() {
+        var geo = undefined;
+        var window = undefined;
+
+        describe( "#portland", function() {
+            beforeEach( inject( function( $controller, $rootScope ) {
+                // Use Portland as the location
+                geo = getGeo( CITIES[0] );
+                window = { navigator: { geolocation: geo } };
+                spyOn( geo, "getCurrentPosition" ).andCallThrough();
+
+                ctrl = $controller( "GithubCtrl", { $scope: scope
+                                                    , Github: gh
+                                                    , $window: window
+                                                  } );
+            } ) );
+
+            it( "should find out if a city matches", function() {
+                scope.init();
+                scope.getCurrentLocation();
+                expect( geo.getCurrentPosition ).toHaveBeenCalled();
+                scope.detectCurrentCity();
+                expect( scope.city.name ).toEqual( "portland" );
+            });
+
+        });
+                                                                                                                                                            
+       describe( "#notfound", function() {                                                                                                                  
+            beforeEach( inject( function( $controller, $rootScope ) {
+                // Fake a bad location                                                                                                                       
+                geo = getGeo( { lat: 100, lng: -50 } );
+                window = { navigator: { geolocation: geo } };
+                spyOn( geo, "getCurrentPosition" ).andCallThrough();
+
+                ctrl = $controller( "GithubCtrl", { $scope: scope
+                                                    , Github: gh
+                                                    , $window: window
+                                                  } );
+            } ) );
+
+            it( "should find out if a city matches", function() {
+                scope.init();
+                scope.getCurrentLocation();
+                expect( geo.getCurrentPosition ).toHaveBeenCalled();
+                scope.detectCurrentCity();
+                expect( scope.city ).toEqual( undefined );
+            });
+
+        });
+    });
+
+-----
+
+In this case we have two new describe blocks, one which tests that
+calling `getCurrentLocation()` correctly calls into our geolocation
+object on the window (the way to pull the geolocation coordinates from
+a browser) and that once we have established our current latitude and
+longitude that calling `detechCurrentCity()` correctly looks at our
+list of cities and determines our real city.
+
+Once we have our tests, we need to refactor our code a bit. Instead of
+loading the portland.json file inside the `init()` function, let's
+load a list of cities stored inside `cities.json`.
+
+[source,javascript]
+-----
+[ { name: "portland", lat: 45, lng: 45 },
+  { name: "seattle", lat: 47.662613, lng: -122.323837 } ]
+-----
+
+Then, we can load this file, determine our current latitude and
+longitude, and match the city based on that list. If we find a match
+within 25 miles, we can then load the correct JSON file for that city.
+This is the way we will build searchability inside our data set, just
+on the client side rather than on the server side.
+
+Our new code looks like this:
+
+[source,javascript]
+------
+
+var mod = angular.module( 'coffeetech', [] );
+
+mod.factory( 'Github', function() {
+    return new Github({});
+});
+
+mod.controller( 'GithubCtrl', [ '$scope', 'Github', '$window', function( $scope, ghs, $window ) {
+    $scope.init = function() {
+        $scope.repo = ghs.getRepo( "xrd", "spa.coffeete.ch" ); 
+        $scope.repo.read( "gh-pages", "cities.json", function(err, data) { 
+            $scope.cities = JSON.parse( data ); 
+            $scope.$apply();
+        });
+    };
+
+    $scope.loadCity = function( city ) {
+        $scope.repo.read( "gh-pages", city + ".json", function(err, data) { 
+            $scope.shops = JSON.parse( data ); 
+            $scope.$apply();
+        });
+    }
+    
+    $scope.successfulGeolocation = function( position ) {
+        $scope.lat = position.coords.latitude || position.coords.lat;
+        $scope.lng = position.coords.longitude || position.coords.lng;
+    };
+    
+    $scope.geolocationError = function( error ) {
+        
+    };
+    
+    $scope.detectCurrentCity = function() {
+        // Calculate the distance from our current position and use
+        // this to determine which city we are closest to and within
+        // 25 miles
+        for( var i = 0; i < $scope.cities.length; i++ ) {
+            var dist = $scope.calculateDistance( $scope.lat, $scope.lng, $scope.cities[i].lat, $scope.cities[i].lng );
+            if( dist < 25 ) {
+                $scope.city = $scope.cities[i];
+                break;
+            }
+        }
+    }
+
+    toRad = function(Value) {
+        return Value * Math.PI / 180;
+    };
+    
+    $scope.calculateDistance = function( lat1, lon1, lat2, lon2 ) {
+        R = 6371;
+        dLat = toRad(lat2 - lat1);
+        dLon = toRad(lon2 - lon1);
+        lat1 = toRad(lat1);
+        lat2 = toRad(lat2);
+        a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        d = R * c;
+        return d;
+    }
+
+    $scope.getCurrentLocation = function() {
+        if ($window.navigator.geolocation) {
+            $window.navigator.geolocation.getCurrentPosition($scope.successfulGeolocation, $scope.geolocationError);
+        } else {
+            error('not supported');
+        }
+        
+    };
+} ] );
+
+------
+
+At a high level, we are 
+
+===== Adding data using pull-requests
+
+Now that we have a functioning application, let's allow people to add
+information themselves and help build our database. Add a button at
+the top of the page which triggers display of an form for adding
+information.  Add this snippet right beneath the div with the
+`ng-controller` directive attribute.
+
+[source,html]
+-----
+<button ng-click="add=!add">Add new coffeeshop...</button>
+<div ng-show="add">
+<form>
+<fieldset>
+<legend>Add new coffeeshop</legend>
+<div class="control-group">
+<label class="control-label input-label" for="name">Name:</label>
+<div class="controls">
+<input type="text" type="text" id="name" name="name" ng-model="addition.name"
+placeholder="Enter name of coffeeshop..." />
+</div>
+</div>
+</fieldset>
+<button ng-click="addNewCoffeeshop(addition)
+</form>
+</div>
+
+-----
+
+Add a few methods to the end of our coffeetech.js file
+
+[source,javascript coffeetech.js]
+-----
+$scope.addNewCoffeeshop( addition ) = function() {
+  // Make a fork of this repository, and then add data to it.                         
+  github.
+}
+-----
 
 ===== Safely implementing login
 
