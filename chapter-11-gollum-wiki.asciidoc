@@ -61,7 +61,7 @@ and this then needs to be communicated to the developer, who has already started
 "set in stone." Or, the developer, as they build the software, realize there are missing steps to get to places
 inside the application, and they need to communicate this back to the designer. If you have multiple people
 doing software development on a project, this information then needs to fan out to them if their areas are affected
-by these changes. This information must traverse many different people, with many different methods of communicating.
+by these changes. This information must traverse many different people, with many different methods of communication.
 
 Wikis are a great way to store this information. Information which changes. Information which must be retrieved
 by many people and edited by many people. Information which sounds perfect for a wiki and perfect to be managed
