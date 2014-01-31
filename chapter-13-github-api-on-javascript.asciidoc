@@ -470,27 +470,7 @@ $ karma start karma.conf.js
 Chrome 32.0.1700 (Mac OS X 10.9.1) GithubCtrl #init should initialize, grabbing current city FAILED
 	Error: [$injector:modulerr] Failed to instantiate module coffeetech due to:
 	Error: [$injector:nomod] Module 'coffeetech' is not available! You either misspelled the module name or forgot to load it. If registering a module ensure that you specify the dependencies as the second argument.
-	http://errors.angularjs.org/1.2.10/$injector/nomod?p0=coffeetech
-	    at /Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:78:12
-	    at /Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:1529:17
-	    at ensure (/Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:1454:38)
-	    at module (/Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:1527:14)
-	    at /Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:3620:22
-	    at Array.forEach (native)
-	    at forEach (/Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:303:11)
-	    at loadModules (/Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:3614:5)
-	    at Object.createInjector [as injector] (/Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:3554:11)
-	    at workFn (/Users/xrdawson/Projects/GithubBook/github.js.test/angular-mocks.js:2101:52)
-	http://errors.angularjs.org/1.2.10/$injector/modulerr?p0=coffeetech&p1=Error%3A%20%5B%24injector%3Anomod%5D%20Module%20'coffeetech'%20is%20not%20available!%20You%20either%20misspelled%20the%20module%20name%20or%20forgot%20to%20load%20it.%20If%20registering%20a%20module%20ensure%20that%20you%20specify%20the%20dependencies%20as%20the%20second%20argument.%0Ahttp%3A%2F%2Ferrors.angularjs.org%2F1.2.10%2F%24injector%2Fnomod%3Fp0%3Dcoffeetech%0A%20%20%20%20at%20http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular.js%3F1390611446000%3A78%3A12%0A%20%20%20%20at%20http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular.js%3F1390611446000%3A1529%3A17%0A%20%20%20%20at%20ensure%20(http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular.js%3F1390611446000%3A1454%3A38)%0A%20%20%20%20at%20module%20(http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular.js%3F1390611446000%3A1527%3A14)%0A%20%20%20%20at%20http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular.js%3F1390611446000%3A3620%3A22%0A%20%20%20%20at%20Array.forEach%20(native)%0A%20%20%20%20at%20forEach%20(http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular.js%3F1390611446000%3A303%3A11)%0A%20%20%20%20at%20loadModules%20(http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular.js%3F1390611446000%3A3614%3A5)%0A%20%20%20%20at%20Object.createInjector%20%5Bas%20injector%5D%20(http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular.js%3F1390611446000%3A3554%3A11)%0A%20%20%20%20at%20workFn%20(http%3A%2F%2Flocalhost%3A9876%2Fbase%2Fangular-mocks.js%3F1388779666000%3A2101%3A52)
-	    at /Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:78:12
-	    at /Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:3648:15
-	    at Array.forEach (native)
-	    at forEach (/Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:303:11)
-	    at loadModules (/Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:3614:5)
-	    at Object.createInjector [as injector] (/Users/xrdawson/Projects/GithubBook/github.js.test/angular.js:3554:11)
-	    at workFn (/Users/xrdawson/Projects/GithubBook/github.js.test/angular-mocks.js:2101:52)
-	TypeError: Cannot call method 'init' of undefined
-	    at null.<anonymous> (/Users/xrdawson/Projects/GithubBook/github.js.test/coffeetech.spec.js:40:19)
+...
 ------
 
 Now we can write the code to support the tests we have written.
@@ -500,11 +480,11 @@ Now we can write the code to support the tests we have written.
 var mod = angular.module( 'coffeetech', [] );
 
 mod.factory( 'Github', function() {
-    return new Github({});
+    return new Github({}); // # <1>
 });
 
 mod.factory( 'Geo', [ '$window', function( $window ) {
-    return $window.navigator.geolocation;
+    return $window.navigator.geolocation; // # <2>
 } ] );
 
 mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', function( $scope, ghs, Geo ) {
@@ -512,12 +492,12 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', function( $scope, ghs
         $scope.getCurrentLocation( function( position ) {
             $scope.latitude = position.coords.latitude;
             $scope.longitude = position.coords.longitude;
-            $scope.repo = ghs.getRepo( "xrd", "spa.coffeete.ch" ); // # <1>
-            $scope.repo.read( "gh-pages", "cities.json", function(err, data) { // # <2>
-                $scope.cities = JSON.parse( data ); // # <3>
+            $scope.repo = ghs.getRepo( "xrd", "spa.coffeete.ch" ); // # <3>
+            $scope.repo.read( "gh-pages", "cities.json", function(err, data) { // # <4>
+                $scope.cities = JSON.parse( data );  // # <5>
                 // Determine our current city
                 $scope.detectCurrentCity();
-                $scope.$apply();
+                $scope.$apply(); // # <6>
             });
         });
     };
@@ -531,12 +511,12 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', function( $scope, ghs
         
     };
 
-    $scope.detectCurrentCity = function() {
-        // Calculatitudee the distance from our current position and use
+    $scope.detectCurrentCity = function() { // # <6>
+        // Calculate the distance from our current position and use
         // this to determine which city we are closest to and within
         // 25 miles
         for( var i = 0; i < $scope.cities.length; i++ ) {
-            var dist = calculateDistance( $scope.latitude, $scope.longitude, $scope.cities[i].latitude, $scope.cities[i].longitude );
+            var dist = $scope.calculateDistance( $scope.latitude, $scope.longitude, $scope.cities[i].latitude, $scope.cities[i].longitude );
             if( dist < 25 ) {
                 $scope.city = $scope.cities[i];
                 break;
@@ -548,7 +528,7 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', function( $scope, ghs
         return Value * Math.PI / 180;
     };
     
-    calculateDistance = function( latitude1, longitude1, latitude2, longitude2 ) {
+    $scope.calculateDistance = function( latitude1, longitude1, latitude2, longitude2 ) {
         R = 6371;
         dLatitude = toRad(latitude2 - latitude1);
         dLongitude = toRad(longitude2 - longitude1);
@@ -567,17 +547,49 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', function( $scope, ghs
 allows us to inject our mocked GitHub object inside our tests; if we
 had placed the GitHub instance creation code inside our controller,
 we would not have been able to easily mock it out in our tests.
-<2> Set the username and repository. If you are putting this into
+<1> We extract the geolocation support into an AngularJS factory. As
+we did with the GitHub library mock, we can now inject a fake one into
+our tests.
+<1> Set the username and repository. If you are putting this into
 your own repository, modify this appropriately, but you can use these
 arguments until you do post this into your own repository.
-<3> We use the `read` method to pull file contents from the
+<1> We use the `read` method to pull file contents from the
 repository. Notice we use the `gh-pages` branch since we are storing our
 single page app and all the data there.
-<4> Once our data is returned to us, it is simply a string. We need to
+<1> Once our data is returned to us, it is simply a string. We need to
 reconstitute this data back into a JavaScript object using the
 `JSON.parse` method.
-<5> Since we are calling outside of AngularJS and returning inside a
+<1> After we retrieve our data from the repository, we can use the
+data inside the cities array to determine our current city.
+<1> Since we are calling outside of AngularJS and returning inside a
 callback, we need to call `scope.$apply()` like we showed in prior examples.
+
+At first glance, the calculate distance function looks confusing, no?
+Unless you are a geocoding geek, how do we know this works as
+advertised? Well, let's write some tests to prove it. Add these lines
+to the bottom of your coffeetech.spec.js, just within the last `});`
+closing braces
+
+[source,javascript]
+-----
+    describe( "#calculateDistance", function() {
+        it( "should find distance between two points", function() {
+            expect( parseInt( scope.calculateDistance( 14.599512, 120.98422, 10.315699, 123.885437 ) * 0.61371 ) ).toEqual( 354 );
+        });
+    });
+
+-----
+
+To build this test, I searched for "distance between Manila" and
+Google autocompleted my search to "Cebu". It says they are 338 miles
+apart. I then grabbed latitude and longitudes for those cities and
+built the test above. I expected my test to fail as my coordinates
+were going to be off by a few miles here or there. But, the test
+showed that our distance was 571. In fact, I had forgotten this
+algorithm actually calculated the distance in kilometers, not miles.
+So, we need to multiply the result by 0.621371 to get the value in
+miles, which ends up being close enough to what Google reports the
+distance to be. 
 
 Now, let's expose the new data inside the `index.html` file like so:
 
@@ -590,8 +602,8 @@ Now, let's expose the new data inside the `index.html` file like so:
 <link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
 </head>
 <body ng-app="coffeetech">
-<div class="container" ng-controller="GithubCtrl">
-<div class="row" ng-repeat="shop in shops"> # <1>
+<div class="container" ng-controller="GithubCtrl" ng-init="init()">
+<div class="row" ng-repeat="city in cities"> # <1>
 <div class="col-md-6"> {{ shop.name }} </div>  # <2>
 <div class="col-md-6"> {{ shop.lat }} {{ shop.lng }} </div> # <3>
 </div>
