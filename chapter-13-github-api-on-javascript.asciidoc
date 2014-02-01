@@ -18,7 +18,17 @@ JavaScript has recently found its way to the server side as well with
 NodeJS, an innovative toolkit for building high performance network
 servers. JavaScript is a useful language to know no matter where your
 interests lie, whether they be on the server side or strictly client
-side web development.
+side web development. 
+
+The main weakness of JavaScript has always been testability. Mainly
+due to the asynchronous nature of JavaScript, writing tests has never
+been easy; polling for changes when a callback returns was until
+recently the best way to test code which was nonlinear. But, recent
+toolkits like AngularJS and promise-based libraries have made testing
+not only easy but elegant as well. Building applications on top of
+third party services makes testing even more important than it already
+was, and we'll make sure to add testing to our application to verify
+the functionality works as we expect.
 
 ===== Building our coffee shop database
 
@@ -126,8 +136,7 @@ you prefer, edit the index.html file to look like this:
 </html>
 
 Then, download the necessary files locally using these commands. We
-include AngularJS, Bootstrap CSS, Underscore.js and Base64.js which
-are support files required for Github.js, and GitHub.js.
+include AngularJS, Github.js and Bootstrap CSS
 
 [source,bash]
 $ wget https://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.js
@@ -352,7 +361,7 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
     files: [
         'angular.js',
-        'cities.js',
+        'fixtures-*.js',
         'angular-mocks.js',
         'github.js', 
         '*.js'
@@ -377,6 +386,7 @@ To write the test, let's clarify what we want our code to do:
   longitude locations of different cities.
 * Iterate over the list of cities and see if we are within 25 miles of
   any of the cities. If so, set the current city to the first match.
+* If we found a city, load the JSON data file from GitHub
 
 We'll use a `ng-init` directive which simply tells AngularJS to call the
 function specified when the controller has finished loading. We'll
@@ -401,7 +411,7 @@ describe( "GithubCtrl", function() {
 
     function generateMockRepositorySupport() {
         repo = { read: function( branch, filename, cb ) {
-            cb( undefined, JSON.stringify( CITIES ) );
+            cb( undefined, JSON.stringify( filename == "cities.json" ? CITIES : PORTLAND ) );  
         } };
         spyOn( repo, "read" ).andCallThrough();
 
@@ -429,7 +439,8 @@ describe( "GithubCtrl", function() {
             expect( repo.read ).toHaveBeenCalled();
             expect( scope.cities.length ).toEqual( 2 );
             expect( scope.city.name ).toEqual( "portland" );
-        });                                                                                                                                                                                                 
+            expect( scope.shops.length ).toEqual( 3 );
+        });
     });
 });
 -----
@@ -460,6 +471,7 @@ Specifically, our test does these things:
 * Verify that we used the data returned from the read to fill our
   cities object inside our scope object.
 * Verify that we calculated the correct current city as Portland.
+* Verify that we have loaded the JSON data file for the current city
 
 Now that we have a set of tests, run the test suite from the command
 line and watch them fail.
@@ -474,6 +486,23 @@ Chrome 32.0.1700 (Mac OS X 10.9.1) GithubCtrl #init should initialize, grabbing 
 ------
 
 Now we can write the code to support the tests we have written.
+
+First add support fixtures, data files which have test data. Add the `fixtures-cities.js` file.
+
+[source,javascript fixture-cities.js] 
+-----
+var CITIES = [ { name: "portland", latitude: 45, longitude: 45 },
+  { name: "seattle", latitude: 47.662613, longitude: -122.323837 } ];
+-----
+
+[source,javascript fixture-portland.js] 
+-----
+var PORTLAND = [ { "name" : "Very Good Coffee Shop", "latitude" : 45.52292,  "longitude" : -122.643074 },
+{ "name" : "Very Bad Coffee Shop", "latitude" : 45.522181, "longitude" : -122.63709 },
+{ "name" : "Mediocre Coffee Shop", "latitude" : 45.520437, "longitude" : -122.67846 } ];
+-----
+
+Then add the `coffeetech.js` file:
 
 [source,javascript]
 ----
@@ -497,10 +526,22 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', function( $scope, ghs
                 $scope.cities = JSON.parse( data );  // # <5>
                 // Determine our current city
                 $scope.detectCurrentCity();
+
+                // If we have a city, get it
+                if( $scope.city ) {
+                    $scope.retrieveCity();
+                }
+
                 $scope.$apply(); // # <6>
             });
         });
     };
+
+    $scope.retrieveCity = function() {
+        $scope.repo.read( "gh-pages", $scope.city.name + ".json", function(err, data) { 
+            $scope.shops = JSON.parse( data );
+        });
+    }
 
     $scope.getCurrentLocation = function( cb ) {
         if( undefined != Geo ) {
@@ -604,8 +645,8 @@ Now, let's expose the new data inside the `index.html` file like so:
 <body ng-app="coffeetech">
 <div class="container" ng-controller="GithubCtrl" ng-init="init()">
 <div class="row" ng-repeat="city in cities"> # <1>
-<div class="col-md-6"> {{ shop.name }} </div>  # <2>
-<div class="col-md-6"> {{ shop.lat }} {{ shop.lng }} </div> # <3>
+<div class="col-md-6"> {{ city.name }} </div>  # <2>
+<div class="col-md-6"> {{ city.latitude }} {{ city.longitude }} </div> # <3>
 </div>
 </div>
 <script
@@ -628,8 +669,8 @@ inside a mobile device, it properly stacks these columns.
 
 ====== Errors Already?
 
-If you run this in your browser, you will not see the Portland coffee
-shops data placed into the proper format. Something is broken, so
+If you run this in your browser, you will not see the cities
+displayed. Something is broken, so
 let's investigate. I recommend using the Chrome browser to
 debug this, but you can use any browser and set of developer tools you
 like. For Chrome, right clicking on the
@@ -682,13 +723,26 @@ Then, make your index.html look like this:
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
 </head>
+
 <body ng-app="coffeetech">
-<div class="container" ng-controller="GithubCtrl">
-<div class="row" ng-repeat="shop in shops"> # <1>
-<div class="col-md-6"> {{ shop.name }} </div>  # <2>
-<div class="col-md-6"> {{ shop.lat }} {{ shop.lng }} </div> # <3>
+
+<div class="container" ng-controller="GithubCtrl" ng-init="init()">
+
+<h1>CoffeeTe.ch</h1>
+
+<h3 ng-show="city">Current city: {{city.name}}</h3>
+
+<div class="row=">
+<div class="col-md-6"><h4>Name</h4> </div>
+<div class="col-md-6"><h4>Lat/Lng</h4> </div>
 </div>
+<div class="row" ng-repeat="city in cities">
+<div class="col-md-6"> {{ city.name }} </div>
+<div class="col-md-6"> {{ city.latitude }} / {{ city.longitude }} </div>
 </div>
+
+</div>
+
 <script
 src="angular.js"></script>
 <script src="underscore.js"></script>
@@ -697,186 +751,12 @@ src="angular.js"></script>
 <script src="coffeetech.js"></script>
 </body>
 </html>
------
-
-===== Find our current geolocation
-
-OK, so we have successfully pulled data from the GitHub API and placed
-it into our app. But, we want to make it so that we can detect where a
-user is located and give them the right data. Let's add this to our
-controller, and we'll start by adding a test to make sure we do it correctly.
-
-===== Lookup our current city
-
-Searchability of data stored within a GitHub repository is not a forte
-of the GitHub API. Afterall, Git excels in storing data
-efficiently, never promising to understand that data. Adding search to the client 
-side is not much work, fortunately. We'll use the latitude and longitude to
-calculate which city we are in, and if we find one, then request the
-data from GitHub specifically for that JSON file. Once we have a
-succinct and compact set of data local to our city, we can perform the
-searching right inside our app with little overhead.
-
-Practicing test driven development, let's add tests for our code. Add
-this to the bottom of our coffeetech.spec.js file.
-
-[source,javascript]
------
-
-describe( "#getCity", function() {
-        var geo = undefined;
-        var window = undefined;
-
-        describe( "#portland", function() {
-            beforeEach( inject( function( $controller, $rootScope ) {
-                // Use Portland as the location
-                geo = getGeo( CITIES[0] );
-                window = { navigator: { geolocation: geo } };
-                spyOn( geo, "getCurrentPosition" ).andCallThrough();
-
-                ctrl = $controller( "GithubCtrl", { $scope: scope
-                                                    , Github: gh
-                                                    , $window: window
-                                                  } );
-            } ) );
-
-            it( "should find out if a city matches", function() {
-                scope.init();
-                scope.getCurrentLocation();
-                expect( geo.getCurrentPosition ).toHaveBeenCalled();
-                scope.detectCurrentCity();
-                expect( scope.city.name ).toEqual( "portland" );
-            });
-
-        });
-                                                                                                                                                            
-       describe( "#notfound", function() {                                                                                                                  
-            beforeEach( inject( function( $controller, $rootScope ) {
-                // Fake a bad location                                                                                                                       
-                geo = getGeo( { lat: 100, lng: -50 } );
-                window = { navigator: { geolocation: geo } };
-                spyOn( geo, "getCurrentPosition" ).andCallThrough();
-
-                ctrl = $controller( "GithubCtrl", { $scope: scope
-                                                    , Github: gh
-                                                    , $window: window
-                                                  } );
-            } ) );
-
-            it( "should find out if a city matches", function() {
-                scope.init();
-                scope.getCurrentLocation();
-                expect( geo.getCurrentPosition ).toHaveBeenCalled();
-                scope.detectCurrentCity();
-                expect( scope.city ).toEqual( undefined );
-            });
-
-        });
-    });
 
 -----
 
-In this case we have two new describe blocks, one which tests that
-calling `getCurrentLocation()` correctly calls into our geolocation
-object on the window (the way to pull the geolocation coordinates from
-a browser) and that once we have established our current latitude and
-longitude that calling `detechCurrentCity()` correctly looks at our
-list of cities and determines our real city.
+===== Adding user reported data
 
-Once we have our tests, we need to refactor our code a bit. Instead of
-loading the portland.json file inside the `init()` function, let's
-load a list of cities stored inside `cities.json`.
 
-[source,javascript]
------
-[ { name: "portland", lat: 45, lng: 45 },
-  { name: "seattle", lat: 47.662613, lng: -122.323837 } ]
------
-
-Then, we can load this file, determine our current latitude and
-longitude, and match the city based on that list. If we find a match
-within 25 miles, we can then load the correct JSON file for that city.
-This is the way we will build searchability inside our data set, just
-on the client side rather than on the server side.
-
-Our new code looks like this:
-
-[source,javascript]
-------
-
-var mod = angular.module( 'coffeetech', [] );
-
-mod.factory( 'Github', function() {
-    return new Github({});
-});
-
-mod.controller( 'GithubCtrl', [ '$scope', 'Github', '$window', function( $scope, ghs, $window ) {
-    $scope.init = function() {
-        $scope.repo = ghs.getRepo( "xrd", "spa.coffeete.ch" ); 
-        $scope.repo.read( "gh-pages", "cities.json", function(err, data) { 
-            $scope.cities = JSON.parse( data ); 
-            $scope.$apply();
-        });
-    };
-
-    $scope.loadCity = function( city ) {
-        $scope.repo.read( "gh-pages", city + ".json", function(err, data) { 
-            $scope.shops = JSON.parse( data ); 
-            $scope.$apply();
-        });
-    }
-    
-    $scope.successfulGeolocation = function( position ) {
-        $scope.lat = position.coords.latitude || position.coords.lat;
-        $scope.lng = position.coords.longitude || position.coords.lng;
-    };
-    
-    $scope.geolocationError = function( error ) {
-        
-    };
-    
-    $scope.detectCurrentCity = function() {
-        // Calculate the distance from our current position and use
-        // this to determine which city we are closest to and within
-        // 25 miles
-        for( var i = 0; i < $scope.cities.length; i++ ) {
-            var dist = $scope.calculateDistance( $scope.lat, $scope.lng, $scope.cities[i].lat, $scope.cities[i].lng );
-            if( dist < 25 ) {
-                $scope.city = $scope.cities[i];
-                break;
-            }
-        }
-    }
-
-    toRad = function(Value) {
-        return Value * Math.PI / 180;
-    };
-    
-    $scope.calculateDistance = function( lat1, lon1, lat2, lon2 ) {
-        R = 6371;
-        dLat = toRad(lat2 - lat1);
-        dLon = toRad(lon2 - lon1);
-        lat1 = toRad(lat1);
-        lat2 = toRad(lat2);
-        a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
-        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        d = R * c;
-        return d;
-    }
-
-    $scope.getCurrentLocation = function() {
-        if ($window.navigator.geolocation) {
-            $window.navigator.geolocation.getCurrentPosition($scope.successfulGeolocation, $scope.geolocationError);
-        } else {
-            error('not supported');
-        }
-        
-    };
-} ] );
-
-------
-
-At a high level, we are 
 
 ===== Adding data using pull-requests
 
