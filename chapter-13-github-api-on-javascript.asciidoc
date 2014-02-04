@@ -162,8 +162,11 @@ Now that we have our page setup, let's add some GitHub data to it.
 
 Create a new file called `coffeetech.js` in the root of your repository
 
-[source,javascript coffeetech.js]
+[source,javascript]
 -----
+
+[filename="../github.js.test/coffeetech.js", language="js", identifier="MODULE_DEFINITION"]
+snippet~~~~~
 var mod = angular.module( 'coffeetech', [] )
 mod.controller( 'GithubCtrl', function( $scope ) {
   var github = new Github({} );
@@ -173,6 +176,8 @@ mod.controller( 'GithubCtrl', function( $scope ) {
     $scope.$apply();
   }); 
 })
+snippet~~~~~
+
 -----
 
 Modify our `index.html` to utilize this new code
