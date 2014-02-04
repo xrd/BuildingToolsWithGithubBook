@@ -1,0 +1,298 @@
+==== GitHub API on Android
+
+Android is currentyly the most popular operating system for mobile
+devices, overtaking Symbian in 2010, experiencing incredible growth
+since its release in 2008. Many software developers would not consider
+a mobile device to worthwhile for software developer tool creation,
+but as more and more people shift to using mobile devices, we will see
+demand for tools on mobile devices. The GitHub API has a good set of
+bindings for developing Java and Android applications. We'll use the
+egit libraries to develop a small Android application which posts to
+our blog hosted on GitHub.
+
+We will build an application which uses one of the unique features of a
+mobile device: GPS. Our blogging application will allow us to login to
+GitHub, determine our location, and then ask us for a quick note
+describing what we are doing. The application will then compose a
+Jekyll blog post for us and push the post into our blog on GitHub.
+
+==== Prerequisites
+
+If you don't have a physical Android device, don't fret. This chapter
+can be followed along without having an actual Android device. You can
+do all this development from a virtual device. 
+
+===== Installing the Java SDK
+
+Unfortunately there is no simple shell command to install Java in the
+same way as there is for Ruby and NodeJS using RVM or NVM. 
+Oracle controls the Java language and distribution of officials SDKs,
+and they restrict access to downloads other than from java.oracle.com.
+Java is freely available, but you need to visit java.oracle.com and
+find the correct download for your needs. Android works with either
+the 1.6 or 1.7 versions of Java, but it is probably best to get the
+newest version you can find.
+
+===== Installing the Android SDK
+===== Creating AVDs for Development
+
+Once you have installed the SDK, you can create a virtual device
+called an AVD. AVDs are very useful because you can see any screen
+resolution, any SDK version, and can quickly delete and reset the
+devices. In addition, AVDs are created "rooted" by default, which
+allows you to view the contents of all files, a capability which is
+not available on non-rooted devices. This makes debugging AVDs much
+easier because, for example, you can inspect SQLite databases using
+command line tools rather than from within a compiled Java
+application. Even if you have a physical device, it is worth learning
+about AVD management.
+
+To create an AVD, run the `android avd` command from a shell prompt.
+You'll see the AVD manager, and can create new devices and manage
+existing ones. Mine has multiple AVDs already created; yours will be
+empty the first time.
+
+image::images/android-avd.png[]
+
+To create a new AVD, click on the "New.." button and follow the
+prompts.
+
+image::images/android-new-avd.png[]
+
+You are generally free to choose whatever settings you like. Google
+produces a real device called the Nexus 5. This is the Android
+reference device, and is a good option for a generic device with good
+support across all features. You can choose this one if you are
+confused about which to use. 
+
+Once you have created an AVD, start it up. It will take a few minutes
+to boot; AVDs are actually emulating the chipset in software and
+booting up can take a few minutes unfortunately. There are ways to
+speed up AVD boot time, like the Genymotion tool, but they are outside
+of the scope of this book. After your AVD has completed booting, you
+can test to see if it is correctly started and available using the adb
+command line tool.
+
+[source,bash]
+$ adb devices -l
+* daemon not running. starting it now on port 5037 *
+* daemon started successfully *
+List of devices attached 
+0222fdc60910aede       device usb:1D110000 product:hammerhead model:Nexus_5 device:hammerhead
+
+Running the adb command starts a daemon service which communicates
+with your device. In this case the daemon reported that I have a
+single device attached via USB which is a Nexus 5 device.
+
+==== Creating a New Project
+
+[source,bash]
+$ mkdir ghoa # GitHub On Android == ghoa
+$ cd ghoa
+$ android create project --target 13 --name Ghoa --path . --activity MainActivity --package com.example.ghoa 
+
+These three commands create a new directory `ghoa`, enter the
+directory, and then build a simple Android directory structure with
+the proper files.
+
+If you have the ant tool installed, you can build this new project
+with the `ant debug` command. This will create an APK in the bin
+directory called `./bin/Ghoa-debug-unaligned.apk`. To install it on
+your device.
+
+===== Adding Gradle support
+
+Gradle is a new build system for Java and works well with Android.
+Using a simple `build.gradle` file we can build an entire Android
+application from the command line. Gradle is well supported with more
+advanced editors, so you can always import an Android project using
+Gradle and use it with editors like Eclipse or Android Studio. Ant
+used to be the default and preferred method of building Java projects
+from the command line, but gradle syntax is so simple and powerful and
+lightweight that it is now the preferred build system by the Android team.
+
+Our gradle script allows us to pull in external libraries. We want to
+use the egit library which allows us to talk to the GitHub API. Adding
+this library to our project is as simple as adding a single dependency
+to our project as you see below.
+
+[source,groovy]
+----
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { 
+               url 'https://oss.sonatype.org/content/repositories/snapshots/'
+         }     
+    }
+}
+
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 18
+    buildToolsVersion "18.0.1"
+    dependencies {
+    'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
+    }
+}
+----
+
+===== Imperative UI versus Declarative UI
+
+Normally when you create an android application you use a files layout
+which simplify creating user interfaces, allow you to easily localize
+(offer your application in multiple languages). These files are called
+resource files, and are written in XML. These files make great sense
+when you have a graphical editor to manage them as much people use
+when developing Android applications. In our case, our application is
+simple enough that we can manage all of our UI imperatively from
+within our application. This allows us to not rely on a graphical
+editor and write pure code.
+
+===== Code to talk to GitHub
+
+We've finally assemble the proper UI for our application. Our last
+step is to write the code which handles putting content into GitHub.
+This is not a simple function, because the GitHub API requires you
+build out the objects required.
+
+This code was refactored from https://gist.github.com/Detelca/2337731.
+Who is this mysterious user Detelca? 
+
+
+[source,java]
+-----
+
+String username = getUsername();
+String password = getPassword();
+RepositoryService rs = getRepositoryService( username, password );
+RepositoryBranch rb = getCorrectBranch( rs );
+String baseCommitSha = getBaseCommitSha( rb );
+commitContents( baseCommitSha, contents );
+
+// create needed services
+private RepositoryService getRepositoryService( String username, String password ) {
+  RepositoryService repositoryService = new RepositoryService();
+  repositoryService.getClient().setOAuth2Token(authToken);
+  CommitService commitService = new CommitService();
+  commitService.getClient().setOAuth2Token(authToken);
+  DataService dataService = new DataService();
+  dataService.getClient().setOAuth2Token(authToken);
+}
+
+private RepositoryBranch getCorrectBranch( RepositoryService ) {
+  // get some sha's from current state in git
+  Repository repository =  repositoryService.getRepository(login, repoName);
+ List<RepositoryBranch> branches = repositoryService.getBranches(repository);
+  RepositoryBranch theBranch = null;
+  RepositoryBranch master = null;
+  // Iterate over the branches and find gh-pages or master
+  for( RepositoryBranch i : branches ) {
+      String theName = i.getName().toString();
+      if( theName.equalsIgnoreCase("gh-pages") ) {
+          theBranch = i;
+      }
+      else if( theName.equalsIgnoreCase("master") ) {
+          master = i;
+      }
+  }
+  if( null == theBranch ) {
+      theBranch = master;
+  }
+  return theBranch;
+}
+
+private String getBaseCommitSha( RepositoryBranch rb ) {
+  String baseCommitSha = rb.getCommit().getSha();
+}
+
+private void commitContents( String baseCommitSha, String contents ) {
+  String newSha = null;
+  // create new blob with data
+  Blob blob = new Blob();
+  blob.setContent(contentsBase64);
+  blob.setEncoding(Blob.ENCODING_BASE64);
+  String blob_sha = dataService.createBlob(repository, blob);
+  Tree baseTree = dataService.getTree(repository, baseCommitSha);
+  
+  // create new tree entry
+  TreeEntry treeEntry = new TreeEntry();
+  treeEntry.setPath(filename);
+  treeEntry.setMode(TreeEntry.MODE_BLOB);
+  treeEntry.setType(TreeEntry.TYPE_BLOB);
+  
+  treeEntry.setSha(blob_sha);
+  treeEntry.setSize(blob.getContent().length());
+  Collection<TreeEntry> entries = new ArrayList<TreeEntry>();
+  entries.add(treeEntry);
+  Tree newTree = dataService.createTree(repository, entries, baseTree.getSha());
+  
+  // create commit
+  Commit commit = new Commit();
+  commit.setMessage( commitMessage );
+  commit.setTree(newTree);
+  List<Commit> listOfCommits = new ArrayList<Commit>();
+  listOfCommits.add(new Commit().setSha(baseCommitSha));
+  // listOfCommits.containsAll(base_commit.getParents());
+  commit.setParents(listOfCommits);
+  // commit.setSha(base_commit.getSha());
+  Commit newCommit = dataService.createCommit(repository, commit);
+  
+  // create resource
+  TypedResource commitResource = new TypedResource();
+  commitResource.setSha(newCommit.getSha());
+  commitResource.setType(TypedResource.TYPE_COMMIT);
+  commitResource.setUrl(newCommit.getUrl());
+  
+  // get master reference and update it
+  Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
+  reference.setObject(commitResource);
+  Reference response = dataService.editReference(repository, reference, true) ;
+  newSha = treeEntry.getSha();
+  }
+  catch( IOException ieo ) {
+      ieo.printStackTrace();
+  }
+  
+  return newSha;
+}
+
+-----
+
+===== Writing Tests
+
+Once we have written our application, we need to write tests to verify
+things work as we expect them to. There are many options for writing
+tests on Java and Android. JUnit is a popular testing tool which
+permits writing unit tests. Robotium is another testing tool which
+focuses on a different aspect of testing, user interface tests. We'll
+use a wrapper around Robotium called Calabash for Android which allows
+us to write in a high level domain specific language. I find that
+writing Calabash tests is a simpler way to write tests using APIS
+because Calabash tests interact with the entire application, rather
+than internals like unit testing. With unit testing you can be
+required to mock out network interactions, and as such, often miss
+subtle changes in APIs. Calabash also uses a simple DSL which is not
+compiled, so refactoring and changing tests is a simple matter.
+Calabash makes testing easy; your code can be complicated, but tests
+should not be an onerous task.
+
+Calabash runs using ruby. You already have ruby installed, so to
+install calabash, run these commands:
+
+[source,bash]
+$ printf "source 'https://rubygems.org'\n\ngem 'calabash-android'" >> Gemfile
+$ bundle install
+$ calabash-android gen
+
+We've now installed calabash and created the folder structure to hold
+our tests along with some helper scripts. Let's write a simple test for our
+application. 
+
+[source,yaml features/login.feature]
+-----
+feature: Login
+  scenario: A user can login
+    Given I have logged in
+-----

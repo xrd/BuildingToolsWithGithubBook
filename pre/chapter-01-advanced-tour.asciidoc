@@ -1,0 +1,322 @@
+
+=== GitHub.com: a town square for the coder community.
+
+There were other Git hosting services before GitHub.com. But, GitHub was the first to build a rabid community
+around Git. GitHub.com became the town square where the coding cognoscenti gathered to discuss, where the 
+enfants informatiques played with new ideas that would become the future of our world. GitHub.com has become 
+the playground and the guild where ideas flourish and grow like no other online community for software developers.
+As such, it is important to give a tour of GitHub.com and learn how to navigate like a member of the inner circle.
+
+=== An overview of GitHub.com
+
+GitHub.com, like most online communities, grows each day, with new sections added to fulfill previously unknown
+needs. As a software developer, we assume you already know you way around most of the normal places, so this chapter
+serves to illumnate some less well known places on GitHub.com
+
+==== Tools you will need to explore this book
+
+* Ruby
+
+You will need to install Ruby on your machine. You will not need to learn Ruby to use this book, but having
+it installed will allow you to follow along on examples which use Ruby. There are examples which use Ruby code,
+and you will be able to easily understand what they do without learning the specifics of Ruby as a language.
+
+Much of GitHub.com is written in Ruby or Ruby on Rails. Many of the tools used with GitHub (like the command
+line tool gh) are written in Ruby. Learning Ruby is useful, but not required for this book. You must have 
+it installed.
+
+To install Ruby, use RVM. RVM stands for Ruby Version Manager. It allows you to install multiple versions of Ruby
+on the same machine. This is useful when you are testing against many different versions of Ruby with a program, 
+but the biggest benefit is a side effect of this: RVM allows you to guarantee which version of Ruby you are using
+at any given moment. This removes a barrier to running code: anyone can use the exact same version you use without
+having to uninstall and developers can stay in sync without onerous installation requirements.
+
+* Bash (or your favorite shell) and the command line
+
+To become a power user, you need to learn about using the command line. Once you learn the basics, you'll find it
+gives you immense power and control. There are only a few commands to learn to be productive. We will not expect
+you to come in with any knowledge of bash or another shell, nor will we expect you to know about the terminal, but 
+we do expect you to use them frequently in this book. Each example that uses command line will provide the full 
+command and output, so you never need to do anything beyond copying and pasting to follow along.
+
+To use a terminal, you just run "terminal" (OSX) or "xterm" if running Linux. Windows users need to install something
+like cygwin or bash. 
+
+==== Security
+
+If you have been using GUI clients for GitHub, it is likely that you noticed there were options for downloading via
+SSH, but never have used anything beyond HTTPS download. The graphical client, like GitHub for Mac, or GitHub for
+Windows use HTTPS as their default because they don't require any configuration on GitHub.com to provide you with
+access. This chapter will tell you why this is a bad idea, and why switching to SSH keys is a simple and smart thing to
+do.
+
+==== Keyboard Shortcuts
+
+Why do you love your favorite editor the way you do? Whether it be Emacs, Vim, XCode, Android Studio, TextMate or another, 
+the main reason you love it is that it saves you time. Smart editors make complicated tasks easier. Each editor has 
+its own metaphor, with Android Studio offering to automatically insert import code when a missing package is discovered, 
+to the fully immersive experience of Emacs with unlimited customization no matter what language you are editing. 
+GitHub.com is a community tool created by coders and it offers the same benefits as your favorite editor by making
+its core service (exploring code) faster than alternatives. One such way it does this is by offering keyboard
+shortcuts. 
+
+===== Getting started with shortcuts
+
+
+
+== Exploring and Searching Github
+
+This chapter takes you on a tour of one of the most valuable features
+of GitHub the ability to explore trends and search for code across
+repositories.  In an industry that changes so quickly, it can often be
+a daily chore just to attempt to keep up with constant change. New
+frameworks, new llibraries, new projects, even new languages seem to
+come into existence every single week, and it is almost a full-time
+just to keep up with this constant activity.
+
+Companies::
+
+    Companies that depend on open source - big companies - they also
+    have a very strong interest in being able to indentify trends and
+    ascertain which new technologies have sufficient support to
+    justify adoption.  If you are a large company looking to adopt a
+    technology like Apache TomEE, you'll want to make sure that there
+    are enough developers on the project and that there is a large
+    network of forks for some of the core repositories.
+
+Developers::
+
+    Individual developers want to know that the technologies they are
+    using are the technology that are at the center of a particular
+    community.  For example, take Ruby on Rails gem and Node.js
+    modules as an example.  The majority of Rails gems and Node.js
+    modules are hosted on GitHub.  Each gem and each module has a
+    repository that is public and you can gain a lot of insight over
+    which module to choose based on the number of forks and the number
+    of people watching a repository.
+
+Open Source Projects::
+
+    Some people just create open source projects because they have an
+    itch to scratch while others do it for the immediate glory and fame that
+    usually accompanies all open source development. If you develop
+    open source software it often gives you a "warm fuzzy" to know
+    that people are consuming, forking, and viewing your project's activity.
+
+Publishers::
+
+    Publishers understand this well.  It takes months to write a good
+    book, and once that book is published you need to make sure that
+    an audience will still be around to purchase that book. Once
+    challenge in the publishing industry is to identify trends before
+    they "break big" and sign-up core developers to write definitive
+    guides on a particular topic.
+
+
+=== Exploring Trends
+
+GitHub  has established itself as the center of open source
+development for a number of languages.  This started with newer
+scripting languages like Ruby and Python, but GitHub as the central
+"watering hole" for open source developer has since expanded to other
+langauges such as Java and, most recently, Node.js.  While there are
+still a few anachronistic hold outs that prefer to host code on difficult to
+use SCM systems on difficult to maintain physical infrastructure. Many
+of the most active, and most vibrant open source communities depend on
+GitHub for collaboration.
+
+As GitHub is a center of open source activity, it also is a
+consolidated platform that generates a treasure trove of activity both
+from open source developers and from people consuming projects.   Not
+only can you see what entire open source communities are doing, you
+can measure which repositories have the largest audience, which
+repositories have been forked most frequently, and which repositories
+are emerging as new standards in communities.
+
+One of the issue (of many) in the technology press is that projects
+that deserve attention often get missed because they are not being
+pushed by a pushy vendor with a marketing budget.  The GitHub trending
+reports, the reports that track the most popular repositories, these
+are empirical data you can use to figure out what's hot and what's
+not.  Instead of relying on technology news websites to track open source
+
+==== Trending Repositories
+
+You can get a snapshot over a day,  a week, or a month of the
+repositories that have had the most meteroic rise over that
+period. This trending repository report will show you the repositories
+that have had the largest change in forks, stars, commits or a
+particular time period.  To load this report, click on Explore, the
+click on the Trending tab in the uppoer right-hand of the interface.
+Once the trending report is located, it will show trending
+repositories by default.  You can change the time period of the report
+by selecting "Day", "Week", or "Month" from the dropdown on the
+right-hand side of the report.
+
+This report is very useful if you are trying to get a sense of the
+trending center of activity for a particular language.  For example,
+let's say you are a Java developer and you are wonder what's new -
+what projects are emerging as interesting projects to track and/or
+use.  
+
+image::images/explore-trend-java-repos.png[]
+
+in the example shown above, you can see that there is a trending
+repository "storm" from Nathan Marz which supplies a "Distributed and
+fault-tolerant realtime computation: stream processing, continuous
+computation, distributed RPC".  Clicking on the project's web site:
+http://storm-project.net/ - you'll see that this is a framework that
+is used by Groupon, Twitter, and Alibaba. If anything this report is
+useful because it allows you to track the repositories that people
+are paying attention.
+
+==== Trending Developers
+
+You can get a snapshot over a day, a week, or a month of the
+developers (individuals and organizations) who are trending. These are
+the organizations that have had the most commits, most followers, and
+most forks over a particular time period.  To load this report, click
+on Explore, then click on the Trending tab in the upper right-hand of
+the interface.  Once the trending report is located, you'll see a
+"Developers" tab on the left-hand of the report display and you'll see
+a dropdown to select the time period for the report on the right-hand
+of the report.
+
+At this point you can select a particular language sub-community and
+you can then see the trending developers and organizations who are
+making contributions to public repositories that contain this
+particular language.
+
+image::images/explore-trend-java-devs.png[]
+
+In the example shown above, we can see that the top developers spots
+contain companies like Alibaba (one of the largest E-Commerce
+companies in China), Twitter, Facebook, GitHub, and one individual
+JakeWharton (the author of the popular ActionBarSherlock framework for
+Android).
+
+==== Featured Repositories
+
+GitHub also exercises some editorial control of the explore page by
+creating a small list of Featured repositories.  These are
+repositories that have caught the interest of the GitHub team and
+which provide some novel or compelling function.  This featured list
+is important because, very often, people will start to game any
+algorithmic system that generates Top 5 or Top 10 lists.  Also, some
+of these lists are not also representative of repositories that are
+actually "interesting".  For example, some of the most popular
+repositories are simply repositories that contain examples to
+accompany popular books.
+
+Even though it is a small group of people making these decisions,
+featured lists are often an important factor in discovering new
+projects.  Think about how you purchase mobile applications from
+either Google Play or Apple's App Store, very often the most popular
+lists remain static over time, it takes the non-algorithm injection of
+featured applications to bring new things to the audience's
+attention.  In GitHub this featured list contains repositories that
+you might have missed but which contain interesting project
+nonetheless.
+
+Here's the current snapshot of this featured list.  You can see that
+it reflects the opinions of a team that is focused on Sass, JSON,
+micro-frameworks, and the Git library.
+
+image::images/explore-featured.png[]
+
+==== Language-specific Statistics
+
+What is the most popular repository for Java?  How about ADA? Maybe
+you work in scientific computing and you want to know what's the
+hottest project in FORTRAN? (Yes, I said FORTRAN.) All of
+this is available on Github.   The Explore feature of GitHub used to
+allow you to see the most popular forked projects and the projects
+with the most followers, but some of these metrics were being gamed by
+projects that understood that projects with more forked gained more
+attention.
+
+GitHub recently modified the interface of the Explore feature to list
+Trending repositories turning this particular aspect of the GitHub
+statistics into less of a popularity and more a measure of which
+projects show promising activity. 
+
+image::images/explore-trending-day-fortran.png[]
+
+==== Using GitHub to Assess an Open Source Project's "Health"
+
+GitHub activity is also made available on several external sites which
+integrate with the GitHub API.  Two examples of
+http://www.nodejsmodules.org and http://www.rubygems.org.  Here's a
+screenshot of the nodejsmodules.org site.  You can see that it lists
+the most popular Node.js modules by the number of times the module has
+been downloaded.  This
+
+image::images/explore-node-js.png[]
+
+If you drill down into a particular Node.JS module like Coffeescript, you'll see
+that the number of forks and the number of stars is shown on this site
+as key metric to help developers make a decision about which modules
+to integrate.  You can see that this particular module has 7,943 stars
+on GitHub which means that a large number of developers view this as a
+particularly important module.  It also has a huge number of forks @
+940 forks. Even if only 5% or 10% of those forks represent active
+development, this suggests that the module has a large population of
+active contributors.  GitHub activity is a way to assess the health of
+components you use in your applications.
+
+image::images/explore-node-js-coffee.png[]
+
+=== Searching for Repositories
+
+One of the area that has received attention over the past year in
+GitHub is the search interface.  The search interface is very capable,
+allowing you to run a simple search on a keyword as well as a search
+for specific code throughout all public GitHub repositories.  This
+powerful tool allows developers to find examples of how to use
+specific libraries very quickly.   To search for all repositories that
+contain a specific term, just type that term into the search bar on
+any GitHub and press the Search button, you should see results that
+resemble the following:
+
+image::images/explore-search-simple.png[]
+
+==== Evaluating Repositories 
+
+One of the great features of the repository search is the ability to
+sort your results by statistics like Most Forks, Most Stars, or
+repositories that have been most recently updated.  This feature
+coupled with the right search terms gives you the ability to sort
+results by the metrics that will help you make better decisions about
+which projects to depend on.
+
+image::images/explore-search-simple-sort.png[]
+
+=== Searching for Code
+
+GitHub also gives you the ability to search for code, and this is a
+huge feature for developers that are looking to find examples to
+follow.  For example if you were trying to find the proper way to use
+a specific RubyGem, Node.JS module, or Java library you could simply
+search for all code listing that reference a particular class in these
+libraries.  
+
+Most developers still rely on Google to tackle the toughest problems
+they face, but GitHub's code search should be something that you
+consult when you are looking for examples to follow.
+
+image::images/explore-search-code.png[]
+
+=== Drilling down into a recently discovered repository
+
+Once you have a found a repository which fits your needs based on the exploration tactics described above, how do you assess whether it is right for you beyond just its popularity among other developers? These additional pieces of information found on the front page of a repository can give you more insight into the value of a project on GitHub.
+
+* When was the last commit? If the project has no recent commits on the master branch, then the community around it may be dead, and the person maintaining it may have moved on to other projects. Or, this may indicate that people have found another project that fulfills better the needs of this project. Just because a project has many forks does not always indicate that it is currently useful.
+* Does the project have tests? A good rule of thumb (on projects with more than one person at least) is that the strength of a project correlates with the test suite. Tests allow others to contribute to a project with the maintainer keeping confidence that the changes don't break any the other functionality of the project without having to understand everything about the new code. GitHub integrates well with continuous integration services, and many projects now publicly post a widget in the README of their project page which provides a quick view into the health of their test suite.
+
+image::images/exploration-tests-twitter.png[]
+
+.Can you search History?
+[NOTE]
+Not with the current search API.  Searching through History isn't a
+feature that GitHub has implemented.
+
