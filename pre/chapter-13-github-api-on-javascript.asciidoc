@@ -678,6 +678,13 @@ information themselves and help build our database. Just beneath the
 link to the map link, add a button which will allow us to annotate a
 coffeeshop with extra information. 
 
+To add an annotation to our existing data we are going ask users to
+contribute the "GitHub" way. Users will fork the repository, make a
+change, and then issue a pull-request. We can do all of this from our
+webapp using the Github.js library. This requires that we ask the
+users to login, so we will prompt them for their username and
+password, as well as the data they want to annotate.
+
 [source,html]
 -----
 [filename=".", language="js", sha="2bc7122:support/js/index.html", lines="37..41"]
@@ -686,17 +693,37 @@ To be replaced
 snippet~~~~~
 -----
 
-Let's add some tests. Inside the `coffeetech.spec.js` file, add these
-lines to the end.
-
+Let's add some tests. Inside the `coffeetech.spec.js` file, modify the
+mock repository generator, and add a new test to the end of the file
+which will test our annotate function.
 
 [source,javascript]
 -----
-[filename=".", language="js", sha="584190274d129b70f:support/js/coffeetech.spec.js", lines="54..61"]
+    ...
+
+[filename=".", language="js", sha="b423c64:support/js/coffeetech.spec.js", lines="15..35"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+
+    ...
+
+[filename=".", language="js", sha="b423c64:support/js/coffeetech.spec.js", lines="65..80"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
+
+We added two new methods to our mock Github object: `fork` and
+`createPullRequest`. We test that these are called. According to the
+documentation for `fork` in the Github.js library, this method can
+take a little time to return, so we need to set a timeout in our app
+and query for the new repository. This explains the
+`$timeout.flush()`, a mock of timeout which we can simulate finishing
+the timeout. We also added a mock prompt. We will be prompting the
+user for username, password and the annotating data, and we will use
+the native browser prompt mechanism to do this. If this sounds like an
+ugly way to do it, don't fret, we'll find a better way later.
 
 Add a few methods to the end of our coffeetech.js file
 

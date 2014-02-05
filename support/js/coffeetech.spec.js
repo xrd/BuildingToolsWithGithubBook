@@ -13,6 +13,12 @@ describe( "GithubCtrl", function() {
         spyOn( geo, "getCurrentPosition" ).andCallThrough();
     }
 
+    var prompt = undefined;
+    function generateMockPrompt() {
+        prompt = { prompt: function() { return "ABC" } };
+        spyOn( prompt, "prompt" ).andCallThrough();
+    }
+
     var PR_ID = 12345;
     function generateMockRepositorySupport() {
         repo = { 
@@ -39,11 +45,12 @@ describe( "GithubCtrl", function() {
     beforeEach( module( "coffeetech" ) );
 
     beforeEach( inject( function ($controller, $rootScope ) {
-            generateMockGeolocationSupport();
-            generateMockRepositorySupport();
-            scope = $rootScope.$new();
-            ctrl = $controller( "GithubCtrl", { $scope: scope, Github: gh, Geo: geo } );
-        } ) 
+        generateMockGeolocationSupport();
+        generateMockRepositorySupport();
+        generateMockPrompt();
+        scope = $rootScope.$new();
+        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: gh, Geo: geo, prompt: prompt } );
+    } ) 
     );
 
     describe( "#init", function() {
@@ -71,6 +78,7 @@ describe( "GithubCtrl", function() {
             } ) );
         it( "should annotate a shop", function() {
             scope.annotate();
+            expect( prompt.prompt.calls.length ).toEqual( 3 );
             expect( repo.fork ).toHaveBeenCalled();
             $timeout.flush();
             expect( repo.read ).toHaveBeenCalled();
