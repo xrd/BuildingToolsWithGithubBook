@@ -347,15 +347,15 @@ first chapter.
 [source,bash]
 -----
 $ npm install karma -g
-$ karma init karma.conf.js
+$ karma init karma.config.js
 $ wget https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-mocks.js
 -----
 
 Then, create a file called `karma.config.js` and enter the following contents:
 
 [source,javascript karma.config.js]
-----
-[filename=".", language="js", sha="2204ef0:support/js/karma.conf.js"]
+-----
+[filename=".", language="js", sha="2204ef0:support/js/karma.config.js"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -542,11 +542,11 @@ Google autocompleted my search to "Cebu". It says they are 338 miles
 apart. I then grabbed latitude and longitudes for those cities and
 built the test above. I expected my test to fail as my coordinates
 were going to be off by a few miles here or there. But, the test
-showed that our distance was 571. In fact, I had forgotten this
-algorithm actually calculated the distance in kilometers, not miles.
-So, we need to multiply the result by 0.621371 to get the value in
-miles, which ends up being close enough to what Google reports the
-distance to be. 
+showed that our distance was 571. Hmm, perhaps we calculated in kilometers, not miles?
+Indeed, I had forgotten this algorithm actually calculated the
+distance in kilometers, not miles. So, we need to multiply the result
+by 0.621371 to get the value in miles, which ends up being close
+enough to what Google reports the distance to be. 
 
 Now, let's expose the new data inside the `index.html` file like so:
 
