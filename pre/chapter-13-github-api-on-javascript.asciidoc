@@ -700,7 +700,7 @@ lines to the end.
 
 [source,javascript]
 -----
-[filename=".", language="js", sha="1b6f1dc:support/js/coffeetech.spec.js"]
+[filename=".", language="js", sha="1b6f1dc:support/js/coffeetech.spec.js:1..5"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

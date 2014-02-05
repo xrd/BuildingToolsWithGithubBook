@@ -53,4 +53,12 @@ describe( "GithubCtrl", function() {
         });
     });
 
+    describe( "#annotate", function() {
+        
+    });
+
+    describe( "#addNewShop", function() {
+        
+    });
+    
 });
