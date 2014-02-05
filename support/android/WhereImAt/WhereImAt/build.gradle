@@ -1,0 +1,42 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.6.+'
+    }
+}
+apply plugin: 'android'
+
+repositories {
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 18
+    buildToolsVersion '18.1.0'
+
+    defaultConfig {
+        minSdkVersion 10
+        targetSdkVersion 19
+    }
+
+    sourceSets {
+    main {
+    }
+    }   
+
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:18.0.0'
+    compile 'com.android.support:support-v4:18.0.0'
+    compile 'com.squareup.retrofit:retrofit:1.2.2'
+    //    compile files('libs/TestFlightLib.jar')
+    compile 'com.jakewharton:butterknife:4.0.1@jar'
+    compile 'de.keyboardsurfer.android.widget:crouton:1.8.1@jar'
+    // Does not seem to work with the required SDK min version
+    // compile 'se.emilsjolander:sprinkles:1.0.1'
+    //    compile 'com.j256.ormlite:ormlite-android:4.48'
+}
+
