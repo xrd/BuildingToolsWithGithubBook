@@ -933,6 +933,14 @@ which will test our annotate function.
         spyOn( repo, "fork" ).andCallThrough();
         spyOn( repo, "createPullRequest" ).andCallThrough();
         spyOn( repo, "read" ).andCallThrough();
+    ....
+
+        generateMockRepositorySupport();
+        generateMockPrompt();
+        scope = $rootScope.$new();
+        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: gh, Geo: geo, Prompt: prompt } );
+    } ) 
+    );
 
     ...
 

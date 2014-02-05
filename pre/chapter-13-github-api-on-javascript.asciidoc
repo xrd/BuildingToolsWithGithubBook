@@ -701,14 +701,20 @@ which will test our annotate function.
 -----
     ...
 
-[filename=".", language="js", sha="a5da163:support/js/coffeetech.spec.js", lines="15..35"]
+[filename=".", language="js", sha="bcb4be8:support/js/coffeetech.spec.js", lines="15..35"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+    ....
+
+[filename=".", language="js", sha="bcb4be8:support/js/coffeetech.spec.js", lines="47..52"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 
     ...
 
-[filename=".", language="js", sha="a5da163:support/js/coffeetech.spec.js", lines="70..85"]
+[filename=".", language="js", sha="bcb4be8:support/js/coffeetech.spec.js", lines="70..85"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

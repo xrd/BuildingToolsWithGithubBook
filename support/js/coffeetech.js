@@ -95,6 +95,8 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', 'Prompt', function( $
         user = Prompt( "Enter your github username" )
         password = Prompt( "Enter your github password" )
         data = Prompt( "Enter data to add" );
+
+        $scope.
     };
     
 } ] );
