@@ -904,13 +904,17 @@ placeholder="Enter name of coffeeshop..." />
 Let's add some tests. Inside the `coffeetech.spec.js` file, add these
 lines to the end.
 
+
 [source,javascript]
 -----
-    var scope = undefined;
-    var ctrl = undefined;
-    var gh  = undefined;
-    var repo = undefined;
-    var geo = undefined;
+    describe( "#annotate", function() {
+        
+    });
+
+    describe( "#addNewShop", function() {
+        
+    });
+    
 -----
 
 Add a few methods to the end of our coffeetech.js file

@@ -698,9 +698,10 @@ placeholder="Enter name of coffeeshop..." />
 Let's add some tests. Inside the `coffeetech.spec.js` file, add these
 lines to the end.
 
+
 [source,javascript]
 -----
-[filename=".", language="js", sha="1b6f1dc:support/js/coffeetech.spec.js:1..5"]
+[filename=".", language="js", sha="584190274d129b70f:support/js/coffeetech.spec.js", lines="54..61"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

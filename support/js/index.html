@@ -17,15 +17,6 @@ width: 20em;
 
 <h1>CoffeeTe.ch</h1>
 
-<button ng-click="add=!add">Add new coffeeshop...</button>
-<div ng-show="add">
-<form>
-<input class="ctinput" type="text" type="text" ng-model="addition.name" placeholder="Enter name of coffeeshop." />
-<input class="ctinput" type="text" ng-model="addition.extra" placeholder="Enter extra information." />
-<button ng-click="addNewCoffeeshop(addition)">Submit for review</button>
-</form>
-</div>
-
 <input class="ctinput" ng-model="search" placeholder="Enter search parameters..."/> <!--1-->
 
 <h3 ng-show="city">Current city: {{city.name}}</h3>
@@ -47,6 +38,7 @@ width: 20em;
 </div>
 <div class="col-md-6">
 <a target="_map" href="http://maps.google.com/?q={{shop.latitude}},{{shop.longitude}}">Open in map ({{shop.latitude}},{{shop.longitude}})</a>
+<button ng-click="annotate(shop)">Add factoid</button>
 </div>
 </div>
 </div>
