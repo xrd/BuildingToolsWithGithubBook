@@ -13,14 +13,12 @@ guard 'shell' do
     snippet_out =  m[0].gsub( "pre/", "" )
     File.open( snippet_out, "w+" ) do |f|
       f.write snippetized
-      puts "Wrote new snippet: #{snippet_out}"
     end
   }
 end
 
 guard 'shell' do 
   watch( /^[^\/]*\.asciidoc$/ ) { |m|
-    puts "File: #{m.inspect}"
     asciidoc = File.read( m[0] )
     out = Asciidoctor.render( asciidoc,
                               :header_footer => true,
@@ -30,7 +28,6 @@ guard 'shell' do
     File.open( m[0]+ ".html", "w+" ) do |f|
       out.gsub!( '</body>', "</body>\n#{init_script}\n" )
       f.write out
-      puts "Wrote: #{m[0]+'.html'}"
     end
   }
 end

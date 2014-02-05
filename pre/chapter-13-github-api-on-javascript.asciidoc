@@ -489,29 +489,33 @@ Now we can write the code to support the tests we have written.
 
 First add support fixtures, data files which have test data. Add the `fixtures-cities.js` file.
 
-[source,javascript fixture-cities.js] 
+[source,javascript]
 -----
-var CITIES = [ { name: "portland", latitude: 45, longitude: 45 },
-  { name: "seattle", latitude: 47.662613, longitude: -122.323837 } ];
+[filename=".", language="js", sha="2204ef0:support/js/fixtures-cities.js"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
+
+And, the `fixtures-portland.js` file.
 
 [source,javascript fixture-portland.js] 
 -----
-var PORTLAND = [ { "name" : "Very Good Coffee Shop", "latitude" : 45.52292,  "longitude" : -122.643074 },
-{ "name" : "Very Bad Coffee Shop", "latitude" : 45.522181, "longitude" : -122.63709 },
-{ "name" : "Mediocre Coffee Shop", "latitude" : 45.520437, "longitude" : -122.67846 } ];
+[filename=".", language="js", sha="2204ef0:support/js/fixtures-portland.js"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 Then add the `coffeetech.js` file:
 
 [source,javascript]
 ----
-[filename="../github.js.test", language="js", sha="de3c69c:coffeetech.js"]
+[filename=".", language="js", sha="2204ef0:support/js/coffeetech.js"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 ----
-
 
 <1> We extract the Github library into an AngularJS factory. This
 allows us to inject our mocked GitHub object inside our tests; if we

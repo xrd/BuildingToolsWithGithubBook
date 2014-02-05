@@ -1,10 +1,8 @@
-// BEGIN MODULE_DEFINITION
 var mod = angular.module( 'coffeetech', [] );
 
 mod.factory( 'Github', function() {
     return new Github({});
 });
-// END MODULE_DEFINITION
 
 mod.factory( 'Geo', [ '$window', function( $window ) {
     return $window.navigator.geolocation;
