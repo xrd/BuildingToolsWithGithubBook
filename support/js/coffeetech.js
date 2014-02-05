@@ -1,10 +1,10 @@
 var mod = angular.module( 'coffeetech', [] );
 
-mod.factory( 'Github', function() {
+mod.factory( 'Github', function() { // # <1>
     return new Github({});
 });
 
-mod.factory( 'Geo', [ '$window', function( $window ) {
+mod.factory( 'Geo', [ '$window', function( $window ) { // # <2>
     return $window.navigator.geolocation;
 } ] );
 
@@ -15,18 +15,18 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', function( $scope, ghs
         $scope.getCurrentLocation( function( position ) {
             $scope.latitude = position.coords.latitude;
             $scope.longitude = position.coords.longitude;
-            $scope.repo = ghs.getRepo( "xrd", "spa.coffeete.ch" ); // # <1>
-            $scope.repo.read( "gh-pages", "cities.json", function(err, data) { // # <2>
-                $scope.cities = JSON.parse( data ); // # <3>
+            $scope.repo = ghs.getRepo( "xrd", "spa.coffeete.ch" ); // # <3>
+            $scope.repo.read( "gh-pages", "cities.json", function(err, data) { // # <4>
+                $scope.cities = JSON.parse( data ); // # <5>
                 // Determine our current city
-                $scope.detectCurrentCity();
+                $scope.detectCurrentCity(); // # <6>
 
                 // If we have a city, get it
                 if( $scope.city ) {
                     $scope.retrieveCity();
                 }
 
-                $scope.$apply();
+                $scope.$apply(); // # <7>
             });
         });
     };

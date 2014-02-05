@@ -355,28 +355,8 @@ Then, create a file called `karma.config.js` and enter the following contents:
 
 [source,javascript karma.config.js]
 ----
-module.exports = function(config) {
-  config.set({
-    basePath: '',
-    frameworks: ['jasmine'],
-    files: [
-        'angular.js',
-        'fixtures-*.js',
-        'angular-mocks.js',
-        'github.js', 
-        '*.js'
-    ],
-    reporters: ['progress'],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    browsers: ['Chrome'],
-    captureTimeout: 60000,
-    singleRun: false
-  });
-};
-----
+
+-----
 
 To write the test, let's clarify what we want our code to do:
 
@@ -510,13 +490,11 @@ Then add the `coffeetech.js` file:
 
 [source,javascript]
 ----
-// BEGIN MODULE_DEFINITION
 var mod = angular.module( 'coffeetech', [] );
 
 mod.factory( 'Github', function() {
     return new Github({});
 });
-// END MODULE_DEFINITION
 
 mod.factory( 'Geo', [ '$window', function( $window ) {
     return $window.navigator.geolocation;
