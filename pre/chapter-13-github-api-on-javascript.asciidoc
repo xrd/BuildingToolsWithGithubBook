@@ -506,81 +506,10 @@ Then add the `coffeetech.js` file:
 
 [source,javascript]
 ----
-var mod = angular.module( 'coffeetech', [] );
-
-mod.factory( 'Github', function() {
-    return new Github({}); // # <1>
-});
-
-mod.factory( 'Geo', [ '$window', function( $window ) {
-    return $window.navigator.geolocation; // # <2>
-} ] );
-
-mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', function( $scope, ghs, Geo ) {
-    $scope.init = function() {
-        $scope.getCurrentLocation( function( position ) {
-            $scope.latitude = position.coords.latitude;
-            $scope.longitude = position.coords.longitude;
-            $scope.repo = ghs.getRepo( "xrd", "spa.coffeete.ch" ); // # <3>
-            $scope.repo.read( "gh-pages", "cities.json", function(err, data) { // # <4>
-                $scope.cities = JSON.parse( data );  // # <5>
-                // Determine our current city
-                $scope.detectCurrentCity();
-
-                // If we have a city, get it
-                if( $scope.city ) {
-                    $scope.retrieveCity();
-                }
-
-                $scope.$apply(); // # <6>
-            });
-        });
-    };
-
-    $scope.retrieveCity = function() {
-        $scope.repo.read( "gh-pages", $scope.city.name + ".json", function(err, data) { 
-            $scope.shops = JSON.parse( data );
-        });
-    }
-
-    $scope.getCurrentLocation = function( cb ) {
-        if( undefined != Geo ) {
-            Geo.getCurrentPosition( cb, $scope.geolocationError );
-        } else {
-            console.error('not supported');
-        }
-        
-    };
-
-    $scope.detectCurrentCity = function() { // # <6>
-        // Calculate the distance from our current position and use
-        // this to determine which city we are closest to and within
-        // 25 miles
-        for( var i = 0; i < $scope.cities.length; i++ ) {
-            var dist = $scope.calculateDistance( $scope.latitude, $scope.longitude, $scope.cities[i].latitude, $scope.cities[i].longitude );
-            if( dist < 25 ) {
-                $scope.city = $scope.cities[i];
-                break;
-            }
-        }
-    }
-
-    toRad = function(Value) {
-        return Value * Math.PI / 180;
-    };
-    
-    $scope.calculateDistance = function( latitude1, longitude1, latitude2, longitude2 ) {
-        R = 6371;
-        dLatitude = toRad(latitude2 - latitude1);
-        dLongitude = toRad(longitude2 - longitude1);
-        latitude1 = toRad(latitude1);
-        latitude2 = toRad(latitude2);
-        a = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) + Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) * Math.cos(latitude1) * Math.cos(latitude2);
-        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        d = R * c;
-        return d;
-    }
-
+[filename="../github.js.test", language="js", sha="de3c69c:coffeetech.js"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 ----
 
 
@@ -756,7 +685,35 @@ src="angular.js"></script>
 
 ===== Simulating user reported data
 
+So far we have built a database of cities and coffee shops in those
+cities. This provides less value than Google Maps. If we add our own
+layer of information on top of this data (like quirky information
+about the coffeeshop) then we might provide something that would have
+people use our app alongside Google Maps. Let's add some faked data to
+our coffee shop information.
 
+Modify the `portland.json` file so it looks like this:
+
+[source,javascript]
+-----
+[filename="../github.js.test", language="js", sha="e598b47:portland.json"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+Notice that we added an array called `information` to our data set.
+We'll use this to allow simple search. Add the search feature to our
+`index.html` (and let's remove our cities listing which was really
+just for testing).
+
+[source,html]
+-----
+[filename="../github.js.test", language="js", sha="e598b47:index.html"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
 
 ===== Adding data using pull-requests
 

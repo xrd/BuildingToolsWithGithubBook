@@ -506,24 +506,28 @@ Then add the `coffeetech.js` file:
 
 [source,javascript]
 ----
+// BEGIN MODULE_DEFINITION
 var mod = angular.module( 'coffeetech', [] );
 
 mod.factory( 'Github', function() {
-    return new Github({}); // # <1>
+    return new Github({});
 });
+// END MODULE_DEFINITION
 
 mod.factory( 'Geo', [ '$window', function( $window ) {
-    return $window.navigator.geolocation; // # <2>
+    return $window.navigator.geolocation;
 } ] );
 
 mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', function( $scope, ghs, Geo ) {
+    $scope.messages = []
+
     $scope.init = function() {
         $scope.getCurrentLocation( function( position ) {
             $scope.latitude = position.coords.latitude;
             $scope.longitude = position.coords.longitude;
-            $scope.repo = ghs.getRepo( "xrd", "spa.coffeete.ch" ); // # <3>
-            $scope.repo.read( "gh-pages", "cities.json", function(err, data) { // # <4>
-                $scope.cities = JSON.parse( data );  // # <5>
+            $scope.repo = ghs.getRepo( "xrd", "spa.coffeete.ch" ); // # <1>
+            $scope.repo.read( "gh-pages", "cities.json", function(err, data) { // # <2>
+                $scope.cities = JSON.parse( data ); // # <3>
                 // Determine our current city
                 $scope.detectCurrentCity();
 
@@ -532,7 +536,7 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', function( $scope, ghs
                     $scope.retrieveCity();
                 }
 
-                $scope.$apply(); // # <6>
+                $scope.$apply();
             });
         });
     };
@@ -540,6 +544,7 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', function( $scope, ghs
     $scope.retrieveCity = function() {
         $scope.repo.read( "gh-pages", $scope.city.name + ".json", function(err, data) { 
             $scope.shops = JSON.parse( data );
+            $scope.$apply();
         });
     }
 
@@ -552,7 +557,7 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', function( $scope, ghs
         
     };
 
-    $scope.detectCurrentCity = function() { // # <6>
+    $scope.detectCurrentCity = function() {
         // Calculate the distance from our current position and use
         // this to determine which city we are closest to and within
         // 25 miles
@@ -580,6 +585,21 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', function( $scope, ghs
         d = R * c;
         return d;
     }
+
+    $scope.loadCity = function( city ) {
+        $scope.repo.read( "gh-pages", city + ".json", function(err, data) { // # <2>
+            $scope.shops = JSON.parse( data ); // # <3>
+            $scope.$apply();
+        });
+    }
+    
+    $scope.geolocationError = function( error ) {
+        console.log( "Inside failure" );
+    };
+    
+
+} ] );
+
 
 ----
 
@@ -756,7 +776,78 @@ src="angular.js"></script>
 
 ===== Simulating user reported data
 
+So far we have built a database of cities and coffee shops in those
+cities. This provides less value than Google Maps. If we add our own
+layer of information on top of this data (like quirky information
+about the coffeeshop) then we might provide something that would have
+people use our app alongside Google Maps. Let's add some faked data to
+our coffee shop information.
 
+Modify the `portland.json` file so it looks like this:
+
+[source,javascript]
+-----
+[ { "name" : "Very Good Coffee Shop", "latitude" : 45.52292,  "longitude" : -122.643074, "information" : [ "offers gluten free desserts", "free wifi", "accepts dogs" ] },
+{ "name" : "Very Bad Coffee Shop", "latitude" : 45.522181, "longitude" : -122.63709 },
+{ "name" : "Mediocre Coffee Shop", "latitude" : 45.520437, "longitude" : -122.67846 } ]
+
+-----
+
+Notice that we added an array called `information` to our data set.
+We'll use this to allow simple search. Add the search feature to our
+`index.html` (and let's remove our cities listing which was really
+just for testing).
+
+[source,html]
+-----
+<html>
+<head>
+<title>CoffeeTe.ch</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
+</head>
+<body ng-app="coffeetech">
+
+<div class="container" ng-controller="GithubCtrl" ng-init="init()">
+
+<h1>CoffeeTe.ch</h1>
+
+<input style="width: 20em;" ng-model="search" placeholder="Enter search parameters..."/>
+
+<h3 ng-show="city">Current city: {{city.name}}</h3>
+
+<div class="row=">
+<div class="col-md-6"><h4>City Name</h4> </div>
+<div class="col-md-6"><h4>Lat/Lng</h4> </div>
+</div>
+<div class="row" ng-repeat="city in cities | filter:search">
+<div class="col-md-6"> 
+{{ city.name }} 
+<div ng-show="search">
+<span ng-repeat="info in city.information">
+<span class="label label-default">city.data</span>
+</span>
+</div>
+</div>
+<div class="col-md-6"> {{ city.latitude }} / {{ city.longitude }} </div>
+
+</div>
+
+
+</div>
+
+<script src="angular.js"></script>
+<script src="underscore-min.js"></script>
+<script src="base64.min.js"></script>
+<script src="github.js"></script>
+<script src="coffeetech.js"></script>
+
+
+
+</body>
+</html>
+
+-----
 
 ===== Adding data using pull-requests
 
