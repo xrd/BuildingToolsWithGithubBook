@@ -8,7 +8,11 @@ mod.factory( 'Geo', [ '$window', function( $window ) { // # <2>
     return $window.navigator.geolocation;
 } ] );
 
-mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', function( $scope, ghs, Geo ) {
+mod.factory( 'Prompt', [ '$window', function( $window ) { 
+    return $window.prompt;
+} ] );
+
+mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', 'Prompt', function( $scope, ghs, Geo, Prompt ) {
     $scope.messages = []
 
     $scope.init = function() {
@@ -87,6 +91,11 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', function( $scope, ghs
         console.log( "Inside failure" );
     };
     
-
+    $scope.annotate = function() {
+        user = Prompt( "Enter your github username" )
+        password = Prompt( "Enter your github password" )
+        data = Prompt( "Enter data to add" );
+    };
+    
 } ] );
 

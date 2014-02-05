@@ -49,7 +49,7 @@ describe( "GithubCtrl", function() {
         generateMockRepositorySupport();
         generateMockPrompt();
         scope = $rootScope.$new();
-        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: gh, Geo: geo, prompt: prompt } );
+        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: gh, Geo: geo, Prompt: prompt } );
     } ) 
     );
 

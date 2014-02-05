@@ -912,6 +912,12 @@ which will test our annotate function.
 -----
     ...
 
+    function generateMockPrompt() {
+        prompt = { prompt: function() { return "ABC" } };
+        spyOn( prompt, "prompt" ).andCallThrough();
+    }
+
+    var PR_ID = 12345;
     function generateMockRepositorySupport() {
         repo = { 
             fork: function( cb ) {
@@ -928,13 +934,9 @@ which will test our annotate function.
         spyOn( repo, "createPullRequest" ).andCallThrough();
         spyOn( repo, "read" ).andCallThrough();
 
-        gh = new Github({});
-        spyOn( gh, "getRepo" ).andCallFake( function() {
-            return repo;
-        } );
-    }
-
     ...
+
+    });
 
     describe( "#annotate", function() {
         var $timeout;
@@ -943,15 +945,13 @@ which will test our annotate function.
             } ) );
         it( "should annotate a shop", function() {
             scope.annotate();
+            expect( prompt.prompt.calls.length ).toEqual( 3 );
             expect( repo.fork ).toHaveBeenCalled();
             $timeout.flush();
             expect( repo.read ).toHaveBeenCalled();
             expect( repo.createPullRequest ).toHaveBeenCalled();
         });
 
-    });
-
-});
 -----
 
 We added two new methods to our mock Github object: `fork` and
@@ -959,13 +959,27 @@ We added two new methods to our mock Github object: `fork` and
 documentation for `fork` in the Github.js library, this method can
 take a little time to return, so we need to set a timeout in our app
 and query for the new repository. This explains the
-`$timeout.flush()`, a mock of timeout which we can simulate finishing
-the timeout. We also added a mock prompt. We will be prompting the
+`$timeout.flush()`, a mock of the timeout browser call which
+we can manually reconcile. We also added a mock prompt. We will be prompting the
 user for username, password and the annotating data, and we will use
 the native browser prompt mechanism to do this. If this sounds like an
 ugly way to do it, don't fret, we'll find a better way later.
 
-Add a few methods to the end of our coffeetech.js file
+If you are still running karma in the background, you'll see the tests
+fail with:
+
+[source,bash]
+-----
+Chrome 32.0.1700 (Mac OS X 10.9.1) GithubCtrl #annotate should
+annotate a shop FAILED
+         TypeError: Object #<Scope> has no method 'annotate'
+             at null.<anonymous> (/.../coffeetech.spec.js:80:19)
+-----
+
+Now, let's implement this functionality in our `coffeetech.js` file.
+
+
+
 
 [source,javascript coffeetech.js]
 -----

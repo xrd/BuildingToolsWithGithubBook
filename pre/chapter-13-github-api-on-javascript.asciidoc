@@ -701,14 +701,14 @@ which will test our annotate function.
 -----
     ...
 
-[filename=".", language="js", sha="b423c64:support/js/coffeetech.spec.js", lines="15..35"]
+[filename=".", language="js", sha="a5da163:support/js/coffeetech.spec.js", lines="15..35"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 
     ...
 
-[filename=".", language="js", sha="b423c64:support/js/coffeetech.spec.js", lines="65..80"]
+[filename=".", language="js", sha="a5da163:support/js/coffeetech.spec.js", lines="70..85"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -719,13 +719,27 @@ We added two new methods to our mock Github object: `fork` and
 documentation for `fork` in the Github.js library, this method can
 take a little time to return, so we need to set a timeout in our app
 and query for the new repository. This explains the
-`$timeout.flush()`, a mock of timeout which we can simulate finishing
-the timeout. We also added a mock prompt. We will be prompting the
+`$timeout.flush()`, a mock of the timeout browser call which
+we can manually reconcile. We also added a mock prompt. We will be prompting the
 user for username, password and the annotating data, and we will use
 the native browser prompt mechanism to do this. If this sounds like an
 ugly way to do it, don't fret, we'll find a better way later.
 
-Add a few methods to the end of our coffeetech.js file
+If you are still running karma in the background, you'll see the tests
+fail with:
+
+[source,bash]
+-----
+Chrome 32.0.1700 (Mac OS X 10.9.1) GithubCtrl #annotate should
+annotate a shop FAILED
+         TypeError: Object #<Scope> has no method 'annotate'
+             at null.<anonymous> (/.../coffeetech.spec.js:80:19)
+-----
+
+Now, let's implement this functionality in our `coffeetech.js` file.
+
+
+
 
 [source,javascript coffeetech.js]
 -----
