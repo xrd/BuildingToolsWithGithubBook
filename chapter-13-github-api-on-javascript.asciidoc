@@ -876,29 +876,11 @@ image::images/javascript-search-box.png[]
 ===== Adding data using pull-requests
 
 Now that we have a functioning application, let's allow people to add
-information themselves and help build our database. Add a button at
-the top of the page which triggers display of a form for adding
-information.  Add this snippet right beneath the div with the
-`ng-controller` directive attribute.
+information themselves and help build our database. Just beneath the link to the 
 
 [source,html]
 -----
-<button ng-click="add=!add">Add new coffeeshop...</button>
-<div ng-show="add">
-<form>
-<fieldset>
-<legend>Add new coffeeshop</legend>
-<div class="control-group">
-<label class="control-label input-label" for="name">Name:</label>
-<div class="controls">
-<input type="text" type="text" id="name" name="name" ng-model="addition.name"
-placeholder="Enter name of coffeeshop..." />
-</div>
-</div>
-</fieldset>
-<button ng-click="addNewCoffeeshop(addition)
-</form>
-</div>
+<button ng-click="annotate(shop)">Add factoid</button>
 -----
 
 Let's add some tests. Inside the `coffeetech.spec.js` file, add these
