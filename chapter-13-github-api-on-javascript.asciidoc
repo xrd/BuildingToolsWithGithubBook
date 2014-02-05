@@ -771,9 +771,9 @@ Then, make your index.html look like this:
 <div class="col-md-6"><h4>Shop Name</h4> </div>
 <div class="col-md-6"><h4>Lat/Lng</h4> </div>
 </div>
-<div class="row" ng-repeat="shop in shops"> <!--1-->
-<div class="col-md-6">   <!--2-->
-{{ shop.name }}  <!--3-->
+<div class="row" ng-repeat="shop in shops"> 
+<div class="col-md-6">  
+{{ shop.name }}  
 </div>
 <div class="col-md-6"> {{ shop.latitude }} / {{ shop.longitude }} </div>
 </div>
@@ -801,7 +801,8 @@ our coffee shop information.
 
 Modify the `portland.json` file so it looks like this:
 
-[source,javascript]
+
+[source,html index.html]
 -----
 [ { "name" : "Very Good Coffee Shop", "latitude" : 45.52292,  "longitude" : -122.643074, "information" : [ "offers gluten free desserts", "free wifi", "accepts dogs" ] },
 { "name" : "Very Bad Coffee Shop", "latitude" : 45.522181, "longitude" : -122.63709 },
@@ -811,8 +812,7 @@ Modify the `portland.json` file so it looks like this:
 
 Notice that we added an array called `information` to our data set.
 We'll use this to allow simple search. Add the search feature to our
-`index.html` (and let's remove our cities listing which was really
-just for testing).
+`index.html`
 
 [source,html]
 -----
@@ -864,6 +864,12 @@ just for testing).
 </html>
 
 -----
+
+<1> We add a search box which binds to the `search` model in our scope
+<2> We add a filter on the data to display which searches through all
+data inside each item in our `shops` array.
+<3> If we are searching (the model variable `search` is defined) then
+we show the extra information.
 
 ===== Adding data using pull-requests
 

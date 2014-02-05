@@ -618,7 +618,7 @@ Then, make your index.html look like this:
 
 [source,html index.html]
 -----
-[filename=".", language="js", sha="177c96c:support/js/index.html"]
+[filename=".", language="js", sha="862ea6f:support/js/index.html"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -635,9 +635,10 @@ our coffee shop information.
 
 Modify the `portland.json` file so it looks like this:
 
-[source,javascript]
+
+[source,html index.html]
 -----
-[filename="../github.js.test", language="js", sha="e598b47:portland.json"]
+[filename=".", language="js", sha="862ea6f:support/js/portland.json"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -645,8 +646,7 @@ snippet~~~~~
 
 Notice that we added an array called `information` to our data set.
 We'll use this to allow simple search. Add the search feature to our
-`index.html` (and let's remove our cities listing which was really
-just for testing).
+`index.html`
 
 [source,html]
 -----
@@ -655,6 +655,12 @@ snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
+
+<1> We add a search box which binds to the `search` model in our scope
+<2> We add a filter on the data to display which searches through all
+data inside each item in our `shops` array.
+<3> If we are searching (the model variable `search` is defined) then
+we show the extra information.
 
 ===== Adding data using pull-requests
 

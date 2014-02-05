@@ -10,15 +10,24 @@
 
 <h1>CoffeeTe.ch</h1>
 
+<input style="width: 20em;" ng-model="search" placeholder="Enter search parameters..."/> <!--1-->
+
 <h3 ng-show="city">Current city: {{city.name}}</h3>
 
 <div class="row=">
 <div class="col-md-6"><h4>Shop Name</h4> </div>
 <div class="col-md-6"><h4>Lat/Lng</h4> </div>
 </div>
-<div class="row" ng-repeat="shop in shops"> 
+<div class="row" ng-repeat="shop in shops | filter:search"> <!--2-->
 <div class="col-md-6">  
 {{ shop.name }}  
+
+<div ng-show="search"> <!--3-->
+<span ng-repeat="info in city.information">
+<span class="label label-default">city.data</span>
+</span>
+</div>
+
 </div>
 <div class="col-md-6"> {{ shop.latitude }} / {{ shop.longitude }} </div>
 </div>
