@@ -852,7 +852,9 @@ We'll use this to allow simple search. Add the search feature to our
 </div>
 
 </div>
-<div class="col-md-6"> {{ shop.latitude }} / {{ shop.longitude }} </div>
+<div class="col-md-6">
+<a target="ctmaps" href="http://maps.google.com/?q={{ shop.latitude }},{{ shop.longitude }}">View on map</a>
+</div>
 </div>
 </div>
 
@@ -878,14 +880,21 @@ anything except shops which match that, and we see the
 
 image::images/javascript-search-box.png[]
 
+
 ===== Adding data using pull-requests
 
 Now that we have a functioning application, let's allow people to add
-information themselves and help build our database. Just beneath the link to the 
+information themselves and help build our database. Just beneath the
+link to the map link, add a button which will allow us to annotate a
+coffeeshop with extra information. 
 
 [source,html]
 -----
+<div class="col-md-6">
+<a target="_map" href="http://maps.google.com/?q={{shop.latitude}},{{shop.longitude}}">Open in map ({{shop.latitude}},{{shop.longitude}})</a>
 <button ng-click="annotate(shop)">Add factoid</button>
+</div>
+</div>
 -----
 
 Let's add some tests. Inside the `coffeetech.spec.js` file, add these

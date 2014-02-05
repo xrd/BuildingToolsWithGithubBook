@@ -653,7 +653,7 @@ We'll use this to allow simple search. Add the search feature to our
 
 [source,html]
 -----
-[filename=".", language="js", sha="1b6f1dc:support/js/index.html"]
+[filename=".", language="js", sha="576c668:support/js/index.html"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -670,14 +670,17 @@ anything except shops which match that, and we see the
 
 image::images/javascript-search-box.png[]
 
+
 ===== Adding data using pull-requests
 
 Now that we have a functioning application, let's allow people to add
-information themselves and help build our database. Just beneath the link to the 
+information themselves and help build our database. Just beneath the
+link to the map link, add a button which will allow us to annotate a
+coffeeshop with extra information. 
 
 [source,html]
 -----
-[filename=".", language="js", sha="2bc7122:support/js/index.html", lines="39..39"]
+[filename=".", language="js", sha="2bc7122:support/js/index.html", lines="37..41"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

@@ -4,7 +4,7 @@ describe( "GithubCtrl", function() {
     var gh  = undefined;
     var repo = undefined;
     var geo = undefined;
-    
+
     function generateMockGeolocationSupport( lat, lng ) {
         response = ( lat && lng ) ? { coords: { lat: lat, lng: lng } } : { coords: CITIES[0] };
         geo = { getCurrentPosition: function( success, failure ) {
@@ -13,10 +13,21 @@ describe( "GithubCtrl", function() {
         spyOn( geo, "getCurrentPosition" ).andCallThrough();
     }
 
+    var PR_ID = 12345;
     function generateMockRepositorySupport() {
-        repo = { read: function( branch, filename, cb ) {
-            cb( undefined, JSON.stringify( filename == "cities.json" ? CITIES : PORTLAND ) );
-        } };
+        repo = { 
+            fork: function( cb ) {
+                cb( true );
+            },
+            createPullRequest: function( pull, cb ) {
+                cb( false, PR_ID );
+            },
+            read: function( branch, filename, cb ) {
+                cb( undefined, JSON.stringify( filename == "cities.json" ? CITIES : PORTLAND ) );
+            } 
+        };
+        spyOn( repo, "fork" ).andCallThrough();
+        spyOn( repo, "createPullRequest" ).andCallThrough();
         spyOn( repo, "read" ).andCallThrough();
 
         gh = new Github({});
@@ -54,11 +65,18 @@ describe( "GithubCtrl", function() {
     });
 
     describe( "#annotate", function() {
-        
+        var $timeout;
+        beforeEach( inject( function( $injector ) {
+            $timeout = $injector.get( '$timeout' );
+            } ) );
+        it( "should annotate a shop", function() {
+            scope.annotate();
+            expect( repo.fork ).toHaveBeenCalled();
+            $timeout.flush();
+            expect( repo.read ).toHaveBeenCalled();
+            expect( repo.createPullRequest ).toHaveBeenCalled();
+        });
+
     });
 
-    describe( "#addNewShop", function() {
-        
-    });
-    
 });
