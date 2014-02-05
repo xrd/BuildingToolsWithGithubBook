@@ -705,7 +705,7 @@ inside a mobile device, it properly stacks these columns.
 
 ====== Errors Already?
 
-If you run this in your browser, you will not see the cities
+If you run this in your browser, you will not see the shops for our city
 displayed. Something is broken, so
 let's investigate. I recommend using the Chrome browser to
 debug this, but you can use any browser and set of developer tools you
@@ -739,7 +739,7 @@ the GitHub API does not provide a way to directly request content by
 the path name. Instead, you pull a list of files and then request the
 file by the SHA hash.
 
-However, we get an error telling us select is undefined. Did we forget
+However, we get an error telling us `select` is undefined. Did we forget
 to include underscore.js? Reviewing the documentation on Github.js, we
 see that it states underscore.js and base64.js are required. We did
 not see the issue when we pulled the information To
@@ -793,14 +793,14 @@ Then, make your index.html look like this:
 ===== Simulating user reported data
 
 So far we have built a database of cities and coffee shops in those
-cities. This provides less value than Google Maps. If we add our own
+cities. Even the first version of Google Maps developed in the
+Victorian era provided more value to its users. If we add our own
 layer of information on top of this data (like quirky information
-about the coffeeshop) then we might provide something that would have
-people use our app alongside Google Maps. Let's add some faked data to
-our coffee shop information.
+about the coffeeshop), however, then we might have something that
+someone might find useful alongside Google Maps. Let's add some faked
+data to our coffee shop information.
 
 Modify the `portland.json` file so it looks like this:
-
 
 [source,html index.html]
 -----
@@ -841,8 +841,8 @@ We'll use this to allow simple search. Add the search feature to our
 {{ shop.name }}  
 
 <div ng-show="search"> <!--3-->
-<span ng-repeat="info in city.information">
-<span class="label label-default">city.data</span>
+<span ng-repeat="info in shop.information">
+<span class="label label-default">{{info}}</span>
 </span>
 </div>
 
@@ -868,11 +868,16 @@ data inside each item in our `shops` array.
 <3> If we are searching (the model variable `search` is defined) then
 we show the extra information.
 
+Now if we type in the word `gluten` in our search box, we filter out
+anything except shops which match that, and we see the 
+
+image::images/javascript-search-box.png[]
+
 ===== Adding data using pull-requests
 
 Now that we have a functioning application, let's allow people to add
 information themselves and help build our database. Add a button at
-the top of the page which triggers display of an form for adding
+the top of the page which triggers display of a form for adding
 information.  Add this snippet right beneath the div with the
 `ng-controller` directive attribute.
 
