@@ -656,27 +656,9 @@ enough to what Google reports the distance to be.
 
 Now, let's expose the new data inside the `index.html` file like so:
 
-[source,html index.html]
+[source,html]
 -----
-<html>
-<head>
-<title>CoffeeTe.ch</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
-</head>
-<body ng-app="coffeetech">
-<div class="container" ng-controller="GithubCtrl" ng-init="init()">
-<div class="row" ng-repeat="city in cities"> # <1>
-<div class="col-md-6"> {{ city.name }} </div>  # <2>
-<div class="col-md-6"> {{ city.latitude }} {{ city.longitude }} </div> # <3>
-</div>
-</div>
-<script
-src="angular.js"></script>
-<script src="github.js"></script>
-<script src="coffeetech.js"></script>
-</body>
-</html>
+
 -----
 
 <1> `ng-repeat` is an AngularJS directive which iterates over an array
