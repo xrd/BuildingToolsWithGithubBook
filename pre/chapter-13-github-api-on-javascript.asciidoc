@@ -650,7 +650,7 @@ We'll use this to allow simple search. Add the search feature to our
 
 [source,html]
 -----
-[filename="../github.js.test", language="js", sha="e598b47:index.html"]
+[filename=".", language="js", sha="3c3540f:support/js/index.html"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
