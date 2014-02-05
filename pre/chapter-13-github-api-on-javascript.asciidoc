@@ -618,11 +618,14 @@ Then, make your index.html look like this:
 
 [source,html index.html]
 -----
-[filename=".", language="js", sha="862ea6f:support/js/index.html"]
+[filename=".", language="js", sha="87490dd:support/js/index.html"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
+
+Let's also add a link to Google Maps with these coordinates, to allow
+the user to generate driving directions and get to the coffee shop.
 
 ===== Simulating user reported data
 

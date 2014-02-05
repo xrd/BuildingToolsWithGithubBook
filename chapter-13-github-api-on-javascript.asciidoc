@@ -775,7 +775,9 @@ Then, make your index.html look like this:
 <div class="col-md-6">  
 {{ shop.name }}  
 </div>
-<div class="col-md-6"> {{ shop.latitude }} / {{ shop.longitude }} </div>
+<div class="col-md-6"> 
+<a target="ctmaps" href="http://maps.google.com/?q={{ shop.latitude }},{{ shop.longitude }}">View on map</a>
+ </div>
 </div>
 </div>
 
@@ -789,6 +791,9 @@ Then, make your index.html look like this:
 </html>
 
 -----
+
+Let's also add a link to Google Maps with these coordinates, to allow
+the user to generate driving directions and get to the coffee shop.
 
 ===== Simulating user reported data
 
