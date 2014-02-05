@@ -899,6 +899,140 @@ placeholder="Enter name of coffeeshop..." />
 <button ng-click="addNewCoffeeshop(addition)
 </form>
 </div>
+-----
+
+Let's add some tests. Inside the `coffeetech.spec.js` file, add these
+lines to the end.
+
+[source,javascript]
+-----
+describe( "GithubCtrl", function() {
+    var scope = undefined;
+    var ctrl = undefined;
+    var gh  = undefined;
+    var repo = undefined;
+    var geo = undefined;
+    
+    function generateMockGeolocationSupport( lat, lng ) {
+        response = ( lat && lng ) ? { coords: { lat: lat, lng: lng } } : { coords: CITIES[0] };
+        geo = { getCurrentPosition: function( success, failure ) {
+            success( response );
+        } };
+        spyOn( geo, "getCurrentPosition" ).andCallThrough();
+    }
+
+    function generateMockRepositorySupport() {
+        repo = { read: function( branch, filename, cb ) {
+            cb( undefined, JSON.stringify( filename == "cities.json" ? CITIES : PORTLAND ) );
+        } };
+        spyOn( repo, "read" ).andCallThrough();
+
+        gh = new Github({});
+        spyOn( gh, "getRepo" ).andCallFake( function() {
+            return repo;
+        } );
+    }
+
+    beforeEach( module( "coffeetech" ) );
+
+    beforeEach( inject( function ($controller, $rootScope ) {
+            generateMockGeolocationSupport();
+            generateMockRepositorySupport();
+            scope = $rootScope.$new();
+            ctrl = $controller( "GithubCtrl", { $scope: scope, Github: gh, Geo: geo } );
+        } ) 
+    );
+
+    describe( "#init", function() {
+        it( "should initialize, grabbing current city", function() {
+            scope.init();
+            expect( geo.getCurrentPosition ).toHaveBeenCalled();
+            expect( gh.getRepo ).toHaveBeenCalled();
+            expect( repo.read ).toHaveBeenCalled();
+            expect( scope.cities.length ).toEqual( 2 );
+            expect( scope.city.name ).toEqual( "portland" );
+            expect( scope.shops.length ).toEqual( 3 );
+        });
+    });
+
+    describe( "#calculateDistance", function() {
+        it( "should find distance between two points", function() {
+            expect( parseInt( scope.calculateDistance( 14.599512, 120.98422, 10.315699, 123.885437 ) * 0.621371 ) ).toEqual( 354 );
+        });
+    });
+    
+
+    // describe( "#getRepos", function() {
+    //     it( "should get the repository contents", function() {
+    //         scope.init();
+    //         expect( gh.getRepo ).toHaveBeenCalled();
+    //         expect( repo.read ).toHaveBeenCalled();
+    //         expect( scope.cities[0].name ).toEqual( "portland" );
+    //     });
+    // });
+
+    // describe( "#getCity", function() {
+    //     var geo = undefined;
+    //     var window = undefined;
+
+    //     describe( "#portland", function() {
+    //         beforeEach( inject( function( $controller, $rootScope ) {
+    //             window =generateMockGeolocationSupport();
+    //             ctrl = $controller( "GithubCtrl", { $scope: scope
+    //                                                 , Github: gh
+    //                                                 , $window: window
+    //                                               } );
+    //         } ) );
+            
+    //         it( "should find out if a city matches", function() {
+    //             scope.init();
+    //             scope.getCurrentLocation();
+    //             expect( geo.getCurrentPosition ).toHaveBeenCalled();
+    //             scope.detectCurrentCity();
+    //             expect( scope.city.name ).toEqual( "portland" );
+    //         });
+
+    //     });
+
+    //     describe( "#seattle", function() {
+    //         beforeEach( inject( function( $controller, $rootScope ) {
+    //             window =generateMockGeolocationSupport();
+    //             ctrl = $controller( "GithubCtrl", { $scope: scope
+    //                                                 , Github: gh
+    //                                                 , $window: window
+    //                                               } );
+    //         } ) );
+            
+    //         it( "should find out if a city matches", function() {
+    //             scope.init();
+    //             scope.getCurrentLocation();
+    //             expect( geo.getCurrentPosition ).toHaveBeenCalled();
+    //             scope.detectCurrentCity();
+    //             expect( scope.city.name ).toEqual( "seattle" );
+    //         });
+            
+    //     });
+
+    //     describe( "#notfound", function() {
+    //         beforeEach( inject( function( $controller, $rootScope ) {
+    //             window =generateMockGeolocationSupport( 50, 100 );
+    //             ctrl = $controller( "GithubCtrl", { $scope: scope
+    //                                                 , Github: gh
+    //                                                 , $window: window
+    //                                               } );
+    //         } ) );
+            
+    //         it( "should find out if a city matches", function() {
+    //             scope.init();
+    //             scope.getCurrentLocation();
+    //             expect( geo.getCurrentPosition ).toHaveBeenCalled();
+    //             scope.detectCurrentCity();
+    //             expect( scope.city ).toEqual( undefined );
+    //         });
+            
+    //     });
+//});
+});
 
 -----
 
@@ -906,10 +1040,50 @@ Add a few methods to the end of our coffeetech.js file
 
 [source,javascript coffeetech.js]
 -----
-$scope.addNewCoffeeshop( addition ) = function() {
-  // Make a fork of this repository, and then add data to it.                         
-  github.
-}
+<html>
+<head>
+<title>CoffeeTe.ch</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
+</head>
+<body ng-app="coffeetech">
+
+<div class="container" ng-controller="GithubCtrl" ng-init="init()">
+
+<h1>CoffeeTe.ch</h1>
+
+<input style="width: 20em;" ng-model="search" placeholder="Enter search parameters..."/> <!--1-->
+
+<h3 ng-show="city">Current city: {{city.name}}</h3>
+
+<div class="row=">
+<div class="col-md-6"><h4>Shop Name</h4> </div>
+<div class="col-md-6"><h4>Lat/Lng</h4> </div>
+</div>
+<div class="row" ng-repeat="shop in shops | filter:search"> <!--2-->
+<div class="col-md-6">  
+{{ shop.name }}  
+
+<div ng-show="search"> <!--3-->
+<span ng-repeat="info in shop.information">
+<span class="label label-default">{{info}}</span>
+</span>
+</div>
+
+</div>
+<div class="col-md-6"> {{ shop.latitude }} / {{ shop.longitude }} </div>
+</div>
+</div>
+
+<script src="angular.js"></script>
+<script src="underscore-min.js"></script>
+<script src="base64.min.js"></script>
+<script src="github.js"></script>
+<script src="coffeetech.js"></script>
+
+</body>
+</html>
+
 -----
 
 ===== Safely implementing login

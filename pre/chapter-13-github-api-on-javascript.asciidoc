@@ -693,17 +693,27 @@ placeholder="Enter name of coffeeshop..." />
 <button ng-click="addNewCoffeeshop(addition)
 </form>
 </div>
+-----
 
+Let's add some tests. Inside the `coffeetech.spec.js` file, add these
+lines to the end.
+
+[source,javascript]
+-----
+[filename=".", language="js", sha="1b6f1dc:support/js/coffeetech.spec.js"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 Add a few methods to the end of our coffeetech.js file
 
 [source,javascript coffeetech.js]
 -----
-$scope.addNewCoffeeshop( addition ) = function() {
-  // Make a fork of this repository, and then add data to it.                         
-  github.
-}
+[filename=".", language="js", sha="1b6f1dc:support/js/index.html"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 ===== Safely implementing login
