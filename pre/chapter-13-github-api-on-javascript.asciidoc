@@ -552,7 +552,7 @@ Now, let's expose the new data inside the `index.html` file like so:
 
 [source,html]
 -----
-[filename=".", language="js", sha=":support/js/index.html"]
+[filename=".", language="js", sha="5d0aaa7:support/js/index.html"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
