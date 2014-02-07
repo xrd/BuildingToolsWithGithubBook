@@ -2,6 +2,7 @@ describe( "GithubCtrl", function() {
     var scope = undefined;
     var ctrl = undefined;
     var gh  = undefined;
+    var ghs = undefined;
     var repo = undefined;
     var geo = undefined;
 
@@ -13,18 +14,19 @@ describe( "GithubCtrl", function() {
         spyOn( geo, "getCurrentPosition" ).andCallThrough();
     }
 
-    var prompt = undefined;
+    var prompter = undefined;
     function generateMockPrompt() {
-        prompt = { prompt: function() { return "ABC" } };
-        spyOn( prompt, "prompt" ).andCallThrough();
+        prompter = { prompt: function() { return "ABC" } };
+        spyOn( prompter, "prompt" ).andCallThrough();
     }
 
     var PR_ID = 12345;
     function generateMockRepositorySupport() {
         repo = { 
             fork: function( cb ) {
-                cb( true );
+                cb( false );
             },
+            write: function( branch, filename, data
             createPullRequest: function( pull, cb ) {
                 cb( false, PR_ID );
             },
@@ -36,10 +38,11 @@ describe( "GithubCtrl", function() {
         spyOn( repo, "createPullRequest" ).andCallThrough();
         spyOn( repo, "read" ).andCallThrough();
 
-        gh = new Github({});
+        gh = { getRepo: function() {} };
         spyOn( gh, "getRepo" ).andCallFake( function() {
             return repo;
         } );
+        ghs = { create: function() { return gh; } };
     }
 
     beforeEach( module( "coffeetech" ) );
@@ -49,9 +52,8 @@ describe( "GithubCtrl", function() {
         generateMockRepositorySupport();
         generateMockPrompt();
         scope = $rootScope.$new();
-        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: gh, Geo: geo, Prompt: prompt } );
-    } ) 
-    );
+        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, Geo: geo, Prompt: prompter } );
+    } ) );
 
     describe( "#init", function() {
         it( "should initialize, grabbing current city", function() {
@@ -77,12 +79,24 @@ describe( "GithubCtrl", function() {
             $timeout = $injector.get( '$timeout' );
             } ) );
         it( "should annotate a shop", function() {
-            scope.annotate();
-            expect( prompt.prompt.calls.length ).toEqual( 3 );
+            var shop = { name: "A coffeeshop" }
+            scope.annotate( shop );
+            expect( scope.shop_to_annotate ).toBeTruthy();
+            expect( prompter.prompt.calls.length ).toEqual( 3 );
+            expect( scope.username ).not.toBeFalsy();
+            expect( scope.annotation ).not.toBeFalsy();
+
             expect( repo.fork ).toHaveBeenCalled();
+            expect( scope.forked_repo ).toBeTruthy();
+            expect( scope.waiting.state ).toEqual( "forking" );
             $timeout.flush();
+
             expect( repo.read ).toHaveBeenCalled();
             expect( repo.createPullRequest ).toHaveBeenCalled();
+            expect( scope.waiting.state ).toEqual( "annotated" );
+            $timeout.flush();
+
+            expect( scope.waiting.state ).toBeFalsy();
         });
 
     });
