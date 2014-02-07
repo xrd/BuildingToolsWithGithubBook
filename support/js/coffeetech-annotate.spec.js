@@ -58,11 +58,12 @@ describe( "GithubCtrl", function() {
             expect( scope.annotation ).not.toBeFalsy();
 
             expect( repo.fork ).toHaveBeenCalled();
-            expect( scope.forked_repo ).toBeTruthy();
             expect( scope.waiting.state ).toEqual( "forking" );
             $timeout.flush();
 
+            expect( scope.forkedRepo ).toBeTruthy();
             expect( repo.read ).toHaveBeenCalled();
+            expect( repo.write ).toHaveBeenCalled();
             expect( repo.createPullRequest ).toHaveBeenCalled();
             expect( scope.waiting.state ).toEqual( "annotated" );
             $timeout.flush();

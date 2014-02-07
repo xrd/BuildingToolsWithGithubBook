@@ -111,7 +111,8 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout'
     };
 
     $scope.annotateAfterForkCompletes = function() {
-        $scope.forked_repo.read( "gh-pages", "cities.json", function(err, data) { 
+        $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" );
+        $scope.forkedRepo.read( "gh-pages", "cities.json", function(err, data) { 
             if( err ) {
                 $timeout( $scope.annotateAfterForkCompletes, 10000 );
             }
@@ -119,7 +120,7 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout'
                 $scope.notifyWaiting( "annotating", "Annotating data on GitHub" );
                 // Write the new data into our repository
                 $scope.appendQuirkToShop();
-                $scope.forked_repo.write('gh-pages', $scope.city + '.json', JSON.stringify( $scope.shops ), 'Added my quirky information', function(err) {
+                $scope.forkedRepo.write('gh-pages', $scope.city + '.json', JSON.stringify( $scope.shops ), 'Added my quirky information', function(err) {
                     if( !err ) {
                         // Annotate our data using a pull request
                         var pull = {
@@ -128,7 +129,7 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout'
                             base: "gh-pages",
                             head: $scope.username + ":" + "gh-pages"
                         };
-                        $scope.forked_repo.createPullRequest( pull, function( err, pullRequest ) {
+                        $scope.forkedRepo.createPullRequest( pull, function( err, pullRequest ) {
                             if( !err ) {
                                 $scope.notifyWaiting( "annotated", "Successfully sent annotation request" );
                                 $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 );
@@ -147,12 +148,12 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout'
     
     $scope.annotate = function( shop ) {
         $scope.shopToAnnotate = shop;
-        $scope.username = $window.prompt( "Enter your github username" )
+        $scope.username = $window.prompt( "Enter your github username (not email!)" )
         pass = $window.prompt( "Enter your github password" )
         $scope.annotation = $window.prompt( "Enter data to add" );
         gh = ghs.create( $scope.username, pass );
-        $scope.forked_repo = gh.getRepo( "xrd", "spa.coffeete.ch" );
-        $scope.forked_repo.fork( function( err ) {
+        toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
+        toFork.fork( function( err ) {
             if( !err ) {
                 $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
                 $timeout( $scope.annotateAfterForkCompletes, 10000 );

@@ -893,9 +893,8 @@ Let's add some tests. Add another file called
 -----
 describe( "GithubCtrl", function() {
 
-    var scope = undefined, gh = undefined, repo = undefined;
+    var scope = undefined, gh = undefined, repo = undefined, prompter = undefined;
 
-    var prompter = undefined;
     function generateMockPrompt() {
         prompter = { prompt: function() { return "ABC" } };
         spyOn( prompter, "prompt" ).andCallThrough();
@@ -975,7 +974,7 @@ our mock Github object: `fork`, `write` and
 `createPullRequest`. We test that these are called. According to the
 documentation for `fork` in the Github.js library, this method can
 take a little time to return (as long as it takes for GitHub to
-complete our request, which is nondeterministic), so we need to set a
+complete our fork request, which is nondeterministic), so we need to set a
 timeout in our app and query for the new repository. This explains the
 `$timeout.flush()`, a mock of the timeout browser call which
 we can manually reconcile. We also added a mock prompt. We will be prompting the
@@ -983,19 +982,19 @@ user for username, password and the annotating data, and we will use
 the native browser prompt mechanism to do this. If this sounds like an
 ugly way to do it, don't fret, we'll find a better way later.
 
-After we understand a little about the facilities of the GitHub API
-and the Github.js library, here are the steps we will take to add data
-to our database. It will all be built on the ubiquitous pull-request,
-of course!
+Now that we are more familiar with the capabilities and limitations of
+the GitHub API and the Github.js library, here are the steps we will
+take to add data to our database. It will all be built on the
+ubiquitous pull-request, of course!
 
 * Call our `annotate` method once we click the annotate button next to
   a shop.
 * The user will be prompted for a username, password and the data
-  which they want to add to the shop.
-* After these calls, we need to save the username and annotation data
-  to make sure we have them when we return from asynchronous calls
-* We then call `fork` on the GitHub.js library and fork the
-  repository.
+  which they want to add to the shop. We'll use the credentials to
+  create a new Github object within the Github.js library.
+* We store the username and annotation data in the scope
+  to make sure we have them when we return from asynchronous calls.
+* We then call `fork` on the repository.
 * We set a repeating timeout to make sure that the repository has been
   created. In our test we flush the timeout mock to simulate the
   completion of the timeout synchronously.
@@ -1003,9 +1002,12 @@ of course!
   waiting for the fork we will indicate the state is `forking`. When
   done with forking we will annotate the data, so we will indicate
   `annotating` and `annotated` as the stages before and after this
-  annotation.
-* Once we have forked and verified the fork, we will create a pull
-  request with the new data. 
+  annotation. We can keep the user notified with these variables
+  inside our HTML.
+* Once we have forked and verified the fork, we will write to our
+  fork. 
+* After we have written to our fork with the new data, we create a pull
+  request to request this data gets added to the original repository.
 * After waiting for a bit to notify the user that our annotation
   request has completed, we clear the status.
 
