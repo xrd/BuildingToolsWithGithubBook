@@ -772,7 +772,7 @@ Add these lines to the bottom of the file, but before the last closing braces.
 [source,javascript]
 -----
   ...
-[filename=".", language="js", sha="17e7ea3:support/js/coffeetech.js" lines="92..164"]
+[filename=".", language="js", sha="25533fd:support/js/coffeetech.js" lines="92..164"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -796,14 +796,24 @@ original repository, as we issues pull requests against that.
 <6> If the pull request succeeds, we update our status messages and
 are done.
 
+Let's add the status message into our HTML.
 
-[source,javascript coffeetech.js]
+[source,javascript]
 -----
-[filename=".", language="js", sha="1b6f1dc:support/js/index.html"]
+[filename=".", language="js", sha="25533fd:support/js/index.html" lines="23..26"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
+
+When someone adds data to a shop, the owner of the original repository
+gets a pull request notification on GitHub.
+
+image::images/javascript-pull-request.png[]
+
+As the owner of this repository and manager of this data, I like this
+as a way to manage contributions. All the tools for managing and
+reviewing changes are right there in GitHub.
 
 ===== Safely implementing login
 
