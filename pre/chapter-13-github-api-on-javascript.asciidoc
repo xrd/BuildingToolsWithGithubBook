@@ -767,19 +767,34 @@ annotate a shop FAILED
 -----
 
 Now, let's implement this functionality in our `coffeetech.js` file.
+Add these lines to the bottom of the file, but before the last closing braces.
 
-NOTES:
+[source,javascript]
+-----
+  ...
+[filename=".", language="js", sha="17e7ea3:support/js/coffeetech.js" lines="92..164"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+  ...
+-----
 
-* Just stringify the data in our $scope.shops. We just modified one of
-  the shops by adding to the array it contains. That will update the
-  parent object and then we can stringify it and send it back to
-  GitHub. Since we are storing JSON inside our GitHub as our
-  "database" we don't need to do anything other than submit new JSON
-  and GitHub will give us a pretty printed diff for the pull-request.
-* I originally accidentally misread the documentation for `fork()`
-  which specifies the return value inside the callback is an error
-  code. In our original test we returned true, so we need to adjust
-  that to return false (meaning no error) inside our mock callback.
+<1> We create a new Github object with the username and password
+provided. We leave it as an exercise of the reader to contend with
+mistyped or incorrect credentials.
+<2> Once we have forked the repository, we schedule a timeout in 10
+seconds which will check to make sure our request completed.
+<3> When we re-enter the timeout callback, we setup a repository
+object for our new forked repository and try to request some content
+from it. If this succeeds, we know the fork completed.
+<4> With the fork ready, we write back into the repository with our
+new addition. We just need to take the existing objects we have loaded
+and add an annotate to the shop, then use `JSON.stringify` to turn it
+back into a JSON string.
+<5> To make a pull request, we create a repository object of the
+original repository, as we issues pull requests against that.
+<6> If the pull request succeeds, we update our status messages and
+are done.
 
 
 [source,javascript coffeetech.js]

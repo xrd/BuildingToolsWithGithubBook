@@ -1026,19 +1026,103 @@ annotate a shop FAILED
 -----
 
 Now, let's implement this functionality in our `coffeetech.js` file.
+Add these lines to the bottom of the file, but before the last closing braces.
 
-NOTES:
+[source,javascript]
+-----
+  ...
 
-* Just stringify the data in our $scope.shops. We just modified one of
-  the shops by adding to the array it contains. That will update the
-  parent object and then we can stringify it and send it back to
-  GitHub. Since we are storing JSON inside our GitHub as our
-  "database" we don't need to do anything other than submit new JSON
-  and GitHub will give us a pretty printed diff for the pull-request.
-* I originally accidentally misread the documentation for `fork()`
-  which specifies the return value inside the callback is an error
-  code. In our original test we returned true, so we need to adjust
-  that to return false (meaning no error) inside our mock callback.
+    $scope.notifyWaiting = function( state, msg ) {
+        if( state ) {
+            $scope.waiting = {};
+            $scope.waiting.state = state;
+            $scope.waiting.msg = msg;
+        }
+        else {
+            $scope.waiting = undefined;
+        }
+    }
+
+    $scope.appendQuirkToShop = function() {
+        if( undefined == $scope.shopToAnnotate.information ) {
+            $scope.shopToAnnotate.information = [];
+        }
+        $scope.shopToAnnotate.information.push( $scope.annotation );
+    };
+
+    $scope.annotateAfterForkCompletes = function() {
+        $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" );
+        $scope.forkedRepo.read( "gh-pages", "cities.json", function(err, data) { 
+            if( err ) {
+                $timeout( $scope.annotateAfterForkCompletes, 10000 );
+            }
+            else {
+                $scope.notifyWaiting( "annotating", "Annotating data on GitHub" );
+                // Write the new data into our repository
+                $scope.appendQuirkToShop();
+                $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', JSON.stringify( $scope.shops ), 'Added my quirky information', function(err) {
+                    if( !err ) {
+                        // Annotate our data using a pull request
+                        var pull = {
+                            title: "Adding quirky information to " + $scope.shopToAnnotate.name,
+                            body: "Created by :" + $scope.username,
+                            base: "gh-pages",
+                            head: $scope.username + ":" + "gh-pages"
+                        };
+                        target = gh.getRepo( "xrd", "spa.coffeete.ch" );
+                        target.createPullRequest( pull, function( err, pullRequest ) {
+                            if( !err ) {
+                                $scope.notifyWaiting( "annotated", "Successfully sent annotation request" );
+                                $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 );
+                                $scope.$apply();
+                            }
+                        } );
+                    }
+                    $scope.$apply();
+                });
+            }
+            $scope.$apply();
+        } );
+        
+        $scope.notifyWaiting( "annotated" );
+    };
+    
+    $scope.annotate = function( shop ) {
+        $scope.shopToAnnotate = shop;
+        $scope.username = $window.prompt( "Enter your github username (not email!)" )
+        pass = $window.prompt( "Enter your github password" )
+        $scope.annotation = $window.prompt( "Enter data to add" );
+        gh = ghs.create( $scope.username, pass );
+        toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
+        toFork.fork( function( err ) {
+            if( !err ) {
+                $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
+                $timeout( $scope.annotateAfterForkCompletes, 10000 );
+                $scope.$apply();
+            }
+        } );
+
+    };
+    
+  ...
+-----
+
+<1> We create a new Github object with the username and password
+provided. We leave it as an exercise of the reader to contend with
+mistyped or incorrect credentials.
+<2> Once we have forked the repository, we schedule a timeout in 10
+seconds which will check to make sure our request completed.
+<3> When we re-enter the timeout callback, we setup a repository
+object for our new forked repository and try to request some content
+from it. If this succeeds, we know the fork completed.
+<4> With the fork ready, we write back into the repository with our
+new addition. We just need to take the existing objects we have loaded
+and add an annotate to the shop, then use `JSON.stringify` to turn it
+back into a JSON string.
+<5> To make a pull request, we create a repository object of the
+original repository, as we issues pull requests against that.
+<6> If the pull request succeeds, we update our status messages and
+are done.
 
 
 [source,javascript coffeetech.js]

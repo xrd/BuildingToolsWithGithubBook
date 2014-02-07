@@ -1,6 +1,6 @@
 var mod = angular.module( 'coffeetech', [] );
 
-mod.factory( 'Github', function() { // # <1>
+mod.factory( 'Github', function() { 
     return { create: function(username, password) { 
         return new Github({ username: username, 
                             password: password, 
@@ -8,7 +8,7 @@ mod.factory( 'Github', function() { // # <1>
            };
 });
 
-mod.factory( 'Geo', [ '$window', function( $window ) { // # <2>
+mod.factory( 'Geo', [ '$window', function( $window ) { 
     return $window.navigator.geolocation;
 } ] );
 
@@ -20,18 +20,18 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout'
             $scope.latitude = position.coords.latitude;
             $scope.longitude = position.coords.longitude;
             var gh = ghs.create();
-            $scope.repo = gh.getRepo( "xrd", "spa.coffeete.ch" ); // # <3>
-            $scope.repo.read( "gh-pages", "cities.json", function(err, data) { // # <4>
-                $scope.cities = JSON.parse( data ); // # <5>
+            $scope.repo = gh.getRepo( "xrd", "spa.coffeete.ch" ); 
+            $scope.repo.read( "gh-pages", "cities.json", function(err, data) { 
+                $scope.cities = JSON.parse( data ); 
                 // Determine our current city
-                $scope.detectCurrentCity(); // # <6>
+                $scope.detectCurrentCity(); 
 
                 // If we have a city, get it
                 if( $scope.city ) {
                     $scope.retrieveCity();
                 }
 
-                $scope.$apply(); // # <7>
+                $scope.$apply(); 
             });
         });
     };
@@ -92,6 +92,60 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout'
         console.log( "Inside failure" );
     };
 
+    $scope.annotate = function( shop ) {
+        $scope.shopToAnnotate = shop;
+        $scope.username = $window.prompt( "Enter your github username (not email!)" )
+        pass = $window.prompt( "Enter your github password" )
+        $scope.annotation = $window.prompt( "Enter data to add" );
+        gh = ghs.create( $scope.username, pass ); // <1>
+        toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
+        toFork.fork( function( err ) {
+            if( !err ) {
+                $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
+                $timeout( $scope.annotateAfterForkCompletes, 10000 ); // <2>
+                $scope.$apply();
+            }
+        } );
+
+    };
+
+    $scope.annotateAfterForkCompletes = function() {
+        $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" ); // <3>
+        $scope.forkedRepo.read( "gh-pages", "cities.json", function(err, data) { 
+            if( err ) {
+                $timeout( $scope.annotateAfterForkCompletes, 10000 );
+            }
+            else {
+                $scope.notifyWaiting( "annotating", "Annotating data on GitHub" );
+                // Write the new data into our repository
+                $scope.appendQuirkToShop();
+                $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', JSON.stringify( $scope.shops ), 'Added my quirky information', function(err) { // <4>
+                    if( !err ) {
+                        // Annotate our data using a pull request
+                        var pull = {
+                            title: "Adding quirky information to " + $scope.shopToAnnotate.name,
+                            body: "Created by :" + $scope.username,
+                            base: "gh-pages",
+                            head: $scope.username + ":" + "gh-pages"
+                        };
+                        target = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <5>
+                        target.createPullRequest( pull, function( err, pullRequest ) {
+                            if( !err ) { // <7>
+                                $scope.notifyWaiting( "annotated", "Successfully sent annotation request" );
+                                $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 );
+                                $scope.$apply();
+                            }
+                        } );
+                    }
+                    $scope.$apply();
+                });
+            }
+            $scope.$apply();
+        } );
+        
+        $scope.notifyWaiting( "annotated" );
+    };    
+
     $scope.notifyWaiting = function( state, msg ) {
         if( state ) {
             $scope.waiting = {};
@@ -110,59 +164,6 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout'
         $scope.shopToAnnotate.information.push( $scope.annotation );
     };
 
-    $scope.annotateAfterForkCompletes = function() {
-        $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" );
-        $scope.forkedRepo.read( "gh-pages", "cities.json", function(err, data) { 
-            if( err ) {
-                $timeout( $scope.annotateAfterForkCompletes, 10000 );
-            }
-            else {
-                $scope.notifyWaiting( "annotating", "Annotating data on GitHub" );
-                // Write the new data into our repository
-                $scope.appendQuirkToShop();
-                $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', JSON.stringify( $scope.shops ), 'Added my quirky information', function(err) {
-                    if( !err ) {
-                        // Annotate our data using a pull request
-                        var pull = {
-                            title: "Adding quirky information to " + $scope.shopToAnnotate.name,
-                            body: "Created by :" + $scope.username,
-                            base: "gh-pages",
-                            head: $scope.username + ":" + "gh-pages"
-                        };
-                        target = gh.getRepo( "xrd", "spa.coffeete.ch" );
-                        target.createPullRequest( pull, function( err, pullRequest ) {
-                            if( !err ) {
-                                $scope.notifyWaiting( "annotated", "Successfully sent annotation request" );
-                                $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 );
-                                $scope.$apply();
-                            }
-                        } );
-                    }
-                    $scope.$apply();
-                });
-            }
-            $scope.$apply();
-        } );
-        
-        $scope.notifyWaiting( "annotated" );
-    };
-    
-    $scope.annotate = function( shop ) {
-        $scope.shopToAnnotate = shop;
-        $scope.username = $window.prompt( "Enter your github username (not email!)" )
-        pass = $window.prompt( "Enter your github password" )
-        $scope.annotation = $window.prompt( "Enter data to add" );
-        gh = ghs.create( $scope.username, pass );
-        toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
-        toFork.fork( function( err ) {
-            if( !err ) {
-                $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
-                $timeout( $scope.annotateAfterForkCompletes, 10000 );
-                $scope.$apply();
-            }
-        } );
-
-    };
     
 } ] );
 
