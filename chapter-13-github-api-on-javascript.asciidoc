@@ -1233,7 +1233,8 @@ connect(
 
 ===== Firebase App
 
-By far the simplest option.
+By far the simplest and safest option. Firebase offers AngularJS
+bindings and offer an integrated GitHub authentication component. 
 
 image::images/javascript-firebase.png[]
 
