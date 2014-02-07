@@ -1,8 +1,7 @@
 describe( "GithubCtrl", function() {
 
-    var scope = undefined, gh = undefined, repo = undefined;
+    var scope = undefined, gh = undefined, repo = undefined, prompter = undefined;
 
-    var prompter = undefined;
     function generateMockPrompt() {
         prompter = { prompt: function() { return "ABC" } };
         spyOn( prompter, "prompt" ).andCallThrough();

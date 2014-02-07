@@ -874,6 +874,9 @@ webapp using the Github.js library. This requires that we ask the
 users to login, so we will prompt them for their username and
 password, as well as the data they want to annotate.
 
+The implementation we will use starts with adding an "annotate" button
+to our HTML. 
+
 [source,html]
 -----
 <div class="col-md-6">
@@ -890,7 +893,7 @@ Let's add some tests. Add another file called
 -----
 describe( "GithubCtrl", function() {
 
-    var scope = undefined;
+    var scope = undefined, gh = undefined, repo = undefined;
 
     var prompter = undefined;
     function generateMockPrompt() {
