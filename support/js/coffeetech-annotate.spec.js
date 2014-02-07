@@ -1,6 +1,6 @@
 describe( "GithubCtrl", function() {
 
-    var scope = undefined;
+    var scope = undefined, gh = undefined, repo = undefined;
 
     var prompter = undefined;
     function generateMockPrompt() {
