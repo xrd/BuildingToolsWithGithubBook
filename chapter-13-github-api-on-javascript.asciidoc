@@ -912,57 +912,18 @@ which will test our annotate function.
 -----
     ...
 
-    function generateMockPrompt() {
-        prompt = { prompt: function() { return "ABC" } };
-        spyOn( prompt, "prompt" ).andCallThrough();
-    }
-
-    var PR_ID = 12345;
-    function generateMockRepositorySupport() {
-        repo = { 
-            fork: function( cb ) {
-                cb( true );
-            },
-            createPullRequest: function( pull, cb ) {
-                cb( false, PR_ID );
-            },
-            read: function( branch, filename, cb ) {
-                cb( undefined, JSON.stringify( filename == "cities.json" ? CITIES : PORTLAND ) );
-            } 
-        };
-        spyOn( repo, "fork" ).andCallThrough();
-        spyOn( repo, "createPullRequest" ).andCallThrough();
-        spyOn( repo, "read" ).andCallThrough();
+PLACEHOLDER TEXT, UPDATE WITH CORRECT SHA HASH
     ....
 
-        generateMockRepositorySupport();
-        generateMockPrompt();
-        scope = $rootScope.$new();
-        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: gh, Geo: geo, Prompt: prompt } );
-    } ) 
-    );
+PLACEHOLDER TEXT, UPDATE WITH CORRECT SHA HASH
 
     ...
 
-    });
-
-    describe( "#annotate", function() {
-        var $timeout;
-        beforeEach( inject( function( $injector ) {
-            $timeout = $injector.get( '$timeout' );
-            } ) );
-        it( "should annotate a shop", function() {
-            scope.annotate();
-            expect( prompt.prompt.calls.length ).toEqual( 3 );
-            expect( repo.fork ).toHaveBeenCalled();
-            $timeout.flush();
-            expect( repo.read ).toHaveBeenCalled();
-            expect( repo.createPullRequest ).toHaveBeenCalled();
-        });
-
+PLACEHOLDER TEXT, UPDATE WITH CORRECT SHA HASH
 -----
 
-We added two new methods to our mock Github object: `fork` and
+
+We added three new methods to our mock Github object: `fork`, `write` and
 `createPullRequest`. We test that these are called. According to the
 documentation for `fork` in the Github.js library, this method can
 take a little time to return (as long as it takes for GitHub to
@@ -1016,6 +977,7 @@ annotate a shop FAILED
 Now, let's implement this functionality in our `coffeetech.js` file.
 
 NOTES:
+
 * Just stringify the data in our $scope.shops. We just modified one of
   the shops by adding to the array it contains. That will update the
   parent object and then we can stringify it and send it back to

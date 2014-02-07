@@ -26,7 +26,9 @@ describe( "GithubCtrl", function() {
             fork: function( cb ) {
                 cb( false );
             },
-            write: function( branch, filename, data
+            write: function( branch, filename, data, commit_msg, cb ) {
+                cb( false );
+            },
             createPullRequest: function( pull, cb ) {
                 cb( false, PR_ID );
             },
@@ -35,6 +37,7 @@ describe( "GithubCtrl", function() {
             } 
         };
         spyOn( repo, "fork" ).andCallThrough();
+        spyOn( repo, "write" ).andCallThrough();
         spyOn( repo, "createPullRequest" ).andCallThrough();
         spyOn( repo, "read" ).andCallThrough();
 
@@ -81,7 +84,7 @@ describe( "GithubCtrl", function() {
         it( "should annotate a shop", function() {
             var shop = { name: "A coffeeshop" }
             scope.annotate( shop );
-            expect( scope.shop_to_annotate ).toBeTruthy();
+            expect( scope.shopToAnnotate ).toBeTruthy();
             expect( prompter.prompt.calls.length ).toEqual( 3 );
             expect( scope.username ).not.toBeFalsy();
             expect( scope.annotation ).not.toBeFalsy();
@@ -96,7 +99,7 @@ describe( "GithubCtrl", function() {
             expect( scope.waiting.state ).toEqual( "annotated" );
             $timeout.flush();
 
-            expect( scope.waiting.state ).toBeFalsy();
+            expect( scope.waiting ).toBeFalsy();
         });
 
     });

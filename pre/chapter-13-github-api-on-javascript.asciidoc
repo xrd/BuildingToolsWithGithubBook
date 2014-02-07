@@ -720,7 +720,8 @@ To be replaced
 snippet~~~~~
 -----
 
-We added two new methods to our mock Github object: `fork` and
+
+We added three new methods to our mock Github object: `fork`, `write` and
 `createPullRequest`. We test that these are called. According to the
 documentation for `fork` in the Github.js library, this method can
 take a little time to return (as long as it takes for GitHub to
@@ -774,6 +775,7 @@ annotate a shop FAILED
 Now, let's implement this functionality in our `coffeetech.js` file.
 
 NOTES:
+
 * Just stringify the data in our $scope.shops. We just modified one of
   the shops by adding to the array it contains. That will update the
   parent object and then we can stringify it and send it back to
