@@ -747,7 +747,7 @@ include these, run these commands from the console:
 
 [source,bash]
 $ wget http://underscorejs.org/underscore-min.js
-$ wget https://raw.github.com/dankogai/js-base64/master/base64.min.js
+$ wget https://raw.github.com/dankogai/js-base64/master/base64.js
 
 Then, make your index.html look like this:
 

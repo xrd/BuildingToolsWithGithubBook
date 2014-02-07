@@ -14,12 +14,6 @@ describe( "GithubCtrl", function() {
         spyOn( geo, "getCurrentPosition" ).andCallThrough();
     }
 
-    var prompter = undefined;
-    function generateMockPrompt() {
-        prompter = { prompt: function() { return "ABC" } };
-        spyOn( prompter, "prompt" ).andCallThrough();
-    }
-
     var PR_ID = 12345;
     function generateMockRepositorySupport() {
         repo = { 
@@ -53,9 +47,8 @@ describe( "GithubCtrl", function() {
     beforeEach( inject( function ($controller, $rootScope ) {
         generateMockGeolocationSupport();
         generateMockRepositorySupport();
-        generateMockPrompt();
         scope = $rootScope.$new();
-        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, Geo: geo, Prompt: prompter } );
+        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, Geo: geo } );
     } ) );
 
     describe( "#init", function() {
@@ -74,34 +67,6 @@ describe( "GithubCtrl", function() {
         it( "should find distance between two points", function() {
             expect( parseInt( scope.calculateDistance( 14.599512, 120.98422, 10.315699, 123.885437 ) * 0.621371 ) ).toEqual( 354 );
         });
-    });
-
-    describe( "#annotate", function() {
-        var $timeout;
-        beforeEach( inject( function( $injector ) {
-            $timeout = $injector.get( '$timeout' );
-            } ) );
-        it( "should annotate a shop", function() {
-            var shop = { name: "A coffeeshop" }
-            scope.annotate( shop );
-            expect( scope.shopToAnnotate ).toBeTruthy();
-            expect( prompter.prompt.calls.length ).toEqual( 3 );
-            expect( scope.username ).not.toBeFalsy();
-            expect( scope.annotation ).not.toBeFalsy();
-
-            expect( repo.fork ).toHaveBeenCalled();
-            expect( scope.forked_repo ).toBeTruthy();
-            expect( scope.waiting.state ).toEqual( "forking" );
-            $timeout.flush();
-
-            expect( repo.read ).toHaveBeenCalled();
-            expect( repo.createPullRequest ).toHaveBeenCalled();
-            expect( scope.waiting.state ).toEqual( "annotated" );
-            $timeout.flush();
-
-            expect( scope.waiting ).toBeFalsy();
-        });
-
     });
 
 });

@@ -12,11 +12,7 @@ mod.factory( 'Geo', [ '$window', function( $window ) { // # <2>
     return $window.navigator.geolocation;
 } ] );
 
-mod.factory( 'Prompt', [ '$window', function( $window ) { 
-    return { prompt: $window.prompt }; 
-} ] );
-
-mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', 'Prompt', '$timeout', function( $scope, ghs, Geo, Prompt, $timeout ) {
+mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout', function( $scope, ghs, Geo, $window, $timeout ) {
     $scope.messages = []
 
     $scope.init = function() {
@@ -151,9 +147,9 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', 'Prompt', '$timeout',
     
     $scope.annotate = function( shop ) {
         $scope.shopToAnnotate = shop;
-        $scope.username = Prompt.prompt( "Enter your github username" )
-        pass = Prompt.prompt( "Enter your github password" )
-        $scope.annotation = Prompt.prompt( "Enter data to add" );
+        $scope.username = $window.prompt( "Enter your github username" )
+        pass = $window.prompt( "Enter your github password" )
+        $scope.annotation = $window.prompt( "Enter data to add" );
         gh = ghs.create( $scope.username, pass );
         $scope.forked_repo = gh.getRepo( "xrd", "spa.coffeete.ch" );
         $scope.forked_repo.fork( function( err ) {
