@@ -618,7 +618,7 @@ Then, make your index.html look like this:
 
 [source,html index.html]
 -----
-[filename=".", language="js", sha="87490dd:support/js/index.html"]
+[filename=".", language="js", sha="c503dbf:support/js/index.html"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -653,10 +653,12 @@ We'll use this to allow simple search. Add the search feature to our
 
 [source,html]
 -----
-[filename=".", language="js", sha="576c668:support/js/index.html"]
+...
+[filename=".", language="js", sha="576c668:support/js/index.html" lines="8..29"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
+...
 -----
 
 <1> We add a search box which binds to the `search` model in our scope
@@ -666,7 +668,8 @@ data inside each item in our `shops` array.
 we show the extra information.
 
 Now if we type in the word `gluten` in our search box, we filter out
-anything except shops which match that, and we see the 
+anything except shops which match that, and we see the information
+pieces formatted as labels underneath the shop name.
 
 image::images/javascript-search-box.png[]
 
@@ -693,9 +696,8 @@ To be replaced
 snippet~~~~~
 -----
 
-Let's add some tests. Inside the `coffeetech.spec.js` file, modify the
-mock repository generator, and add a new test to the end of the file
-which will test our annotate function.
+Let's add some tests. Add another file called
+`coffeetech.annotate.spec.js` with these contents:
 
 [source,javascript]
 -----
