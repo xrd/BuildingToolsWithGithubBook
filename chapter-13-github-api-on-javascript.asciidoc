@@ -1128,13 +1128,20 @@ Let's add the status message into our HTML.
 
 [source,javascript]
 -----
+...
+<h3 ng-show="city">Current city: {{city.name}}</h3>
+
+<div ng-show="waiting">
 {{waiting.msg}}
 </div>
 
 <div class="row=">
+...
 -----
 
-When someone adds data to a shop, the owner of the original repository
+==== Accepting the user contribution via a pull request
+
+When someone makes an annotation to a shop, the owner of the original repository
 gets a pull request notification on GitHub.
 
 image::images/javascript-pull-request.png[]
@@ -1228,9 +1235,11 @@ connect(
 
 By far the simplest option.
 
+image::images/javascript-firebase.png[]
 
 ===== Advanced
 
 We want to make our webapp as fast as possible. So, let's do some minimization of the assets.
 
 [source,bash]
+
