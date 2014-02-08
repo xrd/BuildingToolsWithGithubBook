@@ -919,19 +919,16 @@ use when talking to the GitHub API using Github.js.
 
 ===== Our own NodeJS Application
 
-[source,javascript package.json]
+To build out NodeJS application we will first create the application
+package manifest (`package.json`) which specifies the required pieces
+and allows us to run `npm install` to download them all.
+
+[source,javascript]
 ----
-{
-  "name": "spa-auth",
-  "description": "Single Page Authentication System for GitHub",
-  "version": "0.1",
-  "homepage": "https://github.com/xrd/spa.coffeete.ch/",
-  "author": "Chris Dawson <xrdawson@gmail.com>
-  (https://github.com/xrd/)",
-  "dependencies": {
-    "everyauth": "0.4.5"
-  },
-}
+[filename=".", language="js", sha="c08eb2c:support/js/package.json"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 ----
 
 [source,javascript app.js]
@@ -950,6 +947,7 @@ route, let's review the problems with this setup so far.
   loading a JS file, they too could request this resource and then
   have access to the oAuth token. They then have access to our GitHub
   account and our private repositories.
+* Not testable.
 
 
 ===== Fixing our authentication system with Firebase
