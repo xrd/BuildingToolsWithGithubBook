@@ -980,8 +980,9 @@ timeout in our app and query for the new repository. This explains the
 `$timeout.flush()`, a mock of the timeout browser call which
 we can manually reconcile. We also added a mock prompt. We will be prompting the
 user for username, password and the annotating data, and we will use
-the native browser prompt mechanism to do this. If this sounds like an
-ugly way to do it, don't fret, we'll find a better way later.
+the native browser prompt mechanism to do this. If using prompt to
+gather information from the user sounds like an ugly way to do it,
+don't fret, we'll find a better way later.
 
 Now that we are more familiar with the capabilities and limitations of
 the GitHub API and the Github.js library, here are the steps we will
@@ -1146,9 +1147,20 @@ gets a pull request notification on GitHub.
 
 image::images/javascript-pull-request.png[]
 
-As the owner of this repository and manager of this data, I like this
-as a way to manage contributions. All the tools for managing and
-reviewing changes are right there in GitHub.
+As the owner of this repository and manager of this data, I like
+managing contributions using pull requests inside GitHub.
+In my humble opinion, there are no better tools for managing and
+reviewing changes of information than those found on GitHub. This is a
+simple case of adding data and might look like overkill at this scale.
+You could imagine, however, that were you to have thousands of users,
+making many contributions per day, that all of a sudden you would need
+a complex system for managing, reviewing and accepting changes to your
+data set. GitHub gives you all these tools: diff'ing files, user
+management in case you wanted to delegate review to other people in
+your organization, among many other features GitHub provides for its
+users. This may not be the most obvious way to manage a database of
+information, but there are compelling reasons to consider it against a
+traditional database like Postgresql or Mysql.
 
 ===== Safely implementing login
 
@@ -1161,32 +1173,82 @@ username and password implicitly asks me to trust the authors of this
 application. Trust in this case means that I trust them to not
 maliciously use my credentials for nefarious purposes, and also asks
 me to trust that they are not doing something stupid which would allow
-an attacker  to insert themselves into the middle of the
+an attacker to insert themselves into the middle of the
 authentication process and steal my crendentials. It seems like every
-day we hear of a break-in at a major internet service; I want to believe that most people are out to do good in the world, so I am less worried about the provider of such a service maliciously stealing my crendentials, but I am worried about a script kiddie attacking the service for fun and stealing my crendentials. At any rate, I would never use a service which requires me to give up my username and password to another service, especially one which is as important as GitHub is to me.
+day we hear of a break-in at a major internet service; I want to
+believe that most people are out to do good in the world, so I am less
+worried about the provider of such a service maliciously stealing my
+crendentials, but I am worried about a script kiddie attacking the
+service for fun and stealing my crendentials. At any rate, I would
+never use a service which requires me to give up my username and
+password to another service, especially one which is as important as
+GitHub is to me. 
 
 So, let's use oAuth instead and resolve these problems.
 
-If we use oAuth, we enter our credentials directly into GitHub. We can take advantage of 2-factor authentication. Once we have entered our credentials, GitHub decides whether we are who we say we are, and then returns us to the application which requested access. And, GitHub provides the application with what is called an oAuth token that encapsulates exactly what services on GitHub we have access to, and whether that access is read-only or whether we can add data in a read-write manner. This means our requesting service can ask to modify only parts of our data within GitHub; this provides a much higher level of trust to users as they know the application cannot touch the more private parts within GitHub. Specifically, this means we could ask for access only to gists and not request access to our repositories, for example. And, finally, one important point about oAuth tokens is that they can be revoked. So, once a specific action has been taken, we can destroy the token and revoke access. With simple username and password access, the only way to revoke access is to change the password, which means any place you have saved that password (password managers or other applications which login via username and password) need to update their settings as well. With oAuth we can revoke a single token at any time (and GitHub makes it easy to do this) without affecting access to other services.
+If we use oAuth, we enter our credentials directly into GitHub. We can
+take advantage of 2-factor authentication. Once we have entered our
+credentials, GitHub decides whether we are who we say we are, and then
+returns us to the application which requested access. And, GitHub
+provides the application with what is called an oAuth token that
+encapsulates exactly what services on GitHub we have access to, and
+whether that access is read-only or whether we can add data in a
+read-write manner. This means our requesting service can ask to modify
+only parts of our data within GitHub; this provides a much higher
+level of trust to users as they know the application cannot touch the
+more private parts within GitHub. Specifically, this means we could
+ask for access only to gists and not request access to our
+repositories, for example. And, finally, one important point about
+oAuth tokens is that they can be revoked. So, once a specific action
+has been taken, we can destroy the token and revoke access. With
+simple username and password access, the only way to revoke access is
+to change the password, which means any place you have saved that
+password (password managers or other applications which login via
+username and password) need to update their settings as well. With
+oAuth we can revoke a single token at any time (and GitHub makes it
+easy to do this) without affecting access to other services. 
 
 ==== Everything on GitHub, except for one piece
 
-We would like to host everything on GitHub, but sadly there is one piece which we cannot host there: the authentication component. 
-Somehow we need to safely authenticate our user into the GitHub and retrieve an oAuth token. There is currently no way to do this 
-strictly client side (using only static HTML and JavaScript running in the browser). 
+We would like to host everything on GitHub, but sadly there is one
+piece which we cannot host there: the authentication component.
+Somehow we need to safely authenticate our user into the GitHub and
+retrieve an oAuth token. There is currently no way to do this strictly
+client side (using only static HTML and JavaScript running in the
+browser). Other authentication providers like Facebook do provide pure
+JavaScript login functionality in their SDKs, but GitHub, citing
+security concerns, has not release anything that does authentication
+purely on the client set as of yet.
 
-Instead, we will delegate authentication to Firebase. Firebase is a real time communication toolset which integrates
-well with our choice of AngularJS. Delegation of our authentication
-component is easy with Firebase: we just create a GitHub application,
-provide the credentials and GitHub oAuth scope to Firebase, and then our
-application offloads user management to Firebase. 
+Somehow we have to involve a server into our authentication process.
+The most obvious choice we have is to run a small authentication
+server and delegate authentication to it, and once authentication is
+completed, jump back in our application hosted on GitHub.
 
-To start, we need to create a new GitHub application.
+===== A NodeJS GitHub Authentication Service
+
+Contiuing our love affair with JavaScript, let's build a simple
+authentication service with NodeJS. There are several libraries which
+offer support for oAuth authentication on GitHub, but the consistency
+of NodeJS modules often leaves something to be desired. As I was
+building this chapter I experimented with several of them and quickly
+discovered even though it might have been the sanctioned and approved
+module last year, that it has been abandoned this year. There is a
+tendency to build software using the latest libraries as you might
+assume the newest library would have the fewest bugs. In my
+experience, NodeJS libraries come with less test coverage than other
+language libraries, and for this reason, often have more breaking
+changes than the authors would care to admit. Another reason to build
+testable code. 
+
+The library I finally settled upon is called Passport, written by
+Stuart P. Benchley, which supports a strategy called `passport-github`
+written by Jared Hanson. Both are open source and, of course, hosted
+on GitHub. We'll write a simple NodeJS server which allows login via
+GitHub, and then provides our single page application with a token to
+use when talking to the GitHub API using Github.js.
 
 ===== Our own NodeJS Application
-
-Why not: requires a hosting provider, like Nodejitsu. Not too complicated, but
-do we want to do devops?
 
 [source,javascript package.json]
 ----
@@ -1205,31 +1267,34 @@ do we want to do devops?
 
 [source,javascript app.js]
 ----
-var everyauth = require('everyauth')
-  , connect = require('connect');
-
-everyauth.github
-  .appId('client_id')
-  .appSecret('client_secret')
-  .findOrCreateUser( function (session, accessToken, ,
-  accessTokenExtra, githubUserMetadata) {
-    // find or create user logic goes here
-  })
-  .redirectPath('/');
-
-var routes = function (app) {
-  // Define your routes here
-};
-
-connect(
-    connect.bodyParser()
-  , connect.cookieParser()
-  , connect.session({secret: 'whodunnit'})
-  , everyauth.middleware()
-  , connect.router(routes);
-).listen(3000);
 
 ----
+
+We have it running locally, so we might consider now putting it on a
+public server. There are several different hosting services for NodeJS
+applications, like Heroku and Nodejitsu, but before we go down this
+route, let's review the problems with this setup so far.
+
+* requires a hosting provider. Not too complicated, but do we want to
+  do devops? 
+* hijacking the token. If another app knew about our methodology of
+  loading a JS file, they too could request this resource and then
+  have access to the oAuth token. They then have access to our GitHub
+  account and our private repositories.
+
+
+===== Fixing our authentication system with Firebase
+
+
+Instead, we will delegate authentication to Firebase. Firebase is a
+real time communication toolset which integrates well with our choice
+of AngularJS. Delegation of our authentication component is easy with
+Firebase: we just create a GitHub application, provide the credentials
+and GitHub oAuth scope to Firebase, and then our application offloads
+user management to Firebase.  
+
+To start, we need to create a new GitHub application.
+
 
 ===== Firebase App
 
@@ -1238,9 +1303,14 @@ bindings and offer an integrated GitHub authentication component.
 
 image::images/javascript-firebase.png[]
 
-===== Advanced
+==== Summary
 
-We want to make our webapp as fast as possible. So, let's do some minimization of the assets.
+Obviously there are some pieces of this app that leave things to be
+desired. We don't handle incorrect username and password issues. We
+don't have the case when someone has already forked the repository and
+wants to contribute a second time. These are left as an exercise to
+the reader.
 
-[source,bash]
-
+We do show how to safely store and append to a flexible database stored
+entirely inside of GitHub. And all from within an application stored
+entirely on GitHub. 
