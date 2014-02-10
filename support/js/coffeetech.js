@@ -13,7 +13,6 @@ mod.factory( 'Geo', [ '$window', function( $window ) {
 } ] );
 
 mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout', '$firebase', '$firebaseSimpleLogin', function( $scope, ghs, Geo, $window, $timeout, $firebase, $firebaseSimpleLogin ) {
-    $scope.messages = []
 
     $scope.init = function() {
         
