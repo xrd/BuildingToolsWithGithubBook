@@ -823,6 +823,8 @@ We'll use this to allow simple search. Add the search feature to our
 -----
 ...
 
+<div class="container" ng-controller="GithubCtrl" ng-init="init()">
+
 <h1>CoffeeTe.ch</h1>
 
 <input style="width: 20em;" ng-model="search" placeholder="Enter search parameters..."/> <!--1-->
@@ -841,8 +843,6 @@ We'll use this to allow simple search. Add the search feature to our
 <span ng-repeat="info in shop.information">
 <span class="label label-default">{{info}}</span>
 </span>
-</div>
-
 </div>
 ...
 -----
@@ -879,11 +879,11 @@ to our HTML.
 
 [source,html]
 -----
+
+</div>
 <div class="col-md-6">
 <a target="_map" href="http://maps.google.com/?q={{shop.latitude}},{{shop.longitude}}">Open in map ({{shop.latitude}},{{shop.longitude}})</a>
 <button ng-click="annotate(shop)">Add factoid</button>
-</div>
-</div>
 -----
 
 Let's add some tests. Add another file called
@@ -937,12 +937,14 @@ describe( "GithubCtrl", function() {
         generateMockPrompt();
         $timeout = $injector.get( '$timeout' );
         scope = $rootScope.$new();
-        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter } );
+        mockFirebase = {};
+        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter, 'firebase': mockFirebase } );
     } ) );
 
 
     describe( "#annotate", function() {
         it( "should annotate a shop", function() {
+            scope.city = PORTLAND
             var shop = { name: "A coffeeshop" }
             scope.annotate( shop );
             expect( scope.shopToAnnotate ).toBeTruthy();
@@ -992,7 +994,7 @@ ubiquitous pull-request, of course!
 * Call our `annotate` method once we click the annotate button next to
   a shop.
 * The user will be prompted for a username, password and the data
-  which they want to add to the shop. We'll use the credentials to
+  which they want to add to the shop. We'll use these credentials to
   create a new Github object within the Github.js library.
 * We store the username and annotation data in the scope
   to make sure we have them when we return from asynchronous calls.
@@ -1007,7 +1009,8 @@ ubiquitous pull-request, of course!
   annotation. We can keep the user notified with these variables
   inside our HTML.
 * Once we have forked and verified the fork, we will write to our
-  fork. 
+  fork inside the city JSON file (and so inside our spec we initialize the city to the
+  value of our `PORTLAND` variable found inside our fixtures file).
 * After we have written to our fork with the new data, we create a pull
   request to request this data gets added to the original repository.
 * After waiting for a bit to notify the user that our annotation
@@ -1032,6 +1035,8 @@ Add these lines to the bottom of the file, but before the last closing braces.
 [source,javascript]
 -----
   ...
+        console.log( "Inside failure" );
+    };
 
     $scope.annotate = function( shop ) {
         $scope.shopToAnnotate = shop;
@@ -1103,8 +1108,6 @@ Add these lines to the bottom of the file, but before the last closing braces.
             $scope.shopToAnnotate.information = [];
         }
         $scope.shopToAnnotate.information.push( $scope.annotation );
-    };
-
   ...
 -----
 
@@ -1130,13 +1133,13 @@ Let's add the status message into our HTML.
 [source,javascript]
 -----
 ...
+<input class="ctinput" ng-model="search" placeholder="Enter search parameters..."/> <!--1-->
+
 <h3 ng-show="city">Current city: {{city.name}}</h3>
 
 <div ng-show="waiting">
 {{waiting.msg}}
 </div>
-
-<div class="row=">
 ...
 -----
 
@@ -1516,15 +1519,22 @@ Then, copy your client ID and secret to the sections inside the
 Firebase Simple Login settings for the GitHub provider. Make sure the
 "enabled" checkbox is checked to enable the provider.
 
-Now, add Firebase support to our AngularJS application:
+Now, add Firebase support to our AngularJS application. Add these two
+lines to the HTML, right above the closing `</head>` tag.
 
 [source,html]
 -----
-xxx
-
 <script type='text/javascript'
         src='https://cdn.firebase.com/js/simple-login/1.2.5/firebase-simple-login.js'>
 </script>
+-----
+
+Then, change our AngularJS module definition to include firebase:
+
+[source,javascript]
+-----
+var mod = angular.module( 'coffeetech', [] );
+
 -----
 
 ==== Summary

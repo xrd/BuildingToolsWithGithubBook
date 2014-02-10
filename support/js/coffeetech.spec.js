@@ -42,13 +42,30 @@ describe( "GithubCtrl", function() {
         ghs = { create: function() { return gh; } };
     }
 
+    var mockFirebase = mockSimpleLogin = undefined;
+    function generateMockFirebaseSupport() {
+        mockFirebase = function() {};
+        mockSimpleLogin = function() {
+            return { 
+                '$login': function() {
+                    return { then: function( cb ) {
+                        cb( { name: "someUser",
+                              accessToken: "abcdefghi" } );
+
+                    } };
+                }
+            }
+        };
+    }
+
     beforeEach( module( "coffeetech" ) );
 
     beforeEach( inject( function ($controller, $rootScope ) {
         generateMockGeolocationSupport();
         generateMockRepositorySupport();
+        generateMockFirebaseSupport();
         scope = $rootScope.$new();
-        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, Geo: geo } );
+        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, Geo: geo, '$firebase': mockFirebase, '$firebaseSimpleLogin': mockSimpleLogin } );
     } ) );
 
     describe( "#init", function() {

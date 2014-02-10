@@ -6,6 +6,7 @@ module.exports = function(config) {
         'angular.js',
         'fixtures-*.js',
         'angular-mocks.js',
+        'firebase-mock.js',
         'github.js',
         '*.js'
     ],

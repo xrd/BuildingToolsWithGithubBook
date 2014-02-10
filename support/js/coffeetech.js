@@ -1,4 +1,4 @@
-var mod = angular.module( 'coffeetech', [] );
+var mod = angular.module( 'coffeetech', [ 'firebase' ] );
 
 mod.factory( 'Github', function() { 
     return { create: function(username, password) { 
@@ -12,10 +12,14 @@ mod.factory( 'Geo', [ '$window', function( $window ) {
     return $window.navigator.geolocation;
 } ] );
 
-mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout', 'firebase', function( $scope, ghs, Geo, $window, $timeout, firebase ) {
+mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout', '$firebase', '$firebaseSimpleLogin', function( $scope, ghs, Geo, $window, $timeout, $firebase, $firebaseSimpleLogin ) {
     $scope.messages = []
 
     $scope.init = function() {
+        
+        var ref = new Firebase( 'https://coffeetech.firebaseio.com' );
+        $scope.auth = $firebaseSimpleLogin( ref );
+        
         $scope.getCurrentLocation( function( position ) {
             $scope.latitude = position.coords.latitude;
             $scope.longitude = position.coords.longitude;
@@ -94,23 +98,30 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout'
 
     $scope.annotate = function( shop ) {
         $scope.shopToAnnotate = shop;
-        $scope.username = $window.prompt( "Enter your github username (not email!)" )
-        pass = $window.prompt( "Enter your github password" )
-        $scope.annotation = $window.prompt( "Enter data to add" );
-        gh = ghs.create( $scope.username, pass ); // <1>
-        toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
-        toFork.fork( function( err ) {
-            if( !err ) {
-                $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
-                $timeout( $scope.annotateAfterForkCompletes, 10000 ); // <2>
-                $scope.$apply();
-            }
+
+        $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
+
+            $scope.me = user;
+            $scope.username = user.name;
+
+            $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
+
+            gh = ghs.create( { token: $scope.me.accessToken, auth: 'oauth' } ); // <3>
+            toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
+            toFork.fork( function( err ) {
+                if( !err ) {
+                    $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
+                    $timeout( $scope.annotateAfterForkCompletes, 10000 ); 
+                    $scope.$apply();
+                }
+            } );
+            
         } );
 
     };
 
     $scope.annotateAfterForkCompletes = function() {
-        $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" ); // <3>
+        $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" ); 
         $scope.forkedRepo.read( "gh-pages", "cities.json", function(err, data) { 
             if( err ) {
                 $timeout( $scope.annotateAfterForkCompletes, 10000 );

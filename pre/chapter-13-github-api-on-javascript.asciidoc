@@ -704,7 +704,7 @@ Let's add some tests. Add another file called
 
 [source,javascript]
 -----
-[filename=".", language="js", sha="60d840c:support/js/coffeetech-annotate.spec.js"]
+[filename=".", language="js", sha="6a1cbb8:support/js/coffeetech-annotate.spec.js"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -733,7 +733,7 @@ ubiquitous pull-request, of course!
 * Call our `annotate` method once we click the annotate button next to
   a shop.
 * The user will be prompted for a username, password and the data
-  which they want to add to the shop. We'll use the credentials to
+  which they want to add to the shop. We'll use these credentials to
   create a new Github object within the Github.js library.
 * We store the username and annotation data in the scope
   to make sure we have them when we return from asynchronous calls.
@@ -748,7 +748,8 @@ ubiquitous pull-request, of course!
   annotation. We can keep the user notified with these variables
   inside our HTML.
 * Once we have forked and verified the fork, we will write to our
-  fork. 
+  fork inside the city JSON file (and so inside our spec we initialize the city to the
+  value of our `PORTLAND` variable found inside our fixtures file).
 * After we have written to our fork with the new data, we create a pull
   request to request this data gets added to the original repository.
 * After waiting for a bit to notify the user that our annotation
@@ -1036,15 +1037,24 @@ Then, copy your client ID and secret to the sections inside the
 Firebase Simple Login settings for the GitHub provider. Make sure the
 "enabled" checkbox is checked to enable the provider.
 
-Now, add Firebase support to our AngularJS application:
+Now, add Firebase support to our AngularJS application. Add these two
+lines to the HTML, right above the closing `</head>` tag.
 
 [source,html]
 -----
-xxx
-
 <script type='text/javascript'
         src='https://cdn.firebase.com/js/simple-login/1.2.5/firebase-simple-login.js'>
 </script>
+-----
+
+Then, change our AngularJS module definition to include firebase:
+
+[source,javascript]
+-----
+[filename=".", language="js", sha="6a1cbb8:support/js/coffeetech.js" lines="1..2"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 ==== Summary
