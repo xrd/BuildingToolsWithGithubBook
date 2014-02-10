@@ -1541,7 +1541,7 @@ To test our code, we make the following changes to our
     beforeEach( module( "coffeetech" ) );
 
     var mockFirebase = mockSimpleLogin = undefined;
-    function generateMockFirebaseSupport() {
+    function generateMockFirebaseSupport() { // <1>
         mockFirebase = function() {};
         mockSimpleLogin = function() {
             return { 
@@ -1559,20 +1559,20 @@ To test our code, we make the following changes to our
     beforeEach( inject( function ($controller, $rootScope, $injector ) {
         generateMockRepositorySupport();
         generateMockPrompt();
-        generateMockFirebaseSupport();
+        generateMockFirebaseSupport(); // <2>
         $timeout = $injector.get( '$timeout' );
         scope = $rootScope.$new();
-        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter, '$firebase': mockFirebase, '$firebaseSimpleLogin': mockSimpleLogin } );
+        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter, '$firebase': mockFirebase, '$firebaseSimpleLogin': mockSimpleLogin } ); // <3>
     } ) );
 
 
     describe( "#annotate", function() {
         it( "should annotate a shop", function() {
-            scope.auth = mockSimpleLogin( mockFirebase() );
+            scope.auth = mockSimpleLogin( mockFirebase() ); // <4>
             scope.city = PORTLAND
             var shop = { name: "A coffeeshop" }
             scope.annotate( shop );
-            expect( prompter.prompt.calls.length ).toEqual( 1 );
+            expect( prompter.prompt.calls.length ).toEqual( 1 ); // <5>
             expect( scope.shopToAnnotate ).toBeTruthy();
             expect( scope.username ).not.toBeFalsy();
             expect( scope.annotation ).not.toBeFalsy();
@@ -1582,10 +1582,10 @@ To test our code, we make the following changes to our
 <1> We add a `generateMockFirebaseSupport()` function which creates the mock
 firebase and simple login objects. 
 <2> We call this method to initialize the mocks.
-<3> We will inject these into our controller as specified by the
-Firebase documentation. We call this method to generate the mocks and then change our `$controller`
-instatiator to inject these mock objects instead of letting AngularJS
-inject the real ones. 
+<3> In our test we use the `$controller` method
+instantiator to inject these mock objects instead of letting AngularJS
+inject the real ones. We should modify our other spec file as well now that
+we are changing the required injections for any controller.
 <4> we change our `#annotate` test and create the auth object
 (normally created inside the initialization).
 <5> We prompt only once (we don't need to prompt for username and
@@ -1683,7 +1683,7 @@ image::images/javascript-firebase-simplelogin.png[]
 After you authorize the application, the flow is identical to the
 manually username and password authentication flow. As an optimization
 we could check for previous logins before calling `$login()` again but
-we don't do that here, meaning the dialog is momentarily popped up
+we don't do that here, meaning the login dialog is momentarily popped up
 each time we click the button.
 
 ==== Summary
