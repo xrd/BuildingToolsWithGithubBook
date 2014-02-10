@@ -1,11 +1,11 @@
 var mod = angular.module( 'coffeetech', [ 'firebase' ] );
 
 mod.factory( 'Github', function() { 
-    return { create: function(username, password) { 
-        return new Github({ username: username, 
-                            password: password, 
-                            auth: 'basic' }) }
-           };
+    return { 
+        create: function(token) { 
+            return new Github( { token: token, auth: 'oauth' } );
+        }
+    };
 });
 
 mod.factory( 'Geo', [ '$window', function( $window ) { 
@@ -106,15 +106,17 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout'
 
             $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
 
-            gh = ghs.create( { token: $scope.me.accessToken, auth: 'oauth' } ); // <3>
-            toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
-            toFork.fork( function( err ) {
-                if( !err ) {
-                    $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
-                    $timeout( $scope.annotateAfterForkCompletes, 10000 ); 
-                    $scope.$apply();
-                }
-            } );
+            if( $scope.annotation ) {
+                gh = ghs.create( { token: $scope.me.accessToken, auth: 'oauth' } ); // <3>
+                toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
+                toFork.fork( function( err ) {
+                    if( !err ) {
+                        $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
+                        $timeout( $scope.annotateAfterForkCompletes, 10000 ); 
+                        $scope.$apply();
+                    }
+                } );
+            }
             
         } );
 
