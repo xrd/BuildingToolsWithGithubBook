@@ -67,10 +67,7 @@ app.configure(function() {
 
 app.get( '/token.json', 
          function(req, res) {
-             // console.log( "Auth token inside token.json", req.session.token );
-             // console.log( "User: ", req.user );
              res.send( "var ctAuthToken = '" + req.session.token + "';" );
-             // res.json( { token: req.session.token } );
          }
        );
 
