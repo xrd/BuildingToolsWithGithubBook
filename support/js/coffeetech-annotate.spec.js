@@ -44,12 +44,14 @@ describe( "GithubCtrl", function() {
         generateMockPrompt();
         $timeout = $injector.get( '$timeout' );
         scope = $rootScope.$new();
-        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter } );
+        mockFirebase = {};
+        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter, 'firebase': mockFirebase } );
     } ) );
 
 
     describe( "#annotate", function() {
         it( "should annotate a shop", function() {
+            scope.city = PORTLAND
             var shop = { name: "A coffeeshop" }
             scope.annotate( shop );
             expect( scope.shopToAnnotate ).toBeTruthy();
