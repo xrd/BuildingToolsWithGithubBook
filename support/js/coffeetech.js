@@ -11,7 +11,7 @@ mod.factory( 'Github', function() {
 mod.factory( 'Geo', [ '$window', function( $window ) { 
     return $window.navigator.geolocation;
 } ] );
-o
+
 mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout', 'firebase', function( $scope, ghs, Geo, $window, $timeout, firebase ) {
     $scope.messages = []
 

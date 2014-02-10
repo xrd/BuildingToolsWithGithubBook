@@ -919,8 +919,8 @@ use when talking to the GitHub API using Github.js.
 
 ===== Our own NodeJS Application
 
-Let's build our app inside a directory called `node`. This will keep
-this code separate from our client side code and prevent our karma
+Let's build our app inside a directory called `node`. Doing this will keep
+our code separate from our client side code and prevent our karma
 test runner from loading these files as part of test runs.
 
 To build out NodeJS application we will first create the application
