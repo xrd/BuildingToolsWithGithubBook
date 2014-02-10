@@ -1037,14 +1037,53 @@ Then, copy your client ID and secret to the sections inside the
 Firebase Simple Login settings for the GitHub provider. Make sure the
 "enabled" checkbox is checked to enable the provider.
 
-Now, add Firebase support to our AngularJS application. Add these two
-lines to the HTML, right above the closing `</head>` tag.
+===== Writing tests against Firebase
+
+Since we load firebase from their CDN, we first need to mock out the
+`Firebase` constructor using a simple shim: 
+
+[source,javascript]
+-----
+[filename=".", language="js", sha="9e1121c38eb84a8:support/js/firebase-mock.js"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+To test our code, we make the following changes to our
+`coffeetech-annotate.spec.js`:
+
+[source,javascript]
+-----
+[filename=".", language="js", sha="cb28565:support/js/coffeetech-annotate.spec.js" lines="39..77"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+<1> We add a `generateMockFirebaseSupport()` function which creates the mock
+firebase and simple login objects. 
+<2> We call this method to initialize the mocks.
+<3> We will inject these into our controller as specified by the
+Firebase documentation. We call this method to generate the mocks and then change our `$controller`
+instatiator to inject these mock objects instead of letting AngularJS
+inject the real ones. 
+<4> we change our `#annotate` test and create the auth object
+(normally created inside the initialization).
+<5> We prompt only once (we don't need to prompt for username and
+password any longer). 
+
+===== Implementing Firebase Login
+
+Now, add Firebase support to our AngularJS application. Add the
+references to the Firebase support libraries right after AngularJS is loaded:
 
 [source,html]
 -----
-<script type='text/javascript'
-        src='https://cdn.firebase.com/js/simple-login/1.2.5/firebase-simple-login.js'>
-</script>
+[filename=".", language="js", sha="cb28565:support/js/index.html" lines="51..54"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 We need to adjust our `coffeetech.js` file in a few ways. First,
@@ -1054,7 +1093,7 @@ are using a slightly different signature for oauth tokens.
 
 [source,javascript]
 -----
-[filename=".", language="js", sha="081b6c5:support/js/coffeetech.js" lines="1..10"]
+[filename=".", language="js", sha="cb28565:support/js/coffeetech.js" lines="1..10"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1066,7 +1105,7 @@ our `init` method.
 
 [source,javascript]
 -----
-[filename=".", language="js", sha="081b6c5:support/js/coffeetech.js" lines="15..23"]
+[filename=".", language="js", sha="cb28565:support/js/coffeetech.js" lines="15..23"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1077,7 +1116,7 @@ from Firebase. But, surprisingly little else needs to change in our flow.
 
 [source,javascript]
 -----
-[filename=".", language="js", sha="081b6c5:support/js/coffeetech.js" lines="97..111"]
+[filename=".", language="js", sha="cb28565:support/js/coffeetech.js" lines="97..111"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1095,14 +1134,31 @@ least we are only prompting once instead of three times!
 <3> Once we are ready to fork we need to create our user object using
 the token.
 
+After we make these changes, we can click the "Add factoid" button and
+we'll get a dialog like this one indicating we are logging into GitHub
+(via the Firebase SimpleLogin).
+
+image::images/javascript-firebase-simplelogin.png[]
+
+After you authorize the application, the flow is identical to the
+manually username and password authentication flow. As an optimization
+we could check for previous logins before calling `$login()` again but
+we don't do that here, meaning the dialog is momentarily popped up
+each time we click the button.
+
 ==== Summary
 
 Obviously there are some pieces of this app that leave things to be
 desired. We don't handle incorrect username and password issues. We
-don't have the case when someone has already forked the repository and
-wants to contribute a second time. These are left as an exercise to
-the reader.
+don't deal with the case when someone has already forked the repository and
+wants to contribute a second time. There are UI improvements we could
+make around how users contribute data (browser dialogs are very
+generic). We could do some cleanup on the submitted data. These
+changes are left as an exercise to the reader.
 
-We do show how to safely store and append to a flexible database stored
-entirely inside of GitHub. And all from within an application stored
-entirely on GitHub. 
+But, hopefully you see how powerful and flexible GitHub can be for
+storing databases, making it client side searchable, most importantly,
+allowing safe user contributions. We were able to completely ignore
+all the administrative features of a data entry system, delegating all
+these to GitHub. Our single page app allows us a single point of
+focus: making a cool and useful application.

@@ -39,7 +39,7 @@ describe( "GithubCtrl", function() {
     beforeEach( module( "coffeetech" ) );
 
     var mockFirebase = mockSimpleLogin = undefined;
-    function generateMockFirebaseSupport() {
+    function generateMockFirebaseSupport() { // <1>
         mockFirebase = function() {};
         mockSimpleLogin = function() {
             return { 
@@ -57,20 +57,20 @@ describe( "GithubCtrl", function() {
     beforeEach( inject( function ($controller, $rootScope, $injector ) {
         generateMockRepositorySupport();
         generateMockPrompt();
-        generateMockFirebaseSupport();
+        generateMockFirebaseSupport(); // <2>
         $timeout = $injector.get( '$timeout' );
         scope = $rootScope.$new();
-        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter, '$firebase': mockFirebase, '$firebaseSimpleLogin': mockSimpleLogin } );
+        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter, '$firebase': mockFirebase, '$firebaseSimpleLogin': mockSimpleLogin } ); // <3>
     } ) );
 
 
     describe( "#annotate", function() {
         it( "should annotate a shop", function() {
-            scope.auth = mockSimpleLogin( mockFirebase() );
+            scope.auth = mockSimpleLogin( mockFirebase() ); // <4>
             scope.city = PORTLAND
             var shop = { name: "A coffeeshop" }
             scope.annotate( shop );
-            expect( prompter.prompt.calls.length ).toEqual( 1 );
+            expect( prompter.prompt.calls.length ).toEqual( 1 ); // <5>
             expect( scope.shopToAnnotate ).toBeTruthy();
             expect( scope.username ).not.toBeFalsy();
             expect( scope.annotation ).not.toBeFalsy();

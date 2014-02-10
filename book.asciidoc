@@ -1,3 +1,31 @@
 = The GitHub Book
 
+include::book-docinfo.xml[]
+
+include::preface.asciidoc[]
+
+include::chapter-00-tools.asciidoc[]
+
+include::chapter-01-advanced-tour.asciidoc[]
+
+include::chapter-02-gist.asciidoc[]
+
+include::chapter-06-issues.asciidoc[]
+
+include::chapter-07-pull-requests.asciidoc[]
+
+include::chapter-08-hubot.asciidoc[]
+
+include::chapter-09-github-pages.asciidoc[]
+
+include::chapter-10-jekyll.asciidoc[]
+
+include::chapter-11-gollum-wiki.asciidoc[]
+
+include::chapter-12-api-introduction.asciidoc[]
+
 include::chapter-13-github-api-on-javascript.asciidoc[]
+
+include::chapter-14-api-on-android.asciidoc[]
+
+include::chapter-15-api-on-rails.asciidoc[]
