@@ -1529,13 +1529,75 @@ lines to the HTML, right above the closing `</head>` tag.
 </script>
 -----
 
-Then, change our AngularJS module definition to include firebase:
+We need to adjust our `coffeetech.js` file in a few ways. First,
+import the firebase into our AngularJS module. Also, our original
+Github service expected username and password as parameters, but we now
+are using a slightly different signature for oauth tokens.
 
 [source,javascript]
 -----
-var mod = angular.module( 'coffeetech', [] );
+var mod = angular.module( 'coffeetech', [ 'firebase' ] );
+
+mod.factory( 'Github', function() { 
+    return { 
+        create: function(token) { 
+            return new Github( { token: token, auth: 'oauth' } );
+        }
+    };
+});
 
 -----
+
+When we instatiate our controller, we need
+to inject Firebase and FirebaseSimpleLogin and initialize them inside
+our `init` method.
+
+[source,javascript]
+-----
+mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout', '$firebase', '$firebaseSimpleLogin', function( $scope, ghs, Geo, $window, $timeout, $firebase, $firebaseSimpleLogin ) {
+
+    $scope.init = function() {
+        
+        var ref = new Firebase( 'https://coffeetech.firebaseio.com' );
+        $scope.auth = $firebaseSimpleLogin( ref );
+        
+        $scope.getCurrentLocation( function( position ) {
+            $scope.latitude = position.coords.latitude;
+-----
+
+Then, when we annotate, we need to provide the auth token returned
+from Firebase. But, surprisingly little else needs to change in our flow.
+
+[source,javascript]
+-----
+
+    $scope.annotate = function( shop ) {
+        $scope.shopToAnnotate = shop;
+
+        $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
+
+            $scope.me = user;
+            $scope.username = user.name;
+
+            $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
+
+            if( $scope.annotation ) {
+                gh = ghs.create( { token: $scope.me.accessToken, auth: 'oauth' } ); // <3>
+                toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
+                toFork.fork( function( err ) {
+-----
+
+<1> We call the `$login` method on our auth object created using the
+Firebase SimpleLogin service. It returns a "promise" which is an
+interface that has a `then()` method, which will be called if the
+`$login()` succeeds. `then()` calls our callback function, giving us a
+user object.
+<2> We still need to prompt the user for one piece of information, the
+data to annotate. You can imagine other ways to get this information,
+using modal HTML5 dialogs, but this will work for us for right now. At
+least we are only prompting once instead of three times! 
+<3> Once we are ready to fork we need to create our user object using
+the token.
 
 ==== Summary
 

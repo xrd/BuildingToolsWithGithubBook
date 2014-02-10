@@ -106,7 +106,7 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout'
             $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
 
             if( $scope.annotation ) {
-                gh = ghs.create( { token: $scope.me.accessToken, auth: 'oauth' } ); // <3>
+                gh = ghs.create( $scope.me.accessToken ); // <3>
                 toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
                 toFork.fork( function( err ) {
                     if( !err ) {

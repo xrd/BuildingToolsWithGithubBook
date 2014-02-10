@@ -1047,15 +1047,53 @@ lines to the HTML, right above the closing `</head>` tag.
 </script>
 -----
 
-Then, change our AngularJS module definition to include firebase:
+We need to adjust our `coffeetech.js` file in a few ways. First,
+import the firebase into our AngularJS module. Also, our original
+Github service expected username and password as parameters, but we now
+are using a slightly different signature for oauth tokens.
 
 [source,javascript]
 -----
-[filename=".", language="js", sha="6a1cbb8:support/js/coffeetech.js" lines="1..2"]
+[filename=".", language="js", sha="081b6c5:support/js/coffeetech.js" lines="1..10"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
+
+When we instatiate our controller, we need
+to inject Firebase and FirebaseSimpleLogin and initialize them inside
+our `init` method.
+
+[source,javascript]
+-----
+[filename=".", language="js", sha="081b6c5:support/js/coffeetech.js" lines="15..23"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+Then, when we annotate, we need to provide the auth token returned
+from Firebase. But, surprisingly little else needs to change in our flow.
+
+[source,javascript]
+-----
+[filename=".", language="js", sha="081b6c5:support/js/coffeetech.js" lines="97..111"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+<1> We call the `$login` method on our auth object created using the
+Firebase SimpleLogin service. It returns a "promise" which is an
+interface that has a `then()` method, which will be called if the
+`$login()` succeeds. `then()` calls our callback function, giving us a
+user object.
+<2> We still need to prompt the user for one piece of information, the
+data to annotate. You can imagine other ways to get this information,
+using modal HTML5 dialogs, but this will work for us for right now. At
+least we are only prompting once instead of three times! 
+<3> Once we are ready to fork we need to create our user object using
+the token.
 
 ==== Summary
 
