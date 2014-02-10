@@ -1440,9 +1440,8 @@ The only item which must match exactly here is the "Authorization
 callback URL" which should be set to
 `http://localhost:3000/auth/github/callback`. This is the URL which
 our application will tell the GitHub API to redirect us back to after
-authentication has successfully completed, and this string here must
-match what our application provides when initiating authentication
-with GitHub.
+authentication has successfully completed (the passport library
+automatically provides this when connecting to GitHub).
 
 We run this app by specifying the github client ID and secret on the
 command line as environment variables (to avoid checking them into our
@@ -1451,7 +1450,7 @@ of course.
 
 [source,bash]
 -----
-GITHUB_CLIENT_ID=1234567890abcdefghijk GITHUB_CLIENT_SECRET=0987654321kmnopqrstuv node github-local-login.js
+GITHUB_CLIENT_ID=1234567890abcdefghijk GITHUB_CLIENT_SECRET=0987654321kmnopqrstuv node node/github-local-login.js
 -----
 
 To be brutally honest, this code is not entirely intuitive, is it?
@@ -1485,7 +1484,7 @@ There are significant problems with this approach:
 For all these reasons, let's abandon this approach. We'll leave the
 NodeJS server code here here for posterity, so that you have an
 example of how you could approach building a GitHub server side
-application in JavaScript, but we'll find a different way to
+application in server side JavaScript, but we'll find a different way to
 authenticate while preserving our single page app architecture.
 
 ===== Fixing our authentication system with Firebase
@@ -1493,7 +1492,7 @@ authenticate while preserving our single page app architecture.
 Instead, we will delegate authentication to Firebase. Firebase is a
 real time communication toolset which integrates well with our choice
 of AngularJS. By far the simplest and safest option,
-Firebase offers AngularJS bindings (called "AngularFire") and offer an
+Firebase offers AngularJS bindings (called "AngularFire") and an
 integrated GitHub authentication component (called "Simple Login").
 Together they resolve the authentication issue for us, and keep all
 our code hosted on GitHub. Delegation of our authentication component is easy with
@@ -1501,7 +1500,7 @@ Firebase: we just modify our existing GitHub application, provide the credential
 and GitHub oAuth scope to Firebase, and then our application offloads
 user management to Firebase.  
 
-First, create an account on Firebase. Once you have done this, create
+To start, create an account on Firebase. Once you have done this, create
 a new app called "CoffeeTech". The APP URL needs be unique, so use
 "coffeetech-<USERNAME>", replacing USERNAME with your GitHub username.
 Once you have created the app, click on "View Firebase" button. You'll
