@@ -65,7 +65,7 @@ app.configure(function() {
   app.use(express.static(__dirname + '/public'));
 });
 
-app.get( '/token.json', 
+app.get( '/token.js', 
          function(req, res) {
              res.send( "var ctAuthToken = '" + req.session.token + "';" );
          }

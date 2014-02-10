@@ -1250,8 +1250,12 @@ use when talking to the GitHub API using Github.js.
 
 ===== Our own NodeJS Application
 
+Let's build our app inside a directory called `node`. This will keep
+this code separate from our client side code and prevent our karma
+test runner from loading these files as part of test runs.
+
 To build out NodeJS application we will first create the application
-package manifest (`package.json`) which specifies the required pieces
+package manifest (`node/package.json`) which specifies the required pieces
 and allows us to run `npm install` to download them all.
 
 [source,javascript]
@@ -1287,44 +1291,241 @@ and allows us to run `npm install` to download them all.
 
 ----
 
+Then, add the following code into a file named
+`node/github-local-login.js`. 
+
 [source,javascript app.js]
 ----
+var express = require('express')
+  , passport = require('passport')
+  , util = require('util')
+  , GitHubStrategy = require('passport-github').Strategy;
+
+var GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID
+var GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+
+var authTokens = {};
+
+// Passport session setup.
+//   To support persistent login sessions, Passport needs to be able to
+//   serialize users into and deserialize users out of the session.  Typically,
+//   this will be as simple as storing the user ID when serializing, and finding
+//   the user by ID when deserializing.  However, since this example does not
+//   have a database of user records, the complete GitHub profile is serialized
+//   and deserialized.
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
+// Use the GitHubStrategy within Passport.
+//   Strategies in Passport require a `verify` function, which accept
+//   credentials (in this case, an accessToken, refreshToken, and GitHub
+//   profile), and invoke a callback with a user object.
+passport.use(new GitHubStrategy({
+    clientID: GITHUB_CLIENT_ID,
+    clientSecret: GITHUB_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/github/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+      authTokens[profile.id] = accessToken;
+    // asynchronous verification, for effect...
+      //process.nextTick(function () {
+      
+      // To keep the example simple, the user's GitHub profile is returned to
+      // represent the logged-in user.  In a typical application, you would want
+      // to associate the GitHub account with a user record in your database,
+      // and return that user instead.
+      return done(null, profile);
+  //});
+  }
+));
+
+var app = express.createServer();
+
+// configure Express
+app.configure(function() {
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'ejs');
+  app.use(express.logger());
+  app.use(express.cookieParser());
+  app.use(express.bodyParser());
+  app.use(express.methodOverride());
+  app.use(express.session({ secret: 'keyboard cat' }));
+  // Initialize Passport!  Also use passport.session() middleware, to support
+  // persistent login sessions (recommended).
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use(app.router);
+  app.use(express.static(__dirname + '/public'));
+});
+
+app.get( '/token.json', 
+         function(req, res) {
+             res.send( "var ctAuthToken = '" + req.session.token + "';" );
+         }
+       );
+
+app.get('/', function(req, res){
+  res.render('index', { user: req.user });
+});
+
+app.get('/account', ensureAuthenticated, function(req, res){
+  res.render('account', { user: req.user });
+});
+
+app.get('/login', function(req, res){
+  res.render('login', { user: req.user });
+});
+
+// GET /auth/github
+//   Use passport.authenticate() as route middleware to authenticate the
+//   request.  The first step in GitHub authentication will involve redirecting
+//   the user to github.com.  After authorization, GitHubwill redirect the user
+//   back to this application at /auth/github/callback
+app.get('/auth/github',
+  passport.authenticate('github'),
+  function(req, res){
+    // The request will be redirected to GitHub for authentication, so this
+    // function will not be called.
+  });
+
+// GET /auth/github/callback
+//   Use passport.authenticate() as route middleware to authenticate the
+//   request.  If authentication fails, the user will be redirected back to the
+//   login page.  Otherwise, the primary route function function will be called,
+//   which, in this example, will redirect the user to the home page.
+app.get('/auth/github/callback', 
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  function(req, res) {
+      console.log( "auth token here: ", authTokens[req.user.id] );
+      req.session.token = authTokens[req.user.id];
+      res.redirect('/');
+  });
+
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
+
+app.listen(3000);
+
+
+// Simple route middleware to ensure user is authenticated.
+//   Use this route middleware on any resource that needs to be protected.  If
+//   the request is authenticated (typically via a persistent login session),
+//   the request will proceed.  Otherwise, the user will be redirected to the
+//   login page.
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/login')
+}
 
 ----
 
-We have it running locally, so we might consider now putting it on a
-public server. There are several different hosting services for NodeJS
-applications, like Heroku and Nodejitsu, but before we go down this
-route, let's review the problems with this setup so far.
+Now, we need to create a new GitHub application. In the top right
+corner on GitHub.com, click on the "Account settings" link, and then
+navigate to the "Applications" link towards the bottom. Click on the
+"Register new application" button, and you'll see the following.
 
-* requires a hosting provider. Not too complicated, but do we want to
-  do devops? 
-* hijacking the token. If another app knew about our methodology of
-  loading a JS file, they too could request this resource and then
-  have access to the oAuth token. They then have access to our GitHub
-  account and our private repositories.
-* Not testable.
+image::images/javascript-new-application.png[]
 
+The only item which must match exactly here is the "Authorization
+callback URL" which should be set to
+`http://localhost:3000/auth/github/callback`. This is the URL which
+our application will tell the GitHub API to redirect us back to after
+authentication has successfully completed, and this string here must
+match what our application provides when initiating authentication
+with GitHub.
+
+We run this app by specifying the github client ID and secret on the
+command line as environment variables (to avoid checking them into our
+source code repository). Your client ID and secret will be different,
+of course.
+
+[source,bash]
+-----
+GITHUB_CLIENT_ID=1234567890abcdefghijk GITHUB_CLIENT_SECRET=0987654321kmnopqrstuv node github-local-login.js
+-----
+
+To be brutally honest, this code is not entirely intuitive, is it?
+And, aren't we supposed to start by writing tests? Well, if we really
+want to host our own authentication component and we want to do it
+using JavaScript, this might be the best starting place we can find.
+There are significant problems with this approach:
+
+* We can run this locally as we are developing and testing, but
+  eventually we will require a hosting provider, like Heroku or
+  Nodejitsu, to host our application, or we will need to setup a full stack
+  virtual server ourselves. Do we really want to manage a server?
+* If you did spend time reviewing this code, you'll see a get request
+  at the `/token.js` mount point. Our intention here is to have
+  someone login using this service, and then provide a script tag
+  access point to the single page app. When our app requests the
+  JavaScript, it will load up a script with an authentication token
+  which we can then use inside our `new GitHub()` call. Of course,
+  this approach is fraught with risk as it would be very easy to
+  hijack the token by simply sticking a `<script>` tag with the same
+  src tag inside their page. 
+* We could migrate this app into this NodeJS application, using EJS
+  templates, but then we are losing the fact that our application is
+  simply our repository, a key benefit when hosting entirely on GitHub.
+* Finally, this app is not very testable. One of the reasons AngularJS
+  is such a popular framework is that it makes you write JavaScript
+  code which is testable. Most NodeJS frameworks don't make that easy,
+  and I found it very difficult to wrap this code inside of a piece of
+  test code. 
+
+For all these reasons, let's abandon this approach. We'll leave the
+NodeJS server code here here for posterity, so that you have an
+example of how you could approach building a GitHub server side
+application in JavaScript, but we'll find a different way to
+authenticate while preserving our single page app architecture.
 
 ===== Fixing our authentication system with Firebase
 
-
 Instead, we will delegate authentication to Firebase. Firebase is a
 real time communication toolset which integrates well with our choice
-of AngularJS. Delegation of our authentication component is easy with
-Firebase: we just create a GitHub application, provide the credentials
+of AngularJS. By far the simplest and safest option,
+Firebase offers AngularJS bindings (called "AngularFire") and offer an
+integrated GitHub authentication component (called "Simple Login").
+Together they resolve the authentication issue for us, and keep all
+our code hosted on GitHub. Delegation of our authentication component is easy with
+Firebase: we just modify our existing GitHub application, provide the credentials
 and GitHub oAuth scope to Firebase, and then our application offloads
 user management to Firebase.  
 
-To start, we need to create a new GitHub application.
+First, create an account on Firebase. Once you have done this, create
+a new app called "CoffeeTech". The APP URL needs be unique, so use
+"coffeetech-<USERNAME>", replacing USERNAME with your GitHub username.
+Once you have created the app, click on "View Firebase" button. You'll
+then see a settings screen, and click on "Simple Login" and then
+"GitHub."
 
+image::images/javascript-view-firebase.png[]
 
-===== Firebase App
+Next, in our GitHub oAuth application settings, change the
+"Authorization callback URL" to
+`https://auth.firebase.com/auth/github/callback`. Then save the
+application.
 
-By far the simplest and safest option. Firebase offers AngularJS
-bindings and offer an integrated GitHub authentication component. 
+Then, copy your client ID and secret to the sections inside the
+Firebase Simple Login settings for the GitHub provider. Make sure the
+"enabled" checkbox is checked to enable the provider.
 
-image::images/javascript-firebase.png[]
+Now, add Firebase support to our AngularJS application:
+
+[source,html]
+-----
+xxx
+
+<script type='text/javascript'
+        src='https://cdn.firebase.com/js/simple-login/1.2.5/firebase-simple-login.js'>
+</script>
+-----
 
 ==== Summary
 
