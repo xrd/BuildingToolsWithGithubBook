@@ -5,9 +5,7 @@ interesting with it. GitHub offers libraries which work within other
 programming languages and frameworks, and later we will talk about
 using the GitHub API on the server side. To start, however, let's
 build a single page app with everything hosted on GitHub and using the
-GitHub API. You've already learned about the `gh-pages` branch and now
-know about how the API works and we'll use that background knowledge
-as a foundation for this next chapter. 
+GitHub API. 
 
 === Using the GitHub API with JavaScript
 
@@ -16,14 +14,13 @@ JavaScript. JavaScript is the lingua franca of the web, invented in
 1995 as a scripting language embedded inside the first web browsers.
 JavaScript has recently found its way to the server side as well with
 NodeJS, an innovative toolkit for building high performance network
-servers. JavaScript is a useful language to know no matter where your
-interests lie, whether they be on the server side or strictly client
-side web development. 
+servers. JavaScript is a useful language to know, whether on the
+server side or strictly client side web development. 
 
 The main weakness of JavaScript has always been testability. Mainly
 due to the asynchronous nature of JavaScript, writing tests has never
 been easy; polling for changes when a callback returns was until
-recently the best way to test code which was nonlinear. But, recent
+recently the best way to test nonlinear code. But, recent
 toolkits like AngularJS and promise-based libraries have made testing
 not only easy but elegant as well. Building applications on top of
 third party services makes testing even more important than it already
@@ -33,8 +30,11 @@ the functionality works as we expect.
 ===== Building our coffee shop database
 
 The Japanese have a word "otaku"; it describes a person obsessed with
-something, often computers or technology. Many software developers
-would happily call themselves otaku. Interestingly, in many of the
+something, often computers or technology. Like westerners have done
+with the word "geek" or "nerd" it has been reappropriated by many in Japan to be a
+self-referential term indicating fastidiousness, and now is used in
+the same way in the western world. Many software developers would happily call
+themselves otaku. Interestingly, in many of the 
 software development shops where I have worked in Portland, there is
 an equally, almost disturbing, obsession with coffee. I suffer from
 the same malady, and it means I will drag my poor wife and infant son
@@ -70,7 +70,7 @@ More specifically, we'll use these technologies:
 
 You don't need to know these technologies in advance of working on this chapter.
 
-===== Bootstrapping
+===== Setting up our single page app
 
 To create our app, let's first create our main web page and push it into our repository.
 
@@ -340,7 +340,7 @@ easier for an outsider (meaning other team members) to use our code.
 Testing facilitates "social coding."
 
 We'll use a tool called `karma`. Karma simplifies writing JavaScript
-tests. We need to first install the tool, then write a test or two.
+unit tests. We need to first install the tool, then write a test or two.
 Karma can easily be installed using NPM, which we document in the
 first chapter.
 
@@ -458,7 +458,7 @@ create a mock object for Github and then inject it into our
 calls to Github, we can call into our mock object and verify the
 correct calls are made. The real meat of of
 our test is inside the `describe` and `it` blocks: we initialize the
-scope. We then expect that the functions on our mocked objects will be
+scope, and then expect that the functions on our mocked objects will be
 executed. And, we verify the data is correctly set on our scope.
 
 Specifically, our test does these things:
@@ -703,7 +703,7 @@ column layout. We setup two adjacent columns this way. And, if we are
 inside a mobile device, it properly stacks these columns.
 <3> Notice how we bind to data from the JSON file.
 
-====== Errors Already?
+===== Errors Already?
 
 If you run this in your browser, you will not see the shops for our city
 displayed. Something is broken, so
@@ -1192,8 +1192,9 @@ So, let's use oAuth instead and resolve these problems.
 If we use oAuth, we enter our credentials directly into GitHub. We can
 take advantage of 2-factor authentication. Once we have entered our
 credentials, GitHub decides whether we are who we say we are, and then
-returns us to the application which requested access. And, GitHub
-provides the application with what is called an oAuth token that
+returns us to the application which requested access. 
+
+GitHub provides the application with what is called an oAuth token that
 encapsulates exactly what services on GitHub we have access to, and
 whether that access is read-only or whether we can add data in a
 read-write manner. This means our requesting service can ask to modify
@@ -1201,15 +1202,15 @@ only parts of our data within GitHub; this provides a much higher
 level of trust to users as they know the application cannot touch the
 more private parts within GitHub. Specifically, this means we could
 ask for access only to gists and not request access to our
-repositories, for example. And, finally, one important point about
-oAuth tokens is that they can be revoked. So, once a specific action
-has been taken, we can destroy the token and revoke access. With
-simple username and password access, the only way to revoke access is
-to change the password, which means any place you have saved that
-password (password managers or other applications which login via
-username and password) need to update their settings as well. With
-oAuth we can revoke a single token at any time (and GitHub makes it
-easy to do this) without affecting access to other services. 
+repositories. One important point about oAuth tokens is that they can
+be revoked. So, once a specific action has been taken, we can destroy
+the token and revoke access. With simple username and password access,
+the only way to revoke access is to change the password, which means
+any place you have saved that password (password managers or other
+applications which login via username and password) need to update
+their settings as well. With oAuth we can revoke a single token at any
+time (and GitHub makes it easy to do this) without affecting access to
+other services.  
 
 ==== Everything on GitHub, except for one piece
 
