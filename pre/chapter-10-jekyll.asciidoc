@@ -1,5 +1,40 @@
-==== Introduction
-==== Markdown
+=== Introduction
+
+==== What is Jekyll?
+
+Jekyll is a set of technologies. Jekyll is first and foremost a
+structured repository which can be compiled into a static blog. 
+
+What, when, how, why, who
+
+Developed by Tom Preson Warner, co-founder of GitHub. 
+
+Why: Wordpress is too bloated! Most people writing a blog don't want
+to learn these technologies:
+
+* HTML: HTML is complicated and writing should not require a CS
+  degree.
+* MySQL: writers should not need to know how to manage a database.
+
+=== Safety
+
+===== Static Blogs
+
+Static
+blogs are all the rage, with Jekyll spawning several copycats in all
+major languages. There are other static blogging engines written in
+Ruby (nanoc), blogging engines written in Python (Hyde), Haskell
+(hakyll), and NodeJS (Ghost). But, Jekyll has one simple benefit:
+committing code into a GitHub repository will automatically build your
+site for you.
+
+===== Hosting Jekyll sites on GitHub
+
+CNAME files
+
+Using gh-pages as master: `git push origin gh-pages:master`. 
+
+===== Markdown
 
 Markdown is a readable markup language. HTML was designed for
 computers to read and interpret. Many people have trained themselves
@@ -22,6 +57,35 @@ content.
 <div style="text-align: left">
 {{ sidebar | markdownify }}
 </div>
+
+
+===== Scripts for generating site
+
+===== Filenaming convention
+
+==== Authoring Tips
+  
+===== inside GitHub
+
+===== using Prose.io
+
+==== Embedding Content
+
+==== YAML Front Matter
+
+===== What is YAML?
+
+==== Importing from old blogs
+
+==== Scraping a site into Jekyll
+
+Rebuilding ByTravelers.com.
+
+===== Using the VCR gem to minimize requests
+===== Writing Tests
+===== GeoCoding from the command line
+===== Embedding AngularJS Directives
+===== Stripping out markdown formatting characters
 
 ==== Branches
 =====  Detached "Orphan" branches
@@ -70,12 +134,6 @@ with your website content.
 =====  Loops
 =====  Variables
 ==== Matching gems with github
-==== Scraping and converting a site
-===== Using the VCR gem to minimize requests
-===== Writing Tests
-===== GeoCoding from the command line
-===== Embedding AngularJS Directives
-
 
 == Github Pages
 
@@ -252,7 +310,6 @@ http://prose.io/
 ==== Octopress Blog (Jekyll)
 
 https://github.com/imathis/octopress
-
 
 Remember that things can get broken if you use the wrong Jekyll versions:
 

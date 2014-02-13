@@ -83,7 +83,11 @@ $ printf "<html>\n<body>Hello from CoffeeTe.ch</body>\n</html>\n" > index.html
 $ git commit -m "Add starting point index.html" -a
 $ git config push.default gh-pages
 
-Notice that we created a new repository, and then created and entered the gh-pages branch. We'll do all our work there. And, by using the git config command, we specified that we want the default push branch to be gh-pages. This allows us to use `git push` to push our branch up instead of the longer `git push origin gh-pages`.
+Notice that we created a new repository, and then created and entered
+the gh-pages branch. We'll do all our work there. And, by using the
+git config command, we specified that we want the default push branch
+to be gh-pages. This allows us to use `git push` to push our branch up
+instead of the longer `git push origin gh-pages`. 
 
 ===== Mapping our site to a live hostname
 
@@ -672,7 +676,7 @@ Now, let's expose the new data inside the `index.html` file like so:
 
 <h3 ng-show="city">Current city: {{city.name}}</h3>
 
-<div class="row=">
+<div class="row">
 <div class="col-md-6"><h4>Shop Name</h4> </div>
 <div class="col-md-6"><h4>Lat/Lng</h4> </div>
 </div>

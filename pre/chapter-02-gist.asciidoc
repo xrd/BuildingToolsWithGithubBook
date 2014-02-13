@@ -80,7 +80,24 @@ origin       https://gist.github.com/8138797.git (fetch)
 origin       https://gist.github.com/8138797.git (push)
 
 Your results will be slightly different, but this output displays our remote repository; in other words, where
-we pull and push our code changes. If you are familiar with the
+we pull and push our code changes. If you are familiar with the way
+that remotes work on GitHub you can see that this is a read-only URL.
+We need to adjust these URLs in our remote so that it points to the
+read-write remote URL. To do that, remove the `https://` part and add
+a `git@`. Then, change the first `/` character after the
+`gist.github.com` URL to a `:` character. If your remote was the same
+as above you would have this `git@gist.github.com:8138797.git`. Then,
+in a terminal window run these commands:
+
+[source,bash]
+----
+$ git remote rm origin
+$ git remote add origin git@gist.github.com:8138797.git
+----
+
+Now you can push new content in via the command line as well as edit
+files inside of GitHub.com. As you develop your app you have
+flexibility in whichever way fits you best.
 
 === Discovering Gists
 
