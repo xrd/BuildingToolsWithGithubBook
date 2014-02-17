@@ -112,10 +112,16 @@ $ git push
 
 Remember that you need to wait about ten minutes before GitHub
 regenerates their database to establish the connection between your
-gh-pages site and the mapping on their front end servers. Also,
-generally it takes several hours to even a few days to propagate DNS
+gh-pages site and the mapping on their front end servers. This is only
+the first time you connect a repository to a hostname; you will see
+subsequent changes almost instantaneously.
+
+[NOTE]
+=====
+Generally it takes several hours to even a few days to propagate DNS
 settings out into the wild, so make sure you choose and setup a
-hostname far in advance of needing a site live.
+hostname far in advance if your site has to be live by a certain point.
+=====
 
 ===== Adding the support libraries
 
@@ -314,9 +320,9 @@ GitHub is built on top of Git, a technology that could not be better suited for
 storing content. However, there is a major difference between
 accessing data stored inside a Git repository and a traditional database:
 searchability. Git repositories are great for storing data, and
-GitHub exposes storing data through their API. While Git itself
-has many ways to search and retrieve data, the GitHub API does not
-easily allow searching our repository data. Let's make sure to
+GitHub exposes storing data through their API. The GitHub API does
+support searching of code, but the GitHub.js library does not expose
+access to this part of the API. So, let's make sure to
 design and store the data in a structured way so that we can search
 it on the client side.
 
@@ -610,9 +616,9 @@ file by the SHA hash.
 
 However, we get an error telling us `select` is undefined. Did we forget
 to include underscore.js? Reviewing the documentation on Github.js, we
-see that it states underscore.js and base64.js are required. We did
-not see the issue when we pulled the information To
-include these, run these commands from the console: 
+see that it states underscore.js and base64.js are required. We forgot
+to include them. Oops! To include these, run these commands from the
+console:
 
 [source,bash]
 $ wget http://underscorejs.org/underscore-min.js
@@ -634,10 +640,9 @@ the user to generate driving directions and get to the coffee shop.
 ===== Simulating user reported data
 
 So far we have built a database of cities and coffee shops in those
-cities. Even the first version of Google Maps developed in the
-Victorian era provided more value to its users. If we add our own
-layer of information on top of this data (like quirky information
-about the coffeeshop), however, then we might have something that
+cities. This does not provide any utility beyond any map service out there.
+If we layer additional information on top of this data (like quirky
+information about the coffeeshop), however, then we might have something that
 someone might find useful alongside Google Maps. Let's add some faked
 data to our coffee shop information.
 
