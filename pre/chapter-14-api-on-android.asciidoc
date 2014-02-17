@@ -1,4 +1,4 @@
-==== GitHub API on Android
+== GitHub API on Android
 
 Android is currently the most popular operating system for mobile
 devices, overtaking Symbian in 2010, experiencing incredible growth
@@ -16,13 +16,13 @@ GitHub, determine our location, and then ask us for a quick note
 describing what we are doing. The application will then compose a
 Jekyll blog post for us and push the post into our blog on GitHub.
 
-==== Prerequisites
+=== Prerequisites
 
 If you don't have a physical Android device, don't fret. You can followe
 along with this chapter without having an actual Android device by doing
 development from a virtual device. 
 
-===== Installing the Java SDK
+==== Installing the Java SDK
 
 Unfortunately there is no simple shell command to install Java in the
 same way as there is for Ruby and NodeJS using RVM or NVM. 
@@ -33,9 +33,9 @@ find the correct download for your needs. Android works with either
 the 1.6 or 1.7 versions of Java, but it is probably best to get the
 newest version you can find.
 
-===== Installing the Android SDK
+==== Installing the Android SDK
 
-===== Creating AVDs for Development
+==== Creating AVDs for Development
 
 Once you have installed the SDK, you can create a virtual device
 called an AVD. AVDs are very useful because you can see any screen
@@ -146,25 +146,92 @@ creates a sample main entry point for us. It looks like this:
 
 [source,java]
 -----
-[filename=".", language="js", sha="cf1ae2242b95a05cb:support/android/WhereImAt/src/main/src/com/whereimat/MainActivity.java"]
+[filename=".", language="js", sha="cf1ae2242b95a05cb:support/android/WhereImAt/WhereImAt/src/main/src/com/whereimat/MainActivity.java"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
-===== Imperative UI versus Declarative UI
+When the application is launched, the
+Android OS will launch this activity and then call the `onCreate`
+method for us. Inside this method, our application calls our parent's
+implementation of `onCreate`, and then inflates the layout for our
+application. This layout corresponds to an automatically generated XML
+file which resides in our layouts directory. This file looks like
+this:
 
-Normally when you create an android application you use a files layout
-which simplify creating user interfaces, allow you to easily localize
-(offer your application in multiple languages). These files are called
-resource files, and are written in XML. These files make great sense
-when you have a graphical editor to manage them as much people use
-when developing Android applications. In our case, our application is
-simple enough that we can manage all of our UI imperatively from
-within our application. This allows us to not rely on a graphical
-editor and write pure code.
+[source,java]
+-----
+[filename=".", language="js", sha="cf1ae2242b95a05cb:support/android/WhereImAt/WhereImAt/src/main/res/layout/main.xml"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
 
-===== Code to talk to GitHub
+You may have complicated feelings about XML files (I know I do), but
+the Android layout XML files are a straightforward way to design
+layouts declaratively, and many of the GUI tools provide sophisticated
+ways to manage them. We'll do everything by hand as our needs are simple.
+
+==== Writing tests
+
+Once we have written our application, we need to write tests to verify
+things work as we expect them to. There are many options for writing
+tests on Java and Android. JUnit is a popular testing tool which
+permits writing unit tests. Robotium is another testing tool which
+focuses on a different aspect of testing, user interface tests. We'll
+use a wrapper around Robotium called Calabash for Android which allows
+us to write in a high level domain specific language. I find that
+writing Calabash tests is a simpler way to write tests using APIS
+because Calabash tests interact with the entire application, rather
+than internals like unit testing. With unit testing you can be
+required to mock out network interactions, and as such, often miss
+subtle changes in APIs. Calabash also uses a simple DSL which is not
+compiled, so refactoring and changing tests is a simple matter.
+Calabash makes testing easy; your code can be complicated, but tests
+should not be an onerous task.
+
+Calabash runs using ruby. You already have ruby installed, so to
+install calabash, run these commands:
+
+[source,bash]
+$ printf "source 'https://rubygems.org'\n\ngem 'calabash-android'" >> Gemfile
+$ bundle install
+$ calabash-android gen
+
+Your `Gemfile` should now look like this:
+
+[source,java]
+-----
+[filename=".", language="js", sha="f88268b:support/android/WhereImAt/Gemfile"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+We've now installed calabash and created the folder structure to hold
+our tests along with some helper scripts. Let's write a simple test for our
+application. Your gem
+
+
+[source,java]
+-----
+[filename=".", language="js", sha="cf1ae2242b95a05cb:support/android/WhereImAt/Gemfile"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+xxxx
+[source,yaml features/login.feature]
+-----
+feature: Login
+  scenario: A user can login
+    Given I have logged in
+-----
+
+As we do in all the other chapters, let's practice test drive development.
+
+==== Code to talk to GitHub
 
 We've finally assemble the proper UI for our application. Our last
 step is to write the code which handles putting content into GitHub.
@@ -274,39 +341,3 @@ private void commitContents( String baseCommitSha, String contents ) {
 
 -----
 
-===== Writing Tests
-
-Once we have written our application, we need to write tests to verify
-things work as we expect them to. There are many options for writing
-tests on Java and Android. JUnit is a popular testing tool which
-permits writing unit tests. Robotium is another testing tool which
-focuses on a different aspect of testing, user interface tests. We'll
-use a wrapper around Robotium called Calabash for Android which allows
-us to write in a high level domain specific language. I find that
-writing Calabash tests is a simpler way to write tests using APIS
-because Calabash tests interact with the entire application, rather
-than internals like unit testing. With unit testing you can be
-required to mock out network interactions, and as such, often miss
-subtle changes in APIs. Calabash also uses a simple DSL which is not
-compiled, so refactoring and changing tests is a simple matter.
-Calabash makes testing easy; your code can be complicated, but tests
-should not be an onerous task.
-
-Calabash runs using ruby. You already have ruby installed, so to
-install calabash, run these commands:
-
-[source,bash]
-$ printf "source 'https://rubygems.org'\n\ngem 'calabash-android'" >> Gemfile
-$ bundle install
-$ calabash-android gen
-
-We've now installed calabash and created the folder structure to hold
-our tests along with some helper scripts. Let's write a simple test for our
-application. 
-
-[source,yaml features/login.feature]
------
-feature: Login
-  scenario: A user can login
-    Given I have logged in
------
