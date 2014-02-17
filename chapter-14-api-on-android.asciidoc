@@ -232,14 +232,12 @@ gem 'calabash-android'
 
 We've now installed calabash and created the folder structure to hold
 our tests along with some helper scripts. Let's write a simple test for our
-application. Your gem
-
+application.
 
 [source,java]
 -----
 
 -----
-xxxx
 [source,yaml features/login.feature]
 -----
 feature: Login
