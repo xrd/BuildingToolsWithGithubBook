@@ -210,24 +210,21 @@ snippet~~~~~
 -----
 
 We've now installed calabash and created the folder structure to hold
-our tests along with some helper scripts. Let's write a simple test for our
-application.
+our tests along with some helper scripts. The `calabash-android gen`
+command will write out a default calabash feature file like this.
 
-[source,java]
+[source,yaml]
 -----
-[filename=".", language="js", sha="cf1ae2242b95a05cb:support/android/WhereImAt/Gemfile"]
+[filename=".", language="js", sha="4aa08622318:support/android/WhereImAt/features/my_first.feature"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
-[source,yaml features/login.feature]
------
-feature: Login
-  scenario: A user can login
-    Given I have logged in
------
 
-As we do in all the other chapters, let's practice test drive development.
+As we do in all the other chapters, let's practice test drive
+development. Modify the `my_first.feature` file to look like this:
+
+
 
 ==== Code to talk to GitHub
 
