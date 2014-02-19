@@ -1,5 +1,5 @@
 require 'sinatra'
 
 get '/hi' do
-  "Ok then!"
+  "Hello World!"
 end
