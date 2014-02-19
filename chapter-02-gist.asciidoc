@@ -126,7 +126,21 @@ flexibility in whichever way fits you best.
 Let's add to our application and use the octokit gem to pull all
 public gists for any user we specify.
 
-Add to our Gemfile the octokit gem:
+Add a view `index.erb` at the root of our directory.
+
+[code,ruby]
+-----
+<html>
+<body>
+
+User has <%= count %> public gists
+
+</body>
+</html>
+
+-----
+
+Add the octokit gem to our Gemfile:
 
 [source,ruby]
 -----
@@ -151,16 +165,21 @@ end
 
 -----
 
-Add the view `index.erb` into the root.
+Our filesystem should look like this, with three files.
 
-[code,ruby]
+[source,bash]
 -----
-User has <%= count %> public gists
-
+$ ls -1
+Gemfile
+hi.rb
+index.erb
 -----
 
 Run `bundle` to install octokit and restart Sinatra by running ctrl-c,
-and then `ruby hi.rb`. 
+and then `ruby hi.rb`. If you visit `http://localhost:4567/xrd` in
+your browser, you will see the public gists for any user you specify.
+
+image::images/gists-gist-count.png[]
 
 === Embedding Gists
 
