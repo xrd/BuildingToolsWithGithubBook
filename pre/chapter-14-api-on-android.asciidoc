@@ -184,12 +184,13 @@ use a wrapper around Robotium called Calabash for Android which allows
 us to write in a high level domain specific language. I find that
 writing Calabash tests is a simpler way to write tests using APIS
 because Calabash tests interact with the entire application, rather
-than internals like unit testing. With unit testing you can be
-required to mock out network interactions, and as such, often miss
+than only the internals like unit testing. With unit testing you can
+be required to mock out network interactions, and as such, often miss
 subtle changes in APIs. Calabash also uses a simple DSL which is not
-compiled, so refactoring and changing tests is a simple matter.
-Calabash makes testing easy; your code can be complicated, but tests
-should not be an onerous task.
+compiled, so refactoring and changing tests is a simple matter. And,
+Calabash has a console mode which allows you to interactively refine
+your tests. Calabash makes testing easy; your code can be complicated,
+but tests should not be an onerous task.
 
 Calabash runs using ruby. You already have ruby installed, so to
 install calabash, run these commands:
@@ -221,7 +222,7 @@ To be replaced
 snippet~~~~~
 -----
 
-As we do in all the other chapters, let's practice test drive
+As we do in all the other chapters, let's practice test driven
 development. Modify the `my_first.feature` file to look like this:
 
 
