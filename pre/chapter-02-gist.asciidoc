@@ -1,4 +1,4 @@
-= Gists
+== Gists
 
 Gists are great for code sharing. To create one, you can go to gist.github.com and enter in some code. You 
 then choose public or private and create the gist.
@@ -27,11 +27,10 @@ simple as this:
 
 [code,ruby]
 -----
-require 'sinatra'
-
-get '/hi' do
-  "Hello World!"
-end
+[filename=".", language="js", sha="499e56c:support/gists/hi.rb"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 Create a gist for this by visiting gist.github.com. Enter in the text exactly as above and then choose
@@ -60,9 +59,12 @@ hi.rb
 
 To run this code, enter `ruby hi.rb`
 
-If you had not used ruby before, this will cause an error. This program requires a library called "sinatra" and
-you have not yet installed it. We could write a README, or add documentation into this file itself. Another
-way to guarantee the user has the proper files installed is to use a "Gemfile" which is a file that tells
+If you had not used sinatra with ruby before, this will cause an
+error. This program requires a library called "sinatra" and 
+you have not yet installed it. We could write a README, or add
+documentation into this file itself. Another 
+way to guarantee the user has the proper files installed is to use a
+"Gemfile" which is a file that tells 
 which libraries are installed and from where. Let's add this:
 
 [source,bash]
@@ -120,11 +122,43 @@ flexibility in whichever way fits you best.
 === A gist that displays gists
 
 Let's add to our application and use the octokit gem to pull all
-public gists for a user.
+public gists for any user we specify.
 
+Add to our Gemfile the octokit gem:
 
+[source,ruby]
+-----
+gem "octokit"
+-----
+
+Run `bundle` to install octokit. Then, modify our hi.rb app to look
+like this:
+
+[code,ruby]
+-----
+[filename=".", language="js", sha="bd1422c:support/gists/hi.rb"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+Add the view `index.erb` into the root.
+
+[code,ruby]
+-----
+[filename=".", language="js", sha="bd1422c:support/gists/index.erb"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+Run `bundle` to install octokit and restart Sinatra by running ctrl-c,
+and then `ruby hi.rb`. 
 
 === Embedding Gists
+
+You can embed gists as shareable code snippets inside of blogs or any
+web page.
 
 ==== Inside HTML pages
 
