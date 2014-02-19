@@ -1,5 +1,10 @@
 require 'sinatra'
+require 'octokit'
 
-get '/hi' do
-  "Hello World!"
+set :views, "."
+
+get '/:username' do |username|
+  user = Octokit.user username
+  count = user.public_gists
+  erb :index, locals: { :count => count }
 end
