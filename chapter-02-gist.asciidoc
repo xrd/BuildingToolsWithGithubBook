@@ -181,12 +181,53 @@ your browser, you will see the public gists for any user you specify.
 
 image::images/gists-gist-count.png[]
 
+==== Going deeper into the Gist API
+
+The GitHub API uses hypermedia instead of
+basic resource driven APIs. If you use a client like Octokit, you may
+not need to understand hypermedia. But, a little discussion can
+help us understand it.
+
+Most RESTful APIs come with a "sitemap." You view the resources
+available from that API and then apply some HTTP verb to do something
+to them. Hypermedia thinks of an API differently. Hypermedia APIs
+describe themselves inside their responses using "affordances." What
+this means is that the API might respond like this:
+
+[source,json]
+-----
+
+-----
+
+The important thing to note about Hypermedia APIs is that payloads contain
+metadata about data itself and metadata about the possible options of
+operating on the data. RESTful APIs typically provide a mapping
+outside of the payload. You have to join the API sitemap with the data
+in an ad-hoc way when using RESTful APIs; with Hypermedia APIs your
+client can react to the payload correctly and intelligently. 
+
+This loose coupling makes APIs and their clients flexible. In theory,
+a Hypermedia API works with a Hypermedia aware client. If you change
+the API, the client, as it understands Hypermedia, can react and still
+work as expected. Using a RESTful API means that clients must be
+updated (either a newer version of the client must be installed) or
+the client code must be upgraded. 
+
+This is explained in great detail in the book (http://www.amazon.com/o/ASIN/1449306578?tag=adapas02-20)[Building
+Hypermedia APIs with HTML5 and Node]
+
 === Embedding Gists
 
 You can embed gists as shareable code snippets inside of blogs or any
 web page.
 
 ==== Inside HTML pages
+
+To embed inside of an HTML page look for the "Embed this gist" box to
+the left of a gist. Copy the code listed there (which will look
+something like `<script
+src="https://gist.github.com/xrd/8923697.js"></script>` and paste it
+into your HTML. 
 
 ==== Inside Jekyll blogs
 
@@ -199,8 +240,6 @@ the gist code like `{% gist 8138797 hi.rb %}`.
 Private gists can be embedded. If you use a private gist, you need to
 prefix the username of the account holder in the gist like so: `{% gist
 xrd/8138797 hi.rb %}`.
-
-
 
 === Discovering Gists
 
