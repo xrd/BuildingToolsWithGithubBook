@@ -253,7 +253,8 @@ into your HTML.
 ==== Inside Jekyll blogs
 
 You can use the code `{% gist 8138797 %}` to embed a gist inside of your
-Jekyll blog. 
+Jekyll blog hosted on GitHub, or on any site built on the
+"github-pages" branch mechanism (described in the "GitHub Pages" chapter). 
 
 If you want to use a specific file within the gist, add a filename to
 the gist code like `{% gist 8138797 hi.rb %}`.
@@ -261,6 +262,63 @@ the gist code like `{% gist 8138797 hi.rb %}`.
 Private gists can be embedded. If you use a private gist, you need to
 prefix the username of the account holder in the gist like so: `{% gist
 xrd/8138797 hi.rb %}`.
+
+=== Gist from the command line
+
+`gem install gist` will install a command line tool which assists in
+creating gists. You can use it simply by typing the command, and then
+entering the data you want to post as a gist.
+
+[source,bash]
+-----
+$ gist
+(type a gist. <ctrl-c> to cancel, <ctrl-d> when done)
+{ "foo" : "bar" }
+https://gist.github.com/9106765
+-----
+
+The gist command will return the link to the gist just created. Gists
+are created anonymously by default. You can login using the `--login`
+switch. Once you do this, your gists will be linked to
+your account.
+
+[source,bash]
+-----
+$ gist --login
+Obtaining OAuth2 access_token from github.
+GitHub username: xrd
+GitHub password: 
+2-factor auth code: 787878
+
+Success! https://github.com/settings/applications
+-----
+
+You can pipe text to the gist command to use the contents of that
+file.
+
+[source,bash]
+-----
+$ echo '{ "foo" : "bar" }' | gist
+https://gist.github.com/9106799
+-----
+
+Adding the `-o` switch automatically opens the gist inside your
+default web browser. You can also copy the gist URL to the clipboard
+using the `-c` switch. Or, you can copy the contents of your clipboard
+into a gist using the `-P` switch. 
+
+There are many other fun features of the gist command. To learn more
+run the gist command with the `--help` switch. 
+
+[source,bash]
+-----
+[filename=".", language="js", sha="30afd95:support/gists/gist.help"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+
 
 === Discovering Gists
 
