@@ -34,6 +34,135 @@ are not searchable, but they are accessible to anyone who knows
 the URL. Don't post any code to gist which you need to keep private as
 once you put it there, it is only as a safe as the URL is private.  
 
+=== Embedding Gists
+
+You can embed gists as shareable code snippets inside of blogs or any
+web page.
+
+==== Inside HTML pages
+
+To embed inside of an HTML page look for the "Embed this gist" box to
+the left of a gist. Copy the code listed there (which will look
+something like `<script
+src="https://gist.github.com/xrd/8923697.js"></script>` and paste it
+into your HTML. 
+
+==== Inside Jekyll blogs
+
+You can use the code `{% gist 8138797 %}` to embed a gist inside of your
+Jekyll blog hosted on GitHub, or on any site built on the
+"github-pages" branch mechanism (described in the "GitHub Pages" chapter). 
+
+If you want to use a specific file within the gist, add a filename to
+the gist code like `{% gist 8138797 hi.rb %}`.
+
+Private gists can be embedded. If you use a private gist, you need to
+prefix the username of the account holder in the gist like so: `{% gist
+xrd/8138797 hi.rb %}`.
+
+=== Gist from the command line
+
+`gem install gist` will install a command line tool which assists in
+creating gists. You can use it simply by typing the command, and then
+entering the data you want to post as a gist.
+
+[source,bash]
+-----
+$ gist
+(type a gist. <ctrl-c> to cancel, <ctrl-d> when done)
+{ "foo" : "bar" }
+https://gist.github.com/9106765
+-----
+
+The gist command will return the link to the gist just created. Gists
+are created anonymously by default. You can login using the `--login`
+switch. Once you do this, your gists will be linked to
+your account.
+
+[source,bash]
+-----
+$ gist --login
+Obtaining OAuth2 access_token from github.
+GitHub username: xrd
+GitHub password: 
+2-factor auth code: 787878
+
+Success! https://github.com/settings/applications
+-----
+
+You can pipe text to the gist command to use the contents of that
+file.
+
+[source,bash]
+-----
+$ echo '{ "foo" : "bar" }' | gist
+https://gist.github.com/9106799
+-----
+
+Adding the `-o` switch automatically opens the gist inside your
+default web browser. You can also copy the gist URL to the clipboard
+using the `-c` switch. Or, you can copy the contents of your clipboard
+into a gist using the `-P` switch. 
+
+There are many other fun features of the gist command. To learn more
+run the gist command with the `--help` switch. 
+
+[source,bash]
+-----
+$ gist --help
+Gist (v4.2.0) lets you upload to https://gist.github.com/
+
+The content to be uploaded can be passed as a list of files, if none are
+specified STDIN will be read. The default filename for STDIN is "a.rb", and all
+filenames can be overridden by repeating the "-f" flag. The most useful reason
+to do this is to change the syntax highlighting.
+
+If you'd like your gists to be associated with your GitHub account, so that you
+can edit them and find them in future, first use `gist --login` to obtain an
+Oauth2 access token. This is stored and used by gist in the future.
+
+Private gists do not have guessable URLs and can be created with "-p", you can
+also set the description at the top of the gist by passing "-d".
+
+Anonymous gists are not associated with your GitHub account, they can be created
+with "-a" even after you have used "gist --login".
+
+If you would like to shorten the resulting gist URL, use the -s flag. This will
+use GitHub's URL shortener, git.io. You can also use -R to get the link to the
+raw gist.
+
+To copy the resulting URL to your clipboard you can use the -c option, or to
+just open it directly in your browser, use -o. Using the -e option will copy the
+embeddable URL to the clipboard. You can add `alias gist='gist -c'` to your
+shell's rc file to configure this behaviour by default.
+
+Instead of creating a new gist, you can update an existing one by passing its ID
+or URL with "-u". For this to work, you must be logged in, and have created the
+original gist with the same GitHub account.
+
+Usage: gist [-o|-c|-e] [-p] [-s] [-R] [-d DESC] [-a] [-u URL] [-P] [-f NAME|-t EXT]* FILE*
+       gist --login
+
+        --login                      Authenticate gist on this computer.
+    -f, --filename [NAME.EXTENSION]  Sets the filename and syntax type.
+    -t, --type [EXTENSION]           Sets the file extension and syntax type.
+    -p, --private                    Makes your gist private.
+        --no-private
+    -d, --description DESCRIPTION    Adds a description to your gist.
+    -s, --shorten                    Shorten the gist URL using git.io.
+    -u, --update [ URL | ID ]        Update an existing gist.
+    -a, --anonymous                  Create an anonymous gist.
+    -c, --copy                       Copy the resulting URL to the clipboard
+    -e, --embed                      Copy the embed code for the gist to the clipboard
+    -o, --open                       Open the resulting URL in a browser
+        --no-open
+    -P, --paste                      Paste from the clipboard to gist
+    -R, --raw                        Raw url of the new gist
+    -h, --help                       Show this message.
+    -v, --version                    Print the version.
+
+-----
+
 === Gists as fully functioning apps
 
 You can use gists to store entire apps. Let's create a
@@ -246,10 +375,12 @@ a Hypermedia API works with a Hypermedia aware client. If you change
 the API, the client, as it understands Hypermedia, can react and still
 work as expected. Using a RESTful API means that clients must be
 updated (either a newer version of the client must be installed) or
-the client code must be upgraded. In theory, hypermedia APIs can
-change on the backend, and the client, as long as it is a
-hypermedia-aware client, can automatically and dynamically determine
-the right way to access information from the response itself.
+the client code must be upgraded. Hypermedia APIs can alter their backend
+and the client, as long as it is
+hypermedia-aware, can automatically and dynamically determine
+the right way to access information from the response itself. In other
+words, with a hypermedia client the API backend can change and your
+client code should not need to.
 
 This is explained in great detail in the book (http://www.amazon.com/o/ASIN/1449306578?tag=adapas02-20)[Building
 Hypermedia APIs with HTML5 and Node]
@@ -313,131 +444,4 @@ Now we see the gists and the contents.
 
 image::images/gists-last-five.png[]
 
-=== Embedding Gists
 
-You can embed gists as shareable code snippets inside of blogs or any
-web page.
-
-==== Inside HTML pages
-
-To embed inside of an HTML page look for the "Embed this gist" box to
-the left of a gist. Copy the code listed there (which will look
-something like `<script
-src="https://gist.github.com/xrd/8923697.js"></script>` and paste it
-into your HTML. 
-
-==== Inside Jekyll blogs
-
-You can use the code `{% gist 8138797 %}` to embed a gist inside of your
-Jekyll blog hosted on GitHub, or on any site built on the
-"github-pages" branch mechanism (described in the "GitHub Pages" chapter). 
-
-If you want to use a specific file within the gist, add a filename to
-the gist code like `{% gist 8138797 hi.rb %}`.
-
-Private gists can be embedded. If you use a private gist, you need to
-prefix the username of the account holder in the gist like so: `{% gist
-xrd/8138797 hi.rb %}`.
-
-=== Gist from the command line
-
-`gem install gist` will install a command line tool which assists in
-creating gists. You can use it simply by typing the command, and then
-entering the data you want to post as a gist.
-
-[source,bash]
------
-$ gist
-(type a gist. <ctrl-c> to cancel, <ctrl-d> when done)
-{ "foo" : "bar" }
-https://gist.github.com/9106765
------
-
-The gist command will return the link to the gist just created. Gists
-are created anonymously by default. You can login using the `--login`
-switch. Once you do this, your gists will be linked to
-your account.
-
-[source,bash]
------
-$ gist --login
-Obtaining OAuth2 access_token from github.
-GitHub username: xrd
-GitHub password: 
-2-factor auth code: 787878
-
-Success! https://github.com/settings/applications
------
-
-You can pipe text to the gist command to use the contents of that
-file.
-
-[source,bash]
------
-$ echo '{ "foo" : "bar" }' | gist
-https://gist.github.com/9106799
------
-
-Adding the `-o` switch automatically opens the gist inside your
-default web browser. You can also copy the gist URL to the clipboard
-using the `-c` switch. Or, you can copy the contents of your clipboard
-into a gist using the `-P` switch. 
-
-There are many other fun features of the gist command. To learn more
-run the gist command with the `--help` switch. 
-
-[source,bash]
------
-$ gist --help
-Gist (v4.2.0) lets you upload to https://gist.github.com/
-
-The content to be uploaded can be passed as a list of files, if none are
-specified STDIN will be read. The default filename for STDIN is "a.rb", and all
-filenames can be overridden by repeating the "-f" flag. The most useful reason
-to do this is to change the syntax highlighting.
-
-If you'd like your gists to be associated with your GitHub account, so that you
-can edit them and find them in future, first use `gist --login` to obtain an
-Oauth2 access token. This is stored and used by gist in the future.
-
-Private gists do not have guessable URLs and can be created with "-p", you can
-also set the description at the top of the gist by passing "-d".
-
-Anonymous gists are not associated with your GitHub account, they can be created
-with "-a" even after you have used "gist --login".
-
-If you would like to shorten the resulting gist URL, use the -s flag. This will
-use GitHub's URL shortener, git.io. You can also use -R to get the link to the
-raw gist.
-
-To copy the resulting URL to your clipboard you can use the -c option, or to
-just open it directly in your browser, use -o. Using the -e option will copy the
-embeddable URL to the clipboard. You can add `alias gist='gist -c'` to your
-shell's rc file to configure this behaviour by default.
-
-Instead of creating a new gist, you can update an existing one by passing its ID
-or URL with "-u". For this to work, you must be logged in, and have created the
-original gist with the same GitHub account.
-
-Usage: gist [-o|-c|-e] [-p] [-s] [-R] [-d DESC] [-a] [-u URL] [-P] [-f NAME|-t EXT]* FILE*
-       gist --login
-
-        --login                      Authenticate gist on this computer.
-    -f, --filename [NAME.EXTENSION]  Sets the filename and syntax type.
-    -t, --type [EXTENSION]           Sets the file extension and syntax type.
-    -p, --private                    Makes your gist private.
-        --no-private
-    -d, --description DESCRIPTION    Adds a description to your gist.
-    -s, --shorten                    Shorten the gist URL using git.io.
-    -u, --update [ URL | ID ]        Update an existing gist.
-    -a, --anonymous                  Create an anonymous gist.
-    -c, --copy                       Copy the resulting URL to the clipboard
-    -e, --embed                      Copy the embed code for the gist to the clipboard
-    -o, --open                       Open the resulting URL in a browser
-        --no-open
-    -P, --paste                      Paste from the clipboard to gist
-    -R, --raw                        Raw url of the new gist
-    -h, --help                       Show this message.
-    -v, --version                    Print the version.
-
------
