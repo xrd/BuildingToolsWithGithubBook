@@ -1,21 +1,37 @@
 == Gists
 
-Gists are great for code sharing. To create one, you can go to gist.github.com and enter in some code. You 
-then choose public or private and create the gist.
+Gists are great for code sharing. To create one, you can go to
+gist.github.com and enter in some code. You then choose public or
+private and create the gist. If you need to share a small bit of code,
+or write something and discuss it, gists are a great tool. 
+
+There are other services that do this: pastebin was the first, and
+there are many others that offer variances on code sharing. But gists
+by GitHub are not simply a pasting service.
 
 === Gists are repositories
 
-Every gist created is a tiny repository. You can update gists and see
-the history.
+Gists from GitHub are not just a place to paste code. Every gist
+created is a tiny repository. You can update gists and see
+the history. You can download them, hack on them, and `git push` them
+back into the repository (which will republish them onto the publicly
+facing web page). You get all the benefits of branching when using
+GitHub gists if you need them. And, you can "fork" gists, just like
+any other repository.
 
-You can have an unlimited number of public and private gists.
+You can have an unlimited number of public and private gists. Instead
+of creating a new private repository, you can take a tiny bit of code
+and make a private gist, sharing this will others through a URL
+instead of adding collaborators. Or, you can make a gist public, and
+share that URL to mailing lists or anywhere you need public feedback.
 
 === No real privacy
 
-Remember that there are two types of gists: 
-Public gists are searchable. Private gists are not searchable, but
-they are accessible to anyone who knows the URL. Don't post any code to gist which you need to keep private
-as once you put it there, it is only as a safe as the URL is private. 
+As there are two types of gists (public and private), it is important the understand the
+differences between them. Public gists are searchable. Private gists
+are not searchable, but they are accessible to anyone who knows
+the URL. Don't post any code to gist which you need to keep private as
+once you put it there, it is only as a safe as the URL is private.  
 
 === Gists as fully functioning apps
 
@@ -175,16 +191,31 @@ basic resource driven APIs. If you use a client like Octokit, you may
 not need to understand hypermedia. But, a little discussion can
 help us understand it.
 
-Most RESTful APIs come with a "sitemap." You view the resources
-available from that API and then apply some HTTP verb to do something
-to them. Hypermedia thinks of an API differently. Hypermedia APIs
-describe themselves inside their responses using "affordances." What
-this means is that the API might respond like this:
+Most RESTful APIs come with a "sitemap" documented somewhere. You view
+the resources available from that API and then apply some HTTP verb to
+do something to them. Hypermedia thinks of an API differently.
+Hypermedia APIs describe themselves inside their responses using
+"affordances." What this means is that the API might respond like this:
 
 [source,json]
 -----
-
+{
+    "_links": {
+        "self": {
+            "href": "http://shop.oreilly.com/product/0636920030300.do"
+        }
+    }
+    "id": "xrd",
+    "name": "Chris Dawson"
+}
 -----
+
+In this payload, you can see that there is an id ("xrd") and a name
+("Chris Dawson"). Most APIs offer JSON responses, and this one
+does too. This payload was forked from the HAL explanation at the
+(https://phlyrestfully.readthedocs.org/en/latest/halprimer.html)[HAL
+Primer] and you can find a more detailed explanation of these concepts
+there. 
 
 The important thing to note about Hypermedia APIs is that payloads contain
 metadata about data itself and metadata about the possible options of
@@ -198,7 +229,10 @@ a Hypermedia API works with a Hypermedia aware client. If you change
 the API, the client, as it understands Hypermedia, can react and still
 work as expected. Using a RESTful API means that clients must be
 updated (either a newer version of the client must be installed) or
-the client code must be upgraded. 
+the client code must be upgraded. In theory, hypermedia APIs can
+change on the backend, and the client, as long as it is a
+hypermedia-aware client, can automatically and dynamically determine
+the right way to access information from the response itself.
 
 This is explained in great detail in the book (http://www.amazon.com/o/ASIN/1449306578?tag=adapas02-20)[Building
 Hypermedia APIs with HTML5 and Node]
