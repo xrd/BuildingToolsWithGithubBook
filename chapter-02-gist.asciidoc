@@ -22,7 +22,8 @@ any other repository.
 You can have an unlimited number of public and private gists. Instead
 of creating a new private repository, you can take a tiny bit of code
 and make a private gist, sharing this will others through a URL
-instead of adding collaborators. Or, you can make a gist public, and
+instead of the more onerous process of adding collaborators to a
+regular repository. Or, you can make a gist public, and
 share that URL to mailing lists or anywhere you need public feedback.
 
 === No real privacy
@@ -193,18 +194,21 @@ index.erb
 
 Run `bundle` to install octokit and restart Sinatra by running ctrl-c,
 and then `ruby hi.rb`. If you visit `http://localhost:4567/xrd` in
-your browser, you will see the public gists for any user you specify.
+your browser, you will see the count of public gists for any user you
+specify.
 
 image::images/gists-gist-count.png[]
 
 ==== Going deeper into the Gist API
 
 The GitHub API uses hypermedia instead of
-basic resource driven APIs. If you use a client like Octokit, you may
-not need to understand hypermedia. But, a little discussion can
-help us understand it.
+basic resource driven APIs. If you use a client like Octokit, the
+hypermedia details are hidden behind an elegant ruby client. But,
+there is a benefit to understanding how hypermedia works when you need
+to retrieve deeper information from the GitHub API.
 
-Most RESTful APIs come with a "sitemap" documented somewhere. You view
+Most RESTful APIs come with a "sitemap", generally a API reference
+document which tells a user which endpoints to use. You view
 the resources available from that API and then apply some HTTP verb to
 do something to them. Hypermedia thinks of an API differently.
 Hypermedia APIs describe themselves inside their responses using
@@ -249,6 +253,65 @@ the right way to access information from the response itself.
 
 This is explained in great detail in the book (http://www.amazon.com/o/ASIN/1449306578?tag=adapas02-20)[Building
 Hypermedia APIs with HTML5 and Node]
+
+Let's extend our Sinatra app to retrieve actual data about the user's
+gists by using hypermedia references.
+
+[source,ruby]
+-----
+require 'sinatra'
+require 'octokit'
+
+set :views, "."
+
+helpers do
+  def h(text)
+    Rack::Utils.escape_html(text)
+  end
+end
+
+get '/:username' do |username|
+  gists = Octokit.gists username, :per_page => 5
+  erb :index, locals: { :gists => gists, username: username }
+end
+
+-----
+
+The `index.erb` file contains code to iterate over each gist and pull
+the content. You can see that our response object is an array of
+gists, each which has an attribute called `fields`. This fields attribute
+specifies the filenames available in each gist. If you reference that
+filename against the files, the response includes a hypermedia `ref`
+attribute. You can use this retreive the `raw` content using the
+Octokit method `.get.data`.
+
+[source,html]
+-----
+<html>
+<body>
+
+<h2>User <%= username %>'s last five gists</h2>
+
+<% gists.each do |g| %>
+<% g[:files].fields.each do |f| %>
+<b><%= f %></b>: 
+
+<%= h g[:files][f.to_sym].rels[:raw].get.data %>
+
+<br/>
+<br/>
+
+<% end %>
+<% end %>
+
+</body>
+</html>
+
+-----
+
+Now we see the gists and the contents.
+
+image::images/gists-last-five.png[]
 
 === Embedding Gists
 
@@ -378,16 +441,3 @@ Usage: gist [-o|-c|-e] [-p] [-s] [-R] [-d DESC] [-a] [-u URL] [-P] [-f NAME|-t E
     -v, --version                    Print the version.
 
 -----
-
-
-
-=== Discovering Gists
-
-Gists can be searched, but the interface is much simpler than the
-interface for the search interface discussed previously in this
-chapter.  To get the Gists search feature, go to
-https://gist.github.com/search - type in a search term and the only
-filtering function you'll be able to see is a filter by Gist language.
-
-image::images/explore-search-gists.png[]
-
