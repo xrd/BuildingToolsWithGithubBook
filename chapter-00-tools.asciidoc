@@ -1,11 +1,11 @@
-==== Who are you?
+== Who are you?
 
 If you are reading this book, you are already a software developer. 
 We intentionally wrote this book to assist any developer, regardless of the languages
 with which you are familiar, in understanding GitHub . Our goal is to teach you the technologies
 and philosophies behind GitHub, not specific syntax in any particular language. 
 
-===== GitHub started with Ruby
+=== GitHub started with Ruby
 
 Many of the tools written and used at GitHub are written in specific languages, Ruby being
 the primary one. To be successful with this book, you should at least
@@ -23,7 +23,7 @@ can guarantee you are using the correct version, and the method
 described here will not interfere with any other previously installed
 version of Ruby you have already on your system.
 
-==== Why Ruby at GitHub
+=== Why Ruby at GitHub
 
 GitHub is a company with its foundations sitting on top of the Ruby language. Tom Preston
 Warner built the initial libraries for using git with Ruby, a library
@@ -43,7 +43,7 @@ reading these examples in Ruby you will learn to like it as a
 language. Ruby is not a perfect language, but is a useful addition to
 a developer's toolkit because of its focus on developer productivity.
 
-====== Installing Ruby
+=== Installing Ruby
 
 To install Ruby, use RVM. RVM stands for Ruby Version Manager. RVM allows you to install
 multiple versions of Ruby on your machine and have them interoperate
@@ -72,7 +72,7 @@ inside a host system like Linux which has a wider community around it
 to support you. Virtual Box and Linux are free as in beer and as in
 speech, so you can try them out without cost (other than your time).
 
-===== Important Ruby and RVM Concepts
+=== Important Ruby and RVM Concepts
 
 Here are a few tips when using Ruby and RVM.
 
@@ -98,7 +98,7 @@ Here are a few tips when using Ruby and RVM.
   can be minimal servers used just on a single laptop; Rack makes it
   easy to setup a server. 
 
-===== Potential problems installing Ruby.
+=== Potential problems installing Ruby.
 
 * Missing system tools: If you are running Mac OSX, you need to
   install Xcode and the command line tools. If you are a software
@@ -117,9 +117,9 @@ Here are a few tips when using Ruby and RVM.
   sure to read the output printed to the screen as you install Ruby
   using RVM for special instructions specific to your platform.
 
-==== Other Languages
+== Other Languages
 
-===== NodeJS
+=== NodeJS
 
 NodeJS has gained immense popularity in the last few years. JavaScript
 is the language of client-side development on the web, and many people
@@ -134,7 +134,7 @@ to RVM. To install it run these commands from a shell prompt:
 [source,bash]
 $ curl https://raw.github.com/creationix/nvm/master/install.sh | sh
 
-===== package.json
+=== package.json
 
 Much like Ruby has a Gemfile which indicates required libraries, so
 too does NodeJS have an equivalent file. In NodeJS, this file is

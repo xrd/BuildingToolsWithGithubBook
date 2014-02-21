@@ -18,7 +18,7 @@ to learn these technologies:
 
 === Safety
 
-===== Static Blogs
+==== Static Blogs
 
 Static
 blogs are all the rage, with Jekyll spawning several copycats in all
@@ -206,8 +206,9 @@ To create the gh-pages branch from the command-line, run the following
 from your Git repository:
 
 [source,bash]
-.Creating a gh-pages Branch
-
+----
+$ TODO
+----
 
 ==== Pushing Content to a Github Site
 

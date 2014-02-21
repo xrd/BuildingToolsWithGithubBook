@@ -423,7 +423,7 @@ image::images/gists-last-five.png[]
 The main benefit of using Hypermedia is that you don't need to harcode
 URLs into your application, making your application less brittle when
 inevitable changes to the API occur. 
-(http://signalvnoise.com/posts/3373-getting-hyper-about-hypermedia-apis)[Cool URIs don’t change] 
+link:$$http://signalvnoise.com/posts/3373-getting-hyper-about-hypermedia-apis$$[Cool URIs don’t change] 
 (ironically a post by David Heinemeier Hansen
 talking about why Hypermedia is overblow). As I was developing this
 simple Sintra application, I attempted to refactor the code. From that

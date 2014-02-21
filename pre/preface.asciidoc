@@ -4,7 +4,6 @@
 * Git, What is it?
 
 
-
 * Github, What is it?
 
 GitHub 
@@ -36,8 +35,11 @@ If you are unfamiliar with the "command line" this book will give you a firm und
 * How to Contact Us
 
 * Acknowledgements
+
 =======
+
 [preface]
+
 == Preface
 
 === Conventions Used in This Book
