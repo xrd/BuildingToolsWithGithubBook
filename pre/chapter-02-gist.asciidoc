@@ -366,6 +366,27 @@ client code should not need to.
 This is explained in great detail in the book (http://www.amazon.com/o/ASIN/1449306578?tag=adapas02-20)[Building
 Hypermedia APIs with HTML5 and Node]
 
+In the case of Octokit, navigating hypermedia looks like this:
+
+* Start at a resource, with code like `user = Octokit.user "xrd"`. This
+  begins the initialization of the client.
+* `user` now is an object filled with the actual data of the resource.
+  In this case, you could call a method like `user.followers` to see a
+  meager follower count.
+* `user` also has hypermedia references. You can see these by calling
+  `user.rels`. This retrieves the relationships described in the
+  hypermedia links. In this case, calling `.rels` shows a map of
+  relationships, displayed in ruby code like: `#<Sawyer::Relation::Map: [:avatar, :self, :html,
+  :followers, :following, :gists, :starred, :subscriptions,
+  :organizations, :repos, :events, :received_events]>`
+* Using one of these relationships starts by keying into the
+  relationship hash and then using the get and data methods to request
+  that information from the GitHub API:
+  `followers = user.rels[:followers].get.data`. 
+* Once you call `.get.data` you will have a new followers object
+  populated with an array of the followers (paged if it exceeds 100
+  items). 
+
 Let's extend our Sinatra app to retrieve actual data about the user's
 gists by using hypermedia references.
 
@@ -383,7 +404,7 @@ gists, each which has an attribute called `fields`. This fields attribute
 specifies the filenames available in each gist. If you reference that
 filename against the files, the response includes a hypermedia `ref`
 attribute. You can use this retreive the `raw` content using the
-Octokit method `.get.data`. If we were
+Octokit method `.get.data`. If we were 
 
 [source,html]
 -----
@@ -396,5 +417,27 @@ snippet~~~~~
 Now we see the gists and the contents.
 
 image::images/gists-last-five.png[]
+
+==== Caveats
+
+The main benefit of using Hypermedia is that you don't need to harcode
+URLs into your application, making your application less brittle when
+inevitable changes to the API occur. 
+(http://signalvnoise.com/posts/3373-getting-hyper-about-hypermedia-apis)[Cool URIs don’t change] 
+(ironically a post by David Heinemeier Hansen
+talking about why Hypermedia is overblow). As I was developing this
+simple Sintra application, I attempted to refactor the code. From that
+point onward, the GitHub API issued redirects to all my calls for raw
+gist data. So, while my code did not change, the end result did. I no
+longer get the content, but a HTML message indicating I am being
+redirected. Perhaps I am using the hypermedia references incorrectly,
+but I was able to retrieve the correct content previously. Now I
+am not. Perl people argue that "there is more than one way to do it"
+(TIMTOWTDI) is a good thing, but in this case I am left wondering
+whether I got it right and now GitHub broke their API, or if I never
+had the interface to the API correct. The non-deterministic results of
+the API via Hypermedia make me uncomfortable using it in production.
+
+image::images/gists-hypermedia-broken.png[]
 
 

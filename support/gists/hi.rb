@@ -14,7 +14,7 @@ get '/:username' do |username|
   tuples = []
   gists.each do |g|
     g[:files].fields.each do |f|
-      data = g[:files][f.to_sym].rels[:raw].get.data
+      data = g[:files][f].rels[:raw].get.data
       tuples << [ f, data ]
     end
   end
