@@ -507,7 +507,8 @@ Now we see the gists and the contents.
 
 image::images/gists-last-five.png[]
 
-==== Caveats
+
+////
 
 The main benefit of using Hypermedia is that you don't need to harcode
 URLs into your application, making your application less brittle when
@@ -529,4 +530,4 @@ the API via Hypermedia make me uncomfortable using it in production.
 
 image::images/gists-hypermedia-broken.png[]
 
-
+////

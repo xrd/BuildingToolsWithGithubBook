@@ -270,7 +270,8 @@ comprehensive GitHub API documentation here:
 http://developer.github.com/v3/
 
 [developer-api-rates]
-==== GitHub API Rate Limits
+GitHub API Rate Limits
+----------------------
 
 GitHub tries to limit the rate at which users can make requests to the
 API.  Anonymous requests, requests that haven't authenticated with
@@ -464,7 +465,8 @@ Maybe this needs more development?  - Tim
 ////
 
 [developer-api-accept]
-==== Specifying Response Content Format
+Specifying Response Content Format
+----------------------------------
 
 When you send a request to the GitHub API, you have some ability to
 specify the format of the response you expect.  For example, if you
@@ -610,7 +612,8 @@ Failure to specify the preview version in the Accept header will
 result in an HTTP 404 Not Found result.
 
 [developer-api-terms]
-==== GitHub API Terms of Service
+GitHub API Terms of Service
+---------------------------
 
 Before you start building a system atop another service's API, it is
 always wise to understand what, if any, limitations are placed on that
@@ -620,12 +623,9 @@ servic here: https://help.github.com/articles/github-terms-of-service
 - here is a summary of the terms.
 
 . GitHub isn't liable for any damages that result from your use of the
-API.  You really can't blame GitHub for putting up this clause in
-today's litigious society.
-
+API.  
 . If you abuse the API, GitHub can suspend your account's access to
 the API.  They will attempt to contact you before this happens.
-
 . They can change the API.  They can discontinue a part of the API.
 They can change it without notice.
 
