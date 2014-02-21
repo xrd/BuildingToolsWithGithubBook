@@ -880,7 +880,7 @@ one.  We don't need to bother with langauges like Fortran 90.
 
 Building systems that interact with Github
 
-===== Example Use-cases for Github Applications
+==== Example Use-cases for Github Applications
 
 * For discounts at business-affiliated services. (Publishers like O'Reilly Atlas, Prags, Pluralsight)
 
@@ -912,7 +912,6 @@ Todo: I know that Django has an OAuth provider API, ask a Pythonista.
 ===== Other Languages
 
 Figure out if there are any other pre-built OAuth integrations (like omniauth)
-
 
 === A Sample Github Application
 
