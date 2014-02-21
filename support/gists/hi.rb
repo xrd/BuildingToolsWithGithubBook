@@ -11,5 +11,12 @@ end
 
 get '/:username' do |username|
   gists = Octokit.gists username, :per_page => 5
-  erb :index, locals: { :gists => gists, username: username }
+  tuples = []
+  gists.each do |g|
+    g[:files].fields.each do |f|
+      data = g[:files][f.to_sym].rels[:raw].get.data
+      tuples << [ f, data ]
+    end
+  end
+  erb :index, locals: { :tuples => tuples, username: username }
 end
