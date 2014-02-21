@@ -8,9 +8,9 @@
 
 GitHub 
 
-* Tim's introduction
-
 * Chris' introduction
+
+* Tim's introduction
 
 * Audience for this book
 
@@ -35,10 +35,6 @@ If you are unfamiliar with the "command line" this book will give you a firm und
 * How to Contact Us
 
 * Acknowledgements
-
-=======
-
-[preface]
 
 == Preface
 
@@ -123,12 +119,9 @@ Watch us on YouTube: link:$$http://www.youtube.com/oreillymedia$$[]
 
 === Acknowledgments
 
-++++
-<remark>Fill in...</remark>
-++++
 =======
 [[preface]]
-== Preface
+Preface
 
 * Git, What is it?
 

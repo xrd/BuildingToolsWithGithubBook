@@ -27,7 +27,7 @@ third party services makes testing even more important than it already
 was, and we'll make sure to add testing to our application to verify
 the functionality works as we expect.
 
-===== Building our coffee shop database
+==== Building our coffee shop database
 
 The Japanese have a word "otaku"; it describes a person obsessed with
 something, often computers or technology. Like westerners have done
@@ -304,7 +304,7 @@ src="angular.js"></script>
 </body>
 </html>
 
-No we see something more palatable.
+Now we see something more palatable.
 
 image::images/javascript-gollum-precise.png[]
 
@@ -907,13 +907,13 @@ completed, jump back in our application hosted on GitHub.
 
 ===== A NodeJS GitHub Authentication Service
 
-Contiuing our love affair with JavaScript, let's build a simple
+Continuing our love affair with JavaScript, let's build a simple
 authentication service with NodeJS. There are several libraries which
 offer support for oAuth authentication on GitHub, but the consistency
 of NodeJS modules often leaves something to be desired. As I was
-building this chapter I experimented with several of them and quickly
-discovered even though it might have been the sanctioned and approved
-module last year, that it has been abandoned this year. There is a
+building this chapter I experimented with several authentication modules and quickly
+discovered even though that module might have been the sanctioned and approved
+module last year, that it has already been abandoned this year. There is a
 tendency to build software using the latest libraries as you might
 assume the newest library would have the fewest bugs. In my
 experience, NodeJS libraries come with less test coverage than other
