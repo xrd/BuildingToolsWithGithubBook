@@ -220,7 +220,7 @@ Use `bundle show [gemname]` to see where a bundled gem is installed.
 This shows that we installed the library "sinatra" and the associated dependencies (rack, tilt and other associated
 libraries). 
 
-Why did we do things this way? Because now we can add this file to our repository locally, and then publish
+Why did we do things this way? Because now we can add the Gemfile to our repository locally, and then publish
 into our gist for sharing on the web.
 
 First, we need to update the "remote" repository reference. When we
@@ -404,7 +404,7 @@ gists, each which has an attribute called `fields`. This fields attribute
 specifies the filenames available in each gist. If you reference that
 filename against the files, the response includes a hypermedia `ref`
 attribute. You can use this retreive the `raw` content using the
-Octokit method `.get.data`. If we were 
+Octokit method `.get.data`.
 
 [source,html]
 -----
