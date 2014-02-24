@@ -2,8 +2,6 @@
 
 include::book-docinfo.xml[]
 
-include::preface.asciidoc[]
-
 include::chapter-00-tools.asciidoc[]
 
 include::chapter-01-advanced-tour.asciidoc[]
