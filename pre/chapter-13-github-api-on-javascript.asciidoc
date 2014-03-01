@@ -514,21 +514,21 @@ snippet~~~~~
 allows us to inject our mocked GitHub object inside our tests; if we
 had placed the GitHub instance creation code inside our controller,
 we would not have been able to easily mock it out in our tests.
-<1> We extract the geolocation support into an AngularJS factory. As
+<2> We extract the geolocation support into an AngularJS factory. As
 we did with the GitHub library mock, we can now inject a fake one into
 our tests.
-<1> Set the username and repository. If you are putting this into
+<3> Set the username and repository. If you are putting this into
 your own repository, modify this appropriately, but you can use these
 arguments until you do post this into your own repository.
-<1> We use the `read` method to pull file contents from the
+<4> We use the `read` method to pull file contents from the
 repository. Notice we use the `gh-pages` branch since we are storing our
 single page app and all the data there.
-<1> Once our data is returned to us, it is simply a string. We need to
+<5> Once our data is returned to us, it is simply a string. We need to
 reconstitute this data back into a JavaScript object using the
 `JSON.parse` method.
-<1> After we retrieve our data from the repository, we can use the
+<6> After we retrieve our data from the repository, we can use the
 data inside the cities array to determine our current city.
-<1> Since we are calling outside of AngularJS and returning inside a
+<7> Since we are calling outside of AngularJS and returning inside a
 callback, we need to call `scope.$apply()` like we showed in prior examples.
 
 At first glance, the calculate distance function looks confusing, no?
