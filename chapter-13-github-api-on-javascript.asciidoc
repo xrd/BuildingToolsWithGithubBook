@@ -1225,7 +1225,7 @@ other services.
 
 We would like to host everything on GitHub, but sadly there is one
 piece which we cannot host there: the authentication component.
-Somehow we need to safely authenticate our user into the GitHub and
+Somehow we need to safely authenticate our user into GitHub and
 retrieve an oAuth token. There is currently no way to do this strictly
 client side (using only static HTML and JavaScript running in the
 browser). Other authentication providers like Facebook do provide pure
@@ -1482,14 +1482,14 @@ There are significant problems with this approach:
   this approach is fraught with risk as it would be very easy to
   hijack the token by simply sticking a `<script>` tag with the same
   src tag inside their page. 
-* We could migrate this app into this NodeJS application, using EJS
+* We could migrate our entire app into this NodeJS application, using EJS
   templates, but then we are losing the fact that our application is
   simply our repository, a key benefit when hosting entirely on GitHub.
 * Finally, this app is not very testable. One of the reasons AngularJS
   is such a popular framework is that it makes you write JavaScript
   code which is testable. Most NodeJS frameworks don't make that easy,
-  and I found it very difficult to wrap this code inside of a piece of
-  test code. 
+  and I found it very difficult to wrap this code inside of any of the
+  current test frameworks.
 
 For all these reasons, let's abandon this approach. We'll leave the
 NodeJS server code here here for posterity, so that you have an
@@ -1531,7 +1531,8 @@ Firebase Simple Login settings for the GitHub provider. Make sure the
 ===== Writing tests against Firebase
 
 Since we load firebase from their CDN, we first need to mock out the
-`Firebase` constructor using a simple shim: 
+`Firebase` constructor using a simple shim. Put the following into a
+file called `firebase-mock.js`: 
 
 [source,javascript]
 -----
