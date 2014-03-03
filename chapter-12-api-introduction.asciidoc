@@ -269,7 +269,7 @@ book).  For more information about the GitHub API, see the
 comprehensive GitHub API documentation here:
 http://developer.github.com/v3/
 
-[developer-api-rates]
+[[developer-api-rates]]
 GitHub API Rate Limits
 ----------------------
 
@@ -300,7 +300,7 @@ requests and 5 request per minute for anonymous requests. The
 assumption here is that search is a more infrastructure intensive
 request to satisfy and that tighter limits are placed on its usage.
 
-===== Reading Your Rate Limits
+=== Reading Your Rate Limits
 Reading your rate limit is straightforward, just make a GET request to
 /rate_limit.  This will return a JSON document which tells you the
 limit you are subject to, the number of requests you have remaining,

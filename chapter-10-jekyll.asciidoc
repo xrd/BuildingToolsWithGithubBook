@@ -1,6 +1,6 @@
-=== Introduction
+== Introduction
 
-==== What is Jekyll?
+=== What is Jekyll?
 
 Jekyll is a set of technologies. Jekyll is first and foremost a
 structured repository which can be compiled into a static blog. 

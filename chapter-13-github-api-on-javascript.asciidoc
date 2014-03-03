@@ -5,7 +5,7 @@ interesting with it. GitHub offers libraries which work within other
 programming languages and frameworks, and later we will talk about
 using the GitHub API on the server side. To start, however, let's
 build a single page app with everything hosted on GitHub and using the
-GitHub API. 
+GitHub API.
 
 === Using the GitHub API with JavaScript
 
