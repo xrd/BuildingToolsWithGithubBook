@@ -1,19 +1,21 @@
-== Jekyll
+=== Jekyll: nouveau, yet antiquated, blogging on GitHub
 
 === What is Jekyll?
 
 If you visit GitHub and visit the jekyll repository you'll see it state that 
 "Jekyll is a blog-aware, static site generator in Ruby." What does this mean?
-Jekyll is a set of technologies for building web sites. There are many
-tools for generating web sites, so why does Jekyll deserve notice?
-Jekyll provides a quick way to generate a full featured website 
+Jekyll is a set of technologies for building web sites. There are
+probably as many tools for generating web sites as there are websites,
+though, so why does Jekyll deserve notice over others? Jekyll provides
+a quick way to generate a full featured website  
 without the compromises that come with other tools: complicated process
 and backends. When I author a blog post using Jekyll I am using a
 minimalistic set of tools that get out of the way and allow me to
-focus only on what I am writing. Few other site tools can say that. 
+focus only on what I am writing. Few other site tools can deliver on
+that promise.
 
 Jekyll works natively with GitHub because a Jekyll blog is
-usually a Git repository. When you push files from a repository with
+can be stored as a Git repository. When you push files from a repository with
 Jekyll inside of it, GitHub automatically generates your site for you.
 The tools to generate the site are open source and simple, so you
 create your site yourself, but because GitHub does everything
@@ -23,17 +25,11 @@ blog post using the GitHub API and only publish a new blog post
 without worrying about building the regeneration inside your tool as
 well. GitHub handles this for you on their side.
 
-==== The father of Jekyll
-
-Like many of the open source technologies in heavy usage at GitHub,
-jekyll was originally developed by Tom Preson Warner, one of the
-co-founders of GitHub. 
-
 ==== The need for Jekyll
 
 Though you won't see it in the documentation, the popularity of Jekyll
 is due in large part to bloggers, especially very technical ones,
-wanting an option other than the 800 lb. gorilla in the room:
+wanting a blogging tool option other than the 800 lb. gorilla in the room:
 Wordpress. For many bloggers, Wordpress is a poor
 choice of blogging tools. Of course, there is always language snobbery
 when considering any tool, but Wordpress is built on a language, PHP, which
@@ -44,7 +40,7 @@ community is fractured, and the plugins which arise from it are at
 best poorly documented and poorly integrated, and at worst, poorly
 designed and buggy. While Wordpress does often have a plugin for
 anything you need, the problem it solves often creates more problems
-long term when scalability or database optimization or security, for
+in the long term when scalability or database optimization or security, for
 example, become concerns.
 
 Jekyll is interesting because of the components which are not present
@@ -52,11 +48,12 @@ when compared against Wordpress. Jekyll does not require a database.
 Jekyll does not require you know how to write in HTML. While Wordpress
 ostensibly advertises itself as a tool which can be used without
 knowledge of these technologies, talk to those of us who have struggled with
-recovery of a mangled database after installation of a new plugin,
+recovery of a mangled database after installation of a new Wordpress plugin,
 or resolving scalability issues on a large Wordpress site, or fixing
 by hand broken HTML produced by the Wordpress editor. We'll tell
 you that, when using Wordpress, you don't need to know about MySQL or
-HTML at all, because it is already too late by then.
+HTML at all, because it is already too late by then to fix whatever
+problem you are facing.
 
 Jekyll responds to these concerns in a really elegant way. Instead of
 authoring in HTML, you author in a simple and readable language called
@@ -67,23 +64,130 @@ regenerate the entire site when infrequent changes are made. And, to
 faciliate interaction, you use client side JavaScript plugins instead
 of pushing that interaction into your database. Jekyll has found a
 sweet spot with a simple technology set that makes your life easier
-and makes beautiful blogs and simple web sites.
+and makes beautiful blogs and simple web sites. And, the biggest
+benefit of doing things the "jekyll" way is that all dependencies can
+sit within a repository, and this means your entire site can be hosted
+on GitHub. 
 
-==== The future of static blogging
+==== The father of Jekyll
 
-Interestingly, the movement towards static blogging which was
-catalyzed by Jekyll has moved away from Jekyll. Many alternatives to
-Jekyll have emerged as the prime users of Jekyll, the hacker
-community, have done what they do best, hack alternatives to Jekyll.
-There are now many other static blogging tools built on all the major
-languages, like Nanoc (Ruby), Hakyll (Haskell), Ghost (NodeJS), and
-Hyde (Python), among others. Fortunately, all of these tools can be
-used to publish sites inside of GitHub on the gh-pages branch, but
-unfortunately GitHub does not offer integrated processing of these
-other blogs (yet). What this means is that you can write your sites
-using these tools, process on your local machine, then use the static
-engine tools to generate the site and commit those files to your
-repository inside the gh-pages branch and push them all up to GitHub.
+Like many of the open source technologies in heavy usage at GitHub,
+jekyll was originally developed by Tom Preson Warner, one of the
+co-founders of GitHub. 
+
+==== How
+
+===== Running locally:
+
+* Install jekyll gem...
+* But, installing github-pages gem is better.
+* Remember to use Gemfile
+* Quick start: "jekyll new myblog"
+ * creates the necessary structure for a minimal jekyll blog
+ * syntax.css file
+ * main.css file
+ * .gitignore file ("_site" directory...)
+ * move things into _config.yml file
+ * jekyll serve -w
+ * Specifying the port: --port 4010
+ * Named links
+* Advanced features
+ * Lists
+ * Remember, nested content can be any block level content (embed markup inside of lists, quotes, etc.)
+ * Quotes
+ * Images
+ * Themes
+   * Jekyll Bootstrap
+   * Octopress?
+ * Categories
+ * Orphan branches
+ * Filename conventions
+ * Ignoring files
+
+===== Pushing into GitHub
+
+* Using github.io or github.com/user/repo
+* CNAME for domain names
+ * DNS settings
+* Fork existing repository
+* Branches
+* Hosting on gh-pages
+
+==== What
+
+==== When
+
+==== Who
+
+==== Where
+
+=== Language geek out
+
+==== Textile versus Markdown
+
+===== Each uses slightly different forms for footnotes. 
+
+* Textile supports tables.
+* http://mojomojo.org/documentation/textile_vs_markdown
+* https://github.com/vmg/redcarpet
+
+===== Which to choose? 
+
+==== Different markdown generators:
+
+===== Redcarpet: used in Jekyll and all over GitHub
+
+* supports fenced code blocks
+* fork of libsoldout
+* "safe"
+
+===== Kramdown
+
+===== Maruku
+
+===== MultiMarkdown
+
+===== Markdown
+
+===== The devil is in the details. The differences in markdown support
+is aggravating, but fortunately, you have more control over which you
+prefer and switching is generally easy or at least possible. These two
+tips:
+
+* The best thing to do is to use a cheat sheet for the version of markdown or textile you are using
+* Use the watch switch and live-reload to regenerate your pages and
+  verify manually when you are confused. Fortunately, there is nothing
+  here beyond text generation to contend with.
+
+==== Liquid templates
+
+===== Why: safely generate content using programmatic loops and
+variables, without the risks of using a full programming language,
+invented at Shopify
+
+===== Capturing content is a special case
+
+===== Include files
+
+==== Yaml Front Matter: YFM
+
+===== Problems with YML and YAML
+
+* No comments (JSON has the same problem...)
+ * reading in parsing, then writing out, loses all the comments!
+ * use `comment: "some comment here"` for comments. 
+
+=== Scraping a site into Jekyll
+
+==== Writing tests
+
+==== Using VCR
+
+==== Embedding AngularJS directives
+
+==== Geocoding and expansion of config file
+
+== Jekyll
 
 ===== Hosting Jekyll sites on GitHub
 
@@ -374,4 +478,20 @@ Remember that things can get broken if you use the wrong Jekyll versions:
 https://github.com/github/pages-gem/blob/master/lib/github-pages.rb#L10-L16
 
 `gem install github-pages` will keep things up to date.
+
+==== The future of static blogging
+
+Interestingly, the movement towards static blogging which was
+catalyzed by Jekyll has moved away from Jekyll. Many alternatives to
+Jekyll have emerged as the prime users of Jekyll, the hacker
+community, have done what they do best, hack alternatives to Jekyll.
+There are now many other static blogging tools built on all the major
+languages, like Nanoc (Ruby), Hakyll (Haskell), Ghost (NodeJS), and
+Hyde (Python), among others. Fortunately, all of these tools can be
+used to publish sites inside of GitHub on the gh-pages branch, but
+unfortunately GitHub does not offer integrated processing of these
+other blogs (yet). What this means is that you can write your sites
+using these tools, process on your local machine, then use the static
+engine tools to generate the site and commit those files to your
+repository inside the gh-pages branch and push them all up to GitHub.
 
