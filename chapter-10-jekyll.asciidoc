@@ -184,6 +184,14 @@ Lastly, your jekyll directory has a special file called `_config.yml`.
 This is the jekyll configuration file. Peering into it, you'll see it
 is very basic:
 
+[source,yaml]
+-----
+name: Your New Jekyll Site
+markdown: redcarpet
+pygments: true
+# a comment is here
+
+-----
 
  * move things into _config.yml file
  * jekyll serve -w

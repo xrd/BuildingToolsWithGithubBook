@@ -184,6 +184,13 @@ Lastly, your jekyll directory has a special file called `_config.yml`.
 This is the jekyll configuration file. Peering into it, you'll see it
 is very basic:
 
+[source,yaml]
+-----
+[filename=".", language="yml", sha="d05fc2b:support/jekyll/_config.yml"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
 
  * move things into _config.yml file
  * jekyll serve -w
