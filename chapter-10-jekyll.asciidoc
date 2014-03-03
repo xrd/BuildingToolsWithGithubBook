@@ -1,32 +1,89 @@
-== Introduction
+== Jekyll
 
 === What is Jekyll?
 
-Jekyll is a set of technologies. Jekyll is first and foremost a
-structured repository which can be compiled into a static blog. 
+If you visit GitHub and visit the jekyll repository you'll see it state that 
+"Jekyll is a blog-aware, static site generator in Ruby." What does this mean?
+Jekyll is a set of technologies for building web sites. There are many
+tools for generating web sites, so why does Jekyll deserve notice?
+Jekyll provides a quick way to generate a full featured website 
+without the compromises that come with other tools: complicated process
+and backends. When I author a blog post using Jekyll I am using a
+minimalistic set of tools that get out of the way and allow me to
+focus only on what I am writing. Few other site tools can say that. 
 
-What, when, how, why, who
+Jekyll works natively with GitHub because a Jekyll blog is
+usually a Git repository. When you push files from a repository with
+Jekyll inside of it, GitHub automatically generates your site for you.
+The tools to generate the site are open source and simple, so you
+create your site yourself, but because GitHub does everything
+automatically it allows usage of tools that you might not have
+considered. For example, you could write a tool that creates a new
+blog post using the GitHub API and only publish a new blog post
+without worrying about building the regeneration inside your tool as
+well. GitHub handles this for you on their side.
 
-Developed by Tom Preson Warner, co-founder of GitHub. 
+==== The father of Jekyll
 
-Why: Wordpress is too bloated! Most people writing a blog don't want
-to learn these technologies:
+Like many of the open source technologies in heavy usage at GitHub,
+jekyll was originally developed by Tom Preson Warner, one of the
+co-founders of GitHub. 
 
-* HTML: HTML is complicated and writing should not require a CS
-  degree.
-* MySQL: writers should not need to know how to manage a database.
+==== The need for Jekyll
 
-=== Safety
+Though you won't see it in the documentation, the popularity of Jekyll
+is due in large part to bloggers, especially very technical ones,
+wanting an option other than the 800 lb. gorilla in the room:
+Wordpress. For many bloggers, Wordpress is a poor
+choice of blogging tools. Of course, there is always language snobbery
+when considering any tool, but Wordpress is built on a language, PHP, which
+is generally and widely reviled by advanced developers. Because PHP is
+a more accessible language than other languages, the choice of PHP has
+fostered a large community of plugin developers. Unfortunately, this
+community is fractured, and the plugins which arise from it are at
+best poorly documented and poorly integrated, and at worst, poorly
+designed and buggy. While Wordpress does often have a plugin for
+anything you need, the problem it solves often creates more problems
+long term when scalability or database optimization or security, for
+example, become concerns.
 
-==== Static Blogs
+Jekyll is interesting because of the components which are not present
+when compared against Wordpress. Jekyll does not require a database.
+Jekyll does not require you know how to write in HTML. While Wordpress
+ostensibly advertises itself as a tool which can be used without
+knowledge of these technologies, talk to those of us who have struggled with
+recovery of a mangled database after installation of a new plugin,
+or resolving scalability issues on a large Wordpress site, or fixing
+by hand broken HTML produced by the Wordpress editor. We'll tell
+you that, when using Wordpress, you don't need to know about MySQL or
+HTML at all, because it is already too late by then.
 
-Static
-blogs are all the rage, with Jekyll spawning several copycats in all
-major languages. There are other static blogging engines written in
-Ruby (nanoc), blogging engines written in Python (Hyde), Haskell
-(hakyll), and NodeJS (Ghost). But, Jekyll has one simple benefit:
-committing code into a GitHub repository will automatically build your
-site for you.
+Jekyll responds to these concerns in a really elegant way. Instead of
+authoring in HTML, you author in a simple and readable language called
+Markdown, which the Jekyll engine converts automatically to HTML
+for you. Instead of storing posts and other data inside a MySQL
+database, you use the filesystem to store posts and layouts and then
+regenerate the entire site when infrequent changes are made. And, to
+faciliate interaction, you use client side JavaScript plugins instead
+of pushing that interaction into your database. Jekyll has found a
+sweet spot with a simple technology set that makes your life easier
+and makes beautiful blogs and simple web sites.
+
+==== The future of static blogging
+
+Interestingly, the movement towards static blogging which was
+catalyzed by Jekyll has moved away from Jekyll. Many alternatives to
+Jekyll have emerged as the prime users of Jekyll, the hacker
+community, have done what they do best, hack alternatives to Jekyll.
+There are now many other static blogging tools built on all the major
+languages, like Nanoc (Ruby), Hakyll (Haskell), Ghost (NodeJS), and
+Hyde (Python), among others. Fortunately, all of these tools can be
+used to publish sites inside of GitHub on the gh-pages branch, but
+unfortunately GitHub does not offer integrated processing of these
+other blogs (yet). What this means is that you can write your sites
+using these tools, process on your local machine, then use the static
+engine tools to generate the site and commit those files to your
+repository inside the gh-pages branch and push them all up to GitHub.
 
 ===== Hosting Jekyll sites on GitHub
 
