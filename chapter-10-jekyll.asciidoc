@@ -75,18 +75,116 @@ Like many of the open source technologies in heavy usage at GitHub,
 jekyll was originally developed by Tom Preson Warner, one of the
 co-founders of GitHub. 
 
-==== How
+==== Running Jekyll locally
 
-===== Running locally:
+To use jekyll, you'll need the `jekyll` gem. You can do this by
+running the command
 
-* Install jekyll gem...
-* But, installing github-pages gem is better.
-* Remember to use Gemfile
-* Quick start: "jekyll new myblog"
- * creates the necessary structure for a minimal jekyll blog
- * syntax.css file
- * main.css file
- * .gitignore file ("_site" directory...)
+[source,bash]
+------
+$ gem install jekyll
+------
+
+There are two issues with installation this way. The first is that any
+commands we run inside the command line are lost to us and the world
+(other than in our private shell history file). The second is that if
+we are going to publish any of our sites to GitHub, we will want to
+make sure we are matching the exact versions of Jekyll and its
+dependencies so that a site that works on our local laptop also works
+when published into GitHub. If you don't take care of this, you'll
+occasionally get an email like this from GitHub: 
+
+[quote]
+----
+
+ The page build failed with the following error:
+ 
+ page build failed
+
+ For information on troubleshooting Jekyll see
+ https://help.github.com/articles/using-jekyll-with-pages#troubleshooting
+ If you have any questions please contact GitHub Support.
+
+
+----
+
+The fix for these two issues is a simple one. You've probably seen other
+chapters using a `Gemfile` to install ruby libraries. Instead of
+using a manual command like `bundle` to install from the command line,
+let's put this dependency into the Gemfile. Then, anyone else using
+this repository can run the command `bundle install` and install the
+correct dependencies. And, instead of using the `jekyll` gem directly, use the
+`github-pages` gem which synchronizes your jekyll gem versions with
+those on GitHub. At any point, we can run the command `bundle update`
+to make sure that everything is properly setup and synchronized.
+
+==== Jekyll quick start
+
+Now that we have our required tools, let's create a simple blog. Run
+this command.
+
+[source,bash]
+-----
+$ jekyll new myblog
+$ cd myblog
+-----
+
+The `jekyll new` commands creates the necessary structure for a
+minimal jekyll blog. Taking a look inside the directory, you'll see a
+few files. The `jekyll new` command installs two CSS files (one for
+the blog and one for syntax highlighting). 
+
+Installation of a new blog
+comes with a .gitignore file as well which contains one entry:
+`_site`. When you use the jekyll library to build your site locally,
+all files are by default placed inside the _site directory.
+This .gitignore file prevents those files from being included inside
+your repository as they are overwritten by the jekyll command on
+GitHub when your files are pushed up to GitHub.
+
+All your blog posts are stored in the `_posts` directory. Jekyll sites
+are not required to have a `_posts` directory (you can use jekyll with
+any kind of static site) but if you do include files in this directory
+jekyll handles the in a special way. If you look in the `_posts`
+directory now, you see that the jekyll initialization command has
+created your first post for you. These posts have a special naming
+format: the title of the post (with any whitespace replaced with
+hyphens) trailed by the date and then an extension (either `.md` for
+markdown files, or `.textile` for Textile)
+
+Your new jekyll blog also comes with a few HTML files: an index.html file
+which is the starting point for your blog, and several layout files
+which are used as wrappers when generating your content. If you look
+in the `_layouts` directory, notice there is a file named
+`default.html` and another named `post.html`. These files are the
+layout files, files which are wrapped around all other files. For
+example, the `post.html` file is wrapped around the generated content
+of all posts stored inside the `_posts`. First the markup content is
+turned into HTML and then the layout wrapper is applied. If you look
+inside any of the files inside the `_layouts` directory, you will see
+a placeholder with `{{ content }}`. This placeholder is replaced with the
+generated content from other files. 
+
+These placeholders are actually a markup language on their own: Liquid
+Templates. Liquid Templates were developed and open sourced by
+Shopify, and are a safe way to get programmatic constructs (like loops
+and variables) into markdown, without exposing the rendering context
+to a full fledged programming environment. Shopify wanted to build a
+way for untrusted users of their public facing systems to upload
+dynamic content but not worry that the markup language would have the
+ability to download internal web pages. If you think about a language
+like ERB (embedded ruby templates), you might realize that while
+embedding ruby code is great when you have full control over your
+source documents, it can be dangerous to provide a mechanism where
+valid embedded code could look like `system("rm -rf /")`. Liquid
+provides many of the benefits of embedded programming templates,
+without the dangers.
+
+Lastly, your jekyll directory has a special file called `_config.yml`.
+This is the jekyll configuration file. Peering into it, you'll see it
+is very basic:
+
+
  * move things into _config.yml file
  * jekyll serve -w
  * Specifying the port: --port 4010
