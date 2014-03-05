@@ -322,23 +322,37 @@ title and don't want to damage preexisting URLs.
 
 The date and categories are two other variables included in the YFM.
 They are completely optional and strangely unused by the structure and
-templates created by Jekyll. They do provide additional context to the
-post, but are only stored in the markdown file and not included inside
-the generated content itself. The categories list is often used to
-generate an index file of categories with a list of each post included
-in a category. If you come from a Wordpress background, you'll likely
-have used categories. These are generated dynamically from the MySQL
-database each time you request a list of them, but in Jekyll this file
-is staticly generated. If you wanted something more dynamic, you could
-imagine generating a JSON file with these categories and files, and
-then building a JavaScript widget which requests this file and then
-does something more interactive on the client side. Jekyll can take
-any template file and convert it to JSON (or any other format) -- you
-are not limited to just generating HTML files.
+templates created by default using the Jekyll initializer. They do
+provide additional context to the post, but are only stored in the
+markdown file and not included inside the generated content itself.
+The categories list is often used to generate an index file of
+categories with a list of each post included in a category. If you
+come from a Wordpress background, you'll likely have used categories.
+These are generated dynamically from the MySQL database each time you
+request a list of them, but in Jekyll this file is staticly generated.
+If you wanted something more dynamic, you could imagine generating a
+JSON file with these categories and files, and then building a
+JavaScript widget which requests this file and then does something
+more interactive on the client side. Jekyll can take any template file
+and convert it to JSON (or any other format) -- you are not limited to
+just generating HTML files. 
 
 YFM is completely optional. A post or page can be rendered into your
 Jekyll site without any YFM inside it. Without YFM, your page is
-rendered using the defaults for those variables.
+rendered using the defaults for those variables, so make sure the
+default template, at the very least, is what you expect to wrap your
+content. 
+
+One important default variable for YFM is the published variable. This
+variable is set to true by default. This means that if you create a
+file in your Jekyll repository and do not manually specify the
+published setting, it will be published automatically. If you set the
+variable to false then the post will not be published. With
+private repositories you can keep the contents of draft posts entirely
+private until writing has completed by making sure published is set
+to false. Unfortunately, not all tools that help you create Jekyll
+markdown files remember to set the published variable explicitly
+inside of YFM, so make sure you check before committing. 
 
 ==== Jekyll markup
 
@@ -346,7 +360,7 @@ Continuing deeper into the file, we can start to see the structure of
 Markdown files. Markdown files can be, at their simplest, just textual
 information without any formatting characters. In fact, if your layout files are
 well done, you can definitely create great blog posts without any
-fancing formatting for the content itself. 
+fancing formatting, just pure textual content.
 
 But, with a few small markdown additions, you can really make posts
 shine. One of the first markdown components we notice is the backtick
@@ -363,7 +377,7 @@ markdown formatting characters. The best way to write markdown is to
 keep a markdown cheat sheet near you when writing (or visit Daring
 Fireball which is the definitive resource for Markdown).
 
-https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+xx https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
 
 ==== Using the jekyll command
 
@@ -391,14 +405,19 @@ quickly find that the second instance of `jekyll serve` fails because
 it cannot open port 4000. In this case, use `jekyll --port 4010` to
 open port 4010 (or whatever port you wish to use instead).
 
- * Themes
-   * Jekyll Bootstrap
-   * Octopress?
- * Categories
- * Orphan branches
- * Filename conventions
- * Ignoring files
- * Plugins
+==== Privacy Levels with Jekyll
+
+Jekyll repositories on GitHub can be either public or private
+repositories. If your repository is public you can host public content
+generated from the Jekyll source files without publishing the source
+files themselves. 
+
+==== Themes
+
+Jekyll does not support theming internally, but it is trivial to add
+any CSS files or entire CSS frameworks. You could do this yourself, or
+you could just fork an existing jekyll blog which has the theming you
+like. The most popular themed Jekyll blog structure is Octopress. 
 
 ===== Pushing into GitHub
 
@@ -406,8 +425,6 @@ open port 4010 (or whatever port you wish to use instead).
 * CNAME for domain names
  * DNS settings
 * Fork existing repository
-* Branches
-* Hosting on gh-pages
 
 ==== What
 

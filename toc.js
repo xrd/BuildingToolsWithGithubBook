@@ -7,7 +7,7 @@ $(document).ready( function() {
     $('.toc').click( function() {
         console.log( "Got the click event" );
         toc = !toc;
-        jQuery.each( [ '.paragraph', '.dlist', '.ulist', '.listingblock', '.colist', '.imageblock' ], function( index, item ) {
+        jQuery.each( [ '.paragraph', '.dlist', '.ulist', '.listingblock', '.colist', '.imageblock', '.admonitionblock' ], function( index, item ) {
             $(item)[toc?'hide':'show']();
             } );
 
