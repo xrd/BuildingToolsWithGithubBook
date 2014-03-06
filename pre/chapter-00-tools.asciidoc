@@ -1,15 +1,30 @@
-== Who are you?
 
-If you are reading this book, you are already a software developer. 
-We intentionally wrote this book to assist any developer, regardless of the languages
-with which you are familiar, in understanding GitHub . Our goal is to teach you the technologies
-and philosophies behind GitHub, not specific syntax in any particular language. 
+== GitHub.com: a town square for the coder community.
+
+There were other Git hosting services before GitHub.com. But, GitHub
+was the first to build a rabid community around Git. GitHub.com became
+the town square where the coding cognoscenti gathered to discuss,
+where the enfants informatiques played with new ideas that would
+become the future of our world. GitHub.com has become the playground
+and the guild where ideas flourish and grown like no other online
+community for software developers. As such, it is important to give a
+tour of GitHub.com and learn how to navigate like a member of the
+inner circle. 
+
+=== Who are you?
+
+If you are reading this book, you are already a software developer. We
+intentionally wrote this book to assist any developer, regardless of
+the languages with which you are familiar, in understanding GitHub .
+Our goal is to teach you the technologies and philosophies behind
+GitHub, not specific syntax in any particular language.  
 
 === GitHub started with Ruby
 
-Many of the tools written and used at GitHub are written in specific languages, Ruby being
-the primary one. To be successful with this book, you should at least
-have Ruby installed. 
+Many of the tools written and used internally at GitHub are written in
+Ruby. The founders of GitHub all have strong contributions to popular
+Ruby libraries ("gems"). To be successful with this book, you should
+at least have Ruby installed. 
 
 There are many ways to get Ruby. And, as a long time user I have
 experienced the pain of using it in suboptimal ways. If you are not
@@ -18,18 +33,23 @@ friction and trouble.
 
 You might already have a version of Ruby installed. Mac OSX comes
 bundled with Ruby and various flavors of Linux do as well. However, I
-recommend that you use the method of installation described here. You
-can guarantee you are using the correct version, and the method
-described here will not interfere with any other previously installed
-version of Ruby you have already on your system.
+recommend that you use the method of installation described here.
+Often ruby packages require a specific version of ruby though there
+is a chance it will work with other versions. The problem is that you
+might encounter subtle bugs that have never been seen before and using
+the methods described here will make it trivial to install any version
+of ruby that you need. You can guarantee you are using the correct
+version, and the method described here will not interfere with any
+other previously installed version of Ruby you have already on your system.
 
 === Why Ruby at GitHub
 
-GitHub is a company with its foundations sitting on top of the Ruby language. Tom Preston
-Warner built the initial libraries for using git with Ruby, a library
-called Grit. You can host blogs on GitHub for free, and this tool
-called Jekyll is built using Ruby. Gollum, the technology which powers
-GitHub wikis, is built using Grit and runs on Ruby.
+GitHub is a company with its foundations sitting on top of the Ruby
+language. Tom Preston Warner built the initial libraries for using git
+with Ruby, a library called Grit. You can host blogs on GitHub for
+free, and this tool called Jekyll is built using Ruby. Gollum, the
+technology which powers GitHub wikis, is built using Grit and runs on
+Ruby. 
 
 To understand GitHub, it is best to understand a little bit of Ruby.
 You can use many of the tools used at GitHub by simply installing Ruby,
@@ -64,13 +84,17 @@ This will install RVM and Ruby.
 
 If you are running Windows, you can use RVM to install Ruby, but your
 instructions are a little more complicated. Refer to the documentation
-to do so. Or, consider installing something like VirtualBox (a virtual
+to do so. A better option is to consider installing something like VirtualBox (a virtual
 machine manager). If you do this, you can install RVM inside a Linux
-Virtual Machine (VM). Windows is sadly a second class citizen with
-Ruby and RVM and for this reason, it is often better to install RVM
+Virtual Machine (VM). Windows is, sadly, a second class citizen with
+Ruby and RVM and, for this reason, it is often better to install RVM
 inside a host system like Linux which has a wider community around it
 to support you. Virtual Box and Linux are free as in beer and as in
 speech, so you can try them out without cost (other than your time).
+There are many native gems for Ruby which don't properly compile if
+the host system is Windows, so you can save yourself considerable time
+by just using a completely free (as in beer) option like VirtualBox
+and a Linux instead of using Windows.
 
 === Important Ruby and RVM Concepts
 
@@ -89,7 +113,10 @@ Here are a few tips when using Ruby and RVM.
   application which only runs on Ruby 2.1.3. You can create a file
   called `.ruby-version` which contains the string `ruby-2.1.3` and
   when your application starts, it will automatically use that version
-  of Ruby.
+  of Ruby. There are other Ruby based tools (like the
+  zero-configuration web server Pow) which are aware of files
+  like .ruby-version and will properly use correct version of Ruby if
+  they see this file.
 * `config.ru`: This is a file used to run Ruby applications using
   Rack. Rack is a web server interface, compatible with many
   application servers. If you see a config.ru file, you can run this

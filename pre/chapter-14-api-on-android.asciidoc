@@ -3,12 +3,12 @@
 Android is currently the most popular operating system for mobile
 devices, overtaking Symbian in 2010, experiencing incredible growth
 since its release in 2008. Many software developers would not consider
-a mobile device to worthwhile for software developer tool creation,
-but as more and more people shift to using mobile devices, we will see
-demand for tools on mobile devices. The GitHub API has a good set of
-bindings for developing Java and Android applications. We'll use the
-egit libraries to develop a small Android application which posts to
-our blog hosted on GitHub.
+a mobile device as a worthwhile platform for software developer tool
+creation, but as more and more people shift to using mobile devices,
+we will see demand for tools on mobile devices. The GitHub API has a
+good set of bindings for developing Java and Android applications.
+We'll use the egit libraries to develop a small Android application
+which posts to our blog hosted on GitHub.
 
 We will build an application which uses one of the unique features of a
 mobile device: GPS. Our blogging application will allow us to login to
@@ -18,7 +18,7 @@ Jekyll blog post for us and push the post into our blog on GitHub.
 
 === Prerequisites
 
-If you don't have a physical Android device, don't fret. You can followe
+If you don't have a physical Android device, don't fret. You can follow
 along with this chapter without having an actual Android device by doing
 development from a virtual device. 
 
@@ -26,12 +26,11 @@ development from a virtual device.
 
 Unfortunately there is no simple shell command to install Java in the
 same way as there is for Ruby and NodeJS using RVM or NVM. 
-Oracle controls the Java language and distribution of officials SDKs,
+Oracle controls the Java language and distribution of official SDKs,
 and they restrict access to downloads other than from java.oracle.com.
 Java is freely available, but you need to visit java.oracle.com and
 find the correct download for your needs. Android works with either
-the 1.6 or 1.7 versions of Java, but it is probably best to get the
-newest version you can find.
+the 1.6 or 1.7 versions of Java.
 
 ==== Installing the Android SDK
 
@@ -103,7 +102,8 @@ your device run the command `ant debug install`.
 
 ===== Adding Gradle support
 
-Gradle is a new build system for Java and works well with Android.
+Gradle is a new build system for Java and has become the offical build
+system for the Android platform.
 Using a simple `build.gradle` file we can build an entire Android
 application from the command line. Gradle is well supported with more
 advanced editors, so you can always import an Android project using
@@ -175,14 +175,14 @@ ways to manage them. We'll do everything by hand as our needs are simple.
 
 ==== Writing tests
 
-Once we have written our application, we need to write tests to verify
-things work as we expect them to. There are many options for writing
+Living the GitHub way, we write tests for our application before
+writing the code. There are many options for writing
 tests on Java and Android. JUnit is a popular testing tool which
 permits writing unit tests. Robotium is another testing tool which
 focuses on a different aspect of testing, user interface tests. We'll
 use a wrapper around Robotium called Calabash for Android which allows
 us to write in a high level domain specific language. I find that
-writing Calabash tests is a simpler way to write tests using APIS
+writing Calabash tests is a simpler way to write tests using APIs
 because Calabash tests interact with the entire application, rather
 than only the internals like unit testing. With unit testing you can
 be required to mock out network interactions, and as such, often miss
@@ -224,7 +224,6 @@ snippet~~~~~
 
 As we do in all the other chapters, let's practice test driven
 development. Modify the `my_first.feature` file to look like this:
-
 
 
 ==== Code to talk to GitHub

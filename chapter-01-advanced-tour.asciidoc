@@ -1,54 +1,53 @@
 
-=== GitHub.com: a town square for the coder community.
-
-There were other Git hosting services before GitHub.com. But, GitHub was the first to build a rabid community
-around Git. GitHub.com became the town square where the coding cognoscenti gathered to discuss, where the 
-enfants informatiques played with new ideas that would become the future of our world. GitHub.com has become 
-the playground and the guild where ideas flourish and grow like no other online community for software developers.
-As such, it is important to give a tour of GitHub.com and learn how to navigate like a member of the inner circle.
-
-=== An overview of GitHub.com
-
-GitHub.com, like most online communities, grows each day, with new sections added to fulfill previously unknown
-needs. As a software developer, we assume you already know you way around most of the normal places, so this chapter
-serves to illumnate some less well known places on GitHub.com
 
 ==== Tools you will need to explore this book
 
 * Ruby
 
-You will need to install Ruby on your machine. You will not need to learn Ruby to use this book, but having
-it installed will allow you to follow along on examples which use Ruby. There are examples which use Ruby code,
-and you will be able to easily understand what they do without learning the specifics of Ruby as a language.
+You will need to install Ruby on your machine. You will not need to
+learn Ruby to use this book, but having it installed will allow you to
+follow along on examples which use Ruby. There are examples which use
+Ruby code, and you will be able to easily understand what they do
+without learning the specifics of Ruby as a language. 
 
-Much of GitHub.com is written in Ruby or Ruby on Rails. Many of the tools used with GitHub (like the command
-line tool gh) are written in Ruby. Learning Ruby is useful, but not required for this book. You must have 
-it installed.
+Much of GitHub.com is written in Ruby or Ruby on Rails. Many of the
+tools used with GitHub (like the command line tool gh) are written in
+Ruby. Learning Ruby is useful, but not required for this book. You
+must have it installed.
 
-To install Ruby, use RVM. RVM stands for Ruby Version Manager. It allows you to install multiple versions of Ruby
-on the same machine. This is useful when you are testing against many different versions of Ruby with a program, 
-but the biggest benefit is a side effect of this: RVM allows you to guarantee which version of Ruby you are using
-at any given moment. This removes a barrier to running code: anyone can use the exact same version you use without
-having to uninstall and developers can stay in sync without onerous installation requirements.
+To install Ruby, use RVM. RVM stands for Ruby Version Manager. It
+allows you to install multiple versions of Ruby on the same machine.
+This is useful when you are testing against many different versions of
+Ruby with a program, but the biggest benefit is a side effect of this:
+RVM allows you to guarantee which version of Ruby you are using at any
+given moment. This removes a barrier to running code: anyone can use
+the exact same version you use without having to uninstall and
+developers can stay in sync without onerous installation requirements. 
 
 * Bash (or your favorite shell) and the command line
 
-To become a power user, you need to learn about using the command line. Once you learn the basics, you'll find it
-gives you immense power and control. There are only a few commands to learn to be productive. We will not expect
-you to come in with any knowledge of bash or another shell, nor will we expect you to know about the terminal, but 
-we do expect you to use them frequently in this book. Each example that uses command line will provide the full 
-command and output, so you never need to do anything beyond copying and pasting to follow along.
+To become a power user, you need to learn about using the command
+line. Once you learn the basics, you'll find it gives you immense
+power and control. There are only a few commands to learn to be
+productive. We will not expect you to come in with any knowledge of
+bash or another shell, nor will we expect you to know about the
+terminal, but we do expect you to use them frequently in this book.
+Each example that uses command line will provide the full command and
+output, so you never need to do anything beyond copying and pasting to
+follow along. 
 
 To use a terminal, you just run "terminal" (OSX) or "xterm" if running Linux. Windows users need to install something
 like cygwin or bash. 
 
 ==== Security
 
-If you have been using GUI clients for GitHub, it is likely that you noticed there were options for downloading via
-SSH, but never have used anything beyond HTTPS download. The graphical client, like GitHub for Mac, or GitHub for
-Windows use HTTPS as their default because they don't require any configuration on GitHub.com to provide you with
-access. This chapter will tell you why this is a bad idea, and why switching to SSH keys is a simple and smart thing to
-do.
+If you have been using GUI clients for GitHub, it is likely that you
+noticed there were options for downloading via SSH, but may have never
+used anything beyond HTTPS download. The graphical client, like GitHub
+for Mac, or GitHub for Windows use HTTPS as their default because they
+don't require any configuration on GitHub.com to provide you with
+access. This chapter will tell you why this is a bad idea, and why
+switching to SSH keys is a simple and smart thing to do.
 
 ==== Keyboard Shortcuts
 
