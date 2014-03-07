@@ -1,3 +1,5 @@
+== Issues
+
 ===== Issues
 ===== Demonstrates: tight integration with GitHub code, automatic notifications
 ===== Notifications replace email

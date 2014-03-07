@@ -16,14 +16,26 @@ def get_all_asciidoc_files
   files
 end
 
+def error( msg, line, file )
+  puts "#{file}:#{line}: #{msg}"
+end
+
 namespace :github do
 
   desc "Check heading levels"
   task :check_heading_levels do
     get_all_asciidoc_files.each do |f|
+      found_first = false
       File.readlines( f ).each_with_index do |l,i|
-        if l =~ /^\#{1,2}/
-          puts "Found line ##{i} in file #{f} with incorrect header count: '#{l}'"
+        if !found_first
+          if l =~ /^=={3}.*/
+            error( "First header must be two level header (==)", i, f )
+            puts 
+          else
+            found_first = true
+          end
+        elsif l =~ /^={1,2}[^=]/ and not found_first
+          error( "Incorrect header count: '#{l}'", i, f )
         end
       end
     end
