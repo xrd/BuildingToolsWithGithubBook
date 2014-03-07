@@ -3,7 +3,6 @@
   "files": [
     "book-docinfo.xml",
     "chapter-00-tools.asciidoc",
-    "chapter-01-advanced-tour.asciidoc",
     "chapter-02-gist.asciidoc",
     "chapter-06-issues.asciidoc",
     "chapter-07-pull-requests.asciidoc",
