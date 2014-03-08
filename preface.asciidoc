@@ -119,7 +119,6 @@ Watch us on YouTube: link:$$http://www.youtube.com/oreillymedia$$[]
 
 === Acknowledgments
 
-=======
 [[preface]]
 Preface
 
