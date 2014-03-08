@@ -1,4 +1,4 @@
-=== Jekyll: nouveau, yet antiquated, blogging on GitHub
+== Jekyll: nouveau, yet antiquated, blogging on GitHub
 
 === What is Jekyll?
 
@@ -502,13 +502,13 @@ invented at Shopify
 
 == Jekyll
 
-===== Hosting Jekyll sites on GitHub
+=== Hosting Jekyll sites on GitHub
 
 CNAME files
 
 Using gh-pages as master: `git push origin gh-pages:master`. 
 
-===== Markdown
+==== Markdown
 
 Markdown is a readable markup language. HTML was designed for
 computers to read and interpret. Many people have trained themselves
