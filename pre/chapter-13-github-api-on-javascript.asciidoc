@@ -783,7 +783,7 @@ Add these lines to the bottom of the file, but before the last closing braces.
 [source,javascript]
 -----
   ...
-[filename=".", language="js", sha="bdcfb12:support/js/coffeetech.js" lines="92..164"]
+[filename=".", language="js", sha="33451d6:support/js/coffeetech.js" lines="92..164"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -799,9 +799,9 @@ seconds which will check to make sure our request completed.
 object for our new forked repository and try to request some content
 from it. If this succeeds, we know the fork completed.
 <4> We define a transformation function which we'll use in the next
-step. AngularJS adds data to our objects when we use the `ng-repeat`
-directive and this function filters out that so that our pull request
-data is clean.
+step. AngularJS adds a tracking attribute (`$$hashKey`) to our objects
+when we use the `ng-repeat` directive and this function filters out
+that so that our pull request data is clean.
 <5> With the fork ready, we write back into the repository with our
 new addition. We just need to take the existing objects we have loaded
 and add an annotate to the shop, then use `JSON.stringify` to turn it
@@ -851,6 +851,8 @@ your organization, among many other features GitHub provides for its
 users. This may not be the most obvious way to manage a database of
 information, but there are compelling reasons to consider it against a
 traditional database like Postgresql or Mysql.
+
+image::images/javascript-pull-request-diff.png[]
 
 ===== Safely implementing login
 

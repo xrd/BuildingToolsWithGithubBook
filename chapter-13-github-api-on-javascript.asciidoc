@@ -1056,7 +1056,7 @@ Add these lines to the bottom of the file, but before the last closing braces.
         $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
 
             $scope.me = user;
-            $scope.username = user.name;
+            $scope.username = user.username;
 
             $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
 
@@ -1088,8 +1088,9 @@ Add these lines to the bottom of the file, but before the last closing braces.
                 // Write the new data into our repository
                 $scope.appendQuirkToShop();
 
-                function stripHashKey() { if( key == "$$hasKey" ) { return undefined; } } // <4>
-                $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', JSON.stringify( $scope.shops, stripHashKey, 2 ), 'Added my quirky information', function(err) { // <5>
+                function stripHashKey( key, value ) { if( key == "$$hashKey" ) { return undefined; } return value; } // <4>
+                var newData = JSON.stringify( $scope.shops, stripHashKey, 2 );
+                $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', newData, 'Added my quirky information', function(err) { // <5>
                     if( !err ) {
                         // Annotate our data using a pull request
                         var pull = {
@@ -1116,7 +1117,6 @@ Add these lines to the bottom of the file, but before the last closing braces.
         $scope.notifyWaiting( "annotated" );
     };    
 
-    $scope.notifyWaiting = function( state, msg ) {
   ...
 -----
 
@@ -1129,9 +1129,9 @@ seconds which will check to make sure our request completed.
 object for our new forked repository and try to request some content
 from it. If this succeeds, we know the fork completed.
 <4> We define a transformation function which we'll use in the next
-step. AngularJS adds data to our objects when we use the `ng-repeat`
-directive and this function filters out that so that our pull request
-data is clean.
+step. AngularJS adds a tracking attribute (`$$hashKey`) to our objects
+when we use the `ng-repeat` directive and this function filters out
+that so that our pull request data is clean.
 <5> With the fork ready, we write back into the repository with our
 new addition. We just need to take the existing objects we have loaded
 and add an annotate to the shop, then use `JSON.stringify` to turn it
@@ -1184,6 +1184,8 @@ your organization, among many other features GitHub provides for its
 users. This may not be the most obvious way to manage a database of
 information, but there are compelling reasons to consider it against a
 traditional database like Postgresql or Mysql.
+
+image::images/javascript-pull-request-diff.png[]
 
 ===== Safely implementing login
 
