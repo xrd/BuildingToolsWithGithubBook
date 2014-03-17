@@ -101,7 +101,7 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout'
         $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
 
             $scope.me = user;
-            $scope.username = user.name;
+            $scope.username = user.username;
 
             $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
 
@@ -133,8 +133,9 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout'
                 // Write the new data into our repository
                 $scope.appendQuirkToShop();
 
-                function stripHashKey() { if( key == "$$hasKey" ) { return undefined; } } // <4>
-                $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', JSON.stringify( $scope.shops, stripHashKey, 2 ), 'Added my quirky information', function(err) { // <5>
+                function stripHashKey( key, value ) { if( key == "$$hashKey" ) { return undefined; } return value; } // <4>
+                var newData = JSON.stringify( $scope.shops, stripHashKey, 2 );
+                $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', newData, 'Added my quirky information', function(err) { // <5>
                     if( !err ) {
                         // Annotate our data using a pull request
                         var pull = {
