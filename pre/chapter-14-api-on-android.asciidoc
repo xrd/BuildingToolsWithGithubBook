@@ -87,18 +87,20 @@ single device attached via USB which is a Nexus 5 device.
 ==== Creating a New Project
 
 [source,bash]
-$ mkdir ghoa # GitHub On Android == ghoa
-$ cd ghoa
-$ android create project --target 13 --name Ghoa --path . --activity MainActivity --package com.example.ghoa 
+$ mkdir wia # Where I'm At == wia
+$ cd wia
+$ android create project --target 13 --name Wia --path . --activity MainActivity --package com.whereimat
 
-These three commands create a new directory `ghoa`, enter the
+These three commands create a new directory `wia`, enter the
 directory, and then build a simple Android directory structure with
 the proper files.
 
 If you have the ant tool installed, you can build this new project
 with the `ant debug` command. This will create an APK in the bin
-directory called `./bin/Ghoa-debug-unaligned.apk`. To install it on
-your device run the command `ant debug install`.
+directory called `./bin/Wia-debug-unaligned.apk`. To install it on
+your device run the command `ant debug install`. Then, you can launch
+the application by double clicking on the application titled
+"MainActivity".
 
 ===== Adding Gradle support
 
@@ -116,6 +118,13 @@ Our gradle script allows us to pull in external libraries. We want to
 use the egit library which allows us to talk to the GitHub API. Adding
 this library to our project is as simple as adding a single dependency
 to our project as you see below.
+
+
+[filename=".", language="groovy", sha="56a8da3af8ea46ed05:support/android/wia/build.gradle"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+
 
 [source,groovy]
 ----
@@ -142,7 +151,8 @@ android {
 ===== Default Android Main
 
 When we use the above commands to create a new android application, it
-creates a sample main entry point for us. It looks like this:
+creates a sample entry point into our Android application. That entry
+point looks like this: 
 
 [source,java]
 -----
@@ -171,7 +181,8 @@ snippet~~~~~
 You may have complicated feelings about XML files (I know I do), but
 the Android layout XML files are a straightforward way to design
 layouts declaratively, and many of the GUI tools provide sophisticated
-ways to manage them. We'll do everything by hand as our needs are simple.
+ways to manage them. This application uses very simple forms, so we
+will be creating our UI imperatively (using Java code).
 
 ==== Writing tests
 
