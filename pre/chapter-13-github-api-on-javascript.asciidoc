@@ -783,7 +783,7 @@ Add these lines to the bottom of the file, but before the last closing braces.
 [source,javascript]
 -----
   ...
-[filename=".", language="js", sha="33451d6:support/js/coffeetech.js" lines="92..164"]
+[filename=".", language="js", sha="1f85150:support/js/coffeetech.js" lines="92..164"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -813,8 +813,9 @@ changes on GitHub easier. Diffs on GitHub work best when the changes
 are isolated to a single line, and without the third parameter our
 stringified JSON object would be all on a single line, making diffs
 difficult. 
-<6> To make a pull request, we create a repository object of the
-original repository, as we issues pull requests against that.
+<6> To make a pull request, we create a repository object from the
+Github.js library based on the original repository, and we issue pull
+requests against that.
 <7> If the pull request succeeds, we update our status messages and
 are done.
 
