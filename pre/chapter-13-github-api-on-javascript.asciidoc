@@ -783,7 +783,7 @@ Add these lines to the bottom of the file, but before the last closing braces.
 [source,javascript]
 -----
   ...
-[filename=".", language="js", sha="25533fd:support/js/coffeetech.js" lines="92..164"]
+[filename=".", language="js", sha=":support/js/coffeetech.js" lines="92..164"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -801,7 +801,14 @@ from it. If this succeeds, we know the fork completed.
 <4> With the fork ready, we write back into the repository with our
 new addition. We just need to take the existing objects we have loaded
 and add an annotate to the shop, then use `JSON.stringify` to turn it
-back into a JSON string.
+back into a JSON string. `stringify` takes two extra parameters which
+might not be familiar; our second parameter in `stringify` is a
+transformation function we can use to filter the data. If we did not
+use this, we would see `$$hashKey` inside our JSON file from our pull
+request as AngularJS internally uses this when tracking objects. 
+The last extra parameter tells the JSON library to format 
+our JSON file, which makes reading the changes on GitHub easier. Diffs
+on GitHub work best when the changes happen only on certain lines.
 <5> To make a pull request, we create a repository object of the
 original repository, as we issues pull requests against that.
 <6> If the pull request succeeds, we update our status messages and

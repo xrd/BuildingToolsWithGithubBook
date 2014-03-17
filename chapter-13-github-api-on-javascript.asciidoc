@@ -1044,28 +1044,40 @@ Add these lines to the bottom of the file, but before the last closing braces.
 [source,javascript]
 -----
   ...
+    }
+    
+    $scope.geolocationError = function( error ) {
         console.log( "Inside failure" );
     };
 
     $scope.annotate = function( shop ) {
         $scope.shopToAnnotate = shop;
-        $scope.username = $window.prompt( "Enter your github username (not email!)" )
-        pass = $window.prompt( "Enter your github password" )
-        $scope.annotation = $window.prompt( "Enter data to add" );
-        gh = ghs.create( $scope.username, pass ); // <1>
-        toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
-        toFork.fork( function( err ) {
-            if( !err ) {
-                $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
-                $timeout( $scope.annotateAfterForkCompletes, 10000 ); // <2>
-                $scope.$apply();
+
+        $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
+
+            $scope.me = user;
+            $scope.username = user.name;
+
+            $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
+
+            if( $scope.annotation ) {
+                gh = ghs.create( $scope.me.accessToken ); // <3>
+                toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
+                toFork.fork( function( err ) {
+                    if( !err ) {
+                        $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
+                        $timeout( $scope.annotateAfterForkCompletes, 10000 ); 
+                        $scope.$apply();
+                    }
+                } );
             }
+            
         } );
 
     };
 
     $scope.annotateAfterForkCompletes = function() {
-        $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" ); // <3>
+        $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" ); 
         $scope.forkedRepo.read( "gh-pages", "cities.json", function(err, data) { 
             if( err ) {
                 $timeout( $scope.annotateAfterForkCompletes, 10000 );
@@ -1074,7 +1086,7 @@ Add these lines to the bottom of the file, but before the last closing braces.
                 $scope.notifyWaiting( "annotating", "Annotating data on GitHub" );
                 // Write the new data into our repository
                 $scope.appendQuirkToShop();
-                $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', JSON.stringify( $scope.shops ), 'Added my quirky information', function(err) { // <4>
+                $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', JSON.stringify( $scope.shops, null, 2 ), 'Added my quirky information', function(err) { // <4>
                     if( !err ) {
                         // Annotate our data using a pull request
                         var pull = {
@@ -1105,18 +1117,6 @@ Add these lines to the bottom of the file, but before the last closing braces.
         if( state ) {
             $scope.waiting = {};
             $scope.waiting.state = state;
-            $scope.waiting.msg = msg;
-        }
-        else {
-            $scope.waiting = undefined;
-        }
-    }
-
-    $scope.appendQuirkToShop = function() {
-        if( undefined == $scope.shopToAnnotate.information ) {
-            $scope.shopToAnnotate.information = [];
-        }
-        $scope.shopToAnnotate.information.push( $scope.annotation );
   ...
 -----
 
@@ -1131,7 +1131,14 @@ from it. If this succeeds, we know the fork completed.
 <4> With the fork ready, we write back into the repository with our
 new addition. We just need to take the existing objects we have loaded
 and add an annotate to the shop, then use `JSON.stringify` to turn it
-back into a JSON string.
+back into a JSON string. `stringify` takes two extra parameters which
+might not be familiar; our second parameter in `stringify` is a
+transformation function we can use to filter the data. If we did not
+use this, we would see `$$hashKey` inside our JSON file from our pull
+request as AngularJS internally uses this when tracking objects. 
+The last extra parameter tells the JSON library to format 
+our JSON file, which makes reading the changes on GitHub easier. Diffs
+on GitHub work best when the changes happen only on certain lines.
 <5> To make a pull request, we create a repository object of the
 original repository, as we issues pull requests against that.
 <6> If the pull request succeeds, we update our status messages and
