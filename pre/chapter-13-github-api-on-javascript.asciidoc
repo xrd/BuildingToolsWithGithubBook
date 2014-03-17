@@ -854,6 +854,7 @@ traditional database like Postgresql or Mysql.
 
 image::images/javascript-pull-request-diff.png[]
 
+
 ===== Safely implementing login
 
 If I saw this app in the wild and knew nothing about the authors, I
