@@ -116,19 +116,19 @@ $ cat MyJavaFile.java | gist
 https://gist.github.com/9345609
 -----
 
-`grep` can be a useful tool if you need to
-search for a specific piece of code and include several lines of
-context around that code inside a gist. 
+Gists are often used to show interesting or troublesome code and there
+are times when you don't want to display the entirety of a file. In
+this case the command line `grep` tool can be a useful; `grep` searches
+for a specific piece of code and with the right switches can include
+several lines of context around that code inside a gist. This command
+looks for the function `myFunction` inside the `MyJavaFile.java` file
+and then prints the next 20 lines of context and stores it as a gist.
 
 [source,bash]
 -----
 $ grep -A 20 myFunction MyJavaFile.java | gist
 https://gist.github.com/9453069
 -----
-
-This command looks for the function `myFunction` inside the
-`MyJavaFile.java` file and then prints the next 20 lines of context
-and stores it as a gist.
 
 Adding the `-o` switch automatically opens the gist inside your
 default web browser. You can also copy the gist URL to the clipboard

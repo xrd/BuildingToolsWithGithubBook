@@ -2,14 +2,14 @@
 
 === What is Jekyll?
 
-If you visit GitHub and visit the jekyll repository you'll see it state that 
+If you visit GitHub and go to the jekyll repository you'll see it state that 
 "Jekyll is a blog-aware, static site generator in Ruby." What does this mean?
 Jekyll is a set of technologies for building web sites. There are
 probably as many tools for generating web sites as there are websites,
 though, so why does Jekyll deserve notice over others? Jekyll provides
 a quick way to generate a full featured website  
-without the compromises that come with other tools: complicated process
-and backends. When I author a blog post using Jekyll I am using a
+without the compromises that come with other tools: complicated processes
+and complicated backends. When I author a blog post using Jekyll I am using a
 minimalistic set of tools that get out of the way and allow me to
 focus only on what I am writing. Few other site tools can deliver on
 that promise.
@@ -356,18 +356,18 @@ markdown formatting characters. The best way to write markdown is to
 keep a markdown cheat sheet near you when writing (or visit Daring
 Fireball which is the definitive resource for Markdown).
 
-xx https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
 
 ==== Using the jekyll command
 
 Running `jekyll --help` will show you the options for running jekyll.
 You already saw the `jekyll serve` command which builds the files into
-the `_site` directory and then starts a webserver. If you start to use
-this mechanism to build your jekyll sites then there are a few other
-switches you'll want to learn about.
+the `_site` directory and then starts a webserver with its root at that directory. 
+If you start to use this mechanism to build your jekyll sites then
+there are a few other switches you'll want to learn about.
 
 The `-w` switch means watch. This can be used to automatically
-regenerat the entire site if you make changes to any of the source
+regenerate the entire site if you make changes to any of the source
 files. This means if you edit a post file, that file will be
 regenerated automatically. Without the `-w` switch you would need to
 kill the jekyll server, and then restart it. 
@@ -398,20 +398,46 @@ any CSS files or entire CSS frameworks. You could do this yourself, or
 you could just fork an existing jekyll blog which has the theming you
 like. The most popular themed Jekyll blog structure is Octopress. 
 
-===== Pushing into GitHub
+==== Publishing on GitHub
 
-* Using github.io or github.com/user/repo
-* CNAME for domain names
- * DNS settings
+Once you have your blog created, you can easily publish it to GitHub.
+There are three ways which you can publish Jekyll blogs: 
+
+* As a github.io site
+* As a pages site for your repository
+* On a domain you own
+
+Github offers free personal blogs which are hosted on the github.io
+domain. Each repository can also have its own site using the
+`gh-pages` branch. And, you can host any site with your own domain
+name with a little bit of configuration.
+
+===== Using a GitHub.io Jekyll Blog
+
+To create a github.io personal blog site, your Jekyll blog should be
+on the master branch of your Git repository. You also need a
+repository called `username.github.io` on GitHub. Once these things
+are setup, you can publish by adding a remote and pushing your files.
+If you use the `gh` gem, you can go from start to finish with a few
+simple commands. Make sure to change the first line to reflect your 
+
+[source,bash]
+------
+$ export USERNAME=xrd 
+$ jekyll new $USERNAME.github.io
+$ cd $USERNAME.github.io
+$ git init
+$ git commit -m "Initial checkin" -a
+$ gh create-from-local
+------
+
+
+===== The CNAME file
+
+===== DNS Settings
+
+* DNS settings
 * Fork existing repository
-
-==== What
-
-==== When
-
-==== Who
-
-==== Where
 
 === Language geek out
 
