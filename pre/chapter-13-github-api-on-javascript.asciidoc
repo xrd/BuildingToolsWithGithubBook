@@ -783,7 +783,7 @@ Add these lines to the bottom of the file, but before the last closing braces.
 [source,javascript]
 -----
   ...
-[filename=".", language="js", sha=":support/js/coffeetech.js" lines="92..164"]
+[filename=".", language="js", sha="3ade718:support/js/coffeetech.js" lines="92..164"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -798,20 +798,24 @@ seconds which will check to make sure our request completed.
 <3> When we re-enter the timeout callback, we setup a repository
 object for our new forked repository and try to request some content
 from it. If this succeeds, we know the fork completed.
-<4> With the fork ready, we write back into the repository with our
+<4> We define a transformation function which we'll use in the next
+step. AngularJS adds data to our objects when we use the `ng-repeat`
+directive and this function filters out that so that our pull request
+data is clean.
+<5> With the fork ready, we write back into the repository with our
 new addition. We just need to take the existing objects we have loaded
 and add an annotate to the shop, then use `JSON.stringify` to turn it
 back into a JSON string. `stringify` takes two extra parameters which
-might not be familiar; our second parameter in `stringify` is a
-transformation function we can use to filter the data. If we did not
-use this, we would see `$$hashKey` inside our JSON file from our pull
-request as AngularJS internally uses this when tracking objects. 
-The last extra parameter tells the JSON library to format 
-our JSON file, which makes reading the changes on GitHub easier. Diffs
-on GitHub work best when the changes happen only on certain lines.
-<5> To make a pull request, we create a repository object of the
+might not be familiar; our second parameter is the transformation
+function we defined in the prior callout. The other parameter tells
+the JSON library to format our JSON file, which makes reading the
+changes on GitHub easier. Diffs on GitHub work best when the changes
+are isolated to a single line, and without the third parameter our
+stringified JSON object would be all on a single line, making diffs
+difficult. 
+<6> To make a pull request, we create a repository object of the
 original repository, as we issues pull requests against that.
-<6> If the pull request succeeds, we update our status messages and
+<7> If the pull request succeeds, we update our status messages and
 are done.
 
 Let's add the status message into our HTML.

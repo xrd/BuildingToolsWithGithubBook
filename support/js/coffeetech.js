@@ -133,7 +133,8 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout'
                 // Write the new data into our repository
                 $scope.appendQuirkToShop();
 
-                $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', JSON.stringify( $scope.shops, function stripHashKey() { if( key == "$$hasKey" ) { return undefined; } }, 2 ), 'Added my quirky information', function(err) { // <4>
+                function stripHashKey() { if( key == "$$hasKey" ) { return undefined; } } // <4>
+                $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', JSON.stringify( $scope.shops, stripHashKey, 2 ), 'Added my quirky information', function(err) { // <5>
                     if( !err ) {
                         // Annotate our data using a pull request
                         var pull = {
@@ -142,7 +143,7 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout'
                             base: "gh-pages",
                             head: $scope.username + ":" + "gh-pages"
                         };
-                        target = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <5>
+                        target = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <6>
                         target.createPullRequest( pull, function( err, pullRequest ) {
                             if( !err ) { // <7>
                                 $scope.notifyWaiting( "annotated", "Successfully sent annotation request" );
