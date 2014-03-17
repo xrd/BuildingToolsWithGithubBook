@@ -431,7 +431,6 @@ $ git commit -m "Initial checkin" -a
 $ gh create-from-local
 ------
 
-
 ===== The CNAME file
 
 ===== DNS Settings

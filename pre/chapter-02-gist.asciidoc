@@ -58,14 +58,14 @@ into your HTML.
 
 ==== Inside Jekyll blogs
 
-You can use the code `{% gist 8138797 %}` to embed a gist inside of your
+You can use the code `{% gist 8138797 %}` to embed a public gist inside of your
 Jekyll blog hosted on GitHub, or on any site built on the
 "github-pages" branch mechanism (described in the "GitHub Pages" chapter). 
 
 If you want to use a specific file within the gist, add a filename to
 the gist code like `{% gist 8138797 hi.rb %}`.
 
-Secret gists can be embedded. If you use a secret gist, you need to
+Secret gists can also be embedded. If you use a secret gist, you need to
 prefix the username of the account holder in the gist like so: `{% gist
 xrd/8138797 hi.rb %}`.
 

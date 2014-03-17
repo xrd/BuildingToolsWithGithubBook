@@ -131,7 +131,7 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout'
                 $scope.notifyWaiting( "annotating", "Annotating data on GitHub" );
                 // Write the new data into our repository
                 $scope.appendQuirkToShop();
-                $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', JSON.stringify( $scope.shops ), 'Added my quirky information', function(err) { // <4>
+                $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', JSON.stringify( $scope.shops, null, 2 ), 'Added my quirky information', function(err) { // <4>
                     if( !err ) {
                         // Annotate our data using a pull request
                         var pull = {

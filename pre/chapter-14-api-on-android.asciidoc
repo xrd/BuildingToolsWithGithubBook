@@ -1,7 +1,7 @@
 == GitHub API on Android
 
 Android is currently the most popular operating system for mobile
-devices, overtaking Symbian in 2010, experiencing incredible growth
+devices, overtaking Symbian OS in 2010, experiencing incredible growth
 since its release in 2008. Many software developers would not consider
 a mobile device as a worthwhile platform for software developer tool
 creation, but as more and more people shift to using mobile devices,
@@ -67,7 +67,7 @@ confused about which to use.
 
 Once you have created an AVD, start it up. It will take a few minutes
 to boot; AVDs are actually emulating the chipset in software and
-booting up can take a few minutes unfortunately. There are ways to
+booting up can take a few minutes, unfortunately. There are ways to
 speed up AVD boot time, like the Genymotion tool, but they are outside
 of the scope of this book. After your AVD has completed booting, you
 can test to see if it is correctly started and available using the adb
