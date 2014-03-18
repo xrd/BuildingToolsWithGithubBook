@@ -114,11 +114,6 @@ used to be the default and preferred method of building Java projects
 from the command line, but gradle syntax is so simple and powerful and
 lightweight that it is now the preferred build system by the Android team.
 
-Our gradle script allows us to pull in external libraries. We want to
-use the egit library which allows us to talk to the GitHub API. Adding
-this library to our project is as simple as adding a single dependency
-to our project as you see below.
-
 [source,groovy]
 -----
 buildscript {
@@ -171,27 +166,6 @@ from within Java, using this simple declaration. Gradle will download
 the proper JAR files from the Maven repository and build them into our
 application using this dependency declaration.
 
-[source,groovy]
-----
-buildscript {
-    repositories {
-        mavenCentral()
-        maven { 
-               url 'https://oss.sonatype.org/content/repositories/snapshots/'
-         }     
-    }
-}
-
-apply plugin: 'android'
-
-android {
-    compileSdkVersion 18
-    buildToolsVersion "18.0.1"
-    dependencies {
-    'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
-    }
-}
-----
 
 ===== Default Android Main
 
