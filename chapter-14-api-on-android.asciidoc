@@ -175,22 +175,7 @@ point looks like this:
 
 [source,java]
 -----
-package com.whereimat;
-
-import android.app.Activity;
-import android.os.Bundle;
-
-public class MainActivity extends Activity
-{
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-    }
-}
-
+PLACEHOLDER TEXT, UPDATE WITH CORRECT SHA HASH
 -----
 
 When the application is launched, the
@@ -203,20 +188,7 @@ this:
 
 [source,java]
 -----
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<TextView
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:text="Hello World, MainActivity"
-    />
-</LinearLayout>
-
-
+PLACEHOLDER TEXT, UPDATE WITH CORRECT SHA HASH
 -----
 
 You may have complicated feelings about XML files (I know I do), but
@@ -256,9 +228,7 @@ Your `Gemfile` should now look like this:
 
 [source,java]
 -----
-source 'https://rubygems.org'
-
-gem 'calabash-android'
+PLACEHOLDER TEXT, UPDATE WITH CORRECT SHA HASH
 -----
 
 We've now installed calabash and created the folder structure to hold

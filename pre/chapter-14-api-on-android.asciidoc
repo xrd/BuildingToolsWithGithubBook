@@ -142,7 +142,7 @@ point looks like this:
 
 [source,java]
 -----
-[filename=".", language="js", sha="cf1ae2242b95a05cb:support/android/WhereImAt/WhereImAt/src/main/src/com/whereimat/MainActivity.java"]
+[filename=".", language="js", sha="xxxx:support/android/WhereImAt/WhereImAt/src/main/src/com/whereimat/MainActivity.java"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -158,7 +158,7 @@ this:
 
 [source,java]
 -----
-[filename=".", language="js", sha="cf1ae2242b95a05cb:support/android/WhereImAt/WhereImAt/src/main/res/layout/main.xml"]
+[filename=".", language="js", sha="xxxx:support/android/WhereImAt/WhereImAt/src/main/res/layout/main.xml"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -201,7 +201,7 @@ Your `Gemfile` should now look like this:
 
 [source,java]
 -----
-[filename=".", language="js", sha="f88268b:support/android/WhereImAt/Gemfile"]
+[filename=".", language="js", sha="xxxx:support/android/WhereImAt/Gemfile"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
