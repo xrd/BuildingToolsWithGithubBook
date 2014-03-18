@@ -119,12 +119,23 @@ use the egit library which allows us to talk to the GitHub API. Adding
 this library to our project is as simple as adding a single dependency
 to our project as you see below.
 
-
-[filename=".", language="groovy", sha="56a8da3af8ea46ed05:support/android/wia/build.gradle"]
+[source,groovy]
+-----
+[filename=".", language="groovy", sha="fde4fda:support/android/wia/build.gradle"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
+-----
 
+Gradle build files use some standard boilerplate, but there are two items of note here. 
+
+<1> Gradle was not designed for Android; it started as a generic java
+build tool. We need to specify where the files to compile reside for an android
+project using the `sourceSets` variable.
+<2> We can install the egit library, our interface to the GitHub API
+from within Java, using this simple declaration. Gradle will download
+the proper JAR files from the Maven repository and build them into our
+application using this dependency declaration.
 
 [source,groovy]
 ----

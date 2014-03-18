@@ -119,9 +119,77 @@ use the egit library which allows us to talk to the GitHub API. Adding
 this library to our project is as simple as adding a single dependency
 to our project as you see below.
 
+[source,groovy]
+-----
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.6.+'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.0.1"
+
+    defaultConfig {
+        minSdkVersion 7
+        targetSdkVersion 19
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    sourceSets {
+      main {
+        manifest.srcFile 'AndroidManifest.xml'
+        java.srcDirs = ['src']
+        resources.srcDirs = ['src']
+        res.srcDirs = ['res']
+        assets.srcDirs = ['assets']
+      }
+    }
+
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:18.0.0'
+    compile 'com.android.support:support-v4:18.0.0'
+    compile 'com.squareup.retrofit:retrofit:1.2.2'
+    //    compile files('libs/TestFlightLib.jar')
+    compile 'com.jakewharton:butterknife:4.0.1@jar'
+    compile 'de.keyboardsurfer.android.widget:crouton:1.8.1@jar'
+    // Does not seem to work with the required SDK min version
+    // compile 'se.emilsjolander:sprinkles:1.0.1'
+    //    compile 'com.j256.ormlite:ormlite-android:4.48'
+}
 
 
 
+-----
+
+Gradle build files use some standard boilerplate, but there are two items of note here. 
+
+<1> Gradle was not designed for Android; it started as a generic java
+build tool. We need to specify where the files to compile reside for an android
+project using the `sourceSets` variable.
+<2> We can install the egit library, our interface to the GitHub API
+from within Java, using this simple declaration. Gradle will download
+the proper JAR files from the Maven repository and build them into our
+application using this dependency declaration.
 
 [source,groovy]
 ----

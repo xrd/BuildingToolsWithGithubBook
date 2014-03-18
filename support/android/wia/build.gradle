@@ -17,20 +17,7 @@ android {
     compileSdkVersion 19
     buildToolsVersion "19.0.1"
 
-    defaultConfig {
-        minSdkVersion 7
-        targetSdkVersion 19
-        versionCode 1
-        versionName "1.0"
-    }
-    buildTypes {
-        release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-        }
-    }
-
-    sourceSets {
+    sourceSets { // <1>
       main {
         manifest.srcFile 'AndroidManifest.xml'
         java.srcDirs = ['src']
@@ -43,15 +30,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:18.0.0'
-    compile 'com.android.support:support-v4:18.0.0'
-    compile 'com.squareup.retrofit:retrofit:1.2.2'
-    //    compile files('libs/TestFlightLib.jar')
-    compile 'com.jakewharton:butterknife:4.0.1@jar'
-    compile 'de.keyboardsurfer.android.widget:crouton:1.8.1@jar'
-    // Does not seem to work with the required SDK min version
-    // compile 'se.emilsjolander:sprinkles:1.0.1'
-    //    compile 'com.j256.ormlite:ormlite-android:4.48'
+  compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5' // <2>
 }
 
 
