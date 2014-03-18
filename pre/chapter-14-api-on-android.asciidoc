@@ -121,13 +121,14 @@ to our project as you see below.
 
 [source,groovy]
 -----
-[filename=".", language="groovy", sha="fde4fda:support/android/wia/build.gradle"]
+[filename=".", language="groovy", sha="89a7727:support/android/wia/build.gradle"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
-Gradle build files use some standard boilerplate, but there are two items of note here. 
+Gradle build files use some standard boilerplate which you can ignore
+here, but there are two items which are worth noting.
 
 <1> Gradle was not designed for Android; it started as a generic java
 build tool. We need to specify where the files to compile reside for an android
