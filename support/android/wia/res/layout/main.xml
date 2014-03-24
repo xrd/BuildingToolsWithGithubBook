@@ -7,7 +7,32 @@
 <TextView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:text="Hello World, MainActivity"
+    android:text="GitHub Username:"
     />
+<EditText
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/username"
+    />
+
+<TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="GitHub Password:"
+    />
+
+<EditText
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/password"
+    />
+
+<Button
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="Login"
+    android:id="@+id/login"
+    />
+
 </LinearLayout>
 

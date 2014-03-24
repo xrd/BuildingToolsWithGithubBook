@@ -1,8 +1,8 @@
 require 'calabash-android/calabash_steps'
 
-def check_and_set( id, text )
-  check_element_exists "edittext id:'#{id}'"
-  query "edittext id:'#{id}'", :setText => text
+def check_and_set( name, text )
+  check_element_exists "edittext contentDescription:'GitHub #{name}'"
+  query "edittext contentDescription:'GitHub #{name}'", :setText => text
 end
 
 When(/^I enter the username$/) do
