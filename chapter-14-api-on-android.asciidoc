@@ -87,17 +87,17 @@ single device attached via USB which is a Nexus 5 device.
 ==== Creating a New Project
 
 [source,bash]
-$ mkdir wia # Where I'm At == wia
-$ cd wia
-$ android create project --target 13 --name Wia --path . --activity MainActivity --package com.whereimat
+$ mkdir ghru # GitHub R U?
+$ cd ghru
+$ android create project --target 13 --name GHRU --path . --activity GitHubRu --package com.githubru
 
-These three commands create a new directory `wia`, enter the
+These three commands create a new directory `ghru`, enter the
 directory, and then build a simple Android directory structure with
 the proper files.
 
 If you have the ant tool installed, you can build this new project
 with the `ant debug` command. This will create an APK in the bin
-directory called `./bin/Wia-debug-unaligned.apk`. To install it on
+directory called `./bin/Ghru-debug-unaligned.apk`. To install it on
 your device run the command `ant debug install`. Then, you can launch
 the application by double clicking on the application titled
 "MainActivity".
@@ -116,42 +116,6 @@ lightweight that it is now the preferred build system by the Android team.
 
 [source,groovy]
 -----
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.6.+'
-    }
-}
-
-repositories {
-    mavenCentral()
-}
-
-apply plugin: 'android'
-
-android {
-    compileSdkVersion 19
-    buildToolsVersion "19.0.1"
-
-    sourceSets { // <1>
-      main {
-        manifest.srcFile 'AndroidManifest.xml'
-        java.srcDirs = ['src']
-        resources.srcDirs = ['src']
-        res.srcDirs = ['res']
-        assets.srcDirs = ['assets']
-      }
-    }
-
-}
-
-dependencies {
-  compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5' // <2>
-}
-
-
 
 -----
 
@@ -175,7 +139,7 @@ point looks like this:
 
 [source,java]
 -----
-PLACEHOLDER TEXT, UPDATE WITH CORRECT SHA HASH
+
 -----
 
 When the application is launched, the
@@ -188,18 +152,19 @@ this:
 
 [source,java]
 -----
-PLACEHOLDER TEXT, UPDATE WITH CORRECT SHA HASH
+
 -----
 
 You may have complicated feelings about XML files (I know I do), but
 the Android layout XML files are a straightforward way to design
-layouts declaratively, and many of the GUI tools provide sophisticated
-ways to manage them. This application uses very simple forms, so we
-will be creating our UI imperatively (using Java code).
+layouts declaratively, and many GUI tools provide sophisticated
+ways to manage them. We'll manage ours by hand as they are exceedingly
+simple.
 
 ==== Writing tests
 
-Living the GitHub way, we write tests for our application before
+Practicing test driven development (following the path of our
+friends at GitHub), we write tests for our application before
 writing the code. There are many options for writing
 tests on Java and Android. JUnit is a popular testing tool which
 permits writing unit tests. Robotium is another testing tool which
@@ -214,7 +179,13 @@ subtle changes in APIs. Calabash also uses a simple DSL which is not
 compiled, so refactoring and changing tests is a simple matter. And,
 Calabash has a console mode which allows you to interactively refine
 your tests. Calabash makes testing easy; your code can be complicated,
-but tests should not be an onerous task.
+but tests should not be an onerous task. Calabash test scripts do
+require more overhead and take longer to run because they are
+instantiating and running a new app for each test (unlike unit tests
+which can isolate a test to a small piece of code), but you can
+mitigate the impact of this on your development flow by using
+continuous integration tools or using a service like AppThwack.com to
+run tests in the cloud.
 
 Calabash runs using ruby. You already have ruby installed, so to
 install calabash, run these commands:
@@ -228,7 +199,7 @@ Your `Gemfile` should now look like this:
 
 [source,java]
 -----
-PLACEHOLDER TEXT, UPDATE WITH CORRECT SHA HASH
+
 -----
 
 We've now installed calabash and created the folder structure to hold
@@ -237,17 +208,93 @@ command will write out a default calabash feature file like this.
 
 [source,yaml]
 -----
-Feature: Login feature
-
-  Scenario: As a valid user I can log into my app
-    When I press "Login"
-    Then I see "Welcome to coolest app ever"
 
 -----
 
 As we do in all the other chapters, let's practice test driven
-development. Modify the `my_first.feature` file to look like this:
+development. Modify the `my_first.feature` file:
 
+[source,yaml]
+-----
+
+-----
+
+Calabash requires the *internet* permission added to your
+AndroidManifest.xml file in order to permit Calabash to run. Edit
+`AndroidManifest.xml` to have the internet permission (look for the
+line labled *uses-permission*):
+
+[source,yaml]
+-----
+
+-----
+
+This first test is very basic. It enters in our username and password,
+clicks the login button, and then verifies that our login is
+successful. To run it we need to build our application and then run
+the test harness scripts.
+
+[source,bash]
+-----
+$ gradle assembleDebug
+$ calabash-android run build/apk/ghru-debug-unaligned.apk 
+-----
+
+Gradle and the Gradle Android plugin establish several tasks for you,
+one of which is `assembleDebug`. That builds a debug version of your
+application for you, and then we specify the run command with a path
+to it to run our tests. As expected, these tests will fail. 
+
+image::images/android-calabash-failures.png[]
+
+When using calabash, you need to understand two types of files: "feature"
+files and "step" files. Feature files define human readable actions
+comprising a test. Step files define the code, written in Ruby, behind
+these actions. Step files are entirely optional as there are many default steps
+defined inside of Calabash that suit many app actions. You can find a
+full list of default "canned" calabash steps here:
+https://github.com/calabash/calabash-android/blob/master/ruby-gem/lib/calabash-android/canned_steps.md
+Though you are not required to write steps and can often avoid writing ruby
+code entirely when writing calabash tests for Android applications,
+steps files are very useful when you want to refactor a long
+set of actions into a smaller piece and reuse it, or when you need to
+do something in Ruby that is not possible in a meta DSL (domain
+specific language) like Calabash. For example, in this case we will be
+using username and passwords retrieved from our environment rather
+than storing them inside our source files. Keeping passwords inside
+our source repositories is never a good idea.
+
+To build our step files, Calabash gives us the boilerplate code. Copy and
+paste the output from our initial run into the file
+`features/step_definitions/calabash_steps.rb`. This is our starting
+point, with pending indicated for the places we will be adding our
+code. Once the boilerplate is pasted in, modify it to actually enter
+text into several Android text widgets. These ruby commands for
+calabash are available in the Ruby API document:
+https://github.com/calabash/calabash-android/blob/master/documentation/ruby_api.md
+
+Here we write two steps with some helper code. Each step will test to
+make sure that the text element exists, and then if we find it, set
+the text inside that element to the username or password passed in
+via an environment variable. 
+
+[source,ruby]
+-----
+
+-----
+
+Then we run from the command line using this command `GH_USER=foobar
+GH_PASS=barfoo calabash-android run
+build/apk/ghru-debug-unaligned.apk`. Our code will still fail to pass,
+but now we are actually verifying real functionality of our future app.
+
+image::images/android-calabash-failures2.png[]
+
+So, let's start building our application. Obviously we need to put a
+username and password field into our application. Jumping into our XML
+layout files and editing gives us this file:
+
+xxxx
 
 ==== Code to talk to GitHub
 
@@ -358,4 +405,8 @@ private void commitContents( String baseCommitSha, String contents ) {
 }
 
 -----
+
+Now, let's make this more emojitional.
+
+https://github.com/muan/emoji/blob/gh-pages/emojis.json
 
