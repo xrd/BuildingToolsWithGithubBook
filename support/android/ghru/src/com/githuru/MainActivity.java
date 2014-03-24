@@ -1,4 +1,4 @@
-package com.whereimat;
+package com.githubru;
 
 import android.app.Activity;
 import android.os.Bundle;
