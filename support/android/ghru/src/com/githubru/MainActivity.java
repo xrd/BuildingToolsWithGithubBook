@@ -26,6 +26,7 @@ public class MainActivity extends Activity
     }
 
     private void login() {
+
         setContentView(R.layout.logged_in); // <3>
 
         Button submit = (Button)findViewById( R.id.submit );
