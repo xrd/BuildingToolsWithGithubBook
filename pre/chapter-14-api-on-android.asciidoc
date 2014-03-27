@@ -365,19 +365,32 @@ To be replaced
 snippet~~~~~
 -----
 
+This new code:
+
+<1>: We register a click handler for our login button.
+<2>: When the login button is clicked, we call the `login()` function
+<3>: Once we have logged in, we setup a new layout with UI elements suitable for making a blog post
+<4>: We then setup another click handler for the submit button; when
+clicked, we call the `doPost()` function.
+<5>: Our `doPost()` function updates the status message at the bottom
+of our application.
+
 Viewed inside our application:
 
 image::images/android-calabash-logged-in.png[]
 
-
-
 If we run our tests now, we see that they pass. We now have a baseline
 for success with our tests and can be assured that once we implement
 all the actual functionality that our tests will tell us when we are
-fully complete. 
+fully complete. None of the actual functionality for logging into
+GitHub or posting there is complete, but once we implement that inside
+our app we should not need to adjust our test files.
 
 ==== Code to Login to GitHub
 
+Let's first work on the `login()` method.
+
+https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core
 
 
 ==== Code to talk to GitHub
