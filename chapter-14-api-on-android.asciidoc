@@ -457,6 +457,13 @@ layout files and editing gives us this file:
     android:id="@+id/login"
     />
 
+<TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="GitHub Password:"
+    android:id="@+id/login_status"
+    />
+
 </LinearLayout>
 
 
@@ -503,7 +510,7 @@ provide context while saving the post.
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:id="@+id/status"
+      android:id="@+id/post_status"
       android:layout_weight="0"
       android:text=""/>
   

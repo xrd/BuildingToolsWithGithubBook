@@ -334,7 +334,7 @@ layout files and editing gives us this file:
 
 [source,xml]
 -----
-[filename=".", language="js", sha="bdb0709b8eb33:support/android/ghru/res/layout/main.xml"]
+[filename=".", language="js", sha="06b58b5:support/android/ghru/res/layout/main.xml"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -349,7 +349,7 @@ provide context while saving the post.
 
 [source,xml]
 -----
-[filename=".", language="js", sha="611556c:support/android/ghru/res/layout/logged_in.xml"]
+[filename=".", language="js", sha="06b58b5:support/android/ghru/res/layout/logged_in.xml"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
