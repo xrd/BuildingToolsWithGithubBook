@@ -357,7 +357,13 @@ snippet~~~~~
 
 Let's make the code changes to our MainActivity.
 
-
+[source,java]
+-----
+[filename=".", language="js", sha="ab0d3a7:support/android/ghru/src/com/githubru/MainActivity.java"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
 
 Viewed inside our application:
 
