@@ -175,6 +175,21 @@ point looks like this:
 
 [source,java]
 -----
+package com.githubru;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+public class MainActivity extends Activity
+{
+    /** Called when the activity is first created. */
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+    }
+}
 
 -----
 
@@ -255,32 +270,49 @@ gem 'calabash-android'
 
 We've now installed calabash and created the folder structure to hold
 our tests along with some helper scripts. The `calabash-android gen`
-command will write out a default calabash feature file like this.
+command will write out a default calabash feature file. This is
+boilerplate which we should change, so make the file named
+`features/my_first.feature` look like this: 
 
 [source,yaml]
 -----
-Feature: Login feature
+Feature: Login and post
 
-  Scenario: As a valid user I can log into my app
-    When I press "Login"
-    Then I see "Welcome to coolest app ever"
-
------
-
-As we do in all the other chapters, let's practice test driven
-development. Modify the `my_first.feature` file:
-
-[source,yaml]
------
-Feature: Login feature
-
-  Scenario: As a valid user I can log into my app
+  Scenario: As a valid user I can log into my app and post to my blog
     When I enter the username
     And I enter the password
-    And I press "Login"
-    Then I see "Logged into GitHub"
+    Then I press view with id "login"
+    Then I wait up to 10 seconds to see "Logged into GitHub"
+    Then I enter "I'm doing great today!" into field with id "post"
+    Then I press button number 1
+    Then I wait up to 10 seconds to see "Successful jekyll post"
 
 -----
+
+You may not know how this works or what it does behind the scenes, but
+the nice thing about Calabash scripts are that they are very readable
+by humans without knowing any of those details. This test enters
+credentials into the application, presses the first button, then waits
+to make sure a login message is displayed, then enters in some text
+into a field and presses another button and then expects to see the
+text "Successful jekyll post". 
+
+When using calabash, you need to understand two types of files: "feature"
+files and "step" files. Feature files define human readable actions
+comprising a test. Step files define the code, written in Ruby, behind
+these actions. Step files are entirely optional as there are many default steps
+defined inside of Calabash that suit many app actions. You can find a
+full list of default "canned" calabash steps here:
+https://github.com/calabash/calabash-android/blob/master/ruby-gem/lib/calabash-android/canned_steps.md
+Though you are not required to write steps and can often avoid writing ruby
+code entirely when writing calabash tests for Android applications,
+steps files are very useful when you want to refactor a long
+set of actions into a smaller piece and reuse it, or when you need to
+do something in Ruby that is not possible in a meta DSL (domain
+specific language) like Calabash. For example, in this case we will be
+using username and passwords retrieved from our environment rather
+than storing them inside our source files. Keeping passwords inside
+our source repositories is never a good idea.
 
 Calabash requires the *internet* permission added to your
 AndroidManifest.xml file in order to permit Calabash to run. Edit
@@ -309,10 +341,13 @@ line labled *uses-permission*):
 
 -----
 
-This first test is very basic. It enters in our username and password,
-clicks the login button, and then verifies that our login is
-successful. To run it we need to build our application and then run
-the test harness scripts.
+Once we have made these changes, we can successfully build our application.
+Gradle and the Gradle Android plugin establish several tasks for you,
+one of which is `assembleRelease`. That builds a release version of your
+application for you, and then we specify the run command with a path
+to the APK (the Android application package format) to run our tests.
+Since we have not yet built the code to support these tests, our tests
+will fail as expected.
 
 [source,bash]
 -----
@@ -320,6 +355,9 @@ $ gradle assembleDebug
 $ bundle exec calabash-android resign build/apk/ghru-release-unsigned.apk 
 $ bundle exec calabash-android run build/apk/ghru-release-unsigned.apk 
 -----
+
+image::images/android-calabash-failures.png[]
+
 
 [WARNING]
 You can run calabash using just the abbreviated `calabash-android` command instead of `bundle
@@ -335,31 +373,8 @@ newer version of calabash was previously installed (as it was in my
 case). You'll see this if you run `calabash-android version` even once
 you've bundled with an older version.
 
-Gradle and the Gradle Android plugin establish several tasks for you,
-one of which is `assembleRelease`. That builds a release version of your
-application for you, and then we specify the run command with a path
-to it to run our tests. As expected, these tests will fail. 
-
-image::images/android-calabash-failures.png[]
-
-When using calabash, you need to understand two types of files: "feature"
-files and "step" files. Feature files define human readable actions
-comprising a test. Step files define the code, written in Ruby, behind
-these actions. Step files are entirely optional as there are many default steps
-defined inside of Calabash that suit many app actions. You can find a
-full list of default "canned" calabash steps here:
-https://github.com/calabash/calabash-android/blob/master/ruby-gem/lib/calabash-android/canned_steps.md
-Though you are not required to write steps and can often avoid writing ruby
-code entirely when writing calabash tests for Android applications,
-steps files are very useful when you want to refactor a long
-set of actions into a smaller piece and reuse it, or when you need to
-do something in Ruby that is not possible in a meta DSL (domain
-specific language) like Calabash. For example, in this case we will be
-using username and passwords retrieved from our environment rather
-than storing them inside our source files. Keeping passwords inside
-our source repositories is never a good idea.
-
-To build our step files, Calabash gives us the boilerplate code. Copy and
+Calabash tells us that we are missing the step definitions for some of
+our code. Calabash even gives us the boilerplate code. Copy and
 paste the output from our initial run into the file
 `features/step_definitions/calabash_steps.rb`. This is our starting
 point, with pending indicated for the places we will be adding our
@@ -497,14 +512,22 @@ provide context while saving the post.
 
 -----
 
+Let's make the code changes to our MainActivity.
+
+
+
 Viewed inside our application:
 
 image::images/android-calabash-logged-in.png[]
 
+
+
 If we run our tests now, we see that they pass. We now have a baseline
 for success with our tests and can be assured that once we implement
 all the actual functionality that our tests will tell us when we are
-fully complete.
+fully complete. 
+
+==== Code to Login to GitHub
 
 
 

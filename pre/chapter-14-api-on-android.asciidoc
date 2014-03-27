@@ -142,7 +142,7 @@ point looks like this:
 
 [source,java]
 -----
-[filename=".", language="js", sha="b8e957f:support/android/ghru/src/com/githubru/MainActivity.java"]
+[filename=".", language="js", sha="51338:support/xxx/MainActivity.java"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -216,72 +216,25 @@ snippet~~~~~
 
 We've now installed calabash and created the folder structure to hold
 our tests along with some helper scripts. The `calabash-android gen`
-command will write out a default calabash feature file like this.
+command will write out a default calabash feature file. This is
+boilerplate which we should change, so make the file named
+`features/my_first.feature` look like this: 
 
 [source,yaml]
 -----
-[filename=".", language="js", sha="8032c772:support/android/wia/features/my_first.feature"]
+[filename=".", language="js", sha="209cb6c:support/android/ghru/features/my_first.feature"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
-As we do in all the other chapters, let's practice test driven
-development. Modify the `my_first.feature` file:
-
-[source,yaml]
------
-[filename=".", language="js", sha="b8e957f:support/android/ghru/features/my_first.feature"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
------
-
-Calabash requires the *internet* permission added to your
-AndroidManifest.xml file in order to permit Calabash to run. Edit
-`AndroidManifest.xml` to have the internet permission (look for the
-line labled *uses-permission*):
-
-[source,yaml]
------
-[filename=".", language="js", sha="b8e957f:support/android/ghru/AndroidManifest.xml"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
------
-
-This first test is very basic. It enters in our username and password,
-clicks the login button, and then verifies that our login is
-successful. To run it we need to build our application and then run
-the test harness scripts.
-
-[source,bash]
------
-$ gradle assembleDebug
-$ bundle exec calabash-android resign build/apk/ghru-release-unsigned.apk 
-$ bundle exec calabash-android run build/apk/ghru-release-unsigned.apk 
------
-
-[WARNING]
-You can run calabash using just the abbreviated `calabash-android` command instead of `bundle
-exec calabash-android`. But, there are good reasons to use the full
-command. Adding bundle exec means that you are running your commands
-within the bundler context, loading the gems which you specified in
-the Gemfile. If you don't use this prefix, things might work, or they
-might not. At the time of this writing, there was a bug with the
-newest version of Calabash for Android (0.4.21). To rectify this, we
-specify 0.4.20 in our Gemfile. If we run without `bundle exec` then we
-will not load the correct version of the calabash gems if another
-newer version of calabash was previously installed (as it was in my
-case). You'll see this if you run `calabash-android version` even once
-you've bundled with an older version.
-
-Gradle and the Gradle Android plugin establish several tasks for you,
-one of which is `assembleRelease`. That builds a release version of your
-application for you, and then we specify the run command with a path
-to it to run our tests. As expected, these tests will fail. 
-
-image::images/android-calabash-failures.png[]
+You may not know how this works or what it does behind the scenes, but
+the nice thing about Calabash scripts are that they are very readable
+by humans without knowing any of those details. This test enters
+credentials into the application, presses the first button, then waits
+to make sure a login message is displayed, then enters in some text
+into a field and presses another button and then expects to see the
+text "Successful jekyll post". 
 
 When using calabash, you need to understand two types of files: "feature"
 files and "step" files. Feature files define human readable actions
@@ -300,7 +253,53 @@ using username and passwords retrieved from our environment rather
 than storing them inside our source files. Keeping passwords inside
 our source repositories is never a good idea.
 
-To build our step files, Calabash gives us the boilerplate code. Copy and
+Calabash requires the *internet* permission added to your
+AndroidManifest.xml file in order to permit Calabash to run. Edit
+`AndroidManifest.xml` to have the internet permission (look for the
+line labled *uses-permission*):
+
+[source,yaml]
+-----
+[filename=".", language="js", sha="b8e957f:support/android/ghru/AndroidManifest.xml"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+Once we have made these changes, we can successfully build our application.
+Gradle and the Gradle Android plugin establish several tasks for you,
+one of which is `assembleRelease`. That builds a release version of your
+application for you, and then we specify the run command with a path
+to the APK (the Android application package format) to run our tests.
+Since we have not yet built the code to support these tests, our tests
+will fail as expected.
+
+[source,bash]
+-----
+$ gradle assembleDebug
+$ bundle exec calabash-android resign build/apk/ghru-release-unsigned.apk 
+$ bundle exec calabash-android run build/apk/ghru-release-unsigned.apk 
+-----
+
+image::images/android-calabash-failures.png[]
+
+
+[WARNING]
+You can run calabash using just the abbreviated `calabash-android` command instead of `bundle
+exec calabash-android`. But, there are good reasons to use the full
+command. Adding bundle exec means that you are running your commands
+within the bundler context, loading the gems which you specified in
+the Gemfile. If you don't use this prefix, things might work, or they
+might not. At the time of this writing, there was a bug with the
+newest version of Calabash for Android (0.4.21). To rectify this, we
+specify 0.4.20 in our Gemfile. If we run without `bundle exec` then we
+will not load the correct version of the calabash gems if another
+newer version of calabash was previously installed (as it was in my
+case). You'll see this if you run `calabash-android version` even once
+you've bundled with an older version.
+
+Calabash tells us that we are missing the step definitions for some of
+our code. Calabash even gives us the boilerplate code. Copy and
 paste the output from our initial run into the file
 `features/step_definitions/calabash_steps.rb`. This is our starting
 point, with pending indicated for the places we will be adding our
@@ -356,14 +355,22 @@ To be replaced
 snippet~~~~~
 -----
 
+Let's make the code changes to our MainActivity.
+
+
+
 Viewed inside our application:
 
 image::images/android-calabash-logged-in.png[]
 
+
+
 If we run our tests now, we see that they pass. We now have a baseline
 for success with our tests and can be assured that once we implement
 all the actual functionality that our tests will tell us when we are
-fully complete.
+fully complete. 
+
+==== Code to Login to GitHub
 
 
 

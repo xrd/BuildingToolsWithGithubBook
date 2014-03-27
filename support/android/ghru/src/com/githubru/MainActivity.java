@@ -14,7 +14,20 @@ public class MainActivity extends Activity
 
     private void login() {
         setContentView(R.layout.logged_in);
+
+        Button submit = (Button)findViewById( R.id.submit );
+        submit.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    doPost();
+                }
+            });
     }
+
+    private void doPost() {
+        TextView tv = (TextView)findViewById( R.id.status );
+        tv.setText( "Successful jekyll post" );
+    }
+
 
     /** Called when the activity is first created. */
     @Override
