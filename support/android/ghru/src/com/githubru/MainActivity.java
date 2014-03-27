@@ -33,7 +33,7 @@ public class MainActivity extends Activity
             });
     }
 
-    private void login() {
+    private void loggedIn() {
 
         setContentView(R.layout.logged_in); 
 
@@ -45,11 +45,6 @@ public class MainActivity extends Activity
             });
     }
 
-    private void doPost() {
-        TextView tv = (TextView)findViewById( R.id.status ); 
-        tv.setText( "Successful jekyll post" );
-    }
-    
     class LoginTask extends AsyncTask<String, Void, Boolean> {
         @Override
             protected Boolean doInBackground(String... credentials) {
@@ -67,9 +62,14 @@ public class MainActivity extends Activity
         @Override
             protected void onPostExecute(Boolean result) {
             if( result ) {
-                login();
+                loggedIn();
             }
         }
     }
 
+    private void doPost() {
+        TextView tv = (TextView)findViewById( R.id.post_status ); 
+        tv.setText( "Successful jekyll post" );
+    }
+    
 }
