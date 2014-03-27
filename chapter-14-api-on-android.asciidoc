@@ -453,6 +453,7 @@ blog post into a large text field and then click a button to submit
 the blog post. We also leave an empty status box beneath the button to
 provide context while saving the post.
 
+
 [source,xml]
 -----
 <?xml version="1.0" encoding="utf-8"?>
@@ -473,6 +474,7 @@ provide context while saving the post.
       android:layout_width="fill_parent"
       android:layout_height="fill_parent"
       android:hint="Enter your blog post"
+      android:id="@+id/post"
       android:layout_weight="1"
       />
   
@@ -480,11 +482,13 @@ provide context while saving the post.
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:layout_weight="0"
+      android:id="@+id/submit"
       android:text="Send blog post"/>
     
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
+      android:id="@+id/status"
       android:layout_weight="0"
       android:text=""/>
   
@@ -497,7 +501,12 @@ Viewed inside our application:
 
 image::images/android-calabash-logged-in.png[]
 
-==== OK.
+If we run our tests now, we see that they pass. We now have a baseline
+for success with our tests and can be assured that once we implement
+all the actual functionality that our tests will tell us when we are
+fully complete.
+
+
 
 ==== Code to talk to GitHub
 
