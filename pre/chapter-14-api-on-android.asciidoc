@@ -359,20 +359,21 @@ Let's make the code changes to our MainActivity.
 
 [source,java]
 -----
-[filename=".", language="js", sha="ab0d3a7:support/android/ghru/src/com/githubru/MainActivity.java"]
+[filename=".", language="js", sha="f2ecb28:support/android/ghru/src/com/githubru/MainActivity.java"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
-This new code:
+This code mocks out the functionality we will be building and shows us
+exactly what the UI will look like once that code is completed.
 
-<1>: We register a click handler for our login button.
-<2>: When the login button is clicked, we call the `login()` function
-<3>: Once we have logged in, we setup a new layout with UI elements suitable for making a blog post
-<4>: We then setup another click handler for the submit button; when
+<1> We register a click handler for our login button.
+<2> When the login button is clicked, we call the `login()` function
+<3> Once we have logged in, we setup a new layout with UI elements suitable for making a blog post
+<4> We then setup another click handler for the submit button; when
 clicked, we call the `doPost()` function.
-<5>: Our `doPost()` function updates the status message at the bottom
+<5> Our `doPost()` function updates the status message at the bottom
 of our application.
 
 Viewed inside our application:
@@ -388,9 +389,29 @@ our app we should not need to adjust our test files.
 
 ==== Code to Login to GitHub
 
-Let's first work on the `login()` method.
+Let's first work on the `login()` method. From the Egit libary
+reference: 
 
 https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core
+
+The code to login to GitHub is as simple as can be:
+
+[source,java]
+-----
+//Basic authentication
+GitHubClient client = new GitHubClient();
+client.setCredentials("user", "passw0rd");
+-----
+
+Unfortunately the context in which the code
+runs makes as much a difference as the code. Android requires that any
+code which makes network connections run inside a background thread.
+Android applications, in order to maintain responsive UI behavior,
+disallow any long running processes (or indeterminate processes, like
+network activity) from running on the main UI thread. If your eyes are
+starting to spin at the thought of learning about threading using
+Java, dispell your worries. The Android SDK provides a great class for
+managing background thread code called `AsyncTask`.
 
 
 ==== Code to talk to GitHub

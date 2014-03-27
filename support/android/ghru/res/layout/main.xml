@@ -34,5 +34,12 @@
     android:id="@+id/login"
     />
 
+<TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="GitHub Password:"
+    android:id="@+id/login_status"
+    />
+
 </LinearLayout>
 
