@@ -644,7 +644,7 @@ public class MainActivity extends Activity
             });
     }
 
-    private void login() {
+    private void loggedIn() {
 
         setContentView(R.layout.logged_in); 
 
@@ -656,11 +656,6 @@ public class MainActivity extends Activity
             });
     }
 
-    private void doPost() {
-        TextView tv = (TextView)findViewById( R.id.status ); 
-        tv.setText( "Successful jekyll post" );
-    }
-    
     class LoginTask extends AsyncTask<String, Void, Boolean> {
         @Override
             protected Boolean doInBackground(String... credentials) {
@@ -678,13 +673,46 @@ public class MainActivity extends Activity
         @Override
             protected void onPostExecute(Boolean result) {
             if( result ) {
-                login();
+                loggedIn();
             }
         }
     }
 
+    private void doPost() {
+        TextView tv = (TextView)findViewById( R.id.post_status ); 
+        tv.setText( "Successful jekyll post" );
+    }
+    
 ...
 -----
+
+We've now implemented the login functionality.
+
+<1> We retrieve the username and password from our UI elements. 
+<2> We then start the background thread process to do our login. This
+syntax creates a new thread for us with the username and password as
+parameters. Android will manage the lifecycle of this thread for us,
+meaning starting it off the main UI thread.
+<3> Here we define the derived AsyncTask class. The three types in the
+generics signature provide a way to parameterize the calling context;
+we need to provide a username and password when instantiating the
+AsyncTask, and the first type signature allows us to pass Strings.
+<4> Once inside the `doInBackground()` function, we instantiate a
+`UserService` class, a wrapper around the GitHub API which interacts
+with the user service API call. In order to access this information,
+we have to retrieve the client for this service call and provide the
+client with the username and password credentials. This is the syntax
+to do that.
+<5> We wrap the call to `getUser()` in a try block as the function
+signature can throw an error (if the network were down, for example).
+We don't really need the User object at all, but this call verifies
+that our username and password are correct and we store the result of
+the call in our return value.
+<6> We renamed the `login()` function to more accurately reflect the
+fact that when we call this, we are already logged into GitHub.
+<7> If our login was a failure, either because of network failure, or
+because our credentials were incorrect, we indicate this in the status
+message. A user can retry if they wish.
 
 This code will not compile yet, because we need to import the support
 classes. The JARs and classes for Egit have already been added to our project
