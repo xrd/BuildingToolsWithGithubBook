@@ -447,7 +447,11 @@ layout files and editing gives us this file:
 
 -----
 
-We've now defined the XML for a full on login. Once logged in, we can define what the user will see.
+We've now defined the XML for a full on login. Once logged in, we can
+define what the user will see, a layout that permits them to enter a
+blog post into a large text field and then click a button to submit
+the blog post. We also leave an empty status box beneath the button to
+provide context while saving the post.
 
 [source,xml]
 -----
@@ -457,15 +461,41 @@ We've now defined the XML for a full on login. Once logged in, we can define wha
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<TextView
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:text="Logged into GitHub"
-    />
+  <TextView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:text="Logged into GitHub"
+      android:layout_weight="0"
+      />
+  
+  <EditText
+      android:gravity="top"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:hint="Enter your blog post"
+      android:layout_weight="1"
+      />
+  
+  <Button
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="0"
+      android:text="Send blog post"/>
+    
+  <TextView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="0"
+      android:text=""/>
+  
 </LinearLayout>
 
 
 -----
+
+Viewed inside our application:
+
+image::images/android-calabash-logged-in.png[]
 
 ==== OK.
 

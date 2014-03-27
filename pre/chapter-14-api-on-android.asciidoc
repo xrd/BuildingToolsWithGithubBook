@@ -341,15 +341,23 @@ To be replaced
 snippet~~~~~
 -----
 
-We've now defined the XML for a full on login. Once logged in, we can define what the user will see.
+We've now defined the XML for a full on login. Once logged in, we can
+define what the user will see, a layout that permits them to enter a
+blog post into a large text field and then click a button to submit
+the blog post. We also leave an empty status box beneath the button to
+provide context while saving the post.
 
 [source,xml]
 -----
-[filename=".", language="js", sha="bdb0709b8eb33:support/android/ghru/res/layout/logged_in.xml"]
+[filename=".", language="js", sha="3998ad1:support/android/ghru/res/layout/logged_in.xml"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
+
+Viewed inside our application:
+
+image::images/android-calabash-logged-in.png[]
 
 ==== OK.
 
