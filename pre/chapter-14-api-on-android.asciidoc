@@ -116,7 +116,7 @@ lightweight that it is now the preferred build system by the Android team.
 
 [source,groovy]
 -----
-[filename=".", language="groovy", sha="89a7727:support/android/ghru/build.gradle"]
+[filename=".", language="groovy", sha="b8e957f:support/android/ghru/build.gradle"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -142,7 +142,7 @@ point looks like this:
 
 [source,java]
 -----
-[filename=".", language="js", sha="c9f51d63305add1b87fea49cd790ede67fd07332:support/android/ghru/src/com/whereimat/MainActivity.java"]
+[filename=".", language="js", sha="b8e957f:support/android/ghru/src/com/githubru/MainActivity.java"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -158,7 +158,7 @@ this:
 
 [source,java]
 -----
-[filename=".", language="js", sha="c9f51d63305add1b87fea49cd790ede67fd07332:support/android/ghru/res/layout/main.xml"]
+[filename=".", language="js", sha="d8f7a56e5fa3:support/android/wia/res/layout/main.xml"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -208,7 +208,7 @@ Your `Gemfile` should now look like this:
 
 [source,java]
 -----
-[filename=".", language="js", sha="ecf1752:support/android/ghru/Gemfile"]
+[filename=".", language="js", sha="b8e957f:support/android/ghru/Gemfile"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -220,7 +220,7 @@ command will write out a default calabash feature file like this.
 
 [source,yaml]
 -----
-[filename=".", language="js", sha="8032c77:support/android/ghru/features/my_first.feature"]
+[filename=".", language="js", sha="8032c772:support/android/wia/features/my_first.feature"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -231,7 +231,7 @@ development. Modify the `my_first.feature` file:
 
 [source,yaml]
 -----
-[filename=".", language="js", sha="c24a337:support/android/ghru/features/my_first.feature"]
+[filename=".", language="js", sha="b8e957f:support/android/ghru/features/my_first.feature"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -244,7 +244,7 @@ line labled *uses-permission*):
 
 [source,yaml]
 -----
-[filename=".", language="js", sha="bc4b286:support/android/ghru/AndroidManifest.xml"]
+[filename=".", language="js", sha="b8e957f:support/android/ghru/AndroidManifest.xml"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -258,11 +258,26 @@ the test harness scripts.
 [source,bash]
 -----
 $ gradle assembleDebug
-$ calabash-android run build/apk/ghru-debug-unaligned.apk 
+$ bundle exec calabash-android resign build/apk/ghru-release-unsigned.apk 
+$ bundle exec calabash-android run build/apk/ghru-release-unsigned.apk 
 -----
 
+[WARNING]
+You can run calabash using just the abbreviated `calabash-android` command instead of `bundle
+exec calabash-android`. But, there are good reasons to use the full
+command. Adding bundle exec means that you are running your commands
+within the bundler context, loading the gems which you specified in
+the Gemfile. If you don't use this prefix, things might work, or they
+might not. At the time of this writing, there was a bug with the
+newest version of Calabash for Android (0.4.21). To rectify this, we
+specify 0.4.20 in our Gemfile. If we run without `bundle exec` then we
+will not load the correct version of the calabash gems if another
+newer version of calabash was previously installed (as it was in my
+case). You'll see this if you run `calabash-android version` even once
+you've bundled with an older version.
+
 Gradle and the Gradle Android plugin establish several tasks for you,
-one of which is `assembleDebug`. That builds a debug version of your
+one of which is `assembleRelease`. That builds a release version of your
 application for you, and then we specify the run command with a path
 to it to run our tests. As expected, these tests will fail. 
 
@@ -301,7 +316,7 @@ via an environment variable.
 
 [source,ruby]
 -----
-[filename=".", language="js", sha="d8f7a56:support/android/ghru/features/step_definitions/calabash_steps.rb"]
+[filename=".", language="js", sha="b8e957f:support/android/ghru/features/step_definitions/calabash_steps.rb"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -309,7 +324,7 @@ snippet~~~~~
 
 Then we run from the command line using this command `GH_USER=foobar
 GH_PASS=barfoo calabash-android run
-build/apk/ghru-debug-unaligned.apk`. Our code will still fail to pass,
+build/apk/ghru-release-unsigned.apk`. Our code will still fail to pass,
 but now we are actually verifying real functionality of our future app.
 
 image::images/android-calabash-failures2.png[]
@@ -318,7 +333,25 @@ So, let's start building our application. Obviously we need to put a
 username and password field into our application. Jumping into our XML
 layout files and editing gives us this file:
 
-xxxx
+[source,xml]
+-----
+[filename=".", language="js", sha="bdb0709b8eb33:support/android/ghru/res/layout/main.xml"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+We've now defined the XML for a full on login. Once logged in, we can define what the user will see.
+
+[source,xml]
+-----
+[filename=".", language="js", sha="bdb0709b8eb33:support/android/ghru/res/layout/logged_in.xml"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+==== OK.
 
 ==== Code to talk to GitHub
 

@@ -116,6 +116,42 @@ lightweight that it is now the preferred build system by the Android team.
 
 [source,groovy]
 -----
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.6.+'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.0.1"
+
+    sourceSets { // <1>
+      main {
+        manifest.srcFile 'AndroidManifest.xml'
+        java.srcDirs = ['src']
+        resources.srcDirs = ['src']
+        res.srcDirs = ['res']
+        assets.srcDirs = ['assets']
+      }
+    }
+
+}
+
+dependencies {
+  compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5' // <2>
+}
+
+
 
 -----
 
@@ -152,6 +188,19 @@ this:
 
 [source,java]
 -----
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="Hello World, MainActivity"
+    />
+</LinearLayout>
+
 
 -----
 
@@ -199,7 +248,9 @@ Your `Gemfile` should now look like this:
 
 [source,java]
 -----
+source 'https://rubygems.org'
 
+gem 'calabash-android'
 -----
 
 We've now installed calabash and created the folder structure to hold
@@ -208,6 +259,11 @@ command will write out a default calabash feature file like this.
 
 [source,yaml]
 -----
+Feature: Login feature
+
+  Scenario: As a valid user I can log into my app
+    When I press "Login"
+    Then I see "Welcome to coolest app ever"
 
 -----
 
@@ -216,6 +272,13 @@ development. Modify the `my_first.feature` file:
 
 [source,yaml]
 -----
+Feature: Login feature
+
+  Scenario: As a valid user I can log into my app
+    When I enter the username
+    And I enter the password
+    And I press "Login"
+    Then I see "Logged into GitHub"
 
 -----
 
@@ -226,6 +289,23 @@ line labled *uses-permission*):
 
 [source,yaml]
 -----
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.whereimat"
+      android:versionCode="1"
+      android:versionName="1.0">
+    <application android:label="@string/app_name"
+                 android:icon="@drawable/ic_launcher">
+      <uses-permission android:name="android.permission.INTERNET" />
+        <activity android:name=".MainActivity"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
 
 -----
 
@@ -237,11 +317,26 @@ the test harness scripts.
 [source,bash]
 -----
 $ gradle assembleDebug
-$ calabash-android run build/apk/ghru-debug-unaligned.apk 
+$ bundle exec calabash-android resign build/apk/ghru-release-unsigned.apk 
+$ bundle exec calabash-android run build/apk/ghru-release-unsigned.apk 
 -----
 
+[WARNING]
+You can run calabash using just the abbreviated `calabash-android` command instead of `bundle
+exec calabash-android`. But, there are good reasons to use the full
+command. Adding bundle exec means that you are running your commands
+within the bundler context, loading the gems which you specified in
+the Gemfile. If you don't use this prefix, things might work, or they
+might not. At the time of this writing, there was a bug with the
+newest version of Calabash for Android (0.4.21). To rectify this, we
+specify 0.4.20 in our Gemfile. If we run without `bundle exec` then we
+will not load the correct version of the calabash gems if another
+newer version of calabash was previously installed (as it was in my
+case). You'll see this if you run `calabash-android version` even once
+you've bundled with an older version.
+
 Gradle and the Gradle Android plugin establish several tasks for you,
-one of which is `assembleDebug`. That builds a debug version of your
+one of which is `assembleRelease`. That builds a release version of your
 application for you, and then we specify the run command with a path
 to it to run our tests. As expected, these tests will fail. 
 
@@ -280,12 +375,27 @@ via an environment variable.
 
 [source,ruby]
 -----
+require 'calabash-android/calabash_steps'
+
+def check_and_set( id, text )
+  check_element_exists "edittext id:'#{id}'"
+  query "edittext id:'#{id}'", :setText => text
+end
+
+When(/^I enter the username$/) do
+  check_and_set( "username", ENV['GH_USERID'] )
+end
+
+When(/^I enter the password$/) do
+  check_and_set( "password", ENV['GH_PASSWORD'] )
+end
+
 
 -----
 
 Then we run from the command line using this command `GH_USER=foobar
 GH_PASS=barfoo calabash-android run
-build/apk/ghru-debug-unaligned.apk`. Our code will still fail to pass,
+build/apk/ghru-release-unsigned.apk`. Our code will still fail to pass,
 but now we are actually verifying real functionality of our future app.
 
 image::images/android-calabash-failures2.png[]
@@ -294,7 +404,70 @@ So, let's start building our application. Obviously we need to put a
 username and password field into our application. Jumping into our XML
 layout files and editing gives us this file:
 
-xxxx
+[source,xml]
+-----
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="GitHub Username:"
+    />
+<EditText
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/username"
+    />
+
+<TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="GitHub Password:"
+    />
+
+<EditText
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/password"
+    />
+
+<Button
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="Login"
+    android:id="@+id/login"
+    />
+
+</LinearLayout>
+
+
+-----
+
+We've now defined the XML for a full on login. Once logged in, we can define what the user will see.
+
+[source,xml]
+-----
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="Logged into GitHub"
+    />
+</LinearLayout>
+
+
+-----
+
+==== OK.
 
 ==== Code to talk to GitHub
 

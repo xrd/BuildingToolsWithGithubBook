@@ -34,7 +34,7 @@ GEM
     rubyzip (0.9.9)
     slowhandcuke (0.0.3)
       cucumber
-    thor (0.18.1)
+    thor (0.19.1)
     xamarin-test-cloud (0.9.30)
       bundler (>= 1.3.0, < 2.0)
       json

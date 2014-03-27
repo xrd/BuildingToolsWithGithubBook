@@ -6,7 +6,7 @@ def check_and_set( id, text )
 end
 
 When(/^I enter the username$/) do
-  check_and_set( "username", ENV['GH_USERID'] )
+  check_and_set( "username", ENV['GH_USERNAME'] )
 end
 
 When(/^I enter the password$/) do

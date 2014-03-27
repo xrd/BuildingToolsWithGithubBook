@@ -4,10 +4,32 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<TextView
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:text="Logged into GitHub"
-    />
+  <TextView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:text="Logged into GitHub"
+      android:layout_weight="0"
+      />
+  
+  <EditText
+      android:gravity="top"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:hint="Enter your blog post"
+      android:layout_weight="1"
+      />
+  
+  <Button
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="0"
+      android:text="Send blog post"/>
+    
+  <TextView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="0"
+      android:text=""/>
+  
 </LinearLayout>
 
