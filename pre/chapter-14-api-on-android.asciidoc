@@ -222,7 +222,7 @@ boilerplate which we should change, so make the file named
 
 [source,yaml]
 -----
-[filename=".", language="js", sha="4ece32b:support/android/ghru/features/my_first.feature"]
+[filename=".", language="js", sha="6a0cb94:support/android/ghru/features/my_first.feature"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

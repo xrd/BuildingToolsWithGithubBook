@@ -1,9 +1,5 @@
 Feature: Login and post
 
-  Before do
-             
-  end    
-
   Scenario: As a valid user I can log into my app and post to my blog
     When I enter the username
     And I enter the password
