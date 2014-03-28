@@ -76,6 +76,7 @@ public class MainActivity extends Activity
     private void doPost() {
         TextView tv = (TextView)findViewById( R.id.post_status ); 
         tv.setText( "Successful jekyll post" );
+        GitHubHelpers.SaveFile( "", "", "", "", "", "" );
     }
     
 }

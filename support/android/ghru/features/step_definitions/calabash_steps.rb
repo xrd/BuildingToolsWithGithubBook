@@ -38,6 +38,7 @@ end
 And(/^I have a new jekyll post with my mood status$/) do
   url = "https://raw.githubusercontent.com/#{ENV['GH_USERNAME']}/#{ENV['GH_REPO']}/#{ENV['gh_branch']||'master'}/#{@filename}"
   puts "Checking #{url} for content..."
-  assert( `curl #{url}| grep #{@mood}`, "Mood update not posted" )
+  response = HTTParty.get( url )
+  assert( response.body.include?( @mood ), "Post unsuccessful" )
 end
 

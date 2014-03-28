@@ -34,7 +34,7 @@ we have a sandbox repository that has the structure of a jekyll blog.
 
 [source,bash]
 -----
-$ printf "source 'https://rubygems.org'\n\ngem 'github-pages'\ngem 'hub'" >> Gemfile
+$ printf "source 'https://rubygems.org'\n\ngem 'github-pages'\ngem 'hub'\n gem 'httparty'" >> Gemfile
 $ export BLOG_NAME=mytestblog
 $ bundle
 $ jekyll new $BLOG_NAME
@@ -43,11 +43,11 @@ $ hub create
 $ git push -u origin master
 -----
 
-These commands install the correct libraries for using Jekyll,
-generate a new blog using the jekyll command line tool, and then
-create a blog on GitHub with those files. On the second line we
-specify the name of the blog; you are welcome to change this to any
-name you'd like, just make sure the tests match the name.
+These commands install the correct libraries for using Jekyll (and one
+for our tests as well), generate a new blog using the jekyll command
+line tool, and then create a blog on GitHub with those files. On the
+second line we specify the name of the blog; you are welcome to change
+this to any name you'd like, just make sure the tests match the name.
 
 [WARNING]
 When you have finished running these commands, you should close the
@@ -348,7 +348,6 @@ will copy into our step definition files to complete the test suite.
 
 image::images/android-calabash-failures.png[]
 
-
 [WARNING]
 You can run calabash using just the abbreviated `calabash-android` command instead of `bundle
 exec calabash-android`. But, there are good reasons to use the full
@@ -371,14 +370,25 @@ text into several Android text widgets. These ruby commands for
 calabash are available in the Ruby API document:
 https://github.com/calabash/calabash-android/blob/master/documentation/ruby_api.md
 
-Here we write two steps with some helper code. Each step will test to
-make sure that the text element exists, and then if we find it, set
-the text inside that element to the username or password passed in
-via an environment variable. 
+As you can see from the following code, step definitions are sometimes
+just regular expression matches of the features, but can also include
+vanilla ruby code. At the top of the file we store some variables for
+usage later in the tests. Specifically, we will store a status message
+as a random choice from a moods array, and then later verify that we
+successfully posted that status message into GitHub by reusing that variable.
+The `set_title_and_mood` method establishes the correct filename
+format for a Jekyll blog post (we'll do this same formatting in our
+Java code later). Then we write a method which uses the Calabash Ruby
+API to verify a UI element exists by the ID (these are the IDs created
+inside our XML layout files), and if so, sets the field to the text
+provided. After this our steps are very basic and uniform except for
+the last item. Our last item verifies that we successfully stored the
+data inside our GitHub repository by making a basic HTTP call using
+the Httparty ruby gem.
 
 [source,ruby]
 -----
-[filename=".", language="js", sha="b8e957f:support/android/ghru/features/step_definitions/calabash_steps.rb"]
+[filename=".", language="js", sha="fea1ce8:support/android/ghru/features/step_definitions/calabash_steps.rb"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -412,7 +422,7 @@ provide context while saving the post.
 
 [source,xml]
 -----
-[filename=".", language="js", sha="06b58b5:support/android/ghru/res/layout/logged_in.xml"]
+[filename=".", language="js", sha="fea1ce8:support/android/ghru/res/layout/logged_in.xml"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -443,12 +453,8 @@ Viewed inside our application:
 
 image::images/android-calabash-logged-in.png[]
 
-If we run our tests now, we see that they pass. We now have a baseline
-for success with our tests and can be assured that once we implement
-all the actual functionality that our tests will tell us when we are
-fully complete. None of the actual functionality for logging into
-GitHub or posting there is complete, but once we implement that inside
-our app we should not need to adjust our test files.
+These tests will fail as we've not yet implemented the functionality.
+But, we do have a clear direction to build towards.
 
 ==== Code to Login to GitHub
 
@@ -540,14 +546,17 @@ snippet~~~~~
 ...
 -----
 
-
-
 ==== Code to talk to GitHub
 
-We've finally assemble the proper UI for our application. Our last
-step is to write the code which handles putting content into GitHub.
+Our last step is to write the code which handles putting content into GitHub.
 This is not a simple function, because the GitHub API requires you
-build out the objects required.
+build out the git structure. A great reference for learning more about
+this is the free and open source book called "Pro Git" and
+specifically the last chapter called "Git Internals".
+(http://git-scm.com/book/en/Git-Internals). In a nutshell, the GitHub
+API expects you to create a git "tree" and then place a "blob" object
+into that tree. You then wrap the tree in a "commit" object and then
+create that commit on GitHub using a data service wrapper.
 
 This code was refactored from https://gist.github.com/Detelca/2337731.
 Who is this mysterious user Detelca? 
@@ -555,100 +564,6 @@ Who is this mysterious user Detelca?
 
 [source,java]
 -----
-
-String username = getUsername();
-String password = getPassword();
-RepositoryService rs = getRepositoryService( username, password );
-RepositoryBranch rb = getCorrectBranch( rs );
-String baseCommitSha = getBaseCommitSha( rb );
-commitContents( baseCommitSha, contents );
-
-// create needed services
-private RepositoryService getRepositoryService( String username, String password ) {
-  RepositoryService repositoryService = new RepositoryService();
-  repositoryService.getClient().setOAuth2Token(authToken);
-  CommitService commitService = new CommitService();
-  commitService.getClient().setOAuth2Token(authToken);
-  DataService dataService = new DataService();
-  dataService.getClient().setOAuth2Token(authToken);
-}
-
-private RepositoryBranch getCorrectBranch( RepositoryService ) {
-  // get some sha's from current state in git
-  Repository repository =  repositoryService.getRepository(login, repoName);
- List<RepositoryBranch> branches = repositoryService.getBranches(repository);
-  RepositoryBranch theBranch = null;
-  RepositoryBranch master = null;
-  // Iterate over the branches and find gh-pages or master
-  for( RepositoryBranch i : branches ) {
-      String theName = i.getName().toString();
-      if( theName.equalsIgnoreCase("gh-pages") ) {
-          theBranch = i;
-      }
-      else if( theName.equalsIgnoreCase("master") ) {
-          master = i;
-      }
-  }
-  if( null == theBranch ) {
-      theBranch = master;
-  }
-  return theBranch;
-}
-
-private String getBaseCommitSha( RepositoryBranch rb ) {
-  String baseCommitSha = rb.getCommit().getSha();
-}
-
-private void commitContents( String baseCommitSha, String contents ) {
-  String newSha = null;
-  // create new blob with data
-  Blob blob = new Blob();
-  blob.setContent(contentsBase64);
-  blob.setEncoding(Blob.ENCODING_BASE64);
-  String blob_sha = dataService.createBlob(repository, blob);
-  Tree baseTree = dataService.getTree(repository, baseCommitSha);
-  
-  // create new tree entry
-  TreeEntry treeEntry = new TreeEntry();
-  treeEntry.setPath(filename);
-  treeEntry.setMode(TreeEntry.MODE_BLOB);
-  treeEntry.setType(TreeEntry.TYPE_BLOB);
-  
-  treeEntry.setSha(blob_sha);
-  treeEntry.setSize(blob.getContent().length());
-  Collection<TreeEntry> entries = new ArrayList<TreeEntry>();
-  entries.add(treeEntry);
-  Tree newTree = dataService.createTree(repository, entries, baseTree.getSha());
-  
-  // create commit
-  Commit commit = new Commit();
-  commit.setMessage( commitMessage );
-  commit.setTree(newTree);
-  List<Commit> listOfCommits = new ArrayList<Commit>();
-  listOfCommits.add(new Commit().setSha(baseCommitSha));
-  // listOfCommits.containsAll(base_commit.getParents());
-  commit.setParents(listOfCommits);
-  // commit.setSha(base_commit.getSha());
-  Commit newCommit = dataService.createCommit(repository, commit);
-  
-  // create resource
-  TypedResource commitResource = new TypedResource();
-  commitResource.setSha(newCommit.getSha());
-  commitResource.setType(TypedResource.TYPE_COMMIT);
-  commitResource.setUrl(newCommit.getUrl());
-  
-  // get master reference and update it
-  Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
-  reference.setObject(commitResource);
-  Reference response = dataService.editReference(repository, reference, true) ;
-  newSha = treeEntry.getSha();
-  }
-  catch( IOException ieo ) {
-      ieo.printStackTrace();
-  }
-  
-  return newSha;
-}
 
 -----
 
