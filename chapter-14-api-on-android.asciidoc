@@ -295,7 +295,10 @@ by humans without knowing any of those details. This test enters
 credentials into the application, presses the first button, then waits
 to make sure a login message is displayed, then enters in some text
 into a field and presses another button and then expects to see the
-text "Successful jekyll post". 
+text "Successful jekyll post". The last line is actually an
+expectation that we will have created a post inside our GitHub
+repository, so this line represents a verification happening outside
+of our Android application.
 
 When using calabash, you need to understand two types of files: "feature"
 files and "step" files. Feature files define human readable actions
@@ -744,6 +747,8 @@ import org.eclipse.egit.github.core.User;
 import java.io.IOException;
 ...
 -----
+
+
 
 ==== Code to talk to GitHub
 

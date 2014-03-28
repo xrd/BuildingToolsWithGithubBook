@@ -8,3 +8,4 @@ Feature: Login and post
     Then I enter "I'm doing great today!" into field number 1
     Then I press button number 1
     Then I wait up to 10 seconds to see "Successful jekyll post"
+    And I have a new jekyll post
