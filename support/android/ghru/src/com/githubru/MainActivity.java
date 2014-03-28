@@ -20,6 +20,7 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main); 
+        TextView status;
 
         Button login = (Button)findViewById( R.id.login ); 
         login.setOnClickListener(new View.OnClickListener() {
@@ -28,7 +29,9 @@ public class MainActivity extends Activity
                     EditText ptv = (EditText)findViewById( R.id.password );
                     String username = (String)utv.getText().toString();
                     String password = (String)ptv.getText().toString();
-                    new LoginTask().execute( username, password ); // <2>
+                    status = (TextView)findViewById( R.id.login_status ); // <2>
+                    status.setText( "Logging in, please wait..." );
+                    new LoginTask().execute( username, password ); // <3>
                 }
             });
     }
@@ -45,14 +48,14 @@ public class MainActivity extends Activity
             });
     }
 
-    class LoginTask extends AsyncTask<String, Void, Boolean> {  // <3>
+    class LoginTask extends AsyncTask<String, Void, Boolean> {  // <4>
         @Override
             protected Boolean doInBackground(String... credentials) {
             boolean rv = false;
             UserService us = new UserService();
-            us.getClient().setCredentials( credentials[0], credentials[1] ); // <4>
+            us.getClient().setCredentials( credentials[0], credentials[1] ); // <5>
             try {
-                User user = us.getUser( credentials[0] ); // <5>
+                User user = us.getUser( credentials[0] ); // <6>
                 rv = null != user;
             }
             catch( IOException ioe ) {}
@@ -62,11 +65,10 @@ public class MainActivity extends Activity
         @Override
             protected void onPostExecute(Boolean result) {
             if( result ) {
-                loggedIn(); // <6>
+                loggedIn(); // <7>
             }
             else {
-                TextView status = (TextView)findViewById( R.id.login_status ); // <7>
-                status.setText( "Invalid login, please check credentials" );
+                status.setText( "Invalid login, please check credentials" ); // <8>
             }
         }
     }
