@@ -20,7 +20,6 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main); 
-        TextView status;
 
         Button login = (Button)findViewById( R.id.login ); 
         login.setOnClickListener(new View.OnClickListener() {
@@ -29,7 +28,7 @@ public class MainActivity extends Activity
                     EditText ptv = (EditText)findViewById( R.id.password );
                     String username = (String)utv.getText().toString();
                     String password = (String)ptv.getText().toString();
-                    status = (TextView)findViewById( R.id.login_status ); // <2>
+                    TextView status = (TextView)findViewById( R.id.login_status ); // <2>
                     status.setText( "Logging in, please wait..." );
                     new LoginTask().execute( username, password ); // <3>
                 }
@@ -68,6 +67,7 @@ public class MainActivity extends Activity
                 loggedIn(); // <7>
             }
             else {
+                TextView status = (TextView)findViewById( R.id.login_status );
                 status.setText( "Invalid login, please check credentials" ); // <8>
             }
         }

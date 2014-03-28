@@ -418,7 +418,7 @@ background thread code (called `doInBackground()` coincidentally).
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="f5f69d6:support/android/ghru/src/com/githubru/MainActivity.java" lines="15..-1"]
+[filename=".", language="js", sha="c649c54:support/android/ghru/src/com/githubru/MainActivity.java" lines="15..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -429,17 +429,19 @@ We've now implemented the login functionality.
 
 <1> We retrieve the username and password from our UI elements. 
 <2> Our UI should notify the user that a login is occurring in a
-background task, so we store a reference to the status text element
-and update the text in it. We'll use this same status object later if
-our login fails.
+background task, so we grab the status text element and update the text in it. 
 <2> We then start the background thread process to do our login. This
 syntax creates a new thread for us with the username and password as
 parameters. Android will manage the lifecycle of this thread for us,
 meaning starting it off the main UI thread.
 <2> Here we define the derived AsyncTask class. The three types in the
-generics signature provide a way to parameterize the calling context;
-we need to provide a username and password when instantiating the
-AsyncTask, and the first type signature allows us to pass Strings.
+generics signature provide a way to parameterize our instantiated task;
+we need to provide a username and password to the background task, and
+the first type in the signature allows us to pass an array of Strings.
+You can see in the actual method definition that the ellipsis notation
+provides a way to parameterize a method with a variable number of
+arguments (called varargs). Inside our defined method we expect we
+will send two Strings in, and we make sure to do that in our call.
 <5> Once inside the `doInBackground()` function, we instantiate a
 `UserService` class, a wrapper around the GitHub API which interacts
 with the user service API call. In order to access this information,
