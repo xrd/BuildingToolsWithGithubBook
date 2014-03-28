@@ -20,41 +20,48 @@ Jekyll blog post for us and push the post into our blog on GitHub.
 
 ==== Setting up a Jekyll blog
 
-There are various ways to create a new Jekyll blog. The simplest is to
-run a series of Ruby commands. Jekyll is covered fully in the Jekyll
-chapter. There are a few items of note when establishing a blog that
-have some complexity like mapping a hostname properly and using the
-correct branch inside git. For our purposes of testing we won't need
+We are writing an application which adds jekyll blog entries, and we
+are writing tests to verify our application works as advertisted, so
+we need a sandbox blog against which we can run commands. There are
+various ways to create a new Jekyll blog. The simplest is to run a
+series of Ruby commands documented here; if you want to know more
+about Jekyll, it is covered in more depth in the Jekyll chapter.
+There are a few items of note when establishing a Jekyll blog that
+have some complexity, things like mapping a hostname properly and using the
+correct branch inside git. For our purposes here, however, we won't need
 to make sure all that is established. All we need is to make sure that
-we have a repository that has the structure of a jekyll blog.
+we have a sandbox repository that has the structure of a jekyll blog.
 
 [source,bash]
 -----
-$ printf "source 'https://rubygems.org'\n\ngem 'github-pages'" >> Gemfile
+$ printf "source 'https://rubygems.org'\n\ngem 'github-pages'\ngem 'hub'" >> Gemfile
+$ export BLOG_NAME=mytestblog
 $ bundle
-$ jekyll new myblog
-$ cd myblog
-$ github create-from-local
-$ git push -a
+$ jekyll new $BLOG_NAME
+$ cd $BLOG_NAME
+$ hub create
+$ git push -u origin master
 -----
 
 These commands install the correct libraries for using Jekyll,
 generate a new blog using the jekyll command line tool, and then
-create a blog on GitHub with those files. 
+create a blog on GitHub with those files. On the second line we
+specify the name of the blog; you are welcome to change this to any
+name you'd like, just make sure the tests match the name.
 
 [WARNING]
 When you have finished running these commands, you should close the
 terminal window. There are other commands later in this chapter which
-require you to operate from a clean slate and it is best not to run
-those commands from within this directory where you created your
-jekyll blog. Everything is now up on GitHub, so you could even safely
-delete the local repository in this directory.
+should occur in a fresh directory and as such it is best not to run
+those commands from within the same directory where you created your
+jekyll blog. You've pushed all those files into GitHub, so you could
+safely delete the local repository in this directory.
 
 ==== Android Development Tools
 
 If you don't have a physical Android device, don't fret. You can follow
 along with this chapter without having an actual Android device by doing
-development from a virtual device. 
+development and testing on a virtual device. 
 
 ==== Installing the Java SDK
 
@@ -79,7 +86,7 @@ not available on non-rooted devices. This makes debugging AVDs much
 easier because, for example, you can inspect SQLite databases using
 command line tools rather than from within a compiled Java
 application. Even if you have a physical device, it is worth learning
-about AVD management.
+about AVD management. 
 
 To create an AVD, run the `android avd` command from a shell prompt.
 You'll see the AVD manager, and can create new devices and manage
@@ -184,8 +191,8 @@ assembleRelease`.
 ===== Default Android Main
 
 When we use the above commands to create a new android application, it
-creates a sample entry point into our Android application. That entry
-point looks like this: 
+creates a sample entry point which is the starting point of our
+Android application. 
 
 [source,java]
 -----
@@ -200,8 +207,7 @@ Android OS will launch this activity and then call the `onCreate`
 method for us. Inside this method, our application calls our parent's
 implementation of `onCreate`, and then inflates the layout for our
 application. This layout corresponds to an automatically generated XML
-file which resides in our layouts directory. This file looks like
-this:
+file which resides in our layouts directory called `main.xml`. 
 
 [source,java]
 -----
@@ -379,7 +385,7 @@ snippet~~~~~
 -----
 
 Then we run from the command line using this command `GH_USER=foobar
-GH_PASS=barfoo calabash-android run
+GH_PASS=barfoo GH_REPO=myblog calabash-android run
 build/apk/ghru-release-unsigned.apk`. Our code will still fail to pass,
 but now we are actually verifying real functionality of our future app.
 

@@ -10,6 +10,14 @@
       android:text="Logged into GitHub"
       android:layout_weight="0"
       />
+
+  <EditText
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:hint="Enter the blog repository"
+      android:id="@+id/repository"
+      android:layout_weight="0"
+      />
   
   <EditText
       android:gravity="top"
