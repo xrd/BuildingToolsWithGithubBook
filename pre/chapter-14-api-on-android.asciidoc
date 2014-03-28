@@ -18,6 +18,40 @@ Jekyll blog post for us and push the post into our blog on GitHub.
 
 === Prerequisites
 
+==== Setting up a Jekyll blog
+
+There are various ways to create a new Jekyll blog. The simplest is to
+run a series of Ruby commands. Jekyll is covered fully in the Jekyll
+chapter. There are a few items of note when establishing a blog that
+have some complexity like mapping a hostname properly and using the
+correct branch inside git. For our purposes of testing we won't need
+to make sure all that is established. All we need is to make sure that
+we have a repository that has the structure of a jekyll blog.
+
+[source,bash]
+-----
+$ printf "source 'https://rubygems.org'\n\ngem 'github-pages'" >> Gemfile
+$ bundle
+$ jekyll new myblog
+$ cd myblog
+$ github create-from-local
+$ git push -a
+-----
+
+These commands install the correct libraries for using Jekyll,
+generate a new blog using the jekyll command line tool, and then
+create a blog on GitHub with those files. 
+
+[WARNING]
+When you have finished running these commands, you should close the
+terminal window. There are other commands later in this chapter which
+require you to operate from a clean slate and it is best not to run
+those commands from within this directory where you created your
+jekyll blog. Everything is now up on GitHub, so you could even safely
+delete the local repository in this directory.
+
+==== Android Development Tools
+
 If you don't have a physical Android device, don't fret. You can follow
 along with this chapter without having an actual Android device by doing
 development from a virtual device. 
@@ -100,7 +134,7 @@ with the `ant debug` command. This will create an APK in the bin
 directory called `./bin/Ghru-debug-unaligned.apk`. To install it on
 your device run the command `ant debug install`. Then, you can launch
 the application by double clicking on the application titled
-"MainActivity".
+"GitHubRu".
 
 ===== Adding Gradle support
 
@@ -133,6 +167,19 @@ from within Java, using this simple declaration. Gradle will download
 the proper JAR files from the Maven repository and build them into our
 application using this dependency declaration.
 
+
+===== Installing Gradle
+
+To use gradle, you need to install it. It does not come packaged with
+the Java SDK nor with the Android SDK. There are various ways to
+install gradle: either using a built in package manager, or
+downloading from the website gradle.org. Gradle is in constant flux as
+new versions are released, and I found the easiest way for me to
+install it was to download into a directory called "bin" and unzip the
+files there. Then, I could specify exactly the version needed, and try
+to complete a build. For example, for this project, I found gradle 1.8
+worked best and my command was `~/bin/gradle-1.8/bin/gradle
+assembleRelease`. 
 
 ===== Default Android Main
 
@@ -169,6 +216,25 @@ the Android layout XML files are a straightforward way to design
 layouts declaratively, and many GUI tools provide sophisticated
 ways to manage them. We'll manage ours by hand as they are exceedingly
 simple.
+
+==== Preparing our application for Calabash testing
+
+Calabash requires the *internet* permission added to your
+AndroidManifest.xml file. Calabash is actually a set of technologies
+combined together to permit testing. One of these pieces is a wrapper around
+your application (built on Robotium) that communicates with
+Ruby over HTTP calls, and as such, your application must permit
+network communication. To enable this, edit the `AndroidManifest.xml`
+file to have the internet permission (look for the line labled
+*uses-permission*): 
+
+[source,yaml]
+-----
+[filename=".", language="js", sha="b8e957f:support/android/ghru/AndroidManifest.xml"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
 
 ==== Writing tests
 
@@ -222,7 +288,7 @@ boilerplate which we should change, so make the file named
 
 [source,yaml]
 -----
-[filename=".", language="js", sha="6a0cb94:support/android/ghru/features/my_first.feature"]
+[filename=".", language="js", sha="12c8128:support/android/ghru/features/my_first.feature"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -256,26 +322,11 @@ using username and passwords retrieved from our environment rather
 than storing them inside our source files. Keeping passwords inside
 our source repositories is never a good idea.
 
-Calabash requires the *internet* permission added to your
-AndroidManifest.xml file in order to permit Calabash to run. Edit
-`AndroidManifest.xml` to have the internet permission (look for the
-line labled *uses-permission*):
-
-[source,yaml]
------
-[filename=".", language="js", sha="b8e957f:support/android/ghru/AndroidManifest.xml"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
------
-
-Once we have made these changes, we can successfully build our application.
-Gradle and the Gradle Android plugin establish several tasks for you,
-one of which is `assembleRelease`. That builds a release version of your
-application for you, and then we specify the run command with a path
-to the APK (the Android application package format) to run our tests.
-Since we have not yet built the code to support these tests, our tests
-will fail as expected.
+Gradle and the Gradle Android plugin establish several useful "tasks" for you,
+one of which is `assembleRelease`. That task builds a release version of your
+application for you. We need to then resign the APK (the Android
+application package format), and then we specify the `run` subtask
+with a path to the APK to run our tests. 
 
 [source,bash]
 -----
@@ -283,6 +334,11 @@ $ gradle assembleDebug
 $ bundle exec calabash-android resign build/apk/ghru-release-unsigned.apk 
 $ bundle exec calabash-android run build/apk/ghru-release-unsigned.apk 
 -----
+
+We have not yet built the code to make these tests pass, and in addition,
+we have not yet implemented the step definitions for our feature
+tests. So, we see calabash provide us with boilerplate code which we
+will copy into our step definition files to complete the test suite.
 
 image::images/android-calabash-failures.png[]
 
@@ -301,9 +357,7 @@ newer version of calabash was previously installed (as it was in my
 case). You'll see this if you run `calabash-android version` even once
 you've bundled with an older version.
 
-Calabash tells us that we are missing the step definitions for some of
-our code. Calabash even gives us the boilerplate code. Copy and
-paste the output from our initial run into the file
+Copy and paste the output from our initial run into the file
 `features/step_definitions/calabash_steps.rb`. This is our starting
 point, with pending indicated for the places we will be adding our
 code. Once the boilerplate is pasted in, modify it to actually enter

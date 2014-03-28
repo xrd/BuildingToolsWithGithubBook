@@ -22,6 +22,6 @@ Then(/^I enter my current mood status$/) do
 end
 
 And(/^I have a new jekyll post/) do
-  
-end
+  `curl https://api.github.com/#{ENV['GH_USERNAME'}/#{ENV['GH_REPO']}/_posts
+END
 
