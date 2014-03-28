@@ -418,7 +418,7 @@ background thread code (called `doInBackground()` coincidentally).
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="c649c54:support/android/ghru/src/com/githubru/MainActivity.java" lines="15..-1"]
+[filename=".", language="js", sha="8c7e96c:support/android/ghru/src/com/githubru/MainActivity.java" lines="15..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -433,7 +433,7 @@ background task, so we grab the status text element and update the text in it.
 <2> We then start the background thread process to do our login. This
 syntax creates a new thread for us with the username and password as
 parameters. Android will manage the lifecycle of this thread for us,
-meaning starting it off the main UI thread.
+meaning starting a new thread, separate from the main UI thread.
 <2> Here we define the derived AsyncTask class. The three types in the
 generics signature provide a way to parameterize our instantiated task;
 we need to provide a username and password to the background task, and
@@ -450,9 +450,12 @@ client with the username and password credentials. This is the syntax
 to do that.
 <6> We wrap the call to `getUser()` in a try block as the function
 signature can throw an error (if the network were down, for example).
-We don't really need the User object at all, but this call verifies
-that our username and password are correct and we store the result of
-the call in our return value.
+We don't really need to retrieve information about the user using the
+User object, but this call verifies that our username and password are
+correct and we store the result of the call in our return value.
+GitHub will not use the credentials you set until you make an API
+call, so we need to use our credentials to access something in order
+to verify those credentials work.
 <7> We renamed the `login()` function to more accurately reflect the
 fact that when we call this, we are already logged into GitHub.
 <8> If our login was a failure, either because of network failure, or
