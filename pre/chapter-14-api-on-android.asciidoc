@@ -550,8 +550,8 @@ snippet~~~~~
 
 Our last step is to write the code which handles putting content into GitHub.
 This is not a simple function, because the GitHub API requires you
-build out the git structure. A great reference for learning more about
-this is the free and open source book called "Pro Git" and
+build out the structure used internally by Git. A great reference for learning more about
+this structure is the free and open source book called "Pro Git" and
 specifically the last chapter called "Git Internals".
 (http://git-scm.com/book/en/Git-Internals). In a nutshell, the GitHub
 API expects you to create a git "tree" and then place a "blob" object
@@ -562,7 +562,16 @@ identifier, so you'll see code which retrieves the last SHA in the
 tree associated with our current branch. This code will work
 regardless of whether we are pushing code into the master branch, or
 into the gh-pages branch, so this utility class works with real
-Jekyll blogs.
+Jekyll blogs. It would be lovely if the GitHub API provided more
+"porcelain" (the Git term for user friendly verbs that insulate you
+from knowing the internals of Git) instead of only this "plumbing" API, but
+having the API work like this does give you full control over manipulating
+your repository and data programmatically in any way that you could
+possibly need to as it maps exactly to the capabilities you would
+have writing to a file stored in a local git repository on your hard drive.
+
+We'll write a helper class called `GitHubHelpers` and add a single
+static method which writes a file to our repository.
 
 [source,java]
 -----
@@ -572,4 +581,15 @@ To be replaced
 snippet~~~~~
 -----
 
-We have all our
+Finally, we can now implement the `doPost()` method inside our
+`MainActivity` class.
+
+[source,java]
+-----
+...
+[filename=".", language="js", sha="1b1c698:support/android/ghru/src/com/githubru/MainActivity.java" lines="75..-1"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----

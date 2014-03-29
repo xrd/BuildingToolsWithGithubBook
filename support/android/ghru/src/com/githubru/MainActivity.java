@@ -29,13 +29,13 @@ public class MainActivity extends Activity
         Button login = (Button)findViewById( R.id.login ); 
         login.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    EditText utv = (EditText)findViewById( R.id.username ); // <1>
+                    EditText utv = (EditText)findViewById( R.id.username ); 
                     EditText ptv = (EditText)findViewById( R.id.password );
                     username = (String)utv.getText().toString();
                     password = (String)ptv.getText().toString();
-                    TextView status = (TextView)findViewById( R.id.login_status ); // <2>
+                    TextView status = (TextView)findViewById( R.id.login_status ); 
                     status.setText( "Logging in, please wait..." );
-                    new LoginTask().execute( username, password ); // <3>
+                    new LoginTask().execute( username, password ); 
                 }
             });
     }
@@ -52,14 +52,14 @@ public class MainActivity extends Activity
             });
     }
 
-    class LoginTask extends AsyncTask<String, Void, Boolean> {  // <4>
+    class LoginTask extends AsyncTask<String, Void, Boolean> {  
         @Override
             protected Boolean doInBackground(String... credentials) {
             boolean rv = false;
             UserService us = new UserService();
-            us.getClient().setCredentials( credentials[0], credentials[1] ); // <5>
+            us.getClient().setCredentials( credentials[0], credentials[1] ); 
             try {
-                User user = us.getUser( credentials[0] ); // <6>
+                User user = us.getUser( credentials[0] ); 
                 rv = null != user;
             }
             catch( IOException ioe ) {}
@@ -69,11 +69,11 @@ public class MainActivity extends Activity
         @Override
             protected void onPostExecute(Boolean result) {
             if( result ) {
-                loggedIn(); // <7>
+                loggedIn(); 
             }
             else {
                 TextView status = (TextView)findViewById( R.id.login_status );
-                status.setText( "Invalid login, please check credentials" ); // <8>
+                status.setText( "Invalid login, please check credentials" ); 
             }
         }
     }
@@ -82,7 +82,7 @@ public class MainActivity extends Activity
         new PostTask().execute( username, password );
     }
 
-    class PostTask extends AsyncTask<String, Void, Boolean> {  // <4>
+    class PostTask extends AsyncTask<String, Void, Boolean> {  
 
         private String getFilename( String post ) {
             String title = post.substring( 0, post.length() > 30 ? 30 : post.length() );
@@ -118,7 +118,7 @@ public class MainActivity extends Activity
                 status.setText( "Successful jekyll post" );
             }
             else {
-                status.setText( "Post failed." ); // <8>
+                status.setText( "Post failed." ); 
             }
         }
     }
