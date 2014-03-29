@@ -106,7 +106,7 @@ support across all features. You can choose this one if you are
 confused about which to use. 
 
 Once you have created an AVD, start it up. It will take a few minutes
-to boot; AVDs are actually emulating the chipset in software and
+to boot; AVDs emulate the chipset in software and
 booting up can take a few minutes, unfortunately. There are ways to
 speed up AVD boot time, like the Genymotion tool, but they are outside
 of the scope of this book. After your AVD has completed booting, you
@@ -228,7 +228,7 @@ simple.
 ==== Preparing our application for Calabash testing
 
 Calabash requires the *internet* permission added to your
-AndroidManifest.xml file. Calabash is actually a set of technologies
+AndroidManifest.xml file. Calabash is a set of technologies
 combined together to permit testing. One of these pieces is a wrapper around
 your application (built on Robotium) that communicates with
 Ruby over HTTP calls, and as such, your application must permit
@@ -287,7 +287,7 @@ $ printf "source 'https://rubygems.org'\n\ngem 'calabash-android', '0.4.20'\ngem
 $ bundle install
 $ calabash-android gen
 
-Your `Gemfile` should now look like this:
+The `Gemfile` you just created should now look like this:
 
 [source,java]
 -----
@@ -297,7 +297,7 @@ To be replaced
 snippet~~~~~
 -----
 
-We've now installed calabash and created the folder structure to hold
+We've also now installed calabash and created the folder structure to hold
 our tests along with some helper scripts. The `calabash-android gen`
 command will write out a default calabash feature file. This is
 boilerplate which we should change, so make the file named
@@ -317,12 +317,14 @@ by humans without knowing any of those details. This test enters
 credentials into the application, presses the first button, then waits
 to make sure a login message is displayed, then enters in some text
 into a field and presses another button and then expects to see the
-text "Successful jekyll post". The last line is actually an
+text "Successful jekyll post". The last line is an
 expectation that we will have created a post inside our GitHub
 repository; we will do this using ruby code to pull the file from the
-repository and verify it. This line actually represents a verification
-happening outside of our Android application. Calabash allows us to
-test from whatever vantage point works best given the situation.
+repository and verify it. Whereas the other tests all verify or take
+action inside our Android application (like clicking a button), this
+line represents a verification happening outside of our
+Android application. Calabash allows us to test from whatever vantage
+point works best given the situation. 
 
 When using calabash, you need to understand two types of files: "feature"
 files and "step" files. Feature files define human readable actions
@@ -378,7 +380,7 @@ you've bundled with an older version.
 Copy and paste the output from our initial run into the file
 `features/step_definitions/calabash_steps.rb`. This is our starting
 point, with pending indicated for the places we will be adding our
-code. Once the boilerplate is pasted in, modify it to actually enter
+code. Once the boilerplate is pasted in, modify it to enter
 text into several Android text widgets. These ruby commands for
 calabash are available in the Ruby API document:
 https://github.com/calabash/calabash-android/blob/master/documentation/ruby_api.md
@@ -411,7 +413,7 @@ snippet~~~~~
 Then we run from the command line using this command `GH_USER=foobar
 GH_PASS=barfoo GH_REPO=mytestblog calabash-android run
 build/apk/ghru-release-unsigned.apk`. Our tests will still fail to pass,
-but now we are actually establishing a baseline success story for the
+but now we are establishing a baseline success story for the
 real functionality of our future app.
 
 image::images/android-calabash-failures2.png[]
@@ -475,7 +477,7 @@ login button, we would see that our blog post form looks like this.
 
 image::images/android-calabash-logged-in.png[]
 
-Our tests will actually pass completely right now except for the final
+Our tests will pass completely right now except for the final
 test which checks GitHub to verify a file was correctly posted. We can
 now proceed to writing code to login to GitHub and write a file into
 our Jekyll repository.
