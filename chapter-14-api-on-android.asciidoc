@@ -482,14 +482,13 @@ to make sure it matches the mood we saved earlier.
 [source,ruby]
 -----
 require 'calabash-android/calabash_steps'
-
-@status = nil
-@moods = %w{ happy sad angry blue energized }
-@mood = nil
-@filename = nil
-@title = nil
+require 'httparty'
 
 def set_title_and_mood
+  @mood = nil
+  @filename = nil
+  @title = nil
+  @moods = %w{ happy sad angry blue energized }
   @mood = "Feeling #{@moods[(rand()*@moods.length).to_i]} today"
   @title = @mood.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
   date = (ENV['date'] ? Time.parse(ENV['date']) : Time.now).strftime('%Y-%m-%d')
@@ -519,9 +518,10 @@ Then(/^I enter my current mood status$/) do
 end
 
 And(/^I have a new jekyll post with my mood status$/) do
-  url = "https://raw.githubusercontent.com/#{ENV['GH_USERNAME']}/#{ENV['GH_REPO']}/#{ENV['gh_branch']||'master'}/#{@filename}"
+  url = "https://raw.githubusercontent.com/#{ENV['GH_USERNAME']}/#{ENV['GH_REPO']}/#{ENV['GH_BRANCH']||'master'}/#{@filename}"
   puts "Checking #{url} for content..."
-  assert( `curl #{url}| grep #{@mood}`, "Mood update not posted" )
+  response = HTTParty.get( url )
+  assert( response.body.include?( @mood ), "Post unsuccessful" )
 end
 
 

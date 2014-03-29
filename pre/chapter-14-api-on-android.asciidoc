@@ -402,7 +402,7 @@ to make sure it matches the mood we saved earlier.
 
 [source,ruby]
 -----
-[filename=".", language="js", sha="fea1ce8:support/android/ghru/features/step_definitions/calabash_steps.rb"]
+[filename=".", language="js", sha="81ac634:support/android/ghru/features/step_definitions/calabash_steps.rb"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
