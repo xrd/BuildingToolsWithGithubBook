@@ -176,16 +176,19 @@ application using this dependency declaration.
 
 ===== Installing Gradle
 
-To use gradle, you need to install it. It does not come packaged with
-the Java SDK nor with the Android SDK. There are various ways to
-install gradle: either using a built in package manager, or
+To use gradle, you need to install it manually. Gradle does not come
+packaged with the Java SDK nor with the Android SDK. There are various
+ways to install gradle: either using a built in package manager, or
 downloading from the website gradle.org. Gradle is in constant flux as
 new versions are released, and I found the easiest way for me to
 install it was to download into a directory called "bin" and unzip the
 files there. Then, I could specify exactly the version needed, and try
 to complete a build. For example, for this project, I found gradle 1.8
 worked best and my command was `~/bin/gradle-1.8/bin/gradle
-assembleRelease`. 
+assembleRelease`. If you don't want to type in the full path, you
+could set your path using a command like `export
+PATH=~/bin/gradle-1.8/bin:$PATH` which would make the 1.8 version of
+gradle available using just the `gradle` command.
 
 ===== Default Android Main
 
@@ -243,8 +246,7 @@ snippet~~~~~
 
 ==== Writing tests
 
-Practicing test driven development (following the path of our
-friends at GitHub), we write tests for our application before
+Practicing test driven development, we write tests for our application before
 writing the code. There are many options for writing
 tests on Java and Android. JUnit is a popular testing tool which
 permits writing unit tests. Robotium is another testing tool which
@@ -255,10 +257,20 @@ writing Calabash tests is a simpler way to write tests using APIs
 because Calabash tests interact with the entire application, rather
 than only the internals like unit testing. With unit testing you can
 be required to mock out network interactions, and as such, often miss
-subtle changes in APIs. Calabash also uses a simple DSL which is not
-compiled, so refactoring and changing tests is a simple matter. And,
-Calabash has a console mode which allows you to interactively refine
-your tests. Calabash makes testing easy; your code can be complicated,
+subtle changes in APIs if your mocks are not synchronized with the
+API itself, a cumbersome and error prone process. Calabash uses a
+simple DSL for writing tests which is readable and elegant. Most
+importantly, Calabash scripts are not compiled, so refactoring and
+changing tests does not require the code and compile loop involved in
+writing tests using pure Java with JUnit. 
+
+Calabash also has a console mode which allows you to 
+interactively refine your tests. You jump into a console and query
+a running application using simple ruby commands. This is a
+powerful way to experiement with the calabash ruby API and allows you
+to build tests quickly once you have determined the correct code to use.
+
+Calabash makes testing easy; your code can be complicated, 
 but tests should not be an onerous task. Calabash test scripts do
 require more overhead and take longer to run because they are
 instantiating and running a new app for each test (unlike unit tests
@@ -279,7 +291,7 @@ Your `Gemfile` should now look like this:
 
 [source,java]
 -----
-[filename=".", language="js", sha="74d6fcd:support/android/ghru/Gemfile"]
+[filename=".", language="js", sha="ddb491b:support/android/ghru/Gemfile"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -385,7 +397,8 @@ inside our XML layout files), and if so, sets the field to the text
 provided. After this our steps are very basic and uniform except for
 the last item. Our last item verifies that we successfully stored the
 data inside our GitHub repository by making a basic HTTP call using
-the Httparty ruby gem.
+the Httparty ruby gem and then looking inside the retrieved content
+to make sure it matches the mood we saved earlier.
 
 [source,ruby]
 -----
