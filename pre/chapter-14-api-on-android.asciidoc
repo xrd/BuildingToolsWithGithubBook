@@ -573,33 +573,6 @@ have writing to a file stored in a local git repository on your hard drive.
 We'll write a helper class called `GitHubHelpers` and add a single
 static method which writes a file to our repository.
 
-[source,java]
------
-[filename=".", language="js", sha="92b9294:support/android/ghru/src/com/githubru/GitHubHelpers.java"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
------
-
-Finally, we can now implement the `doPost()` method inside our
-`MainActivity` class.
-
-[source,java]
------
-...
-[filename=".", language="js", sha="c059b88:support/android/ghru/src/com/githubru/MainActivity.java" lines="75..-1"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
-...
------
-
-Our `doPost()` command now does one thing: instantiates a new PostTask
-which. As we are performing network operations, we again create a
-subclass of `AsyncTask` which handles these operations automatically
-on a background thread. We pass in the username and password which we
-retrieved earlier.
-
 The GitHub API requires that files written into repositories be
 Base64 encoded. The Apache Foundation provides a suite of tools
 published to Maven (the same software repository where we grabbed the
@@ -616,11 +589,19 @@ snippet~~~~~
 ...
 -----
 
-And, our `MainActivity.java` needs to import the Base64 class using the
-statement `import org.apache.commons.codec.binary.Base64;`
+Our new helper class is verbose but at least provides a simple wrapper
+around the complicated GitHub API for us.
 
-Peering a little deeper in the code shows us some specifics about
-writing files to a Jekyll repository using the GitHub APi:
+[source,java]
+-----
+[filename=".", language="js", sha="7bdfedc:support/android/ghru/src/com/githubru/GitHubHelpers.java"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+This class hides the details of the GitHub API, and the specifics of
+writing files to Jekyll repositories.
 
 <1> Jekyll posts require that filenames look a very specific way.
 Files must be in the `_posts` directory, and should be named with the
@@ -629,15 +610,34 @@ string like `2012-12-12`) and then followed by a title all lowercased
 and with whitespace replaced by hyphens. The `getFilename()` function
 does all this for us, using the first 30 characters of the post body
 as a title.
-<2> We extract the username and parameters from the parameters given
-upon instantiation of the `AsyncTask`.
+<2> Jekyll files can optional have YAML Front Matter; we add the
+layout and the published flag.
 <3> As noted above, we convert our content to Base64 using the Apache
 foundation helper utility.
-<4> When we have assembled all the information we need to make the
-post, we call into our helper class to communicate with the
-GitHub API.
-<5> Finally, we update the status depending on our success in writing
-our new post to GitHub.
+
+Finally, we can now implement the `doPost()` method inside our
+`MainActivity` class.
+
+[source,java]
+-----
+...
+[filename=".", language="js", sha="7bdfedc:support/android/ghru/src/com/githubru/MainActivity.java" lines="75..-1"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
+
+Our `doPost()` command now does one thing: instantiates a new
+PostTask. As we are performing network operations, we again create a
+subclass of `AsyncTask` which handles these operations automatically
+on a background thread. We pass in the username and password which we
+retrieved earlier along with the post contents and the repository name
+we specified.
+
+Peering a little deeper in the code shows us some specifics about
+writing files to a Jekyll repository using the GitHub APi:
+
 
 ==== Passing our Tests
 

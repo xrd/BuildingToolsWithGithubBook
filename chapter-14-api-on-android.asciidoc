@@ -878,6 +878,26 @@ have writing to a file stored in a local git repository on your hard drive.
 We'll write a helper class called `GitHubHelpers` and add a single
 static method which writes a file to our repository.
 
+The GitHub API requires that files written into repositories be
+Base64 encoded. The Apache Foundation provides a suite of tools
+published to Maven (the same software repository where we grabbed the
+egit libraries) which can do this encoding for us. To add this library
+to our project, we need to add to our dependencies inside our `build.gradle` file:
+
+[source,java]
+-----
+...
+
+dependencies {
+  compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5' 
+   compile( 'commons-codec:commons-codec:1.9' )
+}
+...
+-----
+
+Our new helper class is verbose but at least provides a simple wrapper
+around the complicated GitHub API for us.
+
 [source,java]
 -----
 package com.githubru;
@@ -887,23 +907,37 @@ import org.eclipse.egit.github.core.service.CommitService;
 import org.eclipse.egit.github.core.service.DataService;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.RepositoryService;
-
+import org.apache.commons.codec.binary.Base64;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.io.IOException;
 import java.util.*;
 
 class GitHubHelpers {
 
-    public static void SaveFile( String login, String password, String repoName,
-                                   String contentsBase64, String filename, String commitMessage ) {
+    private static String getFilename( String post ) { // <1>
+        String title = post.substring( 0, post.length() > 30 ? 30 : post.length() );
+        String jekyllfied = title.toLowerCase().replaceAll( "\W+", "-").replaceAll( "\W+$", "" );
+        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" );
+        String prefix = sdf.format( new Date() );
+        String filename = "_posts/" + prefix + jekyllfied + ".md";
+        return filename;
+    }
+    
+    public static boolean SaveFile( String login, String password, String repoName,
+                                    String post ) {
         
-        boolean rv = true;
+        boolean rv = false;
+        String commitMessage = "GitHubRu Update";
+        String postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post;
+        String contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) ); 
+        String filename = getFilename( post );
 
         try {
             // Thank you: https://gist.github.com/Detelca/2337731
 
             // create needed services
-            RepositoryService repositoryService = new
-            RepositoryService();
+            RepositoryService repositoryService = new RepositoryService();
             repositoryService.getClient().setCredentials( login, password );
             CommitService commitService = new CommitService();
             commitService.getClient().setCredentials( login, password );
@@ -936,10 +970,8 @@ class GitHubHelpers {
             Blob blob = new Blob();
             blob.setContent(contentsBase64);
             blob.setEncoding(Blob.ENCODING_BASE64);
-            String blob_sha = dataService.createBlob(repository,
-            blob);
-            Tree baseTree = dataService.getTree(repository,
-            baseCommitSha);
+            String blob_sha = dataService.createBlob(repository, blob);
+            Tree baseTree = dataService.getTree(repository, baseCommitSha);
 
             // create new tree entry
             TreeEntry treeEntry = new TreeEntry();
@@ -949,11 +981,9 @@ class GitHubHelpers {
 
             treeEntry.setSha(blob_sha);
             treeEntry.setSize(blob.getContent().length());
-            Collection<TreeEntry> entries = new
-            ArrayList<TreeEntry>();
+            Collection<TreeEntry> entries = new ArrayList<TreeEntry>();
             entries.add(treeEntry);
-            Tree newTree = dataService.createTree(repository, entries,
-            baseTree.getSha());
+            Tree newTree = dataService.createTree(repository, entries, baseTree.getSha());
 
             // create commit
             Commit commit = new Commit();
@@ -964,8 +994,7 @@ class GitHubHelpers {
             // listOfCommits.containsAll(base_commit.getParents());
             commit.setParents(listOfCommits);
             // commit.setSha(base_commit.getSha());
-            Commit newCommit = dataService.createCommit(repository,
-            commit);
+            Commit newCommit = dataService.createCommit(repository, commit);
 
             // create resource
             TypedResource commitResource = new TypedResource();
@@ -977,15 +1006,34 @@ class GitHubHelpers {
             Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
             reference.setObject(commitResource);
             Reference response = dataService.editReference(repository, reference, true) ;
+
+            rv = true;
         }
         catch( IOException ieo ) {
+            rv = false;
             ieo.printStackTrace();
         }
 
+        return rv;
     }
 }
 
 -----
+
+This class hides the details of the GitHub API, and the specifics of
+writing files to Jekyll repositories.
+
+<1> Jekyll posts require that filenames look a very specific way.
+Files must be in the `_posts` directory, and should be named with the
+date formatted using the formatting string `yyyy-MM-dd` (producing a
+string like `2012-12-12`) and then followed by a title all lowercased
+and with whitespace replaced by hyphens. The `getFilename()` function
+does all this for us, using the first 30 characters of the post body
+as a title.
+<2> Jekyll files can optional have YAML Front Matter; we add the
+layout and the published flag.
+<3> As noted above, we convert our content to Base64 using the Apache
+foundation helper utility.
 
 Finally, we can now implement the `doPost()` method inside our
 `MainActivity` class.
@@ -993,9 +1041,6 @@ Finally, we can now implement the `doPost()` method inside our
 [source,java]
 -----
 ...
-                TextView status = (TextView)findViewById( R.id.login_status );
-                status.setText( "Invalid login, please check credentials" ); 
-            }
         }
     }
 
@@ -1005,36 +1050,24 @@ Finally, we can now implement the `doPost()` method inside our
 
     class PostTask extends AsyncTask<String, Void, Boolean> {  
 
-        private String getFilename( String post ) { // <1>
-            String title = post.substring( 0, post.length() > 30 ? 30 : post.length() );
-            String jekyllfied = title.toLowerCase().replaceAll( "\W+", "-").replaceAll( "\W+$", "" );
-            SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" );
-            String prefix = sdf.format( new Date() );
-            String filename = "_posts/" + prefix + jekyllfied + ".md";
-            return filename;
-        }
-
         @Override 
             protected Boolean doInBackground(String... credentials) {
-            String username = credentials[0]; // <2>
+            String username = credentials[0]; 
             String password = credentials[1];
 
             EditText post = (EditText)findViewById( R.id.post );
             String postContents = post.getText().toString();
-            String base64ed = new String( Base64.encodeBase64( postContents.getBytes() ) ); // <3>
 
             EditText repo = (EditText)findViewById( R.id.repository ); 
             String repoName = repo.getText().toString();
 
-            String filename = getFilename( postContents );
-
             return GitHubHelpers.SaveFile( username, password, 
-                                           repoName, base64ed, filename ); // <4>
+                                           repoName, postContents );
         }
         
         @Override
             protected void onPostExecute(Boolean result) {
-            TextView status = (TextView)findViewById( R.id.post_status ); // <5>
+            TextView status = (TextView)findViewById( R.id.post_status );
             if( result ) {
                 status.setText( "Successful jekyll post" );
             }
@@ -1049,51 +1082,16 @@ Finally, we can now implement the `doPost()` method inside our
 ...
 -----
 
-Our `doPost()` command now does one thing: instantiates a new PostTask
-which. As we are performing network operations, we again create a
+Our `doPost()` command now does one thing: instantiates a new
+PostTask. As we are performing network operations, we again create a
 subclass of `AsyncTask` which handles these operations automatically
 on a background thread. We pass in the username and password which we
-retrieved earlier.
-
-The GitHub API requires that files written into repositories be
-Base64 encoded. The Apache Foundation provides a suite of tools
-published to Maven (the same software repository where we grabbed the
-egit libraries) which can do this encoding for us. To add this library
-to our project, we need to add to our dependencies inside our `build.gradle` file:
-
-[source,java]
------
-...
-
-dependencies {
-  compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5' 
-   compile( 'commons-codec:commons-codec:1.9' )
-}
-...
------
-
-And, our `MainActivity.java` needs to import the Base64 class using the
-statement `import org.apache.commons.codec.binary.Base64;`
+retrieved earlier along with the post contents and the repository name
+we specified.
 
 Peering a little deeper in the code shows us some specifics about
 writing files to a Jekyll repository using the GitHub APi:
 
-<1> Jekyll posts require that filenames look a very specific way.
-Files must be in the `_posts` directory, and should be named with the
-date formatted using the formatting string `yyyy-MM-dd` (producing a
-string like `2012-12-12`) and then followed by a title all lowercased
-and with whitespace replaced by hyphens. The `getFilename()` function
-does all this for us, using the first 30 characters of the post body
-as a title.
-<2> We extract the username and parameters from the parameters given
-upon instantiation of the `AsyncTask`.
-<3> As noted above, we convert our content to Base64 using the Apache
-foundation helper utility.
-<4> When we have assembled all the information we need to make the
-post, we call into our helper class to communicate with the
-GitHub API.
-<5> Finally, we update the status depending on our success in writing
-our new post to GitHub.
 
 ==== Passing our Tests
 

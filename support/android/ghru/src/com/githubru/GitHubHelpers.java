@@ -27,8 +27,8 @@ class GitHubHelpers {
         
         boolean rv = false;
         String commitMessage = "GitHubRu Update";
-        String postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post;
-        String contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) ); 
+        String postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post; // <2>
+        String contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) );  // <3>
         String filename = getFilename( post );
 
         try {
