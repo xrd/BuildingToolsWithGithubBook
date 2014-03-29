@@ -5,17 +5,31 @@ import org.eclipse.egit.github.core.service.CommitService;
 import org.eclipse.egit.github.core.service.DataService;
 import org.eclipse.egit.github.core.service.GistService;
 import org.eclipse.egit.github.core.service.RepositoryService;
-
+import org.apache.commons.codec.binary.Base64;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.io.IOException;
 import java.util.*;
 
 class GitHubHelpers {
 
+    private static String getFilename( String post ) { // <1>
+        String title = post.substring( 0, post.length() > 30 ? 30 : post.length() );
+        String jekyllfied = title.toLowerCase().replaceAll( "\\W+", "-").replaceAll( "\\W+$", "" );
+        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" );
+        String prefix = sdf.format( new Date() );
+        String filename = "_posts/" + prefix + jekyllfied + ".md";
+        return filename;
+    }
+    
     public static boolean SaveFile( String login, String password, String repoName,
-                                   String contentsBase64, String filename ) {
+                                    String post ) {
         
-        boolean rv = true;
+        boolean rv = false;
         String commitMessage = "GitHubRu Update";
+        String postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post;
+        String contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) ); 
+        String filename = getFilename( post );
 
         try {
             // Thank you: https://gist.github.com/Detelca/2337731
@@ -90,8 +104,11 @@ class GitHubHelpers {
             Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
             reference.setObject(commitResource);
             Reference response = dataService.editReference(repository, reference, true) ;
+
+            rv = true;
         }
         catch( IOException ieo ) {
+            rv = false;
             ieo.printStackTrace();
         }
 

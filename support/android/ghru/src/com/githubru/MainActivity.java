@@ -11,9 +11,6 @@ import android.os.AsyncTask;
 import org.eclipse.egit.github.core.service.UserService;
 import org.eclipse.egit.github.core.User;
 import java.io.IOException;
-import org.apache.commons.codec.binary.Base64;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class MainActivity extends Activity
 {
@@ -84,36 +81,24 @@ public class MainActivity extends Activity
 
     class PostTask extends AsyncTask<String, Void, Boolean> {  
 
-        private String getFilename( String post ) { // <1>
-            String title = post.substring( 0, post.length() > 30 ? 30 : post.length() );
-            String jekyllfied = title.toLowerCase().replaceAll( "\\W+", "-").replaceAll( "\\W+$", "" );
-            SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" );
-            String prefix = sdf.format( new Date() );
-            String filename = "_posts/" + prefix + jekyllfied + ".md";
-            return filename;
-        }
-
         @Override 
             protected Boolean doInBackground(String... credentials) {
-            String username = credentials[0]; // <2>
+            String username = credentials[0]; 
             String password = credentials[1];
 
             EditText post = (EditText)findViewById( R.id.post );
             String postContents = post.getText().toString();
-            String base64ed = new String( Base64.encodeBase64( postContents.getBytes() ) ); // <3>
 
             EditText repo = (EditText)findViewById( R.id.repository ); 
             String repoName = repo.getText().toString();
 
-            String filename = getFilename( postContents );
-
             return GitHubHelpers.SaveFile( username, password, 
-                                           repoName, base64ed, filename ); // <4>
+                                           repoName, postContents );
         }
         
         @Override
             protected void onPostExecute(Boolean result) {
-            TextView status = (TextView)findViewById( R.id.post_status ); // <5>
+            TextView status = (TextView)findViewById( R.id.post_status );
             if( result ) {
                 status.setText( "Successful jekyll post" );
             }
