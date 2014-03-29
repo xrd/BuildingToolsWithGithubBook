@@ -36,7 +36,7 @@ Then(/^I enter my current mood status$/) do
 end
 
 And(/^I have a new jekyll post with my mood status$/) do
-  url = "https://raw.githubusercontent.com/#{ENV['GH_USERNAME']}/#{ENV['GH_REPO']}/#{ENV['gh_branch']||'master'}/#{@filename}"
+  url = "https://raw.githubusercontent.com/#{ENV['GH_USERNAME']}/#{ENV['GH_REPO']}/#{ENV['GH_BRANCH']||'master'}/#{@filename}"
   puts "Checking #{url} for content..."
   response = HTTParty.get( url )
   assert( response.body.include?( @mood ), "Post unsuccessful" )

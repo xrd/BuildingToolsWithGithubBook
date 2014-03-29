@@ -934,7 +934,7 @@ class GitHubHelpers {
         String filename = getFilename( post );
 
         try {
-            // Thank you: https://gist.github.com/Detelca/2337731
+            // Thank you: https://gist.github.com/Detelca/2337731 // <4>
 
             // create needed services
             RepositoryService repositoryService = new RepositoryService();
@@ -1035,7 +1035,7 @@ layout and the published flag.
 <3> As noted above, we convert our content to Base64 using the Apache
 foundation helper utility.
 <4> We give credit where credit is due: this class was refactored from
-a Gist on GitHub made by the mysterious user named Detelca.
+a Gist found on GitHub made by a mysterious user named Detelca.
 
 Finally, we can now implement the `doPost()` method inside our
 `MainActivity` class.
@@ -1081,7 +1081,6 @@ Finally, we can now implement the `doPost()` method inside our
 
 
     
-...
 -----
 
 Our `doPost()` command now does one thing: instantiates a new
