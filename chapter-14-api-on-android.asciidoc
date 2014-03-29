@@ -33,7 +33,7 @@ we have a sandbox repository that has the structure of a jekyll blog.
 
 [source,bash]
 -----
-$ printf "source 'https://rubygems.org'\n\ngem 'github-pages'\ngem 'hub'\n gem 'httparty'" >> Gemfile
+$ printf "source 'https://rubygems.org'\n\ngem 'github-pages'\ngem 'hub'" >> Gemfile
 $ export BLOG_NAME=mytestblog
 $ bundle
 $ jekyll new $BLOG_NAME
@@ -340,7 +340,7 @@ Calabash runs using ruby. You already have ruby installed, so to
 install calabash, run these commands:
 
 [source,bash]
-$ printf "source 'https://rubygems.org'\n\ngem 'calabash-android'" >> Gemfile
+$ printf "source 'https://rubygems.org'\n\ngem 'calabash-android', '0.4.20'\ngem 'httparty'" >> Gemfile
 $ bundle install
 $ calabash-android gen
 
@@ -351,6 +351,8 @@ Your `Gemfile` should now look like this:
 source 'https://rubygems.org'
 
 gem 'calabash-android'
+gem "httparty"
+
 -----
 
 We've now installed calabash and created the folder structure to hold
@@ -366,10 +368,11 @@ Feature: Login and post
   Scenario: As a valid user I can log into my app and post to my blog
     When I enter the username
     And I enter the password
-    Then I press button number 1
+    And I press button number 1
     Then I wait up to 10 seconds to see "Logged into GitHub"
-    Then I enter my current mood status
-    Then I press button number 1
+    Then I choose my blog
+    And I enter my current mood status
+    And I press button number 1
     Then I wait up to 10 seconds to see "Successful jekyll post"
     And I have a new jekyll post with my mood status
 
@@ -383,8 +386,10 @@ to make sure a login message is displayed, then enters in some text
 into a field and presses another button and then expects to see the
 text "Successful jekyll post". The last line is actually an
 expectation that we will have created a post inside our GitHub
-repository, so this line represents a verification happening outside
-of our Android application.
+repository; we will do this using ruby code to pull the file from the
+repository and verify it. This line actually represents a verification
+happening outside of our Android application. Calabash allows us to
+test from whatever vantage point works best given the situation.
 
 When using calabash, you need to understand two types of files: "feature"
 files and "step" files. Feature files define human readable actions
@@ -510,9 +515,10 @@ end
 -----
 
 Then we run from the command line using this command `GH_USER=foobar
-GH_PASS=barfoo GH_REPO=myblog calabash-android run
+GH_PASS=barfoo GH_REPO=mytestblog calabash-android run
 build/apk/ghru-release-unsigned.apk`. Our code will still fail to pass,
-but now we are actually verifying real functionality of our future app.
+but now we are actually establishing a baseline success story for the
+real functionality of our future app.
 
 image::images/android-calabash-failures2.png[]
 
@@ -1098,7 +1104,7 @@ our tests.
 
 [source,bash]
 ----
-$ GH_REPO=myblog GH_USERNAME=myusername GH_PASSWORD=mypassword bundle exec calabash-android run build/apk/ghru-release-unsigned.apk
+$ GH_REPO=mytestblog GH_USERNAME=myusername GH_PASSWORD=mypassword bundle exec calabash-android run build/apk/ghru-release-unsigned.apk
 ----
 
 You'll see them pass with flying colors this time:

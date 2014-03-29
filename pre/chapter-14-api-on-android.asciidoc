@@ -33,7 +33,7 @@ we have a sandbox repository that has the structure of a jekyll blog.
 
 [source,bash]
 -----
-$ printf "source 'https://rubygems.org'\n\ngem 'github-pages'\ngem 'hub'\n gem 'httparty'" >> Gemfile
+$ printf "source 'https://rubygems.org'\n\ngem 'github-pages'\ngem 'hub'" >> Gemfile
 $ export BLOG_NAME=mytestblog
 $ bundle
 $ jekyll new $BLOG_NAME
@@ -271,7 +271,7 @@ Calabash runs using ruby. You already have ruby installed, so to
 install calabash, run these commands:
 
 [source,bash]
-$ printf "source 'https://rubygems.org'\n\ngem 'calabash-android'" >> Gemfile
+$ printf "source 'https://rubygems.org'\n\ngem 'calabash-android', '0.4.20'\ngem 'httparty'" >> Gemfile
 $ bundle install
 $ calabash-android gen
 
@@ -279,7 +279,7 @@ Your `Gemfile` should now look like this:
 
 [source,java]
 -----
-[filename=".", language="js", sha="b8e957f:support/android/ghru/Gemfile"]
+[filename=".", language="js", sha="74d6fcd:support/android/ghru/Gemfile"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -293,7 +293,7 @@ boilerplate which we should change, so make the file named
 
 [source,yaml]
 -----
-[filename=".", language="js", sha="12c8128:support/android/ghru/features/my_first.feature"]
+[filename=".", language="js", sha="74d6fcd:support/android/ghru/features/my_first.feature"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -307,8 +307,10 @@ to make sure a login message is displayed, then enters in some text
 into a field and presses another button and then expects to see the
 text "Successful jekyll post". The last line is actually an
 expectation that we will have created a post inside our GitHub
-repository, so this line represents a verification happening outside
-of our Android application.
+repository; we will do this using ruby code to pull the file from the
+repository and verify it. This line actually represents a verification
+happening outside of our Android application. Calabash allows us to
+test from whatever vantage point works best given the situation.
 
 When using calabash, you need to understand two types of files: "feature"
 files and "step" files. Feature files define human readable actions
@@ -394,9 +396,10 @@ snippet~~~~~
 -----
 
 Then we run from the command line using this command `GH_USER=foobar
-GH_PASS=barfoo GH_REPO=myblog calabash-android run
+GH_PASS=barfoo GH_REPO=mytestblog calabash-android run
 build/apk/ghru-release-unsigned.apk`. Our code will still fail to pass,
-but now we are actually verifying real functionality of our future app.
+but now we are actually establishing a baseline success story for the
+real functionality of our future app.
 
 image::images/android-calabash-failures2.png[]
 
@@ -644,7 +647,7 @@ our tests.
 
 [source,bash]
 ----
-$ GH_REPO=myblog GH_USERNAME=myusername GH_PASSWORD=mypassword bundle exec calabash-android run build/apk/ghru-release-unsigned.apk
+$ GH_REPO=mytestblog GH_USERNAME=myusername GH_PASSWORD=mypassword bundle exec calabash-android run build/apk/ghru-release-unsigned.apk
 ----
 
 You'll see them pass with flying colors this time:
