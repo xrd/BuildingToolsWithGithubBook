@@ -11,17 +11,17 @@ import java.util.*;
 
 class GitHubHelpers {
 
-    public static void SaveFile( String login, String password, String repoName,
-                                   String contentsBase64, String filename, String commitMessage ) {
+    public static boolean SaveFile( String login, String password, String repoName,
+                                   String contentsBase64, String filename ) {
         
         boolean rv = true;
+        String commitMessage = "GitHubRu Update";
 
         try {
             // Thank you: https://gist.github.com/Detelca/2337731
 
             // create needed services
-            RepositoryService repositoryService = new
-            RepositoryService();
+            RepositoryService repositoryService = new RepositoryService();
             repositoryService.getClient().setCredentials( login, password );
             CommitService commitService = new CommitService();
             commitService.getClient().setCredentials( login, password );
@@ -54,10 +54,8 @@ class GitHubHelpers {
             Blob blob = new Blob();
             blob.setContent(contentsBase64);
             blob.setEncoding(Blob.ENCODING_BASE64);
-            String blob_sha = dataService.createBlob(repository,
-            blob);
-            Tree baseTree = dataService.getTree(repository,
-            baseCommitSha);
+            String blob_sha = dataService.createBlob(repository, blob);
+            Tree baseTree = dataService.getTree(repository, baseCommitSha);
 
             // create new tree entry
             TreeEntry treeEntry = new TreeEntry();
@@ -67,11 +65,9 @@ class GitHubHelpers {
 
             treeEntry.setSha(blob_sha);
             treeEntry.setSize(blob.getContent().length());
-            Collection<TreeEntry> entries = new
-            ArrayList<TreeEntry>();
+            Collection<TreeEntry> entries = new ArrayList<TreeEntry>();
             entries.add(treeEntry);
-            Tree newTree = dataService.createTree(repository, entries,
-            baseTree.getSha());
+            Tree newTree = dataService.createTree(repository, entries, baseTree.getSha());
 
             // create commit
             Commit commit = new Commit();
@@ -82,8 +78,7 @@ class GitHubHelpers {
             // listOfCommits.containsAll(base_commit.getParents());
             commit.setParents(listOfCommits);
             // commit.setSha(base_commit.getSha());
-            Commit newCommit = dataService.createCommit(repository,
-            commit);
+            Commit newCommit = dataService.createCommit(repository, commit);
 
             // create resource
             TypedResource commitResource = new TypedResource();
@@ -100,5 +95,6 @@ class GitHubHelpers {
             ieo.printStackTrace();
         }
 
+        return rv;
     }
 }

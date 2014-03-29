@@ -556,18 +556,20 @@ specifically the last chapter called "Git Internals".
 (http://git-scm.com/book/en/Git-Internals). In a nutshell, the GitHub
 API expects you to create a git "tree" and then place a "blob" object
 into that tree. You then wrap the tree in a "commit" object and then
-create that commit on GitHub using a data service wrapper.
-
-This code was refactored from https://gist.github.com/Detelca/2337731.
-Who is this mysterious user Detelca? 
-
+create that commit on GitHub using a data service wrapper. In
+addition, writing a tree into GitHub requires knowing the base SHA
+identifier, so you'll see code which retrieves the last SHA in the
+tree associated with our current branch. This code will work
+regardless of whether we are pushing code into the master branch, or
+into the gh-pages branch, so this utility class works with real
+Jekyll blogs.
 
 [source,java]
 -----
-
+[filename=".", language="js", sha="92b9294:support/android/ghru/src/com/githubru/GitHubHelpers.java"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
-Now, let's make this more emojitional.
-
-https://github.com/muan/emoji/blob/gh-pages/emojis.json
-
+We have all our
