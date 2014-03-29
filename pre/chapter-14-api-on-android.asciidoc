@@ -10,11 +10,10 @@ good set of bindings for developing Java and Android applications.
 We'll use the egit libraries to develop a small Android application
 which posts to our blog hosted on GitHub.
 
-We will build an application which uses one of the unique features of a
-mobile device: GPS. Our blogging application will allow us to login to
-GitHub, determine our location, and then ask us for a quick note
-describing what we are doing. The application will then compose a
-Jekyll blog post for us and push the post into our blog on GitHub.
+Our blogging application will allow us to login to
+GitHub, and then ask us for a quick note describing how we are
+feeling. The application will then compose a Jekyll blog post for us
+and push the post into our blog on GitHub. 
 
 === Prerequisites
 
@@ -634,15 +633,21 @@ PostTask. As we are performing network operations, we again create a
 subclass of `AsyncTask` which handles these operations automatically
 on a background thread. We pass in the username and password which we
 retrieved earlier along with the post contents and the repository name
-we specified.
-
-Peering a little deeper in the code shows us some specifics about
-writing files to a Jekyll repository using the GitHub APi:
-
+we specified. We've isolated our GitHub code into our helper class;
+our MainActivity class does only the necessary steps to retrieve items
+from UI elements and pass them on to our helper class.
 
 ==== Passing our Tests
 
 Now that we have fully implemented our Android application, we can run
 our tests.
 
+[source,bash]
+----
+$ GH_REPO=myblog GH_USERNAME=myusername GH_PASSWORD=mypassword bundle exec calabash-android run build/apk/ghru-release-unsigned.apk
+----
+
+You'll see them pass with flying colors this time:
+
+image::images/android-calabash-success.png[]
 

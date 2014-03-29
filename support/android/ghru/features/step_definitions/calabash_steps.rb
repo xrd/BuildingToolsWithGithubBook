@@ -1,12 +1,11 @@
 require 'calabash-android/calabash_steps'
-
-@status = nil
-@moods = %w{ happy sad angry blue energized }
-@mood = nil
-@filename = nil
-@title = nil
+require 'httparty'
 
 def set_title_and_mood
+  @mood = nil
+  @filename = nil
+  @title = nil
+  @moods = %w{ happy sad angry blue energized }
   @mood = "Feeling #{@moods[(rand()*@moods.length).to_i]} today"
   @title = @mood.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
   date = (ENV['date'] ? Time.parse(ENV['date']) : Time.now).strftime('%Y-%m-%d')
