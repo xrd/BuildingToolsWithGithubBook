@@ -608,7 +608,7 @@ inside our `build.gradle` file:
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="1b1c698:support/android/ghru/build.gradle" lines="31..35"]
+[filename=".", language="js", sha="5f1181c:support/android/ghru/build.gradle" lines="31..35"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -618,7 +618,8 @@ snippet~~~~~
 And, our `MainActivity.java` needs to import the Base64 class using the
 statement `import org.apache.commons.codec.binary.Base64;`
 
-
+Peering a little deeper in the code shows us some specifics about
+writing to a Jekyll repository:
 
 <1> Jekyll posts require that filenames look a very specific way.
 Files must be in the `_posts` directory, and should be named with the
@@ -631,4 +632,9 @@ as a title.
 upon instantiation of the `AsyncTask`.
 <3> As noted above, we convert our content to Base64 using the Apache
 foundation helper utility.
-<4>
+<4> When we have assembled all the information we need to make the
+post, we call into our helper class to communicate with the
+GitHub API.
+<5> Finally, we update the status depending on our success in writing
+our new post to GitHub.
+
