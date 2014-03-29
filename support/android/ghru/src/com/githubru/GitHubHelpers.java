@@ -32,7 +32,7 @@ class GitHubHelpers {
         String filename = getFilename( post );
 
         try {
-            // Thank you: https://gist.github.com/Detelca/2337731
+            // Thank you: https://gist.github.com/Detelca/2337731 // <4>
 
             // create needed services
             RepositoryService repositoryService = new RepositoryService();

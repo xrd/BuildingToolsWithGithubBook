@@ -594,7 +594,7 @@ around the complicated GitHub API for us.
 
 [source,java]
 -----
-[filename=".", language="js", sha="7bdfedc:support/android/ghru/src/com/githubru/GitHubHelpers.java"]
+[filename=".", language="js", sha="99af5b6:support/android/ghru/src/com/githubru/GitHubHelpers.java"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -614,6 +614,8 @@ as a title.
 layout and the published flag.
 <3> As noted above, we convert our content to Base64 using the Apache
 foundation helper utility.
+<4> We give credit where credit is due: this class was refactored from
+a Gist on GitHub made by the mysterious user named Detelca.
 
 Finally, we can now implement the `doPost()` method inside our
 `MainActivity` class.
