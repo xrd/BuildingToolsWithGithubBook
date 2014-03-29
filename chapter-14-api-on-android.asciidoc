@@ -485,11 +485,8 @@ require 'calabash-android/calabash_steps'
 require 'httparty'
 
 def set_title_and_mood
-  @mood = nil
-  @filename = nil
-  @title = nil
-  @moods = %w{ happy sad angry blue energized }
-  @mood = "Feeling #{@moods[(rand()*@moods.length).to_i]} today"
+  moods = %w{ happy sad angry blue energized }
+  @mood = "Feeling #{moods[(rand()*moods.length).to_i]} today"
   @title = @mood.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
   date = (ENV['date'] ? Time.parse(ENV['date']) : Time.now).strftime('%Y-%m-%d')
   @filename = "_posts/#{date}-#{@title}.md"
@@ -529,11 +526,13 @@ end
 
 Then we run from the command line using this command `GH_USER=foobar
 GH_PASS=barfoo GH_REPO=mytestblog calabash-android run
-build/apk/ghru-release-unsigned.apk`. Our code will still fail to pass,
+build/apk/ghru-release-unsigned.apk`. Our tests will still fail to pass,
 but now we are actually establishing a baseline success story for the
 real functionality of our future app.
 
 image::images/android-calabash-failures2.png[]
+
+==== Implementing the Login Screen
 
 So, let's start building our application. Obviously we need to put a
 username and password field into our application. Jumping into our XML
@@ -589,12 +588,13 @@ layout files and editing gives us this file:
 
 -----
 
-We've now defined the XML for a full on login. Once logged in, we can
-define what the user will see, a layout that permits them to enter a
-blog post into a large text field and then click a button to submit
-the blog post. We also leave an empty status box beneath the button to
+We also need a layout once we have logged in. Create a file called
+`logged_in.xml` inside the `res/layout` directory. Once logged in, 
+the user is presented with a layout asking them to choose which
+repository to save into, asks them to enter their blog post
+into a large text field and then click a button to submit 
+that blog post. We also leave an empty status box beneath the button to
 provide context while saving the post.
-
 
 [source,xml]
 -----
@@ -647,7 +647,8 @@ provide context while saving the post.
 
 -----
 
-Let's make the code changes to our MainActivity.
+Our `MainActivity` now can implement the functionality to use these
+two layouts.
 
 [source,java]
 -----
@@ -709,12 +710,17 @@ clicked, we call the `doPost()` function.
 <5> Our `doPost()` function updates the status message at the bottom
 of our application.
 
-Viewed inside our application:
+Even though our code is not functional yet, this application will
+compile. This is a good time to play with this application and verify
+the UI looks appropriate. Were we to click the
+login button, we would see that our blog post form looks like this.
 
 image::images/android-calabash-logged-in.png[]
 
-These tests will fail as we've not yet implemented the functionality.
-But, we do have a clear direction to build towards.
+Our tests will actually pass completely right now except for the final
+test which checks GitHub to verify a file was correctly posted. We can
+now proceed to writing code to login to GitHub and write a file into
+our Jekyll repository.
 
 ==== Code to Login to GitHub
 
