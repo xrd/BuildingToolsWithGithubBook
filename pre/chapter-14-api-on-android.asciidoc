@@ -587,7 +587,7 @@ Finally, we can now implement the `doPost()` method inside our
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="1b1c698:support/android/ghru/src/com/githubru/MainActivity.java" lines="75..-1"]
+[filename=".", language="js", sha="c059b88:support/android/ghru/src/com/githubru/MainActivity.java" lines="75..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -601,9 +601,10 @@ on a background thread. We pass in the username and password which we
 retrieved earlier.
 
 The GitHub API requires that files written into repositories be
-encoded using Base64 encoding. Apache provides a suite of tools to do
-this. To add these to our project, we need to add to our dependencies
-inside our `build.gradle` file:
+Base64 encoded. The Apache Foundation provides a suite of tools
+published to Maven (the same software repository where we grabbed the
+egit libraries) which can do this encoding for us. To add this library
+to our project, we need to add to our dependencies inside our `build.gradle` file:
 
 [source,java]
 -----
@@ -619,7 +620,7 @@ And, our `MainActivity.java` needs to import the Base64 class using the
 statement `import org.apache.commons.codec.binary.Base64;`
 
 Peering a little deeper in the code shows us some specifics about
-writing to a Jekyll repository:
+writing files to a Jekyll repository using the GitHub APi:
 
 <1> Jekyll posts require that filenames look a very specific way.
 Files must be in the `_posts` directory, and should be named with the
@@ -637,4 +638,10 @@ post, we call into our helper class to communicate with the
 GitHub API.
 <5> Finally, we update the status depending on our success in writing
 our new post to GitHub.
+
+==== Passing our Tests
+
+Now that we have fully implemented our Android application, we can run
+our tests.
+
 

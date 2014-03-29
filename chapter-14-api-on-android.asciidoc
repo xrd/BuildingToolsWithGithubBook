@@ -994,18 +994,18 @@ Finally, we can now implement the `doPost()` method inside our
 -----
 ...
                 TextView status = (TextView)findViewById( R.id.login_status );
-                status.setText( "Invalid login, please check credentials" ); // <8>
+                status.setText( "Invalid login, please check credentials" ); 
             }
         }
     }
 
     private void doPost() {
-        new PostTask().execute( username, password );
+        new PostTask().execute( username, password ); 
     }
 
-    class PostTask extends AsyncTask<String, Void, Boolean> {  // <4>
+    class PostTask extends AsyncTask<String, Void, Boolean> {  
 
-        private String getFilename( String post ) {
+        private String getFilename( String post ) { // <1>
             String title = post.substring( 0, post.length() > 30 ? 30 : post.length() );
             String jekyllfied = title.toLowerCase().replaceAll( "\W+", "-").replaceAll( "\W+$", "" );
             SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" );
@@ -1016,30 +1016,30 @@ Finally, we can now implement the `doPost()` method inside our
 
         @Override 
             protected Boolean doInBackground(String... credentials) {
-            String username = credentials[0];
+            String username = credentials[0]; // <2>
             String password = credentials[1];
 
             EditText post = (EditText)findViewById( R.id.post );
             String postContents = post.getText().toString();
-            String base64ed = new String( Base64.encodeBase64( postContents.getBytes() ) );
+            String base64ed = new String( Base64.encodeBase64( postContents.getBytes() ) ); // <3>
 
-            EditText repo = (EditText)findViewById( R.id.repository );
+            EditText repo = (EditText)findViewById( R.id.repository ); 
             String repoName = repo.getText().toString();
 
             String filename = getFilename( postContents );
 
             return GitHubHelpers.SaveFile( username, password, 
-                                           repoName, base64ed, filename );
+                                           repoName, base64ed, filename ); // <4>
         }
         
         @Override
             protected void onPostExecute(Boolean result) {
-            TextView status = (TextView)findViewById( R.id.post_status );
+            TextView status = (TextView)findViewById( R.id.post_status ); // <5>
             if( result ) {
                 status.setText( "Successful jekyll post" );
             }
             else {
-                status.setText( "Post failed." ); // <8>
+                status.setText( "Post failed." ); 
             }
         }
     }
@@ -1056,9 +1056,10 @@ on a background thread. We pass in the username and password which we
 retrieved earlier.
 
 The GitHub API requires that files written into repositories be
-encoded using Base64 encoding. Apache provides a suite of tools to do
-this. To add these to our project, we need to add to our dependencies
-inside our `build.gradle` file:
+Base64 encoded. The Apache Foundation provides a suite of tools
+published to Maven (the same software repository where we grabbed the
+egit libraries) which can do this encoding for us. To add this library
+to our project, we need to add to our dependencies inside our `build.gradle` file:
 
 [source,java]
 -----
@@ -1075,7 +1076,7 @@ And, our `MainActivity.java` needs to import the Base64 class using the
 statement `import org.apache.commons.codec.binary.Base64;`
 
 Peering a little deeper in the code shows us some specifics about
-writing to a Jekyll repository:
+writing files to a Jekyll repository using the GitHub APi:
 
 <1> Jekyll posts require that filenames look a very specific way.
 Files must be in the `_posts` directory, and should be named with the
@@ -1093,4 +1094,10 @@ post, we call into our helper class to communicate with the
 GitHub API.
 <5> Finally, we update the status depending on our success in writing
 our new post to GitHub.
+
+==== Passing our Tests
+
+Now that we have fully implemented our Android application, we can run
+our tests.
+
 
