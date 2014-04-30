@@ -8,9 +8,23 @@ and structure by its users." Just as Git has revolutionized
 collaborative editing of code, Gollum wikis layer the benefits of Git
 onto a proven publishing metaphor.
 
+==== Installing Gollum locally
+
+You can edit Gollum wikis hosted on GitHub using only any web browser.
+If you want to run Gollum locally, and there are many benefits to
+doing so, then you need to install the gollum command line tools. 
+
+[source,bash]
+-------
+$ gem install gollum
+-------
+
+You will then see the `gollum` command in your path.
+
 ==== Many Editing Modalities
 
-Editing Gollum content is flexible. Gollum wikis are editable locally
+Editing Gollum content is flexible in that there are many ways to do
+it, depending on what editing metaphor you prefer. Gollum wikis are editable locally
 within a web browser: run the `gollum` command locally on your laptop
 (which spawns a mini web server hosting your wiki) and then browse to
 http://localhost:4567. Gollum wikis are editable remotely using a web
@@ -19,7 +33,6 @@ GitHub web enabled editor tools. And, gollum wikis are editable
 locally using your favorite editor and tools, allowing you the
 flexibility of staying within the same workflow you use to edit any
 other file within a local repository. 
-
 
 You might use a hybrid approach to editing your Gollum wiki, switching
 back and forth  between editing within the web browser interface and
@@ -97,13 +110,14 @@ needs. Let's build one!
 
 ===== Documenting Wireframe Discussions: Needs versus Reality
 
-If you do much software development within a team larger than one
-person, you often find this scenario: a business person develops the
-structure of the application with higher-up stakeholders, these ideas
-are passed down to a  UI/UX designer who then creates wireframes and
-mockups of the interactions, and then a software developer takes these
-wireframes and builds the software. Put another way, executives figure
-out what features provide the most value to users, which then trickles
+If you do much software development within a team
+you will find this idealized scenario: a
+business person develops the structure of the application with
+higher-up stakeholders, these ideas are passed down to a  UI/UX
+designer who then creates wireframes and mockups of the interactions,
+and then a software developer takes these wireframes and builds the
+software. Put another way, executives figure out what features provide
+the most value to users, which then trickles 
 down into the wireframes as real interactions. Many hidden blocking
 paths are fleshed out here, places where the application would confuse
 the user, and time is saved because the software developer does not
@@ -128,8 +142,10 @@ are affected by these changes. This information must traverse many
 different people, with many different methods of communication. 
 
 Wikis are a great way to store this information. Information which changes. Information which must be retrieved
-by many people and edited by many people. Information which sounds perfect for a wiki and perfect to be managed
-within git.
+by many people and edited by many people. What better than to manage
+these informational transitions than a change tracking system like
+Git, and what better way to absorb this information than a Wiki built
+on top of Git, hosted on GitHub.
 
 ===== A Simple Wireframe Review Tool
 
@@ -145,7 +161,7 @@ Gollum is built on ruby and uses the grit library underneath. It is
 simplest to use Ruby to build this, so let's use Sinatra, a super
 simple web server framework for Ruby.  
 
-Again, this is a dual purpose repository. We can use it with gollum as
+This will be a dual purpose repository. We can use it with gollum as
 a standard wiki. And, we can use it with our application to enter data
 in a more powerful way than gollum permits from its default interface.
 The data will still be compatible with gollum and will be hosted on
@@ -195,29 +211,16 @@ our system that we will then unpack and add to our repository, as well
 as adding a list of these files to our wiki. Modify our image.rb
 script to look like this:
 
-[source,ruby image.rb]
-require 'sinatra'
-require 'gollum-lib'
-require 'tempfile'
-require 'zip/zip'
-wiki = Gollum::Wiki.new(".")
-get '/' do
-  render File.open( "index.html" )
-end
-post '/unpack' do
-    zip = params[:zip][:tempfile]
-    Zip::ZipFile.open( zip ) { |zipfile|
-      zipfile.each do |f|
-        puts "F: #{f.name}"
-        # Extract files into our images directory                                                                                              filename = "images/" + ( f.name.gsub( /\s+/, '_' ).gsub( /^.*\/([^\/]*)$/, $1 ) )
-        puts "Filename: #{filename}"
-      end
-    }
-  }
-  render json: { success: 'ok' }
-end  
+[source,ruby]
+-----
+name: Your New Jekyll Site
+markdown: redcarpet
+pygments: true
 
-Without going into the specific syntax of this Ruby code, this server
+-----
+
+
+This server
 script receives a POST request at the `/unpack` mount point and
 retrieves a ZIP file from the parameters passed into the script. It
 then opens the ZIP file (stored as a temp file on the server side),
