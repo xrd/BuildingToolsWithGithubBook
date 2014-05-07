@@ -28,7 +28,6 @@ post '/unpack' do
         puts "Writing out: #{filename}"
       end
     end
-    build_commit()
   }
   index( params[:zip][:filename] )
 end  
