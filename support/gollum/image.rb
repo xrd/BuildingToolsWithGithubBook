@@ -2,6 +2,7 @@ require 'sinatra'
 require 'gollum-lib'
 require 'tempfile'
 require 'zip/zip'
+require 'rugged'
 
 def index( message=nil )
   response = File.read(File.join('.', 'index.html'))
