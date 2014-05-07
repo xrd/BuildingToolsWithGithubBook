@@ -257,6 +257,8 @@ Once you open this in your browser, you'll see a report of the files
 that exist in our Gollum wiki right now. We've only added one file,
 the `Home.md` file.
 
+#### Unpack Images from a Zip File
+
 Let's add to our server. We want to support uploading ZIP files into
 our system that we will then unpack and add to our repository, as well
 as adding a list of these files to our wiki. Modify our image.rb
@@ -264,12 +266,11 @@ script to look like this:
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="6524e46:support/gollum/image.rb"]
+[filename=".", language="ruby", sha="8d81f8a:support/gollum/image.rb" lines="1..35"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
-
 
 This server
 script receives a POST request at the `/unpack` mount point and
