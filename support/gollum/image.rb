@@ -2,6 +2,7 @@ require 'sinatra'
 require 'gollum-lib'
 require 'tempfile'
 require 'zip/zip'
+require 'rugged'
 
 def index( message=nil )
   response = File.read(File.join('.', 'index.html'))
@@ -14,6 +15,11 @@ get '/' do
   index()
 end
 
+get '/credentials' do
+  get_credentials()
+  "User: #{@name}, Email: #{@email}"
+end
+
 post '/unpack' do
   @repo = Rugged::Repository.new('.')
   @index = Rugged::Index.new
@@ -24,20 +30,27 @@ post '/unpack' do
       contents = zipfile.read( f.name )
       filename = f.name.split( File::SEPARATOR ).pop
       if contents and filename and filename =~ /(png|jp?g|gif)$/i
-        puts "Writing out: #{filename}"
+        write_file_to_repo contents, filename # Write the file
       end
     end
+    build_commit() # Build a commit from the new files
   }
   index( params[:zip][:filename] )
 end  
 
+def get_credentials
+  contents = File.read File.join( ENV['HOME'], ".gitconfig" )
+  @email = $1 if contents =~ /email = (.+)$/
+  @name = $1 if contents =~ /name = (.+)$/
+end
+
 def build_commit
-  
+  get_credentials()
   options = {}
   options[:tree] = @index.write_tree(@repo)
-  options[:author] = { :email => "testuser@github.com", :name => 'Test Author', :time => Time.now }
-  options[:committer] = { :email => "testuser@github.com", :name => 'Test Author', :time => Time.now }
-  options[:message] ||= "Making a commit via Rugged!"
+  options[:author] = { :email => @email, :name => @name, :time => Time.now }
+  options[:committer] = { :email => @email, :name => @name, :time => Time.now }
+  options[:message] ||= "Adding new images"
   options[:parents] = @repo.empty? ? [] : [ @repo.head.target ].compact
   options[:update_ref] = 'HEAD'
 
