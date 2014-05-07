@@ -2,20 +2,53 @@ require 'sinatra'
 require 'gollum-lib'
 require 'tempfile'
 require 'zip/zip'
+require 'rugged'
+
+def index( message=nil )
+  response = File.read(File.join('.', 'index.html'))
+  response.gsub!( "<!-- message -->\n", "<h2>Received and unpacked #{message}</h2>" ) if message
+  response
+end
 
 wiki = Gollum::Wiki.new(".")
 get '/' do
-  render File.open( "index.html" )
+  index()
 end
 
 post '/unpack' do
+  @repo = Rugged::Repository.new('.')
+  @index = Rugged::Index.new
+
   zip = params[:zip][:tempfile]
   Zip::ZipFile.open( zip ) { |zipfile|
     zipfile.each do |f|
-      puts "F: #{f.name}"
-      # Extract files into our images directory                                                                                              filename = "images/" + ( f.name.gsub( /\s+/, '_' ).gsub( /^.*\/([^\/]*)$/, $1 ) )
-      puts "Filename: #{filename}"
+      contents = zipfile.read( f.name )
+      filename = f.name.split( File::SEPARATOR ).pop
+      if contents and filename and filename =~ /(png|jp?g|gif)$/i
+        puts "Writing out: #{filename}"
+      end
     end
+    build_commit()
   }
-  render json: { success: 'ok' }
+  index( params[:zip][:filename] )
 end  
+
+def build_commit
+  
+  options = {}
+  options[:tree] = @index.write_tree(@repo)
+  options[:author] = { :email => "testuser@github.com", :name => 'Test Author', :time => Time.now }
+  options[:committer] = { :email => "testuser@github.com", :name => 'Test Author', :time => Time.now }
+  options[:message] ||= "Making a commit via Rugged!"
+  options[:parents] = @repo.empty? ? [] : [ @repo.head.target ].compact
+  options[:update_ref] = 'HEAD'
+
+  Rugged::Commit.create(@repo, options)
+  
+end
+
+def write_file_to_repo( contents, filename )
+  oid = @repo.write( contents, :blob )
+  @index.add(:path => filename, :oid => oid, :mode => 0100644)
+end
+
