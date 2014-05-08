@@ -117,6 +117,14 @@ as you write files into the repository in the way the gollum libraries
 understand, you can write your own editing interface to suit your own
 needs. Let's build one and dive deeper.
 
+==== Limits of Gollum Locally
+
+Gollum is a great tool when working locally. However, there is a bug
+currently where images are not displayed, so although you can fully
+edit files using the local `gollum` command, you will not be be able
+to view them when viewing your wiki on you local machine. To view
+files, publish them into GitHub.
+
 ===== Adding Authentication 
 
 There are solutions to managing authentication if you self host a
