@@ -695,4 +695,16 @@ SHA hash to build out our image links. We can use this to build out a
 navigation inside our comp page when we are on the revision page.
 
 Again, it is a simple change: one line within the `write_review_file`
-method. 
+method. After the line which creates the header for the file (`###
+Review Images`), add a line which build a link to the parent document
+via its SHA hash. 
+
+[source,ruby]
+-----
+  ...
+[filename=".", language="ruby", sha="0be3e44:support/gollum/image.rb", lines="43..46"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+  ...
+-----

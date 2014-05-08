@@ -776,4 +776,16 @@ SHA hash to build out our image links. We can use this to build out a
 navigation inside our comp page when we are on the revision page.
 
 Again, it is a simple change: one line within the `write_review_file`
-method. 
+method. After the line which creates the header for the file (`###
+Review Images`), add a line which build a link to the parent document
+via its SHA hash. 
+
+[source,ruby]
+-----
+  ...
+  contents = "## Review Images\n\n"
+  contents += "[Prior revision](#{@repo.head.target})\n\n"
+  files.each do |f|
+    contents += "### #{f} \n[[#{dir}/#{f}]]\n\n"
+  ...
+-----

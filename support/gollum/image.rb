@@ -41,7 +41,7 @@ end
 def write_review_file( files, dir )
   review_filename = "Review.md"
   contents = "## Review Images\n\n"
-  contents += "[Prior revision](#{@repo.head.target})\n\n"
+  contents += "[Prior revision (only when viewing history)](#{@repo.head.target})\n\n"
   files.each do |f|
     contents += "### #{f} \n[[#{dir}/#{f}]]\n\n"
   end
