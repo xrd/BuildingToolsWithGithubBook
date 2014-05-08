@@ -743,10 +743,18 @@ First, let's add a commit message field to our upload form.
 <form method='POST' enctype='multipart/form-data' action='/unpack'>
 Choose a zip file: 
 <input type='file' name='zip'/>
+<input type='text' name='message' placeholder='Enter commit message'/>
 <input type='submit' name='submit'>
 </form>
 </body>
 </html>
 
 -----
-xxx
+
+Then, let's adjust the commit message inside our `image.rb` script,
+which is a one line change.
+
+[source,ruby]
+-----
+
+-----

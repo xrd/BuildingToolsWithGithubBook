@@ -663,9 +663,19 @@ First, let's add a commit message field to our upload form.
 
 [source,html]
 -----
-[filename=".", language="html", sha="f737917:support/gollum/index.html"]
+[filename=".", language="html", sha="fb361b5:support/gollum/index.html"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
-xxx
+
+Then, let's adjust the commit message inside our `image.rb` script,
+which is a one line change.
+
+[source,ruby]
+-----
+[filename=".", language="ruby", sha="fb361b5:support/gollum/image.ruby"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----

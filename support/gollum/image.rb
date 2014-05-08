@@ -62,7 +62,7 @@ def build_commit
   options[:tree] = @index.write_tree(@repo)
   options[:author] = { :email => @email, :name => @name, :time => Time.now }
   options[:committer] = { :email => @email, :name => @name, :time => Time.now }
-  options[:message] ||= "Adding new images"
+  options[:message] = params[:message]
   options[:parents] = @repo.empty? ? [] : [ @repo.head.target ].compact
   options[:update_ref] = 'HEAD'
 
