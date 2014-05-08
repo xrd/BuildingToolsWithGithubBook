@@ -702,9 +702,10 @@ via its SHA hash.
 [source,ruby]
 -----
   ...
-[filename=".", language="ruby", sha="0be3e44:support/gollum/image.rb", lines="43..46"]
+[filename=".", language="ruby", sha="c61921b:support/gollum/image.rb", lines="43..46"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
   ...
 -----
+

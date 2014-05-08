@@ -784,8 +784,9 @@ via its SHA hash.
 -----
   ...
   contents = "## Review Images\n\n"
-  contents += "[Prior revision](#{@repo.head.target})\n\n"
+  contents += "[Prior revision (only when viewing history)](#{@repo.head.target})\n\n"
   files.each do |f|
     contents += "### #{f} \n[[#{dir}/#{f}]]\n\n"
   ...
 -----
+
