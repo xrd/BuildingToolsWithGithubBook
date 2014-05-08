@@ -649,7 +649,7 @@ revisions, and then another click to jump into the revision we want,
 but this permits us to review changes between the comps provided from
 our designer. It would be nice if GitHub provided a simple way to jump
 from a revision to the parent (older) revision, but they don't expose
-this in their site as of this writing.
+this in their site as of this writing. But, we can fix this.
 
 #### Improving Revision Navigation
 
@@ -670,12 +670,29 @@ snippet~~~~~
 -----
 
 Then, let's adjust the commit message inside our `image.rb` script,
-which is a one line change.
+which is a one line change to the options hash, setting the value of
+it to the parameter we are now passing in for "commit".
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="fb361b5:support/gollum/image.ruby"]
+  ...
+[filename=".", language="ruby", sha="f448f60:support/gollum/image.rb", lines="64..66"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
+  ...
 -----
+
+Now, if our designer posts a new version of the UI comps, they can
+specify what changes were made, and we have a record of that in our
+change log, exposed on the revisions section of our wiki hosted on GitHub.
+
+#### Fixing Linking Between Comp Pages
+
+We noted that there is no quick way to jump between comps once we are
+inside a review revision. However, if you recall we used the parent
+SHA hash to build out our image links. We can use this to build out a
+navigation inside our comp page when we are on the revision page.
+
+Again, it is a simple change: one line within the `write_review_file`
+method. 
