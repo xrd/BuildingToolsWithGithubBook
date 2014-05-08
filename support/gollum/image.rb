@@ -15,28 +15,40 @@ get '/' do
   index()
 end
 
-get '/credentials' do
-  get_credentials()
-  "User: #{@name}, Email: #{@email}"
-end
-
 post '/unpack' do
   @repo = Rugged::Repository.new('.')
   @index = Rugged::Index.new
+  files = []
+  dir = File.join "images", @repo.head.target
 
   zip = params[:zip][:tempfile]
+  
   Zip::ZipFile.open( zip ) { |zipfile|
     zipfile.each do |f|
       contents = zipfile.read( f.name )
       filename = f.name.split( File::SEPARATOR ).pop
       if contents and filename and filename =~ /(png|jp?g|gif)$/i
-        write_file_to_repo contents, filename # Write the file
+        write_file_to_repo contents, filename, dir # Write the file
+        files << filename
       end
     end
+    write_review_file files, dir # write out a review file
     build_commit() # Build a commit from the new files
   }
   index( params[:zip][:filename] )
 end  
+
+def write_review_file( files, dir )
+  review_filename = "Review.md"
+  contents = "## Review Images\n\n"
+  files.each do |f|
+    
+    contents += "### #{f} \n[[#{dir}/#{f}]]\n\n"
+  end
+  File.write review_filename, contents
+  oid = @repo.write( contents, :blob )
+  @index.add(:path => review_filename, :oid => oid, :mode => 0100644)
+end
 
 def get_credentials
   contents = File.read File.join( ENV['HOME'], ".gitconfig" )
@@ -58,8 +70,12 @@ def build_commit
   
 end
 
-def write_file_to_repo( contents, filename )
+def write_file_to_repo( contents, filename, dir )
+  Dir.mkdir "images" unless File.exists? "images"
+  Dir.mkdir dir unless File.exists? dir
+  full_name = File.join dir, filename
+  File.write full_name, contents
   oid = @repo.write( contents, :blob )
-  @index.add(:path => filename, :oid => oid, :mode => 0100644)
+  @index.add(:path => full_name, :oid => oid, :mode => 0100644)
 end
 

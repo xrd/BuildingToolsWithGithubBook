@@ -270,7 +270,6 @@ require 'sinatra'
 require 'gollum-lib'
 require 'tempfile'
 require 'zip/zip'
-require 'rugged'
 
 def index( message=nil )
   response = File.read(File.join('.', 'index.html'))
@@ -296,10 +295,26 @@ post '/unpack' do
         puts "Writing out: #{filename}"
       end
     end
-    build_commit()
   }
   index( params[:zip][:filename] )
 end  
+
+-----
+
+We'll need an `index.html` file as well, so add that.
+
+[source,ruby]
+-----
+<html>
+<body>
+<!-- message -->
+<form method='POST' enctype='multipart/form-data' action='/unpack'>
+Choose a zip file: 
+<input type='file' name='zip'/>
+<input type='submit' name='submit'>
+</form>
+</body>
+</html>
 
 -----
 
@@ -307,10 +322,13 @@ This server
 script receives a POST request at the `/unpack` mount point and
 retrieves a ZIP file from the parameters passed into the script. It
 then opens the ZIP file (stored as a temp file on the server side),
-iterates over each file in the ZIP, and writes them to the images
-directory, stripping the file names down to a simple name without
-subdirectories and converting whitespace to underscores. Pretty
-advanced for 21 lines of code, no?
+iterates over each file in the ZIP, strips the full path from the
+filename, and then prints out that filename (if it looks like an image)
+to our console. Regardless of whether we are accessing the 
+root of our server, or have just posted to the `/unpack` mount point,
+we always need to render our index page. When we do render it after
+unzipping, we replace a comment stored in the index file with a status
+message indicating the script received the correct file we posted.
 
 We need to add an additional ruby library to enable this application,
 so update the required gems using the following commands, and then re-run
@@ -321,19 +339,414 @@ $ printf "gem 'rubyzip'\n" >> Gemfile
 $ bundle install
 $ ruby image.rb
 
-If we visit `http://localhost:4567/` in our browser we will see a
-crash. Our sinatra script complains that the `index.html` file does
-not exist. Let's create that file, named `index.html`.
+Then, we can open `http://localhost:4567/` and test uploading a file
+full of images. You'll see output similar to this in your console
+after uploading a file.
+
+[source,bash]
+----
+...
+[2014-05-07 10:08:49] INFO  WEBrick 1.3.1
+[2014-05-07 10:08:49] INFO  ruby 2.0.0 (2013-05-14)
+[x86_64-darwin13.0.0]
+== Sinatra/1.4.5 has taken the stage on 4567 for development with
+backup from WEBrick
+[2014-05-07 10:08:49] INFO  WEBrick::HTTPServer#start: pid=46370
+port=4567
+Writing out: IMG1234.png
+Writing out: IMG5678.png
+Writing out: IMG5678.png
+...
+----
+
+#### Adding Git Support
+
+Our end goal for this script is to add files to our Gollum wiki, which
+means adding files to the repository which backs our Gollum wiki.
+The Rugged library handles the grunt work of this type of task easily. 
+Rugged is the successor to the original Ruby library for Git (called
+Grit). Rugged provides a binding between the libgit2 library,
+a "portable, pure C implementation of the Git core methods" but Rugged is
+written in Ruby and gives you the simple elegance of Ruby. As you
+might expect, Rugged is maintained by several employees of GitHub. 
+
+To change our script to modify our Git repository, modify the `puts`
+statement inside the zip loop to call a new method called
+`write_file_to_repo`. And, at the end of the zip block, add a method
+called `build_commit` which builds the commit from our new files. Our
+new file (omitting the unchanged code at the head of the file) looks
+like this.
+
+[source,ruby]
+-----
+post '/unpack' do
+  @repo = Rugged::Repository.new('.')
+  @index = Rugged::Index.new
+
+  zip = params[:zip][:tempfile]
+  Zip::ZipFile.open( zip ) { |zipfile|
+    zipfile.each do |f|
+      contents = zipfile.read( f.name )
+      filename = f.name.split( File::SEPARATOR ).pop
+      if contents and filename and filename =~ /(png|jp?g|gif)$/i
+        write_file_to_repo contents, filename # Write the file
+      end
+    end
+    build_commit() # Build a commit from the new files
+  }
+  index( params[:zip][:filename] )
+end  
+
+def get_credentials
+  contents = File.read File.join( ENV['HOME'], ".gitconfig" )
+  @email = $1 if contents =~ /email = (.+)$/
+  @name = $1 if contents =~ /name = (.+)$/
+end
+
+def build_commit
+  get_credentials()
+  options = {}
+  options[:tree] = @index.write_tree(@repo)
+  options[:author] = { :email => @email, :name => @name, :time => Time.now }
+  options[:committer] = { :email => @email, :name => @name, :time => Time.now }
+  options[:message] ||= "Adding new images"
+  options[:parents] = @repo.empty? ? [] : [ @repo.head.target ].compact
+  options[:update_ref] = 'HEAD'
+
+  Rugged::Commit.create(@repo, options)
+  
+end
+
+def write_file_to_repo( contents, filename )
+  oid = @repo.write( contents, :blob )
+  @index.add(:path => filename, :oid => oid, :mode => 0100644)
+end
+-----
+
+As you can see from the code above, Rugged handles a lot of the grunt
+work required when creating a commit inside a Git repository. Rugged has a
+simple interface to creating a blob inside your Git repository
+(`write`), adding files to the index (the `add` method), and
+then has a simple and clean interface to build the tree object
+(`write_tree`) and then build the commit (`Rugged::Commit.create`). 
+
+The astute observers among you will notice a method called
+`get_credentials` which loads up your credentials from a file located
+in your home directory called `.gitconfig`. You probably have this if
+you have used Git for anything at all on your machine, but if this
+file is missing, this method will fail. On my machine this file looks
+like the following code snippet. The `get_credentials` method simply loads up this
+file and parses it for the name and email address. If you wanted to
+load the credentials using another method, or even hard code them, you
+can just modify this method to suit your needs. The instance variables
+`@email` and `@name` are then used in the `build_commit()` method.
+
+[source,ini]
+----
+[user]
+        name = Chris Dawson
+        email = xrdawson@gmail.com
+[credential]
+        helper = cache --timeout=3600
+...
+----
+
+Just to double check that everything worked properly, let's verify
+that things are working correctly after uploading a ZIP file. Jumping
+into a terminal window after uploading a new file, imagine running
+these commands:
+
+[source,bash]
+----
+$ git status
+----
+
+To our surprise, we will see something like this:
+
+[source,bash]
+-----
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+  deleted:    images/3190a7759f7f6688b5e08526301e14d115292a6e/IMG_20120825_164703.jpg
+  deleted:    images/3190a7759f7f6688b5e08526301e14d115292a6e/IMG_20130704_151522.jpg
+  deleted:    images/3190a7759f7f6688b5e08526301e14d115292a6e/IMG_20130704_174217.jpg
+
+-----
+
+We just added those files; why is Git reporting them as deleted?
+
+To understand why this happens, remember that in Git there are three
+places where files can reside: the working directory, the staging
+area or index, and the repository itself. Your working directory is
+the set of local files which you are working on. The `git status`
+command describes itself as "show the working tree status." Rugged
+operates on the repository itself, and our Rugged calls above operated
+on the index and then built a commit. This is important to note
+because our files will not exist in our working directory if we only
+write them using the Rugged calls, and if we do this, we cannot
+reference them inside our wiki page when we are running Gollum
+locally. We'll fix this in the next section.
+
+##### Adding to our Wiki
+
+We've now added the files to our repository, but we have not exposed
+these files inside our wiki. Let's modify our server script to write
+out each file to a wiki page for review. As we mentioned in the
+previous section, we need to make sure that we write the files to both
+the working index and the repository (using the Rugged library `write`
+call). Then we can generate a Review file which details all the images
+uploaded.
+
+##### Git Handles Duplicates Gracefully
+
+Often while a designer is receiving feedback from stakeholders, they
+will incorporate that feedback into the UI comps, and then resend the
+set of comps, with only a tiny change in one file, where the remaining
+dozens or even hundreds of files have been left unchanged. We might
+assume that our code, as it writes these files to a different path on
+disk inside the repository (the path is the parent SHA hash to make it
+unique) and we could therefore be adding the same 
+file multiple times, and creating a big wasteful repository. However,
+the nature of git permits us to add the same file multiple times
+without incurring any additional storage cost beyond the first
+addition. When a file is added to git repository, a SHA hash is
+generated from the file contents. For example, generating the SHA hash
+from an empty file will always return the same SHA
+hash.footnote:[This is explained
+beautifully in the blog
+http://alblue.bandlem.com/2011/08/git-tip-of-week-objects.html.]
+
+[source,bash]
+-----
+$ echo -en "blob 0\0" | shasum
+e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+$ printf '' | git hash-object -w --stdin
+e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+-----
+
+Adding a zip file with a bunch of files where only one
+or two differs from the prior zip file means that Git will properly
+reference the same file multiple times. Unfortunately, GitHub does not provide
+an interface for reviewing statistics of Wikis in the same way that
+they do for regular repositories. We can, however, review our
+repository size from within the local repository by running the
+count-objects Git subcommand. As an example, I uploaded a ZIP file
+with two images inside of it. I then use the 
+count-objects command and see this:
+
+[source,bash]
+-------
+$ git gc
+...
+$ git count-objects -v
+count: 0
+size: 0
+in-pack: 11
+packs: 1
+size-pack: 2029
+prune-packable: 0
+garbage: 0
+size-garbage: 0
+-------
+
+Inspecting the first ZIP file, I see these statistics about it.
+
+[source,bash]
+-----
+$ unzip -l ~/Downloads/Photos\ \(4\).zip 
+Archive:  /Users/xrdawson/Downloads/Photos (4).zip
+  Length     Date   Time    Name
+ --------    ----   ----    ----
+  1189130  01-01-12 00:00   IMG_20130704_151522.jpg
+   889061  01-01-12 00:00   IMG_20130704_174217.jpg
+ --------                   -------
+  2078191                   2 files
+-----
+
+I then use another ZIP file which has one additional file, with the
+other two included files exactly identical.
+
+[source,bash]
+-----
+unzip -l ~/Downloads/Photos\ \(5\).zip 
+Archive:  /Users/xrdawson/Downloads/Photos (5).zip
+  Length     Date   Time    Name
+ --------    ----   ----    ----
+  1189130  01-01-12 00:00   IMG_20130704_151522.jpg
+   566713  01-01-12 00:00   IMG_20120825_164703.jpg
+   889061  01-01-12 00:00   IMG_20130704_174217.jpg
+ --------                   -------
+  2644904                   3 files
+
+-----
+
+Then, I upload the second ZIP file. If I re-run the count-object
+command (after running `git gc`, a command which packs files
+efficiently and makes our output more human readable), I see this:
+
+[source,bash]
+----
+$ git gc
+...
+$ git count-objects -v
+count: 0
+size: 0
+in-pack: 17
+packs: 1
+size-pack: 2578
+prune-packable: 0
+garbage: 0
+size-garbage: 0
+----
+
+Notice that our packed size has only changed by about half a MB, which
+is the compressed size of the additional third file.
+
+If we upload the secondary file yet again, we will regenerate and
+commit a new version of the `Review.md` file, but no new files will
+need to be created inside our Git repository object store from the
+images directory (even though their paths have changed), so our 
+impact on the repository will be minimal.
+
+[source,bash]
+-----
+$ git gc
+...
+$ git count-objects -v
+count: 0
+size: 0
+in-pack: 21
+packs: 1
+size-pack: 2578
+prune-packable: 0
+garbage: 0
+size-garbage: 0
+-----
+
+As you can see, our packed-size has barely changed, an indication that
+the only changes were a new Git tree object and commit object. We
+still do have the files located in our repository at a variety of
+paths so our review pages will work no matter what revision we are accessing.
+
+[source,bash]
+-----
+$ find images
+images
+images/7507409915d00ad33d03c78af0a4004797eec4b4
+images/7507409915d00ad33d03c78af0a4004797eec4b4/IMG_20120825_164703.jpg
+images/7507409915d00ad33d03c78af0a4004797eec4b4/IMG_20130704_151522.jpg
+images/7507409915d00ad33d03c78af0a4004797eec4b4/IMG_20130704_174217.jpg
+images/7f9505a4bafe8c8f654e22ea3fd4dab8b4075f75
+images/7f9505a4bafe8c8f654e22ea3fd4dab8b4075f75/IMG_20120825_164703.jpg
+images/7f9505a4bafe8c8f654e22ea3fd4dab8b4075f75/IMG_20130704_151522.jpg
+images/7f9505a4bafe8c8f654e22ea3fd4dab8b4075f75/IMG_20130704_174217.jpg
+images/b4be28e5b24bfa46c4942d756a3a07efd24bc234
+images/b4be28e5b24bfa46c4942d756a3a07efd24bc234/IMG_20130704_151522.jpg
+images/b4be28e5b24bfa46c4942d756a3a07efd24bc234/IMG_20130704_174217.jpg
+-----
+
+Git and Gollum can efficiently store the same file at different paths
+without overloading the repository.
+
+#### Reviewing on GitHub
+
+The raison d'etre for this wiki is to annotate a development project.
+Since you are reading a book about GitHub, let's assume that you are
+hosting the code for this project on GitHub. Now that we have started
+adding images into our wiki, we might want to share that wiki in a
+public and more accessible way with our
+stakeholders on GitHub. The easiest way to synchronize our local
+repository-as-wiki with a GitHub repository is to visit the
+code repository, and click on the wiki link, and then create a new
+wiki. For example, imagine I am working on a project called
+"android-project1". My username is "xrd", so on GitHub I would
+reference this project at the URL
+`http://github.com/xrd/android-project1`. 
+
+image::images/gollum-android-project1.png[]
+
+Notice that in the right column a link called "Wiki". Clicking on this
+shows us the entry page for our wiki which is empty. We can create a
+new wiki by clicking on the button marked "Create the first page". It
+might seem strange to do this given that we already have a wiki in our
+local repository, but GitHub needs to perform initialization on its
+end before it permits us to push our repository into it.
+
+image::images/gollum-android-project1-create.png[]
+
+Clicking on the button brings us to an editor page which allows us to
+enter the first version of the Home page of our wiki. We don't need to
+do anything here, but we could offer instructions to less technical
+people about how to use the review pages, etc. But, it is acceptable
+to just click the "Save Page" button at the bottom of the page. Once
+you have done this, you will see the wiki home page, and more
+importantly, a box with the clone URL labeled "Clone this wiki
+locally". In our example case, this URL is
+`git@github.com:xrd/android-project1.wiki.git`. 
+
+Entering our terminal window we can then add a remote URL to our local
+repository which allows us to synchronize our repositories and publish
+our changes to GitHub.
+
+[source,bash]
+-----
+$ git remote add origin git@github.com:xrd/android-project1.wiki.git
+$ git pull # This will require us to merge the changes...
+$ git push
+-----
+
+When we pull, we will be asked to merge our changes since GitHub
+created a `Home.md` file which did not exist in our local repository.
+We can just accept the merge as-is. The `git push` publishes our
+changes. If we then visit the wiki, we'll see an additional file
+listed under the pages sidebar to the right. Clicking on the review
+page, we can see the images we've added most recently.
+
+image::images/gollum-android-project1-review.png[]
+
+Not sure why our designer is providing us with an image of a couch,
+but I am sure he has his reasons.
+
+If you note the "3 commits" listed under the "Review" title, this is
+where we can review changes made. 
+
+image::images/gollum-android-project1-revisions.png[]
+
+Clicking on any of the SHA hashes will display the page at that
+revision in our history and show us the state of the app at any given
+moment in history. Unfortunately, jumping back and forth between
+revisions requires two clicks, one from the review page to the list of
+revisions, and then another click to jump into the revision we want,
+but this permits us to review changes between the comps provided from
+our designer. It would be nice if GitHub provided a simple way to jump
+from a revision to the parent (older) revision, but they don't expose
+this in their site as of this writing.
+
+#### Improving Revision Navigation
+
+We only have three revisions right now, and all share the same commit
+message ("Adding new images"). This is not very descriptive and makes
+it challenging to understand the differences between revisions,
+critical when we are trying to understand how things have changed
+between comps. We can improve this easily.
+
+First, let's add a commit message field to our upload form.
 
 [source,html]
-------
+-----
 <html>
 <body>
-<form method='POST' enctype='multipart/form-data' action='/upload'>
+<!-- message -->
+<form method='POST' enctype='multipart/form-data' action='/unpack'>
 Choose a zip file: 
 <input type='file' name='zip'/>
 <input type='submit' name='submit'>
 </form>
 </body>
 </html>
-------
+
+-----
+xxx
