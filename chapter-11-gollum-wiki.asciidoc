@@ -2,16 +2,164 @@
 
 === Using Gollum
 
-Gollum is the GitHub contribution to open source wikis. A wiki is
+Gollum is the GitHub open sourced contribution to Wikis. A wiki is
 defined as "a website that allows collaborative editing of its content
 and structure by its users." Just as Git has revolutionized
 collaborative editing of code, Gollum wikis layer the benefits of Git
-onto a proven publishing metaphor.
+onto a proven publishing metaphor. And, Gollum wikis are tightly integrated
+with GitHub, such that you can quickly build and associate a wiki with any
+repository, and create a collaborative documentation system around any
+repository hosted on GitHub.
+
+==== Creating a Wiki on GitHub
+
+Any repository, public or private, can have an associated Gollum wiki.
+To create one, visit the repository page and then look in the
+rightmost colum. You'll see an icon which looks like a book, next to
+which will be the word "Wiki." 
+
+image::images/gollum-wiki.png[]
+
+Clicking on this link will bring you to a page where you are asked to
+create a wiki for the first time. GitHub will ask you to create the
+"Home" page, which is the starting point in a Gollum wiki. GitHub will
+automatically create a page template with the project name; you can
+customize this information to suit your own needs. Clicking on the
+"Save Page" will save your first page and create the wiki for you.
+
+image::images/gollum-wiki-create.png[]
+
+Your wiki is now as public as your repository is public. Public
+repositories have public wikis, accessible to anyone. Private
+repositories have private wikis, accessible only to those users or
+organizations which have rights to edit the repository data. 
+
+==== Gollum Markup and Structure
+
+Gollum files can be written in any of the supported "Github Markup" formats, which
+includes ASCIIdoc, Creole, Markdown, Org Mode, Pod, RDoc,
+ReStructuredText, Textile, and MediaWiki. The variety of markup
+languages brings flexibility but it can be confusing to know which one
+to use. Markdown (and its variant cousins) is the most popular Markup
+language on GitHub, and is well liked on other popular sites like
+Stack Overflow. If you are unsure which language to use, Markdown is a
+safe bet, but there are pros and cons of each language depending on
+your application. For more specifics on Markdown, see the chapter on
+Jekyll blogging.
+
+In addition to the standard markup language tags, Gollum adds its own
+set of markup tags specific to writing Wikis. There 
+are often subtle differences from other Wiki markup so it is worth reviewing
+the https://github.com/gollum/gollum/wiki:[Gollum
+repository documentation page]; we'll summarize a few of those tags here.
+
+Links use the syntax `[[Link]]`. You can add a link title using
+the bar character: `[[http://foobar.com|A link to foobar]]`. Links can
+be either external or internal links. A link like `[[Review Images]]`
+will be converted to a relative link to the page `review-images.ext`
+(where ext is the preferred extension you are using with your wiki,
+most likely Markdown). Wikis are generally a collection of pages
+linked together in myriad ways, and this assumption about the
+structure of links makes writing pages easier. As we mentioned, there
+are differences between Gollum wiki tags and other wikis despite
+having similar syntax. One such example is MediaWiki, where links with
+titles use the opposite ordering `[[A link to
+foobar|http://foobar.com]]`, so caveat emptor.
+
+Inserting images uses the same tag format `[[ceo.png]]`. Overloading this
+syntax makes it simple to remember the basics of adding relationships
+inside your wiki, whether they be images or page links. There are many
+options you can provide when generating image tags. For example, to
+add a frame and an alt tag, you could use syntax like
+`[[ceo.png|frame|alt=Our CEO relaxing on the beach]]`. Review the
+documentation on the Gollum repository for more details about the breadth
+of the image options.
+
+Gollum comes from GitHub, a company dedicated to improving the lives
+of software developers, so it stands to reason Gollum wikis would
+support code snippets. To include a snippet of code, use three
+backticks, followed by the language name, and close the block of code using
+three more backticks.
+
+[source,ruby]
+----
+```ruby
+def hello
+  puts "hello"
+end
+```
+----
+
+A more interesting way of embedding code inside a Gollum repository is
+to use the file include syntax. Again, use a triple backtick, followed
+by the file type and then a reference to the code snippet inside a
+GitHub repository. You'll need to include the branch as well.
+
+[source,ruby]
+------
+```html:github:xrd/TeddyHyde/blob/master/Gemfile```
+------
+
+This will pull the file on GitHub located inside the "TeddyHyde" repository for
+user "xrd" on the master branch named "Gemfile"  and publish it with
+syntax hilighted into your wiki as if you had used this markup.
+
+[source,ruby]
+-------
+```ruby
+source 'https://rubygems.org'
+
+gem "nokogiri"
+gem "rspec"
+gem 'calabash-android', :git => 'git://github.com/calabash/calabash-android.git'
+```
+-------
+
+Unfortunately, you cannot specify a specific SHA commit to retrieve
+moments in history within the git repository, but this is still a
+powerful way to expose a file inside a Gollum wiki. If you need to do
+that, the best way might be to create a branch from a specific SHA
+commit, and then reference that branch when including the file.
+
+[source,bash]
+$ git checkout 0be3e4475db2697b8
+$ git checkout -b at_sha_0be3e4475db2697b8
+$ echo "gem 'rails' # Adding rails to Gemfile" >> Gemfile
+$ git commit -m "Added rails to Gemfile" -a
+$ git push origin at_sha_0be3e4475db2697b8
+
+This would generate a new branch based on an older commit, and push up
+the branch. Then, you could reference this inside your wiki with the
+following include
+
+[source,ruby]
+------
+```html:github:xrd/TeddyHyde/blob/at_sha_0be3e4475db2697b8/Gemfile```
+------
+
+Note that we've referenced the branch named after the specific SHA
+hash we want. 
+
+Gollum includes capabilities to add sidebars, headers, and footers. If
+you include a file called `_Sidebar.ext` inside your repository,
+you'll see it as a sidebar for every file rendered. Sidebars are
+automatically added to any file and any file from subdirectories that
+do not have their own sidebar files. If you wanted to add sidebars
+specific to a subdirectory, add another file there and this file will
+override the top level sidebar file. 
+
+Finally, for security reasons, Gollum strips out all CSS and
+JavaScript from raw markup files. You can include your own JavaScript
+or CSS file when running Gollum locally using the `--custom-css` or
+`--custom-js` switches, but there is no way to include these files on a
+Wiki when your Gollum wiki is hosted on GitHub.
 
 ==== Installing Gollum locally
 
-You can edit Gollum wikis hosted on GitHub using only any web browser.
-If you want to run Gollum locally, and there are many benefits to
+Gollum wikis hosted on GitHub can be edited using only a web browser;
+GitHub offers a simple editor which supports the basics of Gollum
+markup and you can always use raw Markup commands when necessary. If
+you want to run Gollum locally, and there are many benefits to 
 doing so, then you need to install the gollum command line tools. 
 
 [source,bash]
@@ -123,7 +271,7 @@ Gollum is a great tool when working locally. However, there is a bug
 currently where images are not displayed, so although you can fully
 edit files using the local `gollum` command, you will not be be able
 to view them when viewing your wiki on you local machine. To view
-files, publish them into GitHub.
+image files correctly, publish them into GitHub.
 
 ===== Adding Authentication 
 
@@ -157,7 +305,7 @@ gollum --config authentication.rb
 You'll then be prompted for the username and password, and can use
 "admin" and "admin". 
 
-Hackers love to use puns and wordplay within their code. If you peek
+Why "Precious?" Hackers love to use puns and wordplay within their code. If you peek
 into the Gollum code itself, you'll see that the Gollum libraries use
 a namespace called "Precious" (the word used to refer to the ring by
 the character Gollum in the Lord of the Rings books) as the base class
@@ -662,46 +810,27 @@ without overloading the repository.
 #### Reviewing on GitHub
 
 The raison d'etre for this wiki is to annotate a development project.
-Since you are reading a book about GitHub, let's assume that you are
-hosting the code for this project on GitHub. Now that we have started
-adding images into our wiki, we might want to share that wiki in a
-public and more accessible way with our
-stakeholders on GitHub. The easiest way to synchronize our local
-repository-as-wiki with a GitHub repository is to visit the
-code repository, and click on the wiki link, and then create a new
-wiki. For example, imagine I am working on a project called
-"android-project1". My username is "xrd", so on GitHub I would
-reference this project at the URL
-`http://github.com/xrd/android-project1`. 
+If you follow the instructions above and create a new wiki for a
+repository, you'll then be able to push up the changes we've made
+using our `image.rb` script. Once you have created a new wiki, look
+for a box on the right which says "Clone this wiki locally". 
 
-image::images/gollum-android-project1.png[]
+image::images/gollum-local-clone-url.png[]
 
-Notice that in the right column a link called "Wiki". Clicking on this
-shows us the entry page for our wiki which is empty. We can create a
-new wiki by clicking on the button marked "Create the first page". It
-might seem strange to do this given that we already have a wiki in our
-local repository, but GitHub needs to perform initialization on its
-end before it permits us to push our repository into it.
-
-image::images/gollum-android-project1-create.png[]
-
-Clicking on the button brings us to an editor page which allows us to
-enter the first version of the Home page of our wiki. We don't need to
-do anything here, but we could offer instructions to less technical
-people about how to use the review pages, etc. But, it is acceptable
-to just click the "Save Page" button at the bottom of the page. Once
-you have done this, you will see the wiki home page, and more
-importantly, a box with the clone URL labeled "Clone this wiki
-locally". In our example case, this URL is
-`git@github.com:xrd/android-project1.wiki.git`. 
-
-Entering our terminal window we can then add a remote URL to our local
-repository which allows us to synchronize our repositories and publish
-our changes to GitHub.
+Copy that link, and then enter a terminal window where we can then add a remote
+URL to our local repository which allows us to synchronize our
+repositories and publish our images into GitHub. Gollum wikis have a
+simple URL structure based on the original clone URL: just add the
+word `.wiki` to the end of the clone URL (but before the final `.git`
+extension). So, if our original clone URL of the repository is
+`git@github.com:xrd/webiphany.com.git` our clone URL for the
+associated wiki will be `git@github.com:xrd/webiphany.com.wiki.git`.
+Once we have the URL, we can add it as a remote to our local
+repository using the following commands.
 
 [source,bash]
 -----
-$ git remote add origin git@github.com:xrd/android-project1.wiki.git
+$ git remote add origin git@github.com:xrd/webiphany.com.wiki.git
 $ git pull # This will require us to merge the changes...
 $ git push
 -----
@@ -718,24 +847,32 @@ image::images/gollum-android-project1-review.png[]
 Not sure why our designer is providing us with an image of a couch,
 but I am sure he has his reasons.
 
-If you note the "3 commits" listed under the "Review" title, this is
-where we can review changes made. 
+Once have published the file, we can click on the "Review" link in the
+sidebar to see the most current version of the "Review" page. We also
+can review the revisions of this file by clicking on the "3 Commits"
+(or whatever number of commits have occurred with this file).
+link right underneath the page title. Jumping onto that page shows us
+the full history of this file.
 
 image::images/gollum-android-project1-revisions.png[]
 
 Clicking on any of the SHA hashes will display the page at that
-revision in our history and show us the state of the app at any given
+revision in our history and show us the state of the document at any given
 moment in history. Unfortunately, jumping back and forth between
 revisions requires two clicks, one from the review page to the list of
 revisions, and then another click to jump into the revision we want,
 but this permits us to review changes between the comps provided from
-our designer. It would be nice if GitHub provided a simple way to jump
+our designer. 
+
+It would be nice if GitHub provided a simple way to jump
 from a revision to the parent (older) revision, but they don't expose
-this in their site as of this writing. But, we can fix this.
+this in their site as of this writing. We can fix this, however, by generating
+our own special link inside the review page itself which will
+magically know about how to navigate to a previous version of the page.
 
 #### Improving Revision Navigation
 
-We only have three revisions right now, and all share the same commit
+In our example, we only have three revisions right now, and all share the same commit
 message ("Adding new images"). This is not very descriptive and makes
 it challenging to understand the differences between revisions,
 critical when we are trying to understand how things have changed
@@ -787,7 +924,8 @@ viewing the history.
 Again, it is a simple change: one line within the `write_review_file`
 method. After the block which creates each link to the image files,
 add a line which builds a link to the parent document
-via its SHA hash. This link will allow us to navigate to prior
+via its SHA hash using the parent SHA found in our Rugged object under
+`@repo.head.target`. This link will allow us to navigate to prior
 revisions in our history.
 
 [source,ruby]
@@ -815,7 +953,7 @@ could generate this link alongside the link we placed into the wiki
 markup, and we could do this using a link that runs an onclick handler
 delegating to a JavaScript command like
 `window.history.back()`, but Gollum foils us again by
-stripping JavaScript from our markup files. This is a good thing
+stripping JavaScript from our markup files as we noted before. This is a good thing
 generally, as we don't want to permit rogue markup inside our wiki
 pages, but it does limit our options in this situation.
 
