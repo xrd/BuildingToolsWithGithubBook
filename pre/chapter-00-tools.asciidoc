@@ -94,7 +94,8 @@ speech, so you can try them out without cost (other than your time).
 There are many native gems for Ruby which don't properly compile if
 the host system is Windows, so you can save yourself considerable time
 by just using a completely free (as in beer) option like VirtualBox
-and a Linux instead of using Windows.
+and a Linux virtual machine running on Windows instead of fighting
+with running everything directly on Windows. 
 
 === Important Ruby and RVM Concepts
 
@@ -144,8 +145,6 @@ Here are a few tips when using Ruby and RVM.
   sure to read the output printed to the screen as you install Ruby
   using RVM for special instructions specific to your platform.
 
-== Other Languages
-
 === NodeJS
 
 NodeJS has gained immense popularity in the last few years. JavaScript
@@ -161,12 +160,19 @@ to RVM. To install it run these commands from a shell prompt:
 [source,bash]
 $ curl https://raw.github.com/creationix/nvm/master/install.sh | sh
 
-=== package.json
+==== package.json
 
 Much like Ruby has a Gemfile which indicates required libraries, so
 too does NodeJS have an equivalent file. In NodeJS, this file is
-called `package.json`. 
+called `package.json`.  To install all required libraries for any
+project, use the `npm` tool. Running without any arguments will
+install all libraries specified by the application if there is a
+`package.json` file included with the project. 
 
-To install all required libraries, use the `npm` tool. Running it
-without any arguments will install all libraries specified by the application.
+==== Ruby and NodeJS
 
+Installing these two language management tools in advance will
+streamline your experience as you work through chapters in this book.
+There are other languages presented which require different
+installation procedures, but these two are vital if you plan on
+writing code that integrates with GitHub.

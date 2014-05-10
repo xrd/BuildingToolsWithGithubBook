@@ -204,7 +204,15 @@ to make sure you see them in the browser interface.
 
 ==== Editing Gotchas with the Command Line
 
-To illustrate this "gotcha" let's imagine adding a sidebar to our wiki. Adding a sidebar means you need to create a file called _Sidebar.md. This is a special file which Gollum recognizes and generates a sidebar for you; the first part of the name is fixed, but you can change the extension to whatever extension you prefer for your wiki files. If we use the "open" command (available on Mac or Linux) to open the Wiki in our default browser, you will see that only once we have committed the change to our repository do we actually see the sidebar.
+To illustrate this "gotcha" let's go through the steps to add a
+sidebar to our wiki. Adding a sidebar means you need to create a file
+called _Sidebar.md. This is a special file which Gollum recognizes and
+generates a sidebar for you; the first part of the name is fixed, but
+you can change the extension to whatever extension you prefer for your
+wiki files. If we use the "open" command (available on Mac or Linux)
+to open the Wiki in our default browser, you will see that only once
+we have committed the change to our repository do we actually see the
+sidebar. 
 
 [source,bash]
 -----
