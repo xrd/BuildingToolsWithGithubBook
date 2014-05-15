@@ -22,8 +22,8 @@ GitHub, not specific syntax in any particular language.
 === GitHub started with Ruby
 
 Many of the tools written and used internally at GitHub are written in
-Ruby. The founders of GitHub all have strong contributions to popular
-Ruby libraries ("gems"). To be successful with this book, you should
+Ruby. The founders of GitHub have all made strong contributions to popular
+Ruby libraries, called "gems". To be successful with this book, you should
 at least have Ruby installed. 
 
 There are many ways to get Ruby. And, as a long time user I have
@@ -33,8 +33,10 @@ friction and trouble.
 
 You might already have a version of Ruby installed. Mac OSX comes
 bundled with Ruby and various flavors of Linux do as well. However, I
-recommend that you use the method of installation described here.
-Often ruby packages require a specific version of ruby though there
+recommend that you use the method of installation described below
+rather than using the stock installed version of Ruby you might
+already have on your system. Often ruby packages require a specific
+version of ruby though there 
 is a chance it will work with other versions. The problem is that you
 might encounter subtle bugs that have never been seen before and using
 the methods described here will make it trivial to install any version
@@ -45,7 +47,8 @@ other previously installed version of Ruby you have already on your system.
 === Why Ruby at GitHub
 
 GitHub is a company with its foundations sitting on top of the Ruby
-language. Tom Preston Warner built the initial libraries for using git
+language. Tom Preston Warner (one of three founders of GitHub) built
+the initial libraries for using git 
 with Ruby, a library called Grit. You can host blogs on GitHub for
 free, and this tool called Jekyll is built using Ruby. Gollum, the
 technology which powers GitHub wikis, is built using Grit and runs on
@@ -103,9 +106,10 @@ Here are a few tips when using Ruby and RVM.
 
 * `Gemfile`: Ruby packages libraries in a format called a gem. A
   gemfile is a manifest which describes which gems your application
-  needs. This makes it simple to install all the required libraries.
-  To install all libraries, run the `bundle` command from a shell
-  prompt. 
+  needs. Gemfiles make it simple to install all the required
+  libraries: run the `bundle` command from a shell prompt and all
+  libraries will be installed, which can include downloading from the
+  network and building from source if compilation is required.
 * `.ruby-version` or `.rvmrc`: These two files tell your application
   (or shell) which version of Ruby to use. Often applications will
   include this file as a part of their package. If you use RVM, RVM

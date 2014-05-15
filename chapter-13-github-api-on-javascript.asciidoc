@@ -2,15 +2,15 @@
 
 Now that you know the basics of the GitHub API, let's build something
 interesting with it. GitHub offers libraries which work within other
-programming languages and frameworks, and later we will talk about
-using the GitHub API on the server side. To start, however, let's
-build a single page app with everything hosted on GitHub and using the
-GitHub API.
+programming languages and frameworks, and other chapters discuss the
+GitHub API on the server side. You don't need a server, however, to
+build applications which interact with the GitHub API. To demonstrate
+this, we will build a single page app, hosting everything on GitHub
+and using the GitHub API through a pure JavaScript client-side library.
 
 === Using the GitHub API with JavaScript
 
-This chapter focuses on using the GitHub API with client side
-JavaScript. JavaScript is the lingua franca of the web, invented in
+JavaScript is the lingua franca of the web, invented in
 1995 as a scripting language embedded inside the first web browsers.
 JavaScript has recently found its way to the server side as well with
 NodeJS, an innovative toolkit for building high performance network
@@ -29,14 +29,9 @@ the functionality works as we expect.
 
 ==== Building our coffee shop database
 
-The Japanese have a word "otaku"; it describes a person obsessed with
-something, often computers or technology. Like westerners have done
-with the word "geek" or "nerd" it has been reappropriated by many in Japan to be a
-self-referential term indicating fastidiousness, and now is used in
-the same way in the western world. Many software developers would happily call
-themselves otaku. Interestingly, in many of the 
-software development shops where I have worked in Portland, there is
-an equally, almost disturbing, obsession with coffee. I suffer from
+
+In many of the software development shops where I have worked in Portland, there is
+an almost disturbing obsession with coffee. I suffer from
 the same malady, and it means I will drag my poor wife and infant son
 with me as I visit new cities, through the slime and filth of strange
 neighborhoods, just to find the perfect brew and complementary gluten
@@ -63,10 +58,10 @@ expectations we have of the GitHub API.
 
 More specifically, we'll use these technologies:
 
-* GitHub API JavaScript library:https://github.com/michael/github
-* AngularJS: a superpowered framework for writing JS applications that
-  are testable
-* Bootstrap: a CSS library which simplifies building beautiful webapps
+* https://github.com/michael/github:[an (unofficial) GitHub API JavaScript library]
+* http://angularjs.org:[AngularJS] a "superpowered framework" for writing JS applications that
+  are testable.
+* http://getbootstrap.com:[Bootstrap] a CSS library which simplifies building beautiful webapps
 
 You don't need to know these technologies in advance of working on this chapter.
 
@@ -125,7 +120,7 @@ hostname far in advance if your site has to be live by a certain point.
 
 ===== Adding the support libraries
 
-As we mentioned we will use the GitHub.js library, AngularJS, and
+As we mentioned, we will use the GitHub.js library, AngularJS, and
 Bootstrap. Let's add those to our project now. Using whatever editor
 you prefer, edit the index.html file to look like this:
 
@@ -157,7 +152,7 @@ I am assuming you have a firm grasp on most HTML concepts, but a few
 of the advanced topics here:
 
 * The `meta` tag makes our page work well with mobile browsers and
-  complements the resposive features of Bootstrap.
+  enables the resposive features of Bootstrap.
 * The `ng-app` attribute in the body tag tells AngularJS to initialize
   and compile our page from the body tag downward. 
 * The `{{ }}` (double brackets) are an AngularJS two-way data binding
@@ -204,7 +199,7 @@ Modify our `index.html` to utilize this new code:
 </body>
 </html>
 
-Let's talk about these changes starting with the HTML file first.
+Let's talk about these changes, starting with the HTML file first.
 
 We added or changed just three lines. In reverse geographic order, we
 added a reference to our `coffeetech.js` file beneath our other JS
@@ -255,8 +250,8 @@ you'll understand the significant problems solved by those same features:
   you have completed adding data to the scope inside the callback.
 * AngularJS allows you to break application functionality into
   isolated components which makes your application more testable. When
-  we call `angular.controller` we are creating a controller which has
-  functionality defined on it and encapsulated inside itself.
+  we call `angular.controller` we are creating a controller which
+  allows us to isolate and encapsulate functionality.
 
 Now that we understand the benefits of using AngularJS, a few more
 specifics about the implementation details of our `coffeetech.js`
@@ -314,7 +309,7 @@ our single page app.
 
 ===== Visualize Application Data Structure
 
-Now, let's build our application. First, consider how we
+Let's build our application. First, consider how we
 will structure our data. We are going to use GitHub as our data store.
 GitHub is built on top of Git, a technology that could not be better suited for
 storing content. However, there is a major difference between
@@ -333,8 +328,8 @@ a file named after the city, and then either use geolocation on the
 client side to retrieve a set of the data, or ask the user to choose
 their city manually.
 
-If we look at the Github.js javascript documentation on Github
-[https://github.com/michael/github] we can see that there are some
+If we look at the https://github.com/michael/github:[Github.js javascript documentation on Github]
+we can see that there are some 
 options for us to pull content from a repository. We'll store a data
 file in JSON named after the city inside our repository and retrieve
 this from that repository. It looks like the calls we need to use are
@@ -403,7 +398,7 @@ We'll use a `ng-init` directive which simply tells AngularJS to call the
 function specified when the controller has finished loading. We'll
 call this function `init` so let's test it below.
 
-[source,javascript coffeetech.spec.js]
+[source,javascript]
 -----
 describe( "GithubCtrl", function() {
     var scope = undefined;
@@ -496,9 +491,10 @@ Chrome 32.0.1700 (Mac OS X 10.9.1) GithubCtrl #init should initialize, grabbing 
 ...
 ------
 
-Now we can write the code to support the tests we have written.
-
-First add support fixtures, data files which have test data. Add the `fixtures-cities.js` file.
+Once we have failing tests that support the direction of our code, we
+can write the code to support the tests we have written. First add
+support fixtures, data files which have test data. Add the
+`fixtures-cities.js` file. 
 
 [source,javascript]
 -----
@@ -509,7 +505,7 @@ var CITIES = [ { name: "portland", latitude: 45, longitude: 45 },
 
 And, the `fixtures-portland.js` file.
 
-[source,javascript fixture-portland.js] 
+[source,javascript] 
 -----
 var PORTLAND = [ { "name" : "Very Good Coffee Shop", "latitude" : 45.52292,  "longitude" : -122.643074 },
 { "name" : "Very Bad Coffee Shop", "latitude" : 45.522181, "longitude" : -122.63709 },
@@ -703,7 +699,7 @@ Now, let's expose the new data inside the `index.html` file like so:
 
 -----
 
-<1> `ng-repeat` is an AngularJS directive which iterates over an array
+<1>  `ng-repeat` is an AngularJS directive which iterates over an array
 of items. Here we use it to iterate over the items in our
 `portland.json` file and insert a snippet of HTML with our data
 interpolated from each item in the iteration.
