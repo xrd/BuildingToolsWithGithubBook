@@ -403,7 +403,7 @@ basics of the gollum wiki structure.
 Create our sinatra script called `image.rb`, and then we can install
 the necessary gems and run our server application.
 
-[source,ruby image.rb]
+[source,ruby]
 require 'sinatra'
 require 'gollum-lib'
 wiki = Gollum::Wiki.new(".")
@@ -421,7 +421,7 @@ Once you open this in your browser, you'll see a report of the files
 that exist in our Gollum wiki right now. We've only added one file,
 the `Home.md` file.
 
-#### Unpack Images from a Zip File
+==== Unpack Images from a Zip File
 
 Let's add to our server. We want to support uploading ZIP files into
 our system that we will then unpack and add to our repository, as well
@@ -487,7 +487,7 @@ Writing out: IMG5678.png
 ...
 ----
 
-#### Adding Git Support
+==== Adding Git Support
 
 Our end goal for this script is to add files to our Gollum wiki, which
 means adding files to the repository which backs our Gollum wiki.
@@ -495,7 +495,8 @@ The Rugged library handles the grunt work of this type of task easily.
 Rugged is the successor to the original Ruby library for Git (called
 Grit). Rugged provides a binding between the libgit2 library,
 a "portable, pure C implementation of the Git core methods" but Rugged is
-written in Ruby and gives you the simple elegance of Ruby. As you
+written in Ruby and, if you like Ruby, is a more elegant way to
+interface with a Git repository. As you
 might expect, Rugged is maintained by several employees of GitHub. 
 
 To change our script to modify our Git repository, modify the `puts`
@@ -580,7 +581,7 @@ write them using the Rugged calls, and if we do this, we cannot
 reference them inside our wiki page when we are running Gollum
 locally. We'll fix this in the next section.
 
-##### Adding to our Wiki
+===== Adding to our Wiki
 
 We've now added the files to our repository, but we have not exposed
 these files inside our wiki. Let's modify our server script to write
@@ -590,7 +591,7 @@ the working index and the repository (using the Rugged library `write`
 call). Then we can generate a Review file which details all the images
 uploaded.
 
-##### Git Handles Duplicates Gracefully
+===== Git Handles Duplicates Gracefully
 
 Often while a designer is receiving feedback from stakeholders, they
 will incorporate that feedback into the UI comps, and then resend the
@@ -693,7 +694,9 @@ size-garbage: 0
 ----
 
 Notice that our packed size has only changed by about half a MB, which
-is the compressed size of the additional third file.
+is the compressed size of the additional third file, but more
+importantly, there was no impact from the other two files on our
+repository size, even though they were added at different paths. 
 
 If we upload the secondary file yet again, we will regenerate and
 commit a new version of the `Review.md` file, but no new files will
@@ -741,7 +744,7 @@ images/b4be28e5b24bfa46c4942d756a3a07efd24bc234/IMG_20130704_174217.jpg
 Git and Gollum can efficiently store the same file at different paths
 without overloading the repository.
 
-#### Reviewing on GitHub
+==== Reviewing on GitHub
 
 The raison d'etre for this wiki is to annotate a development project.
 If you follow the instructions above and create a new wiki for a
@@ -804,7 +807,7 @@ this in their site as of this writing. We can fix this, however, by generating
 our own special link inside the review page itself which will
 magically know about how to navigate to a previous version of the page.
 
-#### Improving Revision Navigation
+==== Improving Revision Navigation
 
 In our example, we only have three revisions right now, and all share the same commit
 message ("Adding new images"). This is not very descriptive and makes
@@ -891,7 +894,7 @@ but not in the normal review. It does not affect viewing the files so
 this would require educating your stakeholders on the limitations of
 this link.
 
-### Summary
+=== Summary
 
 Gollum provides a powerful front end to wikis. Combining the power of
 a distributed versioning system, and simple Git libraries like Rugged,

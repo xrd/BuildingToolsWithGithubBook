@@ -10,7 +10,9 @@ or write something and discuss it, gists are a great tool.
 
 There are other services that do this: pastebin was the first, and
 there are many others that offer variances on code sharing. But gists
-by GitHub are not simply a pasting service.
+by GitHub are not simply a pasting service. We'll go over the basics
+of what gists are, and how to create them, before practicing building
+an app with one.
 
 === Gists are repositories
 
@@ -35,18 +37,17 @@ instead of the more onerous process of adding collaborators to a
 regular repository. Or, you can make a gist public, and
 share that URL to mailing lists or anywhere you need public feedback.
 
-=== No real privacy
-
+[NOTE]
 As there are two types of gists (public and secret), it is important the understand the
 differences between them. Public gists are searchable. Secret gists
 are not searchable, but they are accessible to anyone who knows
 the URL. Don't post any code to gist which you need to keep secret as
-once you put it there, it is only as a safe as the URL is secret.  
+once you put it there, it is only as safe as the URL is secret.  
 
 === Embedding Gists
 
-You can embed gists as shareable code snippets inside of blogs or any
-web page.
+Gists are embeddable as shareable code snippets inside of blogs or any
+web page. 
 
 ==== Inside HTML pages
 
@@ -58,16 +59,17 @@ into your HTML.
 
 ==== Inside Jekyll blogs
 
-You can use the code `{% gist 8138797 %}` to embed a public gist inside of your
+Jekyll supports a fast shortcut code to embed a public gist inside of your
 Jekyll blog hosted on GitHub, or on any site built on the
-"github-pages" branch mechanism (described in the "GitHub Pages" chapter). 
+"github-pages" branch mechanism (described in the "GitHub Pages"
+chapter).  The shortcut `{% gist 8138797 %}` will embed a private gist
+which would be found at `http://gist.github.com/8138797`. 
 
 If you want to use a specific file within the gist, add a filename to
 the gist code like `{% gist 8138797 hi.rb %}`.
 
-Secret gists can also be embedded. If you use a secret gist, you need to
-prefix the username of the account holder in the gist like so: `{% gist
-xrd/8138797 hi.rb %}`.
+Secret gists can also be embedded. If you use a secret gist, prefix
+the username of the account holder in the gist like so: `{% gist xrd/8138797 hi.rb %}`.
 
 === Gist from the command line
 
@@ -313,7 +315,11 @@ flexibility in whichever way fits you best.
 === A gist that displays gists
 
 Let's add to our application and use the octokit gem to pull all
-public gists for any user we specify.
+public gists for any user we specify. Why would we want to make a gist
+that displays other gists? Self-referential meta code is all the rage, the
+modern day response to René Magritte's famous work: "Ceci n'est pas une
+pipe.".footnote:[Explained best by Ben
+Zimmer http://www.bostonglobe.com/ideas/2012/05/05/dude-this-headline-meta-dude-this-headline-meta/it75G5CSqi82NtoQHIucEP/story.html?camp=pm]
 
 Add a view `index.erb` at the root of our directory.
 
@@ -366,8 +372,9 @@ index.erb
 
 Run `bundle` to install octokit and restart Sinatra by running ctrl-c,
 and then `ruby hi.rb`. If you visit `http://localhost:4567/xrd` in
-your browser, you will see the count of public gists for any user you
-specify.
+your browser, you will see the count of public gists for user `xrd`;
+modify the username in the URL to any specify any GitHub username and you will see
+their last five gists displayed.
 
 image::images/gists-gist-count.png[]
 
@@ -401,9 +408,9 @@ Hypermedia APIs describe themselves inside their responses using
 
 In this payload, you can see that there is an id ("xrd") and a name
 ("Chris Dawson"). Most APIs offer JSON responses, and this one
-does too. This payload was forked from the HAL explanation at the
-(https://phlyrestfully.readthedocs.org/en/latest/halprimer.html)[HAL
-Primer] and you can find a more detailed explanation of these concepts
+does too. This particular payload was forked from the HAL explanation at the
+https://phlyrestfully.readthedocs.org/en/latest/halprimer.html:[HAL
+Primer document] and you can find a more detailed explanation of these concepts
 there. 
 
 The important thing to note about Hypermedia APIs is that payloads contain
@@ -427,8 +434,8 @@ the right way to access information from the response itself. In other
 words, with a hypermedia client the API backend can change and your
 client code should not need to.
 
-This is explained in great detail in the book (http://www.amazon.com/o/ASIN/1449306578?tag=adapas02-20)[Building
-Hypermedia APIs with HTML5 and Node]
+This is explained in great detail in the book http://www.amazon.com/o/ASIN/1449306578?tag=adapas02-20:[Building
+Hypermedia APIs with HTML5 and Node].
 
 In the case of Octokit, navigating hypermedia looks like this:
 
