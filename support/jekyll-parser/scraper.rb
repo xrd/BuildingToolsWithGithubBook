@@ -23,7 +23,7 @@ class ByTravelersProcessor
   end
   
   def get_ith_page( i )
-    
+    puts "Loading #{i}th page"
   end
   
 end
