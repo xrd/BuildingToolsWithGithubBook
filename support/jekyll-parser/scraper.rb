@@ -14,7 +14,6 @@ class ByTravelersProcessor
     @mechanize = Mechanize.new { |agent|
       agent.user_agent_alias = 'Mac Safari'
     }
-    @ignores = YAML.load_file( "./scraper_ignore.yml" )
   end
 
   def run

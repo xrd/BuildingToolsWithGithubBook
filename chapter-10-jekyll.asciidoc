@@ -803,16 +803,114 @@ HTML you can retrieve text which crashes the markdown parser, so we
 will want to write a few tests to make sure our scraping tool handles
 these edge cases properly.
 
+To write our parser, we will need to look at the structure of the
+archive presented on Archive.org. If we start on Archive.org, and
+enter "bytravelers.com" into the search box in the middle of the page,
+and then click "BROWSE HISTORY" we will be presented with a calendar
+view which shows all the pages scraped by the Internet Archive for
+this site. 
+
+image::images/jekyll-bytravelers-archive.png[The calendar view for Archive.org ]
+
+In the middle of 2003 I took down the server, intending to
+upgrade it to another set of technologies, and never got around to
+completing this migration, and then lost the data. If we click on the
+calendar item on June 6th, 2003, we will see a view of the data that
+was more or less complete at the height of the site's functionality
+and data. There are a few broken links to images, but otherwise the
+site is functionally archived inside Archive.org
+
+image::images/jekyll-bytravelers-jun6.png[Archive of Bytravelers.com on Archive.org]
+
+Taking the URL from Chrome, we can use this as our starting point for
+scraping. Clicking around throughout the site, it becomes evident that
+each URLs to a journal entry uses a standard format; in other words, 
+`http://www.bytravelers.com/journal/entry/56` indicates the 56th
+journal item stored on the site. With this knowledge in hand, we can
+iterate over the first hundred or so URLs easily. 
+
+Going to one of these pages through the archived site, it is useful to
+view the source of the page and start to understand the structure of a
+page which we can then use when pointing our mechanize scraper at the
+page to pull out content. Any modern web browser supports a debug mode, and Chrome (my
+browser of choice) supports this as well. If we hold down the control
+key and click (at least on Mac OSX; righting-click on Windows or
+Linux works in the same way) into the "body" of a journal entry on its
+page, we will see a context menu that gives us the option to "Inspect Element".
+Chosing this option brings up the Chrome Developer Tools and shows us
+the HTML code of the page pretty printed for us. There are a few other
+items of note if we hover over any of the printed items toward the
+bottom. As we moved our mouse over the `<p></p>` items, we see a
+highlight applied to the page above, indicating the visual result once
+rendered in a browser of this specific this HTML code. 
+
+image::images/jekyll-chrome-inspector.png[Inspecting Page Structure]
+
+Moving over different places in the HTML code displays different areas of our
+page; finding our way to the `<tr>` tag above the large number of
+`<td>`'s gives us access to the "body" of the post. Once there, you
+can see at the very bottom of the frame a hierarchy like `html body
+table tbody tr td font table tbody tr` which tells us clues about the
+path we need to take inside the DOM to reach this particular piece of content. With these
+indications in hand, we can start to write our parser to extract this
+text from pages scraped from the archive.
+
 ====== Writing our Parser
 
-Let's start by writing a parser class. This will be helpful because we
-can run instantiate the parser class inside a runner script, but we
-can also instantiate the same class inside a test harness. As we will
+Let's start by writing a parser class. You might raise an eyebrow and
+think that making our scraper script into an object oriented program
+is overkill. We'll prove this is a helpful approach because we
+can instantiate the parser class inside a runner script, but we
+can also then instantiate the same class inside a test harness. As we will
 find out, there are edge cases we will need to cover when scraping
-data and converting it to Markdown, and having a testable class will
-help with that.
+data and converting it to Markdown, and having a testable class structure will
+help make our code testable in a way that a purely imperative script
+would not.
 
-xxx
+[source,ruby]
+-----
+require 'rubygems'
+require 'mechanize'
+require 'vcr'
+
+VCR.configure do |c|
+  c.cassette_library_dir = 'cached'
+  c.hook_into :webmock
+end
+
+class ByTravelersProcessor
+  attr_accessor :mechanize
+
+  def initialize
+    @mechanize = Mechanize.new { |agent|
+      agent.user_agent_alias = 'Mac Safari'
+    }
+    @ignores = YAML.load_file( "./scraper_ignore.yml" )
+  end
+
+  def run
+    100.times do |i|
+      begin
+        root = "http://web.archive.org/web/20030820233527/http://bytravelers.com/journal/entry/#{i}"
+        VCR.use_cassette("bt_#{i}") do
+          @mechanize.get( root ) do |page|
+            begin
+
+            end
+          end
+        end
+      end
+    end
+              
+  
+end
+
+  
+
+-----
+
+<1> Something here
+<2> Another thigns...
 
 ==== Writing tests
 
