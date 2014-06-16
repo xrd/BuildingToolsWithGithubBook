@@ -4,48 +4,59 @@
 
 If you visit GitHub and go to the jekyll repository you'll see it state that 
 "Jekyll is a blog-aware, static site generator in Ruby." What does this mean?
-Jekyll is a set of technologies for building web sites. There are
+Jekyll is a set of technologies for building entire web sites. There are
 probably as many tools for generating web sites as there are websites,
-though, so why does Jekyll deserve notice over others? Jekyll provides
-a quick way to generate a full featured website  
-without the compromises that come with other tools: complicated processes
-and complicated backends. When I author a blog post using Jekyll I am using a
-minimalistic set of tools that get out of the way and allow me to
-focus only on what I am writing. Few other site tools can deliver on
-that promise.
+though, so why does Jekyll deserve notice over others? 
+The core Jekyll tool provides just enough to build a beautiful site,
+but the authors stopped there. Many other web site tools layer more
+and more complicated processes and require complicated backends for
+hosting. Jekyll is an antidote to this way of thinking. You can layer
+many other pieces onto Jekyll and build ever more complex sites if you
+want to, but you don't have to. Often, thinking simple leads to a much
+more elegant way to do things.
+
+More concretely, Jekyll specifies a format that will take a set of
+files and compile them into HTML. Jekyll builds on top of two proven
+tools: Markdown, a markup language which is surprisingly readable and
+surprisingly expressive, and Liquid Templates, a simple programming
+language which gives you just enough components to build modern web
+pages requiring conditionals and loops, but safe enough that you can
+run untrusted pages on public servers. With these two technologies and
+agreement on a layout structure, Jekyll can build very complicated web
+sites without starting from a complicated structure of files and
+technologies. 
 
 Jekyll works natively with GitHub because a Jekyll blog is
 stored as a Git repository. When you push files into GitHub from a
 repository which GitHub recognizes as a Jekyll site, GitHub
-automatically generates your site for you. 
-The tools to generate the site are open source and simple, so you
-create your site yourself, but because GitHub does everything
-automatically it allows usage of tools that you might not have
-considered. For example, you could write a tool that creates a new
-blog post using the GitHub API and only publish a new blog post
-without worrying about building the regeneration inside your tool as
-well. GitHub handles this for you on their side.
+automatically rebuilds the site for you.
+Jekyll is an open source generator and defines a format for your
+source files, a format which other tools can easily understand and
+operate upon. This means you can build your own tools to interact with
+a Jekyll blog. Combining an open source tool like Jekyll with a well
+written API like the GitHub API makes for some powerful publishing
+tools.
 
-If you really think about it, Jekyll takes us back to the advent of
-the web when all pages were staticly created by hand. Most people
-would assume that all modern sites are dynamically generated with a
+Oddly enough, Jekyll takes us back to the advent of
+the web when all pages were static, and often created by hand. 
+Nowadays most modern sites are dynamically generated using a
 database backend. Jekyll suprises us with a tool that recognizes we
 only need to be dynamic when new content is created not when a new visitor
-requests the same page as the previous visitor, and for most
-sites, this acknoledgement results in a massive reduction in
-complexity and freedom. When you look at a site built by jekyll, you
+requests the same page as the previous visitor. Unexpectedly, this
+acknoledgement results in a massive reduction in
+complexity and freedom. When you look at a site built by Jekyll, you
 are looking at a set of static files, backed by nothing more complex
-than the same web server technology that was available in 1998.
+than the same web server technologies available in 1998.
 
 ==== The need for Jekyll
 
 Though you won't see it in the documentation, the popularity of Jekyll
-is due in large part to bloggers, especially very technical ones,
-wanting a blogging tool option other than the 800 lb. gorilla in the room:
-Wordpress. For many bloggers, Wordpress is a poor
+is due in large part to the desire of bloggers, especially very technical ones,
+wanting a blogging tool option other than Wordpress, the 800 lb.
+gorilla in the room. For many bloggers, Wordpress is a poor
 choice of blogging tools. Of course, there is always language snobbery
 when considering any tool, but Wordpress is built on a language, PHP, which
-is generally and widely reviled by advanced developers. Because PHP is
+is widely reviled by many developers. Because PHP is
 a more accessible language than other languages, the choice of PHP has
 fostered a large community of plugin developers. Unfortunately, this
 community is fractured, and the plugins which arise from it are at
@@ -61,9 +72,9 @@ Jekyll does not require you know how to write in HTML. While Wordpress
 ostensibly advertises itself as a tool which can be used without
 knowledge of these technologies, talk to those of us who have struggled with
 recovery of a mangled database after installation of a new Wordpress plugin,
-or resolving scalability issues on a large Wordpress site, or fixing
-by hand broken HTML produced by the Wordpress editor. We'll tell
-you that, when using Wordpress, you don't need to know about MySQL or
+or resolving scalability issues on a large Wordpress site, or
+analyzing and fixing broken HTML produced by the Wordpress editor.
+We'll tell you that, when using Wordpress, you don't need to know about MySQL or
 HTML at all, because it is already too late by then to fix whatever
 problem you are facing.
 
@@ -77,7 +88,7 @@ faciliate interaction, you use client side JavaScript plugins instead
 of pushing that interaction into your database. Jekyll has found a
 sweet spot with a simple technology set that makes your life easier
 and makes beautiful blogs and simple web sites. And, the biggest
-benefit of doing things the "jekyll" way is that all dependencies can
+benefit of doing things the "Jekyll" way is that all dependencies can
 sit within a repository, and this means your entire site can be hosted
 on GitHub. 
 
@@ -85,7 +96,12 @@ on GitHub.
 
 Like many of the open source technologies in heavy usage at GitHub,
 jekyll was originally developed by Tom Preson Warner, one of the
-co-founders of GitHub. 
+co-founders of GitHub, and Nick Quaranto, of 37 Signals, though there
+are now thousands of contributors to the Jekyll codebase. Like many
+open source projects, the strength of the tool comes not from the
+brilliance of the original developers or the brilliance of the idea,
+but the way that those original developers cultivated community and
+involvement among the users of the tool.
 
 ==== Running Jekyll locally
 
@@ -131,6 +147,15 @@ those on GitHub. If you do get the email above, run the command `bundle update`
 to make sure that everything is properly setup and synchronized and
 generally this will reproduce the issues on your local setup, which is
 a much faster place to fix them.
+
+[source,bash]
+------
+$ printf "gem 'github-pages' >> Gemfile
+$ bundle install
+------
+
+Creating and managing your dependencies inside a Gemfile is the smart
+way to your jekyll tool synced with the version running on GitHub.
 
 ==== Jekyll quick start
 
@@ -180,9 +205,9 @@ any kind of static site) but if you do include files in this directory
 jekyll handles them in a special way. If you look in the `_posts`
 directory now, you see that the jekyll initialization command has
 created your first post for you, something like
-`_posts/2014-03-03-welcome-to-jekyll.markdown`. These posts have a
+`_posts/2014-03-03-welcome-to-jekyll.Markdown`. These posts have a
 special naming format: the title of the post (with any whitespace replaced with
-hyphens) trailed by the date and then an extension (either `.markdown`
+hyphens) trailed by the date and then an extension (either `.Markdown`
 or `.md` for Markdown files, or `.textile` for Textile)
 
 Your new jekyll blog also comes with a few HTML files: an `index.html` file
@@ -191,7 +216,7 @@ which are used as wrappers when generating your content. If you look
 in the `_layouts` directory, notice there is a file named
 `default.html` and another named `post.html`. These files are the
 layout files, files which are wrapped around all generated content,
-like those from your markdown formatted blog posts. For
+like those from your Markdown formatted blog posts. For
 example, the `post.html` file is wrapped around the generated content
 of each file stored inside the `_posts` directory. First the markup content is
 turned into HTML and then the layout wrapper is applied. If you look
@@ -200,20 +225,22 @@ that each contains a placeholder with `{{ content }}`. This
 placeholder is replaced with the generated content from other files.
 
 These placeholders are actually a markup language on their own:
-Liquid. Liquid Templating (or Liquid Markup) was developed and open sourced by
-Shopify, and are a safe way to include programmatic constructs (like loops
+"Liquid Templating." Liquid Templating (or Liquid Markup) was developed and open sourced by
+Shopify, and is a safe way to include programmatic constructs (like loops
 and variables) into a template, without exposing the rendering context
 to a full fledged programming environment. Shopify wanted to build a
 way for untrusted users of their public facing systems to upload
-dynamic content but not worry that the markup language would permit the
-malicious activity like opening network connections to
-sites on their internal networks, for example. If you think about a language 
-like ERB (embedded ruby templates), you might realize that while
-embedding ruby code is great when you have full control over your
-source documents, it can be dangerous to provide a mechanism where
-valid embedded code could look like `system("rm -rf /")`. Liquid
-provides many of the benefits of embedded programming templates,
-without the dangers.
+dynamic content but not worry that the markup language would permit
+malicious activity; for example, given a full fledged embedded
+programming language, they would open themselves to attack if a user
+wrote code to open network connections to sites on their internal
+networks. Templating languages like PHP or ERB (embedded ruby
+templates, popular with the Ruby on Rails framework) allow fully
+embedded code snippets and while this is very powerful when you have full control
+over your source documents, it can be dangerous to provide a mechanism
+where that embedded code could look like `system("rm -rf /")`. 
+Liquid provides many of the benefits of embedded programming templates,
+without the dangers. 
 
 Lastly, your jekyll directory has a special file called `_config.yml`.
 This is the jekyll configuration file. Peering into it, you'll see it
@@ -228,7 +255,7 @@ pygments: true
 -----
 
 We only have three lines to contend with and they are simple to
-understand: the name of our site, the markdown parser used by our
+understand: the name of our site, the Markdown parser used by our
 jekyll command, and whether to use pygments to do syntax highlighting.
 
 To view this site locally run this command:
@@ -244,15 +271,19 @@ visit `http://localhost:4000` in your web browser, you will see
 something the front page of your site and a single blog post listed in
 the index.
 
+[[bare-jekyll-site]]
+.A bare Jekyll site
 image::images/jekyll-bare.png[A bare Jekyll site]
 
 Clicking into the link inside the "Blog Posts" section, you will then
 see your first post.
 
+[[a-sample-post]]
+.A sample post
 image::images/jekyll-welcome.png[A sample post co-authored by Tom Preston-Warner]
 
 Our jekyll initialization command created this new post for us. This page
-is backed by the markdown file inside the _posts directory which we
+is backed by the Markdown file inside the _posts directory which we
 saw earlier. 
 
 [source,yaml]
@@ -285,18 +316,17 @@ Check out the [Jekyll docs][jekyll] for more info on how to get the most out of 
 -----
 
 Hopefully you'll agree this is a fairly intuitive and readable
-alternative to raw HTML. If you compare this file to the HTML which is
-generated, you can see that the ruby code inside the file is pure ruby
-code, but when rendered inside the HTML, has been prettified. This
-simplicity is one of the major benefits of using Jekyll. Your source
-files maintain a readability that allows you to focus on the content
-itself, not on the technology that will eventually make them beautiful. 
+alternative to raw HTML. This simplicity and readability is one of the
+major benefits of using Jekyll. Your source files maintain a
+readability that allows you to focus on the content itself, not on the
+technology that will eventually make them beautiful. Let's go over
+this file and investigate some of the important pieces.
 
 ==== YFM: YAML Front Matter
 
-Breaking this file down, we see first and foremost the YAML Front
-Matter (YFM). This is a snippet of YAML (YAML Aint Markup Language)
-delimited by three hyphens on either side. YAML is a simple structured
+Starting at the top, we see the YAML Front
+Matter (YFM). YFM is a snippet of YAML ("YAML Aint Markup Language")
+delimited by three hyphens on both the top and bottom. YAML is a simple structured
 data serialization language used by many open source projects instead
 of XML. Many people find it more readable and editable by humans
 than XML. The YFM in this file shows a few configuration options: a
@@ -324,7 +354,7 @@ The date and categories are two other variables included in the YFM.
 They are completely optional and strangely unused by the structure and
 templates created by default using the Jekyll initializer. They do
 provide additional context to the post, but are only stored in the
-markdown file and not included inside the generated content itself.
+Markdown file and not included inside the generated content itself.
 The categories list is often used to generate an index file of
 categories with a list of each post included in a category. If you
 come from a Wordpress background, you'll likely have used categories.
@@ -340,8 +370,8 @@ just generating HTML files.
 YFM is completely optional. A post or page can be rendered into your
 Jekyll site without any YFM inside it. Without YFM, your page is
 rendered using the defaults for those variables, so make sure the
-default template, at the very least, is what you expect to wrap your
-content. 
+default template, at the very least, is what you expect will wrap
+around all pages left with unspecified layouts.
 
 One important default variable for YFM is the published variable. This
 variable is set to true by default. This means that if you create a
@@ -351,45 +381,66 @@ variable to false then the post will not be published. With
 private repositories you can keep the contents of draft posts entirely
 private until writing has completed by making sure published is set
 to false. Unfortunately, not all tools that help you create Jekyll
-markdown files remember to set the published variable explicitly
-inside of YFM, so make sure you check before committing. 
+Markdown files remember to set the published variable explicitly
+inside of YFM, so make sure you check before committing the file to
+your repository if there is something you don't yet want published. 
 
 ==== Jekyll markup
 
-Continuing deeper into the file, we can start to see the structure of 
+Going past the YFM, we can start to see the structure of 
 Markdown files. Markdown files can be, at their simplest, just textual
 information without any formatting characters. In fact, if your layout files are
 well done, you can definitely create great blog posts without any
-fancing formatting, just pure textual content.
+fancing formatting, just pure textual content. 
 
-But, with a few small markdown additions, you can really make posts
-shine. One of the first markdown components we notice is the backtick
+But, with a few small Markdown additions, you can really make posts
+shine. One of the first Markdown components we notice is the backtick
 character, which is used to wrap small spans of code (or code-ish
 information, like filenames in this case). As you use more and more
-markdown, you'll find markdown to be insidiously clever in the way it
+Markdown, you'll find Markdown to be insidiously clever in the way it
 provides formatting characters without the onerous weight that HTML
 requires to offer the same explicit formatting.
 
-Markdown offers easy formatting for most HTML elements: numbered and
-unordered lists, links, emphasis and more. And, if you cannot find a
-markdown equivalent, you can embed full blooded HTML right next to
-markdown formatting characters. The best way to write markdown is to
-keep a markdown cheat sheet near you when writing (or visit Daring
-Fireball which is the definitive resource for Markdown).
+Links can be specified using `[format][link]`, where `link` is the
+fully qualified URL (like "http://example.com"), or a reference to a
+link at the bottom of the page. In our page we have two references,
+keyed as `jekyll-gh` and `jekyll`; we can then use these inside our
+page with syntax like `[Jekyll's GitHub repo][jekyll-gh]`. Using
+references has an additional benefit in that you can use the link more
+than once by its short name.
 
-https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+Though not offered in the sample, Markdown provides an easy way to
+generate headers of varying degrees. To add a header, use the `#`
+character, and repeat the `#` character to build smaller headers.
+These delimiters simply map to the H tag; two hash characters `##`
+turns into a `<h2>` tag. Building text enclosed by `<h3>` tags looks
+like `### Some Text`. You can optionally match the same number of hash
+symbols at the end of the line if you find it more expressive (`###
+Some Text ###`), but you don't have to.
+
+Markdown offers easy shortcuts for most HTML elements: numbered and
+unordered lists, emphasis and more. And, if you cannot find a
+Markdown equivalent, you can embed normal HTML right next to
+Markdown formatting characters. The best way to write Markdown is to
+keep a
+https://github.com/adam-p/Markdown-here/wiki/Markdown-Cheatsheet:[Markdown
+cheat sheet] near you when writing. John Gruber from Daring 
+Fireball invented Markdown, and his site has a more in depth
+description of the how and why of Markdown.
 
 ==== Using the jekyll command
 
 Running `jekyll --help` will show you the options for running jekyll.
 You already saw the `jekyll serve` command which builds the files into
 the `_site` directory and then starts a webserver with its root at that directory. 
-If you start to use this mechanism to build your jekyll sites then
+If you start to use this mechanism to build your Jekyll sites then
 there are a few other switches you'll want to learn about.
 
-The `-w` switch means watch. This can be used to automatically
+If you are authoring and adjusting a page often, and switching back
+into your browser to see what it looks like, you'll find utility in
+the `-w` switch ("watch"). This can be used to automatically
 regenerate the entire site if you make changes to any of the source
-files. This means if you edit a post file, that file will be
+files. If you edit a post file and save it, that file will be
 regenerated automatically. Without the `-w` switch you would need to
 kill the jekyll server, and then restart it. 
 
@@ -400,7 +451,7 @@ does not reload the _config.yml file. If you make changes to it, you
 will need to stop and restart the server.
 ====
 
-If you are running multiple jekyll sites on the same laptop, you'll
+If you are running multiple Jekyll sites on the same laptop, you'll
 quickly find that the second instance of `jekyll serve` fails because
 it cannot open port 4000. In this case, use `jekyll --port 4010` to
 open port 4010 (or whatever port you wish to use instead).
@@ -410,7 +461,9 @@ open port 4010 (or whatever port you wish to use instead).
 Jekyll repositories on GitHub can be either public or private
 repositories. If your repository is public you can host public content
 generated from the Jekyll source files without publishing the source
-files themselves. 
+files themselves. Remember, as noted previously, that any file without
+`publishing: false` inside the YFM will be made public the moment you
+push it into your repository.
 
 ==== Themes
 
@@ -422,25 +475,24 @@ like. The most popular themed Jekyll blog structure is Octopress.
 ==== Publishing on GitHub
 
 Once you have your blog created, you can easily publish it to GitHub.
-There are three ways which you can publish Jekyll blogs: 
+There are two ways which you can publish Jekyll blogs: 
 
 * As a github.io site
-* As a pages site for your repository
 * On a domain you own
 
 Github offers free personal blogs which are hosted on the github.io
-domain. Each repository can also have its own site using the
-`gh-pages` branch. And, you can host any site with your own domain
-name with a little bit of configuration.
+domain. And, you can host any site with your own domain name with a
+little bit of configuration.
 
 ===== Using a GitHub.io Jekyll Blog
 
 To create a github.io personal blog site, your Jekyll blog should be
-on the master branch of your Git repository. You also need a
-repository called `username.github.io` on GitHub. Once these things
-are setup, you can publish by adding a remote and pushing your files.
-If you use the `gh` gem, you can go from start to finish with a few
-simple commands. Make sure to change the first line to reflect your 
+on the master branch of your Git repository. The repository should be
+named `username.github.io` on GitHub. If everything is setup correctly
+you can then publish your Jekyll blog by adding a remote for GitHub
+and pushing your files up. If you use the `hub` gem (a gem for interacting with git and GitHub),
+you can go from start to finish with a few simple commands. Make sure
+to change the first line to reflect your username. 
 
 [source,bash]
 ------
@@ -449,113 +501,337 @@ $ jekyll new $USERNAME.github.io
 $ cd $USERNAME.github.io
 $ git init
 $ git commit -m "Initial checkin" -a
-$ gh create-from-local
+$ gem install hub
+$ hub create  # You'll need to login here...
+$ sleep $((10*60)) && open $USERNAME.github.io
 ------
+
+The second to the last line creates a repository on GitHub for you
+with the same name as the directory. That last line sleeps for 10
+minutes while your github.io site is provisioned on GitHub, and then
+opens the site in your browser for you. It can take ten minutes for
+GitHub to configure your site the first time, but subsequent content
+pushes will be reflected immediately. 
+
+==== Hosting On Your Own Domain
+
+To host a blog on your own domain name, you need to use the `gh-pages`
+branch inside your repository. You need to create a CNAME file in your
+repository, and then finally establish DNS settings to point your domain to
+the GitHub servers. 
+
+===== The gh-pages branch
+
+To work on the gh-pages branch, check it out and create the branch
+inside your repository. 
+
+[source,bash]
+-----
+$ git checkout -b gh-pages
+$ rake post title="My next big blog post"
+$ git add _posts
+$ git commit -m "Added my next big blog post"
+$ git push -u origin gh-pages
+-----
+
+You will need to always remember to work on the gh-pages branch; if
+this repository is only used as a blog, then this probably is not an
+issue. Adding the `-u` switch will make sure that git always pushes up
+the gh-pages branch whenever you do a push.
 
 ===== The CNAME file
 
+The CNAME file is a simple text file with the domain name inside of
+it. 
+
+[source,bash]
+-----
+$ echo 'mydomain.com' > CNAME
+$ git add CNAME
+$ git commit -m "Added CNAME"
+$ git push
+-----
+
+Once you have pushed the CNAME file to your repository, you can verify
+that GitHub thinks the blog is established correctly by visiting the
+admin page of your repository. An easy way to get there is using the
+`github` gem, no longer actively maintained but still a useful command
+line tool.
+
+[source,bash]
+-----
+$ gem install github
+$ github admin # Opens up https://github.com/username/repo/settings
+-----
+
+The github gem is a useful command line tool, but unfortunately it is
+tied to an older version of the GitHub API, which means the documented
+functionality is often incorrect. 
+
+If your blog is correctly setup, you will see something like Figure 3
+in the middle of your settings page.
+
+[[settings-jekyll-blog]]
+.Settings for a Jekyll blog
+image::images/jekyll-settings.png[Settings for a Jekyll blog]
+
+GitHub has properly recognized the CNAME file and will accept requests
+made to that host on its servers. We are still not yet complete,
+however, in that we need to make sure the DNS is established for our site.
+
 ===== DNS Settings
 
-* DNS settings
-* Fork existing repository
+Generally, establishing DNS settings for your site is straightforward.
+It is easiest if you are setting up DNS with a *subdomain* as opposed
+to an *apex domain*. To be more concrete, an apex domain is a site
+like mypersonaldomain.com, while a subdomain would be
+blog.mypersonaldomain.com. 
 
-=== Language geek out
+A subdomain blog is simple: create a CNAME record in DNS that points
+to `username.github.io`. 
 
-==== Textile versus Markdown
+For an apex domain, things are slightly more complicated. You must create DNS
+A records to point to these IP addresses: `192.30.252.153` and
+`192.30.252.154`.  These are the IP addresses right now; there is
+always the possibility that GitHub could change these at some point in
+the future. For this reason, hosting on apex domains is risky. If
+GitHub needed to change their IP addresses (say during a denial of
+service attack), you would need to respond to this, and deal with the
+DNS propagation issues. If you instead use a subdomain, the CNAME
+record will automatically redirect to the correct IP even if that is
+changed by GitHub.
 
-===== Each uses slightly different forms for footnotes. 
+This is all well documented on the https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages:[GitHub blog].
 
-* Textile supports tables.
-* http://mojomojo.org/documentation/textile_vs_markdown
-* https://github.com/vmg/redcarpet
-
-===== Which to choose? 
-
-==== Different markdown generators:
-
-===== Redcarpet: used in Jekyll and all over GitHub
-
-* supports fenced code blocks
-* fork of libsoldout
-* "safe"
-
-===== Kramdown
-
-===== Maruku
-
-===== MultiMarkdown
-
-===== Markdown
-
-===== The devil is in the details. The differences in markdown support
-is aggravating, but fortunately, you have more control over which you
-prefer and switching is generally easy or at least possible. These two
-tips:
-
-* The best thing to do is to use a cheat sheet for the version of markdown or textile you are using
-* Use the watch switch and live-reload to regenerate your pages and
-  verify manually when you are confused. Fortunately, there is nothing
-  here beyond text generation to contend with.
-
-==== Liquid templates
-
-===== Why: safely generate content using programmatic loops and
-variables, without the risks of using a full programming language,
-invented at Shopify
-
-===== Capturing content is a special case
-
-===== Include files
-
-==== Yaml Front Matter: YFM
-
-===== Problems with YML and YAML
+===== Problems with YML and YAML and Liquid
 
 * No comments (JSON has the same problem...)
  * reading in parsing, then writing out, loses all the comments!
  * use `comment: "some comment here"` for comments. 
 
-=== Scraping a site into Jekyll
+===== Capturing Content
 
-==== Writing tests
+VERIFY THIS STATEMENT
 
-==== Using VCR
-
-==== Embedding AngularJS directives
-
-==== Geocoding and expansion of config file
-
-== Jekyll
-
-=== Hosting Jekyll sites on GitHub
-
-CNAME files
-
-Using gh-pages as master: `git push origin gh-pages:master`. 
-
-==== Markdown
-
-Markdown is a readable markup language. HTML was designed for
-computers to read and interpret. Many people have trained themselves
-to read and write literally in HTML, but most people use editors to
-convert their designs and ideas into HTML code. 
-
-Markdown is another way of writing HTML. Markdown is a language which
-converts into HTML and is entirely readable by humans. 
-
-You can embed regular HTML snippets into Markdown. There are a few gotchas, however:
-
-You cannot wrap markdown inside of HTML tags. If you want to use a
-tag and enclose content inside it, you need to embed pure HTML code.
-
-Well, this is not entirely true. use a combination of includes and capturing
-content. 
+There is no support for partials.
 
 [source,html]
 {% capture sidebar %}{% include blog.md %}{% endcapture %}
 <div style="text-align: left">
-{{ sidebar | markdownify }}
+{{ sidebar | Markdownify }}
 </div>
+
+==== Converters
+
+There are many tools which can be used to import an existing blog into
+Jekyll. As Jekyll is a simple format, you just need to pull the
+relevant pieces (the post itself, and associated metadata like the
+post title, publishing date, etc.) and then put them into the simple
+markdown format. 
+
+==== Wordpress to Jekyll
+
+
+The most popular importer is the Wordpress importer. You will need the 
+the 'jekyll-import' gem, which is installed separately from the jekyll
+gem. If you have installed the `github-pages` gem then the importers
+are installed alongside the other tools packaged with this bundle.
+
+===== Importing with direct database access
+
+Once you have the `jekyll-import` gem, you can convert a Wordpress
+blog using a command like this:
+
+[source,bash]
+----
+ ruby -rubygems -e 'require "jekyll-import";
+    JekyllImport::Importers::WordPress.run({
+      "dbname"   => "wordpress",
+      "user"     => "hastie",
+      "password" => "lanyon",
+      "host"     => "localhost",
+      "status"         => ["publish"]
+    })'
+----
+
+This command will import from an existing Wordpress installation,
+provided that your ruby code can access your database. This will work if you can
+log into the server itself and run the command on the server, or if
+the database is accessible across the network (which is generally bad
+practice when hosting Wordpress!). 
+
+Note the status option: this specifies that imported pages and posts
+are published automatically. More specifically, the YAML for each file
+will specify `published: true` which will publish the page or post
+into your blog. If you want to review each item individually, you can
+specify a status of `private` which will export the pages into Jekyll
+but leave them unpublished. Remember that if your repository is
+public, they will not be listed on the blog but can still be seen if
+someone peruses the source code for your blog on GitHub.  
+
+There are many more options than listed here. For example, by default,
+the Wordpress-Jekyll importer imports categories from your Wordpress
+database, but you can turn this off by specifying `"categories" =>
+false`. 
+
+===== Importing from the Wordpress XML
+
+Another alternative is to export the entire database as an XML file.
+Then, you can run the importer on that file.
+
+[source,bash]
+----
+ruby -rubygems -e 'require "jekyll-import";
+    JekyllImport::Importers::WordpressDotCom.run({
+      "source" => "wordpress.xml",
+      "no_fetch_images" => false,
+      "assets_folder" => "assets"
+    })'
+----
+
+This can be used to export files from a server which you don't
+maintain, but works with sites you maintain and might be a more
+plausible option than running against a database.
+
+To export the XML file, visit the export page on your site
+(https://BLOGNAME.com/wp-admin/export.php).
+
+Like many free tools, there are definitvely limitation to using this
+method of export. If your Wordpress site is anything beyond the
+simplest of Wordpress sites then using this tool to import from
+Wordpress means you will lose much of the metadata stored inside your
+blog. This metadata can include pages, tags, custom fields, and image
+attachments. 
+
+If you want to keep this metadata, then you might
+consider another import option like `Exitwp`. Exitwp is a python tool 
+which provides a much higher level of fidelity between the original
+Wordpress site and the final Jekyll site, but has a longer learning
+curve and option set.
+
+==== Exporting from Worpdress alternatives
+
+If you use another blog format other than Wordpress, chances are there
+is a Jekyll importer for it. Jekyll has dozens of importers, well
+documented on the Jekyll importer site http://import.jekyllrb.com/. 
+
+For example, this command line example from the importer site exports
+from Tumblr blogs.
+
+[source ruby]
+------
+$ ruby -rubygems -e 'require "jekyll-import";
+    JekyllImport::Importers::Tumblr.run({
+      "url"            => "http://myblog.tumblr.com",
+      "format"         => "html", # or "md"
+      "grab_images"    => false,  # whether to download images as well.
+      "add_highlights" => false,  # whether to wrap code blocks (indented 4 spaces) in a Liquid "highlight" tag
+      "rewrite_urls"   => false   # whether to write pages that redirect from the old Tumblr paths to the new Jekyll paths
+    })'
+------
+
+Exporting from Tumblr is considerably easier than Wordpress. The
+Tumblr exporter scrapes all public posts from the blog, and then
+converts to a Jekyll compatible post format.
+
+=== Scraping a site into Jekyll
+
+If you are stuck with a site that does not fit any of the standard
+importers, you could write your own importer by perusing the
+http://github.com/jekyll/jekyll-import[source of the Jekyll
+importers on GitHub]. This is probably the right way to 
+build an importer if you plan on letting others use it, as it will
+extend several jekyll importer classes already available to make
+importing standard for other contributors. Learning all the existing
+methods and reading through the dozens of samples can be a lot of
+work, however; another option is just to write out our files
+respecting the very simple format required by Jekyll. As we are
+programmers in the true sense of the word we embrace and accept our
+laziness and choose the second route. Let's write some code to scrape
+and generate a Jekyll site.
+
+Almost fifteen years ago while traveling in Brazil I grew increasingly
+frustrated with the guide books I used. It seemed like every time I
+went to a restaurant recommended by a guidebook I left the restaurant
+thinking "well, either they paid for that review or the review was
+written several years ago when this restaurant had a different owner."
+To address this discrepancy between reviews and realities, I built a
+site called ByTravelers.com. The idea was that travelers could use
+ByTravelers to record their experiences and easily share their
+experiences with their friends and families (replacing the long emails
+they used to send) and that that information would then become an
+authentication source of information about good and bad travel
+experiences. 
+
+I used the most advanced technologies
+available at the time, specifically a web server called
+http://en.wikipedia.org/wiki/Roxen_(web_server)[Roxen] featuring
+a dynamic language called Pike back when the web was dominated by one
+dynamic language called Perl. The site had ambitions greater than the
+talents of its designer, but suprisingly, a modest number of people
+found the site and started 
+using it to track the experiences and simultaneously offer unbiased
+reviews of their traveling histories. It was exciting to see people
+creating content on their travels to China, Prague, and Cuba, and I
+vowed to visit Bhutan at least once in my lifetime after reading one
+particularly vivid account from an unknown contributor.
+
+One of the problems with build on top of a web server and language
+like Roxen and Pike that never achieved critical mass in any way is
+that maintenance was a challenge. After moving back to the US and
+moving my hosting servers several times, I lost access to the source
+code (this was long before GitHub or even Git) and I lost access to
+the database and ByTravelers.com settled into oblivion.
+
+Or, so I thought. One day I decided to look up ByTravelers on
+Archive.org, the Internet Archive. I found that almost all of the
+articles were listed there and available. Even though we have lost the
+source code and database, could we recover the site from just the
+Internet Archive? Let's retrieve the articles from the Internet
+Archive and make them into a modern Jekyll site. 
+
+===== Jekyll scraping tactics
+
+We'll use Ruby to scrape the site; Ruby has some intuitive gems like
+mechanize which provide automation of web clients. There is an API for
+the Internet Archive, but I found it flakey and unreliable. Scraping
+the site itself works well, but to reduce load on the archive, we'll
+cache our results using a gem called `VCR` (typically used to cached
+results from hitting a web service during test runs but perfectly
+capable here as well). In addition, as we'll find out, when you scrape
+HTML you can retrieve text which crashes the markdown parser, so we
+will want to write a few tests to make sure our scraping tool handles
+these edge cases properly.
+
+====== Writing our Parser
+
+Let's start by writing a parser class. This will be helpful because we
+can run instantiate the parser class inside a runner script, but we
+can also instantiate the same class inside a test harness. As we will
+find out, there are edge cases we will need to cover when scraping
+data and converting it to Markdown, and having a testable class will
+help with that.
+
+xxx
+
+==== Writing tests
+
+* Make sure to watch for whitespace on ends of string.
+* Convert HTML to basic text. Make sure to attend to special markdown
+  characters like *
+
+==== Using VCR
+
+VCR is a ruby gem which is used often inside tests. VCR captures HTTP
+requests to reduce network connections, removing latency but also
+making requests deterministic (at the expense of making them 
+
+==== Embedding AngularJS directives
+
+AngularJS was designed for embedding into blogs.
+
+==== Geocoding and expansion of config file
+
 
 
 ===== Scripts for generating site
@@ -584,7 +860,7 @@ Rebuilding ByTravelers.com.
 ===== Writing Tests
 ===== GeoCoding from the command line
 ===== Embedding AngularJS Directives
-===== Stripping out markdown formatting characters
+===== Stripping out Markdown formatting characters
 
 ==== Branches
 =====  Detached "Orphan" branches
@@ -634,191 +910,7 @@ with your website content.
 =====  Variables
 ==== Matching gems with github
 
-== Github Pages
-
-GitHub Pages are really a very simple idea.  Any 
-GitHub-hosted Git repository can be augmented with a branch called gh-pages. 
-If this branch exists, everything in that branch is published automatically.  
-This content is then served from GitHub giving you a very
-quick and easy way to serve web pages and other information from
-GitHub.  Various people use this or different reasons.  Some users
-host entire company web sites from GitHub, while other create a web
-site for a specific project or repository.
-
-As with most things GitHub, this feature is as useful as you make it,
-and there are many examples of projects and organizations that use
-GitHub pages to provide compelling web content.  In this chapter,
-we're going to explore a few, simple use cases for GitHub pages as
-well as some advanced approaches to managing and publishing GitHub
-pages with Jekyll.  Jekyll is a static site generator which is used as
-a simple templating engine for publishing web sites and blogs.
-
-=== Hosting a Web Site with Github
-
-When you create an open source project or even a project that isn't
-open source there's always some infrastructure required.  First, if
-you are developing something with source code, you will need a source
-code repository, and there's a good chance that if you are reading
-this book you would choose GitHub to host your project's source.
-
-Now, with a source code repository you can push source, you can keep
-track of changes, and do any number of the things related to your
-project, but source control isn't enough. If you want users and
-community members, if you want to be found, you'll need a web site of
-some sort that tells people what your project does, how to download
-and use it, and how to participate in the project if you have an itch
-to scratch.
-
-Before GitHub, you would need to go find a place to host your
-website. If you were developing the project under an open source
-organization like Apache, you would publish the site on an Apache web
-server, or if you were developing a project for a company, maybe the
-company would stand up a simple web server to host open source
-projects it was sponsoring. Before GitHub you had to worry about
-maintaining a separate piece of infrastructure to host a project's web
-site.
-
-With GitHub Pages, you don't need to worry about another
-piece of infrastructure to host a simple web page.  All you need to do
-is push content to a specially named branch and this content will then
-be published on a website that is then associated with your user,
-organization, of project. While this seems like a simple improvement,
-it saves a ton of effort, and makes it easier for open source
-developers to focus on coding and communicating instead of wasting
-precious cycles on worrying about infrastructure.
-
-There are a number of high profile open source projects which rely on
-GitHub Pages to host project web sites including: Twitter's Bootstrap
-CSS and Javascript library, <Fill this in>
-
-==== Creating a gh-pages branch
-
-The first step to publishing content on GitHub Pages is to create a
-gh-pages branch for a GitHub repository.  This is an easy operation to
-do either from the command-line with Git or from the GitHub web
-interface.
-
-To create the gh-pages branch from the GitHub web interface, see
-<<repo-admin-pages>>.
-
-To create the gh-pages branch from the command-line, run the following
-from your Git repository:
-
-[source,bash]
-----
-$ TODO
-----
-
-==== Pushing Content to a Github Site
-
-Once you've created a gh-pages branch, you'll need to put your site's
-content in this branch.   Here are some commands to publish a simple,
-"Hello, world." web page.  Execute the following commands in your Git
-repository after running the commands to create gh-pages from the
-previous section.
-
-[source,bash]
-.Pushing Content to the gh-pages branch
-----
-$ echo "Hello, world. I am a web page." > index.html 
-$ git add index.html 
-$ git push origin gh-pages
-----
-
-These commands populate a simple HTML page, add it to your git
-repository, and then push your working copy to the gh-pages branch on
-GitHub.  Once this is done, your web site will be available within 10
-minutes.  While GitHub says that sites will be available within 10
-minutes, my own experience suggests that the changes may also be
-available immediately.
-
-==== What is your URL?
-
-You now have a web site available at 
-http://:user.github.io/:project.  If your user name is
-"tobrien" and the project is "github-test", the URL of this site would 
-be http://tobrien.github.io/github-test.
-
-=== Customizing Your Github Site
-
-Now that you know how to create the gh-pages branch and populate your
-site with content let's move on to customizing your GitHub Pages
-site.  In the following sections, you will learn how to serve the site
-from a custom domain, create a custom error page, and generate pages
-with GitHub Pages themes.
-
-==== Using a Custom Domain with Github Pages
-
-Sometimes a URL like http://tobrien.github.io/super-important-project
-just doesn't work for you.  Maybe you want to host your project's web
-site on a custom domain?  If you control the DNS for a domain name,
-all you need to do is create an A record and/or a CNAME record and
-GitHub will happily serve your web site from any domain you desire.
-
-Here are the steps to configuring GitHub Pages to serve content from a
-custom domain.  In the next few sections, let's assume that you are
-attempting to serve your site from the URL http://www.fancyproject.com
-
-Step 1: Create a CNAME File::
-
-    Create a file in the root of your repository in the gh-pages
-    branch named CNAME.  In this file you only need a single line that
-    contains the domain name you are pointing at GitHub.   In this
-    case, you need to put "fancyproject.com" in this file.
-
-Step 2: Create an A Record for Your Site::
-
-    Next, create an A record that points your domain to the IP address
-    "204.232.175.78".  This IP address points at GitHub pages. If you
-    create an A record for "fancyproject.com", GitHub will
-    automatically redirect "www.fancyproject.com" to
-    "fancyproject.com".
-
-Step 3: Wait, then Load Your Custom Domain in a Browser::
-
-    When you change DNS you may have to wait a while for your DNS
-    provider to implement the changes and for these changes to
-    propagate over the Internet. After you are certain that the DNS
-    change in in effect, you can then load your GitHub pages website
-    using your custom domain.   Note that if you are certain your DNS
-    changes were immediate, it'll take GitHub a few minutes to catch
-    up with these DNS changes. If you don't see your custom domain on
-    GitHub just give it 10 minutes and try again.
-    
-==== Creating a custom 404 Page
-
-Simple instructions.
-
-==== Generating a Pages with Themes
-
-Simple instructions.
-
-=== Tools for Creating Github Pages
-
-These sections are just pointers.
-
-==== Using Jekyll
-
-Quick instructions: http://pages.github.com/
-
-Note: Do you know who used Jekyll?   Obama for America used Jekyll, you should too.
-
-==== prose.io a CMS for Github Pages
-
-http://prose.io/
-
-==== Octopress Blog (Jekyll)
-
-https://github.com/imathis/octopress
-
-Remember that things can get broken if you use the wrong Jekyll versions:
-
-https://github.com/github/pages-gem/blob/master/lib/github-pages.rb#L10-L16
-
-`gem install github-pages` will keep things up to date.
-
-==== The future of static blogging
-
+[NOTE]
 Interestingly, the movement towards static blogging which was
 catalyzed by Jekyll has moved away from Jekyll. Many alternatives to
 Jekyll have emerged as the prime users of Jekyll, the hacker
