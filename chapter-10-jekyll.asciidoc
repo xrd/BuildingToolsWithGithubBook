@@ -873,28 +873,28 @@ require 'rubygems'
 require 'mechanize'
 require 'vcr'
 
-VCR.configure do |c|
+VCR.configure do |c|  # <1> 
   c.cassette_library_dir = 'cached'
   c.hook_into :webmock
 end
 
 class ByTravelersProcessor
-  attr_accessor :mechanize
+  attr_accessor :mechanize  # <2>
 
   def initialize
-    @mechanize = Mechanize.new { |agent|
+    @mechanize = Mechanize.new { |agent| # <3>
       agent.user_agent_alias = 'Mac Safari'
     }
   end
 
   def run
-    100.times do |i|
-      get_ith_page( i )
+    100.times do |i| 
+      get_ith_page( i ) # <4>
     end
   end
   
   def get_ith_page( i )
-    
+    puts "Loading #{i}th page"
   end
   
 end
@@ -918,7 +918,51 @@ the class.
 <4> As we noted above, we have about 100 pages stored in the archive
 which we want to scrape. We loop 100 times over a function called
 `get_ith_page` which will do the scraping for us. Right now this
-function is left blank.
+function just prints out the index it is supposed to scrape.
+
+===== Installation of our libraries
+
+Like other chapters which use Ruby, we create a `Gemfile` to manage
+our dependencies and then install them using the `bundle` command.
+
+[source,bash]
+-----
+$ printf "source 'https://rubygems.org'\ngem 'vcr'\ngem 'mechanize'\ngem 'webmock'\n" >> Gemfile
+$ bundle
+-----
+
+===== The Runner
+
+Our runner is simple (this means our test cases will be too).
+
+[source,ruby]
+-----
+require 'rubygems'
+require 'bundler/setup'
+require './scraper'
+
+btp = ByTravelersProcessor.new()
+btp.run()
+
+-----
+
+If we run this code now, we will just see our debug output.
+
+[source,bash]
+-----
+$ ruby run.rb
+...
+Loading 91th page
+Loading 92th page
+Loading 93th page
+Loading 94th page
+Loading 95th page
+Loading 96th page
+Loading 97th page
+Loading 98th page
+Loading 99th page
+...
+-----
 
 ==== Writing tests
 

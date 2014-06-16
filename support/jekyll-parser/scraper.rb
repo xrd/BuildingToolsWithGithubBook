@@ -21,9 +21,25 @@ class ByTravelersProcessor
       get_ith_page( i ) # <4>
     end
   end
+
+  def process_body( i, row )
+    puts "#{i}: #{row.text().strip()[0...50]}"
+  end
   
   def get_ith_page( i )
-    puts "Loading #{i}th page"
+    root = "https://web.archive.org/web/20030502080831/http://www.bytravelers.com/journal/entry/#{i}"
+    begin
+      VCR.use_cassette("bt_#{i}") do
+        @mechanize.get( root ) do |page|
+          rows = ( page / "table[valign=top] tr" )
+          if rows and rows.length > 3
+            self.process_body( i, rows[4] )
+          end
+        end
+      end
+    rescue Exception => e
+    end
+    
   end
   
 end
