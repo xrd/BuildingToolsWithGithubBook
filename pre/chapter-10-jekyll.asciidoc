@@ -912,6 +912,68 @@ Loading 99th page
 ...
 -----
 
+===== Implementing get_ith_page
+
+Now let's write the code which pulls out the information for the body
+
+[source,ruby]
+-----
+[filename=".", language="ruby", sha="5ca9032:support/jekyll-parser/scraper.rb" lines="25..-4"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+<1> First, we load up a VCR cassette, which just says "store any HTTP requests
+inside my cassette directory ('cached', specified in the configure
+stage) under the name bt_#{index}". In more concrete terms, the first
+page loaded by our script will be cached and saved in a file at the
+path `cached/bt_1.yml` (VCR adds the yml extension because it stores
+the file using the YAML language).
+<2> Once we have loaded the page we see one of the powerful features
+of mechanize footnote:[Actually, this is handled by the Nokogiri parser, but
+Mechanizes exposes it seamlessly], a simple page searching syntax. If
+we provide the code `page / "table[valign=top] tr"` what we are doing
+is searching inside the page for a tag like `<table valign="top">` and
+then finding all the `<tr>` tags inside that. Recalling the DOM
+hierarchy we saw inside the Chrome Inspector, we can start to see how
+we will easily retrieve content from a scraped page.
+<3> We then take the 5th (ruby uses zero-based offsets) row, and
+process it using a method called `process_body` which, you guessed it,
+processes the 5th row as the body content.
+<4> The `process_body` method takes the retrieved DOM node and
+converts it to pure text (as opposed to leaving us with the HTML tags)
+and then strips whitespace from the front and end, and then prints the
+first 50 characters along with the journal entry index.
+
+If we run our code now, we will see the body of our journal entries.
+
+[source,bash]
+-------
+$ ruby run.rb
+4: I'm now entering the my third day in Salvador.  Th
+15: I had heard about the hill-tribes in 
+northern Tha
+22: On Sunday, Sept. 17 Jeanne picked up Vic at Jackie
+23: Translation -  "Foreigners in India"Well since we 
+24: April 1999Cuba, what an interesting place??!!
+My a
+25: Oct/Nov 2000"NEPAL"We spent our first 3 days in Ba
+...
+-------
+
+The first time we run this, we will see a slow march as Mechanize
+grabs each page from the Archive.org server. The next time we run our
+parser, however, things will be much faster. We have cached all the
+pages and so instead of doing a slow network crawl we are now speeding
+across our local filesystem, reading files from disk and simulating
+our network connection. Our client code does not have to change at
+all, the real power of the VCR gem.
+
+We should grab the titles as well. 
+
+
+
 ==== Writing tests
 
 * Make sure to watch for whitespace on ends of string.
