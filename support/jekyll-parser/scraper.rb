@@ -18,18 +18,13 @@ class ByTravelersProcessor
 
   def run
     100.times do |i|
-      begin
-        root = "http://web.archive.org/web/20030820233527/http://bytravelers.com/journal/entry/#{i}"
-        VCR.use_cassette("bt_#{i}") do
-          @mechanize.get( root ) do |page|
-            begin
-
-            end
-          end
-        end
-      end
+      get_ith_page( i )
     end
-              
+  end
+  
+  def get_ith_page( i )
+    
+  end
   
 end
 

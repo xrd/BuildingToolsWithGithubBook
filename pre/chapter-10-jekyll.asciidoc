@@ -848,7 +848,7 @@ would not.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="52e0239:support/jekyll-parser/scraper.rb"]
+[filename=".", language="ruby", sha="970af8f:support/jekyll-parser/scraper.rb"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
