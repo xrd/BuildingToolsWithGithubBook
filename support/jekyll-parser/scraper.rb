@@ -8,7 +8,7 @@ VCR.configure do |c|
 end
 
 class ByTravelersProcessor
-  attr_accessor :mechanize, :pages
+  attr_accessor :mechanize, :pages 
 
   def initialize
     @mechanize = Mechanize.new { |agent| 
@@ -18,11 +18,12 @@ class ByTravelersProcessor
   end
 
   def process_title( title )
-    @title = title
-    if @title
-      @title.gsub!( /Title:/, "" )
-      @title.strip!
+    title = title
+    if title
+      title.gsub!( /Title:/, "" )
+      title.strip!
     end
+    title
   end
   
   def run
@@ -30,26 +31,26 @@ class ByTravelersProcessor
       get_ith_page( i ) 
     end
     100.times do |i|
-      if @pages[i]
-        puts "Title: #{@pages[i][0]}, body is #{@pages[i][1].length} characters"
+      if pages[i]
+        puts "'#{pages[i][0]}' (#{pages[i][1].length} characters)"
       end
     end
   end
 
   def process_body( i, row )
-    @body = row.text().strip()
+    row.text().strip()
   end
   
   def get_ith_page( i )
     root = "https://web.archive.org/web/20030502080831/http://www.bytravelers.com/journal/entry/#{i}"
     begin
       VCR.use_cassette("bt_#{i}") do 
-        @mechanize.get( root ) do |page|
+        mechanize.get( root ) do |page|
           rows = ( page / "table[valign=top] tr" ) 
           if rows and rows.length > 3
-            body = self.process_body( i, rows[4] ) 
-            title = self.process_body( i, rows[0] )
-            @pages[ i ] = [ title, body ]
+            body = process_body( i, rows[4] ) 
+            title = process_body( i, rows[0] )
+            pages[ i ] = [ title, body ]
           end
         end
       end

@@ -973,6 +973,13 @@ all, the real power of the VCR gem.
 We should grab the titles as well. 
 
 
+[source,ruby]
+-----
+[filename=".", language="ruby", sha="fc48a6f:support/jekyll-parser/scraper.rb" lines="9..38"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
 
 ==== Writing tests
 

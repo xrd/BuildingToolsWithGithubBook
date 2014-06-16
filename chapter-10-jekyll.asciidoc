@@ -1040,6 +1040,39 @@ all, the real power of the VCR gem.
 We should grab the titles as well. 
 
 
+[source,ruby]
+-----
+
+class ByTravelersProcessor
+  attr_accessor :mechanize, :pages
+
+  def initialize
+    @mechanize = Mechanize.new { |agent| 
+      agent.user_agent_alias = 'Mac Safari'
+    }
+    @pages = []
+  end
+
+  def process_title( title )
+    @title = title
+    if @title
+      @title.gsub!( /Title:/, "" )
+      @title.strip!
+    end
+  end
+  
+  def run
+    100.times do |i| 
+      get_ith_page( i ) 
+    end
+    100.times do |i|
+      if @pages[i]
+        puts "Title: #{@pages[i][0]}, body is #{@pages[i][1].length} characters"
+      end
+    end
+  end
+
+-----
 
 ==== Writing tests
 
