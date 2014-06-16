@@ -848,14 +848,28 @@ would not.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="970af8f:support/jekyll-parser/scraper.rb"]
+[filename=".", language="ruby", sha="023ea1f:support/jekyll-parser/scraper.rb"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
-<1> Something here
-<2> Another thigns...
+<1> VCR is a ruby library which caches HTTP requests. Typically used
+inside of tests, it is also an easy way to cache an HTTP request that
+you know will not change. Since these are pages stored inside an
+archive over ten years ago, it is safe to cache them, and the polite
+thing to do for an open system like Archive.org which relies on
+donations to pay for their bandwidth. The code you see here is
+boilerplate for configuring the VCR gem, loaded above.
+<2> Our scraping is handled with the `mechanize` gem, and our class
+should maintain a reference to the scraper by declaring it here.
+<3> After our class is instantiated, we hook into the class
+initialization stage and create our mechanize parser and assign it to
+the class.
+<4> As we noted above, we have about 100 pages stored in the archive
+which we want to scrape. We loop 100 times over a function called
+`get_ith_page` which will do the scraping for us. Right now this
+function is left blank.
 
 ==== Writing tests
 
