@@ -1037,8 +1037,9 @@ across our local filesystem, reading files from disk and simulating
 our network connection. Our client code does not have to change at
 all, the real power of the VCR gem.
 
-We should grab the titles as well. 
-
+We should grab the titles as well.  Add a method called
+`process_title` and add that into the `get_ith_page` method underneath
+the `process_body` method. 
 
 [source,ruby]
 -----
