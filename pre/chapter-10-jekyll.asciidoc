@@ -976,7 +976,7 @@ the `process_body` method.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="fc48a6f:support/jekyll-parser/scraper.rb" lines="9..38"]
+[filename=".", language="ruby", sha="e4f924c:support/jekyll-parser/scraper.rb" lines="9..38"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

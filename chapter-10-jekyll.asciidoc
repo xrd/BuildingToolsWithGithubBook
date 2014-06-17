@@ -1045,7 +1045,7 @@ the `process_body` method.
 -----
 
 class ByTravelersProcessor
-  attr_accessor :mechanize, :pages
+  attr_accessor :mechanize, :pages 
 
   def initialize
     @mechanize = Mechanize.new { |agent| 
@@ -1055,11 +1055,12 @@ class ByTravelersProcessor
   end
 
   def process_title( title )
-    @title = title
-    if @title
-      @title.gsub!( /Title:/, "" )
-      @title.strip!
+    title = title
+    if title
+      title.gsub!( /Title:/, "" )
+      title.strip!
     end
+    title
   end
   
   def run
@@ -1067,12 +1068,11 @@ class ByTravelersProcessor
       get_ith_page( i ) 
     end
     100.times do |i|
-      if @pages[i]
-        puts "Title: #{@pages[i][0]}, body is #{@pages[i][1].length} characters"
+      if pages[i]
+        puts "'#{pages[i][0]}' (#{pages[i][1].length} characters)"
       end
     end
   end
-
 -----
 
 ==== Writing tests

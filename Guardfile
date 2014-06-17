@@ -7,7 +7,7 @@ require 'oreilly/snippets'
 init_script = '<script type="text/javascript" src="init.js"></script>';
 
 guard 'shell' do
-  watch( /^pre\/[^\/]*\.asciidoc$/) {|m|
+  watch( /^pre\/[^\.][^\/]*\.asciidoc$/) {|m|
     contents = File.read( m[0] )
     snippetized = Oreilly::Snippets.process( contents )
     snippet_out =  m[0].gsub( "pre/", "" )
