@@ -1,19 +1,20 @@
 ---
+layout: default
 ---
 
-<html>
-<head>
-<title>ByTravelers.com</title>
-</head>
+<h1>ByTravelers.com</h1>
 
-<body>
+Crowd sourced travel information.
+
+<br/>
+
+<div>
 {% for post in site.posts %}
-<a href="{{ BASE_PATH }}{{ post.url }}"><h2> {{ post.title }} </h2></a>
+<a href="{{ post.url }}"><h2> {{ post.title }} </h2></a>
 {{ post.content | strip_html | truncatewords: 40 }}
 <br/>
 <em>Posted on {{ post.date | date_to_string }}</em>
 <br/>
 {% endfor %}
-</body>
+</div>
 
-</html>

@@ -24,7 +24,7 @@ class ByTravelersProcessor
 
     template = <<"TEMPLATE"
 ---
-layout: post
+layout: default
 title: "#{title.gsub(/"/, '\\"')}"
 published: false
 ---
