@@ -45,18 +45,18 @@ TEMPLATE
     end
     100.times do |i|
       if pages[i]
-        write_post( pages[i] ) # <4>
+        write_post( pages[i] ) # <1>
       end
     end
   end
 
   def process_creation_date( i, row )
-    location, creation_date = row.text().split /last updated on:/ # <5>
+    location, creation_date = row.text().split /last updated on:/ # <4>
     creation_date.strip()
   end  
   
   def process_body( i, row )
-    row.text().strip() # <1>
+    row.text().strip()
   end
 
   def process_title( title )

@@ -1027,13 +1027,27 @@ out the files after we have retrieved and parsed the pages from Archive.org.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="1c298fe:support/jekyll-parser/scraper.rb" lines="20..55"]
+[filename=".", language="ruby", sha="2620b1a:support/jekyll-parser/scraper.rb" lines="20..55"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
-
+<1> First, we modify the `run` method to call our new `write_post`
+method. This method is reponsible for writing out our data into a
+markdown file.
+<2> Inside the `write_post` method we create a "heredoc" template, and
+then stick values inside of it. Heredocs provide a more readable way
+to write out larger textual data.
+<3> Jekyll expects markdown files to have a specific format. We need
+to modify the title by remove commas and quotes, and then converting
+whitespace, colons and semicolons to hyphen characters. We also need
+the creation date, which we retrieve in a later call, and parameterize
+the title with that information. Then we write out the file.
+<4> Inside our new `process_creation_date` method we extract the
+creation date from the scraped data. We don't show it here, but after
+the `process_body` (inside the `get_ith_page`) call we added a call to
+this function, giving it `i` and `row[3]` as the arguments.
 
 ==== Writing tests
 
