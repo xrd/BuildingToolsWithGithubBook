@@ -1160,13 +1160,13 @@ TEMPLATE
     end
     100.times do |i|
       if pages[i]
-        write_post( pages[i] ) # <4>
+        write_post( pages[i] ) # <1>
       end
     end
   end
 
   def process_creation_date( i, row )
-    location, creation_date = row.text().split /last updated on:/ # <5>
+    location, creation_date = row.text().split /last updated on:/ # <4>
     creation_date.strip()
 -----
 
@@ -1175,7 +1175,10 @@ method. This method is reponsible for writing out our data into a
 markdown file.
 <2> Inside the `write_post` method we create a "heredoc" template, and
 then stick values inside of it. Heredocs provide a more readable way
-to write out larger textual data.
+to write out larger textual data, especially those with newlines.
+Heredocs simply start with a tag and then end the template with a tag
+("TEMPLATE" here), and everything in between is treated as a single
+string. 
 <3> Jekyll expects markdown files to have a specific format. We need
 to modify the title by remove commas and quotes, and then converting
 whitespace, colons and semicolons to hyphen characters. We also need
