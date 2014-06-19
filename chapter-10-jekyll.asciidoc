@@ -970,22 +970,23 @@ Now let's write the code which pulls out the information for the body and the ti
 
 [source,ruby]
 -----
-  def process_body( i, row )
-    puts "#{i}: #{row.text().strip()[0...50]}"
+  def process( i, title, body )
+    puts "(#{i}) #{title.text().strip()} :: #{body.text().strip()[0...50]}"
   end
   
   def get_ith_page( i )
     root = "https://web.archive.org/web/20030502080831/http://www.bytravelers.com/journal/entry/#{i}"
     begin
       VCR.use_cassette("bt_#{i}") do
-        @mechanize.get( root ) do |page|
+        mechanize.get( root ) do |page|
           rows = ( page / "table[valign=top] tr" )
           if rows and rows.length > 3
-            self.process_body( i, rows[4] )
+            process( i, rows[1], rows[4] )
           end
         end
       end
     rescue Exception => e
+      puts "Got an exception, skipping index #{i}"
     end
     
   end
@@ -1018,14 +1019,17 @@ If we run our code now, we will see the body of our journal entries.
 [source,bash]
 -------
 $ ruby run.rb
-4: I'm now entering the my third day in Salvador.  Th
-15: I had heard about the hill-tribes in 
+(4) Third day in Salvador :: I'm now entering the my third day in Salvador.  Th
+(15) The Hill-Tribes of Northern Thailand :: I had heard about the hill-tribes in 
 northern Tha
-22: On Sunday, Sept. 17 Jeanne picked up Vic at Jackie
-23: Translation -  "Foreigners in India"Well since we 
-24: April 1999Cuba, what an interesting place??!!
+(22) Passion Play of Oberammergau :: On Sunday, Sept. 17 Jeanne picked up Vic at Jackie
+(23) "Angrezis in Bharat" :: Translation -  "Foreigners in India"Well since we 
+(24) Cuba - the good and bad :: April 1999Cuba, what an interesting place??!!
 My a
-25: Oct/Nov 2000"NEPAL"We spent our first 3 days in Ba
+(25) Nemaste :: Oct/Nov 2000"NEPAL"We spent our first 3 days in Ba
+(26) Mexico/Belize/Guatemala :: Feb/Mar 1999Dear All
+Well it´s been six weeks on t
+(27) South Africa :: Apr/May 1999I got in from South Africa a few days 
 ...
 -------
 
