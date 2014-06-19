@@ -914,7 +914,7 @@ Loading 99th page
 
 ===== Implementing get_ith_page
 
-Now let's write the code which pulls out the information for the body
+Now let's write the code which pulls out the information for the body and the title.
 
 [source,ruby]
 -----
