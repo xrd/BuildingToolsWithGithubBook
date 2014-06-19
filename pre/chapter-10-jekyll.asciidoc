@@ -1025,6 +1025,13 @@ $ git commit -m "Initial checkin"
 To generate Markdown posts, edit the `run` method to write
 out the files after we have processed them.
 
+[source,ruby]
+-----
+[filename=".", language="ruby", sha="6501761:support/jekyll-parser/scraper.rb" lines="20..55"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
 
 
 ==== Writing tests

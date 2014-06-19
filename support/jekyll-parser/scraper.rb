@@ -30,7 +30,7 @@ published: false
 ---
 TEMPLATE
     
-    title_for_filename = title.downcase.gsub( '"', '' ).gsub( /\s+/, '-').gsub( /\//, '-' ).gsub( ':', '-' ).gsub( ',', '' )
+    title_for_filename = title.downcase.gsub( /[",]+/, '' ).gsub( /[\s\/\:\;]+/, '-')
     filename = "_posts/#{creation_date}-#{title_for_filename}.md"
     File.open( filename, "w+" ) do |f|
       f.write template
