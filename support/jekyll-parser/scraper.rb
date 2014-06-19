@@ -17,28 +17,28 @@ class ByTravelersProcessor
     @pages = []
   end
 
-  def process_title( title )
-    title = title
-    if title
-      title.gsub!( /Title:/, "" )
-      title.strip!
-    end
-    title
-  end
-  
   def run
     100.times do |i| 
       get_ith_page( i ) 
     end
     100.times do |i|
       if pages[i]
-        puts "'#{pages[i][0]}' (#{pages[i][1].length} characters)"
+        puts "'#{pages[i][0]}' (#{pages[i][1].length} characters)" # <4>
       end
     end
   end
 
   def process_body( i, row )
-    row.text().strip()
+    row.text().strip() # <1>
+  end
+
+  def process_title( title )
+    title = title
+    if title
+      title.gsub!( /Title:/, "" )
+      title.strip!
+    end
+    title # <2>
   end
   
   def get_ith_page( i )
@@ -49,8 +49,8 @@ class ByTravelersProcessor
           rows = ( page / "table[valign=top] tr" ) 
           if rows and rows.length > 3
             body = process_body( i, rows[4] ) 
-            title = process_body( i, rows[0] )
-            pages[ i ] = [ title, body ]
+            title = process_body( i, rows[1] )
+            pages[ i ] = [ title, body ] # <3>
           end
         end
       end

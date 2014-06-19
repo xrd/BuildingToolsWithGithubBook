@@ -914,22 +914,23 @@ Loading 99th page
 
 ===== Implementing get_ith_page
 
-Now let's write the code which pulls out the information for the body and the title.
+Now let's write the code which pulls out the information for the body
+and the title by implementing the `get_ith_page` method.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="90da997:support/jekyll-parser/scraper.rb" lines="25..-4"]
+[filename=".", language="ruby", sha="6b3c439:support/jekyll-parser/scraper.rb" lines="25..-4"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
-<1> First, we load up a VCR cassette, which just says "store any HTTP requests
+<1> First, we load up a VCR cassette; this code says "store any HTTP requests
 inside my cassette directory ('cached', specified in the configure
 stage) under the name bt_#{index}". In more concrete terms, the first
 page loaded by our script will be cached and saved in a file at the
 path `cached/bt_1.yml` (VCR adds the yml extension because it stores
-the file using the YAML language).
+the results as a structured YAML file).
 <2> Once we have loaded the page we see one of the powerful features
 of mechanize footnote:[Actually, this is handled by the Nokogiri parser, but
 Mechanizes exposes it seamlessly], a simple page searching syntax. If
@@ -938,13 +939,13 @@ is searching inside the page for a tag like `<table valign="top">` and
 then finding all the `<tr>` tags inside that. Recalling the DOM
 hierarchy we saw inside the Chrome Inspector, we can start to see how
 we will easily retrieve content from a scraped page.
-<3> We then take the 5th (ruby uses zero-based offsets) row, and
-process it using a method called `process_body` which, you guessed it,
-processes the 5th row as the body content.
-<4> The `process_body` method takes the retrieved DOM node and
-converts it to pure text (as opposed to leaving us with the HTML tags)
+<3> We then take the 2nd and 5th (ruby uses zero-based offsets) rows, and
+process it using a method called `process` which, you guessed it,
+process them as title and body.
+<4> The `process` method takes the retrieved DOM nodes and
+converts them to pure text (as opposed to leaving us with the HTML tags)
 and then strips whitespace from the front and end, and then prints the
-first 50 characters along with the journal entry index.
+index in parentheses, the title and the first 50 characters of the body.
 
 If we run our code now, we will see the body of our journal entries.
 
@@ -973,9 +974,9 @@ across our local filesystem, reading files from disk and simulating
 our network connection. Our client code does not have to change at
 all, the real power of the VCR gem.
 
-We should grab the titles as well.  Add a method called
-`process_title` and add that into the `get_ith_page` method underneath
-the `process_body` method. 
+Now let's break the title and body processing into separate methods.
+Add a method called `process_title` and add that into the `get_ith_page` method underneath
+the renamed `process` method now called `process_body`.
 
 [source,ruby]
 -----
