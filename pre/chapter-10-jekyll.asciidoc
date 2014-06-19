@@ -980,11 +980,37 @@ the renamed `process` method now called `process_body`.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="e4f924c:support/jekyll-parser/scraper.rb" lines="9..38"]
+[filename=".", language="ruby", sha="2aa63e8:support/jekyll-parser/scraper.rb" lines="20..60"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
+
+We've modified the `get_ith_page` method to save each page as a tuple
+(the title and body) and then print them out after processing inside
+the `run` method.
+
+<1> Now, just return the body text itself after converting to text and
+stripping whitespace.
+<2> Do the same with the title, but processing out the occasion when a
+user added their own "Title: " to the front of the text.
+<3> Keep track of each page in an array with each item of the array
+containing the title and body.
+<4> At the end of processing, just print them out again.
+
+If we re-run this script we will see identical output to the prior
+run, but now we are storing the information in an array and can use it
+to write out our Markdown files.
+
+===== Generating Markdown
+
+Now that we have our information parsed out, we can generate Markdown
+from it. As we've seen, Jekyll Markdown files are very simple: just a
+bit of YAML at the beginning, with text content following the
+Markdown. To generate Markdown posts, edit the `run` method to write
+out the files after we have processed them.
+
+
 
 ==== Writing tests
 
