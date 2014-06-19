@@ -17,17 +17,43 @@ class ByTravelersProcessor
     @pages = []
   end
 
+  def write_post( page )
+    title = page[0]
+    body = page[1]
+    creation_date = page[2]
+
+    template = <<"TEMPLATE"
+---
+layout: post
+title: "#{title.gsub(/"/, '\\"')}"
+published: false
+---
+TEMPLATE
+    
+    title_for_filename = title.downcase.gsub( '"', '' ).gsub( /\s+/, '-').gsub( /\//, '-' ).gsub( ':', '-' ).gsub( ',', '' )
+    filename = "_posts/#{creation_date}-#{title_for_filename}.md"
+    File.open( filename, "w+" ) do |f|
+      f.write template
+      f.write body
+    end
+  end
+
   def run
     100.times do |i| 
       get_ith_page( i ) 
     end
     100.times do |i|
       if pages[i]
-        puts "(#{i}) #{pages[i][0]} :: #{pages[i][1][0...50]}" # <4>
+        write_post( pages[i] )
       end
     end
   end
 
+  def process_creation_date( i, row )
+    location, creation_date = row.text().split /last updated on:/
+    creation_date.strip()
+  end  
+  
   def process_body( i, row )
     row.text().strip() # <1>
   end
@@ -50,7 +76,8 @@ class ByTravelersProcessor
           if rows and rows.length > 3
             body = process_body( i, rows[4] ) 
             title = process_body( i, rows[1] )
-            pages[ i ] = [ title, body ] # <3>
+            creation_date = process_creation_date( i, rows[3] )
+            pages[ i ] = [ title, body, creation_date ]
           end
         end
       end
