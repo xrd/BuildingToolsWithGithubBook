@@ -1007,7 +1007,22 @@ to write out our Markdown files.
 Now that we have our information parsed out, we can generate Markdown
 from it. As we've seen, Jekyll Markdown files are very simple: just a
 bit of YAML at the beginning, with text content following the
-Markdown. To generate Markdown posts, edit the `run` method to write
+Markdown. 
+
+We need to create a Git repository which we can push into GitHub.
+There is no reason why we cannot store our scraper scripts inside it,
+so let's just add the files to the same directory
+
+[source,bash]
+------
+$ git init
+$ mkdir _posts
+$ printf "_site" >> .gitignore
+$ git add .gitignore
+$ git commit -m "Initial checkin"
+------
+
+To generate Markdown posts, edit the `run` method to write
 out the files after we have processed them.
 
 
