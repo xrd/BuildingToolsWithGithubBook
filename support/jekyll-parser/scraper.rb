@@ -23,7 +23,7 @@ class ByTravelersProcessor
     end
     100.times do |i|
       if pages[i]
-        puts "'#{pages[i][0]}' (#{pages[i][1].length} characters)" # <4>
+        puts "(#{i}) #{pages[i][0]} :: #{pages[i][1][0...50]}" # <4>
       end
     end
   end
