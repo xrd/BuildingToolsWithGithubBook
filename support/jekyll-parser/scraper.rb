@@ -22,19 +22,20 @@ class ByTravelersProcessor
     body = page[1]
     creation_date = page[2]
 
-    template = <<"TEMPLATE"
+    template = <<"TEMPLATE"  # <2>
 ---
 layout: default
 title: "#{title.gsub(/"/, '\\"')}"
 published: false
 ---
+
+#{body}
 TEMPLATE
     
-    title_for_filename = title.downcase.gsub( /[",]+/, '' ).gsub( /[\s\/\:\;]+/, '-')
+    title_for_filename = title.downcase.gsub( /[",]+/, '' ).gsub( /[\s\/\:\;]+/, '-') # <3>
     filename = "_posts/#{creation_date}-#{title_for_filename}.md"
     File.open( filename, "w+" ) do |f|
       f.write template
-      f.write body
     end
   end
 
@@ -44,13 +45,13 @@ TEMPLATE
     end
     100.times do |i|
       if pages[i]
-        write_post( pages[i] )
+        write_post( pages[i] ) # <4>
       end
     end
   end
 
   def process_creation_date( i, row )
-    location, creation_date = row.text().split /last updated on:/
+    location, creation_date = row.text().split /last updated on:/ # <5>
     creation_date.strip()
   end  
   

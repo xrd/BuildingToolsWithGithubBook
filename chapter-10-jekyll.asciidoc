@@ -1128,7 +1128,7 @@ $ git commit -m "Initial checkin"
 ------
 
 To generate Markdown posts, edit the `run` method to write
-out the files after we have processed them.
+out the files after we have retrieved and parsed the pages from Archive.org.
 
 [source,ruby]
 -----
@@ -1145,7 +1145,7 @@ published: false
 ---
 TEMPLATE
     
-    title_for_filename = title.downcase.gsub( '"', '' ).gsub( /\s+/, '-').gsub( /\//, '-' ).gsub( ':', '-' ).gsub( ',', '' )
+    title_for_filename = title.downcase.gsub( /[",]+/, '' ).gsub( /[\s\/\:\;]+/, '-')
     filename = "_posts/#{creation_date}-#{title_for_filename}.md"
     File.open( filename, "w+" ) do |f|
       f.write template
@@ -1169,6 +1169,7 @@ TEMPLATE
     creation_date.strip()
   end  
 -----
+
 
 
 ==== Writing tests
