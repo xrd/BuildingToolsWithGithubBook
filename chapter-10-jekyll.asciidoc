@@ -1137,9 +1137,9 @@ out the files after we have retrieved and parsed the pages from Archive.org.
     body = page[1]
     creation_date = page[2]
 
-    title.gsub!( /"/, '' )
+    title.gsub!( /"/, '' ) # <2>
     
-    template = <<"TEMPLATE"  # <2>
+    template = <<"TEMPLATE"  # <3>
 ---
 layout: default
 title: "#{title}"
@@ -1168,6 +1168,10 @@ TEMPLATE
   end
 
   def process_creation_date( i, row )
+    location, creation_date = row.text().split /last updated on:/ # <5>
+    creation_date.strip()
+  end  
+  
 -----
 
 <1> First, we modify the `run` method to call our new `write_post`
@@ -1195,6 +1199,130 @@ creation date from the scraped data. We don't show it here, but after
 the `process_body` method call (which is inside the `get_ith_page`
 method) we added a call to this new function, giving it `i` and
 `row[3]` as the arguments. 
+
+We now have the posts generated properly, but we don't have an entry
+page into the blog. We can create a `index.md` file which just
+displays an index of all the blog posts. Inside this file we will use
+Liquid Tags to generate that list of posts. Notice that the site
+variable is populated with the list of posts automatically (Jekyll
+loads these up as long as they are in the `_posts` directory). We
+generate a link with the post URL, create a teaser from the content by
+generating a snippet of the body using the truncate method. Then we
+indicate the date that file was processed.  Liquid provides a nice set
+of tools to convert and process text using the pipe character which
+allow you to build complex structures when combined with the looping
+constructs you see here.
+
+[source,html]
+-----
+---
+layout: default
+---
+
+<h1>ByTravelers.com</h1>
+
+Crowd sourced travel information.
+
+<br/>
+
+<div>
+{% for post in site.posts %}
+<a href="{{ post.url }}"><h2> {{ post.title }} </h2></a>
+{{ post.content | strip_html | truncatewords: 40 }}
+<br/>
+<em>Posted on {{ post.date | date_to_string }}</em>
+<br/>
+{% endfor %}
+</div>
+
+
+-----
+
+We also need to create a *default* layout, so create this inside the
+`_layouts` directory with the filename `default.html`. 
+
+[source,html]
+-----
+<html>
+<head>
+<title>ByTravelers.com</title>
+</head>
+
+<body>
+
+{{ content }}
+
+</body>
+</html>
+
+-----
+
+This file is almost pure HTML, with only the `{{ content }}` tag. When
+we specify `default` as the layout inside YAML for a Markdown file,
+the Markdown text is converted to HTML, and then this layout file is
+wrapped around it. Notice this default layout is the same layout we
+have used inside our post files. 
+
+Finally, in order to convey that this is a Jekyll repository to both
+the command line Jekyll processor and GitHub service, we need to
+create a `_config.yml` file. We saw a simple version of this file
+earlier and can reuse this almost verbatim, changing only the name.
+
+[source,yaml]
+-----
+name: ByTravelers.com
+markdown: redcarpet
+pygments: true
+-----
+
+Taking a moment to add our files to the Git repository, we can then
+take a look at our site using the `jekyll` command line tool.
+
+[source,bash]
+----
+$ git add .
+$ git commit -m "Make this into a Jekyll site"
+...
+$ jekyll serve --watch
+Configuration file: /Users/xrdawson/Projects/GithubBook/1234000000486/support/jekyll-parser/_config.yml
+            Source: /Users/xrdawson/Projects/GithubBook/1234000000486/support/jekyll-parser
+       Destination: /Users/xrdawson/Projects/GithubBook/1234000000486/support/jekyll-parser/_site
+      Generating... done.
+ Auto-regeneration: enabled
+    Server address: http://0.0.0.0:4000
+  Server running... press ctrl-c to stop.
+----
+
+We've started the Jekyll server in "watch" mode which means the site will
+be automatically regenerated if we edit the source files. Let's take a
+look at the site as currently configured on *http://localhost:4000*.
+
+image::images/jekyll-no-posts.png[No posts at all]
+
+There are no posts! Ah, we elected to keep posts "unpublished" for now
+to review them before making them public. If we edit any file
+individually and change the line `published: false` inside our YFM to
+`published: true` then we will see that this file becomes available
+inside our site. Let's do this for three of the files. Notice the
+server regenerates our files each time we change one of them.
+
+[source,bash]
+-------
+...
+      Regenerating: 1 files at 2014-06-20 12:54:52 ...done.
+      Regenerating: 2 files at 2014-06-20 12:55:03 ...done.
+      Regenerating: 1 files at 2014-06-20 12:55:15 ...done.
+      Regenerating: 4 files at 2014-06-20 12:55:15 ...done.
+...
+-------
+
+And, if we reload our page we'll see them listed inside our index.
+
+image::images/jekyll-got-posts.png[Publishing some of the posts]
+
+If we trust that all these posts are correct, we can change the
+`scraper.rb` script to make them all public, or we could change files
+individually by hand. 
 
 ==== Writing tests
 
