@@ -22,6 +22,8 @@ class ByTravelersProcessor
     body = page[1]
     creation_date = page[2]
 
+    title.gsub!( /"/, '' )
+    
     template = <<"TEMPLATE"  # <2>
 ---
 layout: default
@@ -31,8 +33,8 @@ published: false
 
 #{body}
 TEMPLATE
-    
-    title_for_filename = title.downcase.gsub( /[",]+/, '' ).gsub( /[\s\/\:\;]+/, '-') # <3>
+
+    title_for_filename = title.downcase.gsub( /,+/, '' ).gsub( /[\s\/\:\;]+/, '-') # <3>
     filename = "_posts/#{creation_date}-#{title_for_filename}.md"
     File.open( filename, "w+" ) do |f|
       f.write template
