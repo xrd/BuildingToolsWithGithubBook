@@ -1039,7 +1039,7 @@ markdown file.
 <2> Inside the `write_post` method we create a "heredoc" template, and
 then stick values inside of it. Heredocs provide a more readable way
 to write out larger textual data, especially those with newlines.
-Heredocs simply start with a tag and then end the template with a tag
+Heredocs simply start with a tag and then end the contents with the same tag
 ("TEMPLATE" here), and everything in between is treated as a single
 string. 
 <3> Jekyll expects markdown files to have a specific format. We need
@@ -1049,8 +1049,9 @@ the creation date, which we retrieve in a later call, and parameterize
 the title with that information. Then we write out the file.
 <4> Inside our new `process_creation_date` method we extract the
 creation date from the scraped data. We don't show it here, but after
-the `process_body` (inside the `get_ith_page`) call we added a call to
-this function, giving it `i` and `row[3]` as the arguments.
+the `process_body` method call (which is inside the `get_ith_page`
+method) we added a call to this new function, giving it `i` and
+`row[3]` as the arguments. 
 
 ==== Writing tests
 
