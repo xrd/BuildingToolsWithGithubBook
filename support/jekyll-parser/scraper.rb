@@ -22,9 +22,9 @@ class ByTravelersProcessor
     body = page[1]
     creation_date = page[2]
 
-    title.gsub!( /"/, '' )
+    title.gsub!( /"/, '' ) # <2>
     
-    template = <<"TEMPLATE"  # <2>
+    template = <<"TEMPLATE"  # <3>
 ---
 layout: default
 title: "#{title}"
@@ -53,7 +53,7 @@ TEMPLATE
   end
 
   def process_creation_date( i, row )
-    location, creation_date = row.text().split /last updated on:/ # <4>
+    location, creation_date = row.text().split /last updated on:/ # <5>
     creation_date.strip()
   end  
   

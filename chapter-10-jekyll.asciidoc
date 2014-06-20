@@ -1137,17 +1137,19 @@ out the files after we have retrieved and parsed the pages from Archive.org.
     body = page[1]
     creation_date = page[2]
 
+    title.gsub!( /"/, '' )
+    
     template = <<"TEMPLATE"  # <2>
 ---
 layout: default
-title: "#{title.gsub(/"/, '\"')}"
+title: "#{title}"
 published: false
 ---
 
 #{body}
 TEMPLATE
-    
-    title_for_filename = title.downcase.gsub( /[",]+/, '' ).gsub( /[\s\/\:\;]+/, '-') # <3>
+
+    title_for_filename = title.downcase.gsub( /,+/, '' ).gsub( /[\s\/\:\;]+/, '-') # <3>
     filename = "_posts/#{creation_date}-#{title_for_filename}.md"
     File.open( filename, "w+" ) do |f|
       f.write template
@@ -1166,20 +1168,24 @@ TEMPLATE
   end
 
   def process_creation_date( i, row )
-    location, creation_date = row.text().split /last updated on:/ # <4>
-    creation_date.strip()
 -----
 
 <1> First, we modify the `run` method to call our new `write_post`
 method. This method is reponsible for writing out our data into a
 markdown file.
+<2> We enclose the title inside the YAML inside of double quotes, so
+to make sure this does not conflict with the YAML parser we remove
+double quotes from the title here. We need to do this when we generate
+the filename later, so we use the `gsub!` method which modifies the
+string itself (rather than returning a new value but leaving the
+existing string intact).
 <2> Inside the `write_post` method we create a "heredoc" template, and
 then stick values inside of it. Heredocs provide a more readable way
 to write out larger textual data, especially those with newlines.
 Heredocs simply start with a tag and then end the contents with the same tag
 ("TEMPLATE" here), and everything in between is treated as a single
 string. 
-<3> Jekyll expects markdown files to have a specific format. We need
+<3> Jekyll expects markdown filenames to have a specific format. We need
 to modify the title by remove commas and quotes, and then converting
 whitespace, colons and semicolons to hyphen characters. We also need
 the creation date, which we retrieve in a later call, and parameterize
