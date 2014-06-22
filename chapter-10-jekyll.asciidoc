@@ -1398,7 +1398,6 @@ and white marble floor around the men having breakfast with
 ...
 ------
 
-
 ==== Writing tests
 
 * Make sure to watch for whitespace on ends of string.

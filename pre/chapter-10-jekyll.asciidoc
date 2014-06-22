@@ -1191,7 +1191,6 @@ snippet~~~~~
 ...
 ------
 
-
 ==== Writing tests
 
 * Make sure to watch for whitespace on ends of string.

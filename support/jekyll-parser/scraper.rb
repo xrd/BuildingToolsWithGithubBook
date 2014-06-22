@@ -35,6 +35,7 @@ published: true
 TEMPLATE
 
     title_for_filename = title.downcase.gsub( /,+/, '' ).gsub( /[\s\/\:\;]+/, '-') # <3>
+    # puts "Title: #{title_for_filename}"
     filename = "_posts/#{creation_date}-#{title_for_filename}.md"
     File.open( filename, "w+" ) do |f|
       f.write template
@@ -58,15 +59,14 @@ TEMPLATE
   end  
   
   def process_body( i, row )
-    # puts "Row : #{row}"
     new_text = ( row / "p" ).collect { |p| p.text().strip() }.join( "\n\n" )
     # puts "Processed: #{new_text}"
     puts "Row count: #{ (row / 'p' ).length }"
     new_text
   end
 
-  def process_title( title )
-    title = title
+  def process_title( i, title )
+    title = title.text()
     if title
       title.gsub!( /Title:/, "" )
       title.strip!
@@ -82,13 +82,14 @@ TEMPLATE
           rows = ( page / "table[valign=top] tr" ) 
           if rows and rows.length > 3
             body = process_body( i, rows[4] ) 
-            title = process_body( i, rows[1] )
+            title = process_title( i, rows[1] )
             creation_date = process_creation_date( i, rows[3] )
             pages[ i ] = [ title, body, creation_date ]
           end
         end
       end
     rescue Exception => e
+      puts "Error: #{e}"
     end
   end
   
