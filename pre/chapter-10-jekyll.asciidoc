@@ -980,7 +980,7 @@ the renamed `process` method now called `process_body`.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="2aa63e8:support/jekyll-parser/scraper.rb" lines="20..60"]
+[filename=".", language="ruby", sha="6a810fe:support/jekyll-parser/scraper.rb" lines="20..60"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -992,7 +992,7 @@ the `run` method.
 
 <1> Now, just return the body text itself after converting to text and
 stripping whitespace.
-<2> Do the same with the title, but processing out the occasion when a
+<2> Do the same with the title, but being wary of the occasion when a
 user added their own "Title: " to the front of the text.
 <3> Keep track of each page in an array with each item of the array
 containing the title and body.

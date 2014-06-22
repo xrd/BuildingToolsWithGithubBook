@@ -1063,7 +1063,7 @@ the renamed `process` method now called `process_body`.
     row.text().strip() # <1>
   end
 
-  def process_title( title )
+  def process_title( i, title )
     title = title
     if title
       title.gsub!( /Title:/, "" )
@@ -1080,7 +1080,7 @@ the renamed `process` method now called `process_body`.
           rows = ( page / "table[valign=top] tr" ) 
           if rows and rows.length > 3
             body = process_body( i, rows[4] ) 
-            title = process_body( i, rows[1] )
+            title = process_title( i, rows[1] )
             pages[ i ] = [ title, body ] # <3>
           end
         end
@@ -1097,7 +1097,7 @@ the `run` method.
 
 <1> Now, just return the body text itself after converting to text and
 stripping whitespace.
-<2> Do the same with the title, but processing out the occasion when a
+<2> Do the same with the title, but being wary of the occasion when a
 user added their own "Title: " to the front of the text.
 <3> Keep track of each page in an array with each item of the array
 containing the title and body.
