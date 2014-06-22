@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "smoking in the hague"
-published: false
+published: true
 ---
 
 The Netherlands is a wonderful place to visit. Steer clear 

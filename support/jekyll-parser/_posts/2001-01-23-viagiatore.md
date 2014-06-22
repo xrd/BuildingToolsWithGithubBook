@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Viagiatore"
-published: false
+published: true
 ---
 
 Viagiatore
@@ -38,11 +38,11 @@ and sayings that we can’t understand. These paintings shout at us, "Benvenuti 
 This only happens in America. You don’t expect this in Italy.Antica Locanda Dei MercantiVia San Tomasco is a simple little street just off Via Dante in the centro storico of Milano. Our cab driver had no 
 trouble finding it. Our hotel, though, was nowhere in sight. We stopped at the corner. The proprietor of a Travel Agency was standing outside his store."Dov’e la Antica Locanda Dei Mercanti?" asked our driver."E qui," he replied, pointing to what looked like an ordinary apartment building next door. Yes, there it was, #6 the address we were looking for. But, there was no sign. Nothing was obvious from the street. 
 Not even the small white card scotch taped to the door. 
- 
+
 The man from the travel agency indicated that the hotel was on the second floor. Inside the dark foyer we found a 
 larger sign and half a flight of stairs up we found an elevator. It was the size of a phone booth.I went with the bags. Norma climbed the stairs.Sliding back the steel-grate doors I saw a woman dressed in black like the women that work at Holts in Toronto. Our 
 innkeeper. She smiled as she told us that our room wasn’t ready. The room would be ours at noon. It was 9:30 in the morning.
- 
+
 Sleep walking in  Milan…
 We stepped out on to the streets of Milan and found the humidity waiting for us like a faithful dog. For two travel 
 exhausted, sleep-deprived neophyte travelers, Milan has too many people and too much energy. But the streets are the 
@@ -88,7 +88,7 @@ swirling up to us. To this music we welcome breakfast. Fresh whole fruit, fresh 
 than anything memory can recall, yogurt as it doesn’t taste in Toronto, hard toast which we don’t eat in Toronto, 
 Danish which one wouldn’t expect in Milan and coffee which tastes like nothing in Toronto; rich, dark thick and 
 sweet.
- 
+
 Such is our Sunday morning in Milan, our first Sunday in Italy.2
 A bicycle rattles up the cobblestone street in front of our hotel. A young mother with her son on a seat mounted just 
 behind the handlebars is riding towards me. The boy chattered (as young children do) to his father who ran along 
@@ -146,7 +146,7 @@ closer and look over your shoulder you see a refinery on the other shore. There 
 directions to your hotel confirms it further. If you are struggling with suitcases or backpack in the heat of the day, a 
 tired, drawn look on your face, trying to move yourself and your belongings somewhere, you are marked.You are a tourist. You have not yet earned the right to be called "traveler." That will come later when you learn how 
 to be invisible in a strange place.Just outside Santa Lucia Station a high bridge spans the Grand Canal.
- 
+
 Our hotel is just over the bridge and down a slim lane on the other side. There are steps on the bridge that you must 
 pull your luggage up one side, then bounce your luggage down the other. Hard work on a hot day. Especially with 
 people watching you.Finding our hotel turned into something of a farce as well. According to the directions I found on the Internet, the Hotel Capri was just across from the railway station down a 
@@ -312,7 +312,7 @@ Schedules tell us when we can go and how far. We read them and obey.t Bologna…
 search for the train to Florence. Descending into the Sottopassagio we spot the platform number. With minutes to 
 spare we sprint like super-humans, suitcases aloft, body checking other tourists to clear a path up wet stairs to the 
 waiting train.
- 
+
 Victory! Our prize is the train itself, a first class Eurostar Express in from Zurich. Recling seats. stereo, dining car, electronic 
 window shades and clean washrooms. Best of all we arrive in Florence with our nerves intact, long before the too-full-train-we-were-supposed-to-take does.t 
 The tunnels of Tuscany…Suddenly the darkness comes at you. All the light around you is sucked into a dark tunnel and you are alone with just 
@@ -394,7 +394,7 @@ seen becomes a blur. Italy is over-populated with art.
 2
 We found a gourmet shop on the other side of the Arno that sold authentic balsamic vinegar in tiny wax-topped 
 bottles for a lot of money. Their bottled water was only 1200 lire.
- 
+
 The cheapest, so far, in Italy. The axiom being: the closer you get to an historical site, the more expensive "aqua 
 minerale" gets.2 
 Wasps…The Motorini are everywhere.They are like mosquitoes, annoying. They buzz all around you, their noxious exhaust stinging you nostrils, 
@@ -440,7 +440,7 @@ locals boarded, we realized we were the only tourists there. We must have looked
 what the people of Poggibonsi were wearing. A valley of fields sloped from hill to hill.  Sunflowers black with seeds 
 hung their heavy heads in the sun. Most were wilted, their usefulness over now that it was early fall. Around each 
 curve in the road we caught glimpses of the walls and towers of our destination.
- 
+
 San Gimignano delle Belle Torri seemed to be sitting in the skyv
 Porta San GiovanniFrom this gate a slim cobblestone street leads to the Piazza Della Cisterna and our hotel. Already this medieval town 
 was teeming with tourists. Cars and buses had arrived earlier. Apparently San Gimignano is a day trip for a lot of 
@@ -576,7 +576,7 @@ Rain falls still.
 Wind rolls the gray down the green and the spires of the Duomo appear.
 Orvieto has shrugged off the fog so that she might rule the valley again.We know we must go to this distant place that is framed in our window. Looking at it is no longer satisfying. At the front desk they suggest that calling a cab in this weather is a gamble at 
 best. "There are only three in town." "Yes?""With this weather they could be busy. Besides, it is getting close to lunch time."
- 
+
 Patiently we wait in the courtyard. The resident cat decides to make friends with us. There are nooks and crannies in 
 the old monastery waiting to be explored and he quietly leads us to them. At the Church of the Crucifixion the doors 
 are locked. Looking inside through the cracks in the wood we see hints of frescoes on the wall. Because of the pews 
@@ -597,7 +597,7 @@ façade of the church features marble carvings of religious themes. Alternating 
 your eyes up to the multi-coloured mosaics which give the Duomo a sparkling beauty in today’s gray gloom.After mass we walk the slick, slippery black slate streets. Stone masons laid them in a scallop pattern. Every street is 
 the same. Each street leads to the outside walls of the city and we look down on inspiring views of the valley.Rain follows us around Orvieto. Hazelnut lemon and chocolate gelatti brighten up our day. Riding the funicular down 
 to Orvieto Scalo we arrive at a station that is strangely deserted.
- 
+
 We need a cab to take us back to La Badia. Knowing that it is useless to try and call one we take up our solitary 
 position at the cab stand and settle in for the long wait.After a half hour in the rain we decide to walk. Our decision proves to be a good thing as clouds begin to clear. 
 Sunshine and blue skies are smiling down on us as we set out on our bold adventure in what we think is the right 
@@ -683,7 +683,7 @@ love to hate. They call it the "marble monolith, the wedding cake, the typewrite
 it does contain the tomb of the unknown soldier, a museum and in front a massive statue of a man on a horse. The 
 Vittorio Emanuele Monument was built of white marble from Brescia which for some reason hasn’t mellowed from 
 the time it was constructed at the turn of the century.
- 
+
 Back in 81 BC all of the Roman aqueducts ended at the Trevi Fountain. This is the end of our touring for the day as 
 well. Leaving, we notice the gypsies again. Three of them are approaching a man and woman. We are about to warn 
 them when the man steps back telling his assailants to keep away. A few minutes later while buying postcards in a 
@@ -697,7 +697,7 @@ around where you’re from, where you’ve been and where you’re going. Experi
 for colour. The couple had an audience with the Pope at 10:00. They had bought tickets (which I didn’t know you 
 could do) and were planning on taking the Metro to Saint Peter’s Square. We mentioned that the Vatican was also our 
 destination today, but we were just going to grab the #64 bus.
- 
+
 We all wondered what the crowds would be like what with all the pilgrims in Rome. Our American friends weren’t too 
 concerned…they had tickets. Norma and I made our way to Piazza dei Cinquecento part of which resembled an permanent bus traffic jam. It only 
 took a couple of visits to information kiosks to locate the stop we needed. Deciding against the express we climbed 
@@ -707,7 +707,7 @@ the crowds. You are not prepared for "porta-potties" in Saint Peter’s Square. 
 you file past both you are immediately overwhelmed by the expanse of the square, the gathering crowds and two 
 huge "rock concert style" video screens with a larger than life Pope in full colour. This was the audience our American 
 friends had tickets for. And they were there, somewhere, in that mass of people.
- 
+
 Up on the steps of the Vatican, under a canopy, Pope John Paul sat receiving the faithful from all over the world. 
 Above him and off to the side, sat a group of obvious members of the clergy. Below him well away from the base of 
 the steps were barricades containing row upon row of folding chairs where people sat. Behind this in tight groups, 

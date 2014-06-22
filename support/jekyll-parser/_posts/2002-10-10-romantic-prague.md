@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Romantic Prague"
-published: false
+published: true
 ---
 
 I have been anxious to return to Prague and share it with 

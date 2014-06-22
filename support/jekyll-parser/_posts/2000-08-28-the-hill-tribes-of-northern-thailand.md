@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "The Hill-Tribes of Northern Thailand"
-published: false
+published: true
 ---
 
 I had heard about the hill-tribes in 

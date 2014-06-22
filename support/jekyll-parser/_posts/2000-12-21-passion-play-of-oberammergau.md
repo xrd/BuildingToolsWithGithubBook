@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Passion Play of Oberammergau"
-published: false
+published: true
 ---
 
 On Sunday, Sept. 17 Jeanne picked up Vic at Jackie's and they drove to a 
@@ -45,10 +45,12 @@ The afternoon session started about 1:30 and lasted until 6:10.  We had
 the fast Jesus as the main parts in the play are double cast and this man 
 spoke faster than the other lead who would finish at 6:15.  The weather was 
 warm and got warmer and Sharon started shedding clothes during the afternoon. 
- The woman in front of her was a bit worried.   After the play, it started to 
+
+The woman in front of her was a bit worried.   After the play, it started to 
 rain and we got on the bus and returned to the hotel and dinner.  All really 
 slept well that night.
-    The following morning it was raining.  We were headed for Innsbruk that 
+
+The following morning it was raining.  We were headed for Innsbruk that 
 day, the city of the winter Olympics of 1964 and 1976.  The 2000  summer 
 Olympics in Sydney were going at this time  and we enjoyed watching the 
 events on CNN and a German station.  Go TEAM USA!!!!!In Innsbruk we had a tour of  the Imperial Palace where Maximilian 
@@ -106,7 +108,8 @@ it was just around the NEXT corner!!!!) where family members come after dark
 to light candles for loved ones buried there.  It was quite lovely.  All the 
 cemeteries in Austria are beautifully decorated with flowers and grave 
 markers.On Sunday morning we went back into Germany to the beautiful Wies Church, 
- which is called "The church in the meadow."  They were having a Sunday mass 
+
+which is called "The church in the meadow."  They were having a Sunday mass 
 and the choir and organ were outstanding.  Then on to the original Cinderella 
 castle, Neuschwanstein.   (Disneys Fantasyland castle is modeled on it) .  
 We viewed it from afar and learned it was built by mad King Ludwig II who was 

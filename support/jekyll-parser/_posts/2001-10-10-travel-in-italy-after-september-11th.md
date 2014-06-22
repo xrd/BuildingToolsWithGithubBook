@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "travel in Italy after September 11th"
-published: false
+published: true
 ---
 
 Italy is magnificent in the fall.  I have never spent time 

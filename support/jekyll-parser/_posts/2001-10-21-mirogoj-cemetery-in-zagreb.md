@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Mirogoj Cemetery in Zagreb"
-published: false
+published: true
 ---
 
 This morning I decided to visit Mirogoj cemetery, in the 

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Diving in Dubrovnik"
-published: false
+published: true
 ---
 
 I went diving in Dubrovnik this morning. Anton met me at his

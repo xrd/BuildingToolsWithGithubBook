@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Cuba - the good and bad"
-published: false
+published: true
 ---
 
 April 1999Cuba, what an interesting place??!!

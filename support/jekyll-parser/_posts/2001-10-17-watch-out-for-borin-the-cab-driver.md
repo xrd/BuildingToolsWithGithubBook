@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "watch out for Borin the Cab Driver"
-published: false
+published: true
 ---
 
 I left my new "sobe" (private room) angry and bitter.  

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "The Great Wall"
-published: false
+published: true
 ---
 
 China Chapters

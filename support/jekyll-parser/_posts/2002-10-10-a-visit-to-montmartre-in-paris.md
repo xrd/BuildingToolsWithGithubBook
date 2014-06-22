@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "A Visit to Montmartre in Paris"
-published: false
+published: true
 ---
 
 On our last day in Paris Pam and I decided to start our day 

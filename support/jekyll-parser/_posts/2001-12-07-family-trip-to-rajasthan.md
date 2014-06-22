@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Family trip to Rajasthan"
-published: false
+published: true
 ---
 
 Rajasthan is a state in western India. It is a 
@@ -17,9 +17,10 @@ Hyderabad city in southern India, we chose to travel by
 train. However, you can fly to Jaipur from New Delhi and 
 Mumbai.)
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- ---
- 
+
 JAIPUR:
-	We alighted the train at Jaipur station on October 
+
+We alighted the train at Jaipur station on October 
 20. After getting refreshed in the hotel room, we started 
 for our sightseeing trip on an “Auto Tonga” (a motorized 3-
 wheeler with enough room for 6 people). The first place we 
@@ -65,9 +66,10 @@ back with the repaired camera. After finishing the dinner,
 we left for the railway station to catch the train for 
 Jodhpur.
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- ---
- 
+
 JODHPUR:
-	After an overnight journey, we alighted the train 
+
+After an overnight journey, we alighted the train 
 at Jodhpur station on October 21. After getting refreshed 
 in the hotel room, we started for our sightseeing trip on 
 an “Auto Rickshaw” (a motorized 3-wheeler with enough room 
@@ -105,7 +107,8 @@ the dinner at our hotel, we left for the railway station to
 catch the train for Jaisalmer.
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 JAISALMER:
-	Jaisalmer city lies in the heart of Thar Desert. 
+
+Jaisalmer city lies in the heart of Thar Desert. 
 All the buildings in this city were built of yellow 
 sandstone. At sunset, it looks like a golden city! Due to 
 acute shortage of water, all the structures were built 
@@ -248,8 +251,8 @@ the Sun set behind the mountains. The next day (October
 26), we started for our next destination, Udaipur.
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 UDAIPUR:
- 	
-	Udaipur is a “modern city” when compared to the 
+
+Udaipur is a “modern city” when compared to the 
 other historical places of Rajasthan. It was founded by 
 Maharana Udai Singh in 1559 AD. Udai Singh’s biography is 
 quite interesting. He was born in a royal family at 
@@ -339,7 +342,7 @@ entertained her by making the puppet to jump on her hand
 occasionally.We then retired to our hotel room. After lunch, we started 
 for our final destination in Rajasthan, Chittaurgarh. 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- ---
- 
+
 CHITTAURGARH:	The fort at Chittaurgarh is the largest one in 
 India. A large hill was converted into a gigantic fort by 
 Chitrangada Maurya and it was later named Chittaurgarh 

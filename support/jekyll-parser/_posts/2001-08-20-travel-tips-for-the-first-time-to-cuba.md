@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Travel tips for the first time to Cuba"
-published: false
+published: true
 ---
 
 Travel Tips For Your Cuban Trip.

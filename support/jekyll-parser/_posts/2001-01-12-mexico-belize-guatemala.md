@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Mexico/Belize/Guatemala"
-published: false
+published: true
 ---
 
 Feb/Mar 1999Dear All

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Beautiful Belize"
-published: false
+published: true
 ---
 
 This winter I took a holiday cruise which included the 
@@ -66,7 +66,8 @@ sure that the boats are securely anchored to the platform
 so that no one falls.  (You can see my photo’s of the tendering and Belize Trip 
 in the photo album for this review which is located at 
 http://ausetkmt.com/winter-holiday02.html)
- Mary and I get tickets in the showroom, ship stickers, and 
+
+Mary and I get tickets in the showroom, ship stickers, and 
 then go back up onto the deck to watch the tendering 
 process.  It is at least noon before we are able to get on 
 a tender and into Belize City.  We eat lunch in the Lido 

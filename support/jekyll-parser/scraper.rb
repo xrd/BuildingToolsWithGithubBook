@@ -28,7 +28,7 @@ class ByTravelersProcessor
 ---
 layout: default
 title: "#{title}"
-published: false
+published: true
 ---
 
 #{body}
@@ -58,7 +58,11 @@ TEMPLATE
   end  
   
   def process_body( i, row )
-    row.text().strip()
+    # puts "Row : #{row}"
+    new_text = ( row / "p" ).collect { |p| p.text().strip() }.join( "\n\n" )
+    # puts "Processed: #{new_text}"
+    puts "Row count: #{ (row / 'p' ).length }"
+    new_text
   end
 
   def process_title( title )
@@ -86,7 +90,6 @@ TEMPLATE
       end
     rescue Exception => e
     end
-    
   end
   
 end

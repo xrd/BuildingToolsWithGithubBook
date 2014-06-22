@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Two Days in St. Petersburg"
-published: false
+published: true
 ---
 
 Pam and I woke up early on Tuesday in anticipation of the 

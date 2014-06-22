@@ -1156,8 +1156,41 @@ And, if we reload our page we'll see them listed inside our index.
 image::images/jekyll-got-posts.png[Publishing some of the posts]
 
 If we trust that all these posts are correct, we can change the
-`scraper.rb` script to make them all public, or we could change files
-individually by hand. 
+`scraper.rb` script to make them all public (inside the heredoc
+template, just change the published flag), or we could change files
+individually by hand as we did here.
+
+Taking a look at the blog post itself, we see this after clicking on
+the first link.
+
+image::images/jekyll-unformatted-post.png[Not the best formatting]
+
+Not very pretty at all. Markdown will wrap `<p>` tags around all
+blocks of text, where a block of text is delimited by two newlines. If
+we look at the output of our parser script, we see that the each
+intended paragraph is not separated by two newlines.
+
+[source,bash]
+------
+[filename=".", language="ruby", sha="6000969:support/jekyll-parser/_posts/2001-02-14-solo-tango-in-buenos-aires.md" lines="1..25"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+------
+
+To fix this, we can just modify each newline in the body content and
+where we see an instance of a newline, convert it to two newlines.
+
+[source,bash]
+------
+[filename=".", language="ruby", sha="6000969:support/jekyll-parser/_posts/2001-02-14-solo-tango-in-buenos-aires.md" lines="1..25"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+------
+
 
 ==== Writing tests
 

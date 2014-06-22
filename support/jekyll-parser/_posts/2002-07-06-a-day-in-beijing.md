@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "A Day in Beijing"
-published: false
+published: true
 ---
 
 China Chapters

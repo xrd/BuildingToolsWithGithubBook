@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Water Festival in Bangkok"
-published: false
+published: true
 ---
 
 Song Kron Celebration in ThailandThere is something about landing at Bangkok Airport that is 

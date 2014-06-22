@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Lava Beds Ate Our Shoes; Maui, HI"
-published: false
+published: true
 ---
 
 Lava Beds Ate Our Shoes"Says here just two miles to the deserted black-sand beach," 

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "mystic, connecticut"
-published: false
+published: true
 ---
 
 WE STAYED AT A WONDERFUL, UNIQUE BED AND BREAKFAST INN LAST 

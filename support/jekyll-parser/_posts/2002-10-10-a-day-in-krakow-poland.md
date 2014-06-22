@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "A Day in Krakow, Poland"
-published: false
+published: true
 ---
 
 I am not exactly sure what ingredients are needed to create 

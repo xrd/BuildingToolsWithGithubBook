@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "The Bardo Museum"
-published: false
+published: true
 ---
 
 If you are interested in mosaics, when you visit Tunisia, 

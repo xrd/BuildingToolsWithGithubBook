@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "South Africa"
-published: false
+published: true
 ---
 
 Apr/May 1999I got in from South Africa a few days ago after enjoying a 

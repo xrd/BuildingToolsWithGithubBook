@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Check out this Travel Planning Website"
-published: false
+published: true
 ---
 
 I used this place and found the information presented and 
