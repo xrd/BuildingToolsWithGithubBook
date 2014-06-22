@@ -10,7 +10,7 @@ night of tango. We’re drooped over cafés con leche on an old
 wooden table in a run-down nineteenth-century coffee shop. 
 The large party over by the dark windows also look like 
 they’ve been up all night having a good time. The men are 
-wearing jackets, the women decolletage, all somewhat portly 
+wearing jackets, the women decoletage, all somewhat portly 
 and of a certain age. 
 
 Suddenly one of the men stands up and begins to sing, 
