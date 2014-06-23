@@ -58,11 +58,21 @@ TEMPLATE
     creation_date.strip()
   end  
   
-  def process_body( i, row )
-    new_text = ( row / "p" ).collect { |p| p.text().strip() }.join( "\n\n" )
+  def process_body( name, i, row )
+
+    text = row.text().strip()
+
+    out = text.gsub( /\n\s/, "\n\n" )
+    out.gsub!( /(\S)\n(\S)/, "#{$1}\n\n#{$2}" )
+    
+    # new_text = ( row / "p" ).collect { |p| p.text().strip() }.join( "\n\n" )
     # puts "Processed: #{new_text}"
-    puts "Row count: #{ (row / 'p' ).length }"
-    new_text
+    # puts "name: #{name}::: p count: #{ (row / 'p' ).length }"
+    # new_text
+
+    # puts "Out: #{out}"
+    
+    out
   end
 
   def process_title( i, title )
@@ -81,8 +91,8 @@ TEMPLATE
         mechanize.get( root ) do |page|
           rows = ( page / "table[valign=top] tr" ) 
           if rows and rows.length > 3
-            body = process_body( i, rows[4] ) 
             title = process_title( i, rows[1] )
+            body = process_body( title, i, rows[4] ) 
             creation_date = process_creation_date( i, rows[3] )
             pages[ i ] = [ title, body, creation_date ]
           end

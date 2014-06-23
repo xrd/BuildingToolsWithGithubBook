@@ -1330,73 +1330,13 @@ the first link.
 
 image::images/jekyll-unformatted-post.png[Not the best formatting]
 
-Not very pretty at all. Markdown will wrap `<p>` tags around all
-blocks of text, where a block of text is delimited by two newlines. If
-we look at the output of our parser script, we see that the each
-intended paragraph is not separated by two newlines.
+Not very pretty at all. We can beautiful this by adding some styling
+to the page. We'll use Bootstrap, the most popular CSS framework on
+GitHub. To start, edit the layout to include Bootstrap from the
+Bootstrap CDN. 
 
-[source,bash]
-------
----
-layout: default
-title: "SOLO TANGO IN BUENOS AIRES"
-published: true
----
 
-It’s just before dawn, and our small group of Argentines 
-and Americans are tired and filled with reverie after a 
-night of tango. We’re drooped over cafés con leche on an old 
-wooden table in a run-down nineteenth-century coffee shop. 
-The large party over by the dark windows also look like 
-they’ve been up all night having a good time. The men are 
-wearing jackets, the women décolletage, all somewhat portly 
-and of a certain age. 
-	Suddenly one of the men stands up and begins to sing, 
-loudly, proudly, passionately. Heads nod with approval. A 
-woman in gold beads joins in. 
-Several others, our table included, brighten with the music 
-and begin to clap along. I don’t understand the words, but I 
-know it is Tango--love, life, disappointment, desire, joy 
-and sadness.
-	Marcello can not resist the siren call of the emotional 
-song, even after dancing all night. He’s an Argentine. He 
-looks at me purposefully, and we tango on the cracked black 
-and white marble floor around the men having breakfast with 
-...
-------
 
-To fix this, we can just modify each newline in the body content and
-where we see an instance of a newline, convert it to two newlines.
-
-[source,bash]
-------
----
-layout: default
-title: "SOLO TANGO IN BUENOS AIRES"
-published: true
----
-
-It’s just before dawn, and our small group of Argentines 
-and Americans are tired and filled with reverie after a 
-night of tango. We’re drooped over cafés con leche on an old 
-wooden table in a run-down nineteenth-century coffee shop. 
-The large party over by the dark windows also look like 
-they’ve been up all night having a good time. The men are 
-wearing jackets, the women décolletage, all somewhat portly 
-and of a certain age. 
-	Suddenly one of the men stands up and begins to sing, 
-loudly, proudly, passionately. Heads nod with approval. A 
-woman in gold beads joins in. 
-Several others, our table included, brighten with the music 
-and begin to clap along. I don’t understand the words, but I 
-know it is Tango--love, life, disappointment, desire, joy 
-and sadness.
-	Marcello can not resist the siren call of the emotional 
-song, even after dancing all night. He’s an Argentine. He 
-looks at me purposefully, and we tango on the cracked black 
-and white marble floor around the men having breakfast with 
-...
-------
 
 ==== Writing tests
 

@@ -1165,31 +1165,13 @@ the first link.
 
 image::images/jekyll-unformatted-post.png[Not the best formatting]
 
-Not very pretty at all. Markdown will wrap `<p>` tags around all
-blocks of text, where a block of text is delimited by two newlines. If
-we look at the output of our parser script, we see that the each
-intended paragraph is not separated by two newlines.
+Not very pretty at all. We can beautiful this by adding some styling
+to the page. We'll use Bootstrap, the most popular CSS framework on
+GitHub. To start, edit the layout to include Bootstrap from the
+Bootstrap CDN. 
 
-[source,bash]
-------
-[filename=".", language="ruby", sha="6000969:support/jekyll-parser/_posts/2001-02-14-solo-tango-in-buenos-aires.md" lines="1..25"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
-...
-------
 
-To fix this, we can just modify each newline in the body content and
-where we see an instance of a newline, convert it to two newlines.
 
-[source,bash]
-------
-[filename=".", language="ruby", sha="6000969:support/jekyll-parser/_posts/2001-02-14-solo-tango-in-buenos-aires.md" lines="1..25"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
-...
-------
 
 ==== Writing tests
 
