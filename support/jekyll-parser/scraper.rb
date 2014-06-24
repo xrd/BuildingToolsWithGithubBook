@@ -26,7 +26,7 @@ class ByTravelersProcessor
     
     template = <<"TEMPLATE"  # <3>
 ---
-layout: default
+layout: post
 title: "#{title}"
 published: true
 ---

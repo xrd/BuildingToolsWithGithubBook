@@ -1208,12 +1208,43 @@ following contents.
 
 [source,html]
 -----
-[filename=".", language="html", sha="00be6cf:support/jekyll-parser/_layouts/post.html"]
+[filename=".", language="html", sha="c056a59:support/jekyll-parser/_layouts/post.html"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
+Notice also that this layout inherits the default layout. You can
+imagine wrapping many layouts within layouts to build up complicated
+output trees, but in this case we can now manage a base layout,
+including all the CSS and other complementary files associated with
+our site, and automatically propagate changes down into lower layout files.
+
+Add these changes to the index, and commit them.
+
+[source,bash]
+-----
+$ git add .
+$ git commit -m "Added layout specific to posts"
+-----
+
+Now that we have a post layout, we will need to adjust our post files
+to use this layout as right now they specify `layout: default` inside
+their YAML Front Matter. You might groan at the thought of editing all the
+files individually, but we don't need to go through that much effort
+as it turns out. If we make a one line change to our `scraper.rb`
+script we can run the script again, and all our files will
+automatically be updated. As we committed them to our local git
+repository, we can also use tools like `git diff` to verify the
+changes we made were the correct ones.
+
+[source,ruby]
+-----
+[filename=".", language="ruby", sha="843dd54:support/jekyll-parser/scraper.rb" lines="20..59"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
 
 ==== Writing tests
 
