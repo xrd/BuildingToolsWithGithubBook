@@ -22,12 +22,12 @@ class ByTravelersProcessor
     body = page[1]
     creation_date = page[2]
 
-    title.gsub!( /"/, '' ) # <2>
+    title.gsub!( /"/, '' )
     
-    template = <<"TEMPLATE"  # <3>
+    template = <<"TEMPLATE" 
 ---
-layout: post
-title: "#{title}"
+layout: post    #  <---- Set our layout variable to "post"
+title: "#{title}"  
 published: true
 ---
 
