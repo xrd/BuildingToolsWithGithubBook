@@ -1240,7 +1240,7 @@ changes we made were the correct ones.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="2e8d8d9:support/jekyll-parser/scraper.rb" lines="24..36"]
+[filename=".", language="ruby", sha="e87aee0:support/jekyll-parser/scraper.rb" lines="24..36"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

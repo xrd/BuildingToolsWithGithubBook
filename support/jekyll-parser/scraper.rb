@@ -34,7 +34,7 @@ published: true
 #{body}
 TEMPLATE
 
-    title_for_filename = title.downcase.gsub( /,+/, '' ).gsub( /[\s\/\:\;]+/, '-') # <3>
+    title_for_filename = title.downcase.gsub( /,+/, '' ).gsub( /[\s\/\:\;]+/, '-') 
     # puts "Title: #{title_for_filename}"
     filename = "_posts/#{creation_date}-#{title_for_filename}.md"
     File.open( filename, "w+" ) do |f|
@@ -48,13 +48,13 @@ TEMPLATE
     end
     100.times do |i|
       if pages[i]
-        write_post( pages[i] ) # <1>
+        write_post( pages[i] ) 
       end
     end
   end
 
   def process_creation_date( i, row )
-    location, creation_date = row.text().split /last updated on:/ # <5>
+    location, creation_date = row.text().split /last updated on:/ 
     creation_date.strip()
   end  
   
@@ -81,7 +81,7 @@ TEMPLATE
       title.gsub!( /Title:/, "" )
       title.strip!
     end
-    title # <2>
+    title 
   end
   
   def get_ith_page( i )
