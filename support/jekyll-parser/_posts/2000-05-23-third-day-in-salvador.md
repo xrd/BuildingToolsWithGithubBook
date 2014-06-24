@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Third day in Salvador"
 published: true
 ---

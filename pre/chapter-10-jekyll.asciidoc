@@ -1072,6 +1072,15 @@ of tools to convert and process text using the pipe character which
 allow you to build complex structures when combined with the looping
 constructs you see here.
 
+There are a wide swath of constructs available with Liquid Templates.
+You can review the documentation for specifics. One common source of
+confusion when first learning Liquid is the difference between output
+tags and logic tags. Output tags use double braces surrounding the
+content (`{{ site.title }}`) while logic tags use a brace and percent
+symbol (`{% if site.title %}`). As you might expect, output tags place
+some type of visible output into the page, and logic tags perform some
+logic operation, like conditionals or loops. 
+
 [source,html]
 -----
 [filename=".", language="ruby", sha="843dd54:support/jekyll-parser/index.md"]
@@ -1168,9 +1177,42 @@ image::images/jekyll-unformatted-post.png[Not the best formatting]
 Not very pretty at all. We can beautiful this by adding some styling
 to the page. We'll use Bootstrap, the most popular CSS framework on
 GitHub. To start, edit the layout to include Bootstrap from the
-Bootstrap CDN. 
+Bootstrap CDN. And, add a `container` class around the content. 
 
+[source,html]
+-----
+[filename=".", language="html", sha="00be6cf:support/jekyll-parser/_layouts/default.html"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
 
+Notice that our files are regenerated in the terminal window with
+`jekyll serve -w`. Refreshing the page shows some improvement, but we
+can do better. Let's make a front page which shows just the ten most
+recent post, and an archive page which shows all the posts in reverse
+chronological order.
+
+First, copy the existing `index.md` file to a file named `archive.md`.
+Our current index looks just like our archive page needs to be. 
+To make the front page with ten posts change the `{% for post in
+site.posts %}` tag to `{% for post in site.posts | limit:10 %}`. This
+limits us to ten posts. Add a link to `archive.html` at the bottom of
+our `index.md` file.
+
+If we look at any of the pages we've scraped, they are now centered
+inside a box, but we don't have titles or anything else about the
+journal entry. Add a layout file just for posts by creating a file
+called `post.html` inside of the `_layouts` directory with the
+following contents.
+
+[source,html]
+-----
+[filename=".", language="html", sha="00be6cf:support/jekyll-parser/_layouts/post.html"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
 
 
 ==== Writing tests
