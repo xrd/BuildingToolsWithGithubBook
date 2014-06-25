@@ -1,10 +1,13 @@
 ---
-layout: default
-title: "travel in Italy after September 11th"
+layout: post    #  <---- Set our layout variable to "post"
+title: "travel in Italy after September 11th"  
 published: true
 ---
 
-I am sure I was not alone in my thinking about getting on 
+Italy is magnificent in the fall.  I have never spent time 
+here and not found it to be incredible, but the weather is 
+absolutely perfect for fall.  Sunny, with a little rain in 
+the mornings to clean the air.  I am sure I was not alone in my thinking about getting on 
 an airplane after September 11th.  I definitely gave it 
 more reflection and thought than I would have given it 
 before that day.  I have read countless pieces via email or 
@@ -14,9 +17,7 @@ sitting next to them, both negative and positive.  Nothing
 out of the ordinary occurred, no tear jerking speeches from 
 the cockpit, and no suspicious eyes following anyone as far 
 as I could tell.  Things seemed to be back to normal, as 
-best they could.
-
-I wonder if this is the way it should be after something 
+best they could.  I wonder if this is the way it should be after something 
 like the attacks.  One part of me hopes that this will be a 
 catalyst for people to review what is going on in the rest 
 of the world.  I worry this will mean that Americans will 
@@ -31,9 +32,7 @@ policies of our government in a great many cases.  I hope
 that despite the terrible things that happened several 
 weeks ago that Americans, and all people around the world, 
 choose to learn more about the rest of the world because of 
-it, instead of closeting themselves more because of fear.
-
-Today we visited the Sistine Chapel.  I missed it the first 
+it, instead of closeting themselves more because of fear.Today we visited the Sistine Chapel.  I missed it the first 
 time I went to Italy several years ago.  I almost did not 
 take this trip because of the threat of more terrorism.  I 
 am really glad I did.  Nothing can describe the amazement 
@@ -43,9 +42,7 @@ testament to the power of religion, and devotion.  After
 some introspection, the issues of today are not so 
 different as they were hundreds and thousands of years 
 ago.  Religion and a search for power still drive people to 
-do incredible acts, and also commit terrible atrocities.
-
-One thing never changes as we walk around the cities of 
+do incredible acts, and also commit terrible atrocities.One thing never changes as we walk around the cities of 
 Italy.  We have seen people from all over Europe, and all 
 over Asia, and people from the Middle East, and all other 
 parts of the world.  As you travel, you notice that their 
@@ -60,9 +57,7 @@ interested in getting more information about the attacks,
 just like I was.  And on the train from Florence to Rome 
 yesterday, we overheard people talking about the "war," and 
 I have yet to hear someone here speak out in support of 
-this war, or any war.
-
-I love to travel.  It is a selfish thing in so many ways, 
+this war, or any war.  I love to travel.  It is a selfish thing in so many ways, 
 just to expose myself to things that I think are 
 beautiful.  But, travel also exposes you to the rest of the 
 world, and no matter what politicians want you to think 

@@ -718,7 +718,7 @@ documented on the Jekyll importer site http://import.jekyllrb.com/.
 For example, this command line example from the importer site exports
 from Tumblr blogs.
 
-[source ruby]
+[source,ruby]
 ------
 $ ruby -rubygems -e 'require "jekyll-import";
     JekyllImport::Importers::Tumblr.run({
@@ -1430,7 +1430,7 @@ to use this layout as right now they specify `layout: default` inside
 their YAML Front Matter. You might groan at the thought of editing all the
 files individually, but we don't need to go through that much effort
 as it turns out. If we make a one line change to our `scraper.rb`
-script we can run the script again, and all our files will
+script (inside the `write_post` method) we can run the script again, and all our files will
 automatically be updated. As we committed them to our local git
 repository, we can also use tools like `git diff` to verify the
 changes we made were the correct ones.
@@ -1451,6 +1451,29 @@ published: true
 TEMPLATE
 
 -----
+
+If we then run `ruby scraper.rb` we will see something like
+`Regenerating: 31 files at 2014-06-24 09:00:39 ...done.` indicating
+that our post files have changed. We can also verify that we made the
+correct changes by using the `git diff _posts` command. The result
+will be something like the following.
+
+[source,bash]
+------
+$ git diff _posts
+diff --git a/support/jekyll-parser/_posts/2000-05-23-third-day-in-salvador.md b/support/jekyll-parser/_posts/2000-05-23-third-day-in-salvador.md
+index 1873972..a4dbc21 100644
+--- a/support/jekyll-parser/_posts/2000-05-23-third-day-in-salvador.md
++++ b/support/jekyll-parser/_posts/2000-05-23-third-day-in-salvador.md
+@@ -1,10 +1,16 @@
+ ---
+-layout: post
++layout: post    #  <---- Set our layout variable to "post"
+ published: true
+ ---
+------
+
+The astute amongst you will also note that this shows we can add comments inside of our YAML Front Matter when needed.
 
 ==== Writing tests
 
