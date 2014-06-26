@@ -986,7 +986,7 @@ the renamed `process` method now called `process_body`.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="4d8bb81:support/jekyll-parser/scraper.rb" lines="20..70"]
+[filename=".", language="ruby", sha="3600c98:support/jekyll-parser/scraper.rb" lines="20..70"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -996,12 +996,24 @@ We've modified the `get_ith_page` method to save each page as a tuple
 (the title and body) and then print them out after processing inside
 the `run` method.
 
-<1> 
-<2> Do the same with the title, but being wary of the occasion when a
-user added their own "Title: " to the front of the text.
+<1> Our process body might look a little excessive. Why not just
+return the result of `row.text()`? The reason is that markdown
+is very specific about the format it requires for text formatting.
+Each block of text separated by two newlines will be formatted within
+`<p>` tags. Unfortunately, Mechanize and Nokogiri don't return text
+formatted that way, so this function retrieves each `<p>` tag we
+scraped, strips whitespace from the ends, and then adds it back to a
+body variable. If you scrape text from a site like we are doing here,
+you might need to normalize the text in a similar way.
+<2> Do the same type of processing with the title. With this site
+there are occasionally titles which include the word "Title:" in the
+title itself (authors have to be forgiven for their own formatting
+quirks) so strip that out if we see it there.
 <3> Keep track of each page in an array with each item of the array
-containing the title and body.
-<4> At the end of processing, just print them out again.
+containing the title and body. We can then use this processed data
+later to build out our posts.
+<4> At the end of processing, just print out the processed data we
+saved to verify we are finding the right structure in our pages.
 
 If we re-run this script we will see identical output to the prior
 run, but now we are storing the information in an array and can use it
@@ -1011,7 +1023,7 @@ to write out our Markdown files.
 
 Now that we have our information parsed out, we can generate Markdown
 from it. As we've seen, Jekyll Markdown files are very simple: just a
-bit of YAML at the beginning, with text content following the
+bit of YAML at the beginning, with text content following, formatted as
 Markdown. 
 
 We need to create a Git repository which we can push into GitHub.
