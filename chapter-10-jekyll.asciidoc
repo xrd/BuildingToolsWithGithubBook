@@ -1624,7 +1624,7 @@ using Liquid tags.
 Now, we modify our `post.html` layout to include the image near the
 title.
 
-[source,ruby]
+[source,html]
 -----
 ---
 layout: default
@@ -1632,121 +1632,54 @@ layout: default
 
 <h1>{{ page.title }}</h1>
 
+<img src="/assets/images/{{ page.image }}">
+
 {{ content }}
 
 
 -----
 
+We use the Liquid template tags `{{ page.image }}` to retrieve the
+image from our YFM and build an image tag inside our template.
+
+We can also reuse this image on our index page (`index.md`).
+
+[source,html]
+-----
+---
+layout: default
+---
+
+<h1>ByTravelers.com</h1>
+
+Crowd sourced travel information.
+
+<br/>
+
+<div>
+{% for post in site.posts %}
+<a href="{{ post.url }}"><h2> {{ post.title }} </h2></a>
+<img src="/assets/images/{{ post.image }}">
+{{ post.content | strip_html | truncatewords: 40 }}
+<br/>
+<em>Posted on {{ post.date | date_to_string }}</em>
+<br/>
+{% endfor %}
+</div>
 
 
-==== Writing tests
+-----
 
-* Make sure to watch for whitespace on ends of string.
-* Convert HTML to basic text. Make sure to attend to special markdown
-  characters like *
+Note that in this case the variable is presented as `post.image` as
+compared to `page.image` when we are inside a post. Jekyll and Liquid
+are not consistent here, so caveat emptor.
 
-==== Using VCR
+Our new pages definitely have more life with the original colors and
+images. 
 
-VCR is a ruby gem which is used often inside tests. VCR captures HTTP
-requests to reduce network connections, removing latency but also
-making requests deterministic (at the expense of making them 
-
-==== Embedding AngularJS directives
-
-AngularJS was designed for embedding into blogs.
-
-==== Geocoding and expansion of config file
+[[jekyll-now-livelier]]
+.Restoring the original colors and images
+image::images/jekyll-now-livelier.png[Restoring our blog using images and colors]
 
 
-
-===== Scripts for generating site
-
-===== Filenaming convention
-
-==== Authoring Tips
-  
-===== inside GitHub
-
-===== using Prose.io
-
-==== Embedding Content
-
-==== YAML Front Matter
-
-===== What is YAML?
-
-==== Importing from old blogs
-
-==== Scraping a site into Jekyll
-
-Rebuilding ByTravelers.com.
-
-===== Using the VCR gem to minimize requests
-===== Writing Tests
-===== GeoCoding from the command line
-===== Embedding AngularJS Directives
-===== Stripping out Markdown formatting characters
-
-==== Branches
-=====  Detached "Orphan" branches
-
-[source,bash]
-$ git checkout --orphan gh-pages
-$ git rm -rf .
-
-Once you execute these two commands, you've switched to a new branch named
-gh-pages. This is a specially named branch for GitHub which will hold
-the contents of your repository's web site. Now, this is something of
-an odd concept, but this is a branch in your repository that is
-designed to hold something entirely different from your code. Usually
-branches are designed to hold related content. For example, you may
-create a feature branch to capture a few days of work on a piece of
-code, or you may create a branch for difference versions of content
-that need to be updated independently.  In this case, it is almost
-like you are creating a separate repository within your repository
-that lives on a specially named repository.
-
-Let me explain? When you run "git checkout" with the "--orphan" flag
-you are creating a new branch "gh-pages" that is an "orphan" commit.
-It is a commit that doesn't have any parents and it entirely
-disconnected from history. After you create this branch with a
-parent-less commit that is entirely disconnected from history, you run
-"git rm -rf ." which removes everything from the Git repository. The
-end result is that the branch gh-pages is now completely detached from
-history and contains nothing. gh-pages is a blank slate to be filled
-with your website content.
-
-==== Editing inline on github
-==== Using categories
-==== Using tags
-==== Using themes
-==== Ignoring files
-==== Published versus unpublished
-==== File naming conventions
-==== Using rake
-==== Jekyll serve
-=====  Watch
-=====  Live reload
-==== Cname file
-==== Configuration file
-==== Using liquid tags
-=====  Safety
-=====  Loops
-=====  Variables
-==== Matching gems with github
-
-[NOTE]
-Interestingly, the movement towards static blogging which was
-catalyzed by Jekyll has moved away from Jekyll. Many alternatives to
-Jekyll have emerged as the prime users of Jekyll, the hacker
-community, have done what they do best, hack alternatives to Jekyll.
-There are now many other static blogging tools built on all the major
-languages, like Nanoc (Ruby), Hakyll (Haskell), Ghost (NodeJS), and
-Hyde (Python), among others. Fortunately, all of these tools can be
-used to publish sites inside of GitHub on the gh-pages branch, but
-unfortunately GitHub does not offer integrated processing of these
-other blogs (yet). What this means is that you can write your sites
-using these tools, process on your local machine, then use the static
-engine tools to generate the site and commit those files to your
-repository inside the gh-pages branch and push them all up to GitHub.
 
