@@ -986,7 +986,7 @@ the renamed `process` method now called `process_body`.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="6a810fe:support/jekyll-parser/scraper.rb" lines="20..60"]
+[filename=".", language="ruby", sha="4d8bb81:support/jekyll-parser/scraper.rb" lines="20..70"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -996,8 +996,7 @@ We've modified the `get_ith_page` method to save each page as a tuple
 (the title and body) and then print them out after processing inside
 the `run` method.
 
-<1> Now, just return the body text itself after converting to text and
-stripping whitespace.
+<1> 
 <2> Do the same with the title, but being wary of the occasion when a
 user added their own "Title: " to the front of the text.
 <3> Keep track of each page in an array with each item of the array
