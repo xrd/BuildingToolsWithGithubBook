@@ -1208,7 +1208,7 @@ following contents.
 
 [source,html]
 -----
-[filename=".", language="html", sha="c056a59:support/jekyll-parser/_layouts/post.html"]
+[filename=".", language="html", sha="325c1ef:support/jekyll-parser/_layouts/post.html"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1268,9 +1268,34 @@ index 1873972..a4dbc21 100644
 ...
 ------
 
-The astute amongst you will also note that this shows we can add comments inside of our YAML Front Matter when needed.
+The astute amongst you will also note that this shows we can add
+comments inside of our YAML Front Matter when needed. 
 
-Adding a CSS framework like Bootstrap helps things considerably, but we 
+===== Customizing our CSS 
+
+Adding a CSS framework like Bootstrap helps things considerably, but
+we should match the original colors as well. The easiest way to get
+this information is to again view the site HTML using your browser's
+developer tools. On Chrome we can see that in the original body we
+hard code colors for the body, text and links. 
+
+image::images/jekyll-hardcoded-colors.png[Hard coding colors into our HTML]
+
+We need to convert this into the modern equivalent CSS and we can then
+add this a CSS file and include it inside all our pages by adding
+a link from the `default.html` template. Make a new directory inside
+called `assets/css` and write a file called `site.css` and include the
+CSS to match our original site.
+
+[source,css]
+-----
+[filename=".", language="ruby", sha="364a202:support/jekyll-parser/scraper.rb"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+
 
 ==== Writing tests
 
