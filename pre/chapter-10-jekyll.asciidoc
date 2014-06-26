@@ -566,7 +566,7 @@ to an *apex domain*. To be more concrete, an apex domain is a site
 like mypersonaldomain.com, while a subdomain would be
 blog.mypersonaldomain.com. 
 
-A subdomain blog is simple: create a CNAME record in DNS that points
+Setting up a blog on a subdomain is simple: create a CNAME record in DNS that points
 to `username.github.io`. 
 
 For an apex domain, things are slightly more complicated. You must create DNS
@@ -1265,9 +1265,12 @@ index 1873972..a4dbc21 100644
 +layout: post    #  <---- Set our layout variable to "post"
  published: true
  ---
+...
 ------
 
 The astute amongst you will also note that this shows we can add comments inside of our YAML Front Matter when needed.
+
+Adding a CSS framework like Bootstrap helps things considerably, but we 
 
 ==== Writing tests
 
