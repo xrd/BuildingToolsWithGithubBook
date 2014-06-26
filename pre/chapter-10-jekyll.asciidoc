@@ -1376,12 +1376,32 @@ our `write_post` method.
 [source,ruby]
 -----
 ...
-[filename=".", language="ruby", sha="e5c56e4:support/jekyll-parser/scraper.rb" lines="81..102"]
+[filename=".", language="ruby", sha="d7293c0:support/jekyll-parser/scraper.rb" lines="22..40"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 ...
 -----
+
+<1> As we mentioned, the first item in the array we receive is now the
+title and image packages as another array. We pull the first item out
+as the title text, and use the next item in the secondary array as the
+image.
+<2> What do we do with the image? Let's put it into the YAML Front
+Matter. We can then utilize it from within our `post.html` layout file
+using Liquid tags.
+
+Now, we modify our `post.html` layout to include the image near the
+title.
+
+[source,ruby]
+-----
+[filename=".", language="ruby", sha="d7293c0:support/jekyll-parser/_layouts/post.html"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
 
 
 ==== Writing tests

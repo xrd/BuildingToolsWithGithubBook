@@ -1591,30 +1591,52 @@ our `write_post` method.
 [source,ruby]
 -----
 ...
-  def process_title( i, title )
-    img = ( title / "img" ) # <1>
-    src = img.attr('src').text()
-    filename = src.split( "/" ).pop
+  def write_post( page )
+    title = page[0][0]  # <1>
+    image = page[0][1]
+    body = page[1]
+    creation_date = page[2]
     
-    output = "assets/images/"
-    full = File.join( output, filename ) # <2>
+    title.gsub!( /"/, '' )
     
-    unless File.exists? full
-      root = "https://web.archive.org"
-      remote = root + src
-      contents = `wget --quiet -O #{full} #{remote}`  # <3>
-    end
-    
-    title = title.text()
-    if title
-      title.gsub!( /Title:/, "" )
-      title.strip!
-    end
-    [ title, filename ]  # <4>
-    
-  end
+    template = <<"TEMPLATE" 
+---
+layout: post   
+title: "#{title}"  
+published: true
+image: #{image}   # <2>
+---
+
+#{body}
+TEMPLATE
+
 ...
 -----
+
+<1> As we mentioned, the first item in the array we receive is now the
+title and image packages as another array. We pull the first item out
+as the title text, and use the next item in the secondary array as the
+image.
+<2> What do we do with the image? Let's put it into the YAML Front
+Matter. We can then utilize it from within our `post.html` layout file
+using Liquid tags.
+
+Now, we modify our `post.html` layout to include the image near the
+title.
+
+[source,ruby]
+-----
+---
+layout: default
+---
+
+<h1>{{ page.title }}</h1>
+
+{{ content }}
+
+
+-----
+
 
 
 ==== Writing tests
