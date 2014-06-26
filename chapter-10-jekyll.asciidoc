@@ -1539,14 +1539,41 @@ Ruby for a moment and download the file manually.
 [source,css]
 -----
 ...
-require 'vcr'
-
-VCR.configure do |c|  
-  c.cassette_library_dir = 'cached'
-  c.hook_into :webmock
-end
+  def process_title( i, title )
+    img = ( title / "img" )
+    root = "https://web.archive.org"
+    src = img.attr('src').text()
+    filename = src.split( "/" ).pop
+    output = "assets/images/"
+    full = File.join( output, filename )
+    unless File.exists? full
+      remote = root + src
+      contents = `wget --quiet -O #{full} #{remote}`
+    end
+    
+    title = title.text()
+    if title
+      title.gsub!( /Title:/, "" )
+      title.strip!
+    end
+    [ title, filename ]
+    
 ...
 -----
+
+<1> First, use the HTML node and extract the `img` tag from it. We
+then process the result, picking the `src` attribute from the tag, and
+then split it up by slash characters and pull off the last item
+returning just the filename.
+<2> We then generate a path for the image. We chose `assets/images`,
+which keeps all our assets (like our CSS file) in a common place.
+<3> The `wget` command requires a full remote URL and the path we
+created previously. We give it the `--quiet` switch to reduce noise
+during our processing.
+<4> We will be placing the image into the template, so we want to
+return it with the title as processed data.
+
+Once we have processed the information, we will need to modify the 
 
 ==== Writing tests
 

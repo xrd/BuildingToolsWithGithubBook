@@ -79,15 +79,17 @@ TEMPLATE
   end
 
   def process_title( i, title )
-    img = ( title / "img" )
-    root = "https://web.archive.org"
+    img = ( title / "img" ) # <1>
     src = img.attr('src').text()
     filename = src.split( "/" ).pop
+    
     output = "assets/images/"
-    full = File.join( output, filename )
+    full = File.join( output, filename ) # <2>
+    
     unless File.exists? full
+      root = "https://web.archive.org"
       remote = root + src
-      contents = `wget --quiet -O #{full} #{remote}`
+      contents = `wget --quiet -O #{full} #{remote}`  # <3>
     end
     
     title = title.text()
@@ -95,7 +97,7 @@ TEMPLATE
       title.gsub!( /Title:/, "" )
       title.strip!
     end
-    [ title, filename ]
+    [ title, filename ]  # <4>
     
   end
   

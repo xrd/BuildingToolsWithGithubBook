@@ -1342,12 +1342,26 @@ Ruby for a moment and download the file manually.
 [source,css]
 -----
 ...
-[filename=".", language="ruby", sha="e1590d3:support/jekyll-parser/scraper.rb" lines="3..8"]
+[filename=".", language="ruby", sha="2f4555b:support/jekyll-parser/scraper.rb" lines="81..99"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 ...
 -----
+
+<1> First, use the HTML node and extract the `img` tag from it. We
+then process the result, picking the `src` attribute from the tag, and
+then split it up by slash characters and pull off the last item
+returning just the filename.
+<2> We then generate a path for the image. We chose `assets/images`,
+which keeps all our assets (like our CSS file) in a common place.
+<3> The `wget` command requires a full remote URL and the path we
+created previously. We give it the `--quiet` switch to reduce noise
+during our processing.
+<4> We will be placing the image into the template, so we want to
+return it with the title as processed data.
+
+Once we have processed the information, we will need to modify the 
 
 ==== Writing tests
 
