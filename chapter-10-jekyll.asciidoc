@@ -810,6 +810,8 @@ and then click "BROWSE HISTORY" we will be presented with a calendar
 view which shows all the pages scraped by the Internet Archive for
 this site. 
 
+[[calendar-view-archive]]
+.Calendar view of Archive.org
 image::images/jekyll-bytravelers-archive.png[The calendar view for Archive.org ]
 
 In the middle of 2003 I took down the server, intending to
@@ -820,6 +822,8 @@ was more or less complete at the height of the site's functionality
 and data. There are a few broken links to images, but otherwise the
 site is functionally archived inside Archive.org
 
+[[calendar-view-bytravelers]]
+.Archive of ByTravelers.com on Archive.org
 image::images/jekyll-bytravelers-jun6.png[Archive of Bytravelers.com on Archive.org]
 
 Taking the URL from Chrome, we can use this as our starting point for
@@ -844,6 +848,8 @@ bottom. As we moved our mouse over the `<p></p>` items, we see a
 highlight applied to the page above, indicating the visual result once
 rendered in a browser of this specific this HTML code. 
 
+[[inspecting-page-structure]]
+.Inspecting Page Structure
 image::images/jekyll-chrome-inspector.png[Inspecting Page Structure]
 
 Moving over different places in the HTML code displays different areas of our
@@ -1306,6 +1312,8 @@ We've started the Jekyll server in "watch" mode which means the site will
 be automatically regenerated if we edit the source files. Let's take a
 look at the site as currently configured on *http://localhost:4000*.
 
+[[no-posts]]
+.No posts at all
 image::images/jekyll-no-posts.png[No posts at all]
 
 There are no posts! Ah, we elected to keep posts "unpublished" for now
@@ -1327,6 +1335,8 @@ server regenerates our files each time we change one of them.
 
 And, if we reload our page we'll see them listed inside our index.
 
+[[publishing-single-post]]
+.Publishing a single post
 image::images/jekyll-got-posts.png[Publishing some of the posts]
 
 If we trust that all these posts are correct, we can change the
@@ -1337,6 +1347,8 @@ individually by hand as we did here.
 Taking a look at the blog post itself, we see this after clicking on
 the first link.
 
+[[not-so-beautiful]]
+.Not the best formatting
 image::images/jekyll-unformatted-post.png[Not the best formatting]
 
 Not very pretty at all. We can beautiful this by adding some styling
@@ -1469,6 +1481,8 @@ this information is to again view the site HTML using your browser's
 developer tools. On Chrome we can see that in the original body we
 hard code colors for the body, text and links. 
 
+[[hard-coding-colors]]
+.Hard coding colors into our HTML
 image::images/jekyll-hardcoded-colors.png[Hard coding colors into our HTML]
 
 We need to convert this into the modern equivalent CSS and we can then
@@ -1674,12 +1688,14 @@ Note that in this case the variable is presented as `post.image` as
 compared to `page.image` when we are inside a post. Jekyll and Liquid
 are not consistent here, so caveat emptor.
 
-Our new pages definitely have more life with the original colors and
-images. 
+Our blog definitely has more life when we add in the original colors and
+images. It still looks like a blog from the last millenium, but it is
+an improvement.
 
 [[jekyll-now-livelier]]
 .Restoring the original colors and images
 image::images/jekyll-now-livelier.png[Restoring our blog using images and colors]
+
 
 
 
