@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "Two Days in St. Petersburg"  
 published: true
+image: squig.gif
 ---
 
 Pam and I woke up early on Tuesday in anticipation of the 

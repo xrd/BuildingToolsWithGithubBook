@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "travel in Italy after September 11th"  
 published: true
+image: book.gif
 ---
 
 Italy is magnificent in the fall.  I have never spent time 

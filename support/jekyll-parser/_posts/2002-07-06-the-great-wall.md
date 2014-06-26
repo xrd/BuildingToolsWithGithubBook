@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "The Great Wall"  
 published: true
+image: phone.gif
 ---
 
 China Chapter

@@ -1339,10 +1339,10 @@ download the image. The VCR gem works by hooking into ruby libraries
 which make HTTP calls; by using the `wget` tool we can avoid using
 Ruby for a moment and download the file manually.
 
-[source,css]
+[source,ruby]
 -----
 ...
-[filename=".", language="ruby", sha="2f4555b:support/jekyll-parser/scraper.rb" lines="81..99"]
+[filename=".", language="ruby", sha="e5c56e4:support/jekyll-parser/scraper.rb" lines="81..102"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1361,7 +1361,28 @@ during our processing.
 <4> We will be placing the image into the template, so we want to
 return it with the title as processed data.
 
-Once we have processed the information, we will need to modify the 
+Once we have processed the information, we will need to modify the
+post template. We passed back the image inside the processed data from
+the `process_title` method. Ruby is an untyped language and this makes
+it so that even though initially we were passing back a string result
+from `process_title` and are now passing back an array of strings, we
+don't need to change the `get_ith_page` which assembles the results of
+our processing functions and puts them into the `page` array. When we
+iterate over the `page` result later, we should interpret the first
+element differently and pull the first item out as our title, and use
+the second item as the image for the post. This can all happen inside
+our `write_post` method.
+
+[source,ruby]
+-----
+...
+[filename=".", language="ruby", sha="e5c56e4:support/jekyll-parser/scraper.rb" lines="81..102"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
+
 
 ==== Writing tests
 

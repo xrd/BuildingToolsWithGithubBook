@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "The Bardo Museum"  
 published: true
+image: camera.gif
 ---
 
 If you are interested in mosaics, when you visit Tunisia, 

@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "Passion Play of Oberammergau"  
 published: true
+image: paper.gif
 ---
 
 On Sunday, Sept. 17 Jeanne picked up Vic at Jackie's and they drove to a 

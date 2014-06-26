@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "Mexico/Belize/Guatemala"  
 published: true
+image: phone.gif
 ---
 
 Feb/Mar 1999Dear Al

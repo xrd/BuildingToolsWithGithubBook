@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "Beautiful Belize"  
 published: true
+image: book.gif
 ---
 
 This winter I took a holiday cruise which included the 

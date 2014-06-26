@@ -20,19 +20,19 @@ class ByTravelersProcessor
   end
 
   def write_post( page )
-    title = page[0]
+    title = page[0][0]  # <1>
+    image = page[0][1]
     body = page[1]
     creation_date = page[2]
-    image = page[3]
     
     title.gsub!( /"/, '' )
     
     template = <<"TEMPLATE" 
 ---
-layout: post    #  <---- Set our layout variable to "post"
+layout: post   
 title: "#{title}"  
 published: true
-image: #{image}
+image: #{image}   # <2>
 ---
 
 #{body}
@@ -79,17 +79,17 @@ TEMPLATE
   end
 
   def process_title( i, title )
-    img = ( title / "img" ) # <1>
+    img = ( title / "img" ) 
     src = img.attr('src').text()
     filename = src.split( "/" ).pop
     
     output = "assets/images/"
-    full = File.join( output, filename ) # <2>
+    full = File.join( output, filename ) 
     
     unless File.exists? full
       root = "https://web.archive.org"
       remote = root + src
-      contents = `wget --quiet -O #{full} #{remote}`  # <3>
+      contents = `wget --quiet -O #{full} #{remote}`  
     end
     
     title = title.text()
@@ -97,7 +97,7 @@ TEMPLATE
       title.gsub!( /Title:/, "" )
       title.strip!
     end
-    [ title, filename ]  # <4>
+    [ title, filename ] 
     
   end
   
@@ -108,10 +108,10 @@ TEMPLATE
         mechanize.get( root ) do |page|
           rows = ( page / "table[valign=top] tr" ) 
           if rows and rows.length > 3
-            title, image = process_title( i, rows[1] )
+            title = process_title( i, rows[1] )
             body = process_body( title, i, rows[4] ) 
             creation_date = process_creation_date( i, rows[3] )
-            pages[ i ] = [ title, body, creation_date, image ]
+            pages[ i ] = [ title, body, creation_date ]
           end
         end
       end

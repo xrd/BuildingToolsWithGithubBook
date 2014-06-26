@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "mystic, connecticut"  
 published: true
+image: hut.gif
 ---
 
 WE STAYED AT A WONDERFUL, UNIQUE BED AND BREAKFAST INN LAST 

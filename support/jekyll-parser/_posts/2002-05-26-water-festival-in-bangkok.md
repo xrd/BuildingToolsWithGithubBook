@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "Water Festival in Bangkok"  
 published: true
+image: photo.gif
 ---
 
 Song Kron Celebration in ThailandThere is something about landing at Bangkok Airport that is 

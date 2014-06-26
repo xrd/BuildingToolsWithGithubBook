@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "Check out this Travel Planning Website"  
 published: true
+image: paper.gif
 ---
 
 I used this place and found the information presented and 

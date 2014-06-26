@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "Viagiatore"  
 published: true
+image: tower.gif
 ---
 
 Viagiator

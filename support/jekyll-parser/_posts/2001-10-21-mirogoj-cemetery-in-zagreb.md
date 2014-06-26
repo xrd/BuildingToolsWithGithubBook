@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "Mirogoj Cemetery in Zagreb"  
 published: true
+image: star.gif
 ---
 
 This morning I decided to visit Mirogoj cemetery, in the 

@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "Travel tips for the first time to Cuba"  
 published: true
+image: postcard.gif
 ---
 
 Travel Tips For Your Cuban Trip

@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "A Day in Beijing"  
 published: true
+image: phone.gif
 ---
 
 China Chapter

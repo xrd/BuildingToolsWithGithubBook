@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "A Day in Krakow, Poland"  
 published: true
+image: book.gif
 ---
 
 I am not exactly sure what ingredients are needed to create 

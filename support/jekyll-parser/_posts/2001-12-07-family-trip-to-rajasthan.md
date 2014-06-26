@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "Family trip to Rajasthan"  
 published: true
+image: star.gif
 ---
 
 Rajasthan is a state in western India. It is a 

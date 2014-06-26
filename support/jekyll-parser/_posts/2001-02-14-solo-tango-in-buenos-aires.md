@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "SOLO TANGO IN BUENOS AIRES"  
 published: true
+image: phone.gif
 ---
 
 It’s just before dawn, and our small group of Argentines 

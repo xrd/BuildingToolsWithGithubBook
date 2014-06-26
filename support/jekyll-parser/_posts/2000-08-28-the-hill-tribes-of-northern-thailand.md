@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "The Hill-Tribes of Northern Thailand"  
 published: true
+image: photo.gif
 ---
 
 I had heard about the hill-tribes in 

@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "A Visit to Montmartre in Paris"  
 published: true
+image: postcard.gif
 ---
 
 On our last day in Paris Pam and I decided to start our day 

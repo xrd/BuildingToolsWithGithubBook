@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "watch out for Borin the Cab Driver"  
 published: true
+image: camera.gif
 ---
 
 I left my new "sobe" (private room) angry and bitter.  

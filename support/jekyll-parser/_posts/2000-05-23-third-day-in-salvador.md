@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "Third day in Salvador"  
 published: true
+image: squig.gif
 ---
 
 I'm now entering the my third day in Salvador.  There is, so far, much 

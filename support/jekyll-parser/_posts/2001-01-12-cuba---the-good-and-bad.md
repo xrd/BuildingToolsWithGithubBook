@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "Cuba - the good and bad"  
 published: true
+image: paper.gif
 ---
 
 April 1999Cuba, what an interesting place??!

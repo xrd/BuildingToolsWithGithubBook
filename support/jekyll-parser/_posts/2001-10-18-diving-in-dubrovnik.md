@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "Diving in Dubrovnik"  
 published: true
+image: star.gif
 ---
 
 I went diving in Dubrovnik this morning. Anton met me at hi

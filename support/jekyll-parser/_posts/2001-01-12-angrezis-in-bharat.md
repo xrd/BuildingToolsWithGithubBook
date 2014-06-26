@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "Angrezis in Bharat"  
 published: true
+image: camera.gif
 ---
 
 Translation -  "Foreigners in India"Well since we last wrote we were heading for India.On our way there we stopped in at Chitwan Nat. Par

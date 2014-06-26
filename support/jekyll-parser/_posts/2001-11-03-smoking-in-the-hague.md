@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "smoking in the hague"  
 published: true
+image: hut.gif
 ---
 
 The Netherlands is a wonderful place to visit. Steer clear 

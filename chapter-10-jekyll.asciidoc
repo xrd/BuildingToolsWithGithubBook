@@ -1536,19 +1536,21 @@ download the image. The VCR gem works by hooking into ruby libraries
 which make HTTP calls; by using the `wget` tool we can avoid using
 Ruby for a moment and download the file manually.
 
-[source,css]
+[source,ruby]
 -----
 ...
   def process_title( i, title )
-    img = ( title / "img" )
-    root = "https://web.archive.org"
+    img = ( title / "img" ) # <1>
     src = img.attr('src').text()
     filename = src.split( "/" ).pop
+    
     output = "assets/images/"
-    full = File.join( output, filename )
+    full = File.join( output, filename ) # <2>
+    
     unless File.exists? full
+      root = "https://web.archive.org"
       remote = root + src
-      contents = `wget --quiet -O #{full} #{remote}`
+      contents = `wget --quiet -O #{full} #{remote}`  # <3>
     end
     
     title = title.text()
@@ -1556,8 +1558,9 @@ Ruby for a moment and download the file manually.
       title.gsub!( /Title:/, "" )
       title.strip!
     end
-    [ title, filename ]
+    [ title, filename ]  # <4>
     
+  end
 ...
 -----
 
@@ -1573,7 +1576,46 @@ during our processing.
 <4> We will be placing the image into the template, so we want to
 return it with the title as processed data.
 
-Once we have processed the information, we will need to modify the 
+Once we have processed the information, we will need to modify the
+post template. We passed back the image inside the processed data from
+the `process_title` method. Ruby is an untyped language and this makes
+it so that even though initially we were passing back a string result
+from `process_title` and are now passing back an array of strings, we
+don't need to change the `get_ith_page` which assembles the results of
+our processing functions and puts them into the `page` array. When we
+iterate over the `page` result later, we should interpret the first
+element differently and pull the first item out as our title, and use
+the second item as the image for the post. This can all happen inside
+our `write_post` method.
+
+[source,ruby]
+-----
+...
+  def process_title( i, title )
+    img = ( title / "img" ) # <1>
+    src = img.attr('src').text()
+    filename = src.split( "/" ).pop
+    
+    output = "assets/images/"
+    full = File.join( output, filename ) # <2>
+    
+    unless File.exists? full
+      root = "https://web.archive.org"
+      remote = root + src
+      contents = `wget --quiet -O #{full} #{remote}`  # <3>
+    end
+    
+    title = title.text()
+    if title
+      title.gsub!( /Title:/, "" )
+      title.strip!
+    end
+    [ title, filename ]  # <4>
+    
+  end
+...
+-----
+
 
 ==== Writing tests
 

@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "Romantic Prague"  
 published: true
+image: photo.gif
 ---
 
 I have been anxious to return to Prague and share it with 

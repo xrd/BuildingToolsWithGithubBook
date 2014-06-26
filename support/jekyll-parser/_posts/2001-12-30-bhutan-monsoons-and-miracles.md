@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "Bhutan: Monsoons and Miracles"  
 published: true
+image: paper.gif
 ---
 
 Honolulu Advertiser Hob Osterlun

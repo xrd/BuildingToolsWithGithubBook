@@ -2,6 +2,7 @@
 layout: post    #  <---- Set our layout variable to "post"
 title: "Lava Beds Ate Our Shoes; Maui, HI"  
 published: true
+image: book.gif
 ---
 
 Lava Beds Ate Our Shoes"Says here just two miles to the deserted black-sand beach," 
