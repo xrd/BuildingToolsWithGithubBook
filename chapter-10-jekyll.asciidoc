@@ -1475,122 +1475,54 @@ We need to convert this into the modern equivalent CSS and we can then
 add this a CSS file and include it inside all our pages by adding
 a link from the `default.html` template. Make a new directory inside
 called `assets/css` and write a file called `site.css` and include the
-CSS to match our original site.
+CSS to match our original site. The choice of using `assets/css` as
+the directory structure is completely arbitrary; we could have chosen
+any structure we wanted and as long as the reference was correct it
+would have worked with our HTML templates.
 
 [source,css]
 -----
-require 'rubygems'
-require 'mechanize'
-require 'vcr'
+body {
+color: #000000;
+background-color: #CCCC99;
+}
 
-VCR.configure do |c|  
-  c.cassette_library_dir = 'cached'
-  c.hook_into :webmock
-end
-
-class ByTravelersProcessor
-  attr_accessor :mechanize, :pages 
-
-  def initialize
-    @mechanize = Mechanize.new { |agent| 
-      agent.user_agent_alias = 'Mac Safari'
-    }
-    @pages = []
-  end
-
-  def write_post( page )
-    title = page[0]
-    body = page[1]
-    creation_date = page[2]
-
-    title.gsub!( /"/, '' )
-    
-    template = <<"TEMPLATE" 
----
-layout: post    #  <---- Set our layout variable to "post"
-title: "#{title}"  
-published: true
----
-
-#{body}
-TEMPLATE
-
-    title_for_filename = title.downcase.gsub( /,+/, '' ).gsub( /[\s\/\:\;]+/, '-') 
-    # puts "Title: #{title_for_filename}"
-    filename = "_posts/#{creation_date}-#{title_for_filename}.md"
-    File.open( filename, "w+" ) do |f|
-      f.write template
-    end
-  end
-
-  def run
-    100.times do |i| 
-      get_ith_page( i ) 
-    end
-    100.times do |i|
-      if pages[i]
-        write_post( pages[i] ) 
-      end
-    end
-  end
-
-  def process_creation_date( i, row )
-    location, creation_date = row.text().split /last updated on:/ 
-    creation_date.strip()
-  end  
-  
-  def process_body( name, i, row )
-
-    text = row.text().strip()
-
-    out = text.gsub( /\n\s/, "\n\n" )
-    out.gsub!( /(\S)\n(\S)/, "#{$1}\n\n#{$2}" )
-    
-    # new_text = ( row / "p" ).collect { |p| p.text().strip() }.join( "\n\n" )
-    # puts "Processed: #{new_text}"
-    # puts "name: #{name}::: p count: #{ (row / 'p' ).length }"
-    # new_text
-
-    # puts "Out: #{out}"
-    
-    out
-  end
-
-  def process_title( i, title )
-    title = title.text()
-    if title
-      title.gsub!( /Title:/, "" )
-      title.strip!
-    end
-    title 
-  end
-  
-  def get_ith_page( i )
-    root = "https://web.archive.org/web/20030502080831/http://www.bytravelers.com/journal/entry/#{i}"
-    begin
-      VCR.use_cassette("bt_#{i}") do 
-        mechanize.get( root ) do |page|
-          rows = ( page / "table[valign=top] tr" ) 
-          if rows and rows.length > 3
-            title = process_title( i, rows[1] )
-            body = process_body( title, i, rows[4] ) 
-            creation_date = process_creation_date( i, rows[3] )
-            pages[ i ] = [ title, body, creation_date ]
-          end
-        end
-      end
-    rescue Exception => e
-      puts "Error: #{e}"
-    end
-  end
-  
-end
-
-  
+a {
+color: #603;
+}
 
 -----
 
+Then, modify the `default.html` template and include the new CSS file
+to allow our style changes to "cascade" to all our other files.
 
+[source,css]
+-----
+...
+<title>ByTravelers.com</title>
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+<link href="/assets/css/site.css" rel="stylesheet">
+
+</head>
+...
+-----
+
+===== Adding in original images
+
+Our site is bare beyond text and the original colors; adding the
+images would add some pop. We can easily modify our `scraper.rb`
+script and pull down the original images from our site and then
+republish them into our new Jekyll blog. Taking a look at the archived
+site, note that each title has an image to the left of it. If we
+customize our `process_title` method we can retrieve these images and
+then publish them into our blog.
+
+Finding the image is easy: `img = ( title/ "img" )` will retrieve an
+"img" tag from the title as passed to us. Printing out the element
+using `puts` is simple way to view the contents of the elements, one
+of which looks like this `<img
+src="/web/20030502075943im_/http://www.bytravelers.com/images/pro/book.gif">` 
 
 ==== Writing tests
 

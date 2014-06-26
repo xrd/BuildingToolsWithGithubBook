@@ -1285,17 +1285,47 @@ We need to convert this into the modern equivalent CSS and we can then
 add this a CSS file and include it inside all our pages by adding
 a link from the `default.html` template. Make a new directory inside
 called `assets/css` and write a file called `site.css` and include the
-CSS to match our original site.
+CSS to match our original site. The choice of using `assets/css` as
+the directory structure is completely arbitrary; we could have chosen
+any structure we wanted and as long as the reference was correct it
+would have worked with our HTML templates.
 
 [source,css]
 -----
-[filename=".", language="ruby", sha="364a202:support/jekyll-parser/scraper.rb"]
+[filename=".", language="ruby", sha="e1590d3:support/jekyll-parser/assets/css/site.css"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
+Then, modify the `default.html` template and include the new CSS file
+to allow our style changes to "cascade" to all our other files.
 
+[source,css]
+-----
+...
+[filename=".", language="ruby", sha="e1590d3:support/jekyll-parser/_layouts/default.html" lines="3..8"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
+
+===== Adding in original images
+
+Our site is bare beyond text and the original colors; adding the
+images would add some pop. We can easily modify our `scraper.rb`
+script and pull down the original images from our site and then
+republish them into our new Jekyll blog. Taking a look at the archived
+site, note that each title has an image to the left of it. If we
+customize our `process_title` method we can retrieve these images and
+then publish them into our blog.
+
+Finding the image is easy: `img = ( title/ "img" )` will retrieve an
+"img" tag from the title as passed to us. Printing out the element
+using `puts` is simple way to view the contents of the elements, one
+of which looks like this `<img
+src="/web/20030502075943im_/http://www.bytravelers.com/images/pro/book.gif">` 
 
 ==== Writing tests
 

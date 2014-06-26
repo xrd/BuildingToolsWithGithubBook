@@ -1,10 +1,12 @@
 require 'rubygems'
 require 'mechanize'
 require 'vcr'
+require 'net/http'
 
 VCR.configure do |c|  
   c.cassette_library_dir = 'cached'
   c.hook_into :webmock
+  
 end
 
 class ByTravelersProcessor
@@ -21,7 +23,8 @@ class ByTravelersProcessor
     title = page[0]
     body = page[1]
     creation_date = page[2]
-
+    image = page[3]
+    
     title.gsub!( /"/, '' )
     
     template = <<"TEMPLATE" 
@@ -29,6 +32,7 @@ class ByTravelersProcessor
 layout: post    #  <---- Set our layout variable to "post"
 title: "#{title}"  
 published: true
+image: #{image}
 ---
 
 #{body}
@@ -59,7 +63,6 @@ TEMPLATE
   end  
   
   def process_body( name, i, row )
-
     text = row.text().strip()
 
     out = text.gsub( /\n\s/, "\n\n" )
@@ -76,12 +79,24 @@ TEMPLATE
   end
 
   def process_title( i, title )
+    img = ( title / "img" )
+    root = "https://web.archive.org"
+    src = img.attr('src').text()
+    filename = src.split( "/" ).pop
+    output = "assets/images/"
+    full = File.join( output, filename )
+    unless File.exists? full
+      remote = root + src
+      contents = `wget --quiet -O #{full} #{remote}`
+    end
+    
     title = title.text()
     if title
       title.gsub!( /Title:/, "" )
       title.strip!
     end
-    title 
+    [ title, filename ]
+    
   end
   
   def get_ith_page( i )
@@ -91,10 +106,10 @@ TEMPLATE
         mechanize.get( root ) do |page|
           rows = ( page / "table[valign=top] tr" ) 
           if rows and rows.length > 3
-            title = process_title( i, rows[1] )
+            title, image = process_title( i, rows[1] )
             body = process_body( title, i, rows[4] ) 
             creation_date = process_creation_date( i, rows[3] )
-            pages[ i ] = [ title, body, creation_date ]
+            pages[ i ] = [ title, body, creation_date, image ]
           end
         end
       end
