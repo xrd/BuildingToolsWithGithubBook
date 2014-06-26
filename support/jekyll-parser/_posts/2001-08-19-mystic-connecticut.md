@@ -1,13 +1,8 @@
 ---
-layout: post    #  <---- Set our layout variable to "post"
+layout: post   
 title: "mystic, connecticut"  
 published: true
-image: hut.gif
+image: hut.gif   # <2>
 ---
 
-WE STAYED AT A WONDERFUL, UNIQUE BED AND BREAKFAST INN LAST 
-FALL. THIS PLACE TAKES A STEP BACK INTO HISTORY. THE 
-BUILDING WAS BUILT IN THE 1700'S, AND IS HISTORICALLY 
-CORRECT IN THE FURNISHINGS. IF ANYONE LOVES REAL ANTIQUES 
-AND NOT JUST FAKE OR "CUTE CURTAINS" DECORATING, GO THERE. 
-THE NAME IS RED BROOK INN, MYSTIC
+

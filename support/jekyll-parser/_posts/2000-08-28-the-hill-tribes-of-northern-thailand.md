@@ -1,29 +1,11 @@
 ---
-layout: post    #  <---- Set our layout variable to "post"
+layout: post   
 title: "The Hill-Tribes of Northern Thailand"  
 published: true
-image: photo.gif
+image: photo.gif   # <2>
 ---
 
-I had heard about the hill-tribes in 
-northern Thailand, a collection of 
-Burmese, south China, Laotian, and Thai 
-natives, who had maintained ancient 
-traditions, stayed secluded from 
-urbanization, and basically lived the 
-same lifestyle they had for hundreds of 
-years. 
-Treks they called them. Voyeuristic 
-guided tours of these tribes. On the 
-one hand, it would be fascinating to 
-witness this culture and semi- 
-experience what is must have been like 
-to live hundreds of years in the past. 
-On the other hand, I felt the guilt of 
-imposing and contributing to the 
-touristic erosion of these people. 
-Morals aside, the Peeping Todd would 
-command this expedition.First thing, supplies. They would 
+First thing, supplies. They would 
 supply food and blankets. What I needed 
 was a poncho for the rain, mosquito 
 repelent, malaria tablets, and the all 
@@ -32,7 +14,9 @@ country, toilet paper is not often
 found in bathrooms, so Westerners place 
 great value on it. I carry a roll in a 
 holster on my belt, like a cowboy in 
-the old west.) It was a two hour drive into the 
+the old west.)
+
+It was a two hour drive into the 
 mountains to where our trail began. Our 
 guide's name was Cobp. He was a Thai 
 native who spoke broken English, 
@@ -52,7 +36,9 @@ created lots of mud and there was
 little traction. At one point I slipped 
 and slid head first down the 
 trail, "Romancing the Stone" meets Pete 
-Rose. What a way to start the trek! After three hours of hiking we reached 
+Rose. What a way to start the trek!
+
+After three hours of hiking we reached 
 the Hmong (or Meo) tribe. Colorful 
 garments, laughing children, dogs, and 
 pigs greeted us. All fell silent as the 
@@ -69,9 +55,8 @@ tribe. The village seemed quite small.
 a well for water and a stream nearby, 
 which navigated an intricate series of 
 irrigation canals that fed the rice 
-paddies. The tribe was almost self
-
-ufficient. The married women of the 
+paddies. The tribe was almost self-
+sufficient. The married women of the 
 tribe wore colorful hand-woven 
 garments. Most carried small children 
 in knapsacks on their backs. White and 
@@ -79,7 +64,9 @@ plain color garments indicated
 unmarried tribefolk, mostly children. 
 Young boys showed us their skills with 
 a sling-shot, consistently hitting a 
-small target more than 50 meters away. Dinner was cooked in a large kettle 
+small target more than 50 meters away.
+
+Dinner was cooked in a large kettle 
 over an open fire. Rice, spices, and 
 mixed veggies. It was a simple meal, 
 but while the tribe may not be 
@@ -87,7 +74,9 @@ monetarily wealthy, their cuisine is
 rich with flavor. We slept in a large 
 wooden hut on cots supported by stilts 
 a few feet off the ground. Thai whiskey 
-and a song before bed. I was first to wake at the sound of a 
+and a song before bed.
+
+I was first to wake at the sound of a 
 villager cutting wood for the breakfast 
 fire. I sat outside the hut and watched 
 the morning fog lift from the valley 
@@ -101,7 +90,9 @@ was a rooster. Breakfast was eggs with
 onions and tomatoes, toast, and instant 
 coffee. They like to keep the tourists 
 happy with some of the comforts of 
-home. We set out on the day's hike and waved 
+home.
+
+We set out on the day's hike and waved 
 goodbye to the villagers. I was in the 
 front of the group and held my walking 
 stick in front of me to break the 
@@ -116,7 +107,9 @@ snake on the trail. Our guide said it
 was one of the most poisonous snakes in 
 Thailand (ONE of? We don't have ANY 
 poisonous snakes in Washington.) The 
-hike lasted three hours that morning. Our effort was rewarded when we reached 
+hike lasted three hours that morning.
+
+Our effort was rewarded when we reached 
 the elephant camp. These beasts of 
 burden would take us the next hour of 
 our journey. Elephants have a skin 
@@ -140,7 +133,9 @@ the hiking boots now). We crossed a
 magical ridge. Endless mountain peaks 
 on both sides of us. On the left, 
 Burma, on the right, Laos. We crossed 
-streams and waded through rice paddies. After another three hours of hiking we 
+streams and waded through rice paddies.
+
+After another three hours of hiking we 
 came to a corn field. The stalks were 
 taller than an NBA player. We cut the 
 through the corn field only to appear 
@@ -157,9 +152,8 @@ before. Heads peered out of windows,
 working paused for a moment as the 
 farang (Westerners) made their way 
 through the village to the tourist hut. 
-*Walking through the village was a time
-
-arp back hundreds of years. Michael J. 
+Walking through the village was a time-
+warp back hundreds of years. Michael J. 
 Fox had nothing on us. I can't even 
 begin to explain the impression and 
 pure amazement that we all felt...it 
@@ -182,7 +176,11 @@ Because opium can grow in almost any
 soil and on small plots of land, this 
 task of conversion has been difficult. 
 Slowly though, corn, lettuce, and of 
-course rice have become the main crops.The Fall of the Hill-Tribes...Green curry for dinner, no spice. The 
+course rice have become the main crops.
+
+The Fall of the Hill-Tribes...
+
+Green curry for dinner, no spice. The 
 tourist way. Night fell quickly on the 
 village and it was dark and silent, 
 except for the tourist hut. It was a 
@@ -203,7 +201,9 @@ tourists seemed to have little or no
 respect for the people of the village. 
 Tomorrow they would leave...but the day 
 after another group would come. Things 
-would never be the same again.Before light, morning could be heard 
+would never be the same again.
+
+Before light, morning could be heard 
 from the roosters' mouths. The tribe's 
 people were already at work. Many were 
 heading to the rice paddies to plant 
@@ -218,7 +218,9 @@ activities. The tourists were sleeping
 off the conversation from the night 
 before. I slipped out of the hut and 
 savored the experience I was witnessing 
-(the highlight of my trip so far). The others awoke an hour later. A quick 
+(the highlight of my trip so far).
+
+The others awoke an hour later. A quick 
 breakfast and we were off on an hour 
 hike to the rafting portion of the 
 river. The water rafting would be done 
@@ -236,10 +238,18 @@ white water. We had survived, at least
 physically. At the bottom of the 
 rapids, we were met by the return 
 vehicle. NO MORE WALKING. 20 kilometers 
-over rugged terrain had been enough. As we were driven back to the city of 
+over rugged terrain had been enough.
+
+As we were driven back to the city of 
 Chiang Mai, I couldn't help but smile 
 at our amazing journey through time. An 
 experience none of us would ever 
-forget. Once in Chiang Mai, I went straight to 
+forget.
+
+Once in Chiang Mai, I went straight to 
 the massage parlor for a $5, 2 hour 
 full body massage. Life was good.
+
+
+
+

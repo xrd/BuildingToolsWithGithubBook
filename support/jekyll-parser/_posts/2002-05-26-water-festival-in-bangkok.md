@@ -1,11 +1,11 @@
 ---
-layout: post    #  <---- Set our layout variable to "post"
+layout: post   
 title: "Water Festival in Bangkok"  
 published: true
-image: photo.gif
+image: photo.gif   # <2>
 ---
 
-Song Kron Celebration in ThailandThere is something about landing at Bangkok Airport that is 
+There is something about landing at Bangkok Airport that is 
 special…..at least to the male members of our family.  This 
 was the country where, twenty years ago, we negotiated and 
 landed our first large international contract.  During the 
@@ -15,7 +15,9 @@ country a half a world away.  Over a three-year period we
 drilled two hundred water wells, installed pumps and 
 underground pipelines, and delivered the first year-round 
 water supply to a group of Thai villages that can now grow 
-three crops a year instead of just one. While I had made only one trip to Thailand during that 
+three crops a year instead of just one.
+
+While I had made only one trip to Thailand during that 
 period, Dad had taken many trips and had stayed for weeks 
 on end during the contract negotiations with the upper 
 levels of the government.  Younger brother, Dee, moved to 
@@ -25,23 +27,28 @@ always considered to be the crown jewel of our many
 entrepreneurial endeavors.  Now twenty years later, after 
 delivering underground water to this country, we were 
 arriving just in time to celebrate Song Kron, the annual 
-water festival.As our Singapore Airlines 747 touched down Dee and I 
+water festival.
+
+As our Singapore Airlines 747 touched down Dee and I 
 breathed a sigh of relief.  We had just finished off a 
 stressful week of work in Riyadh, Saudi Arabia.  Going from 
-Saudi Arabia to Thailand is like slipping out of a three
-
-iece suit and tight shoes and into a soft cotton tee shirt 
+Saudi Arabia to Thailand is like slipping out of a three-
+piece suit and tight shoes and into a soft cotton tee shirt 
 and sandals.  It was time to relax and reconnect with old 
 friends and old memories.  We had talked Dad into joining 
 us in Thailand and his flight from the states was scheduled 
-to arrive a few hours behind ours.  Our project manager back in the old days had been a big 
+to arrive a few hours behind ours.
+
+Our project manager back in the old days had been a big 
 Texan named Larry.  During his stay, he fell in love with 
 Thailand and had eventually found a way to get back to 
 the “land of smiles.”  We hadn’t seen Larry for many years, 
 and we were looking forward to a reunion with him and some 
 of our former Thai associates, all of whom promised to be 
 waiting for us at one of old watering holes in the Pat Pong 
-nightclub district.     Since our last trip, several miles of a new elevated toll 
+nightclub district.
+
+Since our last trip, several miles of a new elevated toll 
 road had been completed, and we made it to our hotel in 
 less than an hour, which was a new record.  Our pal Larry 
 was waiting for us at the hotel and helped us get checked 
@@ -54,7 +61,9 @@ and restaurants in the area were in the process of covering
 with plastic anything and everything that needs to stay 
 dry.  The reason......Saturday and Sunday was the Thai new 
 year and everyone was gearing up for the annual Song Kron 
-celebration.  Dee had done his best to plan our schedule so that we could 
+celebration.
+
+Dee had done his best to plan our schedule so that we could 
 be in Bangkok for Song Kron.  He had been through one 
 celebration back in the early 80’s and assured me that I 
 would not believe it unless I saw it for myself.   Friday 
@@ -65,9 +74,8 @@ tall and weighs close to 280.  Ian is an Australian and
 slightly smaller.  Both have lived here for many years.  
 They had already collected several weapons, the principle 
 one reminded me of a WW II flame thrower.  Mark had 
-arranged for this weapon of destruction.  It contained a 5
-
-allon container, which he could strap to his back like a 
+arranged for this weapon of destruction.  It contained a 5-
+gallon container, which he could strap to his back like a 
 backpack with a hose leading to a pump tube and nozzle.  
 With one quick pumping motion Mark could send a large 
 stream of water spewing onto a target thirty feet away.  
@@ -80,7 +88,9 @@ returned with a couple of machine gun looking affairs and a
 water bazooka.  At noon on Saturday, we dressed for 
 combat......old shorts and tee shirts, which could never be 
 worn again, and aqua sport slippers, which holds a grip 
-while soaking wet.  After extensive reconnaissance Mark and Ian had already 
+while soaking wet.
+
+After extensive reconnaissance Mark and Ian had already 
 decided where we would locate our base of operations.  They 
 chose a small open air bar about fifty yards from the hotel 
 entrance.  From this position we were able to conceal 
@@ -91,7 +101,9 @@ low, and there was a three-foot wall to duck behind if we
 began taking too much incoming fire.  We negotiated a truce 
 with the troops in the open-air bar across the street, and 
 then we were assigned our positions and battle 
-responsibilities.  Our weakest point of exposure was from the sidewalk behind 
+responsibilities.
+
+Our weakest point of exposure was from the sidewalk behind 
 us.  Enemy troops could use a flanking action and attack us 
 from the rear via the sidewalk, so Larry and I were 
 assigned to cover the rear of the battle group by parking 
@@ -111,7 +123,9 @@ any assaults with more traditional style arms like buckets,
 large plastic glasses, and water balloons.  The problem is 
 to avoid those dedicated members of the enemy who insist on 
 using chemical warfare (talcum powder mixed with water that 
-gets smeared onto your face and hair). The battle plan was to hold our position as long as 
+gets smeared onto your face and hair).
+
+The battle plan was to hold our position as long as 
 possible while annihilating anyone unfortunate enough to 
 enter our killing zone (motorcycle riders, pickup trucks, 
 casual pedestrians).  We had hoped to be able to hold this 
@@ -138,7 +152,9 @@ them, although we sometimes took heavy casualties.  I was
 the first to take a serious hit when I took a round of 
 incoming laced with yellow dye.  This is against the Geneva 
 Convention’s rules of water warfare, but in war these 
-things do happen.Bloodied and battle weary after two hours, we decided to 
+things do happen.
+
+Bloodied and battle weary after two hours, we decided to 
 move our base camp to the entrance of the Cosmos.  We tried 
 to determine when the coast was reasonably clear and 
 started our advance.  Mark, large target that he is, did 
@@ -149,7 +165,9 @@ positioned on an overhead cross walk.  They were equipped
 with water balloons and a garden hose.  Together we set up 
 a deadly killing field in front of the Cosmos.  We were the 
 ground troops and they gave us plenty of air support from 
-above.  At the end of another couple of hours we declared victory 
+above.
+
+At the end of another couple of hours we declared victory 
 and headed soggily back to our rooms to take warm showers 
 and find more disposable clothing for the party Saturday 
 night.  Randy, another American ex-pat, owns one of the 
@@ -162,10 +180,18 @@ Drinks were served with plastic bags over the glasses with
 a hole punched for a straw.  I don’t know what the water 
 bill is in Thailand for this festival, but I am glad that 
 it is celebrated at the beginning of the rainy season so 
-that they can replenish the city’s water supply. As the party began to wind down, which occurred sometime 
+that they can replenish the city’s water supply.
+
+As the party began to wind down, which occurred sometime 
 prior to daylight, Dad, Dee and I were all glad that our 
 hotel was within walking distance.  We were glad that we 
 had gotten to participate in this most unique and happy 
 celebration.  We were glad to be together and surrounded by 
 old friends, and we were especially glad to be back in 
 the “land of smiles.”
+
+
+
+
+
+

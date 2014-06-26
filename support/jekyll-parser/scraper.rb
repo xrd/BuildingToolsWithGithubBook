@@ -63,19 +63,16 @@ TEMPLATE
   end  
   
   def process_body( name, i, row )
-    text = row.text().strip()
-
-    out = text.gsub( /\n\s/, "\n\n" )
-    out.gsub!( /(\S)\n(\S)/, "#{$1}\n\n#{$2}" )
-    
-    # new_text = ( row / "p" ).collect { |p| p.text().strip() }.join( "\n\n" )
-    # puts "Processed: #{new_text}"
-    # puts "name: #{name}::: p count: #{ (row / 'p' ).length }"
-    # new_text
-
-    # puts "Out: #{out}"
-    
-    out
+    body = ""
+    if row
+      ( row / "p" ).each do |p|
+        text = p.text()
+        text.strip!
+        text.gsub!( /\*\s*/, '' )
+        body += text + "\n\n"
+      end
+    end
+    body 
   end
 
   def process_title( i, title )
