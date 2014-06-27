@@ -20,10 +20,11 @@ class ByTravelersProcessor
   end
 
   def write_post( page )
-    title = page[0][0]  # <1>
+    title = page[0][0]  
     image = page[0][1]
     body = page[1]
     creation_date = page[2]
+    location = page[3]
     
     title.gsub!( /"/, '' )
     
@@ -32,7 +33,8 @@ class ByTravelersProcessor
 layout: post   
 title: "#{title}"  
 published: true
-image: #{image}   # <2>
+image: #{image}
+location: #{location}
 ---
 
 #{body}
@@ -67,14 +69,7 @@ TEMPLATE
 
     location.gsub!( /Concerning: /, "" ) # <2>
     location.strip!
-    # Lookup lat/lng
-    results = Geocoder.search( location )[0]  # <3>
-    location = results.data['geometry']['location']
-    puts "Location: #{location.inspect}"
-    lat = location['lat'] 
-    lng = location['lng']
-    return [ lat, lng ] # <4>
-    
+    return location # <3>
   end  
 
   
