@@ -2,7 +2,8 @@
 layout: post   
 title: "The Great Wall"  
 published: true
-image: phone.gif   # <2>
+image: phone.gif
+location: China, People's Republic of
 ---
 
 I could hardly contain my anticipation for Monday's tour.  

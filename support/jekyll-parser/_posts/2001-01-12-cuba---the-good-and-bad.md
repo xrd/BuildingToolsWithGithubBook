@@ -2,7 +2,8 @@
 layout: post   
 title: "Cuba - the good and bad"  
 published: true
-image: paper.gif   # <2>
+image: paper.gif
+location: Cuba
 ---
 
 Cuba, what an interesting place??!!

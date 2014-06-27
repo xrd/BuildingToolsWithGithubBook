@@ -2,7 +2,8 @@
 layout: post   
 title: "Bhutan: Monsoons and Miracles"  
 published: true
-image: paper.gif   # <2>
+image: paper.gif
+location: Bhutan
 ---
 
 To plan a trip to Bhutan, email Tshering Pem at 

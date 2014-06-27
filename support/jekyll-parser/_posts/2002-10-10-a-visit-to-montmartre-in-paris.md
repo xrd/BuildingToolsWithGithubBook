@@ -2,7 +2,8 @@
 layout: post   
 title: "A Visit to Montmartre in Paris"  
 published: true
-image: postcard.gif   # <2>
+image: postcard.gif
+location: France
 ---
 
 When we emerged from the subway and entered the street 

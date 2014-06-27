@@ -2,7 +2,8 @@
 layout: post   
 title: "Passion Play of Oberammergau"  
 published: true
-image: paper.gif   # <2>
+image: paper.gif
+location: Germany
 ---
 
 We met Jeanne and Vic at the Newark Airport on Monday that day and all 

@@ -2,7 +2,8 @@
 layout: post   
 title: "Check out this Travel Planning Website"  
 published: true
-image: paper.gif   # <2>
+image: paper.gif
+location: United States
 ---
 
 Travel-Ascending.com

@@ -2,7 +2,8 @@
 layout: post   
 title: "travel in Italy after September 11th"  
 published: true
-image: book.gif   # <2>
+image: book.gif
+location: Italy
 ---
 
 I am sure I was not alone in my thinking about getting on 

@@ -2,7 +2,8 @@
 layout: post   
 title: "Romantic Prague"  
 published: true
-image: photo.gif   # <2>
+image: photo.gif
+location: Czech Republic
 ---
 
 I had hoped to be able to get to the hotel from the train 

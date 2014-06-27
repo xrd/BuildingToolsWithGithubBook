@@ -2,7 +2,8 @@
 layout: post   
 title: "The Bardo Museum"  
 published: true
-image: camera.gif   # <2>
+image: camera.gif
+location: Tunisia
 ---
 
 The museum is just four kilometers out from the centre of 

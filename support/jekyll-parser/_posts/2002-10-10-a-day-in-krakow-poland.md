@@ -2,7 +2,8 @@
 layout: post   
 title: "A Day in Krakow, Poland"  
 published: true
-image: book.gif   # <2>
+image: book.gif
+location: Poland
 ---
 
 I awoke in my Katowice hotel room just before my small 

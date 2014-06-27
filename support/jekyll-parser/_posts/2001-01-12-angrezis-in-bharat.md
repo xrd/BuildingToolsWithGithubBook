@@ -2,7 +2,8 @@
 layout: post   
 title: "Angrezis in Bharat"  
 published: true
-image: camera.gif   # <2>
+image: camera.gif
+location: India
 ---
 
 Well since we last wrote we were heading for India.

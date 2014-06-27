@@ -2,7 +2,8 @@
 layout: post   
 title: "Two Days in St. Petersburg"  
 published: true
-image: squig.gif   # <2>
+image: squig.gif
+location: Russian Federation
 ---
 
 Russia continues to be more restrictive on its tourists 

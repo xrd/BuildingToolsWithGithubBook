@@ -2,7 +2,8 @@
 layout: post   
 title: "The Hill-Tribes of Northern Thailand"  
 published: true
-image: photo.gif   # <2>
+image: photo.gif
+location: Thailand
 ---
 
 First thing, supplies. They would 

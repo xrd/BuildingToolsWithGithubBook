@@ -2,7 +2,8 @@
 layout: post   
 title: "Lava Beds Ate Our Shoes; Maui, HI"  
 published: true
-image: book.gif   # <2>
+image: book.gif
+location: United States
 ---
 
 "Says here just two miles to the deserted black-sand beach," 

@@ -2,7 +2,8 @@
 layout: post   
 title: "Mirogoj Cemetery in Zagreb"  
 published: true
-image: star.gif   # <2>
+image: star.gif
+location: Croatia
 ---
 
 Anyone who had forgotten flowers in their haste needn't 

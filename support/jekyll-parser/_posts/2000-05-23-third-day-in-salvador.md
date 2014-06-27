@@ -2,7 +2,8 @@
 layout: post   
 title: "Third day in Salvador"  
 published: true
-image: squig.gif   # <2>
+image: squig.gif
+location: Brazil
 ---
 
 So far I've only really come in contact with people who speak English 

@@ -4,11 +4,14 @@ layout: default
 
 <h1>{{ page.title }}</h1>
 
-<img src="/assets/images/{{ page.image }}">
 
 {% if page.location %} 
-<img src="http://maps.googleapis.com/maps/api/staticmap?center={{ page.location }}&zoom=13&size=600x300">
+<div>
+<img src="http://maps.googleapis.com/maps/api/staticmap?center={{ page.location }}&zoom=13&size=400x100">
+</div>
 {% endif %}
+
+<img src="/assets/images/{{ page.image }}">
 
 {{ content }}
 

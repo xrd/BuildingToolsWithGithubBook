@@ -2,7 +2,8 @@
 layout: post   
 title: "Beautiful Belize"  
 published: true
-image: book.gif   # <2>
+image: book.gif
+location: Belize
 ---
 
 This winter I took a holiday cruise which included the 

@@ -2,7 +2,8 @@
 layout: post   
 title: "Family trip to Rajasthan"  
 published: true
-image: star.gif   # <2>
+image: star.gif
+location: India
 ---
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- ---

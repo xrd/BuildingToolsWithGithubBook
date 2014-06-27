@@ -2,7 +2,8 @@
 layout: post   
 title: "Mexico/Belize/Guatemala"  
 published: true
-image: phone.gif   # <2>
+image: phone.gif
+location: Mexico
 ---
 
 Dear All

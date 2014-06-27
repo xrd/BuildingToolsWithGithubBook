@@ -2,7 +2,8 @@
 layout: post   
 title: "South Africa"  
 published: true
-image: phone.gif   # <2>
+image: phone.gif
+location: South Africa
 ---
 
 I got in from South Africa a few days ago after enjoying a 

@@ -2,7 +2,8 @@
 layout: post   
 title: "Water Festival in Bangkok"  
 published: true
-image: photo.gif   # <2>
+image: photo.gif
+location: Thailand
 ---
 
 There is something about landing at Bangkok Airport that is 

@@ -2,7 +2,8 @@
 layout: post   
 title: "Viagiatore"  
 published: true
-image: tower.gif   # <2>
+image: tower.gif
+location: Italy
 ---
 
 

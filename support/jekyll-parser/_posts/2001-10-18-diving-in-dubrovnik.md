@@ -2,7 +2,8 @@
 layout: post   
 title: "Diving in Dubrovnik"  
 published: true
-image: star.gif   # <2>
+image: star.gif
+location: Croatia
 ---
 
 The first stop we made was for a cave dive. It was just the

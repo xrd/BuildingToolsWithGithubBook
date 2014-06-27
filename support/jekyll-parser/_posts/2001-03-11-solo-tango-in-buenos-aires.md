@@ -2,7 +2,8 @@
 layout: post   
 title: "Solo Tango in Buenos Aires"  
 published: true
-image: photo.gif   # <2>
+image: photo.gif
+location: Argentina
 ---
 
 Suddenly one of the men stands up and begins to 

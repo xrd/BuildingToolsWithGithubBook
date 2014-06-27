@@ -2,7 +2,8 @@
 layout: post   
 title: "watch out for Borin the Cab Driver"  
 published: true
-image: camera.gif   # <2>
+image: camera.gif
+location: Croatia
 ---
 
 The walled city of Dubrovnik would have none of this, and 

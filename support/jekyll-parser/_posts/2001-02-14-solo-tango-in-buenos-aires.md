@@ -2,7 +2,8 @@
 layout: post   
 title: "SOLO TANGO IN BUENOS AIRES"  
 published: true
-image: phone.gif   # <2>
+image: phone.gif
+location: Argentina
 ---
 
 It’s just before dawn, and our small group of Argentines 

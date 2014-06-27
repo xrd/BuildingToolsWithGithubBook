@@ -2,7 +2,8 @@
 layout: post   
 title: "A Day in Beijing"  
 published: true
-image: phone.gif   # <2>
+image: phone.gif
+location: China, People's Republic of
 ---
 
 We arrived at the China World Hotel around noon on 
