@@ -63,19 +63,17 @@ TEMPLATE
   end  
 
   def process_location( i, row )
-    location, creation_date = row.text().split /last updated on:/ 
+    location, creation_date = row.text().split /last updated on:/  # <1>
 
-    location.gsub!( /Concerning: /, "" )
+    location.gsub!( /Concerning: /, "" ) # <2>
     location.strip!
-
     # Lookup lat/lng
-    results = Geocoder.search( location )[0]
-    # puts "Results: #{results.data['geometry']['location'].inspect}"
+    results = Geocoder.search( location )[0]  # <3>
     location = results.data['geometry']['location']
     puts "Location: #{location.inspect}"
-    lat = location['lat']
+    lat = location['lat'] 
     lng = location['lng']
-    return [ lat, lng ]
+    return [ lat, lng ] # <4>
     
   end  
 
