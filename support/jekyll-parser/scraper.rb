@@ -108,6 +108,7 @@ TEMPLATE
             title = process_title( i, rows[1] )
             body = process_body( title, i, rows[4] ) 
             creation_date = process_creation_date( i, rows[3] )
+            location = process_location( i, rows[3] )
             pages[ i ] = [ title, body, creation_date ]
           end
         end
