@@ -1007,7 +1007,7 @@ path `cached/bt_1.yml` (VCR adds the yml extension because it stores
 the results as a structured YAML file).
 <2> Once we have loaded the page we see one of the powerful features
 of mechanize footnote:[Actually, this is handled by the Nokogiri parser, but
-Mechanizes exposes it seamlessly], a simple page searching syntax. If
+Mechanizes exposes it transparently], a simple page searching syntax. If
 we provide the code `page / "table[valign=top] tr"` what we are doing
 is searching inside the page for a tag like `<table valign="top">` and
 then finding all the `<tr>` tags inside that. Recalling the DOM
