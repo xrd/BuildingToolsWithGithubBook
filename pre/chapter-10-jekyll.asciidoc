@@ -1470,7 +1470,8 @@ image::images/jekyll-now-livelier.png[Restoring our blog using images and colors
 ===== Adding maps
 
 This is a site about travel information, so it makes sense to add maps
-as well. We can process the location information and add a map. 
+as well. We can process the location information we retrieved from the
+archived site and add a map image. 
 
 Add a new function called `process_location` and place it underneath
 the `process_creation_date` method inside the `get_ith_page` method.
