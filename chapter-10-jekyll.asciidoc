@@ -599,38 +599,22 @@ GitHub needed to change their IP addresses (say during a denial of
 service attack), you would need to respond to this, and deal with the
 DNS propagation issues. If you instead use a subdomain, the CNAME
 record will automatically redirect to the correct IP even if that is
-changed by GitHub.
+changed by GitHub footnote:[This is all well documented on the
+https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages:[GitHub
+blog]]. 
 
-This is all well documented on the https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages:[GitHub blog].
-
-===== Problems with YML and YAML and Liquid
-
-* No comments (JSON has the same problem...)
- * reading in parsing, then writing out, loses all the comments!
- * use `comment: "some comment here"` for comments. 
-
-===== Capturing Content
-
-VERIFY THIS STATEMENT
-
-There is no support for partials.
-
-[source,html]
-{% capture sidebar %}{% include blog.md %}{% endcapture %}
-<div style="text-align: left">
-{{ sidebar | Markdownify }}
-</div>
-
-==== Converters
+=== Importing from other blogs
 
 There are many tools which can be used to import an existing blog into
-Jekyll. As Jekyll is a simple format, you just need to pull the
-relevant pieces (the post itself, and associated metadata like the
-post title, publishing date, etc.) and then put them into the simple
-markdown format. 
+Jekyll. As Jekyll is really nothing more than a file layout
+convention, you just need to pull the relevant pieces (the post
+itself, and associated metadata like the post title, publishing date,
+etc.) and then write out a file with those contents. Jekyll blogs
+prefer Markdown, but they work fine with HTML content, so you can
+often convert a blog with minimal effort, and there are good tools
+which automate things for you.
 
 ==== Wordpress to Jekyll
-
 
 The most popular importer is the Wordpress importer. You will need the 
 the 'jekyll-import' gem, which is installed separately from the jekyll
@@ -644,7 +628,7 @@ blog using a command like this:
 
 [source,bash]
 ----
- ruby -rubygems -e 'require "jekyll-import";
+$ ruby -rubygems -e 'require "jekyll-import";  
     JekyllImport::Importers::WordPress.run({
       "dbname"   => "wordpress",
       "user"     => "hastie",
@@ -798,10 +782,7 @@ the Internet Archive, but I found it flakey and unreliable. Scraping
 the site itself works well, but to reduce load on the archive, we'll
 cache our results using a gem called `VCR` (typically used to cached
 results from hitting a web service during test runs but perfectly
-capable here as well). In addition, as we'll find out, when you scrape
-HTML you can retrieve text which crashes the markdown parser, so we
-will want to write a few tests to make sure our scraping tool handles
-these edge cases properly.
+capable here as well). 
 
 To write our parser, we will need to look at the structure of the
 archive presented on Archive.org. If we start on Archive.org, and
