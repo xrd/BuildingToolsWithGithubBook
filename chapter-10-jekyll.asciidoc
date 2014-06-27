@@ -1743,8 +1743,51 @@ the `process_creation_date` method inside the `get_ith_page` method.
 [source,ruby]
 -----
 ...
+  def process_location( i, row )
+    location, creation_date = row.text().split /last updated on:/  # <1>
 
+    location.gsub!( /Concerning: /, "" ) # <2>
+    location.strip!
+    return location # <3>
+  end  
+...
+-----
 
+<1> As we did in the `process_creation_date` method, we grab the row
+and split it in two pieces. This time we are only interested in the
+first element, the location.
+<2> Each location string starts with the text "Concerning: " so we
+remove that here.
+<3> Return the result
+
+Now that we have the location, we need to insert it into the post
+itself. Once again we will place it inside the YFM. Modify the
+`write_post` method to grab the location from the array argument, and
+use that in the template inside the YFM.
+
+[source,ruby]
+-----
+...
+  def write_post( page )
+    title = page[0][0]  
+    image = page[0][1]
+    body = page[1]
+    creation_date = page[2]
+    location = page[3]
+    
+    title.gsub!( /"/, '' )
+    
+    template = <<"TEMPLATE" 
+---
+layout: post   
+title: "#{title}"  
+published: true
+image: #{image}
+location: #{location}
+---
+
+#{body}
+TEMPLATE
 
 ...
 -----
