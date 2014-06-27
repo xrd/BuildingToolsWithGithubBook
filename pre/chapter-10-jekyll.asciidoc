@@ -1520,21 +1520,46 @@ To be replaced
 snippet~~~~~
 ----
 
-===== What's next for ByTravelers.com?
+===== Inviting contributions via forking
 
-The wonderful thing about publishing a site as a Jekyll repository is
-that beyond just making it simple to manage, Jekyll repositories make
-it simple to accept contributions. You might have seen the banner
+When you publish a Jekyll blog, the fact that it is a repository on
+GitHub makes it simple to manage and track changes. In addition,
+because forking is a button click away, you can ask people to
+contribute or make changes with very little friction.
+You might have seen the banner
 saying "Fork me on GitHub" on many a software project page hosted on
-GitHub. We can do the same thing with a Jekyll blog and ask for
-contributions using pull requests. Let's add that as a final touch and
+GitHub. We can motivate others to participate in our blog 
+using pull requests. Let's add that as a final touch and
 invite people to make contributions the GitHub way. The https://github.com/blog/273-github-ribbons:[GitHub blog
 first posted these banners] and we'll use their code as-is inside our
 `default.html` page.
 
+[source,html]
+-----
+...
+[filename=".", language="ruby", sha="d7b8316:support/jekyll-parser/_layouts/default.html" lines="10..15"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
 
+==== Publishing our blog to GitHub
 
+Like any other GitHub repository, we can then publish our blog using
+the same commands we saw with earlier repositories. Obviously you
+should change the username and blog name to suit your own needs. 
 
+[source,bash]
+----
+$ export BLOG_NAME=xrd/bytravelers.com
+$ gem install hub
+$ hub create $BLOG_NAME # You might need to login here
+$ sleep $((10*60)) && open $BLOG_NAME
+----
+
+And, don't forget to setup DNS records and give yourself appropriate
+time to let those records propagate out.
 
 ==== Summary
 
