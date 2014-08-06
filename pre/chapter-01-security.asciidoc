@@ -1,3 +1,23 @@
+=== GitHub Account Security
+
+Once you start using GitHub, you'll rely on it for more and more than just hosting your project code.
+You'll probably use it for third party authentication; more and more
+services offer GitHub login (oAuth), after you "Login via GitHub" a
+single step allows these services to quickly and automatically
+provision their services using code from a repository stored on GitHub
+rather than asking you to perform a setup step. You'll probably
+integrate GitHub with continuous integration services, which require
+linking your GitHub account to a third party service. You may even
+want to integrate oAuth login within a service you are building. As your
+usage of GitHub starts to expand, you'll want to make sure you
+understand the various intricacies of security within GitHub. The
+GitHub team has put a lot of thought into making GitHub secure while
+still offering flexibility and ease of use. By understanding the
+contents of this chapter, you will know when, where and how to open up
+your GitHub data to third party providers and protect the data you
+don't want to share. 
+
+
 === Exploring Account Security
 
 ==== Reseting Your Password
