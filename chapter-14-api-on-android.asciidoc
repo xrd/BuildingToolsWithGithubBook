@@ -1056,8 +1056,8 @@ string like `2012-12-12`) and then followed by a title all lowercased
 and with whitespace replaced by hyphens. The `getFilename()` function
 does all this for us, using the first 30 characters of the post body
 as a title.
-<2> Jekyll files can optional have YAML Front Matter; we add the
-layout and the published flag.
+<2> Jekyll files can optionally have YAML Front Matter; we add the
+layout and the published flag into the YFM.
 <3> As noted above, we convert our content to Base64 using the Apache
 foundation helper utility.
 <4> We give credit where credit is due: this class was refactored from
