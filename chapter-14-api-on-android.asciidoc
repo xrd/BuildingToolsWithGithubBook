@@ -2,11 +2,11 @@
 
 Android is currently the most popular operating system for mobile
 devices, overtaking Symbian OS in 2010, experiencing incredible growth
-since its release in 2008. Many software developers would not consider
-a mobile device as a worthwhile platform for software developer tool
-creation, but as more and more people shift to using mobile devices,
-we will see demand for tools on mobile devices. The GitHub API has a
-good set of bindings for developing Java and Android applications.
+since its release in 2008. If it is not the case already, mobile OSes like 
+Android and iOS will soon be more prevalent than desktop OSes. Though it 
+may not occur to many people yet, as more and more people shift to using 
+mobile devices, we will see demand for developer tools on mobile devices. 
+The GitHub API has a good set of bindings for developing Java and Android applications.
 We'll use the egit libraries to develop a small Android application
 which posts to our blog hosted on GitHub.
 
@@ -654,50 +654,6 @@ two layouts.
 
 [source,java]
 -----
-package com.githubru;
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.view.View;
-
-public class MainActivity extends Activity
-{
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main); 
-
-        Button login = (Button)findViewById( R.id.login ); // <1>
-        login.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    login(); // <2>
-                }
-            });
-    }
-
-    private void login() {
-        setContentView(R.layout.logged_in); // <3>
-
-        Button submit = (Button)findViewById( R.id.submit );
-        submit.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    doPost(); // <4>
-                }
-            });
-    }
-
-    private void doPost() {
-        TextView tv = (TextView)findViewById( R.id.post_status ); // <5>
-        tv.setText( "Successful jekyll post" );
-    }
-
-}
 
 -----
 
