@@ -10,16 +10,18 @@ or write something and discuss it, gists are a great tool.
 
 There are other services that do this: pastebin was the first, and
 there are many others that offer variances on code sharing. But gists
-by GitHub are not simply a pasting service. We'll go over the basics
-of what gists are, and how to create them, before practicing building
-an app with one.
+by GitHub are not simply a pasting service. Gists are first class
+repositories, forkable, editable and expansive. We'll go over the basics
+of what gists are, and how to create them, and then show how they
+allow you to share code that is also a live application.
 
 === Gists are repositories
 
-Gists from GitHub are not just a place to paste code. Every gist
+Every gist
 created is a tiny repository. You can update gists and see
-the history using `git log`. You can download gists, hack on the repository, and `git push` them
-back into the repository on gist.github.com (which will republish them onto the publicly
+the history using `git log`. You can download gists, hack on the
+repository, and `git push` them back into the repository on
+gist.github.com (which will republish them onto the publicly 
 facing web page). And, you can "fork" gists, just like
 any other repository. 
 
