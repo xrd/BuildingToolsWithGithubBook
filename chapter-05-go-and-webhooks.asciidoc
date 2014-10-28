@@ -1,7 +1,6 @@
+== Go and Github Webhooks
 
-# Go and Github Webhooks
-
-## Why Go and GitHub?
+=== Why Go and GitHub?
 
 Go was originally developed as a systems language and it still serves
 that purpose well. Yet, beyond just hidden system tools, there is a
@@ -30,7 +29,7 @@ tests. We get a pass or fail, and if a failure occurs, beware of the
 encroaching pirate ship (meaning your manager coming to yell at you
 for breaking the build...).
 
-## About Go
+=== About Go
 
 Over the last couple years the Go programming language has been on a
 meteoric rise in popularity. Conceived in 2007 Go's main purpose was
@@ -51,25 +50,25 @@ Getting the documentation for a particular library is as easy as going
 to godoc.org. Making sure your code is formatted properly is as easy
 as `go fmt`.
 
-## Go Getting Started
+=== Go Getting Started
 
 Luckily if you're new to Go it's has a very user friendly installation
-process. 
+process.
 
 Visit: http://golang.org/doc/install
 
 I would recommend using an installer. You can also download an archive
 or source and install it manually. The package install is nice in that
 it will take care of almost everything for you. You can download it
-at: 
+at:
 
 http://golang.org/dl/
 
 I would also recommend the latest "stable" version. At the time of
 writing this the latest stable version is 1.3.1. Also make sure you
-grab the right one for your architecture and OS. 
+grab the right one for your architecture and OS.
 
-## GOPATH
+=== GOPATH
 
 There is one very important environment variable that we will discuss next:
 GOPATH
@@ -78,46 +77,52 @@ The `GOPATH` environment variable is a comma delimited list of
 locations where go will look for packages. It is where the source for
 your code with live alone with the code you need to import to run your
 code. Each location in the `GOPATH` needs to have three specific
-directories in it: bin, src and pkg. 
+directories in it: bin, src and pkg.
 
 The `bin` directory is where the compiled binaries live.
 
 The `pkg` directory has all the installed package objects. You'll
 rarely have to go into the pkg directory yourself. If peek in you'll
 find a subdirectory for each operating system and architecture the
-packages that were build for it. 
+packages that were build for it.
 
 Finally the `src` directory. This is where you'll spend most of your
 time. Nested in the `src` directory is the import path for each
-package. 
+package.
 
 For our use case we're going to keep it simple and have just one
 location in our `GOPATH`. Depending on how you installed Go you might
-already have GOPATH set. 
+already have GOPATH set.
 
 To check run:
 
+[source,bash]
+-----
   $ echo $GOPATH
+-----
 
 This will print of the current value of the GOPATH environment
 variable. Lets set our GOPATH to a subdirectory in our `HOME`
-directory: 
+directory:
 
+[source,bash]
+-----
   $ export GOPATH=$HOME/go
+-----
 
 This would be a good time to add the line above your bash/zsh profile
-so when you start your next terminal session GOPATH is set for you. 
+so when you start your next terminal session GOPATH is set for you.
 
-## What we are going to build
+=== What we are going to build
 
 You can build almost anything with Go but today we're going to build
-ourselves a webserver that responds to Github Webhooks. 
+ourselves a webserver that responds to Github Webhooks.
 
 Our goal will be to create a server that renders HTML from Markdown
 files hosted on Github. When a Markdown file is created or updated on
-Github our service will automatically render the markdown into HTML. 
+Github our service will automatically render the markdown into HTML.
 
-## Introduction to Github webhooks
+=== Introduction to Github webhooks
 
 Until now most of the interaction we've had with Github is pushing,
 viewing or requesting information from github.  Us telling github what
@@ -136,16 +141,16 @@ information about what event happened, when and to which repository.
 
 To view all supported events visit: https://developer.github.com/webhooks/#events
 
-## Our Project
+=== Our Project
 
 You can uses these webhooks to start builds, notifiy your team on
 commits or anything else your mind can come up with. For our project
 we will be rendering Markdown files into HTML when they're created or
-updated on Github. A CMS of sorts for Markdown data. 
+updated on Github. A CMS of sorts for Markdown data.
 
 The basic idea is: you/someone updates a file on Github, github sends
 us JSON describing the event. Then we update or create the needed HTML
-files from the Markdown files on Github. 
+files from the Markdown files on Github.
 
 This project isn't just a weekend hacking project. What we'll be
 creating is the base for a tool used in production to keep HTML
@@ -156,20 +161,20 @@ project isn't finished at publish date
 
 To make our web server we'll need to be able to connect and interact
 with the Github api. For this we'll use `go-github` written by Google.
-You can find the sounce code here: 
+You can find the sounce code here:
 
 https://github.com/google/go-github
 
 To get you acclimatized to Go's ecosystem lets look at the godoc for
 this libary. To view the documentation **prepend** "godoc.org" into
-the url: 
+the url:
 
 https://godoc.org/github.com/google/go-github
 
 GoDoc has he ability to generate documentation for Go packages hosted
 on Bitbucket, GitHub, Launchpad and Google Project Hosting. It's an
 amazing tool one, if you plan on taking up Go, you should get accustom
-to. 
+to.
 
 Take a minute to look over the `github` package documentation. You can
 see just about everything in Github's API is mapped out in this
@@ -180,7 +185,7 @@ package. We will be using two sections of the package:
   Markdown fuction: http://godoc.org/github.com/google/go-github/github#Client.Markdown
 
 These two sections of the package will allow us to digest a webhook
-payload and render any markdown files that might have changed. 
+payload and render any markdown files that might have changed.
 
 ## Project structure
 
@@ -188,7 +193,7 @@ Time to start writing some Go code. Let setup our workspace so we can get starte
 
 The go tool is setup to work with open source software. When you
 import packages into you actually use the public locations of the
-code. 
+code.
 
 For example when we import Google's go-github package we will write:
 
@@ -198,7 +203,7 @@ import "github.com/google/go-github"
 
 The location of the package locally mirrors the package's location on
 the public internet. Inside our src directory Google's go-github
-package will be located in:  
+package will be located in:
 
 `src/github.com/google/go-github`
 
@@ -207,57 +212,62 @@ to the public location of the code. Our project should do the same.
 You don't actually have to create a repo on github but make a
 directory structure where your code would be if it was hosted on
 github. The name of our project will be 'gowebhooks' so for me that
-would be: 
+would be:
 
 `src/github.com/jpoz/gowebhooks`
 
 To create the directory I'll run:
 
-```
+[source,bash]
+-----
   $ mkdir -p $GOPATH/src/github.com/jpoz/gowebhooks
-```
+-----
 
 And move into our project directory:
 
-```
+[source,bash]
+-----
   $ cd $GOPATH/src/github.com/jpoz/gowebhooks
-```
+-----
 
 Now lets talk about the structure of the files within our project
 directory. We going to build a web server executable and build a
-package the web server will import. 
+package the web server will import.
 
 Below is how we'll have our project structured:
 
-```
+[source]
+-----
 .
 ├── cmd
 │   └── gowebhooks-server
 │       └── main.go
 └── gowebhooks.go
-```
+-----
 
 To create the structure above run the following commands:
 
-```
+[source,bash]
+-----
   $ touch gowebhooks.go
   $ mkdir -p cmd/gowebhooks-server
   $ touch cmd/gowebhooks-server/main.go
-```
+-----
 
 We could write our whole server in one file but then we would be
 restricted to only using the 'main' package. We want to create an
 executable and all executables need to be in the 'main' package.
 Building our server and related code in its own package allows it to
 have the ability to be imported into other projects. Maybe not totally
-needed for this project but is a good practice. 
+needed for this project but is a good practice.
 
 Our executable will be pretty simple. Just a file to load in our
-package and start it up. 
+package and start it up.
 
 main.go
 
-```go
+[source,go]
+-----
 package main
 
 import (
@@ -267,16 +277,17 @@ import (
 func main() {
   gowebhooks.StartServer()
 }
-```
+-----
 
-> remember to replace 'jpoz' with your username.
+[Warning]
+Remember to replace 'jpoz' with your username.
 
 Our `gowebhooks.go` file will have the meat of our project. To start lets make sure Go is installed properly and setup a simple webserver:
 
-
 gowebhooks.go
 
-```go
+[source,go]
+-----
 package gowebhooks
 
 import (
@@ -294,7 +305,7 @@ func StartServer() {
 	fmt.Println("Listening on 8080")
 	http.ListenAndServe(":8080", nil)
 }
-```
+-----
 
 Lets run our project to make sure we've got everything working. In our project
 directory lets run:
@@ -352,7 +363,7 @@ Ngrok has a web interface running locally on port 4040. Navigate your browser to
 
 If the ping test was successful you should see a POST to /webhook. Click on that request to inspect it.
 
-### Setting up our webhooks endpoint
+=== Setting up our webhooks endpoint
 
 We now have connectivity to Github and Github has the ability to POST to us. Now we need to decide what we want to do with the information Github gives us.
 
@@ -411,7 +422,7 @@ func StartServer() {
 
 ```
 
-Above the `webhookHandler` function is taking a `http.ResponseWriter` (`w`) and a `http.Request` (`r`). 
+Above the `webhookHandler` function is taking a `http.ResponseWriter` (`w`) and a `http.Request` (`r`).
 
 The `http.ResponseWriter` is how we will send information back to
 Github. The ResponseWriter conforms to the io.Writer interface meaning it
@@ -463,3 +474,55 @@ If we did successfully read the body lets print it out to see what Github is sen
 ```go
 fmt.Printf("%s\n", body)
 ```
+
+
+== Makefile
+
+Haven't heard of a Makefile? Don't worry, you've probably already used them and
+had no idea. Ever type `make install` while going through a tutorial? Well that's
+you running the "install" target with the Make utility.
+
+Makefiles are simple in their structure.
+
+* A target
+* The dependencies of that target
+* System command(s) to build that target
+
+[source]
+-----
+target: dependencies
+[tab] system command(s)
+-----
+
+For our project we're going to make two targets: run and test
+
+The `run` target will startup our web server. We will also make this the first
+target. This will make the `run` target the default, allowing us to just call
+`make` to startup our server
+
+The second target, `test`, will run our test suite.
+
+Both the `run` and the `test` targets do not output files. This makes them both
+phony targets. We need to make sure the Make utility know this. If we did not
+mark them as phony targets and had a file named "run", our make task would never
+be able to run.
+
+[source,Makefile]
+-----
+.PHONY: run test
+run:
+	go run cmd/gowebhooks-server/main.go
+test:
+	go test
+-----
+
+[NOTE]
+The space before each system command must be a **tab** charachtor. Make sure
+your editor isn't turning tabs into spaces.
+
+
+
+
+
+
+
