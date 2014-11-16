@@ -201,6 +201,16 @@ Issues::
     issue labels, or if you want to see which issues relate to a
     repository milestone the Issues section of the API is where you'll look.
 
+Misc::
+
+    The GitHub API is structured around the endpoints necessary for 
+    managing information stored inside a source code repository. There
+    are tools which don't fit into any of the existing hierarchies,
+    and GitHub placed those here. You might think of this as a
+    utilities category instead if that makes more sense. This section
+    provides access to tools which help you render markdown content,
+    generate emojis, and manage gitignore files.
+
 Orgs::
 
     Repositoryies and individuals associated with organizations can be
@@ -232,6 +242,14 @@ Search::
     GitHub has spent a good amont of effort over the past few years
     creating a very feature-rich search function and they've made this
     search apability available via the GitHub API.
+
+Enterprise::
+
+    For the most part, enterprise (behind the firewall) versions of
+    GitHub have the same API offerings as the main GitHub.com site.
+    However, a few extra pieces of functionality are provided inside
+    this section, like managing users (which is not something the
+    GitHub.com API provides under any circumstances).
 
 In summary, you would have to work to figure out something that GitHub
 isn't making available via the GitHub API.  They done this for a few
