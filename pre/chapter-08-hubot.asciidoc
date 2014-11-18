@@ -1,7 +1,82 @@
-== Hubot
+== Hubot, Activities in GitHub, and 3rd party integrations
+
+Though it has now been removed, GitHub used to call itself a tool for
+"social coding." Though they have since rebranded, they still provide
+access to the social layer inside of GitHub through the Activity API.
+This API includes notifications (comments issued to users through
+various events), stargazing tools (Facebook has "likes" while GitHub
+has "stars" to indicate approval or interest), watching (a way to 
+
 
 ===== Hubot
+
+If you visit hubot.github.com, you are told that "(Hubot) is a
+customizable, kegerator-powered life embetterment robot." What does
+that mean?
+
+Hubot is a framework for developing chat robots. For many people, chat
+is at best a way to waste time and at worst an annoyance or
+distraction. For GitHubbers, chat is central to getting work done.
+People collaborate at GitHub using chat but not in the way you might
+assume, interspercing discussions with dog and cat pictures.
+GitHubbers use chat as an exectuable and recorded layer of
+communication that reduces training costs and improves accountability.
+
+You've likely heard of DevOps, a term coined to recognize the
+convergence of tools and responsibilities held by modern software
+developers. More concretely, software developers no longer operate in
+isolated silos where they commit code and an operations team deploys
+this code. Modern software developers are expected to excel at not
+only coding but at deployment. 
+
+There are good historical reasons to keep a Chinese wall between
+developers and operations teams. Developers think of features and
+programming languages; operations people think of long term capacity
+planning and security. These are very different concerns and there was
+good reason to separate these problem donains. But, over time, cracks
+appeared in the wall. The primary issue was that it became too easy to
+explain away problems by filing bugs against the ops team if you were
+a developer, or vice-versa. 
+
+Entirely homegrow, developers and operations teams merged and devops
+was born.
+
+==== Deficiencies and Limitations
+
+Hubot requires a server to run. The simplest and cheapest way to run
+it is on Heroku. However, for various reasons, this may not be
+feasible given your security concerns. There are other ways to do
+this, but I found all of them difficult and error prone. 
+
+The documentation for Hubot is sketchy. Hubot definitely requires an
+understanding of hubot to use hubot.
+
+Be clear about versions.
+
+==== Starting a hubot locally
+
+If you specify your slack token, etc. you can run your bot locally. It
+will connect to Slack and you can enter commands into the tool.
+
+==== Creating a hubot
+
+[code,bash]
+-----
+$ mkdir slacker-hubot
+$ cd slacker-hubot/
+$ yo hubot
+$ npm install hubot-slack --save
+$ ./bin/hubot -a slack
+-----
+
+
+Don't name your hubot the same as any of the adapters. That won't
+work.
+
 ===== Installing on Heroku
+
+
+
 ===== Extending
 ===== Using with base camp
 ===== Running locally
