@@ -17,18 +17,6 @@ GitHub libraries. Along the way we will show how the GitHub libraries
 for Go support common Go idioms and dig deeper into the way these
 libraries work.
 
-[NOTE]
-One question: why setup a webhook? In other words, is there a fun
-reason we could create for the "why" and what to do when the webhook
-runs? What about running the Go test suite on the code itself? If it
-fails, "fly the Jolly Roger" (the pirate flag) and if it passes "fly
-the white flag." I liked your idea about using Jolly Roger and had fun
-reading the wiki page on it. http://en.wikipedia.org/wiki/Jolly_Roger.
-In other words, the webhook runs, triggering a run through of the
-tests. We get a pass or fail, and if a failure occurs, beware of the
-encroaching pirate ship (meaning your manager coming to yell at you
-for breaking the build...).
-
 === About Go
 
 Over the last couple years the Go programming language has been on a
@@ -70,8 +58,8 @@ grab the right one for your architecture and OS.
 
 === GOPATH
 
-There is one very important environment variable that we will discuss next:
-GOPATH
+There is one very important environment variable that we will discuss
+next: GOPATH
 
 The `GOPATH` environment variable is a comma delimited list of
 locations where go will look for packages. It is where the source for
@@ -113,51 +101,37 @@ directory:
 This would be a good time to add the line above your bash/zsh profile
 so when you start your next terminal session GOPATH is set for you.
 
-=== What we are going to build
-
-You can build almost anything with Go but today we're going to build
-ourselves a webserver that responds to Github Webhooks.
-
-Our goal will be to create a server that renders HTML from Markdown
-files hosted on Github. When a Markdown file is created or updated on
-Github our service will automatically render the markdown into HTML.
-
 === Introduction to Github webhooks
 
 Until now most of the interaction we've had with Github is pushing,
-viewing or requesting information from github.  Us telling github what
+viewing or requesting information from github. Us telling github what
 to do. Webhook are the opposite. Github will send our server
 information when events happen on Github's servers.
 
 https://developer.github.com/webhooks/
 
-Github webhooks provide the ability for your service to get data push
-from Github. When and event happens on Github your service will get
-notified. By setting up a webhook you're telling github: when
+Github webhooks provide the ability for your service to get data
+pushed from Github. When and event happens on Github your service will
+get notified. By setting up a webhook you're telling github: when
 something happens tell me. There are a couple ways to setup these
 hooks but we're going to ask Github to send us JSON describing the
 event. The JSON or "payload" Github will send us will contain
 information about what event happened, when and to which repository.
 
-To view all supported events visit: https://developer.github.com/webhooks/#events
+To view all supported events visit:
+https://developer.github.com/webhooks/#events
 
 === Our Project
 
-You can uses these webhooks to start builds, notifiy your team on
+You can use these webhooks to start builds, notifiy your team on
 commits or anything else your mind can come up with. For our project
-we will be rendering Markdown files into HTML when they're created or
-updated on Github. A CMS of sorts for Markdown data.
+we are going to make a server that will run `make test` on any new
+commit. Anytime we push a new commit to our repositoty Github will
+send our server the information about the new commit, our
+server will pull down the code an run the test to make sure we haven't
+broken anything.
 
-The basic idea is: you/someone updates a file on Github, github sends
-us JSON describing the event. Then we update or create the needed HTML
-files from the Markdown files on Github.
-
-This project isn't just a weekend hacking project. What we'll be
-creating is the base for a tool used in production to keep HTML
-documents up-to-date and easy to edit at Simple
-
-(https://www.simple.com/). <- might need to remove this if simple's
-project isn't finished at publish date
+Think of it as our own custom travis CI.
 
 To make our web server we'll need to be able to connect and interact
 with the Github api. For this we'll use `go-github` written by Google.
@@ -173,27 +147,28 @@ https://godoc.org/github.com/google/go-github
 
 GoDoc has he ability to generate documentation for Go packages hosted
 on Bitbucket, GitHub, Launchpad and Google Project Hosting. It's an
-amazing tool one, if you plan on taking up Go, you should get accustom
-to.
+amazing tool. One, if you plan on taking up Go, you should get
+accustom to.
 
-Take a minute to look over the `github` package documentation. You can
-see just about everything in Github's API is mapped out in this
-package. We will be using two sections of the package:
+We will only be using one of the sections in the package.
 
-  WebHookPayload: http://godoc.org/github.com/google/go-github/github#WebHookPayload
+WebHookPayload: http://godoc.org/github.com/google/go-github/github#WebHookPayload
 
-  Markdown fuction: http://godoc.org/github.com/google/go-github/github#Client.Markdown
+But take a minute to look over the `github` package documentation. You
+can see just about everything in Github's API is mapped out here.
 
-These two sections of the package will allow us to digest a webhook
-payload and render any markdown files that might have changed.
+## Go get
+
+** TODO `go get`
 
 ## Project structure
 
-Time to start writing some Go code. Let setup our workspace so we can get started.
+Time to start writing some Go code. Let setup our workspace so we can
+get started.
 
 The go tool is setup to work with open source software. When you
-import packages into you actually use the public locations of the
-code.
+import packages into you actually use the public location of the
+code in your code to import the package.
 
 For example when we import Google's go-github package we will write:
 
@@ -202,37 +177,46 @@ import "github.com/google/go-github"
 ```
 
 The location of the package locally mirrors the package's location on
-the public internet. Inside our src directory Google's go-github
+the public internet. Inside our `src` directory Google's go-github
 package will be located in:
 
-`src/github.com/google/go-github`
-
-As you can see go code's directory structure is intrinsically linked
-to the public location of the code. Our project should do the same.
-You don't actually have to create a repo on github but make a
-directory structure where your code would be if it was hosted on
-github. The name of our project will be 'gowebhooks' so for me that
-would be:
-
-`src/github.com/jpoz/gowebhooks`
-
-To create the directory I'll run:
 
 [source,bash]
 -----
-  $ mkdir -p $GOPATH/src/github.com/jpoz/gowebhooks
+src/github.com/google/go-github
+-----
+
+As you can see go code's directory structure is intrinsically linked
+to the public location of the code. Our project should do the same.
+On Github create a new project call "gowebhooks". The URL for your
+project should be 'http://github.com/{yourusername}/gowebhooks'.
+
+[source,bash]
+-----
+src/github.com/jpoz/gowebhooks
+-----
+
+To create the directory we will run:
+
+[source,bash]
+-----
+$ mkdir -p $GOPATH/src/github.com/{yourusername}/gowebhooks
 -----
 
 And move into our project directory:
 
 [source,bash]
 -----
-  $ cd $GOPATH/src/github.com/jpoz/gowebhooks
+$ cd $GOPATH/src/github.com/{yourusername}/gowebhooks
 -----
 
 Now lets talk about the structure of the files within our project
-directory. We going to build a web server executable and build a
-package the web server will import.
+directory. We going to build a web server. The webserver will be able
+to be run by an executable. The executable will be build with a package
+we will import.
+
+We will also have a 'public' directory to host static files such as the
+output of our server running the test for a project.
 
 Below is how we'll have our project structured:
 
@@ -241,17 +225,19 @@ Below is how we'll have our project structured:
 .
 ├── cmd
 │   └── gowebhooks-server
-│       └── main.go
-└── gowebhooks.go
+│       └── gowebhooks.go
+├── public
+└── server.go
 -----
 
 To create the structure above run the following commands:
 
 [source,bash]
 -----
-  $ touch gowebhooks.go
+  $ touch server.go
   $ mkdir -p cmd/gowebhooks-server
-  $ touch cmd/gowebhooks-server/main.go
+  $ mkdir -p public
+  $ touch cmd/gowebhooks-server/gowebhooks.go
 -----
 
 We could write our whole server in one file but then we would be
@@ -264,27 +250,32 @@ needed for this project but is a good practice.
 Our executable will be pretty simple. Just a file to load in our
 package and start it up.
 
-main.go
+cmd/gowebhooks-server/gowebhooks.go
 
 [source,go]
 -----
 package main
 
 import (
-  "github.com/jpoz/gowebhooks"
+	"fmt"
+
+	"github.com/{yourusername}/gowebhooks"
 )
 
 func main() {
-  gowebhooks.StartServer()
+	err := gowebhooks.StartServer()
+	fmt.Println(err)
 }
 -----
 
 [Warning]
-Remember to replace 'jpoz' with your username.
+Remember to replace '{yourusername}' with your username.
 
-Our `gowebhooks.go` file will have the meat of our project. To start lets make sure Go is installed properly and setup a simple webserver:
+Our `server.go` file will have the code actually needed to startup our
+server. To start lets make sure Go is installed properly and setup a
+very simple webserver.
 
-gowebhooks.go
+server.go
 
 [source,go]
 -----
@@ -295,100 +286,141 @@ import (
 	"net/http"
 )
 
-func helloHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello %s", r.URL.Path[1:])
-}
-
 func StartServer() {
-	http.HandleFunc("/", helloHandler)
+	staticFileServer := http.FileServer(http.Dir("./public"))
+	http.Handle("/", staticFileServer)
 
-	fmt.Println("Listening on 8080")
-	http.ListenAndServe(":8080", nil)
+	fmt.Println("Listening on 4567")
+	http.ListenAndServe(":4567", nil)
 }
+-----
+
+This server will host all the files in './public'. Lets add a hello
+file for testing purposes.
+
+[source,bash]
+-----
+$ echo "Hello from Go!" > public/hello
 -----
 
 Lets run our project to make sure we've got everything working. In our project
 directory lets run:
 
-  $ go run cmd/gowebhooks-server/main.go
+[source,bash]
+-----
+$ go run cmd/gowebhooks-server/gowebhooks.go
+-----
 
-Navigate your browser to http://localhost:8080/ and you should see a page greeting you.
+Navigate your browser to http://localhost:4567/hello and you should
+see a page greeting you.
 
 ## Receiving webhooks from Github
 
-First step in receiving webhooks is turning them on at github.com. Navigate to the project you'd like to receive webhooks from or create a new project to test out webhooks.
-
-I'm going to create a new project called "JollyRoger" (Captain *Hook's* Ship's Name).
+First step in receiving webhooks is turning them on at github.com.
+Navigate to your gowebhooks repository on Github.
 
 In the settings panel you'll find "Webhooks & Services". There you
 should find a "Add Webhook" button. Click it and lets get started.
 
 image::images/go-webhook.png[]
 
-To create our webhook we need to provide a "Payload URL". In this case we're going to want github to send webhooks to our local computer. Giving github "localhost" won't do us any good. Since we're not on the same network at github we need a public address for our local computer. To allow github to have connectivity to our local computer we'll need to tunnel a public address to our local computer.
+### Setting up a tunnel
 
-The Github documentation recommends "ngrok.com" for this task. Ngrok runs a small daemon on our local machine that tunnels traffic back and forth to a public address on their site. So any traffic that hit the given unique address will be proxied by ngrok.com to our local machine. Visa versa if we send anything to the daemon it will be proxied to
-ngrok.com and sent by their servers.
+To create our webhook we need to provide a "Payload URL". In this case
+we're going to want github to send webhooks to our local computer.
+Giving github "localhost" won't do us any good. Since we're not on the
+same network as github's servers. We need a public address for our
+local computer. To allow github to have connectivity to our local
+computer we'll need to tunnel a public address to our local computer.
 
-To get ngrok install follow the instructions at "https://ngrok.com/download". Or if you're a homebrew user: `brew install ngrok`
+The Github documentation recommends "ngrok.com" for this task. Ngrok
+runs a small daemon on our local machine that tunnels traffic back and
+forth to a public address on their site. So any traffic that hits the
+given unique address provided by ngrock will be proxied from ngrok.com
+to our local machine. Visa versa, if we send anything to the daemon it
+will be proxied to ngrok.com and sent by their servers.
 
-We want to proxy all traffic from port 80 (default http port) from ngrok to our server's port locally (8080).
+To get ngrok install follow the instructions at
+"https://ngrok.com/download". Or if you're a homebrew user:
 
-Quick warning before we start up ngrok. When we start up the ngrok daemon we will be opening up port 8080 of our local computer to the **entire** internet. Sound a little scary but ngork gives us a unique subdomain and we can always shutdown the daemon to close the connection.
+[source, bash]
+-----
+brew install ngrok
+-----
+
+We want to proxy all traffic from port 80 (default http port) from
+ngrok to our server's port locally, port 4567.
+
+[NOTE]
+Quick warning before we start up ngrok.
+When we start ngrok port 4567 on our local machine will be accessible
+to the **entire** internet. Sound a little scary but ngork gives us a
+unique subdomain and we can always shutdown the daemon to close the
+connection.
 
 To start tunneling traffic run:
 
-	$ ngrok 8080
+[source, bash]
+-----
+$ ngrok 4567
+-----
 
-You should see the tunnel starting up and tunnel status of "online". Below that should be your unique ngrok url. The url should look something like: http://1a2b3c4d.ngrok.com
+You should see the tunnel starting up and tunnel status of "online".
+Below that should be your unique ngrok url. The url should look
+something like: http://1a2b3c4d.ngrok.com/hello
 
-Leave ngrok running in a terminal window. In another terminal window navigate back to your project directory and restart your server:
+Leave ngrok running in a terminal window. In another terminal window
+navigate back to your project directory and restart your server:
 
-	$ go run cmd/gowebhooks-server/main.go
+[source, bash]
+-----
+$ go run cmd/gowebhooks-server/gowebhooks.go
+-----
 
-Now navigate your browser to your unique ngrok url. You should see the same page as when you connected to the sever locally.
+Now navigate your browser to your unique ngrok url. You should see the
+same page as when you connected to the sever locally.
 
-# TODO go over ngrok http/in interface (maybe not needed)
+### Setting the Payload URL
 
-We can now tell Github where to send our webhooks. Go back to your repository's "Add webhook" page and enter in your unique ngrok url followed by `/webhook`. For me that's: `http://1a2b3c4d.ngrok.com/webhook`.
+We can now tell Github where to send our webhooks. Go back to your
+repository's "Add webhook" page and enter in your unique ngrok url
+followed by `/webhook`. For me that's: `http://1a2b3c4d.ngrok.com/webhook`.
 
 Make sure the content type is `application/json` and set the secret to
 something you'll remember. Something like: "DangerZone". We'll just be
 working with push events. So you can leave "Just the push event"
 selected. Click "Add webhook" to save your settings.
 
-When a new webhook is created Github sends a ping test. To see if we received it we can check ngrok.
+image::images/go-webhook-payload-url.png[]
 
-Ngrok has a web interface running locally on port 4040. Navigate your browser to http://localhost:4040. You will see a list of request ngrok has tunneled to your local machine.
+## Setting up our webhooks endpoint
 
-If the ping test was successful you should see a POST to /webhook. Click on that request to inspect it.
-
-=== Setting up our webhooks endpoint
-
-We now have connectivity to Github and Github has the ability to POST to us. Now we need to decide what we want to do with the information Github gives us.
-
-We have our `helloHander` now lets build our `webhookHander`.
+We that Github has the ability to `POST` to us via the tunnel. Now we
+need to decide what we want to do with the information Github gives us.
 
 We will need to do a few things in our `webhookHandler`
 
 1. Check what type of Event we're getting from Github.
 2. Read the body of JSON in the request.
 3. Parse the JSON into something Go can use.
+4. Pass the parsed JSON on to something that can run the tests.
 
-Let's worry about #3 in a bit. First lets hookup a very basic handle to see what Github is sending us. Below is the entire gowebhooks.go file.
+Below is the entire `server.go`. Notice it has some lines commented out.
 
-```go
+Those lines will be explained later.
+
+[source, go]
+----
 package gowebhooks
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-)
 
-func helloHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello %s", r.URL.Path[1:])
-}
+	"github.com/google/go-github/github"
+)
 
 func webhookHandler(w http.ResponseWriter, r *http.Request) {
 	eventHeader := r.Header.Get("X-GitHub-Event")
@@ -405,76 +437,114 @@ func webhookHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		fmt.Printf("%s\n", body)
+		payload := github.WebHookPayload{}
+		json.Unmarshal(body, &payload)
+
+    // We will uncomment this once you've defined GithubProject
+		// githubProject := GithubProject{payload}
+
+    // We will uncomment these once you've defined ProjectTestRunner
+		// runner := ProjectTestRunner{githubProject}
+		// runner.RunAndWriteTo("./public")
+
+		fmt.Fprintf(w, "Recieved and Parsed %s", *payload.HeadCommit.ID)
 	default:
-		fmt.Printf("Don't know how to handle a %s event\n", eventHeader)
+		fmt.Fprintf(w, "Don't know how to handle a %s event\n", eventHeader)
 	}
-
 }
 
-func StartServer() {
+func StartServer() error {
+	publicFileServer := http.FileServer(http.Dir("./public"))
+	http.Handle("/", publicFileServer)
 	http.HandleFunc("/webhook", webhookHandler)
-	http.HandleFunc("/", helloHandler)
 
-	fmt.Println("Listening on 8080")
-	http.ListenAndServe(":8080", nil)
+	fmt.Println("Listening on 4567")
+	return http.ListenAndServe(":4567", nil)
 }
+----
 
-```
+### Key take aways for server.go
 
-Above the `webhookHandler` function is taking a `http.ResponseWriter` (`w`) and a `http.Request` (`r`).
+#### Handler arguments
 
-The `http.ResponseWriter` is how we will send information back to
-Github. The ResponseWriter conforms to the io.Writer interface meaning it
-has a `Write(byte)` function. We will use the Fprintf function in the
-'fmt' package (which takes a `io.Writer` as its first argument) to
-write back to Github.
+In Go you can pass functions as arguments. In the `StartServer` function
+we're passing the `webhookHandler` function as the second argument. We
+can do this because the function conforms to the method signature defined
+in `http.HandleFunc`.
+
+If `webhookHandler` did not take a `http.ResponseWriter` as the first
+argument and a `*http.Request` as the second argument we would get a
+compilation error.
+
+The `http.ResponseWriter` is used to respond and how `webhookHandler`
+sends information back to Github. The ResponseWriter conforms to the
+io.Writer interface. We'll go over interfaces a bit more later,
+but conforming to the io.Writer interface basically means
+`http.ResponseWriter` has a `Write(byte)` function.
+
+We will use the Fprintf function in the 'fmt' package (which takes a
+`io.Writer` as its first argument) to write back to Github.
 
 The `http.Request` holds all the information Github posted over to us.
 
-> For more information on the net/http package: http://golang.org/pkg/net/http/
+[NOTE]
+For more information on the net/http package: http://golang.org/pkg/net/http/
 
-The first thing we need to check it what type of Event Github has sent us. This information is held in the "X-GitHub-Event" header. To see what type of event we received we'll use the`Get` function on the Header:
+#### io/ioutil
 
-```go
+The `io/ioutil` package defines a bunch of helpful functions to deal
+with files and other io objects. In `server.go` the package is used
+to read the JSON body sent from Github so it can be parsed.
+
+#### JSON parsing
+
+JSON is built into the standard Go library via the `encoding/json`
+package. To decode JSON you first declare what type of data you're
+expecting. This is usually done by defining a struct with "tags" to
+define the JSON the struct will be populated by.
+
+The `github.com/google/github-go` package has already defined a struct
+that can be populated by a webhook payload.
+
+Look at the godoc for the WebHookPayload struct:
+
+[soruce,go]
+----
+type WebHookPayload struct {
+    After      *string         `json:"after,omitempty"`
+    Before     *string         `json:"before,omitempty"`
+    Commits    []WebHookCommit `json:"commits,omitempty"`
+    Compare    *string         `json:"compare,omitempty"`
+    Created    *bool           `json:"created,omitempty"`
+    Deleted    *bool           `json:"deleted,omitempty"`
+    Forced     *bool           `json:"forced,omitempty"`
+    HeadCommit *WebHookCommit  `json:"head_commit,omitempty"`
+    Pusher     *User           `json:"pusher,omitempty"`
+    Ref        *string         `json:"ref,omitempty"`
+    Repo       *Repository     `json:"repository,omitempty"`
+}
+----
+
+https://godoc.org/github.com/google/go-github/github#WebHookPayload
+
+Each field on the struct has a "struct tag" that maps the JSON key to
+the field in the Go struct. For example the `Repo` field in the Go struct
+will be populated with the `repository` key's value in the JSON. Each
+tag also has `omitempty` which will omit the field if the value is
+empty.
+
+#### Type of Payload
+
+You also need to check it what type of Event Github has sent us. This
+information is held in the "X-GitHub-Event" header in the `Request` object.
+
+The `http.Request` Header has a `Get` function to access header
+values.
+
+[source,go]
+-----
 eventHeader := r.Header.Get("X-GitHub-Event")
-```
-
-This will give us the value of the "X-Github-Event" header.
-
-Next we check what we want to do with the type of event Github sent us. To do this we setup a `switch` statement with two cases: `ping` and `push`. Then a default that lets us know we got an event but we don't know what to do with it.
-
-```go
-switch eventHeader {
-	case "ping":
-		fmt.Fprint(w, "pong")
-	case "push":
-		...
-	default:
-		fmt.Printf("Don't know how to handle a %s event\n", eventHeader)
-}
-```
-
-The `ping` case is pretty simple: We just write back `"pong"` with the Fprint function to our `ResponseWriter`. Which will send "pong" back to Github.
-
-The `push` case is where we want to see what Github has sent us. First we need to read in the body of the request. The body of a `http.Request` ?conforms? to the `io.ReadCloser` interface. Meaning that body of the request response both to the `Read(p []byte)` function and the `Close()` function. Luckily for us there's a package to helpout with io related tasks: `io/ioutil`. We will use the `ReadAll` function to turn our body from an io.ReadCloser to a slice of bytes:
-
-```go
-body, err := ioutil.ReadAll(r.Body)
-if err != nil {
-	fmt.Println(err)
-	return
-}
-```
-
-Notice we also check to see if we had an error reading the body. If we did we print it out and return. We can't do anything with an incomplete body.
-
-If we did successfully read the body lets print it out to see what Github is sending us. Using the `Printf` function from the `fmt` package we can format our slice of bytes into a string (%s) and append a new line (\n).
-
-```go
-fmt.Printf("%s\n", body)
-```
-
+-----
 
 == Makefile
 
