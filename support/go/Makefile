@@ -2,4 +2,4 @@
 run:
 	go run cmd/gowebhooks-server/gowebhooks.go
 test:
-	go test
+	echo 'Tests'

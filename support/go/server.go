@@ -1,4 +1,4 @@
-package gowebhooks
+package main
 
 import (
 	"bytes"
@@ -31,50 +31,55 @@ func webhookHandler(w http.ResponseWriter, r *http.Request) {
 	payload := github.WebHookPayload{}
 	json.Unmarshal(body, &payload)
 
-	output, err := RunMakeTest(payload)
+	buffer, err := RunMakeTest(payload)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	err = WriteOutput(payload, output)
+	err = WriteOutput(payload, buffer.Bytes())
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	log.Printf("Completed %s", eventType)
+	log.Printf("Completed. Available at http://localhost:4567/%s/%s",
+		*payload.Repo.Name, *payload.HeadCommit.ID)
 
 	fmt.Fprintf(w, "OK")
 }
 
-func RunMakeTest(payload github.WebHookPayload) ([]byte, error) {
+func RunMakeTest(payload github.WebHookPayload) (*bytes.Buffer, error) {
+	buffer := bytes.NewBuffer([]byte{})
 	tempDir, _ := ioutil.TempDir("/tmp", "gowebhooks")
 
 	giturl := *payload.Repo.GitURL
 	gitref := *payload.HeadCommit.ID
 
+	var commands [3]*exec.Cmd
+
 	cloneCmd := exec.Command("git", "clone", giturl, tempDir)
-	cloneOutput, err := cloneCmd.CombinedOutput()
-	if err != nil {
-		return cloneOutput, err
-	}
 
 	checkoutCmd := exec.Command("git", "checkout", "-b", gitref, gitref)
 	checkoutCmd.Dir = tempDir
-	checkoutOutput, err := checkoutCmd.CombinedOutput()
-	if err != nil {
-		return checkoutOutput, err
-	}
 
 	makeTestCmd := exec.Command("make", "test")
 	makeTestCmd.Dir = tempDir
-	makeTestOutput, err := makeTestCmd.CombinedOutput()
 
-	outputs := [][]byte{cloneOutput, checkoutOutput, makeTestOutput}
-	output := bytes.Join(outputs, []byte("\n"))
+	commands[0] = cloneCmd
+	commands[1] = checkoutCmd
+	commands[2] = makeTestCmd
 
-	return output, err
+	for _, cmd := range commands {
+		buffer.WriteString(fmt.Sprintf("\n%s\n", cmd.Args))
+		cmdOutput, err := cmd.CombinedOutput()
+		buffer.Write(cmdOutput)
+		if err != nil {
+			return buffer, err
+		}
+	}
+
+	return buffer, nil
 }
 
 func WriteOutput(payload github.WebHookPayload, output []byte) (err error) {
@@ -96,7 +101,7 @@ func WriteOutput(payload github.WebHookPayload, output []byte) (err error) {
 	return
 }
 
-func StartServer() error {
+func main() error {
 	publicFileServer := http.FileServer(http.Dir("./public"))
 	http.Handle("/", publicFileServer)
 	http.HandleFunc("/webhook", webhookHandler)
