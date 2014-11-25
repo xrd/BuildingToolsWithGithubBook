@@ -101,11 +101,12 @@ func WriteOutput(payload github.WebHookPayload, output []byte) (err error) {
 	return
 }
 
-func main() error {
+func main() {
 	publicFileServer := http.FileServer(http.Dir("./public"))
 	http.Handle("/", publicFileServer)
 	http.HandleFunc("/webhook", webhookHandler)
 
 	fmt.Println("Listening on 4567")
-	return http.ListenAndServe(":4567", nil)
+	err := http.ListenAndServe(":4567", nil)
+	fmt.Println(err)
 }
