@@ -234,10 +234,10 @@ To create the structure above run the following commands:
 
 [source,bash]
 -----
-  $ touch server.go
-  $ mkdir -p cmd/gowebhooks-server
-  $ mkdir -p public
-  $ touch cmd/gowebhooks-server/gowebhooks.go
+$ touch server.go
+$ mkdir -p cmd/gowebhooks-server
+$ mkdir -p public
+$ touch cmd/gowebhooks-server/gowebhooks.go
 -----
 
 We could write our whole server in one file but then we would be
@@ -286,12 +286,12 @@ import (
 	"net/http"
 )
 
-func StartServer() {
-	staticFileServer := http.FileServer(http.Dir("./public"))
-	http.Handle("/", staticFileServer)
+func StartServer() error {
+	publicFileServer := http.FileServer(http.Dir("./public"))
+	http.Handle("/", publicFileServer)
 
 	fmt.Println("Listening on 4567")
-	http.ListenAndServe(":4567", nil)
+	return http.ListenAndServe(":4567", nil)
 }
 -----
 
@@ -300,7 +300,7 @@ file for testing purposes.
 
 [source,bash]
 -----
-$ echo "Hello from Go!" > public/hello
+$ echo 'Hello from Go!' > public/hello
 -----
 
 Lets run our project to make sure we've got everything working. In our project
@@ -423,34 +423,25 @@ import (
 )
 
 func webhookHandler(w http.ResponseWriter, r *http.Request) {
-	eventHeader := r.Header.Get("X-GitHub-Event")
+	eventType := r.Header.Get("X-GitHub-Event")
+	fmt.Printf("Received: %s event", eventType)
 
-	fmt.Printf("Received: %s\n", eventHeader)
-
-	switch eventHeader {
-	case "ping":
-		fmt.Fprint(w, "pong")
-	case "push":
-		body, err := ioutil.ReadAll(r.Body)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-
-		payload := github.WebHookPayload{}
-		json.Unmarshal(body, &payload)
-
-    // We will uncomment this once you've defined GithubProject
-		// githubProject := GithubProject{payload}
-
-    // We will uncomment these once you've defined ProjectTestRunner
-		// runner := ProjectTestRunner{githubProject}
-		// runner.RunAndWriteTo("./public")
-
-		fmt.Fprintf(w, "Recieved and Parsed %s", *payload.HeadCommit.ID)
-	default:
-		fmt.Fprintf(w, "Don't know how to handle a %s event\n", eventHeader)
+	if eventType != "push" {
+		return
 	}
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	payload := github.WebHookPayload{}
+	json.Unmarshal(body, &payload)
+
+  // TODO
+
+	fmt.Fprintf(w, "OK")
 }
 
 func StartServer() error {
@@ -546,6 +537,61 @@ values.
 eventHeader := r.Header.Get("X-GitHub-Event")
 -----
 
+## Defining GithubProject struct
+
+
+
+[source, go]
+----
+package gowebhooks
+
+import (
+	"io/ioutil"
+	"log"
+	"os/exec"
+
+	"github.com/google/go-github/github"
+)
+
+type GithubProject struct {
+	payload github.WebHookPayload
+}
+
+func (gh GithubProject) Download() (tempDir string, err error) {
+	tempDir, _ = ioutil.TempDir("/tmp", "gowebhooks")
+	log.Printf("Downloading to %s", tempDir)
+
+	giturl := *gh.payload.Repo.GitURL
+	gitref := *gh.payload.HeadCommit.ID
+
+	cloneCmd := exec.Command("git", "clone", giturl, tempDir)
+	output, _, err := RunAndCaptureCmd(cloneCmd)
+
+	// Print output of git clone
+	log.Printf("%s\n", output)
+
+  // If the command errored return err and exit from Download function
+	if err != nil {
+		return tempDir, err
+	}
+
+	checkoutCmd := exec.Command("git", "checkout", "-b", gitref, gitref)
+	checkoutCmd.Dir = tempDir
+	output, _, err = RunAndCaptureCmd(checkoutCmd)
+
+	log.Printf("%s\n", output)
+	return tempDir, err
+}
+
+func (gh GithubProject) Details() RemoteProjectDetails {
+	return RemoteProjectDetails{
+		*gh.payload.Repo.Name,
+		*gh.payload.HeadCommit.ID,
+		*gh.payload.HeadCommit.Message,
+	}
+}
+----
+
 == Makefile
 
 Haven't heard of a Makefile? Don't worry, you've probably already used them and
@@ -587,12 +633,12 @@ test:
 -----
 
 [NOTE]
-The space before each system command must be a **tab** charachtor. Make sure
+The space before each system command must be a **tab** characters. Make sure
 your editor isn't turning tabs into spaces.
 
-
-
-
-
+# THOUGHTS
+* More comments in code?
+* Level of Go knowledge?
+* Less files? Larger files?
 
 

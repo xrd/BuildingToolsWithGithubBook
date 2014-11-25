@@ -1,0 +1,8 @@
+Cloning into '/tmp/gowebhooks212435914'...
+Checking connectivity... done
+
+Switched to a new branch 'c463b16f96553582a8da2d0c952e12f33f6f92b2'
+
+go test
+PASS
+ok  	_/private/tmp/gowebhooks212435914	0.054s
