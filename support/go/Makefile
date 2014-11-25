@@ -1,5 +1,5 @@
 .PHONY: run test
 run:
-	go run cmd/gowebhooks-server/gowebhooks.go
+	go run gowebhooks.go
 test:
 	echo 'Tests'
