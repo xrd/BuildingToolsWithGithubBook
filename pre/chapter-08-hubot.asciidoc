@@ -2,6 +2,9 @@
 
 ===== Hubot
 ===== Installing on Heroku
+
+Let's consider installing using Slack.
+
 ===== Extending
 ===== Using with base camp
 ===== Running locally
