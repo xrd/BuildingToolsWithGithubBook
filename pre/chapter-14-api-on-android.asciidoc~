@@ -156,43 +156,10 @@ lightweight that it is now the preferred build system by the Android team.
 
 [source,groovy]
 -----
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.6.+'
-    }
-}
-
-repositories {
-    mavenCentral()
-}
-
-apply plugin: 'android'
-
-android {
-    compileSdkVersion 19
-    buildToolsVersion "19.0.1"
-
-    sourceSets { // <1>
-      main {
-        manifest.srcFile 'AndroidManifest.xml'
-        java.srcDirs = ['src']
-        resources.srcDirs = ['src']
-        res.srcDirs = ['res']
-        assets.srcDirs = ['assets']
-      }
-    }
-
-}
-
-dependencies {
-  compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5' // <2>
-}
-
-
-
+[filename=".", language="groovy", sha="b8e957f:support/android/ghru/build.gradle"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 Gradle build files use some standard boilerplate which you can ignore
@@ -231,22 +198,10 @@ Android application.
 
 [source,java]
 -----
-package com.githubru;
-
-import android.app.Activity;
-import android.os.Bundle;
-
-public class MainActivity extends Activity
-{
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-    }
-}
-
+[filename=".", language="js", sha="51338:support/xxx/MainActivity.java"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 When the application is launched, the
@@ -258,20 +213,10 @@ file which resides in our layouts directory called `main.xml`.
 
 [source,java]
 -----
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<TextView
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:text="Hello World, MainActivity"
-    />
-</LinearLayout>
-
-
+[filename=".", language="js", sha="d8f7a56e5fa3:support/android/wia/res/layout/main.xml"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 You may have complicated feelings about XML files (I know I do), but
@@ -293,24 +238,10 @@ file to have the internet permission (look for the line labled
 
 [source,yaml]
 -----
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.whereimat"
-      android:versionCode="1"
-      android:versionName="1.0">
-    <application android:label="@string/app_name"
-                 android:icon="@drawable/ic_launcher">
-      <uses-permission android:name="android.permission.INTERNET" />
-        <activity android:name=".MainActivity"
-                  android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
-</manifest>
-
+[filename=".", language="js", sha="b8e957f:support/android/ghru/AndroidManifest.xml"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 ==== Writing tests
@@ -360,11 +291,10 @@ The `Gemfile` you just created should now look like this:
 
 [source,java]
 -----
-source 'https://rubygems.org'
-
-gem 'calabash-android', '0.4.20'
-gem "httparty"
-
+[filename=".", language="js", sha="ddb491b:support/android/ghru/Gemfile"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 We've also now installed calabash and created the folder structure to hold
@@ -375,19 +305,10 @@ boilerplate which we should change, so make the file named
 
 [source,yaml]
 -----
-Feature: Login and post
-
-  Scenario: As a valid user I can log into my app and post to my blog
-    When I enter the username
-    And I enter the password
-    And I press button number 1
-    Then I wait up to 10 seconds to see "Logged into GitHub"
-    Then I choose my blog
-    And I enter my current mood status
-    And I press button number 1
-    Then I wait up to 10 seconds to see "Successful jekyll post"
-    And I have a new jekyll post with my mood status
-
+[filename=".", language="js", sha="74d6fcd:support/android/ghru/features/my_first.feature"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 You may not know how this works or what it does behind the scenes, but
@@ -483,47 +404,10 @@ to make sure it matches the mood we saved earlier.
 
 [source,ruby]
 -----
-require 'calabash-android/calabash_steps'
-require 'httparty'
-
-def set_title_and_mood
-  moods = %w{ happy sad angry blue energized }
-  @mood = "Feeling #{moods[(rand()*moods.length).to_i]} today"
-  @title = @mood.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
-  date = (ENV['date'] ? Time.parse(ENV['date']) : Time.now).strftime('%Y-%m-%d')
-  @filename = "_posts/#{date}-#{@title}.md"
-end
-
-def check_and_set( id, text )
-  check_element_exists "edittext id:'#{id}'"
-  query "edittext id:'#{id}'", :setText => text
-end
-
-When(/^I enter the username$/) do
-  check_and_set( "username", ENV['GH_USERNAME'] )
-end
-
-When(/^I enter the password$/) do
-  check_and_set( "password", ENV['GH_PASSWORD'] )
-end
-
-Then(/^I choose my blog$/) do
-  check_and_set( "repository", ENV['GH_REPO'] )
-end
-
-Then(/^I enter my current mood status$/) do
-  set_title_and_mood()
-  check_and_set( "post", @mood )
-end
-
-And(/^I have a new jekyll post with my mood status$/) do
-  url = "https://raw.githubusercontent.com/#{ENV['GH_USERNAME']}/#{ENV['GH_REPO']}/#{ENV['GH_BRANCH']||'master'}/#{@filename}"
-  puts "Checking #{url} for content..."
-  response = HTTParty.get( url )
-  assert( response.body.include?( @mood ), "Post unsuccessful" )
-end
-
-
+[filename=".", language="js", sha="ad67b08:support/android/ghru/features/step_definitions/calabash_steps.rb"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 Then we run from the command line using this command `GH_USER=foobar
@@ -542,52 +426,10 @@ layout files and editing gives us this file:
 
 [source,xml]
 -----
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<TextView
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:text="GitHub Username:"
-    />
-<EditText
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/username"
-    />
-
-<TextView
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:text="GitHub Password:"
-    />
-
-<EditText
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/password"
-    />
-
-<Button
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:text="Login"
-    android:id="@+id/login"
-    />
-
-<TextView
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:text="GitHub Password:"
-    android:id="@+id/login_status"
-    />
-
-</LinearLayout>
-
-
+[filename=".", language="js", sha="06b58b5:support/android/ghru/res/layout/main.xml"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 We also need a layout once we have logged in. Create a file called
@@ -600,53 +442,10 @@ provide context while saving the post.
 
 [source,xml]
 -----
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-  <TextView
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:text="Logged into GitHub"
-      android:layout_weight="0"
-      />
-
-  <EditText
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:hint="Enter the blog repository"
-      android:id="@+id/repository"
-      android:layout_weight="0"
-      />
-  
-  <EditText
-      android:gravity="top"
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
-      android:hint="Enter your blog post"
-      android:id="@+id/post"
-      android:layout_weight="1"
-      />
-  
-  <Button
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:layout_weight="0"
-      android:id="@+id/submit"
-      android:text="Send blog post"/>
-    
-  <TextView
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:id="@+id/post_status"
-      android:layout_weight="0"
-      android:text=""/>
-  
-</LinearLayout>
-
-
+[filename=".", language="js", sha="fea1ce8:support/android/ghru/res/layout/logged_in.xml"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 Our `MainActivity` now can implement the functionality to use these
@@ -654,7 +453,10 @@ two layouts.
 
 [source,java]
 -----
-
+[filename=".", language="js", sha="a545cb4:support/android/ghru/src/com/githubru/MainActivity.java"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 This code mocks out the functionality we will be building and shows us
@@ -711,72 +513,10 @@ background thread code (called `doInBackground()` coincidentally).
 [source,java]
 -----
 ...
-public class MainActivity extends Activity
-{
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main); 
-
-        Button login = (Button)findViewById( R.id.login ); 
-        login.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    EditText utv = (EditText)findViewById( R.id.username ); // <1>
-                    EditText ptv = (EditText)findViewById( R.id.password );
-                    String username = (String)utv.getText().toString();
-                    String password = (String)ptv.getText().toString();
-                    TextView status = (TextView)findViewById( R.id.login_status ); // <2>
-                    status.setText( "Logging in, please wait..." );
-                    new LoginTask().execute( username, password ); // <3>
-                }
-            });
-    }
-
-    private void loggedIn() {
-
-        setContentView(R.layout.logged_in); 
-
-        Button submit = (Button)findViewById( R.id.submit );
-        submit.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    doPost(); 
-                }
-            });
-    }
-
-    class LoginTask extends AsyncTask<String, Void, Boolean> {  // <4>
-        @Override
-            protected Boolean doInBackground(String... credentials) {
-            boolean rv = false;
-            UserService us = new UserService();
-            us.getClient().setCredentials( credentials[0], credentials[1] ); // <5>
-            try {
-                User user = us.getUser( credentials[0] ); // <6>
-                rv = null != user;
-            }
-            catch( IOException ioe ) {}
-            return rv;
-        }
-        
-        @Override
-            protected void onPostExecute(Boolean result) {
-            if( result ) {
-                loggedIn(); // <7>
-            }
-            else {
-                TextView status = (TextView)findViewById( R.id.login_status );
-                status.setText( "Invalid login, please check credentials" ); // <8>
-            }
-        }
-    }
-
-    private void doPost() {
-        TextView tv = (TextView)findViewById( R.id.post_status ); 
-        tv.setText( "Successful jekyll post" );
-    }
-    
+[filename=".", language="js", sha="8c7e96c:support/android/ghru/src/com/githubru/MainActivity.java" lines="15..-1"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 ...
 -----
 
@@ -825,11 +565,10 @@ statements to the top of the file, under the other imports.
 [source,java]
 -----
 ...
-import android.view.View;
-import android.os.AsyncTask;
-import org.eclipse.egit.github.core.service.UserService;
-import org.eclipse.egit.github.core.User;
-import java.io.IOException;
+[filename=".", language="js", sha="467c40dc8d:support/android/ghru/src/com/githubru/MainActivity.java" lines="9..13"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 ...
 -----
 
@@ -869,11 +608,10 @@ to our project, we need to add to our dependencies inside our `build.gradle` fil
 [source,java]
 -----
 ...
-
-dependencies {
-  compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5' 
-   compile( 'commons-codec:commons-codec:1.9' )
-}
+[filename=".", language="js", sha="5f1181c:support/android/ghru/build.gradle" lines="31..35"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 ...
 -----
 
@@ -882,124 +620,10 @@ around the complicated GitHub API for us.
 
 [source,java]
 -----
-package com.githubru;
-
-import org.eclipse.egit.github.core.*;
-import org.eclipse.egit.github.core.service.CommitService;
-import org.eclipse.egit.github.core.service.DataService;
-import org.eclipse.egit.github.core.service.GistService;
-import org.eclipse.egit.github.core.service.RepositoryService;
-import org.apache.commons.codec.binary.Base64;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.io.IOException;
-import java.util.*;
-
-class GitHubHelpers {
-
-    private static String getFilename( String post ) { // <1>
-        String title = post.substring( 0, post.length() > 30 ? 30 : post.length() );
-        String jekyllfied = title.toLowerCase().replaceAll( "\W+", "-").replaceAll( "\W+$", "" );
-        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" );
-        String prefix = sdf.format( new Date() );
-        String filename = "_posts/" + prefix + jekyllfied + ".md";
-        return filename;
-    }
-    
-    public static boolean SaveFile( String login, String password, String repoName,
-                                    String post ) {
-        
-        boolean rv = false;
-        String commitMessage = "GitHubRu Update";
-        String postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post; // <2>
-        String contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) );  // <3>
-        String filename = getFilename( post );
-
-        try {
-            // Thank you: https://gist.github.com/Detelca/2337731 // <4>
-
-            // create needed services
-            RepositoryService repositoryService = new RepositoryService();
-            repositoryService.getClient().setCredentials( login, password );
-            CommitService commitService = new CommitService();
-            commitService.getClient().setCredentials( login, password );
-            DataService dataService = new DataService();
-            dataService.getClient().setCredentials( login, password );
-
-            // get some sha's from current state in git
-            Repository repository =  repositoryService.getRepository(login, repoName);
-            List<RepositoryBranch> branches = repositoryService.getBranches(repository);
-            RepositoryBranch theBranch = null;
-            RepositoryBranch master = null;
-            // Iterate over the branches and find gh-pages or master
-            for( RepositoryBranch i : branches ) {
-                String theName = i.getName().toString();
-                if( theName.equalsIgnoreCase("gh-pages") ) {
-                    theBranch = i;
-                }
-                else if( theName.equalsIgnoreCase("master") ) {
-                    master = i;
-                }
-            }
-            if( null == theBranch ) {
-                theBranch = master;
-            }
-
-            String baseCommitSha = theBranch.getCommit().getSha();
-            // create new blob with data
-
-            Random random = new Random();
-            Blob blob = new Blob();
-            blob.setContent(contentsBase64);
-            blob.setEncoding(Blob.ENCODING_BASE64);
-            String blob_sha = dataService.createBlob(repository, blob);
-            Tree baseTree = dataService.getTree(repository, baseCommitSha);
-
-            // create new tree entry
-            TreeEntry treeEntry = new TreeEntry();
-            treeEntry.setPath(filename);
-            treeEntry.setMode(TreeEntry.MODE_BLOB);
-            treeEntry.setType(TreeEntry.TYPE_BLOB);
-
-            treeEntry.setSha(blob_sha);
-            treeEntry.setSize(blob.getContent().length());
-            Collection<TreeEntry> entries = new ArrayList<TreeEntry>();
-            entries.add(treeEntry);
-            Tree newTree = dataService.createTree(repository, entries, baseTree.getSha());
-
-            // create commit
-            Commit commit = new Commit();
-            commit.setMessage( commitMessage );
-            commit.setTree(newTree);
-            List<Commit> listOfCommits = new ArrayList<Commit>();
-            listOfCommits.add(new Commit().setSha(baseCommitSha));
-            // listOfCommits.containsAll(base_commit.getParents());
-            commit.setParents(listOfCommits);
-            // commit.setSha(base_commit.getSha());
-            Commit newCommit = dataService.createCommit(repository, commit);
-
-            // create resource
-            TypedResource commitResource = new TypedResource();
-            commitResource.setSha(newCommit.getSha());
-            commitResource.setType(TypedResource.TYPE_COMMIT);
-            commitResource.setUrl(newCommit.getUrl());
-
-            // get master reference and update it
-            Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
-            reference.setObject(commitResource);
-            Reference response = dataService.editReference(repository, reference, true) ;
-
-            rv = true;
-        }
-        catch( IOException ieo ) {
-            rv = false;
-            ieo.printStackTrace();
-        }
-
-        return rv;
-    }
-}
-
+[filename=".", language="js", sha="7ba835f:support/android/ghru/src/com/githubru/GitHubHelpers.java"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 This class hides the details of the GitHub API, and the specifics of
@@ -1025,44 +649,10 @@ Finally, we can now implement the `doPost()` method inside our
 [source,java]
 -----
 ...
-        }
-    }
-
-    private void doPost() {
-        new PostTask().execute( username, password ); 
-    }
-
-    class PostTask extends AsyncTask<String, Void, Boolean> {  
-
-        @Override 
-            protected Boolean doInBackground(String... credentials) {
-            String username = credentials[0]; 
-            String password = credentials[1];
-
-            EditText post = (EditText)findViewById( R.id.post );
-            String postContents = post.getText().toString();
-
-            EditText repo = (EditText)findViewById( R.id.repository ); 
-            String repoName = repo.getText().toString();
-
-            return GitHubHelpers.SaveFile( username, password, 
-                                           repoName, postContents );
-        }
-        
-        @Override
-            protected void onPostExecute(Boolean result) {
-            TextView status = (TextView)findViewById( R.id.post_status );
-            if( result ) {
-                status.setText( "Successful jekyll post" );
-            }
-            else {
-                status.setText( "Post failed." ); 
-            }
-        }
-    }
-
-
-    
+[filename=".", language="js", sha="7bdfedc:support/android/ghru/src/com/githubru/MainActivity.java" lines="75..-1"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 -----
 
 Our `doPost()` command now does one thing: instantiates a new

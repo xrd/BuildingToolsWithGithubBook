@@ -249,66 +249,8 @@ your chat bot, and then pull locally and push into Heroku.
 === NOTES 
 
 Notifications
-	* Watched repositories
-	  ** Issues and comments
-	  ** PRs and comments
-	  ** Comments on any commits
-	* Even if not watching, notifications come for:
-	  ** @mentions
-	  ** issue assignments
-	  ** commits user authors or commits
-	  ** any discussion participation
-	* use notification or repo scope
-	* x-poll-header: use this to know when to retry. Obey this.
-	  ** Do clients support this	     	      	 
-	* Look for "reason" payload. Indicates why the notification was sent
-	* API
-	  ** list GET
-	  ** list for repo GET
-	  ** mark as read PUT
-	  ** mark as read for all in repo PUT
-	  ** view thread GET
-	  ** mark thread as read PATCH
-	  ** set thread subscription   
-	     ** booleans: subscribed or ignored
-	  ** delete thread subscription DELETE
-
 Starring
-	* List stargazers (ro)
-	* list repositories being starred (ro)
-	* check if you are starring repo (ro)
-	  ** If yes, 204, else 404. No body!
-	* star repo (write)
-	  ** Put request, content-length should be zero.
-	* unstar repo (write)
-	  ** Delete request
 Watching
-	Clarify what the difference is between watching and notifications. 
-	  ** Show difference in data and how you get there.
-	  ** Subscribe to a repo and then interact with a repo @mention.
-	Is this simply legacy support and redundant?
-	/repos/:owner/:repo/subscribers (list watchers)
-	/users/:username/subscriptions (list repos being watched)
-	/user/subscriptions (my watch list)
-	/repos/:owner/:repo/subscription (get repo subscription)
-	  ** if yes, JSON
-	  ** if no, 404
-	PUT /repos/:owner/:repo/subscription
-	  ** modify subscription
-	DELETE /repos/:owner/:repo/subscription
-	  ** delete subscription
-
 Events
-	Optimized for etag, which improves polling. No impact on rate limits if 
-	All events have similar structure
-	    ** type: Event
-	    ** public: true/false
-	    ** payload hash
-	      ** repo
-	      ** actor
-	      ** org
-	    ** dates
-
-
 Feeds
 	
