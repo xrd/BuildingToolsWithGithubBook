@@ -92,8 +92,9 @@ public class MainActivity extends Activity
             EditText repo = (EditText)findViewById( R.id.repository ); 
             String repoName = repo.getText().toString();
 
-            return GitHubHelpers.SaveFile( username, password, 
-                                           repoName, postContents );
+            GitHubHelper ghh = new GitHubHelper();
+            ghh.SaveFile( username, password, 
+                          repoName, postContents );
         }
         
         @Override

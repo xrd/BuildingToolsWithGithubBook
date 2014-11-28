@@ -11,9 +11,12 @@ import java.util.Date;
 import java.io.IOException;
 import java.util.*;
 
-class GitHubHelpers {
+class GitHubHelper {
 
-    private static String getFilename( String post ) { // <1>
+    GitHubHelper() {
+    }
+
+    private String getFilename( String post ) { // <1>
         String title = post.substring( 0, post.length() > 30 ? 30 : post.length() );
         String jekyllfied = title.toLowerCase().replaceAll( "\\W+", "-").replaceAll( "\\W+$", "" );
         SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" );
@@ -22,8 +25,7 @@ class GitHubHelpers {
         return filename;
     }
 
-
-    public static RepositoryBranch getBranch( RepositoryService repositoryService ) {
+    public RepositoryBranch getBranch( RepositoryService repositoryService ) {
 	List<RepositoryBranch> branches = repositoryService.getBranches(repository);
 	RepositoryBranch master = null;
 	// Iterate over the branches and find gh-pages or master
@@ -43,7 +45,7 @@ class GitHubHelpers {
     }
 
 
-    private static String createBlob( String contentsBase64 ) {
+    private String createBlob( String contentsBase64 ) {
 	Random random = new Random();
 	Blob blob = new Blob();
 	blob.setContent(contentsBase64);
@@ -51,8 +53,7 @@ class GitHubHelpers {
 	return dataService.createBlob(repository, blob);
     }
     
-    private static TreeEntry generateTree( String filename, String blobSha, Blob blob, 
-					   DataService dataService, Repository repository, TreeEntry baseTree ) {
+    private TreeEntry generateTree() {
 	TreeEntry treeEntry = new TreeEntry();
 	treeEntry.setPath(filename);
 	treeEntry.setMode(TreeEntry.MODE_BLOB);
@@ -65,57 +66,90 @@ class GitHubHelpers {
 	return newTree;
     }
 
+
+    RepositoryService repositoryService;
+    CommitService commitService;
+    DataService dataService;
+    private boolean createServices() {
+        repositoryService = new RepositoryService();
+        repositoryService.getClient().setCredentials( login, password );
+        commitService = new CommitService();
+        commitService.getClient().setCredentials( login, password );
+        dataService = new DataService();
+        dataService.getClient().setCredentials( login, password );
+    }
+
+    Repository repository;
+    RepositoryBranch theBranch;
+    String baseCommitSha;
+    private String retrieveBaseSha() {
+        // get some sha's from current state in git
+        repository =  repositoryService.getRepository(login, repoName);
+        theBranch = getBranch(); 
+        return theBranch.getCommit().getSha();
+    }
+
+    private String createBlobFromSha() {
+        // create new blob with data
+        Tree baseTree = dataService.getTree(repository, baseCommitSha);
+        return blobSha = createBlob();
+    }
+
+    Commit newCommit;
+    private void createCommit() {
+        // create commit
+        Commit commit = new Commit();
+        commit.setMessage( commitMessage );
+        commit.setTree( newTree );
+        List<Commit> listOfCommits = new ArrayList<Commit>();
+        listOfCommits.add(new Commit().setSha(baseCommitSha));
+        commit.setParents(listOfCommits);
+        newCommit = dataService.createCommit(repository, commit);
+    }
+
+    TypedResource commitResource;
+    private void createResource() {
+        commitResource = new TypedResource();            
+        commitResource.setSha(newCommit.getSha());
+        commitResource.setType(TypedResource.TYPE_COMMIT);
+        commitResource.setUrl(newCommit.getUrl());
+    }
+
+    private void updateMasterResource() {
+        // get master reference and update it
+        Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
+        reference.setObject(commitResource);
+        Reference response = dataService.editReference(repository, reference, true) ;
+    }
+
+    String blobSha;
+    TreeEntry newTree;
+    String commitMessage;
+    String postContentsWithYfm;
+    String contentsBase64;
+    String filename;
+
+    private void generateContent() {
+        commitMessage = "GitHubRu Update";
+        postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post; // <2>
+        contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) );  // <3>
+        filename = getFilename( post );
+    }
+
     public static boolean SaveFile( String login, String password, String repoName,
                                     String post ) {
         
         boolean rv = false;
-        String commitMessage = "GitHubRu Update";
-        String postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post; // <2>
-        String contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) );  // <3>
-        String filename = getFilename( post );
 
         try {
-            // Thank you: https://gist.github.com/Detelca/2337731 // <4>
-
-            // create needed services
-            RepositoryService repositoryService = new RepositoryService();
-            repositoryService.getClient().setCredentials( login, password );
-            CommitService commitService = new CommitService();
-            commitService.getClient().setCredentials( login, password );
-            DataService dataService = new DataService();
-            dataService.getClient().setCredentials( login, password );
-
-            // get some sha's from current state in git
-            Repository repository =  repositoryService.getRepository(login, repoName);
-            RepositoryBranch theBranch = getBranch(); 
-            String baseCommitSha = theBranch.getCommit().getSha();
-
-            // create new blob with data
-            Tree baseTree = dataService.getTree(repository, baseCommitSha);
-	    String blobSha = createBlob();
-
-	    TreeEntry newTree = generateTree( filename, blobSha, blob, dataService, repository, baseTree );
-
-            // create commit
-            Commit commit = new Commit();
-            commit.setMessage( commitMessage );
-            commit.setTree( newTree );
-            List<Commit> listOfCommits = new ArrayList<Commit>();
-            listOfCommits.add(new Commit().setSha(baseCommitSha));
-            commit.setParents(listOfCommits);
-            Commit newCommit = dataService.createCommit(repository, commit);
-
-            // create resource
-            TypedResource commitResource = new TypedResource();
-            commitResource.setSha(newCommit.getSha());
-            commitResource.setType(TypedResource.TYPE_COMMIT);
-            commitResource.setUrl(newCommit.getUrl());
-
-            // get master reference and update it
-            Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
-            reference.setObject(commitResource);
-            Reference response = dataService.editReference(repository, reference, true) ;
-
+            generateContent();
+            createServices();
+            retrieveBaseSha();
+            createBlobFromSha();
+	    generateTree();
+            createCommit();
+            createResource();
+            updateMasterResource();
             rv = true;
         }
         catch( IOException ieo ) {
