@@ -616,11 +616,11 @@ snippet~~~~~
 -----
 
 Our new helper class is verbose but at least provides a simple wrapper
-around the complicated GitHub API for us.
+around the complicated GitHub API for us. 
 
 [source,java]
 -----
-[filename=".", language="js", sha="7ba835f:support/android/ghru/src/com/githubru/GitHubHelpers.java"]
+[filename=".", language="js", sha="633cbefb4abf947ac8cc88d3b7d3b48978617ebb:support/android/ghru/src/com/githubru/GitHubHelper.java"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -649,7 +649,7 @@ Finally, we can now implement the `doPost()` method inside our
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="7bdfedc:support/android/ghru/src/com/githubru/MainActivity.java" lines="75..-1"]
+[filename=".", language="js", sha="633cbefb4abf947ac8cc88d3b7d3b48978617ebb:support/android/ghru/src/com/githubru/MainActivity.java" lines="75..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

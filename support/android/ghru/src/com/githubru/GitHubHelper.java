@@ -15,7 +15,54 @@ class GitHubHelper {
 
     String login;
     String password;
+
     GitHubHelper() {
+    }
+
+    GitHubHelper( String _login, String _password ) {
+        login = _login;
+        password = _password;
+    }
+
+    public boolean SaveFile( String _repoName, String _post ) {
+        post = _post;
+        repoName = _repoName;
+
+        boolean rv = false;
+
+        try {
+            generateContent();
+            createServices();
+            retrieveBaseSha();
+            createBlob();
+	    generateTree();
+            createCommit();
+            createResource();
+            updateMasterResource();
+            rv = true;
+        }
+        catch( IOException ieo ) {
+            ieo.printStackTrace();
+        }
+
+        return rv;
+    }
+
+
+    String blobSha;
+    Tree newTree;
+    String commitMessage;
+    String postContentsWithYfm;
+    String contentsBase64;
+    String filename;
+    String post;
+    String repoName;
+
+    private void generateContent() {
+        commitMessage = "GitHubRu Update";
+        postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post; // <2>
+        contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) );  // <3>
+        getFilename( post );
     }
 
     private void getFilename( String post ) { // <1>
@@ -118,44 +165,5 @@ class GitHubHelper {
         Reference response = dataService.editReference(repository, reference, true) ;
     }
 
-    String blobSha;
-    Tree newTree;
-    String commitMessage;
-    String postContentsWithYfm;
-    String contentsBase64;
-    String filename;
-    String post;
-    String repoName;
 
-    private void generateContent() {
-        commitMessage = "GitHubRu Update";
-        postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post; // <2>
-        contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) );  // <3>
-        getFilename( post );
-    }
-
-    public boolean SaveFile( String l, String p, String rn, String po ) {
-        login = l;
-        password = p;
-        post = po;
-        repoName = rn;
-        boolean rv = false;
-
-        try {
-            generateContent();
-            createServices();
-            retrieveBaseSha();
-            createBlob();
-	    generateTree();
-            createCommit();
-            createResource();
-            updateMasterResource();
-            rv = true;
-        }
-        catch( IOException ieo ) {
-            ieo.printStackTrace();
-        }
-
-        return rv;
-    }
 }
