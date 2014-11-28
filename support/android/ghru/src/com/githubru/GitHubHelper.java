@@ -16,9 +16,6 @@ class GitHubHelper {
     String login;
     String password;
 
-    GitHubHelper() {
-    }
-
     GitHubHelper( String _login, String _password ) {
         login = _login;
         password = _password;
@@ -31,7 +28,7 @@ class GitHubHelper {
         boolean rv = false;
 
         try {
-            generateContent();
+            generateContent(); // <1>
             createServices();
             retrieveBaseSha();
             createBlob();
@@ -60,12 +57,12 @@ class GitHubHelper {
 
     private void generateContent() {
         commitMessage = "GitHubRu Update";
-        postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post; // <2>
-        contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) );  // <3>
+        postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post; 
+        contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) ); 
         getFilename( post );
     }
 
-    private void getFilename( String post ) { // <1>
+    private void getFilename( String post ) { 
         String title = post.substring( 0, post.length() > 30 ? 30 : post.length() );
         String jekyllfied = title.toLowerCase().replaceAll( "\\W+", "-").replaceAll( "\\W+$", "" );
         SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" );

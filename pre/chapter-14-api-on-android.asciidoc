@@ -596,8 +596,8 @@ your repository and data programmatically in any way that you could
 possibly need to as it maps exactly to the capabilities you would
 have writing to a file stored in a local git repository on your hard drive.
 
-We'll write a helper class called `GitHubHelpers` and add a single
-static method which writes a file to our repository.
+We'll write a helper class called `GitHubHelper` and add a single
+method which writes a file to our repository.
 
 The GitHub API requires that files written into repositories be
 Base64 encoded. The Apache Foundation provides a suite of tools
@@ -620,14 +620,23 @@ around the complicated GitHub API for us.
 
 [source,java]
 -----
-[filename=".", language="js", sha="633cbefb4abf947ac8cc88d3b7d3b48978617ebb:support/android/ghru/src/com/githubru/GitHubHelper.java"]
+[filename=".", language="js",
+sha="feb30092496efb36156d22cd2ba16d4c9620ca92:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="14..50"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
+...
 -----
 
 This class hides the details of the GitHub API, and the specifics of
-writing files to Jekyll repositories.
+writing files to Jekyll repositories. We start by providing a
+constructor with our login and password. Then, we implement a method
+called SaveFile which takes the repository name and the post contents.
+From here, we work to build the proper structure for creating a new
+Jekyll post. 
+
+The way we generate content inside of a git repository is carefully
+detailed in the last chapter of the excellent book ProGit
 
 <1> Jekyll posts require that filenames look a very specific way.
 Files must be in the `_posts` directory, and should be named with the
@@ -649,7 +658,7 @@ Finally, we can now implement the `doPost()` method inside our
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="633cbefb4abf947ac8cc88d3b7d3b48978617ebb:support/android/ghru/src/com/githubru/MainActivity.java" lines="75..-1"]
+[filename=".", language="js", sha="feb30092496efb36156d22cd2ba16d4c9620ca92:support/android/ghru/src/com/githubru/MainActivity.java" lines="75..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
