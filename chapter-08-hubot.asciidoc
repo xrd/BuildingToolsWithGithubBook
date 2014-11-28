@@ -163,6 +163,13 @@ xxxx
 
 ===== Installing on Heroku
 
+Let's consider installing using Slack.
+
+===== Extending
+===== Using with base camp
+===== Running locally
+===== Reviewing logs
+=======
 You'll need a Heroku account. Heroku offers free plans and everything
 we'll do here can be done using a free plan. Next, install the heroku
 toolbelt found here: https://toolbelt.heroku.com/. This provides a set
@@ -311,4 +318,3 @@ Events
 
 
 Feeds
-	
