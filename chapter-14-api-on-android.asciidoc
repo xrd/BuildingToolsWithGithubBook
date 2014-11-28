@@ -926,13 +926,23 @@ around the complicated GitHub API for us.
 
 [source,java]
 -----
+package com.githubru;
+
+import org.eclipse.egit.github.core.*;
+import org.eclipse.egit.github.core.service.CommitService;
+import org.eclipse.egit.github.core.service.DataService;
+import org.eclipse.egit.github.core.service.GistService;
+import org.eclipse.egit.github.core.service.RepositoryService;
+import org.apache.commons.codec.binary.Base64;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.io.IOException;
+import java.util.*;
+
 class GitHubHelper {
 
     String login;
     String password;
-
-    GitHubHelper() {
-    }
 
     GitHubHelper( String _login, String _password ) {
         login = _login;
@@ -946,7 +956,7 @@ class GitHubHelper {
         boolean rv = false;
 
         try {
-            generateContent();
+            generateContent(); // <1>
             createServices();
             retrieveBaseSha();
             createBlob();
@@ -963,6 +973,9 @@ class GitHubHelper {
         return rv;
     }
 
+
+    String blobSha;
+    Tree newTree;
 ...
 -----
 
@@ -974,7 +987,42 @@ From here, we work to build the proper structure for creating a new
 Jekyll post. 
 
 The way we generate content inside of a git repository is carefully
-detailed in the last chapter of the excellent book ProGit
+detailed in the last chapter of the excellent book ProGit mentioned
+earlier.
+
+=== Writing the blog content
+
+[source,java]
+-----
+...
+
+    String blobSha;
+    Tree newTree;
+    String commitMessage;
+    String postContentsWithYfm;
+    String contentsBase64;
+    String filename;
+    String post;
+    String repoName;
+
+    private void generateContent() {
+        commitMessage = "GitHubRu Update";
+        postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post; 
+        contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) ); 
+        getFilename( post );
+    }
+
+    private void getFilename( String post ) { 
+        String title = post.substring( 0, post.length() > 30 ? 30 : post.length() );
+        String jekyllfied = title.toLowerCase().replaceAll( "\W+", "-").replaceAll( "\W+$", "" );
+        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" );
+        String prefix = sdf.format( new Date() );
+        filename = "_posts/" + prefix + jekyllfied + ".md";
+    }
+
+    public RepositoryBranch getBranch() throws IOException {
+...
+-----
 
 <1> Jekyll posts require that filenames look a very specific way.
 Files must be in the `_posts` directory, and should be named with the

@@ -620,8 +620,7 @@ around the complicated GitHub API for us.
 
 [source,java]
 -----
-[filename=".", language="js",
-sha="feb30092496efb36156d22cd2ba16d4c9620ca92:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="14..50"]
+[filename=".", language="js", sha="2f0d210d1e74c1eae326c89047c6cded276640a2:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="1..50"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -636,7 +635,20 @@ From here, we work to build the proper structure for creating a new
 Jekyll post. 
 
 The way we generate content inside of a git repository is carefully
-detailed in the last chapter of the excellent book ProGit
+detailed in the last chapter of the excellent book ProGit mentioned
+earlier.
+
+=== Writing the blog content
+
+[source,java]
+-----
+...
+[filename=".", language="js", sha="2f0d210d1e74c1eae326c89047c6cded276640a2:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="48..73"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
 
 <1> Jekyll posts require that filenames look a very specific way.
 Files must be in the `_posts` directory, and should be named with the
@@ -658,7 +670,7 @@ Finally, we can now implement the `doPost()` method inside our
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="feb30092496efb36156d22cd2ba16d4c9620ca92:support/android/ghru/src/com/githubru/MainActivity.java" lines="75..-1"]
+[filename=".", language="js", sha="2f0d210d1e74c1eae326c89047c6cded276640a2:support/android/ghru/src/com/githubru/MainActivity.java" lines="75..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
