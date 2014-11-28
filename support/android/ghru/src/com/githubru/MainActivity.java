@@ -93,8 +93,8 @@ public class MainActivity extends Activity
             String repoName = repo.getText().toString();
 
             GitHubHelper ghh = new GitHubHelper();
-            ghh.SaveFile( username, password, 
-                          repoName, postContents );
+            return ghh.SaveFile( username, password, 
+                                 repoName, postContents );
         }
         
         @Override

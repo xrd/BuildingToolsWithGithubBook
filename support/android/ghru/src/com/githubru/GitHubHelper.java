@@ -13,19 +13,20 @@ import java.util.*;
 
 class GitHubHelper {
 
+    String login;
+    String password;
     GitHubHelper() {
     }
 
-    private String getFilename( String post ) { // <1>
+    private void getFilename( String post ) { // <1>
         String title = post.substring( 0, post.length() > 30 ? 30 : post.length() );
         String jekyllfied = title.toLowerCase().replaceAll( "\\W+", "-").replaceAll( "\\W+$", "" );
         SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" );
         String prefix = sdf.format( new Date() );
-        String filename = "_posts/" + prefix + jekyllfied + ".md";
-        return filename;
+        filename = "_posts/" + prefix + jekyllfied + ".md";
     }
 
-    public RepositoryBranch getBranch( RepositoryService repositoryService ) {
+    public RepositoryBranch getBranch() throws IOException {
 	List<RepositoryBranch> branches = repositoryService.getBranches(repository);
 	RepositoryBranch master = null;
 	// Iterate over the branches and find gh-pages or master
@@ -44,33 +45,34 @@ class GitHubHelper {
 	return theBranch;
     }
 
-
-    private String createBlob( String contentsBase64 ) {
+    Blob blob;
+    Tree baseTree;
+    private void createBlob() throws IOException {
 	Random random = new Random();
-	Blob blob = new Blob();
+	blob = new Blob();
 	blob.setContent(contentsBase64);
 	blob.setEncoding(Blob.ENCODING_BASE64);
-	return dataService.createBlob(repository, blob);
+	dataService.createBlob(repository, blob);
     }
     
-    private TreeEntry generateTree() {
+    private void generateTree() throws IOException {
+        baseTree = dataService.getTree(repository, baseCommitSha);
 	TreeEntry treeEntry = new TreeEntry();
-	treeEntry.setPath(filename);
-	treeEntry.setMode(TreeEntry.MODE_BLOB);
-	treeEntry.setType(TreeEntry.TYPE_BLOB);
+	treeEntry.setPath( filename );
+	treeEntry.setMode( TreeEntry.MODE_BLOB );
+	treeEntry.setType( TreeEntry.TYPE_BLOB );
 	treeEntry.setSha(blobSha);
 	treeEntry.setSize(blob.getContent().length());
 	Collection<TreeEntry> entries = new ArrayList<TreeEntry>();
 	entries.add(treeEntry);
-	Tree newTree = dataService.createTree(repository, entries, baseTree.getSha());
-	return newTree;
+	newTree = dataService.createTree( repository, entries, baseTree.getSha() );
     }
-
 
     RepositoryService repositoryService;
     CommitService commitService;
     DataService dataService;
-    private boolean createServices() {
+
+    private void createServices() throws IOException {
         repositoryService = new RepositoryService();
         repositoryService.getClient().setCredentials( login, password );
         commitService = new CommitService();
@@ -82,21 +84,15 @@ class GitHubHelper {
     Repository repository;
     RepositoryBranch theBranch;
     String baseCommitSha;
-    private String retrieveBaseSha() {
+    private String retrieveBaseSha() throws IOException {
         // get some sha's from current state in git
         repository =  repositoryService.getRepository(login, repoName);
         theBranch = getBranch(); 
         return theBranch.getCommit().getSha();
     }
 
-    private String createBlobFromSha() {
-        // create new blob with data
-        Tree baseTree = dataService.getTree(repository, baseCommitSha);
-        return blobSha = createBlob();
-    }
-
     Commit newCommit;
-    private void createCommit() {
+    private void createCommit() throws IOException {
         // create commit
         Commit commit = new Commit();
         commit.setMessage( commitMessage );
@@ -115,7 +111,7 @@ class GitHubHelper {
         commitResource.setUrl(newCommit.getUrl());
     }
 
-    private void updateMasterResource() {
+    private void updateMasterResource() throws IOException {
         // get master reference and update it
         Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
         reference.setObject(commitResource);
@@ -123,29 +119,33 @@ class GitHubHelper {
     }
 
     String blobSha;
-    TreeEntry newTree;
+    Tree newTree;
     String commitMessage;
     String postContentsWithYfm;
     String contentsBase64;
     String filename;
+    String post;
+    String repoName;
 
     private void generateContent() {
         commitMessage = "GitHubRu Update";
         postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post; // <2>
         contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) );  // <3>
-        filename = getFilename( post );
+        getFilename( post );
     }
 
-    public static boolean SaveFile( String login, String password, String repoName,
-                                    String post ) {
-        
+    public boolean SaveFile( String l, String p, String rn, String po ) {
+        login = l;
+        password = p;
+        post = po;
+        repoName = rn;
         boolean rv = false;
 
         try {
             generateContent();
             createServices();
             retrieveBaseSha();
-            createBlobFromSha();
+            createBlob();
 	    generateTree();
             createCommit();
             createResource();
@@ -153,7 +153,6 @@ class GitHubHelper {
             rv = true;
         }
         catch( IOException ieo ) {
-            rv = false;
             ieo.printStackTrace();
         }
 
