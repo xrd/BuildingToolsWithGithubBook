@@ -634,11 +634,19 @@ called SaveFile which takes the repository name and the post contents.
 From here, we work to build the proper structure for creating a new
 Jekyll post. 
 
-The way we generate content inside of a git repository is carefully
-detailed in the last chapter of the excellent book ProGit mentioned
-earlier.
-
 === Writing the blog content
+
+Our method generateContent sets a commit message and then creates the YAML
+Front Matter (see the Jekyll chapter for more details on YFM if you
+need a refresher). We then base64 encode the contents of the blog post
+itself using a utility class found inside the Apache Commons library.
+Contents inside a git repository are stored either as UTF-8 content or
+base64; we could have used UTF-8 since this is text content but base64
+works losslessly.
+
+We then generate a filename. This is a bit more complex because Jekyll
+repositories require a specific format: the date as yyyy-MM-dd, with
+the title of the post, replacing all whitespace with hyphens.
 
 [source,java]
 -----
@@ -650,19 +658,7 @@ snippet~~~~~
 ...
 -----
 
-<1> Jekyll posts require that filenames look a very specific way.
-Files must be in the `_posts` directory, and should be named with the
-date formatted using the formatting string `yyyy-MM-dd` (producing a
-string like `2012-12-12`) and then followed by a title all lowercased
-and with whitespace replaced by hyphens. The `getFilename()` function
-does all this for us, using the first 30 characters of the post body
-as a title.
-<2> Jekyll files can optionally have YAML Front Matter; we add the
-layout and the published flag into the YFM.
-<3> As noted above, we convert our content to Base64 using the Apache
-foundation helper utility.
-<4> We give credit where credit is due: this class was refactored from
-a Gist found on GitHub made by a mysterious user named Detelca.
+=== Stuff
 
 Finally, we can now implement the `doPost()` method inside our
 `MainActivity` class.

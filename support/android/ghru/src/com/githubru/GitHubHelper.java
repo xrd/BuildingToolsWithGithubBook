@@ -28,7 +28,7 @@ class GitHubHelper {
         boolean rv = false;
 
         try {
-            generateContent(); // <1>
+            generateContent();
             createServices();
             retrieveBaseSha();
             createBlob();
