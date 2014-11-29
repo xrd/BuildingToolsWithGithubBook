@@ -703,7 +703,7 @@ snippet~~~~~
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="48..71"]
+[filename=".", language="js", sha="b7a3874:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="101..114"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -716,7 +716,7 @@ snippet~~~~~
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="48..71"]
+[filename=".", language="js", sha="b7a3874:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="138..149"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -729,13 +729,14 @@ snippet~~~~~
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="48..71"]
+[filename=".", language="js", sha="b7a3874:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="150..164"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 ...
 -----
 
+=== Implementing Our Final doPost
 
 Finally, we can now implement the `doPost()` method inside our
 `MainActivity` class.

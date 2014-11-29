@@ -1102,30 +1102,20 @@ the title of the post, replacing all whitespace with hyphens.
 [source,java]
 -----
 ...
-
-    String blobSha;
-    Tree newTree;
-    String commitMessage;
-    String postContentsWithYfm;
-    String contentsBase64;
-    String filename;
-    String post;
-    String repoName;
-
-    private void generateContent() {
-        commitMessage = "GitHubRu Update";
-        postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post; 
-        contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) ); 
-        getFilename( post );
+    Tree baseTree;
+    private void generateTree() throws IOException {
+        baseTree = dataService.getTree(repository, baseCommitSha);
+	TreeEntry treeEntry = new TreeEntry();
+	treeEntry.setPath( filename );
+	treeEntry.setMode( TreeEntry.MODE_BLOB );
+	treeEntry.setType( TreeEntry.TYPE_BLOB );
+	treeEntry.setSha(blobSha);
+	treeEntry.setSize(blob.getContent().length());
+	Collection<TreeEntry> entries = new ArrayList<TreeEntry>();
+	entries.add(treeEntry);
+	newTree = dataService.createTree( repository, entries, baseTree.getSha() );
     }
 
-    private void getFilename( String post ) { 
-        String title = post.substring( 0, post.length() > 30 ? 30 : post.length() );
-        String jekyllfied = title.toLowerCase().replaceAll( "\W+", "-").replaceAll( "\W+$", "" );
-        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" );
-        String prefix = sdf.format( new Date() );
-        filename = "_posts/" + prefix + jekyllfied + ".md";
-    }
 ...
 -----
 
@@ -1135,30 +1125,18 @@ the title of the post, replacing all whitespace with hyphens.
 [source,java]
 -----
 ...
-
-    String blobSha;
-    Tree newTree;
-    String commitMessage;
-    String postContentsWithYfm;
-    String contentsBase64;
-    String filename;
-    String post;
-    String repoName;
-
-    private void generateContent() {
-        commitMessage = "GitHubRu Update";
-        postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post; 
-        contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) ); 
-        getFilename( post );
+    Commit newCommit;
+    private void createCommit() throws IOException {
+        // create commit
+        Commit commit = new Commit();
+        commit.setMessage( commitMessage );
+        commit.setTree( newTree );
+        List<Commit> listOfCommits = new ArrayList<Commit>();
+        listOfCommits.add(new Commit().setSha(baseCommitSha));
+        commit.setParents(listOfCommits);
+        newCommit = dataService.createCommit(repository, commit);
     }
 
-    private void getFilename( String post ) { 
-        String title = post.substring( 0, post.length() > 30 ? 30 : post.length() );
-        String jekyllfied = title.toLowerCase().replaceAll( "\W+", "-").replaceAll( "\W+$", "" );
-        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" );
-        String prefix = sdf.format( new Date() );
-        filename = "_posts/" + prefix + jekyllfied + ".md";
-    }
 ...
 -----
 
@@ -1168,33 +1146,25 @@ the title of the post, replacing all whitespace with hyphens.
 [source,java]
 -----
 ...
-
-    String blobSha;
-    Tree newTree;
-    String commitMessage;
-    String postContentsWithYfm;
-    String contentsBase64;
-    String filename;
-    String post;
-    String repoName;
-
-    private void generateContent() {
-        commitMessage = "GitHubRu Update";
-        postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post; 
-        contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) ); 
-        getFilename( post );
+    TypedResource commitResource;
+    private void createResource() {
+        commitResource = new TypedResource();            
+        commitResource.setSha(newCommit.getSha());
+        commitResource.setType(TypedResource.TYPE_COMMIT);
+        commitResource.setUrl(newCommit.getUrl());
     }
 
-    private void getFilename( String post ) { 
-        String title = post.substring( 0, post.length() > 30 ? 30 : post.length() );
-        String jekyllfied = title.toLowerCase().replaceAll( "\W+", "-").replaceAll( "\W+$", "" );
-        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" );
-        String prefix = sdf.format( new Date() );
-        filename = "_posts/" + prefix + jekyllfied + ".md";
+    private void updateMasterResource() throws IOException {
+        // get master reference and update it
+        Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
+        reference.setObject(commitResource);
+        Reference response = dataService.editReference(repository, reference, true) ;
     }
+
 ...
 -----
 
+=== Implementing Our Final doPost
 
 Finally, we can now implement the `doPost()` method inside our
 `MainActivity` class.
