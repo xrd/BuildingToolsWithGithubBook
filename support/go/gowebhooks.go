@@ -9,10 +9,16 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	"path/filepath"
 
+	"code.google.com/p/goauth2/oauth"
 	"github.com/google/go-github/github"
 )
+
+var accessToken = os.Getenv("GITHUB_ACCESS_TOKEN")
+var t = &oauth.Transport{
+	Token: &oauth.Token{AccessToken: accessToken},
+}
+var client = github.NewClient(t.Client())
 
 func webhookHandler(w http.ResponseWriter, r *http.Request) {
 	eventType := r.Header.Get("X-GitHub-Event")
@@ -31,22 +37,23 @@ func webhookHandler(w http.ResponseWriter, r *http.Request) {
 	payload := github.WebHookPayload{}
 	json.Unmarshal(body, &payload)
 
-	buffer, err := RunMakeTest(payload)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	go func() {
+		buffer, err := RunMakeTest(payload)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 
-	err = WriteOutput(payload, buffer.Bytes())
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	log.Printf("Completed. Available at http://localhost:4567/%s/%s",
-		*payload.Repo.Name, *payload.HeadCommit.ID)
+		err = CommentOutput(payload, buffer)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		log.Printf("Commented on: %s", *payload.HeadCommit.ID)
+	}()
 
 	fmt.Fprintf(w, "OK")
+	log.Printf("Responded: OK")
 }
 
 func RunMakeTest(payload github.WebHookPayload) (*bytes.Buffer, error) {
@@ -82,23 +89,24 @@ func RunMakeTest(payload github.WebHookPayload) (*bytes.Buffer, error) {
 	return buffer, nil
 }
 
-func WriteOutput(payload github.WebHookPayload, output []byte) (err error) {
-	full_path := filepath.Join("./public", *payload.Repo.Name)
-	file_path := filepath.Join(full_path, *payload.HeadCommit.ID)
+func CommentOutput(payload github.WebHookPayload, output *bytes.Buffer) error {
+	owner := *payload.Repo.Owner.Name
+	repo := *payload.Repo.Name
+	gitref := *payload.HeadCommit.ID
 
-	err = os.MkdirAll(full_path, 0774)
-	if err != nil {
-		return err
+	commentBody := bytes.NewBufferString("Created by gowebhooks!")
+	commentBody.WriteString("\n```")
+	commentBody.Write(output.Bytes())
+	commentBody.WriteString("```")
+
+	commentBodyString := commentBody.String()
+
+	comment := &github.RepositoryComment{
+		Body: &commentBodyString,
 	}
 
-	file, err := os.Create(file_path)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-	file.Write(output)
-
-	return
+	_, _, err := client.Repositories.CreateComment(owner, repo, gitref, comment)
+	return err
 }
 
 func main() {

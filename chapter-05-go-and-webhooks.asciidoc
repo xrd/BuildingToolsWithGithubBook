@@ -86,7 +86,7 @@ To check run:
 
 [source,bash]
 -----
-  $ echo $GOPATH
+$ echo $GOPATH
 -----
 
 This will print of the current value of the GOPATH environment
@@ -95,7 +95,7 @@ directory:
 
 [source,bash]
 -----
-  $ export GOPATH=$HOME/go
+$ export GOPATH=$HOME/go
 -----
 
 This would be a good time to add the line above your bash/zsh profile
@@ -130,8 +130,6 @@ commit. Anytime we push a new commit to our repositoty Github will
 send our server the information about the new commit, our
 server will pull down the code an run the test to make sure we haven't
 broken anything.
-
-Think of it as our own custom travis CI.
 
 To make our web server we'll need to be able to connect and interact
 with the Github api. For this we'll use `go-github` written by Google.
