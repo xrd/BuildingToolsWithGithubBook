@@ -90,7 +90,6 @@ class GitHubHelper {
     }
 
     Blob blob;
-    Tree baseTree;
     private void createBlob() throws IOException {
 	Random random = new Random();
 	blob = new Blob();
@@ -98,7 +97,8 @@ class GitHubHelper {
 	blob.setEncoding(Blob.ENCODING_BASE64);
 	dataService.createBlob(repository, blob);
     }
-    
+
+    Tree baseTree;
     private void generateTree() throws IOException {
         baseTree = dataService.getTree(repository, baseCommitSha);
 	TreeEntry treeEntry = new TreeEntry();

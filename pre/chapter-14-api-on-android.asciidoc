@@ -672,7 +672,70 @@ snippet~~~~~
 ...
 -----
 
-=== Stuff
+=== Services and the Base SHA
+
+[source,java]
+-----
+...
+[filename=".", language="js", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="114..137"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
+
+
+=== Creating the Blob
+
+[source,java]
+-----
+...
+[filename=".", language="js", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="91..101"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
+
+
+=== Generating a Tree
+
+[source,java]
+-----
+...
+[filename=".", language="js", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="48..71"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
+
+
+=== Creating the Commit
+
+[source,java]
+-----
+...
+[filename=".", language="js", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="48..71"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
+
+
+=== Creating the Resource and Updating the Master
+
+[source,java]
+-----
+...
+[filename=".", language="js", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="48..71"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
+
 
 Finally, we can now implement the `doPost()` method inside our
 `MainActivity` class.
