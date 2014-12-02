@@ -331,8 +331,9 @@ files and "step" files. Feature files define human readable actions
 comprising a test. Step files define the code, written in Ruby, behind
 these actions. Step files are entirely optional as there are many default steps
 defined inside of Calabash that suit many app actions. You can find a
-full list of default "canned" calabash steps here:
-https://github.com/calabash/calabash-android/blob/master/ruby-gem/lib/calabash-android/canned_steps.md
+full list of default calabash steps on the
+https://github.com/calabash/calabash-android/blob/master/ruby-gem/lib/calabash-android/canned_steps.md:[Canned
+Steps] page.
 Though you are not required to write steps and can often avoid writing ruby
 code entirely when writing calabash tests for Android applications,
 steps files are very useful when you want to refactor a long
@@ -382,8 +383,8 @@ Copy and paste the output from our initial run into the file
 point, with pending indicated for the places we will be adding our
 code. Once the boilerplate is pasted in, modify it to enter
 text into several Android text widgets. These ruby commands for
-calabash are available in the Ruby API document:
-https://github.com/calabash/calabash-android/blob/master/documentation/ruby_api.md
+calabash are available in the 
+https://github.com/calabash/calabash-android/blob/master/documentation/ruby_api.md:[Ruby API document]
 
 As you can see from the following code, step definitions are sometimes
 just regular expression matches of the features, but can also include
@@ -484,12 +485,8 @@ our Jekyll repository.
 
 ==== Code to Login to GitHub
 
-Let's first work on the `login()` method. From the Egit libary
-reference: 
-
-https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core
-
-The code to login to GitHub is as simple as can be:
+Let's first work on the `login()` method. Poking into the https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core:[Egit libary
+reference], we can write GitHub login code that is as simple as the following.
 
 [source,java]
 -----
@@ -578,8 +575,7 @@ Our last step is to write the code which handles putting content into GitHub.
 This is not a simple function, because the GitHub API requires you
 build out the structure used internally by Git. A great reference for learning more about
 this structure is the free and open source book called "Pro Git" and
-specifically the last chapter called "Git Internals".
-(http://git-scm.com/book/en/Git-Internals). In a nutshell, the GitHub
+specifically the last chapter called "Git Internals":http://git-scm.com/book/en/Git-Internals. In a nutshell, the GitHub
 API expects you to create a git "tree" and then place a "blob" object
 into that tree. You then wrap the tree in a "commit" object and then
 create that commit on GitHub using a data service wrapper. In
@@ -703,20 +699,25 @@ earlier. Once we have the repository, we need to look inside the
 correct branch: `getBranch` does this for us. 
 
 
-
-
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="114..137"]
+[filename=".", language="js", sha="a2ed219:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="108..137"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 ...
 -----
 
-
 === Creating the Blob
+
+Contents inside a git repository are stored as blobs. `createBlob`
+manages storing our content as a blob object, and then uses the
+dataService to store this blob into a repository. Until we have called
+`dataService.createBlob`, we have not actually placed the object
+inside GitHub. Also, remember that blobs are not linked into our DAG
+by themselves; they need to be associated with our DAG vis-a-vis a
+tree and commit object, which we do next.
 
 [source,java]
 -----
@@ -728,8 +729,18 @@ snippet~~~~~
 ...
 -----
 
-
 === Generating a Tree
+
+Next, we generate a tree. A tree wraps a blob object and provides
+basically a path to our object: if you know UNIX file system concepts,
+you can think of a tree as the filename path and the blob as an inode
+object. Our data service manager uses a repository name and a base SHA
+address, one that we retrieved earlier, to validate that this is a
+valid starting point inside our repository. Once we have a tree, we
+fill out the necessary tree attributes, like tree type (blob) and and
+tree mode (blob), and set the SHA from the previously created blob
+object along with the size. Then we store the tree into our GitHub
+account using the data service object. 
 
 [source,java]
 -----
@@ -741,8 +752,19 @@ snippet~~~~~
 ...
 -----
 
-
 === Creating the Commit
+
+We are getting close to actually finalizing our save. We have created
+a blob which stores the actual content, and created a tree which
+stores the path to the content (more or less), but since git is a
+version control system, we also need to store information about who
+wrote this object and why. A commit object stores this
+information. The process should look familiar coming from the previous
+steps: we create the commit and then add relevant metadata, in this case the
+commit message. The "who" of this commit is inferred from our login:
+GitHub knows that we authenticated and assigns this commit to us on
+the server side. We then use the data service to create the commit
+inside our repository in GitHub at the correct SHA address.
 
 [source,java]
 -----
@@ -754,8 +776,17 @@ snippet~~~~~
 ...
 -----
 
-
 === Creating the Resource and Updating the Master
+
+Finally, we need to adjust "master" or "gh-pages", the branch from
+which GitHub will generate your Jekyll blog. Previously, we
+determined the correct branch against which to apply our additions. GitHub
+follows this convention when generating your Jekyll blog, using either
+master or gh-pages as the checkout point for retrieving your content
+and then doing a site rebuild from a working copy there. In our code,
+we use the commit we created and stored in the previous code to
+generate a commit resource, set the URL, and then use our data service
+to update the reference inside the repository inside GitHub.
 
 [source,java]
 -----
@@ -803,6 +834,19 @@ $ GH_REPO=mytestblog GH_USERNAME=myusername GH_PASSWORD=mypassword bundle exec c
 You'll see them pass with flying colors this time:
 
 image::images/android-calabash-success.png[]
+
+==== A real world example
+
+If you want to see a more complicated version of the GitHub API on
+Android, take a look at https://github.com/xrd/TeddyHyde.git:[Teddy Hyde]. Teddy Hyde is the
+"the extensible, one handed GitHub editor for Android." I wrote this
+when my son was born because there was not a way for me to publish
+Jekyll blogs hosted on GitHub as my son slept on my chest. You
+can't type on a computer while acting as a sleeping pad for a new
+baby, but you can use your cell phone with one hand. This app allowed
+me to stay creative even within the radical life changes that come
+with a new baby. And, the GitHub API work surprisingly well from
+within an Android app using the Merlyn git libraries.
 
 ===== Final Notes
 
