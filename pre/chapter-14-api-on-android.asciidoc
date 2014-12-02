@@ -485,8 +485,10 @@ our Jekyll repository.
 
 ==== Code to Login to GitHub
 
-Let's first work on the `login()` method. Poking into the https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core:[Egit libary
-reference], we can write GitHub login code that is as simple as the following.
+Let's first work on the `login()` method. Poking into the
+https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core:[Egit
+libary reference], we can write GitHub login code that is as simple as
+the following. 
 
 [source,java]
 -----
