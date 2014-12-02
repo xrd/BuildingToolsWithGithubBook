@@ -654,50 +654,6 @@ two layouts.
 
 [source,java]
 -----
-package com.githubru;
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.view.View;
-
-public class MainActivity extends Activity
-{
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main); 
-
-        Button login = (Button)findViewById( R.id.login ); // <1>
-        login.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    login(); // <2>
-                }
-            });
-    }
-
-    private void login() {
-        setContentView(R.layout.logged_in); // <3>
-
-        Button submit = (Button)findViewById( R.id.submit );
-        submit.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    doPost(); // <4>
-                }
-            });
-    }
-
-    private void doPost() {
-        TextView tv = (TextView)findViewById( R.id.post_status ); // <5>
-        tv.setText( "Successful jekyll post" );
-    }
-
-}
 
 -----
 
@@ -1044,7 +1000,58 @@ the title of the post, replacing all whitespace with hyphens.
 ...
 -----
 
-=== Services and the Base SHA
+=== Services 
+
+There are several services (wrappers around git protocols) which we
+need to instantiate. We don't use them all immediately, but we will
+need them at various steps during the file save process. The
+`createServices` call manages these for us. Once we have created the
+three services (repositories, commit, and data)
+
+[source,java]
+-----
+...
+
+    RepositoryService repositoryService;
+    CommitService commitService;
+    DataService dataService;
+
+    private void createServices() throws IOException {
+        repositoryService = new RepositoryService();
+        repositoryService.getClient().setCredentials( login, password );
+        commitService = new CommitService();
+        commitService.getClient().setCredentials( login, password );
+        dataService = new DataService();
+        dataService.getClient().setCredentials( login, password );
+    }
+
+    Repository repository;
+    RepositoryBranch theBranch;
+    String baseCommitSha;
+    private String retrieveBaseSha() throws IOException {
+        // get some sha's from current state in git
+        repository =  repositoryService.getRepository(login, repoName);
+        theBranch = getBranch(); 
+        return theBranch.getCommit().getSha();
+    }
+
+...
+-----
+
+=== The Base SHA from the Repository and Branch
+
+A git repository is a directed acrylic graph (DAG) and as such, each
+node in the graph must have a starting point. When we append content
+to our graph, we need to determine the starting point on that
+graph. `retrieveBaseSha` does this: it finds the SHA hash for our
+starting point, a SHA hash which is functionally an address inside our
+tree. To determine this address, our applications needs to a reference to the
+repository, and we use the repository service we instantiated
+earlier. Once we have the repository, we need to look inside the
+correct branch: `getBranch` does this for us. 
+
+
+
 
 [source,java]
 -----

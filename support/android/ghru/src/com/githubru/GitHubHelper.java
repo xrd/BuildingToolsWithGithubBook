@@ -70,25 +70,6 @@ class GitHubHelper {
         filename = "_posts/" + prefix + jekyllfied + ".md";
     }
 
-    public RepositoryBranch getBranch() throws IOException {
-	List<RepositoryBranch> branches = repositoryService.getBranches(repository);
-	RepositoryBranch master = null;
-	// Iterate over the branches and find gh-pages or master
-	for( RepositoryBranch i : branches ) {
-	    String theName = i.getName().toString();
-	    if( theName.equalsIgnoreCase("gh-pages") ) {
-		theBranch = i;
-	    }
-	    else if( theName.equalsIgnoreCase("master") ) {
-		master = i;
-	    }
-	}
-	if( null == theBranch ) {
-	    theBranch = master;
-	}
-	return theBranch;
-    }
-
     Blob blob;
     private void createBlob() throws IOException {
 	Random random = new Random();
@@ -134,6 +115,26 @@ class GitHubHelper {
         theBranch = getBranch(); 
         return theBranch.getCommit().getSha();
     }
+
+    public RepositoryBranch getBranch() throws IOException {
+	List<RepositoryBranch> branches = repositoryService.getBranches(repository);
+	RepositoryBranch master = null;
+	// Iterate over the branches and find gh-pages or master
+	for( RepositoryBranch i : branches ) {
+	    String theName = i.getName().toString();
+	    if( theName.equalsIgnoreCase("gh-pages") ) {
+		theBranch = i;
+	    }
+	    else if( theName.equalsIgnoreCase("master") ) {
+		master = i;
+	    }
+	}
+	if( null == theBranch ) {
+	    theBranch = master;
+	}
+	return theBranch;
+    }
+
 
     Commit newCommit;
     private void createCommit() throws IOException {

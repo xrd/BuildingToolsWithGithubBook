@@ -1,7 +1,7 @@
 == Hubot, Activities in GitHub, and 3rd party integrations
 
 Though it has now been removed, GitHub used to call itself a tool for
-"social coding." Though they have since rebranded, they still provide
+"social coding." Though they have since reworded their identity, they still provide
 access to the social layer inside of GitHub through the Activity API.
 This API includes notifications (comments issued to users through
 various events), stargazing tools (Facebook has "likes" while GitHub
@@ -9,9 +9,11 @@ has "stars" to indicate approval or interest), watching (a way to
 track GitHub data) and events (a higher level activity stream useful for
 following actions of users). 
 
-Feeds are also a component of the Activity API but we won't cover them
+The activity API section also includes "feeds." Feeds are also a
+component of the Activity API but we won't cover them 
 in depth as they are nothing more than an Atom feed and not
-interactive beyond that. 
+interactive beyond that. Atom feeds are similar to RSS feeds: a static
+feed you can subscribe to with an Atom client.
 
 In this chapter we'll investigate the Activity API. GitHubbers use an
 extensible chat robot called Hubot to record and automate their tasks,

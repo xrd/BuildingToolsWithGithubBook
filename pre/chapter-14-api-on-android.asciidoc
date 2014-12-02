@@ -672,7 +672,38 @@ snippet~~~~~
 ...
 -----
 
-=== Services and the Base SHA
+=== Services 
+
+There are several services (wrappers around git protocols) which we
+need to instantiate. We don't use them all immediately, but we will
+need them at various steps during the file save process. The
+`createServices` call manages these for us. Once we have created the
+three services (repositories, commit, and data)
+
+[source,java]
+-----
+...
+[filename=".", language="js", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="114..137"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
+
+=== The Base SHA from the Repository and Branch
+
+A git repository is a directed acrylic graph (DAG) and as such, each
+node in the graph must have a starting point. When we append content
+to our graph, we need to determine the starting point on that
+graph. `retrieveBaseSha` does this: it finds the SHA hash for our
+starting point, a SHA hash which is functionally an address inside our
+tree. To determine this address, our applications needs to a reference to the
+repository, and we use the repository service we instantiated
+earlier. Once we have the repository, we need to look inside the
+correct branch: `getBranch` does this for us. 
+
+
+
 
 [source,java]
 -----
