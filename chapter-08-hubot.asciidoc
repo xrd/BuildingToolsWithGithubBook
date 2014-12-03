@@ -1,7 +1,8 @@
 == Hubot, Activities in GitHub, and 3rd party integrations
 
-Though it has now been removed, GitHub used to call itself a tool for
-"social coding." Though they have since rebranded, they still provide
+Though the phrase has now been removed from their marketing materials,
+GitHub used to call itself a tool for "social coding." Their identity
+has been reworded, but they still provide 
 access to the social layer inside of GitHub through the Activity API.
 This API includes notifications (comments issued to users through
 various events), stargazing tools (Facebook has "likes" while GitHub
@@ -9,13 +10,32 @@ has "stars" to indicate approval or interest), watching (a way to
 track GitHub data) and events (a higher level activity stream useful for
 following actions of users). 
 
-Feeds are also a component of the Activity API but we won't cover them
-in depth as they are nothing more than an Atom feed and not
-interactive beyond that. 
+The activity API section also includes "feeds." While feeds are
+grouped within the Activity API, they are not programmatic in the same
+way that an API is, and we won't cover them in depth here.  Feeds are
+actually Atom feeds and not interactive beyond that. Atom feeds are
+similar to RSS feeds: a static feed you can subscribe to with an Atom
+client. 
 
 In this chapter we'll investigate the Activity API. GitHubbers use an
 extensible chat robot called Hubot to record and automate their tasks,
-and we'll use Hubot to interact with the GitHub Activity API.
+and we'll use Hubot to interact with the GitHub Activity API. Hubot is
+not only an exciting tool for automating and interacting with
+complicated software development systems, but provide a novel way of
+collaboration, especially within remote teams. Through the use of
+various APIs, including the GitHub API, chat robots can interact with
+developers, and developers can control remote systems. All of this
+provides a chat log, which makes it easy to understand what happened
+when a post-mortems occurs. Perhaps most importantly, it is much
+easier to  on-board new engineers quickly; new developers can on-board
+themselves by reading actual conversations between team  members and
+robots, rather than  asking someone to spend a day creating training
+materials and training someone. As Fred Brooks elegantly documented in
+his book "The Mythical Man Month", adding new people to an
+organization almost always destroys ship schedules like no other
+factor. Hubot minimized this impact immensely, and was crucial to
+scaling the growth of both people and products at a fast growing startup
+like GitHub. 
 
 ===== Hubot
 
@@ -27,18 +47,19 @@ Hubot is a framework for developing chat robots. For many people, chat
 is at best a way to waste time and at worst an annoyance or
 distraction. For GitHubbers, chat is central to getting work done.
 People collaborate at GitHub using chat but not in the way you might
-assume, interspercing discussions with dog and cat pictures.
-GitHubbers use chat as an exectuable and recorded layer of
-communication that reduces training costs and improves accountability.
-New GitHubbers can immediately enter a chat room and see commands used
-to operate services central to GitHub. 
+assume, interspercing highly technical discussions of GitHub tools and
+systems with dog and cat pictures. GitHubbers use chat as an
+exectuable and recorded layer of communication that reduces training
+costs and improves accountability. New GitHubbers can immediately
+enter a chat room and see commands used to operate services central to
+GitHub.
 
 You've likely heard of DevOps, a term coined to recognize the
 convergence of tools and responsibilities held by modern software
 developers. More concretely, software developers no longer operate in
 isolated silos where they commit code and an operations team deploys
 this code. Modern software developers are expected to excel at not
-only coding but at deployment. 
+only coding but at deployment as well. 
 
 There are good historical reasons to keep a Chinese wall between
 developers and operations teams. Developers think of features and
@@ -54,11 +75,20 @@ was born.
 
 Another idea from GitHub: always build tools to manage complexity. At
 many places, there is a naive approach to getting things done where
-people follow the principle of insanity by doing things over and over
-again and again. GitHubbers build tools. Hubot is one of these tools.
-Why type "cap deploy" (the deployment command to deploy a server to a
-production server) and then re-enter passwords, etc. If you do this,
-you lose all of the context of that command: who ran it, when did they
+people follow the principle of insanity by repeating extremely
+complicated tasks over and over again and again, never addressing
+quality issues that come up when people fatigue and are
+multitasking. GitHubbers do it differently: they build tools when they
+see rote tasks like this. Hubot is one of these tools. 
+
+If you have worked with the Ruby on Rails framework, you might know
+about http://capistranorb.com:[Capistrano]. Capistrano was (and still
+is) an important tool, because it automated a complicated series of
+steps. But, GitHub took the idea further than other places. When a
+developer types "cap deploy" (the deployment command to deploy a
+server to a production server), there is an issue of accountability.
+When this command is run from that developer's laptop, the context of
+that command is lost (or at least hard to recover): who ran it, when did they 
 run it, what time did they do it. Sure, you can find this information,
 if you have the correct logins, and you have time to download the
 massive log files, and you know where to look. GitHubbers created a
@@ -67,17 +97,29 @@ your team and in which resides a robot who can interpret devops
 commands (and a robot who is easily programmable). If the robot does
 the work for you, you can easily see who asked the robot to do what he
 did, when he did it and can see the contextual information as a
-conversation between team members as to why. Anyone can parse a chat
-log inside a web browser. Though GitHub has many of the smartest
-people within the software world working for it, their tools are built
-for the lowest common denominator.
+conversation between team members as to why. Anyone can understand a
+conversational chat log; not anyone can parse SSH server logs. Though
+GitHub has many of the smartest people within the software world
+working for it, their tools are built for the lowest common denominator.
 
 ==== Deficiencies and Limitations
 
-Hubot requires a server to run. The simplest and cheapest way to run
-it is on Heroku. However, for various reasons, this may not be
-feasible given your security concerns. There are other ways to do
-this, but I found all of them difficult and error prone. 
+Hubot requires a server which hosts it and requires a chat endpoint on
+which the chat rooms are hosted. Hubot is written in NodeJS and
+requires a hosting service that supports NodeJS. Chat endpoints are
+connected using adapters.
+
+The simplest and cheapest hosting service is to use Heroku.
+However, for various reasons, this may not be feasible given your
+security concerns. There are other ways to do this, but I found all of
+them difficult and error prone.  
+
+Many chat endpoints are supported: you can use almost any popular chat
+service or protocol: IRC, XMPP and many commercial services like
+Gchat, Basecamp, even Twitter. Slack is a relatively new entrant into
+the world of chat services, but despite their youth, the Slack API is
+solid and connecting third party clients to their chat service is
+simple and straightforward. We'll use Slack as our chat endpoint.
 
 The documentation for Hubot is sketchy. Hubot definitely requires an
 understanding of hubot to use hubot.
@@ -169,7 +211,9 @@ Let's consider installing using Slack.
 ===== Using with base camp
 ===== Running locally
 ===== Reviewing logs
-=======
+
+======= Heroku
+
 You'll need a Heroku account. Heroku offers free plans and everything
 we'll do here can be done using a free plan. Next, install the heroku
 toolbelt found here: https://toolbelt.heroku.com/. This provides a set
