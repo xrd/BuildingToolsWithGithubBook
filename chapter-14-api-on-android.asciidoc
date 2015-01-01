@@ -107,9 +107,10 @@ confused about which to use.
 
 Once you have created an AVD, start it up. It will take a few minutes
 to boot; AVDs emulate the chipset in software and
-booting up can take a few minutes, unfortunately. There are ways to
-speed up AVD boot time, like the Genymotion tool, but they are outside
-of the scope of this book. After your AVD has completed booting, you
+booting up can take a few minutes, unfortunately. There are
+alternative tools that speed up AVD boot time (Genymotion is one of
+those), but usage of these tools is are outside the scope of this
+book. After your AVD has completed booting, you 
 can test to see if it is correctly started and available using the adb
 command line tool.
 
@@ -122,7 +123,7 @@ List of devices attached
 
 Running the adb command starts a daemon service which communicates
 with your device. In this case the daemon reported that I have a
-single device attached via USB which is a Nexus 5 device.
+single device attached via USB which is the emulated Nexus 5 device.
 
 ==== Creating a New Project
 
@@ -695,17 +696,17 @@ GitHubClient client = new GitHubClient();
 client.setCredentials("user", "passw0rd");
 -----
 
-Unfortunately the context in which the code
-runs makes as much a difference as the code. Android requires that any
+The context in which the code runs makes as much a difference as the
+code. Android requires that any 
 code which makes network connections run inside a background thread.
 Android applications, in order to maintain responsive UI behavior,
 disallow any long running processes (or indeterminate processes, like
 network activity) from running on the main UI thread. If your eyes are
 starting to spin at the thought of learning about threading using
 Java, dispell your worries. The Android SDK provides a great class for
-managing background thread code called `AsyncTask`. We derive from
-this interface and override at least one method which runs our
-background thread code (called `doInBackground()` coincidentally).
+managing background thread code called `AsyncTask`. We implement a
+class which supports this interface by overriding at least one method
+which runs our background thread code (called `doInBackground()`). 
 
 [source,java]
 -----
