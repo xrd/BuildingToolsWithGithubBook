@@ -76,9 +76,11 @@ GitHub.
 You've likely heard of DevOps, a term coined to recognize the
 convergence of tools and responsibilities held by modern software
 developers. More concretely, software developers no longer operate in
-isolated silos where they commit code and an operations team deploys
-this code. Modern software developers are expected to excel at not
-only coding but at deployment as well. 
+silos isolated from operations people. Until recently developers
+would commit code and then hand that over to n operations team who
+would deploys it. For many cutting edge startups, there is an
+expectation when you are hired that developers excel at not only
+coding but at deployment as well.
 
 There are good historical reasons to keep a Chinese wall between
 developers and operations teams. Developers think of features and
@@ -87,10 +89,9 @@ planning and security. These are very different concerns and there was
 good reason to separate these problem donains. But, over time, cracks
 appeared in the wall. The primary issue was that it became too easy to
 explain away problems by filing bugs against the ops team if you were
-a developer, or vice-versa. 
-
-Entirely homegrown, developers and operations teams merged and devops
-was born.
+a developer, or vice-versa. Passing the buck does not only happen in
+the political realm. Entirely homegrown, developers and operations
+teams merged and devops was born.
 
 Another idea from GitHub: always build tools to manage complexity. At
 many places, there is a naive approach to getting things done where
@@ -98,7 +99,9 @@ people follow the principle of insanity by repeating extremely
 complicated tasks over and over again and again, never addressing
 quality issues that come up when people fatigue and are
 multitasking. GitHubbers do it differently: they build tools when they
-see rote tasks like this. Hubot is one of these tools. 
+see rote tasks like this.  Hubot is the tool that emerged when
+GitHubbers asked the question: "What tool can we build to version
+deployment in a scalable way?"
 
 If you have worked with the Ruby on Rails framework, you might know
 about http://capistranorb.com:[Capistrano]. Capistrano was (and still
@@ -182,7 +185,9 @@ is a NodeJS application. Most NodeJS applications have a package
 manifest called `package.json` which documents required packages and
 other pieces of information important to a NodeJS application. The
 final command installs the Slack adapter for Hubot and saves the
-proper configuration into the `package.json` file.
+proper configuration into the `package.json` file. Depending on the
+version of the yeoman generator you use, you might be prompted for the
+adapter and can enter `slack`. If you do this, you can skip this step.
 
 ==== Creating your slack account
 
@@ -525,7 +530,26 @@ reviews when a new pull request is created. We will use the GitHub
 Activities API to subscribe to pull request events. When our Hubot
 becomes aware that a pull request needs review, it will randomly
 assign a user in the chat room to do the review and then ask that user
-if they want to accept the challenge. We'll build our pull request 
+if they want to accept the challenge. Once a user has accepted, we
+will schedule a check in to make sure they have updated or reviewed
+the pull request, and if no action has been taken, our Hubot will
+invite the designated reviewer to rescind and then select another
+reviewer. 
+
+===== Extension Boilerplate
+
+To enable our our Hubot script, we need to add it to the list of
+extensions inside the `hubot-scripts.json` file. This file should
+contain an empty array; we need to modify it to contain the name of
+our script.
+
+[source,json]
+-----
+[filename=".", language="json", sha="fea1ce8:support/android/ghru/res/layout/logged_in.xml"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
 
 ===== Setting up our webhook
 
