@@ -7,7 +7,7 @@ module.exports = (robot) ->
 
         accept = ( msg ) ->
                 msg.reply "Thanks, you got it!"
-                console.log "Declined!"
+                console.log "Accepted!"
                 
         decline = ( msg ) ->
                 msg.reply "OK, I'll find someone else"

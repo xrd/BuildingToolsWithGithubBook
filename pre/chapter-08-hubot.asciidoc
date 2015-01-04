@@ -544,12 +544,11 @@ script looks like this:
 	  
 [source,json]
 -----
-[language="json", sha="800599f:support/slacker-hubot/hubot-scripts.json"]
+[language="json", sha="f795561:support/slacker-hubot/scripts/pr-delegator.coffee", lines="1..15"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
-
 
 
 ===== Setting up our webhook
