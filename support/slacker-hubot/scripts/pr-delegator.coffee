@@ -1,8 +1,15 @@
 module.exports = (robot) ->
         robot.respond /accept/i, (msg) ->
-                msg.reply "Thanks, you got it!"
+                accept( msg )
 
         robot.respond /decline/i, (msg) ->
+                decline( msg )
+
+        accept = ( msg ) ->
+                msg.reply "Thanks, you got it!"
+                console.log "Declined!"
+                
+        decline = ( msg ) ->
                 msg.reply "OK, I'll find someone else"
                 console.log "Declined!"
 
