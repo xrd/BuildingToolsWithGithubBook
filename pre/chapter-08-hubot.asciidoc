@@ -538,18 +538,19 @@ reviewer.
 
 ===== Extension Boilerplate
 
-To enable our our Hubot script, we need to add it to the list of
-extensions inside the `hubot-scripts.json` file. This file should
-contain an empty array; we need to modify it to contain the name of
-our script.
-
+Our script has a simple vocabulary: it needs to recognize responses
+accepting a review request, or those that decline. Our extension
+script looks like this: 
+	  
 [source,json]
 -----
-[filename=".", language="json", sha="fea1ce8:support/android/ghru/res/layout/logged_in.xml"]
+[language="json", sha="800599f:support/slacker-hubot/hubot-scripts.json"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
+
+
 
 ===== Setting up our webhook
 
@@ -576,13 +577,6 @@ snippet~~~~~
 * Writing tests using Jasmine
 
 Reference: https://github.com/github/hubot-scripts/blob/master/src/scripts/github-pull-request-notifier.coffee
-
-===== Our extension vocabulary 
-
-* slammed: too busy
-* wildoo: accept
-* help
-* 
 
 ==== Limitations
 

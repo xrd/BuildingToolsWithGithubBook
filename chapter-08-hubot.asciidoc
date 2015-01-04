@@ -538,61 +538,16 @@ reviewer.
 
 ===== Extension Boilerplate
 
-To enable our our Hubot script, we need to add it to the list of
-extensions inside the `hubot-scripts.json` file. This file should
-contain an empty array; we need to modify it to contain the name of
-our script.
-
+Our script has a simple vocabulary: it needs to recognize responses
+accepting a review request, or those that decline. Our extension
+script looks like this: 
+	  
 [source,json]
 -----
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-  <TextView
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:text="Logged into GitHub"
-      android:layout_weight="0"
-      />
-
-  <EditText
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:hint="Enter the blog repository"
-      android:id="@+id/repository"
-      android:layout_weight="0"
-      />
-  
-  <EditText
-      android:gravity="top"
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
-      android:hint="Enter your blog post"
-      android:id="@+id/post"
-      android:layout_weight="1"
-      />
-  
-  <Button
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:layout_weight="0"
-      android:id="@+id/submit"
-      android:text="Send blog post"/>
-    
-  <TextView
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:id="@+id/post_status"
-      android:layout_weight="0"
-      android:text=""/>
-  
-</LinearLayout>
-
-
+[]
 -----
+
+
 
 ===== Setting up our webhook
 
@@ -619,13 +574,6 @@ our script.
 * Writing tests using Jasmine
 
 Reference: https://github.com/github/hubot-scripts/blob/master/src/scripts/github-pull-request-notifier.coffee
-
-===== Our extension vocabulary 
-
-* slammed: too busy
-* wildoo: accept
-* help
-* 
 
 ==== Limitations
 
