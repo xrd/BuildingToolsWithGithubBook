@@ -1,4 +1,4 @@
-Pr = require "../scripts/pr-delegator"
+Probot = require "../scripts/pr-delegator"
 
 calledIt = false
 
@@ -8,14 +8,14 @@ msg = {
         }
 
 robot = {
-        hear: ( something, message ) -> msg
+        respond: ( re, cb ) ->
+                cb()
         }
 
 exports.acceptance =
         'verify acceptance': (test) ->
-                pr = Pr( robot )
-                pr.hear( "" ) 
-                test.expect( calledIt )
+                pr = Probot( robot )
+                test.ok( robot.respond )
                 test.done()
 
         

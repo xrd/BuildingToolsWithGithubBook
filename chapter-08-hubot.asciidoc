@@ -3,16 +3,16 @@
 == Social Coding
 
 Though the phrase has now been removed from their marketing materials,
-GitHub used to call itself a tool for "social coding." Their identity
-has been reworded, but they still provide 
-access to the social layer inside of GitHub through the Activity API.
+GitHub used to call itself a tool for "social coding." This idea is
+still central to the services GitHub provides, intimate access to the
+social layer inside of GitHub through the Activity API. 
 This API includes notifications (comments issued to users through
 various events), stargazing tools (Facebook has "likes" while GitHub
 has "stars" to indicate approval or interest), watching (a way to
 track GitHub data) and events (a higher level activity stream useful for
 following actions of users). 
 
-The activity API section also includes "feeds." While feeds are
+The Activity API section also includes "feeds." While feeds are
 grouped within the Activity API, they are not programmatic in the same
 way that an API is, and we won't cover them in depth here.  Feeds are
 actually Atom feeds and not interactive beyond that. Atom feeds are
@@ -561,8 +561,8 @@ If Hubot is running, you will need to restart it to reload any
 scripts. Kill Hubot (using Ctrl-C), and then restart it, and then
 play with commands inside your Slack site. Entering the commands
 `probot accept` and `probot decline` and you'll see our Hubot
-respoding inside the channel. You'll also see the message `Accept!` or
-`Decline!` printed to the console on which your Hubot is
+respoding inside the channel. You'll also see the message `Accepted!` or
+`Declined!` printed to the console on which your Hubot is
 running. Using `console.log` can be a quick way to troubleshoot your
 scripts and make sure your Hubot is working.
 

@@ -928,7 +928,7 @@ hierarchy we saw inside the Chrome Inspector, we can start to see how
 we will easily retrieve content from a scraped page.
 <3> We then take the 2nd and 5th (ruby uses zero-based offsets) rows, and
 process it using a method called `process` which, you guessed it,
-process them as title and body.
+processes the two rows as title and body respectively.
 <4> The `process` method takes the retrieved DOM nodes and
 converts them to pure text (as opposed to leaving us with the HTML tags)
 and then strips whitespace from the front and end, and then prints the
