@@ -155,10 +155,13 @@ simple guide will alleviate some of these challenges.
 To build a Hubot you will need a working NodeJS installation, as
 specified in the first chapter.
 
-A word of advice: don't name your hubot the same as any of the adapters. That won't
-work. More concretely, don't call your hubot "slack" (call it
-"slackbot" instead). You wouldn't name your child "boy" or "girl" and
-your hubot expects the same level of originality.
+There are a few pitfalls to avoid when naming your Hubot. First, don't
+name your hubot the same as any of the adapters. More concretely,
+don't call this hubot "slack". And, all Slack chat sites come with
+their own helper hubot, which they call "slackbot". So, call our Hubot
+"probot". The name is configured by the integration (on the Slack
+side) so you are not able to rename it with the command line switch
+`--name`. You can always change the name later if you feel the need.
 
 [code,bash]
 -----
@@ -211,13 +214,6 @@ and an optional description.
 
 image::images/hubot-create-channel-popup.png[]
 
-===== Specifying the username
-
-You'll need to create a username for your bot. You can use slackbot or
-any name you prefer.
-
-image::images/hubot-choose-username.png[]
-
 ===== Adding service integration
 
 After you have created the channel, you'll immediately see a link to
@@ -230,18 +226,19 @@ Hubot.
 
 image::images/hubot-choose-hubot-integration.png[]
 
-===== Slack Token Configuration
+Choosing Hubot takes you to a settings screen for your Hubot integration.
 
-Once you have created your service integration, you will be presented
-with your environment variables which you'll need to pass on to your
-Hubot. 
+Slack automatically generates an authentication token for you. 
+This token is used to verify the connection from your Hubot. This
+token can be revoked, and in fact the token from the image below
+has been revoked and can no longer be used to authenticate into
+Slack. If you ever accidentally publicize this token, you can easily
+revoke and reassign a token to your Slackbot.
 
-image::images/hubot-environment-variables.png[]
+You will also need to specify a name. Use "probot" and if you'd like,
+change the avatar associated with the Hubot.
 
-There are three variables to be aware of: the token which
-allows your hubot to authenticate with the Slack service. This is a
-token which can be revoked, and in fact the token from the image above
-has been revoked and can no longer be used to authenticate into Slack. 
+image::images/hubot-choose-username.png[]
 
 Make sure you save your integration before continuing.
 
@@ -540,16 +537,20 @@ reviewer.
 
 Our script has a simple vocabulary: it needs to recognize responses
 accepting a review request, or those that decline. Our extension
-script looks like this: 
+script should be in the `scripts` directory and named `pr-delegator.coffee`:
 	  
 [source,json]
 -----
-[language="json", sha="f795561:support/slacker-hubot/scripts/pr-delegator.coffee", lines="1..15"]
+[language="json", sha="abeac40:support/slacker-hubot/scripts/pr-delegator.coffee", lines="1..15"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
+If Hubot is running, you will need to restart it to reload any
+scripts. Kill Hubot (using Ctrl-C), and then restart it, and then
+play with commands inside your Slack site. Entering the commands
+`slackbot accept` and 
 
 ===== Setting up our webhook
 
