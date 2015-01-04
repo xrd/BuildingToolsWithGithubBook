@@ -150,7 +150,7 @@ there are times where it feels like a Catch-22: you need to have Hubot
 running in order to configure it properly and run it. Hopefully, this
 simple guide will alleviate some of these challenges.
 
-=== Creating your Slackbot
+=== Creating your Hubot
 
 To build a Hubot you will need a working NodeJS installation, as
 specified in the first chapter.
@@ -158,8 +158,9 @@ specified in the first chapter.
 There are a few pitfalls to avoid when naming your Hubot. First, don't
 name your hubot the same as any of the adapters. More concretely,
 don't call this hubot "slack". And, all Slack chat sites come with
-their own helper hubot, which they call "slackbot". So, call our Hubot
-"probot". The name is configured by the integration (on the Slack
+their own helper hubot, which is named "slackbot" (you'll see it in
+your site). So, give our Hubot a unique name and call our Hubot
+"probot". The name is configured by the integration (on the Slack 
 side) so you are not able to rename it with the command line switch
 `--name`. You can always change the name later if you feel the need.
 
@@ -233,7 +234,7 @@ This token is used to verify the connection from your Hubot. This
 token can be revoked, and in fact the token from the image below
 has been revoked and can no longer be used to authenticate into
 Slack. If you ever accidentally publicize this token, you can easily
-revoke and reassign a token to your Slackbot.
+revoke and reassign a token to your Hubot.
 
 You will also need to specify a name. Use "probot" and if you'd like,
 change the avatar associated with the Hubot.
@@ -275,13 +276,13 @@ something like the following.
 
 image::images/hubot-verify.png[]
 
-We see that our slackbot printed out the rules it
+We see that our hubot printed out the rules it
 abides by (published originally by Isaac Asimov in his "Runaround"
 short story in 1942).
 
 ===== Experimenting in private
 
-Slackbot comes with a bunch of built in commands. 
+Hubot comes with a bunch of built in commands. 
 To discover these commands, ask what commands are supported using
 the `help` command. However, be aware that the #general room is a
 shared room and all commands typed there will be seen by all people in
@@ -296,9 +297,9 @@ state). To prevent these interactions from cluttering the
 public spaces, you can direct message your bot and keep those
 interactions on a private channel. On the side of the Slack UI, you
 should see a list of channels, and then a list of "Direct Message"
-options; look for the bot (named "slackbot"), click on the name, and
+options; look for the bot (named "hubot"), click on the name, and
 you'll be in a private channel. You can then enter the help command
-(and in this case don't need to address slackbot at all by prefixing
+(and in this case don't need to address hubot at all by prefixing
 it to your command). 
 
 image::images/hubot-help.png[]
@@ -369,7 +370,7 @@ the heroku log command to view logs for your application `heroku logs -t`.
 ----
 $ heroku logs -t
 2014-11-18T07:07:18.716943+00:00 app[web.1]: Successfully 'connected'
-as slackbot
+as hubot
 2014-11-18T07:07:18.576287+00:00 app[web.1]: Tue, 18 Nov 2014 07:07:18
 GMT connect deprecated limit: Restrict request size at location of
 read at
@@ -559,7 +560,7 @@ module.exports = (robot) ->
 If Hubot is running, you will need to restart it to reload any
 scripts. Kill Hubot (using Ctrl-C), and then restart it, and then
 play with commands inside your Slack site. Entering the commands
-`slackbot accept` and 
+`probot accept` and 
 
 ===== Setting up our webhook
 
