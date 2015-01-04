@@ -560,7 +560,11 @@ module.exports = (robot) ->
 If Hubot is running, you will need to restart it to reload any
 scripts. Kill Hubot (using Ctrl-C), and then restart it, and then
 play with commands inside your Slack site. Entering the commands
-`probot accept` and 
+`probot accept` and `probot decline` and you'll see our Hubot
+respoding inside the channel. You'll also see the message `Accept!` or
+`Decline!` printed to the console on which your Hubot is
+running. Using `console.log` can be a quick way to troubleshoot your
+scripts and make sure your Hubot is working.
 
 ===== Setting up our webhook
 
