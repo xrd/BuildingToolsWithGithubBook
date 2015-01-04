@@ -267,17 +267,15 @@ variable at the beginning of the line.
 ===== The first conversation
 
 Your bot should be setup and waiting in the #general room inside your
-Slack site. Go to the #general room. Then, you can test that slackbot
-is properly connectd by typing in the name of your slackbot
-and then a command like `the rules`. For example, if our slackbot is
-named `slackbot`, then we would type `slackbot the rules`. You'll see
+Slack site. Go to the #general room. Then, you can test that probot
+is properly connectd by typing in the name of your Hubot
+and then a command like `the rules`. For example, if our Hubot is
+named `probot`, then we would type `probot the rules`. You'll see
 something like the following.
 
 image::images/hubot-verify.png[]
 
-We got creative an updated our slackbot with a frog avatar as you
-see (this is done inside Slack.com and not a part of Hubot's
-functionality). And, we see that our slackbot printed out the rules it
+We see that our slackbot printed out the rules it
 abides by (published originally by Isaac Asimov in his "Runaround"
 short story in 1942).
 
