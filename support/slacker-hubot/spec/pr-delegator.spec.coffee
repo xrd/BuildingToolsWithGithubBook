@@ -12,12 +12,6 @@ describe "#probot", ->
                                 post: jasmine.createSpy()
                                 }
                         }
-                        
-                # robot.respond = jasmine.createSpy( "robot", "respond" )
-
-                # robot.router = {
-                #                 post: jasmine.createSpy( "router", "post" )
-                #                 }
 
         it "should verify our calls to respond and router.post", (done) ->
                 pr = Probot robot

@@ -579,6 +579,30 @@ scripts and make sure your Hubot is working.
 * Generating fake hubot messages
 * Writing tests using Jasmine
 
+Code: 
+
+[source,coffeescript]
+-----
+[language="coffeescript", sha="c5eeb64b11646924e435ad2e714b7bd46e0b7b3f:support/slacker-hubot/spec/pr-delegator.spec.coffee"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+To run the specs:
+
+`./node_modules/.bin/jasmine-node --coffee spec/`
+
+Output: 
+
+```
+.
+
+Finished in 0.009 seconds
+1 test, 2 assertions, 0 failures, 0 skipped
+
+```
+
 Reference: https://github.com/github/hubot-scripts/blob/master/src/scripts/github-pull-request-notifier.coffee
 
 ==== Limitations

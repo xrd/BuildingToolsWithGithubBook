@@ -590,6 +590,56 @@ scripts and make sure your Hubot is working.
 * Generating fake hubot messages
 * Writing tests using Jasmine
 
+Code: 
+
+[source,coffeescript]
+-----
+
+Probot = require "../scripts/pr-delegator"
+
+pr = undefined
+robot = undefined
+
+describe "#probot", ->
+        beforeEach () ->
+                robot = {
+                        respond: jasmine.createSpy()
+                        router: {
+                                post: jasmine.createSpy()
+                                }
+                        }
+                        
+                # robot.respond = jasmine.createSpy( "robot", "respond" )
+
+                # robot.router = {
+                #                 post: jasmine.createSpy( "router", "post" )
+                #                 }
+
+        it "should verify our calls to respond and router.post", (done) ->
+                pr = Probot robot
+                expect( robot.respond.calls.length ).toEqual( 2 )
+                expect( robot.router.post ).toHaveBeenCalled()
+                done()
+
+
+        
+
+-----
+
+To run the specs:
+
+`./node_modules/.bin/jasmine-node --coffee spec/`
+
+Output: 
+
+```
+.
+
+Finished in 0.009 seconds
+1 test, 2 assertions, 0 failures, 0 skipped
+
+```
+
 Reference: https://github.com/github/hubot-scripts/blob/master/src/scripts/github-pull-request-notifier.coffee
 
 ==== Limitations
