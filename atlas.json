@@ -45,5 +45,6 @@
     }
   },
   "theme": "https://github.com/oreillymedia/atlas_tech1c_theme.git",
-  "title": "github"
+  "title": "github",
+  "templating": false
 }
