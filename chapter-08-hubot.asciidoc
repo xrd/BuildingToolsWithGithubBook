@@ -566,6 +566,115 @@ respoding inside the channel. You'll also see the message `Accepted!` or
 running. Using `console.log` can be a quick way to troubleshoot your
 scripts and make sure your Hubot is working.
 
+===== Writing tests for our Hubot
+
+Now that we have the basics of our Hubot working, let's make sure we
+certify our code with some tests. We'll use the Jasmine testing
+framework for NodeJS. It offers an elegant behavior driven testing
+syntax where you specify a behavior as the first parameter to an `it`
+function, and as a second paramter, a function which is run as the
+test itself. Jasmine manages running each `it` call and displays a
+nice output of passing and failed tests at the end of your
+run. Jasmine tests are JavaScript tests, but the latest versions of
+Jasmine support using CoffeeScript. To match our Hubot, let's write
+them in CoffeeScript as well. We need to put our tests inside a
+directory called "spec" and make sure our filename ends with
+`.spec.coffee`. Let's use `spec/pr-delegator.spec.coffee` as the
+complete filename. Jasmine expects spec files to have `.spec.` at the
+end of their filename (before the extension, either `.js` or
+`.coffee`); if your filename does not match this pattern Jasmine won't
+recognize it as a test. 
+
+[source,coffeescript]
+-----
+
+Probot = require "../scripts/pr-delegator"
+
+pr = undefined
+robot = undefined
+
+describe "#probot", ->
+        beforeEach () ->
+                robot = {
+                        respond: jasmine.createSpy()
+                        router: {
+                                post: jasmine.createSpy()
+                                }
+                        }
+
+        it "should verify our calls to respond and router.post", (done) ->
+                pr = Probot robot
+                expect( robot.respond.calls.length ).toEqual( 2 )
+                expect( robot.router.post ).toHaveBeenCalled()
+                done()
+
+
+        
+
+-----
+
+The first line in our test requires, or loads, the Hubot extension
+module into our test script, giving us a function we save as a Probot
+variable. We then create a `describe` 
+function which is an organizing function to group tests. `describe`
+functions take an indentifier (in this case `#probot`) and a function
+which contains multiple `it` calls. In addition, a `describe` function
+can also contain a `beforeEach` function which configures common
+elements inside our `it` calls; in this case we create a faked robot
+object which we will pass into our `Probot` function call. When we are
+running Hubot itself, Hubot creates the robot and passes it into the
+`Probot` function but when we run our tests, we generate a fake one
+and query it to make sure that it is receiving the proper
+configuration. If we make a change inside our actual Hubot code and
+forget to update our tests to verify those changes, our tests will
+fail and we'll know we need to either augment our tests, or something
+broke inside our robot, a good automated sanity check for us when we
+are feverishly coding away, animating our helpful Probot.
+
+You should see some similarities between the calls made to our robot
+(`robot.respond` and `robot.router.post`) and the tests. We setup
+"spies" using Jasmine that generate fake function calls capable of
+recording any interaction with themselves. Inside our `it` call, we
+then verify that those calls were made. We use the `expect` function
+to verify that we have made two calls to the `respond` function
+defined on the robot, and that `robot.router.post` has been called as
+well.
+
+We need to install Jasmine, and we do this by adding to our
+`package.json` file. Append `"jasmine-node": "1.14.5"` to the file,
+and make sure to add a comma to the tuple above it.
+
+[source,javascript]
+-----
+...
+    "hubot-shipit": "^0.1.1",
+    "hubot-slack": "^3.2.1",
+    "hubot-youtube": "^0.1.2",
+    "jasmine-node": "1.14.5"
+  },
+  "engines": {
+...
+-----
+
+Runing the following commands will then install Jasmine (the library
+and the test runner) and run our tests.
+
+```
+$ npm install
+... 
+$ ./node_modules/.bin/jasmine-node --coffee spec/
+
+.
+
+Finished in 0.009 seconds
+1 test, 2 assertions, 0 failures, 0 skipped
+
+```
+
+Our tests pass and we now have a way to document and verify that our
+code does what we think it does.
+
+
 ===== Setting up our webhook
 
 * Authorization
@@ -585,62 +694,6 @@ scripts and make sure your Hubot is working.
 
 ===== Packaging our Hubot extension
 
-===== Testing it
-
-* Generating fake hubot messages
-* Writing tests using Jasmine
-
-Code: 
-
-[source,coffeescript]
------
-
-Probot = require "../scripts/pr-delegator"
-
-pr = undefined
-robot = undefined
-
-describe "#probot", ->
-        beforeEach () ->
-                robot = {
-                        respond: jasmine.createSpy()
-                        router: {
-                                post: jasmine.createSpy()
-                                }
-                        }
-                        
-                # robot.respond = jasmine.createSpy( "robot", "respond" )
-
-                # robot.router = {
-                #                 post: jasmine.createSpy( "router", "post" )
-                #                 }
-
-        it "should verify our calls to respond and router.post", (done) ->
-                pr = Probot robot
-                expect( robot.respond.calls.length ).toEqual( 2 )
-                expect( robot.router.post ).toHaveBeenCalled()
-                done()
-
-
-        
-
------
-
-To run the specs:
-
-`./node_modules/.bin/jasmine-node --coffee spec/`
-
-Output: 
-
-```
-.
-
-Finished in 0.009 seconds
-1 test, 2 assertions, 0 failures, 0 skipped
-
-```
-
-Reference: https://github.com/github/hubot-scripts/blob/master/src/scripts/github-pull-request-notifier.coffee
 
 ==== Limitations
 
