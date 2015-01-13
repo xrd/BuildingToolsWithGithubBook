@@ -610,13 +610,15 @@ defined on the robot, and that `robot.router.post` has been called as
 well.
 
 We need to install Jasmine, and we do this by adding to our
-`package.json` file. Append `"jasmine-node": "1.14.5"` to the file,
-and make sure to add a comma to the tuple above it.
+`package.json` file. Append `"jasmine-node": "^1.14.5"` to the file,
+and make sure to add a comma to the tuple above it. Adding this code
+specifies that the minimum version of jasmine node we will use is
+"1.14.5". 
 
 [source,javascript]
 -----
 ...
-[language="coffeescript", sha="58c3cbb:support/slacker-hubot/package.json" lines="19..24"]
+[language="coffeescript", sha="431888f:support/slacker-hubot/package.json" lines="19..24"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -624,10 +626,40 @@ snippet~~~~~
 -----
 
 Runing the following commands will then install Jasmine (the library
-and the test runner) and run our tests.
+and a test runner command line tool) and run our tests. We abbreviate
+some of the installation output to save space.
 
 ```
 $ npm install
+...
+hubot-slack@3.2.1 node_modules/hubot-slack
+└── slack-client@1.2.2 (log@1.4.0, coffee-script@1.6.3, ws@0.4.31)
+
+jasmine-node@1.14.5 node_modules/jasmine-node
+├── underscore@1.7.0
+├── mkdirp@0.3.5
+├── walkdir@0.0.7
+├── jasmine-growl-reporter@0.0.3 (growl@1.7.0)
+├── coffee-script@1.8.0
+├── gaze@0.3.4 (minimatch@0.2.14, fileset@0.1.5)
+├── requirejs@2.1.15
+└── jasmine-reporters@1.0.1
+
+hubot-scripts@2.5.16 node_modules/hubot-scripts
+└── redis@0.8.4
+
+hubot@2.11.0 node_modules/hubot
+├── readline-history@1.2.0
+├── optparse@1.0.4
+├── scoped-http-client@0.10.0
+├── log@1.4.0
+├── coffee-script@1.6.3
+└── express@3.18.1 (basic-auth@1.0.0, utils-merge@1.0.0,
+merge-descriptors@0.0.2, fresh@0.2.4, cookie@0.1.2, escape-html@1.0.1,
+range-parser@1.0.2, cookie-signature@1.0.5, vary@1.0.0,
+media-typer@0.3.0, parseurl@1.3.0, methods@1.1.0,
+content-disposition@0.5.0, depd@1.0.0, debug@2.1.1, commander@1.3.2,
+etag@1.5.1, proxy-addr@1.0.5, send@0.10.1, mkdirp@0.5.0, connect@2.27.1)
 ... 
 $ ./node_modules/.bin/jasmine-node --coffee spec/
 
@@ -641,11 +673,110 @@ Finished in 0.009 seconds
 Our tests pass and we now have a way to document and verify that our
 code does what we think it does.
 
-
 ===== Setting up our webhook
+
+We are now in a position to start adding the actual functionality to
+our Probot. Our first requirement is to register for pull request
+events. We could do this from within the GitHub website, but another
+way is to use the cURL tool to create the webhook from the command
+line. In order to do this, we need to first create an authorization
+token, and then we can use that token to create a webhook.
+
+To create the token, run this command, setting the proper variables
+for your username instead of mine ("xrd").
+
+```
+$ export USERNAME=xrd
+$ curl https://api.github.com/authorizations --user $USERNAME --data
+'{"scopes":["repo"], "note": "Probot access to PRs" }' -X POST
+```
+
+If you are using two-factor authentication (and you should [CALLOUT TO
+2-FACTOR AUTH]), then you will see a response message like this:
+
+```
+{
+  "message": "Must specify two-factor authentication OTP code.",
+  "documentation_url":
+  "https://developer.github.com/v3/auth#working-with-two-factor-authentication"
+}
+```
+
+If you see this, then you will be receiving a one time password via
+your choice of two factor authentication alternative endpoint (either
+SMS or a two factor authentication like Google Authenticator). If you
+use text messaging, check your text messages and then resend the
+request appending a header using cURL.
+
+```
+$ curl https://api.github.com/authorizations --user $USERNAME --data
+'{"scopes":["repo"], "note": "Probot access to PRs" }' -X POST
+--header "X-GitHub-OTP: 423584"                                           
+Enter host password for user 'xrd':
+```
+
+Enter your password again.
+
+==== Using the oAuth token to register for events
+
+If you have completed these steps correctly (regardless of whether you
+are using 2-factor auth or not)	you will then receive an oauth token.
+                                                 
+```  
+{
+  "id": 1234567,
+  "url": "https://api.github.com/authorizations/1234567",
+  "app": {
+    "name": "Probot access to PRs (API)",
+    "url": "https://developer.github.com/v3/oauth_authorizations/",
+    "client_id": "00000000000000000000"
+  },
+  "token": "ad5a36c3b7322c4ae8bb9069d4f20fdf2e454266",
+  "note": "Probot access to PRs",
+  "note_url": null,
+  "created_at": "2015-01-13T06:23:53Z",
+  "updated_at": "2015-01-13T06:23:53Z",
+  "scopes": [
+    "notifications"
+  ]
+}
+
+```
+
+Once this is completed we now have our token which we can use to
+create a webhook. Make sure to use the correct repository name and
+access token before running the cURL command.
+
+```
+$ export REPOSITORY=isagh
+$ export ACCESS_TOKEN=ad5a36c3b7322c4ae8bb9069d4f20fdf2e454266
+$ export WEBHOOK_URL=HTTP://herokuapp.com.blah
+$ export CONFIG="{\"url\": \"$WEBHOOK_URL\", \"content_type\": \"json\"}}"
+$ curl -u "$ACCESS_TOKEN:x-oauth-token" -v -H "Content-Type: application/json" -X POST -d $CONFIG, https://api.github.com/repos/$USERNAME/$REPOSITORY/hooks
+
+curl -usigmavirus24 -v -H "Content-Type: application/json" -X POST -d
+'{"name": "cia", "active": true, "events": ["push"], "config": {"url":
+"...", "content_type": "json"}}' https://api.github.com/repos/sigmavirus24/reponame/hooks
+
+$ curl https://api.github.com/repos/$USERNAME/$REPOSITORY/hooks?access_token=$ACCESS_TOKEN
+# View the webhook...
+
+```
+
+Use the heroku api URL as our webhook endpoint. Unfortunately, we
+cannot do this in local mode (our Probot runs only on our laptop right
+now, but review the Go chapter for an easy way to simulate this using
+ngrok...).
+
+We will need to make sure all requests are real requests from GitHub
+and not a cracker attempting to maliciously.
 
 * Authorization
 * Using Hubot's HTTP server
+
+Let's make sure our tests reflect this new functionality. 
+
+
 
 ===== Assigning an active chat room user
 
@@ -658,9 +789,6 @@ code does what we think it does.
 * Ask someone else to do it?
 
 ===== Inviting others
-
-===== Packaging our Hubot extension
-
 
 ==== Limitations
 
