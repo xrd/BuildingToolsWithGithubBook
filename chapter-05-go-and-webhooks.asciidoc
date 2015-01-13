@@ -1,7 +1,7 @@
 
-# Go and Github Webhooks
+== Go and Github Webhooks
 
-## Why Go and GitHub?
+=== Why Go and GitHub?
 
 Go was originally developed as a systems language and it still serves
 that purpose well. Yet, beyond just hidden system tools, there is a
@@ -30,7 +30,7 @@ tests. We get a pass or fail, and if a failure occurs, beware of the
 encroaching pirate ship (meaning your manager coming to yell at you
 for breaking the build...).
 
-## About Go
+=== About Go
 
 Over the last couple years the Go programming language has been on a
 meteoric rise in popularity. Conceived in 2007 Go's main purpose was
@@ -51,7 +51,7 @@ Getting the documentation for a particular library is as easy as going
 to godoc.org. Making sure your code is formatted properly is as easy
 as `go fmt`.
 
-## Go Getting Started
+=== Go Getting Started
 
 Luckily if you're new to Go it's has a very user friendly installation
 process. 
@@ -69,7 +69,7 @@ I would also recommend the latest "stable" version. At the time of
 writing this the latest stable version is 1.3.1. Also make sure you
 grab the right one for your architecture and OS. 
 
-## GOPATH
+=== GOPATH
 
 There is one very important environment variable that we will discuss next:
 GOPATH
@@ -108,7 +108,7 @@ directory:
 This would be a good time to add the line above your bash/zsh profile
 so when you start your next terminal session GOPATH is set for you. 
 
-## What we are going to build
+=== What we are going to build
 
 You can build almost anything with Go but today we're going to build
 ourselves a webserver that responds to Github Webhooks. 
@@ -117,7 +117,7 @@ Our goal will be to create a server that renders HTML from Markdown
 files hosted on Github. When a Markdown file is created or updated on
 Github our service will automatically render the markdown into HTML. 
 
-## Introduction to Github webhooks
+=== Introduction to Github webhooks
 
 Until now most of the interaction we've had with Github is pushing,
 viewing or requesting information from github.  Us telling github what
@@ -136,7 +136,7 @@ information about what event happened, when and to which repository.
 
 To view all supported events visit: https://developer.github.com/webhooks/#events
 
-## Our Project
+=== Our Project
 
 You can uses these webhooks to start builds, notifiy your team on
 commits or anything else your mind can come up with. For our project
@@ -182,7 +182,7 @@ package. We will be using two sections of the package:
 These two sections of the package will allow us to digest a webhook
 payload and render any markdown files that might have changed. 
 
-## Project structure
+=== Project structure
 
 Time to start writing some Go code. Let setup our workspace so we can get started.
 
@@ -303,7 +303,7 @@ directory lets run:
 
 Navigate your browser to http://localhost:8080/ and you should see a page greeting you.
 
-## Receiving webhooks from Github
+=== Receiving webhooks from Github
 
 First step in receiving webhooks is turning them on at github.com. Navigate to the project you'd like to receive webhooks from or create a new project to test out webhooks.
 
@@ -352,7 +352,7 @@ Ngrok has a web interface running locally on port 4040. Navigate your browser to
 
 If the ping test was successful you should see a POST to /webhook. Click on that request to inspect it.
 
-### Setting up our webhooks endpoint
+==== Setting up our webhooks endpoint
 
 We now have connectivity to Github and Github has the ability to POST to us. Now we need to decide what we want to do with the information Github gives us.
 
