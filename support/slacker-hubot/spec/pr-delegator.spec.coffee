@@ -8,10 +8,6 @@ describe "#probot", ->
         beforeEach () ->
                 robot = {
                         respond: jasmine.createSpy()
-                        router: {
-                                post: jasmine.createSpy()
-                                }
-                        }
 
         it "should verify our calls to respond and router.post", (done) ->
                 pr = Probot robot

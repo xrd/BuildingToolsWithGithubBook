@@ -576,7 +576,7 @@ recognize it as a test.
 
 [source,coffeescript]
 -----
-[language="coffeescript", sha="58c3cbb:support/slacker-hubot/spec/pr-delegator.spec.coffee"]
+[language="coffeescript", sha="558eac2:support/slacker-hubot/spec/pr-delegator.spec.coffee"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
