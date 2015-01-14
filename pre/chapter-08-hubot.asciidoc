@@ -842,7 +842,8 @@ To be replaced
 snippet~~~~~
 -----
 
-Now if we run our tests, they all pass.
+Now if we run our tests, they all pass. If they do, publish our new
+version of the app into Heroku.
 
 [source.bash]
 ------
@@ -851,9 +852,54 @@ $ ./node_modules/.bin/jasmine-node --coffee spec/
 
 Finished in 0.009 seconds
 2 tests, 2 assertions, 0 failures, 0 skipped
+$ git push heroku master
+Fetching repository, done.
+Counting objects: 5, done.
+Delta compression using up to 8 threads.
+...
 ------
 
-We now should publish into Heroku.
+Once this is complete, we can now create a pull request for our
+repository from the command line and test our Probot. We'll first
+create a new branch inside our repository, create a test file, and
+then push that content into our repository. Once we have a new branch,
+we can create a pull request from it using the API. We can reuse some
+of our command line pieces from prior commands: reuse the CONFIG
+variable to match the pull request format. The required fields are the
+title and body for the pull request, the "head" key which matches the
+name of the branch, and where to merge it to using the "base" key.
+
+[source,bash]
+-------
+$ cd ../isagh # Go into our test repository
+$ NEW_BRANCH=just_a_test
+$ git checkout -b $NEW_BRANCH
+$ echo "Just a test" > test.txt
+$ git commit -m "Adding test file to test branch" -a
+$ git push origin $NEW_BRANCH
+$ CONFIG=$(echo '{
+"title": "A PR test", "body" : "Pull me in", "head": "'$NEW_BRANCH'", "base": "master"
+}')
+
+$ curl -H "Authorization: token d71053e8d73ca9f6f59e6ffb4758e50093958894" -H "Content-Type: appli cation/json" -X POST -d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/pulls
+{
+  "url": "https://api.github.com/repos/xrd/isagh/pulls/1",
+  "id": 27330198,
+  "html_url": "https://github.com/xrd/isagh/pull/1",
+  "diff_url": "https://github.com/xrd/isagh/pull/1.diff",
+  "patch_url": "https://github.com/xrd/isagh/pull/1.patch",
+  "issue_url": "https://api.github.com/repos/xrd/isagh/issues/1",
+  "number": 1,
+  "state": "open",
+  "locked": false,
+  "title": "A PR test",
+      "open_issues_count": 1,
+...
+-------
+
+This returns a huge JSON response, but you can see the first item is
+the link to the pull request. Were we to visit this inside of GitHub,
+we could merge the pull request from the web UI.
 
 ===== Assigning an active chat room user
 
