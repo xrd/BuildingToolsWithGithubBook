@@ -356,7 +356,7 @@ If the ping test was successful you should see a POST to /webhook. Click on that
 
 We now have connectivity to Github and Github has the ability to POST to us. Now we need to decide what we want to do with the information Github gives us.
 
-We have our `helloHander` now lets build our `webhookHander`.
+We have our `helloHandler` now lets build our `webhookHandler`.
 
 We will need to do a few things in our `webhookHandler`
 
@@ -364,7 +364,7 @@ We will need to do a few things in our `webhookHandler`
 2. Read the body of JSON in the request.
 3. Parse the JSON into something Go can use.
 
-Let's worry about #3 in a bit. First lets hookup a very basic handle to see what Github is sending us. Below is the entire gowebhooks.go file.
+Let's worry about #3 in a bit. First let's hookup a very basic handle to see what Github is sending us. Below is the entire gowebhooks.go file.
 
 ```go
 package gowebhooks
