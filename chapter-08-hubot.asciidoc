@@ -597,10 +597,6 @@ describe "#probot", ->
         beforeEach () ->
                 robot = {
                         respond: jasmine.createSpy()
-                        router: {
-                                post: jasmine.createSpy()
-                                }
-                        }
 
         it "should verify our calls to respond and router.post", (done) ->
                 pr = Probot robot
@@ -851,7 +847,28 @@ We should update our tests to make sure we anticipate this new
 functionality. We will be using the Hubot HTTP server, which
 piggybacks on the built in express server running inside of Hubot.
 
+[source,coffeescript]
+-----
 
+Probot = require "../scripts/pr-delegator"
+
+pr = undefined
+robot = undefined
+
+describe "#probot", ->
+        beforeEach () ->
+                robot = {
+                        respond: jasmine.createSpy()
+
+        it "should verify our calls to respond and router.post", (done) ->
+                pr = Probot robot
+                expect( robot.respond.calls.length ).toEqual( 2 )
+                done()
+
+
+        
+
+-----
 
 
 ===== Assigning an active chat room user

@@ -576,7 +576,7 @@ recognize it as a test.
 
 [source,coffeescript]
 -----
-[language="coffeescript", sha="558eac2:support/slacker-hubot/spec/pr-delegator.spec.coffee"]
+[language="coffeescript", sha="7257c20:support/slacker-hubot/spec/pr-delegator.spec.coffee"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -819,7 +819,13 @@ We should update our tests to make sure we anticipate this new
 functionality. We will be using the Hubot HTTP server, which
 piggybacks on the built in express server running inside of Hubot.
 
-
+[source,coffeescript]
+-----
+[language="coffeescript", sha="7257c20:support/slacker-hubot/spec/pr-delegator.spec.coffee"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
 
 
 ===== Assigning an active chat room user
