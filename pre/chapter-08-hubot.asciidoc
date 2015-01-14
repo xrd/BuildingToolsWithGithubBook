@@ -799,7 +799,7 @@ command. Since the $CONFIG variable is particularly long, we use echo
 to print out a bunch of information with the webhook URL in the
 middle. If you want to see the result of that variable, type `echo
 $CONFIG` and you'll notice the snippet `... "url":
-"https://webiphany-chatbot.herokuapp.com" ...` properly interpolated.
+"https://webiphany-chatbot.herokuapp.com/pr" ...` properly interpolated.
 
 Use the heroku api URL as our webhook endpoint. Unfortunately, we
 cannot operate our Probot purely in local mode when we start
@@ -817,16 +817,17 @@ our webhook secret.
 
 We should update our tests to make sure we anticipate this new
 functionality. We will be using the Hubot HTTP server, which
-piggybacks on the built in express server running inside of Hubot.
+piggybacks on the built in express server running inside of Hubot. Our
+new test should reflect that we use the `router.post` method exposed
+to our Hubot, and that it is called once.
 
 [source,coffeescript]
 -----
-[language="coffeescript", sha="7257c20:support/slacker-hubot/spec/pr-delegator.spec.coffee"]
+[language="coffeescript", sha="ffe7236:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="8..20"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
-
 
 ===== Assigning an active chat room user
 

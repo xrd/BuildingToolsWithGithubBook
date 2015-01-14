@@ -14,10 +14,8 @@ module.exports = (robot) ->
                 console.log "Declined!"
 
         robot.router.post '/pr', (req, res) ->
-                data   = JSON.parse req.body.payload
-                # secret = data.secret
-                console.log "Got soemthing"
+                data = JSON.parse req.body.payload
+                secret = data.secret
                 room = "general"
-        
-                robot.messageRoom room, "Willy nilly on the googly" # "I have a secret: #{secret}"
+                robot.messageRoom room, "OMG, GitHub is on my caller-id!?!"
                 res.send 'OK'
