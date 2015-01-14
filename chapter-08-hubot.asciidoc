@@ -866,6 +866,23 @@ to our Hubot, and that it is called once.
                 done()
 -----
 
+These tests will fail should we run them.
+
+Now we can add to our Probot and have it handle webhook
+callbacks from GitHub. Add this to the end of the file.
+
+[source,coffeescript]
+-----
+        robot.router.post '/pr', (req, res) ->
+                data = JSON.parse req.body.payload
+                secret = data.secret
+                room = "general"
+                robot.messageRoom room, "OMG, GitHub is on my caller-id!?!"
+                res.send 'OK'
+-----
+
+
+
 ===== Assigning an active chat room user
 
 * Randomly selecting a user

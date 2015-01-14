@@ -13,9 +13,13 @@ describe "#probot", ->
                                 }
                         }
 
-        it "should verify our calls to respond and router.post", (done) ->
+        it "should verify our calls to respond", (done) ->
                 pr = Probot robot
                 expect( robot.respond.calls.length ).toEqual( 2 )
+                done()
+
+        it "should verify our calls to router.post", (done) ->
+                pr = Probot robot
                 expect( robot.router.post ).toHaveBeenCalled()
                 done()
 

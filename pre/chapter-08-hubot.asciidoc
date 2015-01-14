@@ -829,6 +829,21 @@ To be replaced
 snippet~~~~~
 -----
 
+These tests will fail should we run them.
+
+Now we can add to our Probot and have it handle webhook
+callbacks from GitHub. Add this to the end of the file.
+
+[source,coffeescript]
+-----
+[language="coffeescript", sha="6be8818:support/slacker-hubot/scripts/pr-delegator.coffee", lines="16..22"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+
+
 ===== Assigning an active chat room user
 
 * Randomly selecting a user
