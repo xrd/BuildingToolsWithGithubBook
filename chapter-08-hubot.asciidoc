@@ -597,14 +597,15 @@ describe "#probot", ->
         beforeEach () ->
                 robot = {
                         respond: jasmine.createSpy()
+                        router: {
+                                post: jasmine.createSpy()
+                                }
+                        }
 
-        it "should verify our calls to respond and router.post", (done) ->
+        it "should verify our calls to respond", (done) ->
                 pr = Probot robot
                 expect( robot.respond.calls.length ).toEqual( 2 )
                 done()
-
-
-        
 
 -----
 
@@ -694,7 +695,7 @@ $ ./node_modules/.bin/jasmine-node --coffee spec/
 .
 
 Finished in 0.009 seconds
-1 test, 2 assertions, 0 failures, 0 skipped
+1 test, 1 assertions, 0 failures, 0 skipped
 
 ```
 
@@ -847,29 +848,21 @@ We should update our tests to make sure we anticipate this new
 functionality. We will be using the Hubot HTTP server, which
 piggybacks on the built in express server running inside of Hubot. Our
 new test should reflect that we use the `router.post` method exposed
-to our Hubot, and that it is called once.
+to our Hubot, and that it is called once. We add this next test to the
+end of our spec file.
 
 [source,coffeescript]
 -----
-        beforeEach () ->
-                robot = {
-                        respond: jasmine.createSpy()
-                        router: {
-                                post: jasmine.createSpy()
-                                }
-                        }
-
-        it "should verify our calls to respond and router.post", (done) ->
+        it "should verify our calls to router.post", (done) ->
                 pr = Probot robot
-                expect( robot.respond.calls.length ).toEqual( 2 )
                 expect( robot.router.post ).toHaveBeenCalled()
                 done()
+
 -----
 
-These tests will fail should we run them.
-
-Now we can add to our Probot and have it handle webhook
-callbacks from GitHub. Add this to the end of the file.
+This additional test will fail should we run it. Now we can add to our
+Probot and have it handle webhook callbacks from GitHub. Add this to
+the end of the file. 
 
 [source,coffeescript]
 -----
@@ -881,7 +874,18 @@ callbacks from GitHub. Add this to the end of the file.
                 res.send 'OK'
 -----
 
+Now if we run our tests, they all pass.
 
+[source.bash]
+------
+$ ./node_modules/.bin/jasmine-node --coffee spec/                                                
+..
+
+Finished in 0.009 seconds
+2 tests, 2 assertions, 0 failures, 0 skipped
+------
+
+We now should publish into Heroku.
 
 ===== Assigning an active chat room user
 

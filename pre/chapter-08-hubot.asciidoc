@@ -576,7 +576,7 @@ recognize it as a test.
 
 [source,coffeescript]
 -----
-[language="coffeescript", sha="7257c20:support/slacker-hubot/spec/pr-delegator.spec.coffee"]
+[language="coffeescript", sha="e38eeca:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="1..20"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -666,7 +666,7 @@ $ ./node_modules/.bin/jasmine-node --coffee spec/
 .
 
 Finished in 0.009 seconds
-1 test, 2 assertions, 0 failures, 0 skipped
+1 test, 1 assertions, 0 failures, 0 skipped
 
 ```
 
@@ -819,20 +819,20 @@ We should update our tests to make sure we anticipate this new
 functionality. We will be using the Hubot HTTP server, which
 piggybacks on the built in express server running inside of Hubot. Our
 new test should reflect that we use the `router.post` method exposed
-to our Hubot, and that it is called once.
+to our Hubot, and that it is called once. We add this next test to the
+end of our spec file.
 
 [source,coffeescript]
 -----
-[language="coffeescript", sha="ffe7236:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="8..20"]
+[language="coffeescript", sha="e38eeca:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="21..25"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
-These tests will fail should we run them.
-
-Now we can add to our Probot and have it handle webhook
-callbacks from GitHub. Add this to the end of the file.
+This additional test will fail should we run it. Now we can add to our
+Probot and have it handle webhook callbacks from GitHub. Add this to
+the end of the file. 
 
 [source,coffeescript]
 -----
@@ -842,7 +842,18 @@ To be replaced
 snippet~~~~~
 -----
 
+Now if we run our tests, they all pass.
 
+[source.bash]
+------
+$ ./node_modules/.bin/jasmine-node --coffee spec/                                                
+..
+
+Finished in 0.009 seconds
+2 tests, 2 assertions, 0 failures, 0 skipped
+------
+
+We now should publish into Heroku.
 
 ===== Assigning an active chat room user
 
