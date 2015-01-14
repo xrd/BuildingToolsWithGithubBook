@@ -329,7 +329,8 @@ URL for your site. Generally any name works, and it is
 
 [code,bash]
 -----
-$ heroku config:add HEROKU_URL=https://webiphany-chatbot.herokuapp.com/
+$ heroku create inqry-chatbot
+$ heroku config:add HEROKU_URL=https://inqry-chatbot.herokuapp.com/
 $ heroku config:add HUBOT_SLACK_TOKEN=xoxb-3295776784-nZxl1H3nyLsVcgdD29r1PZCq
 $ git push heroku master
 Fetching repository, done.
@@ -356,9 +357,9 @@ Total 3 (delta 2), reused 0 (delta 0)
 
 -----> Compressing... done, 6.8MB
 -----> Launching... done, v9
-       https://webiphany-chatbot.herokuapp.com/ deployed to Heroku
+       https://inqry-chatbot.herokuapp.com/ deployed to Heroku
 
-To git@heroku.com:webiphany-chatbot.git
+To git@heroku.com:inqry-chatbot.git
    d32e2db..3627218  master -> master
 
 -----
@@ -776,12 +777,12 @@ Once this is completed we now have our token which we can use to
 create a webhook. Make sure to use the correct repository name and
 access token before running the cURL command. We will also need the
 endpoint that we created when we published into Heroku (in our case
-`https://webiphany-chatbot.herokuapp.com`) 
+`https://inqry-chatbot.herokuapp.com`) 
 
 ```
 $ REPOSITORY=isagh
 $ TOKEN=ad5a36c3b7322c4ae8bb9069d4f20fdf2e454266
-$ WEBHOOK_URL=https://webiphany-chatbot.herokuapp.com/pr
+$ WEBHOOK_URL=https://inqry-chatbot.herokuapp.com/pr
 $ CONFIG=$(echo '{
   "name": "web",
   "active": true,
@@ -828,7 +829,7 @@ command. Since the $CONFIG variable is particularly long, we use echo
 to print out a bunch of information with the webhook URL in the
 middle. If you want to see the result of that variable, type `echo
 $CONFIG` and you'll notice the snippet `... "url":
-"https://webiphany-chatbot.herokuapp.com/pr" ...` properly interpolated.
+"https://inqry-chatbot.herokuapp.com/pr" ...` properly interpolated.
 
 Use the heroku api URL as our webhook endpoint. Unfortunately, we
 cannot operate our Probot purely in local mode when we start
@@ -931,7 +932,14 @@ $ curl -H "Authorization: token d71053e8d73ca9f6f59e6ffb4758e50093958894" -H "Co
 
 This returns a huge JSON response, but you can see the first item is
 the link to the pull request. Were we to visit this inside of GitHub,
-we could merge the pull request from the web UI.
+we could merge the pull request from the web UI. If we then went to
+the settings for our repository, and then clicked on the "Webhooks and
+Services" link on the left navigation bar, at the very bottom of the
+page we would see a list of recent deliveries to our webhook. 
+
+image::images/hubot-recent-deliveries.png[]
+
+
 
 ===== Assigning an active chat room user
 
