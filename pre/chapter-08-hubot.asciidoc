@@ -751,8 +751,8 @@ endpoint that we created when we published into Heroku (in our case
 
 ```
 $ REPOSITORY=isagh
-$ ACCESS_TOKEN=ad5a36c3b7322c4ae8bb9069d4f20fdf2e454266
-$ WEBHOOK_URL=https://webiphany-chatbot.herokuapp.com
+$ TOKEN=ad5a36c3b7322c4ae8bb9069d4f20fdf2e454266
+$ WEBHOOK_URL=https://webiphany-chatbot.herokuapp.com/pr
 $ CONFIG=$(echo '{
   "name": "web",
   "active": true,
@@ -765,7 +765,32 @@ $ CONFIG=$(echo '{
     "content_type": "json"
   }
 }')
-$ curl -u "$ACCESS_TOKEN:x-oauth-token" -v -H "Content-Type: application/json" -X POST -d $CONFIG, https://api.github.com/repos/$USERNAME/$REPOSITORY/hooks
+$ curl -H "Authorization: token $TOKEN" -H "Content-Type: application/json" -X POST -d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/hooks
+{
+  "url": "https://api.github.com/repos/xrd/isagh/hooks/3846063",
+  "test_url":
+  "https://api.github.com/repos/xrd/isagh/hooks/3846063/test",
+  "ping_url":
+  "https://api.github.com/repos/xrd/isagh/hooks/3846063/pings",
+  "id": 3846063,
+  "name": "web",
+  "active": true,
+  "events": [
+    "push",
+    "pull_request"
+  ],
+  "config": {
+    "url": "https://inqry-chatbot.herokuapp.com/pr",
+    "content_type": "json"
+  },
+  "last_response": {
+    "code": null,
+    "status": "unused",
+    "message": null
+  },
+  "updated_at": "2015-01-14T06:23:59Z",
+  "created_at": "2015-01-14T06:23:59Z"
+}
 ```
 
 There is a bit of bash trickery here, but nothing to be overly
@@ -777,9 +802,10 @@ $CONFIG` and you'll notice the snippet `... "url":
 "https://webiphany-chatbot.herokuapp.com" ...` properly interpolated.
 
 Use the heroku api URL as our webhook endpoint. Unfortunately, we
-cannot do this in local mode (our Probot runs only on our laptop right
-now, but review the Go chapter for an easy way to simulate this using
-ngrok...).
+cannot operate our Probot purely in local mode when we start
+integration with GitHub as GitHub cannot talk to our laptop inside a
+LAN, but review the Go chapter for an easy way to simulate this using
+ngrok.
 
 We will need to make sure all requests are real requests from GitHub
 and not a cracker attempting to maliciously inject themselves into our
@@ -789,10 +815,10 @@ webhook. A cracker might be able to guess about where our endpoint
 exists, but unless Heroku or GitHub is compromised, they won't know
 our webhook secret.
 
-* Authorization
-* Using Hubot's HTTP server
+We should update our tests to make sure we anticipate this new
+functionality. We will be using the Hubot HTTP server, which
+piggybacks on the built in express server running inside of Hubot.
 
-Let's make sure our tests reflect this new functionality. 
 
 
 
