@@ -948,3 +948,156 @@ Registering an Organization's Application
 
 
 
+=== GitHub Account Security
+
+Once you start using GitHub, you'll rely on it for more and more than just hosting your project code.
+You'll probably use it for third party authentication; more and more
+services offer GitHub login (oAuth), after you "Login via GitHub" a
+single step allows these services to quickly and automatically
+provision their services using code from a repository stored on GitHub
+rather than asking you to perform a setup step. You'll probably
+integrate GitHub with continuous integration services, which require
+linking your GitHub account to a third party service. You may even
+want to integrate oAuth login within a service you are building. As your
+usage of GitHub starts to expand, you'll want to make sure you
+understand the various intricacies of security within GitHub. The
+GitHub team has put a lot of thought into making GitHub secure while
+still offering flexibility and ease of use. By understanding the
+contents of this chapter, you will know when, where and how to open up
+your GitHub data to third party providers and protect the data you
+don't want to share. 
+
+
+=== Exploring Account Security
+
+==== Reseting Your Password
+
+To change your password, click on the "Accounting settings" icon at the top right corner within GitHub. You will be taken to the "Profile" section of the account settings; click on the "Account Settings" item within the list on the left and you will see a form in which you can enter a new password and confirmation, plus the old password. If you enter these correctly you will update your password on GitHub.
+
+image::images/creating-account-change-password.png[]
+
+Remember: if you are using HTTPS (instead of SSH) with your GitHub clients (meaning, the programs you use to access files within GitHub, like GitHub for Mac or GitHub for Windows), changing your password on GitHub will mean you need to update your password within those clients as well. If you are using SSH to access files on GitHub (you have setup public/private SSH keys) then you can change your password without worry. We detail this distinction and how to handle setting things up below.
+
+==== Using 2 Factor Authentication
+
+GitHub takes the "octocat" as its mascot, and not so surprisingly their technologies have crept like tentacles into many other sites. One example is the availability of "Login via GitHub" buttons, which permit a third-party site to delegate login and credentialing to GitHub using a technology called oAuth. Less technically, a site can ask users to login on the GitHub site, and then ask GitHub to validate that user's identity and then provide access to the services of the third-party site. When third party sites start trusting GitHub for authentication, it becomes more and more important to protect the credibility of a GitHub login. For various reasons, protecting access with a username and passwords is often an easy attack vector. And, for this reason, GitHub offers, like many other sites offering login services for third party sites, what is commonly referred to as "two factor authentication."
+
+If you are not using two factor authentication on your GitHub account, the theft of your username and password is all that is required to break into your account. And, if you have logged into any other sites using GitHub's login delegation services, then those accounts are as good as compromised as well when someone breaks into your GitHub account. 
+
+Two factor authentication simply means that login to GitHub can require two different unconnected methods of authentication to prove you are who you say you are. If you have enabled two factor authentication, an attacker cannot access your GitHub account with only your username and password. The first time you login to GitHub with two-factor authentication enabled, you will start by entering in the username and password. After this GitHub will, typically, send you a text message with a special one time code required to complete the login process. Without this code, the username and password do no good to a malicious attacker. 
+
+It can be easy to steal a username and password through brute force attacks, or due to the fact that many people reuse passwords across different accounts (so when one is compromised an attacker can start testing the password on any other account the person might own), or even good old fashioned social hacking where a person is tricked into revealing their password over the phone or inside an cleverly worded email. All of these attacks can made on the other side of the world. But, it is much harder for a hacker to obtain physical access to your cell phone, especially when they are halfway around the world. Two factor authentication does not completely prevent unauthorized access to your GitHub account, but it reduces the chances monumentally. 
+
+Spend the time to enable two factor authentication on your GitHub account. It only takes a minute to set up, and the piece of mind is worth it.
+
+==== SSH vs HTTPS
+
+There are two transport options for loading code from GitHub: SSH and HTTPS.
+
+Actually, at the time of this writing there are really three protocols: SSH, 
+HTTPS and Subversion. Subversion is there for backwards compatibility with older 
+workflows, and actually just maps the SVN protocol on top of Git. The only reason
+you would use Subversion with GitHub is that you work in an organization that
+requires use of Subversion but also wants to host their code on GitHub. If you work
+for such an schizophrenic organization, you might want to start looking for another job right 
+away.
+
+Both HTTPS and SSH operate over a secure encrypted channel, but beyond this commonality 
+there are very different reasons for using each.
+
+Of the two, SSH is the more secure option. If you are willing to tackle the slight complexity that comes with using SSH, we recommend it. If not, use HTTPS. GitHub recommends HTTPS as their preferred method, but we differ in believing that you'll rest more easily in the long run if you take the trouble to set up SSH access.
+
+===== HTTPS
+
+The only reason you might be unable to use SSH and have no option other than HTTPS is that this protocol can be useful if you are
+inside a very restrictive firewall.
+HTTPS traffic is almost always permitted (port 443 is a common "secure" port on almost 
+any firewall). If you use HTTPS, the "git clone" command will use a URL which starts 
+with https://. For example, to load the Ruby on Rails repository from GitHub you would 
+use the command `git clone https://github.com/rails/rails.git`.
+
+===== HTTPS Downsides
+
+When you use the HTTPS protocol, note that you will need to enter in
+your password to authenticate. The command line git client (which might be what your
+editor is using underneath the graphical interface you use to code) does not
+have an ability to cache this password. This means each time you push code, or pull 
+the latest changes, you will need to re-enter your password. Git is a protocol which 
+supports making lots of little changes, so a requirement that you must add another ten 
+seconds to your workflow makes HTTPS quickly unusable. GitHub has released a Ruby gem called "hub"
+which you can alias in your shell so that when typing "git" your shell actually uses the ruby gem client instead of the native 
+command line client; this ruby gem client can cache and use HTTPS passwords. But, this requires
+additional setup, convolutes your workflow, and SSH still offers more benefits. 
+
+HTTPS is also a less efficient protocol for transferring files; cloning and interacting with 
+repositories using HTTPS is slower for you. 
+
+The only real benefit for HTTPS is for server administrators: it 
+is easier to configure a server to provide HTTPS to git repositories than it is to provide those
+repositories over SSH. GitHub is doing the work of hosting your git repositories for you, however, so this is not a compelling reason to consider HTTPS.
+
+===== SSH 
+
+SSH offers the same level of security but is much more convenient, more flexible and 
+keeps access more secure. You will notice that GitHub offers SSH as the default protocol.
+
+At the center of SSH is a concept called asymmetric cryptography also called 
+public key cryptography. To use SSH you generate a public/private keypair. Then, you 
+upload the public key into GitHub. You keep the private key on your machine, and 
+you keep it private (meaning, don't send it over email, or post it on Facebook).
+
+===== A brief tutorial on using SSH keys
+
+If using SSH sounds complicated, don't fret. To generate a public/private keypair, 
+you just need to run this command from a terminal:
+
+[source,bash]
+$ ssh-keygen 
+Generating public/private rsa key pair.
+Enter file in which to save the key (/Users/xrdawson/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+
+This generates two files, a file called ~/.ssh/id_rsa and another called ~/.ssh/id_rsa.pub. 
+The first file is the private file and the second (ending with a suffix abbreviation of the word "public") is the public file. 
+
+You will be asked if you want to enter a passphrase which protects usage of your keypair. If
+you believe your machine is secure (for example, this is a laptop which uses fingerprint 
+recognition to unlock the screen), then you can hit enter and not protect your private key
+with a passphrase. If the key is sitting in a less secure position, such as a server on the 
+Internet, then you might want to protect the key with a passphrase. If you lose the passphrase, 
+you cannot use the key. However, replacing a key is an easy problem to rectify.
+
+===== Putting your SSH public key on GitHub 
+
+To store an SSH public key on GitHub, copy the key contents into your clipboard. On an OSX machine, you 
+could use this command:
+
+[source,bash]
+$ cat ~/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDG56LecqP2ip/odHzAkM3F/TyL5TjS0m6bNEo3p+m7KEU/eJ+ZvrF1/4ALPk59+Ca2NtOwewVs1RZNuV9BuMesTHFAxev6Zx4R56fwL45UuDm1gjpwevxwHe8aS0elek94OcgxYomnnnmB4Og/OIbVYICfaQ4VhE+xVVOF/TXIGkndZG/wBLFg9QwPTQKhOIgVDoTzdj0FZ9qXfhvc7AhGkeOAO+dyeNgfk8ghzRPqyztd14tq6gOVPAMce3mGQsugbcKxgRBbd/7VaWT5hQl5YVtLlcAvM1gHgvU8MNVhrJTKzZxlTNBVBnYy1QxPtB3LF25YL7jAjtMYkuEjmZff xrdawson@Chriss-MacBook-Pro-2.local
+
+Select everything from the "ssh-rsa" to and including the "xrdawson@Chriss-MacBook-Pro-2.local" (which is the name of my MacBook Pro) and then copy it to your clipboard. Then, go to GitHub, click on the "Account Settings" button:
+
+image::images/account-settings.png[]
+
+Then, click on the "SSH" item in the navigation bar on the left. You'll see a list of SSH keys already in the system. You might not have any if you just setup your account. In my account, I have many SSH keys.
+
+image::images/ssh-keylist.png[]
+
+As you can see, I have a key for my OSX Laptop. I have another key for an Ubuntu server I manage, a server which has a user which has access to my repositories. Then, I have another server, this time running on Amazon Web Services, which also has access to my repositories. I have an Android device which has access, as well as a Chromebook running developer mode that has access to my GitHub repositories. Finally, I have a virtual machine (using Vagrant) on my OSX laptop, and this machine has its own access. 
+
+To add your key, click on the "Add SSH Key" button at the very top right of the list of SSH keys. This action will open a form underneath into which you can choose a title for the SSH key and then the contents which you copied to the clipboard. Once the form looks something like this you can click the "Add Key" button.
+
+image::images/ssh-add-key.png[]
+
+===== The big reason why SSH trumps HTTPS
+
+If you takeaway one thing about why SSH is better than HTTPS, let it be this: both HTTPS and SSH make
+it easy to add access to your repositories. However, HTTPS makes it really hard to revoke that
+access.
+
+With HTTPS managing and securing access to your repository becomes *your* problem. With SSH, 
+secure access is *GitHub's* problem. And, they've been thinking about the right ways to do this: 
+from requiring re-entry of your password whenever a new SSH public key is added, 
+to two factor authentication (utilizing email and your cell phone to verify your identity), GitHub has spent lots of time and money making sure your source code is protected from rogue access.
