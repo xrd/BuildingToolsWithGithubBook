@@ -1,3 +1,5 @@
+handler = require '../lib/handler'
+
 module.exports = (robot) ->
         robot.respond /accept/i, (msg) ->
                 accept( msg )
@@ -13,11 +15,5 @@ module.exports = (robot) ->
                 msg.reply "OK, I'll find someone else"
                 console.log "Declined!"
 
-        robot.router.post '/pr', (req, res) ->
-                #payload = req.body.payload
-                payload = "um, ok"
-                secret = req.body.secret
-                console.log "Inside the post: #{payload} / #{secret}"
-                room = "general"
-                robot.messageRoom room, "OMG, GitHub is on my caller-id!?!"
-                res.send 'OK'
+        robot.router.post '/pr', ( req, res ) ->
+                handler.prHandler( req, res, robot )

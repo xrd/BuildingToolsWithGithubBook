@@ -541,10 +541,21 @@ script should be in the `scripts` directory and named `pr-delegator.coffee`:
 	  
 [source,json]
 -----
-[language="json", sha="abeac40:support/slacker-hubot/scripts/pr-delegator.coffee", lines="1..15"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+module.exports = (robot) ->
+        robot.respond /accept/i, (msg) ->
+                accept( msg )
+
+        robot.respond /decline/i, (msg) ->
+                decline( msg )
+
+        accept = ( msg ) ->
+                msg.reply "Thanks, you got it!"
+                console.log "Accepted!"
+                
+        decline = ( msg ) ->
+                msg.reply "OK, I'll find someone else"
+                console.log "Declined!"
+
 -----
 
 If Hubot is running, you will need to restart it to reload any
@@ -577,10 +588,26 @@ recognize it as a test.
 
 [source,coffeescript]
 -----
-[language="coffeescript", sha="e38eeca:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="1..20"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+
+Probot = require "../scripts/pr-delegator"
+
+pr = undefined
+robot = undefined
+
+describe "#probot", ->
+        beforeEach () ->
+                robot = {
+                        respond: jasmine.createSpy()
+                        router: {
+                                post: jasmine.createSpy()
+                                }
+                        }
+
+        it "should verify our calls to respond", (done) ->
+                pr = Probot robot
+                expect( robot.respond.calls.length ).toEqual( 2 )
+                done()
+
 -----
 
 The first line in our test requires, or loads, the Hubot extension
@@ -619,10 +646,12 @@ specifies that the minimum version of jasmine node we will use is
 [source,javascript]
 -----
 ...
-[language="coffeescript", sha="431888f:support/slacker-hubot/package.json" lines="19..24"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+    "hubot-shipit": "^0.1.1",
+    "hubot-slack": "^3.2.1",
+    "hubot-youtube": "^0.1.2",
+    "jasmine-node": "^1.14.5"
+  },
+  "engines": {
 ...
 -----
 
@@ -825,10 +854,11 @@ end of our spec file.
 
 [source,coffeescript]
 -----
-[language="coffeescript", sha="e38eeca:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="21..25"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+        it "should verify our calls to router.post", (done) ->
+                pr = Probot robot
+                expect( robot.router.post ).toHaveBeenCalled()
+                done()
+
 -----
 
 This additional test will fail should we run it. Now we can add to our
@@ -837,10 +867,13 @@ the end of the file.
 
 [source,coffeescript]
 -----
-[language="coffeescript", sha="6be8818:support/slacker-hubot/scripts/pr-delegator.coffee", lines="16..22"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+        robot.router.post '/pr', (req, res) ->
+                #payload = req.body.payload
+                payload = "um, ok"
+                secret = req.body.secret
+                console.log "Inside the post: #{payload} / #{secret}"
+                room = "general"
+                robot.messageRoom room, "OMG, GitHub is on my caller-id!?!"
 -----
 
 Now if we run our tests, they all pass. If they do, publish our new
@@ -850,6 +883,9 @@ version of the app into Heroku.
 ------
 $ ./node_modules/.bin/jasmine-node --coffee spec/                                                
 ..
+$ git commit -m "Working tests and associated code" -a
+...
+$ heroku push
 
 Finished in 0.009 seconds
 2 tests, 2 assertions, 0 failures, 0 skipped
@@ -870,19 +906,40 @@ variable to match the pull request format. The required fields are the
 title and body for the pull request, the "head" key which matches the
 name of the branch, and where to merge it to using the "base" key.
 
+Creating a new branch, adding some content and then issuing a pull
+request against the branch might be something we need to do several
+times to get it to work correctly. The examples here as are written
+work right out of the box, but don't be fooled into thinking that it
+all went exactly as we expected the first time around. As these are
+commands you might want to perform multiple times as you are
+experimenting, let's put the commands described in the prior paragraph
+into a bash script that is generic and can be run multiple times. 
+
+Create a new repository, and push it into GitHub.
+
+THIS NEEDS TO BE A CHAPTER FOLLOWING THE INTRODUCTION TO HUB
+
+[source,bash]
+------
+DATE=$(date "+%s")
+NEW_BRANCH=$DATE
+git checkout -b $NEW_BRANCH
+echo "Adding some content" >> test.txt
+git commit -m "Adding test file to test branchat $DATE" -a
+git push origin $NEW_BRANCH
+CONFIG=$(echo "{ "title": "PR on '$DATE'", "body" : "Pull this PR'$DATE'", "head": "'$NEW_BRANCH'", "base": "master" }')
+curl -H "Authorization: token d71053e8d73ca9f6f59e6ffb4758e50093958894" -H "Content-Type: application/json" -X POST -d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/pulls
+------
+
 [source,bash]
 -------
-$ cd ../isagh # Go into our test repository
-$ NEW_BRANCH=just_a_test
-$ git checkout -b $NEW_BRANCH
-$ echo "Just a test" > test.txt
-$ git commit -m "Adding test file to test branch" -a
-$ git push origin $NEW_BRANCH
-$ CONFIG=$(echo '{
-"title": "A PR test", "body" : "Pull me in", "head": "'$NEW_BRANCH'", "base": "master"
-}')
+$ mkdir testing_repository
+$ cd testing_repository
+$ hub create
 
-$ curl -H "Authorization: token d71053e8d73ca9f6f59e6ffb4758e50093958894" -H "Content-Type: appli cation/json" -X POST -d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/pulls
+'
+
+
 {
   "url": "https://api.github.com/repos/xrd/isagh/pulls/1",
   "id": 27330198,

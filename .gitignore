@@ -6,5 +6,5 @@ temp
 node_modules
 **screenshot*.png
 xml
-*~
+**/*~
 full-outline*
