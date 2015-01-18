@@ -248,10 +248,10 @@ is very basic:
 
 [source,yaml]
 -----
-[filename=".", language="yml", sha="c6117f6:support/jekyll/_config.yml"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+name: Your New Jekyll Site
+markdown: redcarpet
+pygments: true
+
 -----
 
 We only have three lines to contend with and they are simple to
@@ -288,10 +288,31 @@ saw earlier.
 
 [source,yaml]
 -----
-[filename=".", language="yml", sha="c6117f633f:support/jekyll/_posts/2014-03-03-welcome-to-jekyll.markdown"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+---
+layout: post
+title:  "Welcome to Jekyll!"
+date:   2014-03-03 12:56:40
+categories: jekyll update
+---
+
+You'll find this post in your `_posts` directory - edit this post and re-build (or run with the `-w` switch) to see your changes!
+To add new posts, simply add a file in the `_posts` directory that follows the convention: YYYY-MM-DD-name-of-post.ext.
+
+Jekyll also offers powerful support for code snippets:
+
+{% highlight ruby %}
+def print_hi(name)
+  puts "Hi, #{name}"
+end
+print_hi('Tom')
+#=> prints 'Hi, Tom' to STDOUT.
+{% endhighlight %}
+
+Check out the [Jekyll docs][jekyll] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll's GitHub repo][jekyll-gh].
+
+[jekyll-gh]: https://github.com/mojombo/jekyll
+[jekyll]:    http://jekyllrb.com
+
 -----
 
 Hopefully you'll agree this is a fairly intuitive and readable
@@ -835,10 +856,38 @@ would not.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="5ddfa26:support/jekyll-parser/scraper.rb"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+require 'rubygems'
+require 'mechanize'
+require 'vcr'
+
+VCR.configure do |c|  # <1> 
+  c.cassette_library_dir = 'cached'
+  c.hook_into :webmock
+end
+
+class ByTravelersProcessor
+  attr_accessor :mechanize  # <2>
+
+  def initialize
+    @mechanize = Mechanize.new { |agent| # <3>
+      agent.user_agent_alias = 'Mac Safari'
+    }
+  end
+
+  def run
+    100.times do |i| 
+      get_ith_page( i ) # <4>
+    end
+  end
+  
+  def get_ith_page( i )
+    puts "Loading #{i}th page"
+  end
+  
+end
+
+  
+
 -----
 
 <1> VCR is a ruby library which caches HTTP requests. Typically used
@@ -875,10 +924,13 @@ Our runner is simple (this means our test cases will be too).
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="2245215:support/jekyll-parser/run.rb"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+require 'rubygems'
+require 'bundler/setup'
+require './scraper'
+
+btp = ByTravelersProcessor.new()
+btp.run()
+
 -----
 
 If we run this code now, we will just see our debug output.
@@ -906,10 +958,112 @@ and the title by implementing the `get_ith_page` method.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="6be532b0bd:support/jekyll-parser/scraper.rb" lines="25..-4"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+    body = page[1]
+    creation_date = page[2]
+    location = page[3]
+    
+    title.gsub!( /"/, '' )
+    
+    template = <<"TEMPLATE" 
+---
+layout: post   
+title: "#{title}"  
+published: true
+image: #{image}
+location: #{location}
+---
+
+#{body}
+TEMPLATE
+
+    title_for_filename = title.downcase.gsub( /,+/, '' ).gsub( /[\s\/\:\;]+/, '-') 
+    # puts "Title: #{title_for_filename}"
+    filename = "_posts/#{creation_date}-#{title_for_filename}.md"
+    File.open( filename, "w+" ) do |f|
+      f.write template
+    end
+  end
+
+  def run
+    100.times do |i| 
+      get_ith_page( i ) 
+    end
+    100.times do |i|
+      if pages[i]
+        write_post( pages[i] ) 
+      end
+    end
+  end
+
+  def process_creation_date( i, row )
+    location, creation_date = row.text().split /last updated on:/ 
+    creation_date.strip()
+  end  
+
+  def process_location( i, row )
+    location, creation_date = row.text().split /last updated on:/  # <1>
+
+    location.gsub!( /Concerning: /, "" ) # <2>
+    location.strip!
+    return location # <3>
+  end  
+
+  
+  def process_body( name, i, row )
+    body = ""
+    if row
+      ( row / "p" ).each do |p|
+        text = p.text()
+        text.strip!
+        text.gsub!( /\*\s*/, '' )
+        body += text + "\n\n"
+      end
+    end
+    body 
+  end
+
+  def process_title( i, title )
+    img = ( title / "img" ) 
+    src = img.attr('src').text()
+    filename = src.split( "/" ).pop
+    
+    output = "assets/images/"
+    full = File.join( output, filename ) 
+    
+    unless File.exists? full
+      root = "https://web.archive.org"
+      remote = root + src
+      contents = `wget --quiet -O #{full} #{remote}`  
+    end
+    
+    title = title.text()
+    if title
+      title.gsub!( /Title:/, "" )
+      title.strip!
+    end
+    [ title, filename ] 
+    
+  end
+  
+  def get_ith_page( i )
+    root = "https://web.archive.org/web/20030502080831/http://www.bytravelers.com/journal/entry/#{i}"
+    begin
+      VCR.use_cassette("bt_#{i}") do 
+        mechanize.get( root ) do |page|
+          rows = ( page / "table[valign=top] tr" ) 
+          if rows and rows.length > 3
+            title = process_title( i, rows[1] )
+            body = process_body( title, i, rows[4] ) 
+            creation_date = process_creation_date( i, rows[3] )
+            location = process_location( i, rows[3] )
+            pages[ i ] = [ title, body, creation_date, location ]
+          end
+        end
+      end
+    rescue Exception => e
+      puts "Error: #{e}"
+    end
+  end
 -----
 
 <1> First, we load up a VCR cassette; this code says "store any HTTP requests
@@ -967,10 +1121,57 @@ the renamed `process` method now called `process_body`.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="6be532b0bd4b2055847339c76b7496ef47d902da:support/jekyll-parser/scraper.rb" lines="20..70"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+  end
+
+  def write_post( page )
+    title = page[0][0]  
+    image = page[0][1]
+    body = page[1]
+    creation_date = page[2]
+    location = page[3]
+    
+    title.gsub!( /"/, '' )
+    
+    template = <<"TEMPLATE" 
+---
+layout: post   
+title: "#{title}"  
+published: true
+image: #{image}
+location: #{location}
+---
+
+#{body}
+TEMPLATE
+
+    title_for_filename = title.downcase.gsub( /,+/, '' ).gsub( /[\s\/\:\;]+/, '-') 
+    # puts "Title: #{title_for_filename}"
+    filename = "_posts/#{creation_date}-#{title_for_filename}.md"
+    File.open( filename, "w+" ) do |f|
+      f.write template
+    end
+  end
+
+  def run
+    100.times do |i| 
+      get_ith_page( i ) 
+    end
+    100.times do |i|
+      if pages[i]
+        write_post( pages[i] ) 
+      end
+    end
+  end
+
+  def process_creation_date( i, row )
+    location, creation_date = row.text().split /last updated on:/ 
+    creation_date.strip()
+  end  
+
+  def process_location( i, row )
+    location, creation_date = row.text().split /last updated on:/  # <1>
+
+    location.gsub!( /Concerning: /, "" ) # <2>
 -----
 
 We've modified the `get_ith_page` method to save each page as a tuple
@@ -1025,10 +1226,46 @@ out the files after we have retrieved and parsed the pages from Archive.org.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="843dd54:support/jekyll-parser/scraper.rb" lines="20..59"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+  def write_post( page )
+    title = page[0]
+    body = page[1]
+    creation_date = page[2]
+
+    title.gsub!( /"/, '' ) # <2>
+    
+    template = <<"TEMPLATE"  # <3>
+---
+layout: default
+title: "#{title}"
+published: false
+---
+
+#{body}
+TEMPLATE
+
+    title_for_filename = title.downcase.gsub( /,+/, '' ).gsub( /[\s\/\:\;]+/, '-') # <3>
+    filename = "_posts/#{creation_date}-#{title_for_filename}.md"
+    File.open( filename, "w+" ) do |f|
+      f.write template
+    end
+  end
+
+  def run
+    100.times do |i| 
+      get_ith_page( i ) 
+    end
+    100.times do |i|
+      if pages[i]
+        write_post( pages[i] ) # <1>
+      end
+    end
+  end
+
+  def process_creation_date( i, row )
+    location, creation_date = row.text().split /last updated on:/ # <5>
+    creation_date.strip()
+  end  
+  
 -----
 
 <1> First, we modify the `run` method to call our new `write_post`
@@ -1081,10 +1318,27 @@ logic operation, like conditionals or loops.
 
 [source,html]
 -----
-[filename=".", language="ruby", sha="843dd54:support/jekyll-parser/index.md"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+---
+layout: default
+---
+
+<h1>ByTravelers.com</h1>
+
+Crowd sourced travel information.
+
+<br/>
+
+<div>
+{% for post in site.posts %}
+<a href="{{ post.url }}"><h2> {{ post.title }} </h2></a>
+{{ post.content | strip_html | truncatewords: 40 }}
+<br/>
+<em>Posted on {{ post.date | date_to_string }}</em>
+<br/>
+{% endfor %}
+</div>
+
+
 -----
 
 The above template has both output and logic tags. We see a logic tag
@@ -1107,10 +1361,18 @@ We also need to create a *default* layout, so create this inside the
 
 [source,html]
 -----
-[filename=".", language="ruby", sha="843dd54:support/jekyll-parser/_layouts/default.html"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+<html>
+<head>
+<title>ByTravelers.com</title>
+</head>
+
+<body>
+
+{{ content }}
+
+</body>
+</html>
+
 -----
 
 This file is almost pure HTML, with only the `{{ content }}` tag. When
@@ -1126,10 +1388,9 @@ earlier and can reuse this almost verbatim, changing only the name.
 
 [source,yaml]
 -----
-[filename=".", language="ruby", sha="843dd54:support/jekyll-parser/_config.yml"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+name: ByTravelers.com
+markdown: redcarpet
+pygments: true
 -----
 
 Taking a moment to add our files to the Git repository, we can then
@@ -1200,10 +1461,21 @@ Bootstrap CDN. And, add a `container` class around the content.
 
 [source,html]
 -----
-[filename=".", language="html", sha="00be6cf:support/jekyll-parser/_layouts/default.html"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+<html>
+<head>
+<title>ByTravelers.com</title>
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+{{ content }}
+
+</body>
+</html>
+
 -----
 
 Notice that our files are regenerated in the terminal window with
@@ -1227,10 +1499,15 @@ following contents.
 
 [source,html]
 -----
-[filename=".", language="html", sha="325c1ef:support/jekyll-parser/_layouts/post.html"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+---
+layout: default
+---
+
+<h1>{{ page.title }}</h1>
+
+{{ content }}
+
+
 -----
 
 Notice also that this layout inherits the default layout. You can
@@ -1259,10 +1536,19 @@ changes we made were the correct ones.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="364a202:support/jekyll-parser/scraper.rb" lines="24..36"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+
+    title.gsub!( /"/, '' )
+    
+    template = <<"TEMPLATE" 
+---
+layout: post    #  <---- Set our layout variable to "post"
+title: "#{title}"  
+published: true
+---
+
+#{body}
+TEMPLATE
+
 -----
 
 If we then run `ruby scraper.rb` we will see something like
@@ -1313,10 +1599,15 @@ would have worked with our HTML templates.
 
 [source,css]
 -----
-[filename=".", language="ruby", sha="e1590d3:support/jekyll-parser/assets/css/site.css"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+body {
+color: #000000;
+background-color: #CCCC99;
+}
+
+a {
+color: #603;
+}
+
 -----
 
 Then, modify the `default.html` template and include the new CSS file
@@ -1325,10 +1616,12 @@ to allow our style changes to "cascade" to all our other files.
 [source,css]
 -----
 ...
-[filename=".", language="ruby", sha="e1590d3:support/jekyll-parser/_layouts/default.html" lines="3..8"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+<title>ByTravelers.com</title>
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+<link href="/assets/css/site.css" rel="stylesheet">
+
+</head>
 ...
 -----
 
@@ -1363,10 +1656,28 @@ Ruby for a moment and download the file manually.
 [source,ruby]
 -----
 ...
-[filename=".", language="ruby", sha="e5c56e4:support/jekyll-parser/scraper.rb" lines="81..102"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+  def process_title( i, title )
+    img = ( title / "img" ) # <1>
+    src = img.attr('src').text()
+    filename = src.split( "/" ).pop
+    
+    output = "assets/images/"
+    full = File.join( output, filename ) # <2>
+    
+    unless File.exists? full
+      root = "https://web.archive.org"
+      remote = root + src
+      contents = `wget --quiet -O #{full} #{remote}`  # <3>
+    end
+    
+    title = title.text()
+    if title
+      title.gsub!( /Title:/, "" )
+      title.strip!
+    end
+    [ title, filename ]  # <4>
+    
+  end
 ...
 -----
 
@@ -1397,10 +1708,25 @@ our `write_post` method.
 [source,ruby]
 -----
 ...
-[filename=".", language="ruby", sha="d7293c0:support/jekyll-parser/scraper.rb" lines="22..40"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+  def write_post( page )
+    title = page[0][0]  # <1>
+    image = page[0][1]
+    body = page[1]
+    creation_date = page[2]
+    
+    title.gsub!( /"/, '' )
+    
+    template = <<"TEMPLATE" 
+---
+layout: post   
+title: "#{title}"  
+published: true
+image: #{image}   # <2>
+---
+
+#{body}
+TEMPLATE
+
 ...
 -----
 
@@ -1417,10 +1743,17 @@ title.
 
 [source,html]
 -----
-[filename=".", language="ruby", sha="7052195:support/jekyll-parser/_layouts/post.html"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+---
+layout: default
+---
+
+<h1>{{ page.title }}</h1>
+
+<img src="/assets/images/{{ page.image }}">
+
+{{ content }}
+
+
 -----
 
 We use the Liquid template tags `{{ page.image }}` to retrieve the
@@ -1430,10 +1763,28 @@ We can also reuse this image on our index page (`index.md`).
 
 [source,html]
 -----
-[filename=".", language="ruby", sha="7052195:support/jekyll-parser/index.md"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+---
+layout: default
+---
+
+<h1>ByTravelers.com</h1>
+
+Crowd sourced travel information.
+
+<br/>
+
+<div>
+{% for post in site.posts %}
+<a href="{{ post.url }}"><h2> {{ post.title }} </h2></a>
+<img src="/assets/images/{{ post.image }}">
+{{ post.content | strip_html | truncatewords: 40 }}
+<br/>
+<em>Posted on {{ post.date | date_to_string }}</em>
+<br/>
+{% endfor %}
+</div>
+
+
 -----
 
 Note that in this case the variable is presented as `post.image` as
@@ -1460,10 +1811,13 @@ the `process_creation_date` method inside the `get_ith_page` method.
 [source,ruby]
 -----
 ...
-[filename=".", language="ruby", sha="7291400:support/jekyll-parser/scraper.rb" lines="67..73"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+  def process_location( i, row )
+    location, creation_date = row.text().split /last updated on:/  # <1>
+
+    location.gsub!( /Concerning: /, "" ) # <2>
+    location.strip!
+    return location # <3>
+  end  
 ...
 -----
 
@@ -1482,10 +1836,27 @@ use that in the template inside the YFM.
 [source,ruby]
 -----
 ...
-[filename=".", language="ruby", sha="7291400:support/jekyll-parser/scraper.rb" lines="22..42"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+  def write_post( page )
+    title = page[0][0]  
+    image = page[0][1]
+    body = page[1]
+    creation_date = page[2]
+    location = page[3]
+    
+    title.gsub!( /"/, '' )
+    
+    template = <<"TEMPLATE" 
+---
+layout: post   
+title: "#{title}"  
+published: true
+image: #{image}
+location: #{location}
+---
+
+#{body}
+TEMPLATE
+
 ...
 -----
 
@@ -1496,10 +1867,24 @@ modified from http://katydecorah.com/code/2013/09/06/google-maps-images-api-for-
 
 [source,html]
 ----
-[filename=".", language="ruby", sha="4d7894a:support/jekyll-parser/_layouts/post.html"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+---
+layout: default
+---
+
+<h1>{{ page.title }}</h1>
+
+
+{% if page.location %} 
+<div>
+<img src="http://maps.googleapis.com/maps/api/staticmap?center={{ page.location }}&zoom=13&size=400x100">
+</div>
+{% endif %}
+
+<img src="/assets/images/{{ page.image }}">
+
+{{ content }}
+
+
 ----
 
 ===== Inviting contributions via forking
@@ -1519,10 +1904,12 @@ first posted these banners] and we'll use their code as-is inside our
 [source,html]
 -----
 ...
-[filename=".", language="ruby", sha="d7b8316:support/jekyll-parser/_layouts/default.html" lines="10..15"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+<body>
+
+<a href="https://github.com/xrd/bytravelers.com"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+
+<div class="container">
+{{ content }}
 ...
 -----
 
