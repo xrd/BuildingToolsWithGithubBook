@@ -184,10 +184,6 @@ The `go get` command is how you download go code and dependencies.
 Running `go get` followed by a projects URL will download and install
 the project.
 
-The great thing about the `go get` itself is that it is url aware.
-It knows to use git when downloading `github.com/google/go-github`
-and knows to use Bazarr when downloading `launchpad.net/goamz/aws`.
-
 Lets install the `github.com/google/go-github/github` project:
 
 [source,bash]
@@ -205,6 +201,26 @@ We can look at the package's source by going into the
 [source,bash]
 -----
 cd $HOME/go/src/github.com/google/go-github/github
+-----
+
+The great thing about the `go get` itself is that it is url aware.
+It knows to use git when downloading `github.com/google/go-github`,
+knows to use Mercurial when downloading `code.google.com/p/goauth2/oauth`.
+
+It just happens the `code.google.com/p/goauth2/oauth` project is another
+dependencies we'll use later so lets install it as well:
+
+[source,bash]
+-----
+go get code.google.com/p/goauth2/oauth
+-----
+
+You might get an error that the Mercurial command is missing. If you do you
+can install Mercurial with Homebrew:
+
+[source,bash]
+-----
+brew install mercurial
 -----
 
 === Project structure
@@ -316,6 +332,27 @@ tell the http package to send requests to `"/"` to our `helloWorldHandler`.
 Then we started the package's default http server by calling `ListenAndServe`
 on the `http` package.
 
+[source,go]
+-----
+err := http.ListenAndServe(":4567", nil)
+-----
+
+The `ListenAndServe` function will block until it errors. Notice we're using the
+`:=` operator to save the error if one occurs.
+
+The `:=` operator can be used instead of explicitly creating a variable and
+setting it's assignment.
+
+We could alternatively write:
+
+[source,go]
+-----
+var err error
+err = http.ListenAndServe(":4567", nil)
+-----
+
+But isn't one line just so much cleaner. :)
+
 ==== Running our project
 
 Lets run our project to make sure we've got everything working. In our project
@@ -386,14 +423,14 @@ $ ngrok 4567
 
 You should see the tunnel starting up and tunnel status of "online".
 Below that should be your unique ngrok url. The url should look
-something like: http://1a2b3c4d.ngrok.com/hello
+something like: http://1a2b3c4d.ngrok.com/
 
 Leave ngrok running in a terminal window. In another terminal window
 navigate back to your project directory and restart your server:
 
 [source, bash]
 -----
-$ go run cmd/gowebhooks-server/gowebhooks.go
+$ go run gowebhooks.go
 -----
 
 Now navigate your browser to your unique ngrok url. You should see the
@@ -414,9 +451,10 @@ image::images/go-webhook-payload-url.png[]
 
 ==== Setting up our webhooks endpoint
 
-We now have connectivity to Github and Github has the ability to POST to us. Now we need to decide what we want to do with the information Github gives us.
+We now have connectivity to Github and Github has the ability to POST to us.
+Now we need to decide what we want to do with the information Github gives us.
 
-We have our `helloHandler` now lets build our `webhookHandler`.
+We have our `helloWorldHandler` now lets build our `webhookHandler`.
 
 We will need to do a few things in our `webhookHandler`
 
@@ -426,8 +464,6 @@ We will need to do a few things in our `webhookHandler`
 4. Pass the parsed JSON on to something that can run the tests.
 
 Below is the entire `server.go`. Notice it has some lines commented out.
-
-Those lines will be explained later.
 
 [source, go]
 ----
@@ -447,11 +483,11 @@ import (
 	"github.com/google/go-github/github"
 )
 
-var accessToken = os.Getenv("GITHUB_ACCESS_TOKEN")
-var t = &oauth.Transport{
-	Token: &oauth.Token{AccessToken: accessToken},
-}
-var client = github.NewClient(t.Client())
+var (
+	accessToken = os.Getenv("GITHUB_ACCESS_TOKEN")
+	transport   = &oauth.Transport{Token: &oauth.Token{AccessToken: accessToken}}
+	client      = github.NewClient(transport.Client())
+)
 
 func webhookHandler(w http.ResponseWriter, r *http.Request) {
 	eventType := r.Header.Get("X-GitHub-Event")
@@ -471,15 +507,16 @@ func webhookHandler(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(body, &payload)
 
 	go func() {
-		buffer, err := RunMakeTest(payload)
+		buffer, err := runMakeTest(payload)
 		if err != nil {
-			fmt.Println(err)
-			return
+			log.Printf("runMakeTest: %s", err)
 		}
 
-		err = CommentOutput(payload, buffer)
+		log.Printf("%s", buffer)
+
+		resp, err := commentOutput(payload, buffer)
 		if err != nil {
-			fmt.Println(err)
+			log.Printf("commentOutput: %s\n%s", err, resp.Body)
 			return
 		}
 		log.Printf("Commented on: %s", *payload.HeadCommit.ID)
@@ -489,11 +526,13 @@ func webhookHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Responded: OK")
 }
 
-func RunMakeTest(payload github.WebHookPayload) (*bytes.Buffer, error) {
+func runMakeTest(payload github.WebHookPayload) (*bytes.Buffer, error) {
 	buffer := bytes.NewBuffer([]byte{})
 	tempDir, _ := ioutil.TempDir("/tmp", "gowebhooks")
 
-	giturl := *payload.Repo.GitURL
+	giturl := *payload.Repo.SSHURL
+	// Replace line above if not private repo
+	// giturl := *payload.Repo.CloneURL
 	gitref := *payload.HeadCommit.ID
 
 	var commands [3]*exec.Cmd
@@ -522,7 +561,7 @@ func RunMakeTest(payload github.WebHookPayload) (*bytes.Buffer, error) {
 	return buffer, nil
 }
 
-func CommentOutput(payload github.WebHookPayload, output *bytes.Buffer) error {
+func commentOutput(payload github.WebHookPayload, output *bytes.Buffer) (*github.Response, error) {
 	owner := *payload.Repo.Owner.Name
 	repo := *payload.Repo.Name
 	gitref := *payload.HeadCommit.ID
@@ -538,8 +577,13 @@ func CommentOutput(payload github.WebHookPayload, output *bytes.Buffer) error {
 		Body: &commentBodyString,
 	}
 
-	_, _, err := client.Repositories.CreateComment(owner, repo, gitref, comment)
-	return err
+	_, resp, err := client.Repositories.CreateComment(
+		owner,
+		repo,
+		gitref,
+		comment)
+
+	return resp, err
 }
 
 func main() {
@@ -551,9 +595,27 @@ func main() {
 }
 ----
 
-The same structure is used when import a package into your project.
+The code above can be thought of as 5 sections:
 
-When you import packages into you actually use the public location
+* import and vars
+* webhookHandler
+* runMakeTest
+* commentOutput
+* main()
+
+Lets go over each individually:
+
+===== import and vars
+
+At the top of our `gowebhooks.go` file there is an import statement. In it is
+listen each of the dependencies of our project. Notice it has two sections first
+dependencies with shorter names like `"os/exec"` or `"bytes"`. These are the
+standard library dependencies for our project. They come with the standard
+installation of go.
+
+Next are dependencies with longer URL names. These are our remote dependencies.
+
+When you import remote packages into you actually use the public location
 of the code in your code to import the package.
 
 For example when we import Google's go-github package we will write:
@@ -565,11 +627,41 @@ import "github.com/google/go-github/github"
 The location of the package locally mirrors the package's location on
 the internet.
 
+The `var` section sets up global variables we can use across functions. Our
+project has three: `accessToken`, `transport` and `client`
+
+- `accessToken` is the value of the environment variable "GITHUB_ACCESS_TOKEN".
+You might already have this set, if not we'll go over that later.
+- `transport` is an oauth http transport using the accessToken. If you want more
+information on oauth transports checkout the documentation for the oauth package
+we're using: http://godoc.org/code.google.com/p/goauth2/oauth
+- `client` will be our authenticated github client. It will use the transport
+we created with the accessToken to talk to GitHub. Using an authenticated client
+allows us to comment on our project via the API.
+
+===== webhookHandler
+
+Our `webhookHandler` function's purpose will be to take an http request
+read/validate the request's data and pass it on to our other functions.
+
+We only want `push` events. The type of event received by our server is kept in
+a `X-GitHub-Event` header.
+
+[source, go]
+----
+	eventType := r.Header.Get("X-GitHub-Event")
+	log.Printf("Received: %s event", eventType)
+
+	if eventType != "push" {
+		return
+	}
+----
+
 ### Key take aways for gowebhooks.go
 
 #### Handler arguments
 
-In Go you can pass functions as arguments. In the `StartServer` function
+In Go you can pass functions as arguments. In the `main()` function
 we're passing the `webhookHandler` function as the second argument. We
 can do this because the function conforms to the method signature defined
 in `http.HandleFunc`.
@@ -652,56 +744,6 @@ eventHeader := r.Header.Get("X-GitHub-Event")
 
 
 
-[source, go]
-----
-package gowebhooks
-
-import (
-	"io/ioutil"
-	"log"
-	"os/exec"
-
-	"github.com/google/go-github/github"
-)
-
-type GithubProject struct {
-	payload github.WebHookPayload
-}
-
-func (gh GithubProject) Download() (tempDir string, err error) {
-	tempDir, _ = ioutil.TempDir("/tmp", "gowebhooks")
-	log.Printf("Downloading to %s", tempDir)
-
-	giturl := *gh.payload.Repo.GitURL
-	gitref := *gh.payload.HeadCommit.ID
-
-	cloneCmd := exec.Command("git", "clone", giturl, tempDir)
-	output, _, err := RunAndCaptureCmd(cloneCmd)
-
-	// Print output of git clone
-	log.Printf("%s\n", output)
-
-  // If the command errored return err and exit from Download function
-	if err != nil {
-		return tempDir, err
-	}
-
-	checkoutCmd := exec.Command("git", "checkout", "-b", gitref, gitref)
-	checkoutCmd.Dir = tempDir
-	output, _, err = RunAndCaptureCmd(checkoutCmd)
-
-	log.Printf("%s\n", output)
-	return tempDir, err
-}
-
-func (gh GithubProject) Details() RemoteProjectDetails {
-	return RemoteProjectDetails{
-		*gh.payload.Repo.Name,
-		*gh.payload.HeadCommit.ID,
-		*gh.payload.HeadCommit.Message,
-	}
-}
-----
 
 == Makefile
 
