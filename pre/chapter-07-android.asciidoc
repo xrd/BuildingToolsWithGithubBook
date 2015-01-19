@@ -455,7 +455,7 @@ two layouts.
 
 [source,java]
 -----
-[filename=".", language="js", sha="a545cb4:support/android/ghru/src/com/githubru/MainActivity.java"]
+[filename=".", language="js", sha="de816900a106fcc2436baaee4b495e2bfa8afbe4:support/android/ghru/src/com/githubru/MainActivity.java"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

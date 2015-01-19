@@ -1,6 +1,6 @@
-= Hubot and the GitHub Activities API
+== Hubot and the GitHub Activities API
 
-== Social Coding
+=== Social Coding
 
 Though the phrase has now been removed from their marketing materials,
 GitHub used to call itself a tool for "social coding." This idea is
@@ -53,7 +53,7 @@ memes or jokes. There is always a fine line between having fun and
 being disruptive, but Hubot works so hard for you that it seems a
 trifle that it also injects jocular moments into the conversation.
 
-== Hubot
+=== Hubot
 
 If you visit hubot.github.com, you are told that "(Hubot) is a
 customizable, kegerator-powered life embetterment robot." What does
@@ -124,7 +124,7 @@ conversational chat log; not anyone can parse SSH server logs. Though
 GitHub has many of the smartest people within the software world
 working for it, their tools are built for the lowest common denominator.
 
-=== Deficiencies and Limitations
+==== Deficiencies and Limitations
 
 Hubot requires a server which hosts it and requires a chat endpoint on
 which the chat rooms are hosted. Hubot is written in NodeJS and
@@ -150,7 +150,7 @@ there are times where it feels like a Catch-22: you need to have Hubot
 running in order to configure it properly and run it. Hopefully, this
 simple guide will alleviate some of these challenges.
 
-=== Creating your Hubot
+==== Creating your Hubot
 
 To build a Hubot you will need a working NodeJS installation, as
 specified in the first chapter.

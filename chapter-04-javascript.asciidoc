@@ -371,10 +371,28 @@ Then, create a file called `karma.config.js` and enter the following contents:
 
 [source,javascript karma.config.js]
 -----
-[filename=".", language="js", sha="2204ef0:support/js/karma.config.js"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+module.exports = function(config) {
+  config.set({
+    basePath: '',
+    frameworks: ['jasmine'],
+    files: [
+        'angular.js',
+        'fixtures-*.js',
+        'angular-mocks.js',
+        'github.js',
+        '*.js'
+    ],
+    reporters: ['progress'],
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
+    browsers: ['Chrome'],
+    captureTimeout: 60000,
+    singleRun: false
+  });
+};
+
 -----
 
 To write the test, let's clarify what we want our code to do:
@@ -491,30 +509,127 @@ support fixtures, data files which have test data. Add the
 
 [source,javascript]
 -----
-[filename=".", language="js", sha="2204ef0:support/js/fixtures-cities.js"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+var CITIES = [ { name: "portland", latitude: 45, longitude: 45 },
+  { name: "seattle", latitude: 47.662613, longitude: -122.323837 } ];
+
 -----
 
 And, the `fixtures-portland.js` file.
 
 [source,javascript] 
 -----
-[filename=".", language="js", sha="2204ef0:support/js/fixtures-portland.js"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+var PORTLAND = [ { "name" : "Very Good Coffee Shop", "latitude" : 45.52292,  "longitude" : -122.643074 },
+{ "name" : "Very Bad Coffee Shop", "latitude" : 45.522181, "longitude" : -122.63709 },
+{ "name" : "Mediocre Coffee Shop", "latitude" : 45.520437, "longitude" : -122.67846 } ]
+
 -----
 
 Then add the `coffeetech.js` file:
 
 [source,javascript]
 ----
-[filename=".", language="js", sha="7693187:support/js/coffeetech.js"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+var mod = angular.module( 'coffeetech', [] );
+
+mod.factory( 'Github', function() { // # <1>
+    return new Github({});
+});
+
+mod.factory( 'Geo', [ '$window', function( $window ) { // # <2>
+    return $window.navigator.geolocation;
+} ] );
+
+mod.factory( 'Prompt', [ '$window', function( $window ) { 
+    return $window.prompt;
+} ] );
+
+mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', 'Prompt', function( $scope, ghs, Geo, Prompt ) {
+    $scope.messages = []
+
+    $scope.init = function() {
+        $scope.getCurrentLocation( function( position ) {
+            $scope.latitude = position.coords.latitude;
+            $scope.longitude = position.coords.longitude;
+            $scope.repo = ghs.getRepo( "xrd", "spa.coffeete.ch" ); // # <3>
+            $scope.repo.read( "gh-pages", "cities.json", function(err, data) { // # <4>
+                $scope.cities = JSON.parse( data ); // # <5>
+                // Determine our current city
+                $scope.detectCurrentCity(); // # <6>
+
+                // If we have a city, get it
+                if( $scope.city ) {
+                    $scope.retrieveCity();
+                }
+
+                $scope.$apply(); // # <7>
+            });
+        });
+    };
+
+    $scope.retrieveCity = function() {
+        $scope.repo.read( "gh-pages", $scope.city.name + ".json", function(err, data) { 
+            $scope.shops = JSON.parse( data );
+            $scope.$apply();
+        });
+    }
+
+    $scope.getCurrentLocation = function( cb ) {
+        if( undefined != Geo ) {
+            Geo.getCurrentPosition( cb, $scope.geolocationError );
+        } else {
+            console.error('not supported');
+        }
+        
+    };
+
+    $scope.detectCurrentCity = function() {
+        // Calculate the distance from our current position and use
+        // this to determine which city we are closest to and within
+        // 25 miles
+        for( var i = 0; i < $scope.cities.length; i++ ) {
+            var dist = $scope.calculateDistance( $scope.latitude, $scope.longitude, $scope.cities[i].latitude, $scope.cities[i].longitude );
+            if( dist < 25 ) {
+                $scope.city = $scope.cities[i];
+                break;
+            }
+        }
+    }
+
+    toRad = function(Value) {
+        return Value * Math.PI / 180;
+    };
+    
+    $scope.calculateDistance = function( latitude1, longitude1, latitude2, longitude2 ) {
+        R = 6371;
+        dLatitude = toRad(latitude2 - latitude1);
+        dLongitude = toRad(longitude2 - longitude1);
+        latitude1 = toRad(latitude1);
+        latitude2 = toRad(latitude2);
+        a = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) + Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) * Math.cos(latitude1) * Math.cos(latitude2);
+        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        d = R * c;
+        return d;
+    }
+
+    $scope.loadCity = function( city ) {
+        $scope.repo.read( "gh-pages", city + ".json", function(err, data) { 
+            $scope.shops = JSON.parse( data ); 
+            $scope.$apply();
+        });
+    }
+    
+    $scope.geolocationError = function( error ) {
+        console.log( "Inside failure" );
+    };
+    
+    $scope.annotate = function() {
+        user = Prompt( "Enter your github username" )
+        password = Prompt( "Enter your github password" )
+        data = Prompt( "Enter data to add" );
+    };
+    
+} ] );
+
+
 ----
 
 <1> We extract the Github library into an AngularJS factory. This
@@ -569,10 +684,39 @@ Now, let's expose the new data inside the `index.html` file like so:
 
 [source,html]
 -----
-[filename=".", language="js", sha="0e872b1b67dbd0c29ff42c211083f31add9c0123:support/js/index.html"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+<html>
+<head>
+<title>CoffeeTe.ch</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
+</head>
+<body ng-app="coffeetech">
+
+<div class="container" ng-controller="GithubCtrl" ng-init="init()">
+
+<h1>CoffeeTe.ch</h1>
+
+<h3 ng-show="city">Current city: {{city.name}}</h3>
+
+<div class="row=">
+<div class="col-md-6"><h4>Shop Name</h4> </div>
+<div class="col-md-6"><h4>Lat/Lng</h4> </div>
+</div>
+<div class="row" ng-repeat="shop in shops"> <!--1-->
+<div class="col-md-6">   <!--2-->
+{{ shop.name }}  <!--3-->
+</div>
+<div class="col-md-6"> {{ shop.latitude }} / {{ shop.longitude }} </div>
+</div>
+</div>
+
+<script src="angular.js"></script>
+<script src="github.js"></script>
+<script src="coffeetech.js"></script>
+
+</body>
+</html>
+
 -----
 
 <1> `ng-repeat` is an AngularJS directive which iterates over an array
@@ -637,10 +781,41 @@ Then, make your index.html look like this:
 
 [source,html index.html]
 -----
-[filename=".", language="js", sha="177c96ceb8dd4b21b8d66717abbac3c8a36cb4c7:support/js/index.html"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+<html>
+<head>
+<title>CoffeeTe.ch</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
+</head>
+<body ng-app="coffeetech">
+
+<div class="container" ng-controller="GithubCtrl" ng-init="init()">
+
+<h1>CoffeeTe.ch</h1>
+
+<h3 ng-show="city">Current city: {{city.name}}</h3>
+
+<div class="row=">
+<div class="col-md-6"><h4>Shop Name</h4> </div>
+<div class="col-md-6"><h4>Lat/Lng</h4> </div>
+</div>
+<div class="row" ng-repeat="shop in shops"> <!--1-->
+<div class="col-md-6">   <!--2-->
+{{ shop.name }}  <!--3-->
+</div>
+<div class="col-md-6"> {{ shop.latitude }} / {{ shop.longitude }} </div>
+</div>
+</div>
+
+<script src="angular.js"></script>
+<script src="underscore-min.js"></script>
+<script src="base64.min.js"></script>
+<script src="github.js"></script>
+<script src="coffeetech.js"></script>
+
+</body>
+</html>
+
 -----
 
 Let's also add a link to Google Maps with these coordinates, to allow
@@ -659,10 +834,10 @@ Modify the `portland.json` file so it looks like this:
 
 [source,html index.html]
 -----
-[filename=".", language="js", sha="862ea6f:support/js/portland.json"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+[ { "name" : "Very Good Coffee Shop", "latitude" : 45.52292,  "longitude" : -122.643074, "information" : [ "offers gluten free desserts", "free wifi", "accepts dogs" ] },
+{ "name" : "Very Bad Coffee Shop", "latitude" : 45.522181, "longitude" : -122.63709 },
+{ "name" : "Mediocre Coffee Shop", "latitude" : 45.520437, "longitude" : -122.67846 } ]
+
 -----
 
 Notice that we added an array called `information` to our data set.
@@ -672,10 +847,28 @@ We'll use this to allow simple search. Add the search feature to our
 [source,html]
 -----
 ...
-[filename=".", language="js", sha="3c3540fe6cf5dd97e536e9a7d7cfabbdca70d4d9:support/js/index.html" lines="8..29"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+
+<div class="container" ng-controller="GithubCtrl" ng-init="init()">
+
+<h1>CoffeeTe.ch</h1>
+
+<input style="width: 20em;" ng-model="search" placeholder="Enter search parameters..."/> <!--1-->
+
+<h3 ng-show="city">Current city: {{city.name}}</h3>
+
+<div class="row=">
+<div class="col-md-6"><h4>Shop Name</h4> </div>
+<div class="col-md-6"><h4>Lat/Lng</h4> </div>
+</div>
+<div class="row" ng-repeat="shop in shops | filter:search"> <!--2-->
+<div class="col-md-6">  
+{{ shop.name }}  
+
+<div ng-show="search"> <!--3-->
+<span ng-repeat="info in city.information">
+<span class="label label-default">city.data</span>
+</span>
+</div>
 ...
 -----
 
@@ -711,10 +904,11 @@ to our HTML.
 
 [source,html]
 -----
-[filename=".", language="js", sha="2bc7122:support/js/index.html", lines="37..41"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+
+</div>
+<div class="col-md-6">
+<a target="_map" href="http://maps.google.com/?q={{shop.latitude}},{{shop.longitude}}">Open in map ({{shop.latitude}},{{shop.longitude}})</a>
+<button ng-click="annotate(shop)">Add factoid</button>
 -----
 
 Let's add some tests. Add another file called
@@ -722,10 +916,84 @@ Let's add some tests. Add another file called
 
 [source,javascript]
 -----
-[filename=".", language="js", sha="6a1cbb8:support/js/coffeetech-annotate.spec.js"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+describe( "GithubCtrl", function() {
+
+    var scope = undefined, gh = undefined, repo = undefined, prompter = undefined;
+
+    function generateMockPrompt() {
+        prompter = { prompt: function() { return "ABC" } };
+        spyOn( prompter, "prompt" ).andCallThrough();
+
+    }
+
+    var PR_ID = 12345;
+    function generateMockRepositorySupport() {
+        repo = { 
+            fork: function( cb ) {
+                cb( false );
+            },
+            write: function( branch, filename, data, commit_msg, cb ) {
+                cb( false );
+            },
+            createPullRequest: function( pull, cb ) {
+                cb( false, PR_ID );
+            },
+            read: function( branch, filename, cb ) {
+                cb( undefined, JSON.stringify( filename == "cities.json" ? CITIES : PORTLAND ) );
+            } 
+        };
+        spyOn( repo, "fork" ).andCallThrough();
+        spyOn( repo, "write" ).andCallThrough();
+        spyOn( repo, "createPullRequest" ).andCallThrough();
+        spyOn( repo, "read" ).andCallThrough();
+
+        gh = { getRepo: function() {} };
+        spyOn( gh, "getRepo" ).andCallFake( function() {
+            return repo;
+        } );
+        ghs = { create: function() { return gh; } };
+    }
+
+    beforeEach( module( "coffeetech" ) );
+
+    var $timeout;
+    beforeEach( inject( function ($controller, $rootScope, $injector ) {
+        generateMockRepositorySupport();
+        generateMockPrompt();
+        $timeout = $injector.get( '$timeout' );
+        scope = $rootScope.$new();
+        mockFirebase = {};
+        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter, 'firebase': mockFirebase } );
+    } ) );
+
+
+    describe( "#annotate", function() {
+        it( "should annotate a shop", function() {
+            scope.city = PORTLAND
+            var shop = { name: "A coffeeshop" }
+            scope.annotate( shop );
+            expect( scope.shopToAnnotate ).toBeTruthy();
+            expect( prompter.prompt.calls.length ).toEqual( 3 );
+            expect( scope.username ).not.toBeFalsy();
+            expect( scope.annotation ).not.toBeFalsy();
+
+            expect( repo.fork ).toHaveBeenCalled();
+            expect( scope.waiting.state ).toEqual( "forking" );
+            $timeout.flush();
+
+            expect( scope.forkedRepo ).toBeTruthy();
+            expect( repo.read ).toHaveBeenCalled();
+            expect( repo.write ).toHaveBeenCalled();
+            expect( repo.createPullRequest ).toHaveBeenCalled();
+            expect( scope.waiting.state ).toEqual( "annotated" );
+            $timeout.flush();
+
+            expect( scope.waiting ).toBeFalsy();
+        });
+
+    });
+} );
+
 -----
 
 It looks similar to our previous tests where we mock out a bunch of
@@ -792,10 +1060,79 @@ Add these lines to the bottom of the file, but before the last closing braces.
 [source,javascript]
 -----
   ...
-[filename=".", language="js", sha="33451d6fda5fa5cd6e4de182bbe63c88b398b862:support/js/coffeetech.js" lines="92..164"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+    }
+    
+    $scope.geolocationError = function( error ) {
+        console.log( "Inside failure" );
+    };
+
+    $scope.annotate = function( shop ) {
+        $scope.shopToAnnotate = shop;
+
+        $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
+
+            $scope.me = user;
+            $scope.username = user.username;
+
+            $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
+
+            if( $scope.annotation ) {
+                gh = ghs.create( $scope.me.accessToken ); // <3>
+                toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
+                toFork.fork( function( err ) {
+                    if( !err ) {
+                        $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
+                        $timeout( $scope.annotateAfterForkCompletes, 10000 ); 
+                        $scope.$apply();
+                    }
+                } );
+            }
+            
+        } );
+
+    };
+
+
+    $scope.annotateAfterForkCompletes = function() {
+        $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" ); 
+        $scope.forkedRepo.read( "gh-pages", "cities.json", function(err, data) { 
+            if( err ) {
+                $timeout( $scope.annotateAfterForkCompletes, 10000 );
+            }
+            else {
+                $scope.notifyWaiting( "annotating", "Annotating data on GitHub" );
+                // Write the new data into our repository
+                $scope.appendQuirkToShop();
+
+                function stripHashKey( key, value ) { if( key == "$$hashKey" ) { return undefined; } return value; } // <4>
+                var newData = JSON.stringify( $scope.shops, stripHashKey, 2 );
+                $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', newData, 'Added my quirky information', function(err) { // <5>
+                    if( !err ) {
+                        // Annotate our data using a pull request
+                        var pull = {
+                            title: "Adding quirky information to " + $scope.shopToAnnotate.name,
+                            body: "Created by :" + $scope.username,
+                            base: "gh-pages",
+                            head: $scope.username + ":" + "gh-pages"
+                        };
+                        target = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <6>
+                        target.createPullRequest( pull, function( err, pullRequest ) {
+                            if( !err ) { // <7>
+                                $scope.notifyWaiting( "annotated", "Successfully sent annotation request" );
+                                $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 );
+                                $scope.$apply();
+                            }
+                        } );
+                    }
+                    $scope.$apply();
+                });
+            }
+            $scope.$apply();
+        } );
+        
+        $scope.notifyWaiting( "annotated" );
+    };    
+
   ...
 -----
 
@@ -838,10 +1175,13 @@ Let's add the status message into our HTML.
 [source,javascript]
 -----
 ...
-[filename=".", language="js", sha="25533fd:support/js/index.html" lines="20..26"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+<input class="ctinput" ng-model="search" placeholder="Enter search parameters..."/> <!--1-->
+
+<h3 ng-show="city">Current city: {{city.name}}</h3>
+
+<div ng-show="waiting">
+{{waiting.msg}}
+</div>
 ...
 -----
 
@@ -969,10 +1309,35 @@ and allows us to run `npm install` to download them all.
 
 [source,javascript]
 ----
-[filename=".", language="js", sha="c08eb2c:support/js/package.json"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+{
+    "name": "coffeetech-localauth",
+    "description": "Sample NodeJS for GitHub Auth",
+    "version": "0.0.1",
+    "homepage": "http://spa.coffeete.ch",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/xrd/spa.coffeete.ch.git"
+    },
+    "author": "Chris Dawson <xrdawson@gmail.com> (https://github.com/xrd/)",
+    "keywords": [
+        "auth",
+        "oauth",
+        "password",
+        "github",
+        "authorization",
+        "authentication",
+        "connect",
+        "express"
+    ],
+    "main": "./gihub-local-login.js",
+    "dependencies": {
+        "express": "3.x",
+        "passport": "0.2.0",
+        "passport-github": "0.1.5"
+    }
+}
+      
+
 ----
 
 Then, add the following code into a file named
@@ -980,10 +1345,134 @@ Then, add the following code into a file named
 
 [source,javascript app.js]
 ----
-[filename=".", language="js", sha="a3635f9:support/js/github-local-login.js"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+var express = require('express')
+  , passport = require('passport')
+  , util = require('util')
+  , GitHubStrategy = require('passport-github').Strategy;
+
+var GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID
+var GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+
+var authTokens = {};
+
+// Passport session setup.
+//   To support persistent login sessions, Passport needs to be able to
+//   serialize users into and deserialize users out of the session.  Typically,
+//   this will be as simple as storing the user ID when serializing, and finding
+//   the user by ID when deserializing.  However, since this example does not
+//   have a database of user records, the complete GitHub profile is serialized
+//   and deserialized.
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
+// Use the GitHubStrategy within Passport.
+//   Strategies in Passport require a `verify` function, which accept
+//   credentials (in this case, an accessToken, refreshToken, and GitHub
+//   profile), and invoke a callback with a user object.
+passport.use(new GitHubStrategy({
+    clientID: GITHUB_CLIENT_ID,
+    clientSecret: GITHUB_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/github/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+      authTokens[profile.id] = accessToken;
+    // asynchronous verification, for effect...
+      //process.nextTick(function () {
+      
+      // To keep the example simple, the user's GitHub profile is returned to
+      // represent the logged-in user.  In a typical application, you would want
+      // to associate the GitHub account with a user record in your database,
+      // and return that user instead.
+      return done(null, profile);
+  //});
+  }
+));
+
+var app = express.createServer();
+
+// configure Express
+app.configure(function() {
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'ejs');
+  app.use(express.logger());
+  app.use(express.cookieParser());
+  app.use(express.bodyParser());
+  app.use(express.methodOverride());
+  app.use(express.session({ secret: 'keyboard cat' }));
+  // Initialize Passport!  Also use passport.session() middleware, to support
+  // persistent login sessions (recommended).
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use(app.router);
+  app.use(express.static(__dirname + '/public'));
+});
+
+app.get( '/token.json', 
+         function(req, res) {
+             res.send( "var ctAuthToken = '" + req.session.token + "';" );
+         }
+       );
+
+app.get('/', function(req, res){
+  res.render('index', { user: req.user });
+});
+
+app.get('/account', ensureAuthenticated, function(req, res){
+  res.render('account', { user: req.user });
+});
+
+app.get('/login', function(req, res){
+  res.render('login', { user: req.user });
+});
+
+// GET /auth/github
+//   Use passport.authenticate() as route middleware to authenticate the
+//   request.  The first step in GitHub authentication will involve redirecting
+//   the user to github.com.  After authorization, GitHubwill redirect the user
+//   back to this application at /auth/github/callback
+app.get('/auth/github',
+  passport.authenticate('github'),
+  function(req, res){
+    // The request will be redirected to GitHub for authentication, so this
+    // function will not be called.
+  });
+
+// GET /auth/github/callback
+//   Use passport.authenticate() as route middleware to authenticate the
+//   request.  If authentication fails, the user will be redirected back to the
+//   login page.  Otherwise, the primary route function function will be called,
+//   which, in this example, will redirect the user to the home page.
+app.get('/auth/github/callback', 
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  function(req, res) {
+      console.log( "auth token here: ", authTokens[req.user.id] );
+      req.session.token = authTokens[req.user.id];
+      res.redirect('/');
+  });
+
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
+
+app.listen(3000);
+
+
+// Simple route middleware to ensure user is authenticated.
+//   Use this route middleware on any resource that needs to be protected.  If
+//   the request is authenticated (typically via a persistent login session),
+//   the request will proceed.  Otherwise, the user will be redirected to the
+//   login page.
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/login')
+}
+
 ----
 
 Now, we need to create a new GitHub application. In the top right
@@ -1083,10 +1572,11 @@ file called `firebase-mock.js`:
 
 [source,javascript]
 -----
-[filename=".", language="js", sha="9e1121c38eb84a8:support/js/firebase-mock.js"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+var Firebase = function (url) {
+}
+
+angular.module( 'firebase', [] );
+
 -----
 
 To test our code, we make the following changes to our
@@ -1094,10 +1584,45 @@ To test our code, we make the following changes to our
 
 [source,javascript]
 -----
-[filename=".", language="js", sha="003855b:support/js/coffeetech-annotate.spec.js" lines="39..77"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+    beforeEach( module( "coffeetech" ) );
+
+    var mockFirebase = mockSimpleLogin = undefined;
+    function generateMockFirebaseSupport() { // <1>
+        mockFirebase = function() {};
+        mockSimpleLogin = function() {
+            return { 
+                '$login': function() {
+                    return { then: function( cb ) {
+                        cb( { name: "someUser",
+                              accessToken: "abcdefghi" } );
+                    } };
+                }
+            }
+        };
+    }
+
+    var $timeout;
+    beforeEach( inject( function ($controller, $rootScope, $injector ) {
+        generateMockRepositorySupport();
+        generateMockPrompt();
+        generateMockFirebaseSupport(); // <2>
+        $timeout = $injector.get( '$timeout' );
+        scope = $rootScope.$new();
+        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter, '$firebase': mockFirebase, '$firebaseSimpleLogin': mockSimpleLogin } ); // <3>
+    } ) );
+
+
+    describe( "#annotate", function() {
+        it( "should annotate a shop", function() {
+            scope.auth = mockSimpleLogin( mockFirebase() ); // <4>
+            scope.city = PORTLAND
+            var shop = { name: "A coffeeshop" }
+            scope.annotate( shop );
+            expect( prompter.prompt.calls.length ).toEqual( 1 ); // <5>
+            expect( scope.shopToAnnotate ).toBeTruthy();
+            expect( scope.username ).not.toBeFalsy();
+            expect( scope.annotation ).not.toBeFalsy();
+
 -----
 
 <1> We add a `generateMockFirebaseSupport()` function which creates the mock
@@ -1119,10 +1644,10 @@ references to the Firebase support libraries right after AngularJS is loaded:
 
 [source,html]
 -----
-[filename=".", language="js", sha="cb28565:support/js/index.html" lines="51..54"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+<script src="angular.js"></script>
+<script src='https://cdn.firebase.com/v0/firebase.js'></script>
+<script src='https://cdn.firebase.com/libs/angularfire/0.6.0/angularfire.min.js'></script>
+<script src='https://cdn.firebase.com/js/simple-login/1.2.5/firebase-simple-login.js'></script>
 -----
 
 We need to adjust our `coffeetech.js` file in a few ways. First,
@@ -1132,10 +1657,16 @@ are using a slightly different signature for oauth tokens.
 
 [source,javascript]
 -----
-[filename=".", language="js", sha="cb28565:support/js/coffeetech.js" lines="1..10"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+var mod = angular.module( 'coffeetech', [ 'firebase' ] );
+
+mod.factory( 'Github', function() { 
+    return { 
+        create: function(token) { 
+            return new Github( { token: token, auth: 'oauth' } );
+        }
+    };
+});
+
 -----
 
 When we instatiate our controller, we need
@@ -1144,10 +1675,15 @@ our `init` method.
 
 [source,javascript]
 -----
-[filename=".", language="js", sha="cb28565:support/js/coffeetech.js" lines="15..23"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout', '$firebase', '$firebaseSimpleLogin', function( $scope, ghs, Geo, $window, $timeout, $firebase, $firebaseSimpleLogin ) {
+
+    $scope.init = function() {
+        
+        var ref = new Firebase( 'https://coffeetech.firebaseio.com' );
+        $scope.auth = $firebaseSimpleLogin( ref );
+        
+        $scope.getCurrentLocation( function( position ) {
+            $scope.latitude = position.coords.latitude;
 -----
 
 Then, when we annotate, we need to provide the auth token returned
@@ -1155,10 +1691,21 @@ from Firebase. But, surprisingly little else needs to change in our flow.
 
 [source,javascript]
 -----
-[filename=".", language="js", sha="cb28565:support/js/coffeetech.js" lines="97..111"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+
+    $scope.annotate = function( shop ) {
+        $scope.shopToAnnotate = shop;
+
+        $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
+
+            $scope.me = user;
+            $scope.username = user.name;
+
+            $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
+
+            if( $scope.annotation ) {
+                gh = ghs.create( $scope.me.accessToken ); // <3>
+                toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
+                toFork.fork( function( err ) {
 -----
 
 <1> We call the `$login` method on our auth object created using the
