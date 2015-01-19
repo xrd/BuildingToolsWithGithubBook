@@ -83,7 +83,7 @@ public class MainActivity extends Activity
 
         @Override 
             protected Boolean doInBackground(String... credentials) {
-            String username = credentials[0]; 
+            String login = credentials[0]; 
             String password = credentials[1];
 
             EditText post = (EditText)findViewById( R.id.post );
@@ -92,8 +92,8 @@ public class MainActivity extends Activity
             EditText repo = (EditText)findViewById( R.id.repository ); 
             String repoName = repo.getText().toString();
 
-            return GitHubHelpers.SaveFile( username, password, 
-                                           repoName, postContents );
+            GitHubHelper ghh = new GitHubHelper( login, password );
+            return ghh.SaveFile( repoName, postContents );
         }
         
         @Override

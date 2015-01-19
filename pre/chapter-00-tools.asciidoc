@@ -6,7 +6,7 @@ was the first to build a rabid community around Git. GitHub.com became
 the town square where the coding cognoscenti gathered to discuss,
 where the enfants informatiques played with new ideas that would
 become the future of our world. GitHub.com has become the playground
-and the guild where ideas flourish and grown like no other online
+and the guild where ideas flourish and grow like no other online
 community for software developers. As such, it is important to give a
 tour of GitHub.com and learn how to navigate like a member of the
 inner circle. 
@@ -26,23 +26,27 @@ Ruby. The founders of GitHub have all made strong contributions to popular
 Ruby libraries, called "gems". To be successful with this book, you should
 at least have Ruby installed. 
 
-There are many ways to get Ruby. And, as a long time user I have
-experienced the pain of using it in suboptimal ways. If you are not
-familiar with Ruby, use this chapter to install it with the least
-friction and trouble.
+There are many ways to get Ruby but not all of them are created equal. 
+As a long time user I have experienced the pain of using a pre-installed Ruby 
+or one from a package manager, and generally these installation
+methods provide a suboptimal experience. If you are not familiar with
+Ruby, use this chapter to get through installation with the least
+friction and trouble. 
 
 You might already have a version of Ruby installed. Mac OSX comes
-bundled with Ruby and various flavors of Linux do as well. However, I
-recommend that you use the method of installation described below
-rather than using the stock installed version of Ruby you might
-already have on your system. Often ruby packages require a specific
-version of ruby though there 
+bundled with Ruby and various flavors of Linux do as well (or provide
+a quick and easy installation through the built in package manager
+like "apt-get"). However, I recommend that you use the method of
+installation described below rather than using the stock installed
+version of Ruby you might already have on your system. Often ruby
+packages require a specific version of ruby though there 
 is a chance it will work with other versions. The problem is that you
 might encounter subtle bugs that have never been seen before and using
 the methods described here will make it trivial to install any version
-of ruby that you need. You can guarantee you are using the correct
-version, and the method described here will not interfere with any
-other previously installed version of Ruby you have already on your system.
+of Ruby that you need side by side with any other version. You can
+guarantee you are using the correct version, and the method described
+here will not interfere with any other previously installed version of
+Ruby you have already on your system. 
 
 === Why Ruby at GitHub
 

@@ -1,16 +1,15 @@
 {
   "branch": "master",
   "files": [
-    "book-docinfo.xml",
     "chapter-00-tools.asciidoc",
     "chapter-02-gist.asciidoc",
+    "chapter-05-go-and-webhooks.asciidoc",
     "chapter-06-issues.asciidoc",
     "chapter-07-pull-requests.asciidoc",
     "chapter-08-hubot.asciidoc",
     "chapter-09-github-pages.asciidoc",
     "chapter-10-jekyll.asciidoc",
     "chapter-11-gollum-wiki.asciidoc",
-    "chapter-12-api-introduction.asciidoc",
     "chapter-13-github-api-on-javascript.asciidoc",
     "chapter-14-api-on-android.asciidoc",
     "chapter-15-api-on-rails.asciidoc",
@@ -20,22 +19,32 @@
     "pdf": {
       "version": "print",
       "index": false,
-      "toc": false
+      "toc": false,
+      "syntaxhighlighting": false,
+      "show_comments": false
     },
     "epub": {
       "index": false,
       "toc": false,
-      "epubcheck": false
+      "epubcheck": false,
+      "syntaxhighlighting": false,
+      "show_comments": false
     },
     "mobi": {
       "index": false,
-      "toc": false
+      "toc": false,
+      "syntaxhighlighting": false,
+      "show_comments": false
     },
     "html": {
       "index": true,
-      "toc": true
+      "toc": true,
+      "syntaxhighlighting": false,
+      "show_comments": false,
+      "consolidated": false
     }
   },
   "theme": "https://github.com/oreillymedia/atlas_tech1c_theme.git",
-  "title": "github"
+  "title": "github",
+  "templating": false
 }
