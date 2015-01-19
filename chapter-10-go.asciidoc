@@ -118,9 +118,9 @@ so when you start your next terminal session GOPATH is set for you.
 You can build almost anything with Go but today we're going to build
 ourselves a webserver that responds to Github Webhooks.
 
-Our goal will be to create a server that renders HTML from Markdown
-files hosted on Github. When a Markdown file is created or updated on
-Github our service will automatically render the markdown into HTML.
+Our goal will be to create a server that runs a repository's tests
+when ever there is a new commit. Then comments the output of the tests
+on the commit on Github.
 
 === Introduction to Github webhooks
 
@@ -164,49 +164,61 @@ the url:
 
 https://godoc.org/github.com/google/go-github
 
-GoDoc has he ability to generate documentation for Go packages hosted
-on Bitbucket, GitHub, Launchpad and Google Project Hosting. It's an
+GoDoc can generate documentation for Go packages hosted
+on GitHub, Bitbucket,  Launchpad and Google Project Hosting. It's an
 amazing tool. One, if you plan on taking up Go, you should get
 accustom to.
 
-We will only be using one of the sections in the package.
+We will be using two of the sections in the package.
 
 WebHookPayload: http://godoc.org/github.com/google/go-github/github#WebHookPayload
+
+RepositoriesService.CreateComment: http://godoc.org/github.com/google/go-github/github#RepositoriesService.CreateComment
 
 But take a minute to look over the `github` package documentation. You
 can see just about everything in Github's API is mapped out here.
 
-## Go get
+=== Go get
 
-** TODO `go get`
+The `go get` command is how you download go code and dependencies.
+Running `go get` followed by a projects URL will download and install
+the project.
+
+The great thing about the `go get` itself is that it is url aware.
+It knows to use git when downloading `github.com/google/go-github`
+and knows to use Bazarr when downloading `launchpad.net/goamz/aws`.
+
+Lets install the `github.com/google/go-github/github` project:
+
+[source,bash]
+-----
+go get github.com/google/go-github/github
+-----
+
+The command should exit with no output. But what exactly did we just do?
+
+The go get command just downloaded the source of the project and installed
+it in your `GOPATH` in a subdirectory matching the project's URL.
+We can look at the package's source by going into the
+`src` folder inside our `GOPATH`.
+
+[source,bash]
+-----
+cd $HOME/go/src/github.com/google/go-github/github
+-----
 
 === Project structure
 
 Time to start writing some Go code. Let setup our workspace so we can
 get started.
 
-The go tool is setup to work with open source software. When you
-import packages into you actually use the public location of the
-code in your code to import the package.
+The go tool is setup to work with open source software. As we saw with `go get`
+command, the go tool uses a package's location to store the source locally on
+your machine.
 
-For example when we import Google's go-github package we will write:
-
-```go
-import "github.com/google/go-github"
-```
-
-The location of the package locally mirrors the package's location on
-the public internet. Inside our `src` directory Google's go-github
-package will be located in:
-
-
-[source,bash]
------
-src/github.com/google/go-github
------
-
-As you can see go code's directory structure is intrinsically linked
+Go code's directory structure is intrinsically linked
 to the public location of the code. Our project should do the same.
+
 On Github create a new project call "gowebhooks". The URL for your
 project should be 'http://github.com/{yourusername}/gowebhooks'.
 
@@ -229,48 +241,82 @@ And move into our project directory:
 $ cd $GOPATH/src/github.com/{yourusername}/gowebhooks
 -----
 
-Now lets talk about the structure of the files within our project
-directory. We going to build a web server. We are going to keep it simple with
-our project and keep all of our code in a single file (other than tests).
+We are going to keep it simple with our project and keep all of our code in a
+single file (other than tests).
 
-To create the structure above run the following commands:
+Lets create a `gowebhooks.go` file:
 
 [source,bash]
 -----
 $ touch gowebhooks.go
 -----
 
-Our `gowebhooks.go` file will have the code actually needed to startup our
-server. To start lets make sure Go is installed properly and setup a
-very simple webserver.
+To get started and get familiar with some go code lets write a very simple
+webserver to just return "hello world".
 
 gowebhooks.go
 
 [source,go]
 -----
-package gowebhooks
+package main
 
 import (
 	"fmt"
 	"net/http"
 )
 
-func StartServer() error {
-	publicFileServer := http.FileServer(http.Dir("./public"))
-	http.Handle("/", publicFileServer)
+func helloWorldHandler(w http.ResponseWriter, r *http.Request) {
+  fmt.Fprintln(w, "Hello World")
+}
+
+func main() {
+	http.HandleFunc("/", helloWorldHandler)
 
 	fmt.Println("Listening on 4567")
-	return http.ListenAndServe(":4567", nil)
+	err := http.ListenAndServe(":4567", nil)
+
+	fmt.Println(err)
 }
 -----
 
-This server will host all the files in './public'. Lets add a hello
-file for testing purposes.
+The file has four parts: package declaration, import statement, helloWorldHandler function and main function. Lets go over each:
 
-[source,bash]
------
-$ echo 'Hello from Go!' > public/hello
------
+===== package main
+
+The first line of any go code needs to declare which package it belongs to. For
+our server we're declaring this code belongs to the `main` package. The `main`
+package is used when we want to create an executable. It tells go to load the
+file then start our program by executing the `main()` function.
+
+If we wanted our code to be a reusable package we would need to choose another
+name.
+
+===== import
+
+Next we to import the libraries our code depends one. In this simple example we
+only depend on two packages from the standard library: `fmt` and `net/http`.
+
+The `fmt` package is a formating utility. We will use it to write output to
+standard out and to write content from our server.
+
+The `net/http` package is go's standard http library. We will use it to startup
+an http server but the package also includes http clients to get http content
+as well.
+
+===== helloWorldHandler
+
+This function will handle our http request and response. Using the `fmt` package
+we write "Hello World" to the `ResponseWriter`.
+
+===== main()
+
+The `main()` function will be called when we compile and run our code. In it we
+tell the http package to send requests to `"/"` to our `helloWorldHandler`.
+
+Then we started the package's default http server by calling `ListenAndServe`
+on the `http` package.
+
+==== Running our project
 
 Lets run our project to make sure we've got everything working. In our project
 directory lets run:
@@ -280,19 +326,20 @@ directory lets run:
 $ go run gowebhooks.go
 -----
 
-Navigate your browser to http://localhost:4567/hello and you should
+Navigate your browser to http://localhost:4567/ and you should
 see a page greeting you.
 
-<<<<<<< HEAD:chapter-05-go-and-webhooks.asciidoc
-Give yourself a pat on the back, you just made your first Go server.
+Give yourself a pat on the back, you just made your first Go server!
 
 === Receiving webhooks from Github
 
 First step in receiving webhooks is turning them on at github.com.
 Navigate to your gowebhooks repository on Github.
 
+https://github.com/{username}/gowebhooks/settings/hooks
+
 In the settings panel you'll find "Webhooks & Services". There you
-should find a "Add Webhook" button. Click it and lets get started.
+should find a "Add Webhook" button. Click it and lets get started
 
 image::images/go-webhook.png[]
 
@@ -496,8 +543,6 @@ func CommentOutput(payload github.WebHookPayload, output *bytes.Buffer) error {
 }
 
 func main() {
-	publicFileServer := http.FileServer(http.Dir("./public"))
-	http.Handle("/", publicFileServer)
 	http.HandleFunc("/webhook", webhookHandler)
 
 	fmt.Println("Listening on 4567")
@@ -505,6 +550,20 @@ func main() {
 	fmt.Println(err)
 }
 ----
+
+The same structure is used when import a package into your project.
+
+When you import packages into you actually use the public location
+of the code in your code to import the package.
+
+For example when we import Google's go-github package we will write:
+
+```go
+import "github.com/google/go-github/github"
+```
+
+The location of the package locally mirrors the package's location on
+the internet.
 
 ### Key take aways for gowebhooks.go
 
