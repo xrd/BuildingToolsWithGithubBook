@@ -1,5 +1,12 @@
 == Jekyll: nouveau, yet antiquated, blogging on GitHub
 
+=== Ease
+=== Depth
+=== Complete
+=== Expansive
+=== Expedited
+
+
 === What is Jekyll?
 
 If you visit GitHub and go to the jekyll repository you'll see it state that 

@@ -1,6 +1,12 @@
 
 == Go and Github Webhooks
 
+=== Ease
+=== Depth
+=== Complete
+=== Expansive
+=== Expedited
+
 === Why Go and GitHub?
 
 Go was originally developed as a systems language and it still serves

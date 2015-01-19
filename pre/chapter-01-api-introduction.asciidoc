@@ -1,6 +1,13 @@
 [[developer-api]]
 
 == The GitHub API
+
+=== Ease
+=== Depth
+=== Complete
+=== Expansive
+=== Expedited
+
 Like most useful sites and services today, GitHub is less a site that
 you simply visit in isolation and more and more becoming a utility intertwined and integrated with other developer-centered sites on the Internet. If you develop in
 Ruby, Node.js, and, increasingly, Java you are going to encounter
@@ -938,15 +945,6 @@ This section would build out a sample application.
 === Organization Applications
 
 Registering an Organization's Application
-
-
-
-
-
-
-
-
-
 
 === GitHub Account Security
 

@@ -1,5 +1,11 @@
 == Hubot and the GitHub Activities API
 
+=== Ease
+=== Depth
+=== Complete
+=== Expansive
+=== Expedited
+
 === Social Coding
 
 Though the phrase has now been removed from their marketing materials,
