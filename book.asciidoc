@@ -14,9 +14,9 @@ include::chapter-03-gollum.asciidoc[]
 
 include::chapter-04-javascript.asciidoc[]
 
-include::chapter-05-hubot-activities.asciidoc[]
+include::chapter-05-jekyll.asciidoc[]
 
-include::chapter-06-jekyll.asciidoc[]
+include::chapter-06-hubot-activities.asciidoc[]
 
 include::chapter-07-android.asciidoc[]
 
