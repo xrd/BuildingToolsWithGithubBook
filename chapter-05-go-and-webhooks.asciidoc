@@ -209,71 +209,21 @@ $ cd $GOPATH/src/github.com/{yourusername}/gowebhooks
 -----
 
 Now lets talk about the structure of the files within our project
-directory. We going to build a web server. The webserver will be able
-to be run by an executable. The executable will be build with a package
-we will import.
-
-We will also have a 'public' directory to host static files such as the
-output of our server running the test for a project.
-
-Below is how we'll have our project structured:
-
-[source]
------
-.
-├── cmd
-│   └── gowebhooks-server
-│       └── gowebhooks.go
-├── public
-└── server.go
------
+directory. We going to build a web server. We are going to keep it simple with
+our project and keep all of our code in a single file (other than tests).
 
 To create the structure above run the following commands:
 
 [source,bash]
 -----
-$ touch server.go
-$ mkdir -p cmd/gowebhooks-server
-$ mkdir -p public
-$ touch cmd/gowebhooks-server/gowebhooks.go
+$ touch gowebhooks.go
 -----
 
-We could write our whole server in one file but then we would be
-restricted to only using the 'main' package. We want to create an
-executable and all executables need to be in the 'main' package.
-Building our server and related code in its own package allows it to
-have the ability to be imported into other projects. Maybe not totally
-needed for this project but is a good practice.
-
-Our executable will be pretty simple. Just a file to load in our
-package and start it up.
-
-cmd/gowebhooks-server/gowebhooks.go
-
-[source,go]
------
-package main
-
-import (
-	"fmt"
-
-	"github.com/{yourusername}/gowebhooks"
-)
-
-func main() {
-	err := gowebhooks.StartServer()
-	fmt.Println(err)
-}
------
-
-[Warning]
-Remember to replace '{yourusername}' with your username.
-
-Our `server.go` file will have the code actually needed to startup our
+Our `gowebhooks.go` file will have the code actually needed to startup our
 server. To start lets make sure Go is installed properly and setup a
 very simple webserver.
 
-server.go
+gowebhooks.go
 
 [source,go]
 -----
@@ -306,11 +256,13 @@ directory lets run:
 
 [source,bash]
 -----
-$ go run cmd/gowebhooks-server/gowebhooks.go
+$ go run gowebhooks.go
 -----
 
 Navigate your browser to http://localhost:4567/hello and you should
 see a page greeting you.
+
+Give yourself a pat on the back, you just made your first Go server.
 
 ## Receiving webhooks from Github
 
@@ -409,20 +361,31 @@ Those lines will be explained later.
 
 [source, go]
 ----
-package gowebhooks
+package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
+	"os"
+	"os/exec"
 
+	"code.google.com/p/goauth2/oauth"
 	"github.com/google/go-github/github"
 )
 
+var accessToken = os.Getenv("GITHUB_ACCESS_TOKEN")
+var t = &oauth.Transport{
+	Token: &oauth.Token{AccessToken: accessToken},
+}
+var client = github.NewClient(t.Client())
+
 func webhookHandler(w http.ResponseWriter, r *http.Request) {
 	eventType := r.Header.Get("X-GitHub-Event")
-	fmt.Printf("Received: %s event", eventType)
+	log.Printf("Received: %s event", eventType)
 
 	if eventType != "push" {
 		return
@@ -437,22 +400,90 @@ func webhookHandler(w http.ResponseWriter, r *http.Request) {
 	payload := github.WebHookPayload{}
 	json.Unmarshal(body, &payload)
 
-  // TODO
+	go func() {
+		buffer, err := RunMakeTest(payload)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		err = CommentOutput(payload, buffer)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		log.Printf("Commented on: %s", *payload.HeadCommit.ID)
+	}()
 
 	fmt.Fprintf(w, "OK")
+	log.Printf("Responded: OK")
 }
 
-func StartServer() error {
+func RunMakeTest(payload github.WebHookPayload) (*bytes.Buffer, error) {
+	buffer := bytes.NewBuffer([]byte{})
+	tempDir, _ := ioutil.TempDir("/tmp", "gowebhooks")
+
+	giturl := *payload.Repo.GitURL
+	gitref := *payload.HeadCommit.ID
+
+	var commands [3]*exec.Cmd
+
+	cloneCmd := exec.Command("git", "clone", giturl, tempDir)
+
+	checkoutCmd := exec.Command("git", "checkout", "-b", gitref, gitref)
+	checkoutCmd.Dir = tempDir
+
+	makeTestCmd := exec.Command("make", "test")
+	makeTestCmd.Dir = tempDir
+
+	commands[0] = cloneCmd
+	commands[1] = checkoutCmd
+	commands[2] = makeTestCmd
+
+	for _, cmd := range commands {
+		buffer.WriteString(fmt.Sprintf("\n%s\n", cmd.Args))
+		cmdOutput, err := cmd.CombinedOutput()
+		buffer.Write(cmdOutput)
+		if err != nil {
+			return buffer, err
+		}
+	}
+
+	return buffer, nil
+}
+
+func CommentOutput(payload github.WebHookPayload, output *bytes.Buffer) error {
+	owner := *payload.Repo.Owner.Name
+	repo := *payload.Repo.Name
+	gitref := *payload.HeadCommit.ID
+
+	commentBody := bytes.NewBufferString("Created by gowebhooks!")
+	commentBody.WriteString("\n```")
+	commentBody.Write(output.Bytes())
+	commentBody.WriteString("```")
+
+	commentBodyString := commentBody.String()
+
+	comment := &github.RepositoryComment{
+		Body: &commentBodyString,
+	}
+
+	_, _, err := client.Repositories.CreateComment(owner, repo, gitref, comment)
+	return err
+}
+
+func main() {
 	publicFileServer := http.FileServer(http.Dir("./public"))
 	http.Handle("/", publicFileServer)
 	http.HandleFunc("/webhook", webhookHandler)
 
 	fmt.Println("Listening on 4567")
-	return http.ListenAndServe(":4567", nil)
+	err := http.ListenAndServe(":4567", nil)
+	fmt.Println(err)
 }
 ----
 
-### Key take aways for server.go
+### Key take aways for gowebhooks.go
 
 #### Handler arguments
 
