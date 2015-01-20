@@ -506,24 +506,26 @@ func webhookHandler(w http.ResponseWriter, r *http.Request) {
 	payload := github.WebHookPayload{}
 	json.Unmarshal(body, &payload)
 
-	go func() {
-		buffer, err := runMakeTest(payload)
-		if err != nil {
-			log.Printf("runMakeTest: %s", err)
-		}
+  go run(payload)
 
-		log.Printf("%s", buffer)
-
-		resp, err := commentOutput(payload, buffer)
-		if err != nil {
-			log.Printf("commentOutput: %s\n%s", err, resp.Body)
-			return
-		}
-		log.Printf("Commented on: %s", *payload.HeadCommit.ID)
-	}()
-
-	fmt.Fprintf(w, "OK")
+	fmt.Fprintln(w, "OK")
 	log.Printf("Responded: OK")
+}
+
+func run(payload github.WebHookPayload) {
+  buffer, err := runMakeTest(payload)
+  if err != nil {
+    log.Printf("runMakeTest: %s", err)
+  }
+
+  log.Printf("%s", buffer)
+
+  resp, err := commentOutput(payload, buffer)
+  if err != nil {
+    log.Printf("commentOutput: %s\n%s", err, resp.Body)
+    return
+  }
+  log.Printf("Commented on: %s", *payload.HeadCommit.ID)
 }
 
 func runMakeTest(payload github.WebHookPayload) (*bytes.Buffer, error) {
@@ -595,10 +597,11 @@ func main() {
 }
 ----
 
-The code above can be thought of as 5 sections:
+The code above can be thought of as 6 sections:
 
 * import and vars
 * webhookHandler
+* run
 * runMakeTest
 * commentOutput
 * main()
@@ -620,9 +623,10 @@ of the code in your code to import the package.
 
 For example when we import Google's go-github package we will write:
 
-```go
+[source, go]
+----
 import "github.com/google/go-github/github"
-```
+----
 
 The location of the package locally mirrors the package's location on
 the internet.
@@ -644,18 +648,123 @@ allows us to comment on our project via the API.
 Our `webhookHandler` function's purpose will be to take an http request
 read/validate the request's data and pass it on to our other functions.
 
-We only want `push` events. The type of event received by our server is kept in
-a `X-GitHub-Event` header.
+We only want `push` events. So we need to check the event type before we
+proceed. The event type received by our server is kept in a `X-GitHub-Event`
+header. We will get the event type and return from the function if it does
+not equal "push".
 
 [source, go]
 ----
-	eventType := r.Header.Get("X-GitHub-Event")
-	log.Printf("Received: %s event", eventType)
+eventType := r.Header.Get("X-GitHub-Event")
+log.Printf("Received: %s event", eventType)
 
-	if eventType != "push" {
-		return
-	}
+if eventType != "push" {
+  return
+}
 ----
+
+Next we need to read in the JSON GitHub has sent us. This is done in two steps:
+First we will read in the byts from our request then create a `struct` of the
+json we can pass to other functions.
+
+Our `webhookHandler` was passed a `http.Request` which has a `Body`
+`io.ReadCloser`. The `io/ioutil` package defines a bunch of helpful functions to
+deal io objects such as the `io.ReadCloser`. We need to read all of the bytes
+from our `io.ReadCloser`. We'll use the `ReadAll` function from the `io/ioutil`
+package to do so. Now that we have the bytes we can parse them as JSON.
+
+JSON is built into the standard Go library via the `encoding/json`
+package. You need two things to decode JSON: the expected data type and bytes
+to decode.
+
+Luckily the `github.com/google/github-go` package has already defined a struct
+that can be populated by the bytes we read in.
+
+Look at the godoc for the WebHookPayload struct:
+
+[soruce,go]
+----
+type WebHookPayload struct {
+    After      *string         `json:"after,omitempty"`
+    Before     *string         `json:"before,omitempty"`
+    Commits    []WebHookCommit `json:"commits,omitempty"`
+    Compare    *string         `json:"compare,omitempty"`
+    Created    *bool           `json:"created,omitempty"`
+    Deleted    *bool           `json:"deleted,omitempty"`
+    Forced     *bool           `json:"forced,omitempty"`
+    HeadCommit *WebHookCommit  `json:"head_commit,omitempty"`
+    Pusher     *User           `json:"pusher,omitempty"`
+    Ref        *string         `json:"ref,omitempty"`
+    Repo       *Repository     `json:"repository,omitempty"`
+}
+----
+
+https://godoc.org/github.com/google/go-github/github#WebHookPayload
+
+
+Notice each field on the struct has a `json` "struct tag" that maps the JSON
+key to the field in the Go struct. For example the `Repo` field in the Go
+struct will be populated with the `repository` key's value in the JSON. Each
+tag also has `omitempty` which will omit the field if the value is
+empty.
+
+To recap: Our webhookHandler function read in some bytes via the `io/ioutil`
+package. Then handed those bytes to the `encoding/json` package to unmarshal
+them into a `github.WebHookPayload` struct.
+
+[soruce,go]
+-----
+body, err := ioutil.ReadAll(r.Body)
+if err != nil {
+  fmt.Println(err)
+  return
+}
+
+payload := github.WebHookPayload{}
+json.Unmarshal(body, &payload)
+-----
+
+We now have our `payload` variable filled in with the JSON GitHub sent us.
+
+Next we start the process of running the test by passing our `payload` to the
+`run` function.
+
+[soruce,go]
+-----
+go run(payload)
+-----
+
+Notice we prepend the function call with the `go` command. We could run the
+`run` function without the `go` call. But with it the `run` function will be
+executed in it's own goroutine. This allows the execution of the `run` function
+to happen concurrently with the rest of the `webhookHandler`. Meaning, we can
+run the `run` function (which will take sometime) and quickly respond to
+GitHub at the sametime.
+
+We don't need to response back to GitHub with anything special. We'll just
+respond back with `"OK"`. And for good measure log what we did.
+
+[soruce,go]
+-----
+fmt.Fprintln(w, "OK")
+log.Printf("Responded: OK")
+-----
+
+===== run
+
+During the execution of the `webhookHandler` we started the execution of the
+`run` function. The run function will mostly just handle the execution of two
+other functions: `runMakeTest` and `commentOutput`. But there are some nice
+take aways from this function.
+
+Twice in the `run` function you see the pattern:
+
+[soruce,go]
+-----
+if err != nil {
+  ...
+}
+-----
 
 ### Key take aways for gowebhooks.go
 
@@ -691,41 +800,6 @@ with files and other io objects. In `server.go` the package is used
 to read the JSON body sent from Github so it can be parsed.
 
 #### JSON parsing
-
-JSON is built into the standard Go library via the `encoding/json`
-package. To decode JSON you first declare what type of data you're
-expecting. This is usually done by defining a struct with "tags" to
-define the JSON the struct will be populated by.
-
-The `github.com/google/github-go` package has already defined a struct
-that can be populated by a webhook payload.
-
-Look at the godoc for the WebHookPayload struct:
-
-[soruce,go]
-----
-type WebHookPayload struct {
-    After      *string         `json:"after,omitempty"`
-    Before     *string         `json:"before,omitempty"`
-    Commits    []WebHookCommit `json:"commits,omitempty"`
-    Compare    *string         `json:"compare,omitempty"`
-    Created    *bool           `json:"created,omitempty"`
-    Deleted    *bool           `json:"deleted,omitempty"`
-    Forced     *bool           `json:"forced,omitempty"`
-    HeadCommit *WebHookCommit  `json:"head_commit,omitempty"`
-    Pusher     *User           `json:"pusher,omitempty"`
-    Ref        *string         `json:"ref,omitempty"`
-    Repo       *Repository     `json:"repository,omitempty"`
-}
-----
-
-https://godoc.org/github.com/google/go-github/github#WebHookPayload
-
-Each field on the struct has a "struct tag" that maps the JSON key to
-the field in the Go struct. For example the `Repo` field in the Go struct
-will be populated with the `repository` key's value in the JSON. Each
-tag also has `omitempty` which will omit the field if the value is
-empty.
 
 #### Type of Payload
 
