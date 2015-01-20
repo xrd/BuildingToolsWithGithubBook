@@ -24,7 +24,7 @@ describe "#probot", ->
                 expect( robot.router.post ).toHaveBeenCalled()
                 done()
 
-        describe "#security", ->
+        describe "#pr", ->
                 secret = "ABCDEF"
                 robot = undefined
                 res = undefined
