@@ -786,7 +786,7 @@ endpoint that we created when we published into Heroku (in our case
 `https://inqry-chatbot.herokuapp.com`) 
 
 ```
-$ REPOSITORY=isagh
+$ REPOSITORY=testing_repostory
 $ TOKEN=ad5a36c3b7322c4ae8bb9069d4f20fdf2e454266
 $ WEBHOOK_URL=https://inqry-chatbot.herokuapp.com/pr
 $ CONFIG=$(echo '{
@@ -803,11 +803,11 @@ $ CONFIG=$(echo '{
 }')
 $ curl -H "Authorization: token $TOKEN" -H "Content-Type: application/json" -X POST -d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/hooks
 {
-  "url": "https://api.github.com/repos/xrd/isagh/hooks/3846063",
+  "url": "https://api.github.com/repos/xrd/testing_repostory/hooks/3846063",
   "test_url":
-  "https://api.github.com/repos/xrd/isagh/hooks/3846063/test",
+  "https://api.github.com/repos/xrd/testing_repostory/hooks/3846063/test",
   "ping_url":
-  "https://api.github.com/repos/xrd/isagh/hooks/3846063/pings",
+  "https://api.github.com/repos/xrd/testing_repostory/hooks/3846063/pings",
   "id": 3846063,
   "name": "web",
   "active": true,
@@ -902,57 +902,92 @@ Delta compression using up to 8 threads.
 ...
 ------
 
-Once this is complete, we can now create a pull request for our
-repository from the command line and test our Probot. We'll first
-create a new branch inside our repository, create a test file, and
-then push that content into our repository. Once we have a new branch,
-we can create a pull request from it using the API. We can reuse some
-of our command line pieces from prior commands: reuse the CONFIG
-variable to match the pull request format. The required fields are the
-title and body for the pull request, the "head" key which matches the
-name of the branch, and where to merge it to using the "base" key.
-
-Creating a new branch, adding some content and then issuing a pull
-request against the branch might be something we need to do several
-times to get it to work correctly. The examples here as are written
-work right out of the box, but don't be fooled into thinking that it
-all went exactly as we expected the first time around. As these are
-commands you might want to perform multiple times as you are
-experimenting, let's put the commands described in the prior paragraph
-into a bash script that is generic and can be run multiple times. 
-
-Create a new repository, and push it into GitHub.
-
-THIS NEEDS TO BE A CHAPTER FOLLOWING THE INTRODUCTION TO HUB
-
-[source,bash]
-------
-DATE=$(date "+%s")
-NEW_BRANCH=$DATE
-git checkout -b $NEW_BRANCH
-echo "Adding some content" >> test.txt
-git commit -m "Adding test file to test branchat $DATE" -a
-git push origin $NEW_BRANCH
-CONFIG=$(echo "{ "title": "PR on '$DATE'", "body" : "Pull this PR'$DATE'", "head": "'$NEW_BRANCH'", "base": "master" }')
-curl -H "Authorization: token d71053e8d73ca9f6f59e6ffb4758e50093958894" -H "Content-Type: application/json" -X POST -d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/pulls
-------
+We can now start testing our Probot with real GitHub
+notifications. First, let's set up a repository which we can use for
+testing. Creating the new repository on GitHub is a quick task if we
+use the `hub` tool described in the previous chapter on Jekyll. 
 
 [source,bash]
 -------
 $ mkdir testing_repository
 $ cd testing_repository
+$ git init
+$ touch test.txt
+$ git add .
+$ git commit -m "Initial checkin"
 $ hub create
+...
+-------
 
-'
+Now we can create a real pull requests for our repository from the
+command line and test our Probot. A typical pull request flow looks
+like the following:
 
+. Create a new branch
+. Add new content
+. Commit the content
+. Push the new branch into GitHub
+. Issue a pull request.
 
+All of this can be automated using a combination of git commands and cURL.
+We've seen some of these commands before and can reuse previous
+command line invocations and variables that we used when generating
+our webhook using the API via cURL. Our config variable is similar,
+but the required fields in this case are the title and body for the
+pull request, the "head" key which matches the name of the branch, and
+where to merge it to using the "base" key. 
+
+Creating a new branch, adding some content and then issuing a pull
+request against the branch might be something we need to do several
+(or more) times as we experiment and learn about the Hubot extension
+API. The examples here work right out of the box, but don't be fooled
+into thinking that it all went exactly as we expected the first time.
+Given that, these are commands you might want to perform multiple times as you are
+experimenting, so let's put the commands described in the prior paragraph
+into a bash script that is generic and can be run multiple times. We
+can call it `issue-pull-request.sh` and place the script inside the
+test directory.
+
+[source,bash]
+------
+# Modify these three variables
+AUTH_TOKEN=d71053e8d73ca9f6f59e6ffb4758e50093958894
+USERNAME=xrd
+REPOSTORY=testing_repostory
+
+DATE=$(date "+%s")
+NEW_BRANCH=$DATE
+git checkout -b $NEW_BRANCH
+echo "Adding some content" >> test.txt
+git commit -m "Adding test file to test branch at $DATE" -a
+git push origin $NEW_BRANCH
+CONFIG=$(echo "{ "title": "PR on '$DATE'", "body" : "Pull this PR'$DATE'", "head": "'$NEW_BRANCH'", "base": "master" }')
+curl -H "Authorization: token $AUTH_TOKEN" -H "Content-Type: application/json" -X POST -d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/pulls
+------
+
+This script generates a unique string based on the current time. It
+then creates and checks out a new branch based on that name, adds some
+content to a file, commits it, pushes it into GitHub, and generates a
+pull request using the API. All you will need to do is update the three
+variables at the top of the script to match your information. This
+script is resilient in that even if your auth token were incorrect (or
+had expired) this command will do nothing other than add testing data
+to your test repository, so you can experiement safely. Just be sure
+to pay attention to whether you see a successful JSON request as shown
+below or an error message. And, as we are going to run this script as
+a command, make it executable using the `chmod` command. 
+
+[source,bash]
+-------
+$ chmod +x ./issue-pull-request.sh
+$ ./issue-pull-request.sh
 {
-  "url": "https://api.github.com/repos/xrd/isagh/pulls/1",
+  "url": "https://api.github.com/repos/xrd/testing_repostory/pulls/1",
   "id": 27330198,
-  "html_url": "https://github.com/xrd/isagh/pull/1",
-  "diff_url": "https://github.com/xrd/isagh/pull/1.diff",
-  "patch_url": "https://github.com/xrd/isagh/pull/1.patch",
-  "issue_url": "https://api.github.com/repos/xrd/isagh/issues/1",
+  "html_url": "https://github.com/xrd/testing_repostory/pull/1",
+  "diff_url": "https://github.com/xrd/testing_repostory/pull/1.diff",
+  "patch_url": "https://github.com/xrd/testing_repostory/pull/1.patch",
+  "issue_url": "https://api.github.com/repos/xrd/testing_repostory/issues/1",
   "number": 1,
   "state": "open",
   "locked": false,
@@ -961,16 +996,15 @@ $ hub create
 ...
 -------
 
-This returns a huge JSON response, but you can see the first item is
-the link to the pull request. Were we to visit this inside of GitHub,
-we could merge the pull request from the web UI. If we then went to
-the settings for our repository, and then clicked on the "Webhooks and
-Services" link on the left navigation bar, at the very bottom of the
-page we would see a list of recent deliveries to our webhook. 
+This returns a huge JSON response (abbreviated here), but you can see
+the first item is the link to the pull request. Were we to visit this
+inside of GitHub, we could merge the pull request from the web UI. If
+we then went to the settings for our repository, and then clicked on
+the "Webhooks and Services" link on the left navigation bar, at the
+very bottom of the page we would see a list of recent deliveries to
+our webhook.
 
 image::images/hubot-recent-deliveries.png[]
-
-
 
 ===== Assigning an active chat room user
 
