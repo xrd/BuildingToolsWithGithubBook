@@ -1,19 +1,19 @@
 {
   "branch": "master",
   "files": [
-    "chapter-00-tools.asciidoc",
-    "chapter-02-gist.asciidoc",
-    "chapter-05-go-and-webhooks.asciidoc",
-    "chapter-06-issues.asciidoc",
-    "chapter-07-pull-requests.asciidoc",
-    "chapter-08-hubot.asciidoc",
-    "chapter-09-github-pages.asciidoc",
-    "chapter-10-jekyll.asciidoc",
-    "chapter-11-gollum-wiki.asciidoc",
-    "chapter-13-github-api-on-javascript.asciidoc",
-    "chapter-14-api-on-android.asciidoc",
-    "chapter-15-api-on-rails.asciidoc",
-    "preface.asciidoc"
+      "chapter-00-tools.asciidoc",
+      "chapter-01-api-introduction.asciidoc",
+      "chapter-02-gist.asciidoc",
+      "chapter-03-gollum.asciidoc",
+      "chapter-04-javascript.asciidoc",
+      "chapter-05-jekyll.asciidoc",
+      "chapter-06-hubot-activities.asciidoc",
+      "chapter-07-android.asciidoc",
+      "chapter-10-go.asciidoc",
+      "chapter-50-pull-requests.asciidoc",
+      "chapter-51-issues.asciidoc",
+      "chapter-52-github-pages.asciidoc",
+      "preface.asciidoc"
   ],
   "formats": {
     "pdf": {
