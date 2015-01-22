@@ -1018,16 +1018,86 @@ inherent in JavaScript programming and the fact that Hubot extensions
 only export a single constructor (using the `module.exports` syntax)
 it is easier to create, and more importantly test, a separate module
 which we require in our main extension script.
-
+sx
 We start by writing our tests. We've already created a test which
 verifies the call to `robot.router.post`. Our new functionality will
 actually handle the PR notification, so let's add a new grouping using
-the describe syntax and call it "#pr".
+the describe syntax and call it "#pr". The new functionality is
+simple: if the Probot receives the proper parameters (most importantly
+that the internal secret matches the secret sent on the request) then
+we accept the PR as valid and message our room with further
+instructions. Our handler then needs to expose two methods:
+`prHandler` which is where we delegate any information coming from an
+HTTP request to the `/pr` route, and a method where we can configure
+the secret, which we call `setSecret`. Once we have established this
+internal signature for our handler library, we can add two simple
+tests and then our library.
 
 [source,coffeescript]
 -----
+        describe "#pr", ->
+                secret = "ABCDEF"
+                robot = undefined
+                res = undefined
+                
+                beforeEach ->
+                        robot = {
+                                messageRoom: jasmine.createSpy()
+                                }
+                        res = { send: jasmine.createSpy() }
+                        Handler.setSecret secret
+                
+                it "should disallow calls without the secret", (done) ->
+                        req = {}
+                        Handler.prHandler( robot, req, res )
+                        expect( robot.messageRoom ).not.toHaveBeenCalled()
+                        expect( res.send ).toHaveBeenCalled()
+                        done()
+
+                it "should allow calls with the secret", (done) ->
+                        req = { body: { secret: secret } }
+                        Handler.prHandler( robot, req, res )
+                        expect( robot.messageRoom ).toHaveBeenCalled()
+                        expect( res.send ).toHaveBeenCalled()
+                        done()
+
+
 
 -----
+
+Now, add a file called `./lib/handler.coffee`:
+
+[source,coffeescript]
+-----
+_SECRET = undefined
+
+exports.prHandler = ( robot, req, res ) ->
+        secret = req.body?.secret
+        if secret == _SECRET
+                room = "general"
+                robot.messageRoom room, "OMG, GitHub is on my caller-id!?!"
+        res.send 'OK'
+
+
+exports.setSecret = (secret) ->
+        _SECRET = secret
+
+-----
+
+As you can see, the Hubot API does a lot of work for us: it processes
+the JSON POST request to the `/pr` endpoint and provides us with the
+parsed parameters inside the body object. We use that to retrieve the
+secret from the request. Even if you have used CoffeeScript before,
+you may not be familiar with the `?.` syntax: this just tests to see
+if body is defined and if so, has a key named `secret`. This prevents
+us from crashing if the secret is not sent in with the request. If the
+secret from the request matches the configured secret, then we message
+the room, otherwise we ignore the request. In either case, we need to
+respond to the calling server by using the `send` method (`send` is
+provided by the built in *express* server that Hubot uses to provide
+an HTTP server). 
+
+If we run our tests
 
 ===== Assigning an active chat room user
 
