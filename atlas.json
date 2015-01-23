@@ -1,39 +1,39 @@
 {
   "branch": "master",
   "files": [
-      "chapter-00-tools.asciidoc",
-      "chapter-01-api-introduction.asciidoc",
-      "chapter-02-gist.asciidoc",
-      "chapter-03-gollum.asciidoc",
-      "chapter-04-javascript.asciidoc",
-      "chapter-05-jekyll.asciidoc",
-      "chapter-06-hubot-activities.asciidoc",
-      "chapter-07-android.asciidoc",
-      "chapter-10-go.asciidoc",
-      "chapter-50-pull-requests.asciidoc",
-      "chapter-51-issues.asciidoc",
-      "chapter-52-github-pages.asciidoc",
-      "preface.asciidoc"
+    "chapter-00-tools.asciidoc",
+    "chapter-01-api-introduction.asciidoc",
+    "chapter-02-gist.asciidoc",
+    "chapter-03-gollum.asciidoc",
+    "chapter-04-javascript.asciidoc",
+    "chapter-05-jekyll.asciidoc",
+    "chapter-06-hubot-activities.asciidoc",
+    "chapter-07-android.asciidoc",
+    "chapter-10-go.asciidoc",
+    "chapter-50-pull-requests.asciidoc",
+    "chapter-51-issues.asciidoc",
+    "chapter-52-github-pages.asciidoc",
+    "preface.asciidoc"
   ],
   "formats": {
     "pdf": {
       "version": "print",
-      "index": false,
-      "toc": false,
-      "syntaxhighlighting": false,
+      "index": true,
+      "toc": true,
+      "syntaxhighlighting": true,
       "show_comments": false
     },
     "epub": {
-      "index": false,
-      "toc": false,
-      "epubcheck": false,
-      "syntaxhighlighting": false,
+      "index": true,
+      "toc": true,
+      "epubcheck": true,
+      "syntaxhighlighting": true,
       "show_comments": false
     },
     "mobi": {
-      "index": false,
-      "toc": false,
-      "syntaxhighlighting": false,
+      "index": true,
+      "toc": true,
+      "syntaxhighlighting": true,
       "show_comments": false
     },
     "html": {
@@ -44,7 +44,7 @@
       "consolidated": false
     }
   },
-  "theme": "https://github.com/oreillymedia/atlas_tech1c_theme.git",
+  "theme": "oreillymedia/atlas_tech1c_theme",
   "title": "github",
   "templating": false
 }
