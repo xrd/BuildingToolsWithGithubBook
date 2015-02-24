@@ -1,18 +1,400 @@
 [[developer-api]]
 
-== The GitHub API
 
-=== Ease
-=== Depth
-=== Complete
-=== Expansive
-=== Expedited
+== GitHub
+
+This is a book about using the GitHub API. Before we investigate the
+API, it is important to know the history of the GitHub. Let's break it
+down into the two pieces in the name: Git and Hub. To understand
+GitHub, you need to understand Git, and you need to understand what
+Hub means in this context. We'll tell you a little about Git through
+its history and the technical reasons 
+why Git has been so widely adopted by developers around the world. Git
+(an open source project) grew out of necessity from another open
+source project, the Linux kernel. We'll trace the history of Git and
+why it was so important technologically and politically to the team
+working on the Linux kernel.
+
+===  Git: a Sea Change for Software Development
+
+Some of biggest Open Source projects, such as the Linux kernel, have
+been using a decentralized approach to development for decades.  In
+these projects hundreds, sometimes thousands, of developers collaborate on
+fast-moving projects without central direction.  While the Kernel
+project itself is maintained by a Linus Torvald and a handful of
+experts, there is no manager creating lists of priorities and
+tasks. There are no weekly status meetings to convey management
+priorities to compliant workers.  It is an ad-hoc process that relies
+on widely distributed individuals maintaining hundreds of different
+versions of the kernel.
+
+One developer may add a new driver to her fork of the kernel, and yet
+another may modify the behavior of the file system in another copy.
+These separate "forks" are typical in distributed version control and
+tools like Git make it possible for anyone to take a project like
+Linux, fork it, and take it in whatever direction they prefer.  This
+distributed development is made possible by Git - a version control
+system which facilitates distributed development and places an
+emphasis on making merges between two separate forks easy.
+
+The alternative is an approach that involves strict control of code and a
+rigorous approach to project planning and that model is clearly quite
+different than the ad-hoc, distributed approach to collaboration
+described above. If you read any MBA textbook from the past fifty
+years, however, you could not help but immediately question whether
+this could ever work. Yet, Linux is at the heart of most of the
+internet, and it powers the most popular mobile operating system in
+the world. Who's managing these developers?  How do they agree on
+standards?  How could this team of strangers ever create quality
+software?  Despite these concerns it works very and Linux is empirical
+proof that distributed development and distributed version control
+provide the appropriate background for wide-scale, open-source
+collaboration. And, the people idealogically invested in the more
+corporate approach to development never seem to talk about the
+downsides of a strictly controlled  development process, namely a
+tendency to lose track of the voice of the customer and the ability to
+pivot rapidly when those voices finally become ring clear. 
+
+==== How Software Development works on the Linux kernel
+
+Thousands of developers submit patches to the kernel through a list of
+maintainers.  If you have a change to the Linux kernel, the first step
+is to consult the linux/MAINTAINERS and then submit a patch to the
+appropriate individual.  Eventually, this patch is vetted, integrated
+into a particular component and then passed up to core contributors
+and integrated into the kernel distribution.
+
+It's a busy, human process that relies on a busy mailing list named
+linux-kernel and a small team of core contributors. For more than a
+decade Torvalds was simply organizing the kernel with patchfiles and
+tarballs, and this process just wasn't scalable.  It was only in 2002
+that Torvalds decided to standardize his own workflow on a proprietary
+tool written by Larry McVoy named BitKeeper.  BitKeeper was a
+successor to an earlier DVCS named TeamWare.
+
+==== The Birth of Git
+
+While Linus Torvalds was happy with BitKeeper, core contibutors to the
+Linux Kernel, notably Alan Cox, refused to continue using a
+proprietary tool for Linux.  Fast forward through years of flamewars
+and in 2005 a developer named Andrew Tridgell created a tool
+(SourcePuller) which was compatible with the BitKeeper protocol.  This
+caused BitKeeper to rescind the free BitKeeper license and change
+licensing terms, making it impractical for Torvalds to continue to use
+BitKeeper for kernel development without requiring other developers to
+purchase a license.
+
+Torvalds, motivated by his desire for a DVCS that would allow for
+efficient and rapid merging, created a prototype of Git in 2005
+handing over the project to Git's current maintainer Junio Hamano
+later that year.  In just eight years, Git has become the primary tool
+used in open source development, and it has made significant inroads
+into corporate development.
+
+==== Git: Toward an Acceptance of DVCS
+
+By the time Torvalds created Git in 2005, the Linux Kernel had been at
+it for almost 15 years.  The decade-old Apache Software Foundation had
+largely finished a migration from CVS to Subversion, and the Eclipse Foundation
+was continuing to use CVS.  In the early part of the last decade
+centralized, client-server SCMs were the rule.  Proprietary systems
+such as Perforce, Clearcase, MKS Integrity, and (cringe) Visual
+SourceSafe along with the two main open source SCMs CVS and Subversion
+dominated the market.
+
+At the time, the VCS of choice for open source projects was
+Subversion, a centralized system, and there was some discussion on
+linux-kernel about using a tool like CVS or Subversion.  Torvalds
+decision to stick with a DVCS wasn't controversial, but Linux' use of
+a DVCS was certainly the exception in the OSS world. OSS efforts
+seemed to have a definite preference for central SCMs - Subversion,
+CVS.  Torvald's reaction to CVS and Subversion was telling, at the
+time he had some technical issues with the centralized version
+control, but his biggest objection to centralization was that they
+encouraged "politics around the question of who gets commit
+privileges".  Here is Torvald's reaction to CVS and Subversion in 2005
+from linux-kernel. http://marc.info/?l=git&m=113072612805233&w=2
+
+---- 
+The problem with a centralized model is that there's one point of
+contact: you can replicate the central database endlessly, but you can
+only really modify it in one place. Which means that anybody who wants
+to modify anything at all needs to have write access to that one
+repository.
+
+Now, you can limit write access in various ways ("user xyz can only
+write to these files"), but it still requires an a-priori trust
+network rather than a dynamic one. So every single CVS project (and
+SVN does zero in this regard) always ends up having politics around
+the question of who gets commit privileges, and what the rules for
+them are.
+
+So one of the worst downsides of CVS is _politics_. People, not
+technology.  
+----
+
+==== A Distributed Revolution
+
+As Git became more capable, open source projects and commercial
+developers alike started to experiment with more asynchronous
+approaches to collaboration.    Git continued to develop for two years
+before the arrival of Github, founed in 2008.  It wasn't until Github
+arrived that Git started to convert more and more open source
+projects.  The Rails project moved four years of Subversion activity
+dating back to 2004 to Git in April of 2008, and the number of
+developers, forks, and projects on Git skyrocketed.
+
+The ease with which communities could collaborate and the ability for
+independent developers to create forks and issue pull requests started
+to put pressure on traditional open source forges like Apache and
+Eclipse.  While these forges are not running toward Github, Github
+played an important part in popularizing Git.  Don't mistake Github
+for Git, the two are separate and you can certainly use Git without
+using Github.
+
+==== Git Features
+
+Git isn't the first distributed version control systems (DVCS) out
+there, but it is the most popular.  This section explores a few points
+that differentiate Git from the rest of the DVCS pack icluding: 
+Monotone, Darcs, Mercurial, BitKeeper, and Bazaar.
+
+The project driving the requirements for Git is the largest, most
+complex collaborative effort in the history of the species. That may
+sound somewhat grandiose, but it's very much true. The Linux kernel is
+over 17 million lines of code and is growing at an average rate of
+3,500 lines per
+day:[http://royal.pingdom.com/2012/04/16/linux-kernel-development-numbers/].
+Nearly 1,300 developers contribute to Linux with versions like 2.6.25
+generating more than 12,000 patches. The Linux kernel powers over 93%
+of the TOP500
+Supercomputers:[http://en.wikipedia.org/wiki/Usage_share_of_operating_systems#Servers].
+The kernel is at the heart of the Android which has a nearly 60% share
+of the mobile operating system market with 1.5 million device
+activations a day. The kernel also powers millions of servers across
+companies that have helped transform the way we consume information
+and communicate with one another such as Yahoo, Google, Facebook, and
+Twitter.
+
+This project can be thought of as a multi-layered tree of
+collaborating developers. A patch submitted at the bottom of this tree
+might jump around in a non-linear path to inclusion in the
+kernel. Git supports this because it makes branching and merging
+easy.  In Git, a branch isn't a separate object, it is a reference to
+a commit.  Contrast this approach to that of Subversion where branches
+and tags are distinct objects (in Subversion's case a branch is a
+directory).  That approach isn't nearly as flexible.  If a patch was
+thrown around to ten different developers over the course of several
+weeks, in Git you simply have a moving reference to a commit and the ability
+to integrate that commit into the end-product.  In Subversion
+individual developers would have to selectively merge specific commits
+across different branch directories.  It's a mess in anything other
+than Git.
+
+Distributed, Efficient, Easy to Branch and Merge, Free and Open Source
+
+==== Flexibility
+
+Git does not force you into a completely different mode of
+development, regardless of where your development process is centered
+now. Neither Git nor GitHub force you to change your workflow if your
+development team philosophies are currently "centralized" rather than
+"distributed." You can still make GitHub (or another Git hosting
+service) act as the centralized repository and require team members to
+push changes into the service.  
+
+Zachary Kessin has created an eBook, hosted on GitHub, which documents
+various patterns of DVCSes, and it is especially relevant to teams
+coming from a centralized model and trying out Git or GitHub. The book
+describes several workflows fitting many standard team member
+paradigms from the Linux Kernel development team to the "solo-coder"
+with or without clients. If you have concerns about how to map your
+existing workflow to GitHub, or how to transition from a centralized
+system to a distributed system, this book is worth a look. 
+
+https://github.com/zkessin/dvcs-workflows
+
+==== Popularity
+
+===== in Open Source
+
+image::images/bootstrapping-git-rails-network.png[]
+
+These graphs display the network of participation for the popular web
+framework "Ruby on Rails." Rails migrated from Subversion (SVN) to Git
+in 2008 at the moment when GitHub launched as a company. Without
+reading too much into the graphs, notice a slight upward trend that
+begins in 2008 and continues to today, and also notice a slight
+downward trend from the inception of the project in 2005 until right
+before switching to Git. Was there stagnation in the Rails project as
+it grew, and more developer finger started poking in the pie? Did
+switching to Git improve the workflow for developers and make it a
+more  frictionless process for making additions? One of the benefits
+and designs of Git has been that it is suitable for "programming in
+the large," that development should be fluid even as team size grows,
+and the health of the Rails project seems to have benefitted (or at
+least encountered no stumbling blocks) since switching to Git.
+
+image::images/bootstrapping-git-node-network.png[]
+
+Node is another popular project on GitHub, allowing an author to run
+JavaScript, traditionally a web client-side language, on the server
+side. Node emphasizes providing developers with a set of tools for
+developing responsive and high performance applications with a
+familiar language. Peering into the graphs underneath the project
+level commit graph, you see the project's creator, Ryan Dahl,
+initially made a large majority of the changes in the project. As he
+has stepped back, others like "isaacs" (Isaac Z. Schlueter) and
+"bnoordhuis" (Ben Noordhuis) have taken over and are now making the
+majority of changes. Git and GitHub make these transitions of
+ownership and contribution levels seamless and without conflict. 
+
+==== Comparisons to Alternatives
+
+Git is not the only popular DVCS, but it is the most popular. Here is
+a quick comparison of the other major DVCSes, from both technical and
+cultural viewpoints. 
+
+===== Darcs
+
+Darcs supports the same set of basic operations as Git does, but
+differs internally in that it manages a set of patches independently
+rather than as a connected directed acyclic graph (DAG). In other
+words, darcs allows you to create a set of changes and then push
+individual patches from that set without the need to rewrite the
+history graph. This internal structure makes branching even cheaper
+than with git, one of the most touted benefits of using git. There is
+controversy around "cherry-picking" within the world of DVCS, but this
+part of darcs makes cherry picking trivial. Darcs is written in
+Haskell. Unfortunately, as of this writing, there is no strong
+equivalent to GitHub for darcs hosting. The leading candidate
+"darcsden.com" has a copyright notice from 2011 and most projects show
+activity no later than 2011 as well. Darcs uses the GPL license. 
+
+===== Bazaar (bzr)
+
+Bazaar (which uses the command line command "bzr") is an open source
+DVCS that offers the majority of operations that Git offers. Bazaar is
+sponsored by Canonical, the company which develops Ubuntu, the most
+popular distribution of Linux. Canonical offers a functional hosting
+service called Launchpad.net which offers good code management across
+teams but does not have near the polish of GitHub. Bazaar uses
+sequential commit numbers (1,2,3) rather than git-style SHA hashes
+(d670460b4b4a..., 1f7a7a472abf...), which means it is easier to tell
+which commit comes before or after another; you are simply comparing
+an integer to another integer, but this does add complexity (handled
+by the bzr tools generally) to managing these commit numbers when you
+start introducing other team member commits. Another technical
+difference is that directories are first class objects, meaning bzr
+can rename directories and this operation is stored as a rename
+operation in the commit log. Compare this to Git which does not store
+directories inside commit history and notice how git requires you to
+place files like ".gitkeep" in order to maintain empty
+directories. Mark Shuttlesworth, the founder of Ubuntu, has written at
+length about the benefits of renaming and how bzr wins against other
+DVCS, including git. Bzr is written in Python and licensed under the
+GPLv2. Bazaar was originally forked from the arch DVCS. 
+
+===== Mercurial (hg)
+
+Mercurial (which uses the command line command "hg") is another DVCS,
+offering much of the same functionality as git. Unlike git, Mercurial
+is distributed as a single monolithic binary instead of multiple git
+commands (over 140 individual commands, depending on which build
+version you are using of git). You can tell git came from the Linux
+world which favors small chainable commands, but let's not go so far
+to say that Mercurial was designed in the basements of Redmond,
+WA. Mercurial also uses a DAG to keep change history, like
+Git. Mercurial favors immutable histories, meaning there are no tools
+to rewrite history like the "git revert" command. Mercurial has the
+best code hosting alternative to GitHub in BitBucket.org, a service of
+Atlassian. Mercurial is licensed under the GPLv2 and is written in
+Python. 
+
+===== Monotone
+
+If a movie studio ever decides to remake "Back to the Future" with the
+main character named Git instead of Marty, there will be a scene where
+Git sees his hand disappearing in front of his eyes while strumming a
+guitar, as Linus Torvalds dances and falls in love with Monotone,
+dooming us all to a future world without Git. Fortunately, right as
+Linus is about to falls deeply in love with Monotone, she says: "So,
+you know, my father Bjarne Stroustrup said..." Looking incredulous,
+Linus interrupts her and says: "Wait! You're C\+\+?!?!" And, he rushes
+out, leaving Monotone alone on the dance floor, securing our future
+with Git and GitHub. Back to reality, Monotone was initially favored
+by Linus as the replacement to BitKeeper and CVS within the Linux
+kernel community, but Linus could never overcome his revulsion to the
+performance of C++, the language in which Monotone was
+written. Ideologically, Linus agrees with the ommission of cherry
+picking in Monotone, though ironically this is a feature available in
+the git of today. Unfortunately, Monotone has lost momentum; for
+example, the mailing list for the Monotone Eclipse plugin has seen no
+activity since 2008. Monotone is licensed under the GPL. 
+
+===== BitKeeper
+
+BitKeeper was the early inspiration for many of these open source
+DVCSes. The maintainers of the Linux kernel used BitKeeper for a short
+while, but differences over its closed source licensing inspired Linux
+kernel developers to seek out an alternative and resulted in Linus
+building his own, now called Git. Unfortunately, for many open source
+developers, a closed source system which manages their source code is
+a no go, and there are many viable alternatives offering the same
+features as BitKeeper, so while BitKeeper continues to have some
+traction in the enterprise, there are very few open source projects
+using it. 
+
+=== Git Needed a Hub
+
+Git was thriving on its own, so why did GitHub emerge and why did
+developers, startups and now large businesses flock to it? There are
+various reasons why. 
+
+* Hosting a Git repository is not complicated but it is not trivial
+  either. Developers wanted something that just worked so they could
+  focus on software   development, not hosting a Git
+  repository. Paying a small fee to a trusted community member made
+  sense to many early adopters.
+* GitHub was built by members of the Ruby community who kept
+  building trust in that community. Tom Preston-Werner, Chris
+  Wanstrath, PJ Hyett and Scott Chacon all made significant
+  contributions to open source projects. The authenticity in which
+  they worked served as their sales pitch, inviting developers to use
+  their service. 
+* And, it "just worked." GitHub was launched with a minimal layer on top of a
+  powerful tool that users already understood. GitHub got out of the
+  way and exposed just the right amount of Git to you, and the
+  features GitHub added were truly additive, rather than lock-in
+  driven or fluffy and distracting.
+* GitHub quickly offered a transition path to tighter security with
+  their GitHub Enterprise project, making it possible to keep your
+  GitHub data inside a corporate firewall.
+
+GitHub had hyper growth at the beginning, and decisions were being
+made from a technological perspective, not from a business
+perspective. In other words, the founders were making choices that
+made their customers happy (the founders have written about "optimize
+for happiness") and were the path of least resistance. We've all
+experienced using products or services which were clearly designed to
+prevent us from using them given some restriction which benefitted the
+company and was to the detriment of its users. We've all used a
+product that was beyond contemptuous of its attempts to lock-in its
+users. We've all used products that treated its users as infantile. 
+
+GitHub was built by its founders to be a collaboration community, not
+a money making opportunity. This was the missing component for many
+developers, a place where they could build great things with others.
+
+=== Beyond GitHub as Just a Git Repository Service
 
 Like most useful sites and services today, GitHub is less a site that
-you simply visit in isolation and more and more becoming a utility intertwined and integrated with other developer-centered sites on the Internet. If you develop in
-Ruby, Node.js, and, increasingly, Java you are going to encounter
-GitHub as the foundational SCM used by a number of leading projects
-and libraries available for your language or platform.  
+you simply visit in isolation and more and more becoming a utility
+intertwined and integrated with other developer-centered sites on the
+Internet. If you develop in Ruby, Node.js, and, increasingly, Java you
+are going to encounter GitHub as the foundational SCM used by a number
+of leading projects and libraries available for your language or
+platform.  
 
 This ubiquitous presence continues to develop as GitHub's APIs have
 started to mature and offer basic utilities for sites that need to
@@ -24,239 +406,99 @@ a provider of both user identity and Git activity.
 As more developer-focused sites start to offer the ability to "Login
 with GitHub", and as GitHub continues to offer more low-level
 infrastructure for development GitHub goes from just a simple service to a
-necessary infrastructure for collaboration. In more than a few ways, GitHub is
-to developers as Facebook is to social networks and the API is a
-critical component of that transformation.
+necessary infrastructure for collaboration. In more than a few ways,
+GitHub is to developers as Facebook is to social networks and the API
+is a critical component of that transformation.
 
-This chapter will supply three things: 
+=== High-level Areas of the GitHub API
 
-* A language-neutral overview of the GitHub API along with an
-  explanation of basic interaction patterns and pointers toward more
-  detailed information.
-* A survey of libraries available to make interacting with the GitHub
-  APIs easier.
-* An exploration of intergration patterns for GitHub's OAuth
-  services.
+The GitHub API is broken into several logical components. These
+components are tied to a scope. Applications that authenticate using
+the GitHub oAuth token flow are only allowed to view and modify data
+for those scopes which were specified during authentication. And, you
+can limit whether the information is read only or read and write.
 
-=== API Overview
+==== Activity
 
-The GitHub API is a set of REST services that speak JSON.  Some of
-these services are available anonymously without the need for
-authentication, while others require a set of credentials.  The API is
-easy to access, and this chapter will use a command-line utility named
-cURL to demonstrate how to access this API.
+Activity includes Events, Feeds, Notifications, Starring, and
+Watching.  If you are building a site or service that is focused
+on supporting developers this portion of the API provides information about 
+activity that affects everything: users, repositories, and organizations.
 
-.Installing cURL
-[NOTE]
-If you are running these examples on a Linux box, you should be able
-use your native package management tool to install cURL - either a
-"sudo yum install curl*" on a RedHat variant or "sudo apt-get
-install curl" on an Ubuntu (or Debian) system.  If you are on any recent version of OSX, you already
-have cURL installed, but it you can't find it, take a look at the
-HomeBrew project (http://brew.sh/) or MacPorts project (http://www.macports.org/).  If you are running on Windows or another operating system, you best bet is to download cURL from the cURL web site here: http://curl.haxx.se/download.html
+==== Gists
 
-==== Accessing the GitHub API
+Gists are code snippets that can be shared and embedded in other
+sites. Using the GitHub API you can retrieve and populate Gist
+content and use GitHub as the infrastructure for sharing pieces of code.
 
-It's easy, just run curl and hit the API URL as shown in the following
-command listing.  Throughout this chapter, we're going to show a
-number of command listings that have been edited help us save space in
-the book.   I've left the output of this particular call unedited so
-we can walk through the response headers and so you can see how the
-GitHub tells you where to look for all of the other services it
-provides.
+==== Git Data
 
-----
-$ curl -i https://api.github.com/
-HTTP/1.1 200 OK
-Server: GitHub.com
-Date: Sun, 11 Aug 2013 22:37:26 GMT
-Content-Type: application/json; charset=utf-8
-Status: 200 OK
-X-RateLimit-Limit: 60
-X-RateLimit-Remaining: 57
-X-RateLimit-Reset: 1376262655
-X-GitHub-Media-Type: github.beta
-X-Content-Type-Options: nosniff
-Content-Length: 1776
-Access-Control-Allow-Credentials: true
-Access-Control-Expose-Headers: ETag, Link, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes
-Access-Control-Allow-Origin: *
-ETag: "d20e5cc244a6cdb4056579e47e839e36"
-Cache-Control: max-age=0, private, must-revalidate
-Vary: Accept-Encoding
-----
+This portion of the API allows you to do anything with the GitHub
+API that you can do with the Git command.  If you are familiar
+with the way that Git's plumbing (not the porcelain) works, you
+could write systems that read, create, and manipulate the basic
+building blocks of Git's content-addressable storage backend
+including blobs, trees, tags, and commits.
 
-Let's do a quick walkthrough of this response.  The first thing we
-see is a response code.  In this case, our response code is 200 which
-signals to us that the request was a success.  Later in this chapter
-you will see how GitHub uses other response codes such as HTTP 304 to
-send signals to a client.   After the response code, you'll see other
-standard headers one would expect in any HTTP response such as the
-server sending the response, the date of the response, the Status
-header, the Content-Length, and the Content-Type of the response.
+==== Issues
 
-Three headers are present in every GitHub API response which tell you
-about the GitHub API rate limits.  They are X-RateLimit-Limit,
-X-RateLimit-Remaining, and X-RateLimit-Reset.   These limits are
-explained in detail in <<developer-api-rates>>.
+GitHub's issues management systems is made fully availabel to you
+via the GitHub API.  If you need to create custom systems to
+create and read GitHub issues, issue comments, issues events,
+issue labels, or if you want to see which issues relate to a
+repository milestone the Issues section of the API is where you'll look.
 
-The X-GitHub-Media-Type header contains information that will come in
-handy when you are starting to retrieve text or blob content from the
-API.  when you make a request to the GitHub API you can specify the
-format you want to work with by sending an Accept header with your request.
+==== Misc
 
+The GitHub API is structured around the endpoints necessary for 
+managing information stored inside a source code repository. There
+are tools which don't fit into any of the existing hierarchies,
+and GitHub placed those here. You might think of this as a
+utilities category instead if that makes more sense. This section
+provides access to tools which help you render markdown content,
+generate emojis, and manage gitignore files.
 
-After the HTTP response headers shown above, the root directory of the
-GitHub API helpfully returns a JSON document listing all of the
-services available via the GitHub API.  You can print this out and use
-it as a map to the GitHub API.  We're going to run through most of
-these services in this chapter, but this is a helpful list to have
-access to, and to get it, just go to https://api.github.com/
+==== Orgs
 
-----
-{
-  "current_user_url": "https://api.github.com/user",
-  "authorizations_url": "https://api.github.com/authorizations",
-  "emails_url": "https://api.github.com/user/emails",
-  "emojis_url": "https://api.github.com/emojis",
-  "events_url": "https://api.github.com/events",
-  "feeds_url": "https://api.github.com/feeds",
-  "following_url": "https://api.github.com/user/following{/target}",
-  "gists_url": "https://api.github.com/gists{/gist_id}",
-  "hub_url": "https://api.github.com/hub",
-  "issue_search_url": "https://api.github.com/legacy/issues/search/{owner}/{repo}/{state}/{keyword}",
-  "issues_url": "https://api.github.com/issues",
-  "keys_url": "https://api.github.com/user/keys",
-  "notifications_url": "https://api.github.com/notifications",
-  "organization_repositories_url": "https://api.github.com/orgs/{org}/repos/{?type,page,per_page,sort}",
-  "organization_url": "https://api.github.com/orgs/{org}",
-  "public_gists_url": "https://api.github.com/gists/public",
-  "rate_limit_url": "https://api.github.com/rate_limit",
-  "repository_url": "https://api.github.com/repos/{owner}/{repo}",
-  "repository_search_url": "https://api.github.com/legacy/repos/search/{keyword}{?language,start_page}",
-  "current_user_repositories_url": "https://api.github.com/user/repos{?type,page,per_page,sort}",
-  "starred_url": "https://api.github.com/user/starred{/owner}{/repo}",
-  "starred_gists_url": "https://api.github.com/gists/starred",
-  "team_url": "https://api.github.com/teams",
-  "user_url": "https://api.github.com/users/{user}",
-  "user_organizations_url": "https://api.github.com/user/orgs",
-  "user_repositories_url": "https://api.github.com/users/{user}/repos{?type,page,per_page,sort}",
-  "user_search_url": "https://api.github.com/legacy/user/search/{keyword}"
-}
-----
+Repositories and individuals associated with organizations can be
+read and manipualted from the Org Teams API.  If you wanted to
+render a list of developers contributing to a repository on a web
+site you could use this section of the API to obtain this information.
 
-Any of these service URLs can be used with the cURL tool to pull more specific information from the GitHub API. For example, if we wanted to know more about the "github" organization, we could use the following cURL command:
+==== Pull Requests
 
-----
-$ curl https://api.github.com/orgs/github
-{
-  "login": "github",
-  "id": 9919,
-  "url": "https://api.github.com/orgs/github",
-  "repos_url": "https://api.github.com/orgs/github/repos",
-  "events_url": "https://api.github.com/orgs/github/events",
-  "members_url": "https://api.github.com/orgs/github/members{/member}",
-  "public_members_url": "https://api.github.com/orgs/github/public_members{/member}",
-  "avatar_url": "https://0.gravatar.com/avatar/61024896f291303615bcd4f7a0dcfb74?d=https%3A%2F%2Fidenticons.github.com%2Fae816a80e4c1c56caa2eb4e1819cbb2f.png",
-  "name": "GitHub",
-  "company": null,
-  "blog": "https://github.com/about",
-  "location": "San Francisco, CA",
-  "email": "support@github.com",
-  "public_repos": 114,
-  "public_gists": 0,
-  "followers": 12,
-  "following": 0,
-  "html_url": "https://github.com/github",
-  "created_at": "2008-05-11T04:37:31Z",
-  "updated_at": "2013-10-18T23:55:02Z",
-  "type": "Organization"
-}
-----
+With the Pull Requests section of the GitHub API you can create a
+pull request, view a pull request, updated a pull request, comment
+on a pull request, and merge a pull request.
 
-We've removed the `-i` switch from the cURL command so that we no longer see the headers. We took the URL named "organization_url" and added the parameter of "github" (replacing the {org} placeholder) to generate the full URL to the GitHub organization. You can see this tells us the company blog (https://github.com/about), that the company is located in San Francisco, and the creation date (which strangely does not match their blog post which states April 10th was their official launch date [https://github.com/blog/40-we-launched]).
+==== Repositories
 
-==== High-level Areas of the GitHub API
+The Repos API gives you access to lists of repositories by user
+and by organization. It also provides access to teams, tags,
+branches, and contributors associated with a repository.
 
-Activity::
+==== Users
 
-    Activity includes Events, Feeds, Notifications, Starring, and
-    Watching.  If you are building a site or service that is focused
-    on supporting developers this portion of the API provides information about 
-    activity that affects everything: users, repositories, and organizations.
+You can read a user, read the current authenicated user, update
+your own user, list a user's followers, update followers, and
+check to see if a user if following another.  This section of the
+API also allows you to see public keys for a user and 
 
-Gists::
+==== Search
 
-    Gists are code snippets that can be shared and embedded in other
-    sites. Using the GitHub API you can retrieve and populate Gist
-    content and use GitHub as the infrastructure for sharing pieces of code.
+GitHub has spent a good amont of effort over the past few years
+creating a very feature-rich search function and they've made this
+search apability available via the GitHub API.
 
-Git Data::
+==== Enterprise
 
-    This portion of the API allows you to do anything with the GitHub
-    API that you can do with the Git command.  If you are familiar
-    with the way that Git's plumbing (not the porcelain) works, you
-    could write systems that read, create, and manipulate the basic
-    building blocks of Git's content-addressable storage backend
-    including blobs, trees, tags, and commits.
+For the most part, enterprise (behind the firewall) versions of
+GitHub have the same API offerings as the main GitHub.com site.
+However, a few extra pieces of functionality are provided inside
+this section, like managing users (which is not something the
+GitHub.com API provides under any circumstances).
 
-Issues::
-
-    GitHub's issues management systems is made fully availabel to you
-    via the GitHub API.  If you need to create custom systems to
-    create and read GitHub issues, issue comments, issues events,
-    issue labels, or if you want to see which issues relate to a
-    repository milestone the Issues section of the API is where you'll look.
-
-Misc::
-
-    The GitHub API is structured around the endpoints necessary for 
-    managing information stored inside a source code repository. There
-    are tools which don't fit into any of the existing hierarchies,
-    and GitHub placed those here. You might think of this as a
-    utilities category instead if that makes more sense. This section
-    provides access to tools which help you render markdown content,
-    generate emojis, and manage gitignore files.
-
-Orgs::
-
-    Repositoryies and individuals associated with organizations can be
-    read and manipualted from the Org Teams API.  If you wanted to
-    render a list of developers contributing to a repository on a web
-    site you could use this section of the API to obtain this information.
-
-Pull Requests::
-
-    With the Pull Requests section of the GitHub API you can create a
-    pull request, view a pull request, updated a pull request, comment
-    on a pull request, and merge a pull request.
-
-Repositories::
-
-    The Repos API gives you access to lists of repositories by user
-    and by organization. It also provides access to teams, tags,
-    branches, and contributors associated with a repository.
-
-Users::
-
-    You can read a user, read the current authenicated user, update
-    your own user, list a user's followers, update followers, and
-    check to see if a user if following another.  This section of the
-    API also allows you to see public keys for a user and 
-
-Search::
-
-    GitHub has spent a good amont of effort over the past few years
-    creating a very feature-rich search function and they've made this
-    search apability available via the GitHub API.
-
-Enterprise::
-
-    For the most part, enterprise (behind the firewall) versions of
-    GitHub have the same API offerings as the main GitHub.com site.
-    However, a few extra pieces of functionality are provided inside
-    this section, like managing users (which is not something the
-    GitHub.com API provides under any circumstances).
+=== Complete Coverage
 
 In summary, you would have to work to figure out something that GitHub
 isn't making available via the GitHub API.  They done this for a few
@@ -286,816 +528,3 @@ One thing to keep in mind, despite the current, ideal approach that
 GitHub is taking to its API is that your use of this API is still
 subject to the arbitrary whim of a commercial entity.
 
-==== How the Read the Github API Documentation
-
-A full exploration of the GitHub API and fine-grained details for each
-service is well beyond the scope of this chapter (or even this entire
-book).  For more information about the GitHub API, see the
-comprehensive GitHub API documentation here:
-http://developer.github.com/v3/
-
-[[developer-api-rates]]
-GitHub API Rate Limits
-----------------------
-
-GitHub tries to limit the rate at which users can make requests to the
-API.  Anonymous requests, requests that haven't authenticated with
-either a username/password or OAuth information, are limited to 60
-requests an hour. If you are developing a system to integrate with the
-GitHub API on behalf of users, clearly 60 requests per hour isn't
-going to be sufficient.
-
-This rate limit is increased to 5000 requests per hour if you are
-making an authenticated request to the GitHub API, and while this rate
-is two orders of magnitude larger than the anonymous rate limit, it
-still presents problems if you intend to use your own GitHub
-credentials when making requests on behalf of many users.
-
-For this reason, if your web site or service uses the GitHub API to
-request information from the GitHub API, you should consider using
-OAuth and make requests to the GitHub API using your user's shared
-authentication information. 
-
-[NOTE]
-There are actually two rate limits.  The "core" rate limit and the
-"search" rate limit.  The rate limits explained in the previous
-paragraphs were for the core rate limit.  For search,
-requests are limited at 20 requests per minute for authenticated user
-requests and 5 request per minute for anonymous requests. The
-assumption here is that search is a more infrastructure intensive
-request to satisfy and that tighter limits are placed on its usage.
-
-=== Reading Your Rate Limits
-Reading your rate limit is straightforward, just make a GET request to
-/rate_limit.  This will return a JSON document which tells you the
-limit you are subject to, the number of requests you have remaining,
-and the timestamp (in seconds since 1970).  Note that this timestamp
-has a timezone in Coordinated Universal Time (UTC).
-
-The following command listing uses curl to retrieve the rate limit
-for an anonymous request.   This response is abbreviated to save space
-in this book, but you'll notice that the quota information is supplied
-twice: once in the HTTP response headers and again in the JSON
-response.  The rate limit headers are returned with every request to
-the GitHub API, so there is little need to make a direct call to the
-/rate_limit API.
-
-----
-$ curl -i https://api.github.com/rate_limit
-HTTP/1.1 200 OK
-X-RateLimit-Limit: 60
-X-RateLimit-Remaining: 60
-X-RateLimit-Reset: 1376252013
-
-{
-  "rate": {
-    "limit": 60,
-    "remaining": 60,
-    "reset": 1376252013
-  }
-}
-----
-
-60 requests over the course of an hour isn't very much, and if
-you plan on doing anything interesting, you will likely exceed this
-limit quickly. If you are hitting up against the 60 requests per
-minute limit, you will likely want to investigate making authenticated
-requests to the GitHub API.
-
-The following command listing uses curl to retrieve the rate limit for
-an authenticated request.  Again, you will note that the rate limit
-information is present in both the response body and the HTTP response
-headers.
-
-----
-$ curl -i -u tobrien https://api.github.com/rate_limit
-Enter host password for user 'tobrien': xxxxxxxx
-HTTP/1.1 200 OK
-X-RateLimit-Limit: 5000
-X-RateLimit-Remaining: 4995
-X-RateLimit-Reset: 1376251941
-
-{
-  "rate": {
-    "limit": 5000,
-    "remaining": 4995,
-    "reset": 1376251941
-  }
-}
-----
-
-[NOTE]
-Calls to the Rate Limit API are not deducted from your Rate Limit.
-Isn't that nice of them?
-
-===== Conditional Requests to Avoid Rate Limits
-
-If you are querying the GitHub APIs to obtain activity data for a user
-or a repository, there's a good chance that mamy of your requests
-won't return much activity.  If you check for new activity once every
-few minutes, there will be time periods over which no activity has
-occurred.  These requests, these constant polls still use up requests
-in your rate limit even though there's no new activity to be
-delivered.
-
-In these cases, you can send conditional HTTP headers
-If-Modified-Since and If-None-Match to tell GitHub to return an HTTP
-304 response code telling you that nothing has been modified.  When
-you send a request with a conditional header and the GitHub API responds
-with a HTTP 304 response code, this request is not deducted from your
-rate limit.
-
-The following command listing is an example of passing in the
-If-Modified-Since HTTP header to the GitHub API.   Here we've
-specified that we're only interested in receiving content if the
-Twitter Boostrap repositories has been altered after 7:49 PM GMT on
-Sunday, August 11, 2013.  The GitHub API responds with a HTTP 304
-response code which also tells us that the last time this repository
-changed was a minute earlier than our cutoff date.
-
-----
-$ curl -i https://api.github.com/repos/twbs/bootstrap \
-          -H "If-Modified-Since: Sun, 11 Aug 2013 19:48:59 GMT"
-HTTP/1.1 304 Not Modified
-Server: GitHub.com
-Date: Sun, 11 Aug 2013 20:11:26 GMT
-Status: 304 Not Modified
-X-RateLimit-Limit: 60
-X-RateLimit-Remaining: 46
-X-RateLimit-Reset: 1376255215
-Cache-Control: public, max-age=60, s-maxage=60
-Last-Modified: Sun, 11 Aug 2013 19:48:39 GMT
-----
-
-The GitHub API also understands HTTP caching tags. An ETag, or Entity Tag, is an HTTP
-header that is used to control whether or not content that you have
-previously cached is the most recent version.  Here's how your systems
-would use ETag:
-
-. Your server requests information from an HTTP server.
-
-.  Server returns an ETag header for a version of a content item.
-
-. Your server includes this ETag in all subsequent requests.
-
-.. If the server has a newer version it returns new content + a new
-   ETag
-
-.. If the server doesn't have a newer version it returns an HTTP 304
-
-The following command listing demonstrates to commands.  The first
-curl call to the GitHub API generates an ETag value, and the second
-value passes this ETag value as an If-None-Match header.  You'll note
-that the second response is an HTTP 304 which tells the caller that
-there is no new content available.
-
-----
-$ curl -i https://api.github.com/repos/twbs/bootstrap
-HTTP/1.1 200 OK
-Cache-Control: public, max-age=60, s-maxage=60
-Last-Modified: Sun, 11 Aug 2013 20:25:37 GMT
-ETag: "462c74009317cf64560b8e395b9d0cdd"
-
-{
-  "id": 2126244,
-  "name": "bootstrap",
-  "full_name": "twbs/bootstrap",
-  ....
-}
-
-$ curl -i https://api.github.com/repos/twbs/bootstrap \
-          -H 'If-None-Match: "462c74009317cf64560b8e395b9d0cdd"' 
-
-HTTP/1.1 304 Not Modified
-Status: 304 Not Modified
-Cache-Control: public, max-age=60, s-maxage=60
-Last-Modified: Sun, 11 Aug 2013 20:25:37 GMT
-ETag: "462c74009317cf64560b8e395b9d0cdd"
-----
-
-If you are developing an application that needs to make a significant
-number of requests to the GitHub API over a long period of time, you
-can use a caching HTTP proxy like Squid to take care of automatically
-caching content, storing content alongside ETags, and injecting the
-"If-None-Match" header into GitHub API requests. If you do this,
-you'll be automating the injection of conditional headers and helping
-to reduce the overall load on the GitHub API. If you use an API library, like Octokit for Ruby, there are some tricks we'll detail later which can assist in staying beneath the limits.
-
-Use of conditional request headers is encouraged to conserve resources
-and make sure that the infrastructure that supports GitHub's API isn't
-asked to generated content unnecessarily.
-
-////
-Maybe this needs more development?  - Tim
-////
-
-[developer-api-accept]
-Specifying Response Content Format
-----------------------------------
-
-When you send a request to the GitHub API, you have some ability to
-specify the format of the response you expect.  For example, if you
-are requesting content that contains text from a commit's comment
-thread, you can use the Accept header to ask for the raw markdown or
-for the HTML this markdown generates.  You also have the ability to
-specify this version of the GitHub API you are using.  At this point,
-you can specify either version 3 or beta of the API.
-
-To demonstrate the specification of the Accept header, let's take a
-look at what happens when we request something without the Accept
-header:
-
-----
-$ curl -i https://api.github.com/
-Content-Type: application/json; charset=utf-8
-X-GitHub-Media-Type: github.beta
-----
-
-You can see that GitHub API assumes that you are requesting the
-beta version and for results to be returned as JSON. This is the
-default behavior of the GitHub API. GitHub is currently developing v3
-of the GitHub API and has marked the current version of this stable
-API as "beta".  This is the default version that it returned.  At some
-point in the future, GitHub may decide to release a final version of
-v3 and move to a new version identifier.
-
-When making an individual service call you can specify the version of
-the API as follows:
-
-----
-$ curl -i https://api.github.com/ \
-          -H "Accept: application/vnd.github.v3+json"
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-X-GitHub-Media-Type: github.v3; format=json
-----
-
-Note how the content of the X-GitHub-Media-Type header changed to
-reflect the newly specified version number.  In addition to these
-changes, the following sections outline further customization of
-response format with the Accept Header.
-
-////
-Fact check GitHub v3 assertion above.
-////
-
-===== Retrieving Formatted Content
-
-The Accept header you send with a request can affect the format of
-text returned by the GitHub API.  As an example, let's assume you
-wanted to read the body of a GitHub Issue. An Issue's body is stored
-in Markdown and can be retrieved with the following request by sending
-"application/vnd.github.beta.raw+json" as the Accept header.
-
-----
-$ curl -i https://api.github.com/repos/rails/rails/issues/11819 \
-          -H "Accept: application/vnd.github.beta.raw+json"
-Content-Type: application/json; charset=utf-8
-X-GitHub-Media-Type: github.beta; param=raw; format=json
-
-...Content Removed...
-
-  "body": "Hi, \r\n\r\nI have a problem with strong parameters in
-  rails 4. \r\n\r\nI have a one-to-many association that accept nested
-  attributes.\r\n\r\nI try to permit nested attributes with following
-  line :\r\n\r\n```ruby\r\nevent_params =
-  params.require(:event).permit(:description,
-  \r\nevent_parts_attributes: [:start_date,
-  :start_time])\r\n```\r\n\r\ndescription is present but
-  event_parts_attributes aren't added to event_params. They are well
-  present in params.\r\n\r\nWhen I remove require(:event) it's
-  work. \r\n\r\nThanks",
-----
-
-As you can see in the response returned above, the body of this Issue
-is returned in a raw, unformatted response. If you were consuming this
-and displaying it to users, it would be up to you to parse and render
-the Markdown in this Issue body.  If you were attempted to retrieve an
-Issue body with Javascript to display to an end-user, you might want
-to retrieve the body as rendered HTML content.  Here's how you would
-do that with the Accept header passing in
-"application:vnd.github.beta.html+json" in the Accept header.
-
-----
-$ curl -i https://api.github.com/repos/rails/rails/issues/11819 \
-          -H "Accept: application/vnd.github.beta.html+json"
-Content-Type: application/json; charset=utf-8
-X-GitHub-Media-Type: github.beta; param=html; format=json
-
-  ...Content Removed...
-
-  "body_html": "<p>Hi, </p>\n\n<p>I have a problem with strong
-  parameters in rails 4. </p>\n\n<p>I have a one-to-many association
-  that accept nested attributes.</p>\n\n<p>I try to permit nested
-  attributes with following line :</p>\n\n<div
-  class=\"highlight\"><pre><span class=\"n\">event_params</span> <span
-  class=\"o\">=</span> <span class=\"n\">params</span><span
-  class=\"o\">.</span><span class=\"n\">require</span><span
-  class=\"p\">(</span><span class=\"ss\">:event</span><span
-  class=\"p\">)</span><span class=\"o\">.</span><span
-  class=\"n\">permit</span><span class=\"p\">(</span><span
-  class=\"ss\">:description</span><span class=\"p\">,</span> \n<span
-  class=\"n\">event_parts_attributes</span><span class=\"p\">:</span>
-  <span class=\"o\">[</span><span class=\"ss\">:start_date</span><span
-  class=\"p\">,</span> <span class=\"ss\">:start_time</span><span
-  class=\"o\">]</span><span
-  class=\"p\">)</span>\n</pre></div>\n\n<p>description is present but
-  event_parts_attributes aren't added to event_params. They are well
-  present in params.</p>\n\n<p>When I remove require(:event) it's
-  work. </p>\n\n<p>Thanks</p>",
-
-----
-
-Besides "raw" and "html" there are two other format options that
-influence how Markdown content is delivered via the GitHub API.  If
-you specify "text" as a format, the issue body would have been
-returned as plaintext.   If you specify "full" then the content will
-be rendered multiple times including the raw Markdown, rendered HTML,
-and rendered plaintext.
-
-In addition to controlling the format of text content, you can also
-retrieve GitHub blobs either as raw binary or as a BASE64 encoded
-text.   When retrieving commits, you can also specify that the content
-be returned either as a diff or as a patch.  For more information
-about these fine-grained controls for formatting, see the GitHub API
-documentation here: http://developer.github.com
-
-===== Preview Version Required for Search API
-
-Note that the Search API is a separate version.  To use the Search API
-you must specify the Accept header in your request as
-"application/vnd.github.preview+json".  The following command listing
-demonstrates the use of curl to search repositories while specifying
-the appropriate Media type.
-
-----
-$ curl -i https://api.github.com/search/repositories?q=@tobrien \
-          -H "Accept: application/vnd.github.preview+json"
-----
-
-Failure to specify the preview version in the Accept header will
-result in an HTTP 404 Not Found result.
-
-[developer-api-terms]
-GitHub API Terms of Service
----------------------------
-
-Before you start building a system atop another service's API, it is
-always wise to understand what, if any, limitations are placed on that
-API's usage. Aside from the limitations on bandwidth, GitHub's API is also covered
-by the overall GitHub Terms of Service.   While you can read these terms of
-servic here: https://help.github.com/articles/github-terms-of-service
-- here is a summary of the terms.
-
-. GitHub isn't liable for any damages that result from your use of the
-API.  
-. If you abuse the API, GitHub can suspend your account's access to
-the API.  They will attempt to contact you before this happens.
-. They can change the API.  They can discontinue a part of the API.
-They can change it without notice.
-
-This is fairly standard stuff when it comes to terms for an API.
-We're not liable, don't abuse it, and we can change it or take it
-away.
-
-////
-We need guidance from GitHub here.  I don't see that the GitHub API
-has any explicit Terms of Service beyond the one every user agrees
-to.   It would be nice to know if there are any red lines that can't
-be crossed.
-////
-
-=== API Security
-
-How is a call to the API secured?
-
-==== Unauthenticated Usage
-
-Public usage of the API, briefly discuss any limitations for
-unauthenticated usage.
-
-==== Connecting as Yourself
-
-Just describe simple authentication, how can you make calls to Github
-as your own user.
-
-==== Connecting as Someone Else (OAuth)
-
-Reference the larger section on OAuth below.
-
-=== API Libraries
-
-There are already a number of API Libraries available for the Github
-API.  This section lists some of the major languages along with some
-of the options.
-
-The first two sections of this chapter will deal with the official,
-GitHub-maintained client libraries. GitHub maintains two official
-libraries which are grouped under the name Octokit - a reference to
-Github's Feline Octopus mascot "Octocat".  Octokit maintains two
-projects on GitHub - octokit.rb and octokit.objc.
-
-image::images/developer-api-octokit.png[]
-
-
-
-==== Connecting to Github from Objective-C
-
-////
-TBD
-////
-
-
-
-
-==== Connecting to Github from Ruby
-
-Just have a simple example using the most popular library.  Simple ,
-then just some of the alternatives.
-
-https://github.com/octokit/octokit.rb
-
-gem install octokit
-
-////
-TBD
-////
-
-==== Connecting to Github from Javascript (Client-side)
-
-Just have a simple example using the most popular library.  Simple ,
-then just some of the alternatives.
-
-The following example depends on jQuery, Underscore, and the gh3
-Javascript library maintained by Philippe Charriere (GitHub: @k33g) at
-GitHub here: https://github.com/k33g/gh3
-
-To run the following example, download underscore-min.js from
-http://underscorejs.org/ and gh3.js from https://github.com/k33f/gh3, and
-place these files in the same directory as an HTML
-
-----
-<html>
-  <head>
-    <title>GitHub Client Side Example</title>
-
-    <script type="text/javascript"
-      src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
-    </script>
-    <script type="text/javascript" src="underscore-min.js"></script>
-    <script type="text/javascript" src="gh3.js"></script>
-
-    <script type="text/javascript">
-      $(document).ready( function() {
-        var tobrien = new Gh3.User("tobrien");
-        tobrien.fetch(function (err, user){
-          $('#id').append( user.id );
-          $('#login').append( user.login );
-          $('#blog').append( user.blog );
-          $('#name').append( user.name );
-        });
-      });
-    </script>
-  </head>
-  <body>
-    <h1>GitHub User Information</h1>
-    <ul>
-      <li id="id">ID: </li>
-      <li id="login">Login: </li>
-      <li id="blog">Blog: </li>
-      <li id="name">Name: </li>
-    </ul>
-  </body>
-</html>
-----
-
-----
-GitHub User Information
-
-ID: 36787
-Login: tobrien
-Blog: http://www.discursive.com
-Name: Tim O'Brien
-----
-
-==== Connecting to Github from Java
-
-The Eclipse project's EGit project maintains a Java library named
-egit-github which can be usd independently of Eclipse to interact with
-the GitHub API.  The GitHub project page for this egit-github project
-can be found here: https://github.com/eclipse/egit-github
-
-If you are using Maven the dependency XML for egit-github is the
-following XML dependency.
-
-----
-<dependency>
-  <groupId>org.eclipse.mylyn.github</groupId>
-  <artifactId>org.eclipse.egit.github.core</artifactId>
-  <version>2.1.5</version>
-</dependency>
-----
-
-----
-package com.oreilly.github;
-
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.client.PageIterator;
-import org.eclipse.egit.github.core.event.Event;
-import org.eclipse.egit.github.core.service.EventService;
-import org.eclipse.egit.github.core.service.RepositoryService;
-import org.eclipse.egit.github.core.service.UserService;
-
-public class App
-{
-    public static void main( String[] args ) throws Exception
-    {
-        GitHubClient client = new GitHubClient();
-        EventService service = new EventService();
-        PageIterator<Event> iterator = service.pageUserEvents("tobrien");
-
-        for (Event event : iterator.next() )
-          System.out.printf( "%s %s\n", event.getType(), event.getCreatedAt());
-    }
-}
-----
-
-----
-WatchEvent Tue Aug 06 05:03:16 CDT 2013
-CreateEvent Sun Jul 21 19:57:14 CDT 2013
-IssuesEvent Mon Jun 03 09:33:51 CDT 2013
-IssuesEvent Mon Jun 03 09:32:54 CDT 2013
-PullRequestEvent Mon Jun 03 08:48:51 CDT 2013
-CreateEvent Mon Jun 03 08:39:09 CDT 2013
-MemberEvent Sun Jun 02 15:51:27 CDT 2013
-MemberEvent Sun Jun 02 15:51:18 CDT 2013
-MemberEvent Sun Jun 02 15:51:13 CDT 2013
-CreateEvent Sun Jun 02 15:51:02 CDT 2013
-PublicEvent Sun Jun 02 13:46:52 CDT 2013
-----
-
-
-
-==== Connecting to Github from Node.js
-There is a popular node library that provides access to the GitHub API
-developed by Mike de Boer (GitHub: @mikedeboer) this Node.js library
-can be found on GitHub here: https://github.com/mikedeboer/node-github
-
-To install the JavaScript GitHub API for Node.js.  Run the following
-command with npm - the Node.js package manager:
-
-----
-npm install github
-----
-
-Once you've installed the github package, you can reference the GitHub
-library in code like the following code listing.
-
-----
-var GitHubApi = require("github");
-var prettyjson = require( 'prettyjson' );
-
-var github = new GitHubApi({
-    version: "3.0.0",
-    timeout: 5000
-});
-
-github.events.getFromUser({
-    user: "tobrien"
-}, function(err, res) {
-    console.log(prettyjson.render(res));
-});
-----
-
-The code shown above connects to GitHub's API and requests recent
-events related to the user "tobrien".  The result of the API call is
-then printed out using a utility library named "prettyjson" which
-ensures that the JSON output is transformed into something easier to
-read. To run this code, you will need to run the following commands:
-
-----
-$ npm install github
-$ npm install prettyjson
-$ node github.js
-----
-
-Running this command should yield JSON output that contains a list of
-events and actions the user 'tobrien' has recently completed.
-
-For detailed document of Mike de Boer's JavaScript GitHub API, you can
-read the full library documentation here:
-http://mikedeboer.github.io/node-github/.
-
-While the simple example shown above is sufficient for read-only
-operations in the GitHub API, if you are planning on using this API
-for anything more than reading GitHub content, you will need to
-configure authentication options for this library.  A full discussion
-of authentication with the JavaScript GitHub API for Node.js can be
-found on the GitHub project page for this library here:
-https://github.com/mikedeboer/node-github
-
-
-==== Connecting to Github from a Billion Alternative Languages
-
-Here is where you can have a list of the available APIs, but not a big
-one.  We don't need to bother with langauges like Fortran 90.
-
-=== Developing Github Applications
-
-Building systems that interact with Github
-
-==== Example Use-cases for Github Applications
-
-* For discounts at business-affiliated services. (Publishers like O'Reilly Atlas, Prags, Pluralsight)
-
-* For automation integration like Travis-CI
-
-* For sign-in to credentialing services like [CoderWall](http://coderwall.com)
-
-* For sign-in to reputation services like [StackOverflow](http://stackoverflow.com)
-
-===== Authorizing Github Applications
-
-When you develop an application that needs to make use of Github they
-need to be authorized using an OAuth workflow...
-
-===== How does OAuth Work?
-
- [OAuth](http://developer.github.com/v3/oauth/)
-
-===== OAuth Libraries for Github
-
-===== Ruby: Omniauth (with Devise)
-
-Omniauth already has a OAuth provider for Github.
-
-===== Python: ???
-
-Todo: I know that Django has an OAuth provider API, ask a Pythonista.
-
-===== Other Languages
-
-Figure out if there are any other pre-built OAuth integrations (like omniauth)
-
-=== A Sample Github Application
-
-This section would build out a sample application.
-
-=== Organization Applications
-
-Registering an Organization's Application
-
-=== GitHub Account Security
-
-Once you start using GitHub, you'll rely on it for more and more than just hosting your project code.
-You'll probably use it for third party authentication; more and more
-services offer GitHub login (oAuth), after you "Login via GitHub" a
-single step allows these services to quickly and automatically
-provision their services using code from a repository stored on GitHub
-rather than asking you to perform a setup step. You'll probably
-integrate GitHub with continuous integration services, which require
-linking your GitHub account to a third party service. You may even
-want to integrate oAuth login within a service you are building. As your
-usage of GitHub starts to expand, you'll want to make sure you
-understand the various intricacies of security within GitHub. The
-GitHub team has put a lot of thought into making GitHub secure while
-still offering flexibility and ease of use. By understanding the
-contents of this chapter, you will know when, where and how to open up
-your GitHub data to third party providers and protect the data you
-don't want to share. 
-
-
-=== Exploring Account Security
-
-==== Reseting Your Password
-
-To change your password, click on the "Accounting settings" icon at the top right corner within GitHub. You will be taken to the "Profile" section of the account settings; click on the "Account Settings" item within the list on the left and you will see a form in which you can enter a new password and confirmation, plus the old password. If you enter these correctly you will update your password on GitHub.
-
-image::images/creating-account-change-password.png[]
-
-Remember: if you are using HTTPS (instead of SSH) with your GitHub clients (meaning, the programs you use to access files within GitHub, like GitHub for Mac or GitHub for Windows), changing your password on GitHub will mean you need to update your password within those clients as well. If you are using SSH to access files on GitHub (you have setup public/private SSH keys) then you can change your password without worry. We detail this distinction and how to handle setting things up below.
-
-==== Using 2 Factor Authentication
-
-GitHub takes the "octocat" as its mascot, and not so surprisingly their technologies have crept like tentacles into many other sites. One example is the availability of "Login via GitHub" buttons, which permit a third-party site to delegate login and credentialing to GitHub using a technology called oAuth. Less technically, a site can ask users to login on the GitHub site, and then ask GitHub to validate that user's identity and then provide access to the services of the third-party site. When third party sites start trusting GitHub for authentication, it becomes more and more important to protect the credibility of a GitHub login. For various reasons, protecting access with a username and passwords is often an easy attack vector. And, for this reason, GitHub offers, like many other sites offering login services for third party sites, what is commonly referred to as "two factor authentication."
-
-If you are not using two factor authentication on your GitHub account, the theft of your username and password is all that is required to break into your account. And, if you have logged into any other sites using GitHub's login delegation services, then those accounts are as good as compromised as well when someone breaks into your GitHub account. 
-
-Two factor authentication simply means that login to GitHub can require two different unconnected methods of authentication to prove you are who you say you are. If you have enabled two factor authentication, an attacker cannot access your GitHub account with only your username and password. The first time you login to GitHub with two-factor authentication enabled, you will start by entering in the username and password. After this GitHub will, typically, send you a text message with a special one time code required to complete the login process. Without this code, the username and password do no good to a malicious attacker. 
-
-It can be easy to steal a username and password through brute force attacks, or due to the fact that many people reuse passwords across different accounts (so when one is compromised an attacker can start testing the password on any other account the person might own), or even good old fashioned social hacking where a person is tricked into revealing their password over the phone or inside an cleverly worded email. All of these attacks can made on the other side of the world. But, it is much harder for a hacker to obtain physical access to your cell phone, especially when they are halfway around the world. Two factor authentication does not completely prevent unauthorized access to your GitHub account, but it reduces the chances monumentally. 
-
-Spend the time to enable two factor authentication on your GitHub account. It only takes a minute to set up, and the piece of mind is worth it.
-
-==== SSH vs HTTPS
-
-There are two transport options for loading code from GitHub: SSH and HTTPS.
-
-Actually, at the time of this writing there are really three protocols: SSH, 
-HTTPS and Subversion. Subversion is there for backwards compatibility with older 
-workflows, and actually just maps the SVN protocol on top of Git. The only reason
-you would use Subversion with GitHub is that you work in an organization that
-requires use of Subversion but also wants to host their code on GitHub. If you work
-for such an schizophrenic organization, you might want to start looking for another job right 
-away.
-
-Both HTTPS and SSH operate over a secure encrypted channel, but beyond this commonality 
-there are very different reasons for using each.
-
-Of the two, SSH is the more secure option. If you are willing to tackle the slight complexity that comes with using SSH, we recommend it. If not, use HTTPS. GitHub recommends HTTPS as their preferred method, but we differ in believing that you'll rest more easily in the long run if you take the trouble to set up SSH access.
-
-===== HTTPS
-
-The only reason you might be unable to use SSH and have no option other than HTTPS is that this protocol can be useful if you are
-inside a very restrictive firewall.
-HTTPS traffic is almost always permitted (port 443 is a common "secure" port on almost 
-any firewall). If you use HTTPS, the "git clone" command will use a URL which starts 
-with https://. For example, to load the Ruby on Rails repository from GitHub you would 
-use the command `git clone https://github.com/rails/rails.git`.
-
-===== HTTPS Downsides
-
-When you use the HTTPS protocol, note that you will need to enter in
-your password to authenticate. The command line git client (which might be what your
-editor is using underneath the graphical interface you use to code) does not
-have an ability to cache this password. This means each time you push code, or pull 
-the latest changes, you will need to re-enter your password. Git is a protocol which 
-supports making lots of little changes, so a requirement that you must add another ten 
-seconds to your workflow makes HTTPS quickly unusable. GitHub has released a Ruby gem called "hub"
-which you can alias in your shell so that when typing "git" your shell actually uses the ruby gem client instead of the native 
-command line client; this ruby gem client can cache and use HTTPS passwords. But, this requires
-additional setup, convolutes your workflow, and SSH still offers more benefits. 
-
-HTTPS is also a less efficient protocol for transferring files; cloning and interacting with 
-repositories using HTTPS is slower for you. 
-
-The only real benefit for HTTPS is for server administrators: it 
-is easier to configure a server to provide HTTPS to git repositories than it is to provide those
-repositories over SSH. GitHub is doing the work of hosting your git repositories for you, however, so this is not a compelling reason to consider HTTPS.
-
-===== SSH 
-
-SSH offers the same level of security but is much more convenient, more flexible and 
-keeps access more secure. You will notice that GitHub offers SSH as the default protocol.
-
-At the center of SSH is a concept called asymmetric cryptography also called 
-public key cryptography. To use SSH you generate a public/private keypair. Then, you 
-upload the public key into GitHub. You keep the private key on your machine, and 
-you keep it private (meaning, don't send it over email, or post it on Facebook).
-
-===== A brief tutorial on using SSH keys
-
-If using SSH sounds complicated, don't fret. To generate a public/private keypair, 
-you just need to run this command from a terminal:
-
-[source,bash]
-$ ssh-keygen 
-Generating public/private rsa key pair.
-Enter file in which to save the key (/Users/xrdawson/.ssh/id_rsa): 
-Enter passphrase (empty for no passphrase): 
-Enter same passphrase again: 
-
-This generates two files, a file called ~/.ssh/id_rsa and another called ~/.ssh/id_rsa.pub. 
-The first file is the private file and the second (ending with a suffix abbreviation of the word "public") is the public file. 
-
-You will be asked if you want to enter a passphrase which protects usage of your keypair. If
-you believe your machine is secure (for example, this is a laptop which uses fingerprint 
-recognition to unlock the screen), then you can hit enter and not protect your private key
-with a passphrase. If the key is sitting in a less secure position, such as a server on the 
-Internet, then you might want to protect the key with a passphrase. If you lose the passphrase, 
-you cannot use the key. However, replacing a key is an easy problem to rectify.
-
-===== Putting your SSH public key on GitHub 
-
-To store an SSH public key on GitHub, copy the key contents into your clipboard. On an OSX machine, you 
-could use this command:
-
-[source,bash]
-$ cat ~/.ssh/id_rsa.pub
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDG56LecqP2ip/odHzAkM3F/TyL5TjS0m6bNEo3p+m7KEU/eJ+ZvrF1/4ALPk59+Ca2NtOwewVs1RZNuV9BuMesTHFAxev6Zx4R56fwL45UuDm1gjpwevxwHe8aS0elek94OcgxYomnnnmB4Og/OIbVYICfaQ4VhE+xVVOF/TXIGkndZG/wBLFg9QwPTQKhOIgVDoTzdj0FZ9qXfhvc7AhGkeOAO+dyeNgfk8ghzRPqyztd14tq6gOVPAMce3mGQsugbcKxgRBbd/7VaWT5hQl5YVtLlcAvM1gHgvU8MNVhrJTKzZxlTNBVBnYy1QxPtB3LF25YL7jAjtMYkuEjmZff xrdawson@Chriss-MacBook-Pro-2.local
-
-Select everything from the "ssh-rsa" to and including the "xrdawson@Chriss-MacBook-Pro-2.local" (which is the name of my MacBook Pro) and then copy it to your clipboard. Then, go to GitHub, click on the "Account Settings" button:
-
-image::images/account-settings.png[]
-
-Then, click on the "SSH" item in the navigation bar on the left. You'll see a list of SSH keys already in the system. You might not have any if you just setup your account. In my account, I have many SSH keys.
-
-image::images/ssh-keylist.png[]
-
-As you can see, I have a key for my OSX Laptop. I have another key for an Ubuntu server I manage, a server which has a user which has access to my repositories. Then, I have another server, this time running on Amazon Web Services, which also has access to my repositories. I have an Android device which has access, as well as a Chromebook running developer mode that has access to my GitHub repositories. Finally, I have a virtual machine (using Vagrant) on my OSX laptop, and this machine has its own access. 
-
-To add your key, click on the "Add SSH Key" button at the very top right of the list of SSH keys. This action will open a form underneath into which you can choose a title for the SSH key and then the contents which you copied to the clipboard. Once the form looks something like this you can click the "Add Key" button.
-
-image::images/ssh-add-key.png[]
-
-===== The big reason why SSH trumps HTTPS
-
-If you takeaway one thing about why SSH is better than HTTPS, let it be this: both HTTPS and SSH make
-it easy to add access to your repositories. However, HTTPS makes it really hard to revoke that
-access.
-
-With HTTPS managing and securing access to your repository becomes *your* problem. With SSH, 
-secure access is *GitHub's* problem. And, they've been thinking about the right ways to do this: 
-from requiring re-entry of your password whenever a new SSH public key is added, 
-to two factor authentication (utilizing email and your cell phone to verify your identity), GitHub has spent lots of time and money making sure your source code is protected from rogue access.

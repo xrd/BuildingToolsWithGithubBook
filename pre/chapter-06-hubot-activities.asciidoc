@@ -1034,7 +1034,19 @@ respond to the calling server by using the `send` method (`send` is
 provided by the built in *express* server that Hubot uses to provide
 an HTTP server). 
 
-If we run our tests
+If we run our tests we will see them all pass:
+
+[source,bash]
+------
+$ node_modules/jasmine-node/bin/jasmine-node --coffee spec/pr-delegator.spec.coffee 
+....
+
+Finished in 0.01 seconds
+4 tests, 6 assertions, 0 failures, 0 skipped
+
+------
+
+
 
 ===== Assigning an active chat room user
 

@@ -1,0 +1,776 @@
+
+== Tools
+
+To use this book, you will need familiarity with some tools that might
+be new to you. This book covers the API from various vantage points,
+looking at the idioms found in many different languages, but each
+chapter is designed so that you can follow it without intimacy to the
+language or toolkit. However, much as a carpenter cannot survive with
+only a hammer, or only a saw, and needs both , it is useful to have facility with
+multiple basic tools to get things done. This chapter documents basic
+operations of tools that will be extremely helpful when exploring the
+GitHub API. 
+
+They are:
+
+* Ruby: a simple, readable programming language used heavily by the
+  founders of GitHub 
+* NodeJS: now that JavaScript runs on the server side as well, many
+  tools are appearing that use the 
+* cURL: there are many tools that speak HTTP, and cURL is one of the
+  best for its elegant and useful command line interface.
+
+If you spend a little time installing these tools, you will have a
+solid toolset for exploring the API.  
+
+== GitHub started with Ruby
+
+Many of the tools written and used internally at GitHub are written in
+Ruby. The founders of GitHub have all made strong contributions to popular
+Ruby libraries, called "gems". To be successful with this book, you should
+at least have Ruby installed. 
+
+There are many ways to get Ruby but not all of them are created equal. 
+As a long time user I have experienced the pain of using a pre-installed Ruby 
+or one from a package manager, and generally these installation
+methods provide a suboptimal experience. If you are not familiar with
+Ruby, use this chapter to get through installation with the least
+friction and trouble. 
+
+You might already have a version of Ruby installed. Mac OSX comes
+bundled with Ruby and various flavors of Linux do as well (or provide
+a quick and easy installation through the built in package manager
+like "apt-get"). However, I recommend that you use the method of
+installation described below rather than using the stock installed
+version of Ruby you might already have on your system. Often ruby
+packages require a specific version of ruby though there 
+is a chance it will work with other versions. The problem is that you
+might encounter subtle bugs that have never been seen before and using
+the methods described here will make it trivial to install any version
+of Ruby that you need side by side with any other version. You can
+guarantee you are using the correct version, and the method described
+here will not interfere with any other previously installed version of
+Ruby you have already on your system. 
+
+=== Why Ruby at GitHub
+
+GitHub is a company with its foundations sitting on top of the Ruby
+language. Tom Preston Warner (one of three founders of GitHub) built
+the initial libraries for using git 
+with Ruby, a library called Grit. You can host blogs on GitHub for
+free, and this tool called Jekyll is built using Ruby. Gollum, the
+technology which powers GitHub wikis, is built using Grit and runs on
+Ruby. 
+
+To understand GitHub, it is best to understand a little bit of Ruby.
+You can use many of the tools used at GitHub by simply installing Ruby,
+and not knowing any Ruby syntax. This book will not require you to
+code in Ruby, but will ask you to read through Ruby code. We write in
+a literal, readable way, so that anyone with basic software developer
+skills and mastery of the English language should be able to
+understand the tools we are using. And, if you are someone
+who previously never wanted to learn Ruby, who knows, perhaps after
+reading these examples in Ruby you will learn to like it as a
+language. Ruby is not a perfect language, but is a useful addition to
+a developer's toolkit because of its focus on developer productivity.
+
+=== Installing Ruby
+
+To install Ruby, use RVM. RVM stands for Ruby Version Manager. RVM allows you to install
+multiple versions of Ruby on your machine and have them interoperate
+without conflict. You will probably only need to install a single
+version of Ruby to use the examples in the book. And, RVM makes it so
+that if you choose to install another version, you will not have to
+reconfigure any applications that relied on the other versions
+installed. 
+
+Installation of Ruby using RVM depends on your operating system. If
+you are using Mac OSX or Linux, your installation will probably be as
+simple as running these commands from a shell:
+
+[source,bash]
+$ \curl -sSL https://get.rvm.io | bash -s stable
+
+This will install RVM and Ruby.
+
+If you are running Windows, you can use RVM to install Ruby, but your
+instructions are a little more complicated. Refer to the documentation
+to do so. A better option is to consider installing something like VirtualBox (a virtual
+machine manager). If you do this, you can install RVM inside a Linux
+Virtual Machine (VM). Windows is, sadly, a second class citizen with
+Ruby and RVM and, for this reason, it is often better to install RVM
+inside a host system like Linux which has a wider community around it
+to support you. Virtual Box and Linux are free as in beer and as in
+speech, so you can try them out without cost (other than your time).
+There are many native gems for Ruby which don't properly compile if
+the host system is Windows, so you can save yourself considerable time
+by just using a completely free (as in beer) option like VirtualBox
+and a Linux virtual machine running on Windows instead of fighting
+with running everything directly on Windows. 
+
+=== Important Ruby and RVM Concepts
+
+Here are a few tips when using Ruby and RVM.
+
+* `Gemfile`: Ruby packages libraries in a format called a gem. A
+  gemfile is a manifest which describes which gems your application
+  needs. Gemfiles make it simple to install all the required
+  libraries: run the `bundle` command from a shell prompt and all
+  libraries will be installed, which can include downloading from the
+  network and building from source if compilation is required.
+* `.ruby-version` or `.rvmrc`: These two files tell your application
+  (or shell) which version of Ruby to use. Often applications will
+  include this file as a part of their package. If you use RVM, RVM
+  will either switch to that version of Ruby or prompt you to install
+  that version. Imagine you have an
+  application which only runs on Ruby 2.1.3. You can create a file
+  called `.ruby-version` which contains the string `ruby-2.1.3` and
+  when your application starts, it will automatically use that version
+  of Ruby. There are other Ruby based tools (like the
+  zero-configuration web server Pow) which are aware of files
+  like .ruby-version and will properly use correct version of Ruby if
+  they see this file.
+* `config.ru`: This is a file used to run Ruby applications using
+  Rack. Rack is a web server interface, compatible with many
+  application servers. If you see a config.ru file, you can run this
+  application with many different servers. These can be powerful front
+  ends used in production on many large sites on the Internet, or they
+  can be minimal servers used just on a single laptop; Rack makes it
+  easy to setup a server. 
+
+=== Potential problems installing Ruby.
+
+* Missing system tools: If you are running Mac OSX, you need to
+  install Xcode and the command line tools. If you are a software
+  developer, you probably have these already installed. If not, review
+  online documentation to install these. If you are running Linux, you
+  might not have installed the compiler chain; you can install all the
+  build tools you will ever need using this command: `sudo apt-get
+  install build-essential`. This can take a while, but will ensure you
+  have all the tools necessary for building RVM and any binary gems.
+* Missing developer libraries: There are some libraries which support
+  Ruby (readline support, as an example, which allows you to use
+  command line history inside of an interactive Ruby shell) that are
+  not always installed or available to the RVM tool. RVM has greatly
+  improved in detecting the correct libraries, and there are often
+  notes which tell you how to properly configure these libraries. Make
+  sure to read the output printed to the screen as you install Ruby
+  using RVM for special instructions specific to your platform.
+
+=== NodeJS
+
+NodeJS has gained immense popularity in the last few years. JavaScript
+is the language of client-side development on the web, and many people
+are excited about developing in the same language on the server side. One of
+the chapters in this book discusses Hubot, GitHub's "devops" chatbot.
+Hubot is written in NodeJS. Fortunately, installing NodeJS is simple
+using NVM.
+
+NVM stands for "Node Version Manager" and is a direct correlate
+to RVM. To install it run these commands from a shell prompt:
+
+[source,bash]
+$ curl https://raw.github.com/creationix/nvm/master/install.sh | sh
+
+==== package.json
+
+Much like Ruby has a Gemfile which indicates required libraries, so
+too does NodeJS have an equivalent file. In NodeJS, this file is
+called `package.json`.  To install all required libraries for any
+project, use the `npm` tool. Running without any arguments will
+install all libraries specified by the application if there is a
+`package.json` file included with the project. 
+
+==== Ruby and NodeJS
+
+Installing these two language management tools in advance will
+streamline your experience as you work through chapters in this book.
+There are other languages presented which require different
+installation procedures, but these two are vital if you plan on
+writing code that integrates with GitHub.
+
+== Simple Access for Anyone on Any System
+
+There are many client libraries which wrap the GitHub API in an
+idiomatic tool. These client libraries make your life easier by
+removing or limiting your exposure to the complexity of the GitHub
+API. But, often you want to quickly access information from the API
+without writing a program. This is where cURL becomes handy.
+
+=== API Overview via cURL
+
+The GitHub API is a set of REST services that speak JSON.  Some of
+these services are available anonymously without the need for
+authentication, while others require a set of credentials.  The API is
+easy to access, and this chapter will use a command-line utility named
+cURL to demonstrate how to access this API.
+
+.Installing cURL
+[NOTE]
+If you are running these examples on a Linux box, you should be able
+use your native package management tool to install cURL - either a
+"sudo yum install curl*" on a RedHat variant or "sudo apt-get
+install curl" on an Ubuntu (or Debian) system.  If you are on any recent version of OSX, you already
+have cURL installed, but it you can't find it, take a look at the
+HomeBrew project (http://brew.sh/) or MacPorts project (http://www.macports.org/).  If you are running on Windows or another operating system, you best bet is to download cURL from the cURL web site here: http://curl.haxx.se/download.html
+
+==== An Introductory API Command
+
+The following cURL command is the simplest command you can use to
+retrieve data from the GitHub API. Throughout this chapter, we're going to show a
+number of command listings that have been edited help us save space in
+the book.   I've left the output of this particular call unedited so
+we can walk through the response headers and so you can see how the
+GitHub tells you where to look for all of the other services it
+provides.
+
+----
+$ curl -i https://api.github.com/
+HTTP/1.1 200 OK
+Server: GitHub.com
+Date: Sun, 11 Aug 2013 22:37:26 GMT
+Content-Type: application/json; charset=utf-8
+Status: 200 OK
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 57
+X-RateLimit-Reset: 1376262655
+X-GitHub-Media-Type: github.beta
+X-Content-Type-Options: nosniff
+Content-Length: 1776
+Access-Control-Allow-Credentials: true
+Access-Control-Expose-Headers: ETag, Link, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes
+Access-Control-Allow-Origin: *
+ETag: "d20e5cc244a6cdb4056579e47e839e36"
+Cache-Control: max-age=0, private, must-revalidate
+Vary: Accept-Encoding
+----
+
+Let's do a quick walkthrough of this response.  The first thing we
+see is a response code.  In this case, our response code is 200 which
+signals to us that the request was a success.  Later in this chapter
+you will see how GitHub uses other response codes such as HTTP 304 to
+send signals to a client.   After the response code, you'll see other
+standard headers one would expect in any HTTP response such as the
+server sending the response, the date of the response, the Status
+header, the Content-Length, and the Content-Type of the response.
+
+Three headers are present in every GitHub API response which tell you
+about the GitHub API rate limits.  They are X-RateLimit-Limit,
+X-RateLimit-Remaining, and X-RateLimit-Reset.   These limits are
+explained in detail in <<developer-api-rates>>.
+
+The X-GitHub-Media-Type header contains information that will come in
+handy when you are starting to retrieve text or blob content from the
+API.  when you make a request to the GitHub API you can specify the
+format you want to work with by sending an Accept header with your request.
+
+
+After the HTTP response headers shown above, the root directory of the
+GitHub API helpfully returns a JSON document listing all of the
+services available via the GitHub API.  You can print this out and use
+it as a map to the GitHub API.  We're going to run through most of
+these services in this chapter, but this is a helpful list to have
+access to, and to get it, just go to https://api.github.com/
+
+----
+{
+  "current_user_url": "https://api.github.com/user",
+  "authorizations_url": "https://api.github.com/authorizations",
+  "emails_url": "https://api.github.com/user/emails",
+  "emojis_url": "https://api.github.com/emojis",
+  "events_url": "https://api.github.com/events",
+  "feeds_url": "https://api.github.com/feeds",
+  "following_url": "https://api.github.com/user/following{/target}",
+  "gists_url": "https://api.github.com/gists{/gist_id}",
+  "hub_url": "https://api.github.com/hub",
+  "issue_search_url": "https://api.github.com/legacy/issues/search/{owner}/{repo}/{state}/{keyword}",
+  "issues_url": "https://api.github.com/issues",
+  "keys_url": "https://api.github.com/user/keys",
+  "notifications_url": "https://api.github.com/notifications",
+  "organization_repositories_url": "https://api.github.com/orgs/{org}/repos/{?type,page,per_page,sort}",
+  "organization_url": "https://api.github.com/orgs/{org}",
+  "public_gists_url": "https://api.github.com/gists/public",
+  "rate_limit_url": "https://api.github.com/rate_limit",
+  "repository_url": "https://api.github.com/repos/{owner}/{repo}",
+  "repository_search_url": "https://api.github.com/legacy/repos/search/{keyword}{?language,start_page}",
+  "current_user_repositories_url": "https://api.github.com/user/repos{?type,page,per_page,sort}",
+  "starred_url": "https://api.github.com/user/starred{/owner}{/repo}",
+  "starred_gists_url": "https://api.github.com/gists/starred",
+  "team_url": "https://api.github.com/teams",
+  "user_url": "https://api.github.com/users/{user}",
+  "user_organizations_url": "https://api.github.com/user/orgs",
+  "user_repositories_url": "https://api.github.com/users/{user}/repos{?type,page,per_page,sort}",
+  "user_search_url": "https://api.github.com/legacy/user/search/{keyword}"
+}
+----
+
+Any of these service URLs can be used with the cURL tool to pull more specific information from the GitHub API. For example, if we wanted to know more about the "github" organization, we could use the following cURL command:
+
+----
+$ curl https://api.github.com/orgs/github
+{
+  "login": "github",
+  "id": 9919,
+  "url": "https://api.github.com/orgs/github",
+  "repos_url": "https://api.github.com/orgs/github/repos",
+  "events_url": "https://api.github.com/orgs/github/events",
+  "members_url": "https://api.github.com/orgs/github/members{/member}",
+  "public_members_url": "https://api.github.com/orgs/github/public_members{/member}",
+  "avatar_url": "https://0.gravatar.com/avatar/61024896f291303615bcd4f7a0dcfb74?d=https%3A%2F%2Fidenticons.github.com%2Fae816a80e4c1c56caa2eb4e1819cbb2f.png",
+  "name": "GitHub",
+  "company": null,
+  "blog": "https://github.com/about",
+  "location": "San Francisco, CA",
+  "email": "support@github.com",
+  "public_repos": 114,
+  "public_gists": 0,
+  "followers": 12,
+  "following": 0,
+  "html_url": "https://github.com/github",
+  "created_at": "2008-05-11T04:37:31Z",
+  "updated_at": "2013-10-18T23:55:02Z",
+  "type": "Organization"
+}
+----
+
+We've removed the `-i` switch from the cURL command so that we no longer see the headers. We took the URL named "organization_url" and added the parameter of "github" (replacing the {org} placeholder) to generate the full URL to the GitHub organization. You can see this tells us the company blog (https://github.com/about), that the company is located in San Francisco, and the creation date (which strangely does not match their blog post which states April 10th was their official launch date [https://github.com/blog/40-we-launched]).
+
+===== Why Learn About cURL?
+
+cURL is a great tool for exploring the API. It has a simple interface,
+and you can easily write shell scripts which wrap cURL and create a
+more complex workflow of requests. cURL, like the HTTP protocol which
+it speaks intimately, is a stateless tool, meaning it is challenging
+to use cURL only to hit a URL and then use the results to hit a
+secondary URL. For this reason, you'll find (and we'll document) how
+to use other client libraries to access the GitHub API, as you will
+often need to use the resulant response from an initial request to
+seed the next response in a long chain of requests and responses. But,
+cURL is a great tool for getting to the bare request and seeing
+everything behind a request. Anything that you do with a client
+library can be done with cURL, and often cURL can be used to confirm
+that something works the way you expect it to. Client libraries make
+it easy to access these APIs, but they can hide information useful to
+debugging. cURL provides an alternative viewpoint to the GitHub API
+and the data it exposes, and no matter what client library you use,
+cURL is a great complementary tool.
+
+
+=== GitHub API Access
+
+==== Username and Password
+
+A bad idea!
+
+* No scoping
+* Insecure to ask user to provide user/pw. 
+** Will they store it? Will
+** they properly delete it when asked?
+
+Proper use of user/pwd is only when you are accessing the API yourself.
+
+==== oAuth
+
+The right way, but more difficult.
+
+All GitHub applications require oAuth.
+
+===== Scopes
+
+Each component, as described above, creates a scope. When your
+application asks for access to a user's data, you provide a
+scope. This gives users clarity on what information you will be
+reading, and gives them better control over how their information is
+used, and whether they want to provide this information.
+
+===== Scope Limitations
+
+* Cannot do fine-grained access to certain repositories only.
+* Some information requires granting scope to user object, but is not
+* really necessary
+
+Beware when you ask for a scope; users will evaluate your application
+based on the scopes requested; if they don't think you need that
+scope, 
+
+===== Scope Escalation
+
+You can ask for scope at one point which is very limited, and then
+later ask for a greater scope. For example, when a user first accesses
+your application, you could only get the user scope to create a user
+object inside your service, and only when your application needs
+repository information for a user, then request to escalate
+priviledges. At this point the user will need to approve or disapprove
+your request, but asking for everything up front (before you have a
+relationship with the user) often results in a user abandoning the login.
+
+[[developer-api-rates]]
+==== GitHub API Rate Limits
+
+GitHub tries to limit the rate at which users can make requests to the
+API.  Anonymous requests, requests that haven't authenticated with
+either a username/password or OAuth information, are limited to 60
+requests an hour. If you are developing a system to integrate with the
+GitHub API on behalf of users, clearly 60 requests per hour isn't
+going to be sufficient.
+
+This rate limit is increased to 5000 requests per hour if you are
+making an authenticated request to the GitHub API, and while this rate
+is two orders of magnitude larger than the anonymous rate limit, it
+still presents problems if you intend to use your own GitHub
+credentials when making requests on behalf of many users.
+
+For this reason, if your web site or service uses the GitHub API to
+request information from the GitHub API, you should consider using
+OAuth and make requests to the GitHub API using your user's shared
+authentication information. 
+
+[NOTE]
+There are actually two rate limits.  The "core" rate limit and the
+"search" rate limit.  The rate limits explained in the previous
+paragraphs were for the core rate limit.  For search,
+requests are limited at 20 requests per minute for authenticated user
+requests and 5 request per minute for anonymous requests. The
+assumption here is that search is a more infrastructure intensive
+request to satisfy and that tighter limits are placed on its usage.
+
+==== Reading Your Rate Limits
+Reading your rate limit is straightforward, just make a GET request to
+/rate_limit.  This will return a JSON document which tells you the
+limit you are subject to, the number of requests you have remaining,
+and the timestamp (in seconds since 1970).  Note that this timestamp
+has a timezone in Coordinated Universal Time (UTC).
+
+The following command listing uses curl to retrieve the rate limit
+for an anonymous request.   This response is abbreviated to save space
+in this book, but you'll notice that the quota information is supplied
+twice: once in the HTTP response headers and again in the JSON
+response.  The rate limit headers are returned with every request to
+the GitHub API, so there is little need to make a direct call to the
+/rate_limit API.
+
+----
+$ curl -i https://api.github.com/rate_limit
+HTTP/1.1 200 OK
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 60
+X-RateLimit-Reset: 1376252013
+
+{
+  "rate": {
+    "limit": 60,
+    "remaining": 60,
+    "reset": 1376252013
+  }
+}
+----
+
+60 requests over the course of an hour isn't very much, and if
+you plan on doing anything interesting, you will likely exceed this
+limit quickly. If you are hitting up against the 60 requests per
+minute limit, you will likely want to investigate making authenticated
+requests to the GitHub API.
+
+The following command listing uses curl to retrieve the rate limit for
+an authenticated request.  Again, you will note that the rate limit
+information is present in both the response body and the HTTP response
+headers.
+
+----
+$ curl -i -u tobrien https://api.github.com/rate_limit
+Enter host password for user 'tobrien': xxxxxxxx
+HTTP/1.1 200 OK
+X-RateLimit-Limit: 5000
+X-RateLimit-Remaining: 4995
+X-RateLimit-Reset: 1376251941
+
+{
+  "rate": {
+    "limit": 5000,
+    "remaining": 4995,
+    "reset": 1376251941
+  }
+}
+----
+
+[NOTE]
+Calls to the Rate Limit API are not deducted from your Rate Limit.
+Isn't that nice of them?
+
+===== Conditional Requests to Avoid Rate Limits
+
+If you are querying the GitHub APIs to obtain activity data for a user
+or a repository, there's a good chance that mamy of your requests
+won't return much activity.  If you check for new activity once every
+few minutes, there will be time periods over which no activity has
+occurred.  These requests, these constant polls still use up requests
+in your rate limit even though there's no new activity to be
+delivered.
+
+In these cases, you can send conditional HTTP headers
+If-Modified-Since and If-None-Match to tell GitHub to return an HTTP
+304 response code telling you that nothing has been modified.  When
+you send a request with a conditional header and the GitHub API responds
+with a HTTP 304 response code, this request is not deducted from your
+rate limit.
+
+The following command listing is an example of passing in the
+If-Modified-Since HTTP header to the GitHub API.   Here we've
+specified that we're only interested in receiving content if the
+Twitter Boostrap repositories has been altered after 7:49 PM GMT on
+Sunday, August 11, 2013.  The GitHub API responds with a HTTP 304
+response code which also tells us that the last time this repository
+changed was a minute earlier than our cutoff date.
+
+----
+$ curl -i https://api.github.com/repos/twbs/bootstrap \
+          -H "If-Modified-Since: Sun, 11 Aug 2013 19:48:59 GMT"
+HTTP/1.1 304 Not Modified
+Server: GitHub.com
+Date: Sun, 11 Aug 2013 20:11:26 GMT
+Status: 304 Not Modified
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 46
+X-RateLimit-Reset: 1376255215
+Cache-Control: public, max-age=60, s-maxage=60
+Last-Modified: Sun, 11 Aug 2013 19:48:39 GMT
+----
+
+The GitHub API also understands HTTP caching tags. An ETag, or Entity Tag, is an HTTP
+header that is used to control whether or not content that you have
+previously cached is the most recent version.  Here's how your systems
+would use ETag:
+
+. Your server requests information from an HTTP server.
+
+.  Server returns an ETag header for a version of a content item.
+
+. Your server includes this ETag in all subsequent requests.
+
+.. If the server has a newer version it returns new content + a new
+   ETag
+
+.. If the server doesn't have a newer version it returns an HTTP 304
+
+The following command listing demonstrates to commands.  The first
+curl call to the GitHub API generates an ETag value, and the second
+value passes this ETag value as an If-None-Match header.  You'll note
+that the second response is an HTTP 304 which tells the caller that
+there is no new content available.
+
+----
+$ curl -i https://api.github.com/repos/twbs/bootstrap
+HTTP/1.1 200 OK
+Cache-Control: public, max-age=60, s-maxage=60
+Last-Modified: Sun, 11 Aug 2013 20:25:37 GMT
+ETag: "462c74009317cf64560b8e395b9d0cdd"
+
+{
+  "id": 2126244,
+  "name": "bootstrap",
+  "full_name": "twbs/bootstrap",
+  ....
+}
+
+$ curl -i https://api.github.com/repos/twbs/bootstrap \
+          -H 'If-None-Match: "462c74009317cf64560b8e395b9d0cdd"' 
+
+HTTP/1.1 304 Not Modified
+Status: 304 Not Modified
+Cache-Control: public, max-age=60, s-maxage=60
+Last-Modified: Sun, 11 Aug 2013 20:25:37 GMT
+ETag: "462c74009317cf64560b8e395b9d0cdd"
+----
+
+If you are developing an application that needs to make a significant
+number of requests to the GitHub API over a long period of time, you
+can use a caching HTTP proxy like Squid to take care of automatically
+caching content, storing content alongside ETags, and injecting the
+"If-None-Match" header into GitHub API requests. If you do this,
+you'll be automating the injection of conditional headers and helping
+to reduce the overall load on the GitHub API. If you use an API library, like Octokit for Ruby, there are some tricks we'll detail later which can assist in staying beneath the limits.
+
+Use of conditional request headers is encouraged to conserve resources
+and make sure that the infrastructure that supports GitHub's API isn't
+asked to generated content unnecessarily.
+
+[developer-api-accept]
+Specifying Response Content Format
+----------------------------------
+
+When you send a request to the GitHub API, you have some ability to
+specify the format of the response you expect.  For example, if you
+are requesting content that contains text from a commit's comment
+thread, you can use the Accept header to ask for the raw markdown or
+for the HTML this markdown generates.  You also have the ability to
+specify this version of the GitHub API you are using.  At this point,
+you can specify either version 3 or beta of the API.
+
+To demonstrate the specification of the Accept header, let's take a
+look at what happens when we request something without the Accept
+header:
+
+----
+$ curl -i https://api.github.com/
+Content-Type: application/json; charset=utf-8
+X-GitHub-Media-Type: github.beta
+----
+
+You can see that GitHub API assumes that you are requesting the
+beta version and for results to be returned as JSON. This is the
+default behavior of the GitHub API. GitHub is currently developing v3
+of the GitHub API and has marked the current version of this stable
+API as "beta".  This is the default version that it returned.  At some
+point in the future, GitHub may decide to release a final version of
+v3 and move to a new version identifier.
+
+When making an individual service call you can specify the version of
+the API as follows:
+
+----
+$ curl -i https://api.github.com/ \
+          -H "Accept: application/vnd.github.v3+json"
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+X-GitHub-Media-Type: github.v3; format=json
+----
+
+Note how the content of the X-GitHub-Media-Type header changed to
+reflect the newly specified version number.  In addition to these
+changes, the following sections outline further customization of
+response format with the Accept Header.
+
+////
+Fact check GitHub v3 assertion above.
+////
+
+===== Retrieving Formatted Content
+
+The Accept header you send with a request can affect the format of
+text returned by the GitHub API.  As an example, let's assume you
+wanted to read the body of a GitHub Issue. An Issue's body is stored
+in Markdown and can be retrieved with the following request by sending
+"application/vnd.github.beta.raw+json" as the Accept header.
+
+----
+$ curl -i https://api.github.com/repos/rails/rails/issues/11819 \
+          -H "Accept: application/vnd.github.beta.raw+json"
+Content-Type: application/json; charset=utf-8
+X-GitHub-Media-Type: github.beta; param=raw; format=json
+
+...Content Removed...
+
+  "body": "Hi, \r\n\r\nI have a problem with strong parameters in
+  rails 4. \r\n\r\nI have a one-to-many association that accept nested
+  attributes.\r\n\r\nI try to permit nested attributes with following
+  line :\r\n\r\n```ruby\r\nevent_params =
+  params.require(:event).permit(:description,
+  \r\nevent_parts_attributes: [:start_date,
+  :start_time])\r\n```\r\n\r\ndescription is present but
+  event_parts_attributes aren't added to event_params. They are well
+  present in params.\r\n\r\nWhen I remove require(:event) it's
+  work. \r\n\r\nThanks",
+----
+
+As you can see in the response returned above, the body of this Issue
+is returned in a raw, unformatted response. If you were consuming this
+and displaying it to users, it would be up to you to parse and render
+the Markdown in this Issue body.  If you were attempted to retrieve an
+Issue body with Javascript to display to an end-user, you might want
+to retrieve the body as rendered HTML content.  Here's how you would
+do that with the Accept header passing in
+"application:vnd.github.beta.html+json" in the Accept header.
+
+----
+$ curl -i https://api.github.com/repos/rails/rails/issues/11819 \
+          -H "Accept: application/vnd.github.beta.html+json"
+Content-Type: application/json; charset=utf-8
+X-GitHub-Media-Type: github.beta; param=html; format=json
+
+  ...Content Removed...
+
+  "body_html": "<p>Hi, </p>\n\n<p>I have a problem with strong
+  parameters in rails 4. </p>\n\n<p>I have a one-to-many association
+  that accept nested attributes.</p>\n\n<p>I try to permit nested
+  attributes with following line :</p>\n\n<div
+  class=\"highlight\"><pre><span class=\"n\">event_params</span> <span
+  class=\"o\">=</span> <span class=\"n\">params</span><span
+  class=\"o\">.</span><span class=\"n\">require</span><span
+  class=\"p\">(</span><span class=\"ss\">:event</span><span
+  class=\"p\">)</span><span class=\"o\">.</span><span
+  class=\"n\">permit</span><span class=\"p\">(</span><span
+  class=\"ss\">:description</span><span class=\"p\">,</span> \n<span
+  class=\"n\">event_parts_attributes</span><span class=\"p\">:</span>
+  <span class=\"o\">[</span><span class=\"ss\">:start_date</span><span
+  class=\"p\">,</span> <span class=\"ss\">:start_time</span><span
+  class=\"o\">]</span><span
+  class=\"p\">)</span>\n</pre></div>\n\n<p>description is present but
+  event_parts_attributes aren't added to event_params. They are well
+  present in params.</p>\n\n<p>When I remove require(:event) it's
+  work. </p>\n\n<p>Thanks</p>",
+
+----
+
+Besides "raw" and "html" there are two other format options that
+influence how Markdown content is delivered via the GitHub API.  If
+you specify "text" as a format, the issue body would have been
+returned as plaintext.   If you specify "full" then the content will
+be rendered multiple times including the raw Markdown, rendered HTML,
+and rendered plaintext.
+
+In addition to controlling the format of text content, you can also
+retrieve GitHub blobs either as raw binary or as a BASE64 encoded
+text.   When retrieving commits, you can also specify that the content
+be returned either as a diff or as a patch.  For more information
+about these fine-grained controls for formatting, see the GitHub API
+documentation here: http://developer.github.com
+
+===== Preview Version Required for Search API
+
+Note that the Search API is a separate version.  To use the Search API
+you must specify the Accept header in your request as
+"application/vnd.github.preview+json".  The following command listing
+demonstrates the use of curl to search repositories while specifying
+the appropriate Media type.
+
+----
+$ curl -i https://api.github.com/search/repositories?q=@tobrien \
+          -H "Accept: application/vnd.github.preview+json"
+----
+
+Failure to specify the preview version in the Accept header will
+result in an HTTP 404 Not Found result.
+
+[developer-api-terms]
+GitHub API Terms of Service
+---------------------------
+
+Before you start building a system atop another service's API, it is
+always wise to understand what, if any, limitations are placed on that
+API's usage. Aside from the limitations on bandwidth, GitHub's API is also covered
+by the overall GitHub Terms of Service.   While you can read these terms of
+servic here: https://help.github.com/articles/github-terms-of-service
+- here is a summary of the terms.
+
+. GitHub isn't liable for any damages that result from your use of the
+API.  
+. If you abuse the API, GitHub can suspend your account's access to
+the API.  They will attempt to contact you before this happens.
+. They can change the API.  They can discontinue a part of the API.
+They can change it without notice.
+
+This is fairly standard stuff when it comes to terms for an API.
+We're not liable, don't abuse it, and we can change it or take it
+away.
+
+////
+We need guidance from GitHub here.  I don't see that the GitHub API
+has any explicit Terms of Service beyond the one every user agrees
+to.   It would be nice to know if there are any red lines that can't
+be crossed.
+////
+
+===== How does OAuth Work?
+
+ [OAuth](http://developer.github.com/v3/oauth/)
+

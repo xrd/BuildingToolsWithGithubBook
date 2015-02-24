@@ -1,4 +1,5 @@
 [[bootstrapping-git]]
+
 == Bootstrapping Git
 
 This book is focused on Github, but before we can explore Github it is helpful to understand Git.   
