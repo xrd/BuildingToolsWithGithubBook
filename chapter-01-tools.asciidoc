@@ -3,25 +3,28 @@
 
 To use this book, you will need familiarity with some tools that might
 be new to you. This book covers the API from various vantage points,
-looking at the idioms found in many different languages, but each
-chapter is designed so that you can follow it without intimacy to the
+examining the API and through the idioms found in many different
+languages and their associated client libraries. Each chapter is
+designed so that you can follow it without intimacy to the 
 language or toolkit. However, much as a carpenter cannot survive with
-only a hammer, or only a saw, and needs both , it is useful to have facility with
-multiple basic tools to get things done. This chapter documents basic
-operations of tools that will be extremely helpful when exploring the
-GitHub API. 
+only a hammer, or only a saw, and needs both, it is useful to have facility with
+multiple basic tools to get things done. This chapter documents a
+minimum set of tools that are extremely helpful when exploring and
+using the GitHub API. 
 
-They are:
+These tools are:
 
 * Ruby: a simple, readable programming language used heavily by the
   founders of GitHub 
 * NodeJS: now that JavaScript runs on the server side as well, many
   tools are appearing that use the 
 * cURL: there are many tools that speak HTTP, and cURL is one of the
-  best for its elegant and useful command line interface.
+  best due to its elegant and useful command line interface.
 
-If you spend a little time installing these tools, you will have a
-solid toolset for exploring the API.  
+If you spend a little time inside this chapter installing and
+familiarizing yourself with the concepts and practices inherent to
+usage of these tools, you will have a solid toolset for exploration of
+the GitHub API.
 
 == GitHub started with Ruby
 
