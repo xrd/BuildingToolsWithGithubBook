@@ -1,5 +1,7 @@
 handler = require '../lib/handler'
 
+handler.setSecret "XYZABC"
+
 module.exports = (robot) ->
         robot.respond /accept/i, (msg) ->
                 accept( msg )

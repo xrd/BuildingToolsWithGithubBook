@@ -1019,7 +1019,7 @@ Now, add a file called `./lib/handler.coffee`:
 
 [source,coffeescript]
 -----
-[language="json", sha="a1316ed:support/slacker-hubot/lib/handler.coffee"]
+[language="json", sha="fe734f6:support/slacker-hubot/lib/handler.coffee"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1036,7 +1036,10 @@ secret from the request matches the configured secret, then we message
 the room, otherwise we ignore the request. In either case, we need to
 respond to the calling server by using the `send` method (`send` is
 provided by the built in *express* server that Hubot uses to provide
-an HTTP server). 
+an HTTP server). For debugging purposes we output that the secret
+was validated, if it was in fact validated, but otherwise the behavior
+of our response to the calling client is the same. We don't want to
+provide an attacker with anything extra if they pass in an incorrect secret.
 
 If we run our tests we will see them all pass:
 
@@ -1060,8 +1063,9 @@ switch with cURL).
 [source,bash]
 --------
 $ HUBOT_SLACK_TOKEN=xoxb-3295776784-nZxl1H3nyLsVcgdD29r1PZCq ./bin/hubot -a slack &
-$ curl --data "" http://localhost:8080/pr
-
+$ curl --data '' http://localhost:8080/pr
+OK
+$ curl --data '{ "secret" : "
 --------
 
 ===== Assigning an active chat room user

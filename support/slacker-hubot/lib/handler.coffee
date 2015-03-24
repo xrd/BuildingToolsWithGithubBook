@@ -6,8 +6,7 @@ exports.prHandler = ( robot, req, res ) ->
                 console.log "Secret verified, let's notify our channel"
                 room = "general"
                 robot.messageRoom room, "OMG, GitHub is on my caller-id!?!"
-        res.send 'OK'
-
+        res.send "OK\n"
 
 exports.setSecret = (secret) ->
         _SECRET = secret
