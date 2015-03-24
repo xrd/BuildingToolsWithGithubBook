@@ -1019,7 +1019,7 @@ Now, add a file called `./lib/handler.coffee`:
 
 [source,coffeescript]
 -----
-[language="json", sha="19118b0:support/slacker-hubot/lib/handler.coffee"]
+[language="json", sha="a1316ed:support/slacker-hubot/lib/handler.coffee"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
