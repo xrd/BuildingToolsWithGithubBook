@@ -286,7 +286,7 @@ We see that our hubot printed out the rules it
 abides by (published originally by Isaac Asimov in his "Runaround"
 short story in 1942).
 
-===== Experimenting in private
+===== Experimenting in Isolation
 
 Hubot comes with a bunch of built in commands. 
 To discover these commands, ask what commands are supported using
@@ -310,8 +310,9 @@ it to your command).
 
 image::images/hubot-help.png[]
 
-The `pug me` command is a favorite. Many people new to 
-sucked into spending hours looking at cute pictures of pugs.
+The `pug me` command is a favorite. Many people new to Hubot
+quickly get sucked into spending hours looking at cute pictures of
+pugs. Beware!
 
 === Installation on Heroku
 
@@ -331,7 +332,9 @@ If your chatbot is working per the instructions given in the previous
 section, then it is almost ready to deploy to Heroku. You'll need to
 add the same environment variable using the heroku tools. In addition
 to the authentication token for slack, you will need to configure a
-URL for your site. Generally any name works, and it is 
+URL for your site. Heroku will generate a URL for you from the name of
+your project (in this case `inqry-chatbot`) so as long as the name has
+not been claimed already by someone else, you can name it as you will.
 
 [code,bash]
 -----
@@ -405,9 +408,9 @@ You might also want to publish this repository into GitHub. Heroku,
 as a part of hosting your live application, also hosts the full Git
 repository of your Hubot (Hubot, as friendly as it tries to be, is
 just another NodeJS application in the end). Heroku can host the
-entirety of the source code for yor Hubot for you, but does not have
+entirety of the source code for your Hubot for you, but does not have
 the additional tools, like user management, that GitHub does. For this
-reason, use your GitHub account as your code repository, the place
+reason, use your GitHub account as your code repository, the place where
 team members develop new features of your chat bot, and then pull
 locally and push into Heroku using the ease of source code tools as a
 deployment layer.
@@ -502,7 +505,7 @@ inside the scripts directory.
   programmed with a catch-all error handler so that no matter where
   you code failed, you can catch it without crashing your bot.
 
-==== Code reviews via pull requests
+==== Code reviews via Pull Requests
 
 As we've seen in other chapters, pull requests are the mechanism used
 on GitHub to easily integrate code changes into a project. Contributors
@@ -571,7 +574,8 @@ play with commands inside your Slack site. Entering the commands
 respoding inside the channel. You'll also see the message `Accepted!` or
 `Declined!` printed to the console on which your Hubot is
 running. Using `console.log` can be a quick way to troubleshoot your
-scripts and make sure your Hubot is working.
+scripts and make sure your Hubot is working from within only a
+terminal session.
 
 ===== Writing tests for our Hubot
 
@@ -579,11 +583,11 @@ Now that we have the basics of our Hubot working, let's make sure we
 certify our code with some tests. We'll use the Jasmine testing
 framework for NodeJS. It offers an elegant behavior driven testing
 syntax where you specify a behavior as the first parameter to an `it`
-function, and as a second paramter, a function which is run as the
+function, and as a second parameter, a function which is run as the
 test itself. Jasmine manages running each `it` call and displays a
 nice output of passing and failed tests at the end of your
 run. Jasmine tests are JavaScript tests, but the latest versions of
-Jasmine support using CoffeeScript. To match our Hubot, let's write
+Jasmine support tests written in CoffeeScript. To match our Hubot, let's write
 them in CoffeeScript as well. We need to put our tests inside a
 directory called "spec" and make sure our filename ends with
 `.spec.coffee`. Let's use `spec/pr-delegator.spec.coffee` as the
@@ -837,7 +841,7 @@ middle. If you want to see the result of that variable, type `echo
 $CONFIG` and you'll notice the snippet `... "url":
 "https://inqry-chatbot.herokuapp.com/pr" ...` properly interpolated.
 
-Use the heroku api URL as our webhook endpoint. Unfortunately, we
+Here we use the heroku api URL as our webhook endpoint. Unfortunately, we
 cannot operate our Probot purely in local mode when we start
 integration with GitHub as GitHub cannot talk to our laptop inside a
 LAN, but review the Go chapter for an easy way to simulate this using
@@ -845,11 +849,11 @@ ngrok.
 
 We will need to make sure all requests are real requests from GitHub
 and not a cracker attempting to maliciously inject themselves into our
-conversations. To do this, we verify each request back into GitHub by
-using the client id and secret generated when we created the
-webhook. A cracker might be able to guess about where our endpoint
-exists, but unless Heroku or GitHub is compromised, they won't know
-our webhook secret.
+conversations. To protect from this possible situation, we verify each
+request back into GitHub by using the client id and secret generated
+when we created the webhook. A cracker might be able to guess about
+where our endpoint exists, but unless Heroku or GitHub is compromised,
+they won't know our webhook secret.
 
 We should update our tests to make sure we anticipate this new
 functionality. We will be using the Hubot HTTP server, which
@@ -1013,12 +1017,12 @@ another PR.
 
 Let's build our HTTP handler when PRs notifications arrive from
 GitHub. At first glance, we might take the easy route, adding it
-directly into the top level script. But, due to the callbacks
-inherent in JavaScript programming and the fact that Hubot extensions
-only export a single constructor (using the `module.exports` syntax)
-it is easier to create, and more importantly test, a separate module
-which we require in our main extension script.
-sx
+directly into the top level script. But, given the fact that
+JavaScript handles events inside of callbacks and the fact that Hubot
+extensions only export a single constructor (using the
+`module.exports` syntax) it is easier to create, and more importantly
+test, a separate module which we require in our main extension script.
+
 We start by writing our tests. We've already created a test which
 verifies the call to `robot.router.post`. Our new functionality will
 actually handle the PR notification, so let's add a new grouping using
@@ -1109,7 +1113,19 @@ Finished in 0.01 seconds
 
 ------
 
+Hubot will spawn the HTTP server wherever it runs so we can talk to it
+on our local machine (though this will likely be inside a firewall and
+inaccessible to GitHub), so we can test it using cURL
+locally. Remember that our robot router accepts commands as HTTP POST
+requests, so we need to specify a post request (using the `--data`
+switch with cURL).
 
+[source,bash]
+--------
+$ HUBOT_SLACK_TOKEN=xoxb-3295776784-nZxl1H3nyLsVcgdD29r1PZCq ./bin/hubot -a slack &
+$ curl --data "" http://localhost:8080/pr
+
+--------
 
 ===== Assigning an active chat room user
 

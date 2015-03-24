@@ -16,4 +16,4 @@ module.exports = (robot) ->
                 console.log "Declined!"
 
         robot.router.post '/pr', ( req, res ) ->
-                handler.prHandler( req, res, robot )
+                handler.prHandler( robot, req, res )
