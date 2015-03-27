@@ -1019,7 +1019,7 @@ Now, add a file called `./lib/handler.coffee`:
 
 [source,coffeescript]
 -----
-[language="json", sha="fe734f6:support/slacker-hubot/lib/handler.coffee"]
+[language="json", sha="d8b7375:support/slacker-hubot/lib/handler.coffee"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1062,13 +1062,60 @@ switch with cURL).
 
 [source,bash]
 --------
-$ HUBOT_SLACK_TOKEN=xoxb-3295776784-nZxl1H3nyLsVcgdD29r1PZCq ./bin/hubot -a slack &
-$ curl --data '' http://localhost:8080/pr
+$ ( HUBOT_SLACK_TOKEN=xoxb-3295776784-nZxl1H3nyLsVcgdD29r1PZCq ./bin/hubot -a slack 2> /dev/null | grep -i secret & )
+$ curl --data '' http://localhost:8080/pr                                                                                             
+Invalid secret
 OK
-$ curl --data '{ "secret" : "
+$ curl --data 'secret=XYZABC' http://localhost:8080/pr
+Secret verified
+OK
+$ kill `ps a | grep node | grep -v grep | awk -F ' ' '{ print $1 }'`
 --------
 
+These commands verify that things are working properly. First, we
+start the server and pipe the output to grep to only display output
+which is related to our secret processing (we also background the
+entire chain using an ampersand and parentheses, a bash trick). Then,
+we hit the server running locally without the secret: the server (as
+it is running in the same shell) prints out the 
+message "Invalid secret" using `console.log`, and then curl prints out
+"OK" which is what was returned from our server. If we run the command
+again, this time including the secret as post parameters, we see that
+Hubot verified the secret internally against its own secret, and then
+curl again prints "OK" which was what the express server inside of
+Hubot returned to the calling client. The final line quits Hubot: 
+this command finds the PID for the Hubot client (which runs as a node
+process) and then sends it a SIGHUP signal, signaling to Hubot that it 
+should quit. 
+
+Provided you connected correctly to your Slack site, you'll also see a
+message inside your #general channel which says "OMG, GitHub is on my
+caller-id!?!" 
+
+We now have a simple way to trigger a pull request notification
+without going through the formality of actually generating a pull
+request. 
+
 ===== Assigning an active chat room user
+
+Now that we have an incoming pull request (albeit one which we are
+faking), we can write the code to find a random user and assign them
+to the pull request. To find a user in the room, we unfortunately have
+to perform this action outside of the hubot API and use the Slack API
+directly. Fortunately, Hubot comes with a built in HTTP client, which
+works great for accessing information over HTTP. The Slack API returns
+the list of members in the room currently; we can look over this list
+and randomly choose a member and deliver the PR request to them. It
+takes surprisingly little code to do all of this: in a little more
+than 10 lines of CoffeeScript code we can retrieve a JSON response
+from an API, parse the response, generate a message for a random user,
+and then send a request to them into our chat room. It almost takes
+more characters to write out the explanation in English!
+
+[source,coffeescript]
+--------
+
+--------
 
 * Randomly selecting a user
 * Asking them for confirmation (use hubot `robot.respond` and `msg.reply`)
