@@ -1,0 +1,530 @@
+[[developer-api]]
+
+
+== GitHub
+
+This is a book about using the GitHub API. Before we investigate the
+API, it is important to know the history of the GitHub. Let's break it
+down into the two pieces in the name: Git and Hub. To understand
+GitHub, you need to understand Git, and you need to understand what
+Hub means in this context. We'll tell you a little about Git through
+its history and the technical reasons 
+why Git has been so widely adopted by developers around the world. Git
+(an open source project) grew out of necessity from another open
+source project, the Linux kernel. We'll trace the history of Git and
+why it was so important technologically and politically to the team
+working on the Linux kernel.
+
+===  Git: a Sea Change for Software Development
+
+Some of biggest Open Source projects, such as the Linux kernel, have
+been using a decentralized approach to development for decades.  In
+these projects hundreds, sometimes thousands, of developers collaborate on
+fast-moving projects without central direction.  While the Kernel
+project itself is maintained by a Linus Torvald and a handful of
+experts, there is no manager creating lists of priorities and
+tasks. There are no weekly status meetings to convey management
+priorities to compliant workers.  It is an ad-hoc process that relies
+on widely distributed individuals maintaining hundreds of different
+versions of the kernel.
+
+One developer may add a new driver to her fork of the kernel, and yet
+another may modify the behavior of the file system in another copy.
+These separate "forks" are typical in distributed version control and
+tools like Git make it possible for anyone to take a project like
+Linux, fork it, and take it in whatever direction they prefer.  This
+distributed development is made possible by Git - a version control
+system which facilitates distributed development and places an
+emphasis on making merges between two separate forks easy.
+
+The alternative is an approach that involves strict control of code and a
+rigorous approach to project planning and that model is clearly quite
+different than the ad-hoc, distributed approach to collaboration
+described above. If you read any MBA textbook from the past fifty
+years, however, you could not help but immediately question whether
+this could ever work. Yet, Linux is at the heart of most of the
+internet, and it powers the most popular mobile operating system in
+the world. Who's managing these developers?  How do they agree on
+standards?  How could this team of strangers ever create quality
+software?  Despite these concerns it works very and Linux is empirical
+proof that distributed development and distributed version control
+provide the appropriate background for wide-scale, open-source
+collaboration. And, the people idealogically invested in the more
+corporate approach to development never seem to talk about the
+downsides of a strictly controlled  development process, namely a
+tendency to lose track of the voice of the customer and the ability to
+pivot rapidly when those voices finally become ring clear. 
+
+==== How Software Development works on the Linux kernel
+
+Thousands of developers submit patches to the kernel through a list of
+maintainers.  If you have a change to the Linux kernel, the first step
+is to consult the linux/MAINTAINERS and then submit a patch to the
+appropriate individual.  Eventually, this patch is vetted, integrated
+into a particular component and then passed up to core contributors
+and integrated into the kernel distribution.
+
+It's a busy, human process that relies on a busy mailing list named
+linux-kernel and a small team of core contributors. For more than a
+decade Torvalds was simply organizing the kernel with patchfiles and
+tarballs, and this process just wasn't scalable.  It was only in 2002
+that Torvalds decided to standardize his own workflow on a proprietary
+tool written by Larry McVoy named BitKeeper.  BitKeeper was a
+successor to an earlier DVCS named TeamWare.
+
+==== The Birth of Git
+
+While Linus Torvalds was happy with BitKeeper, core contibutors to the
+Linux Kernel, notably Alan Cox, refused to continue using a
+proprietary tool for Linux.  Fast forward through years of flamewars
+and in 2005 a developer named Andrew Tridgell created a tool
+(SourcePuller) which was compatible with the BitKeeper protocol.  This
+caused BitKeeper to rescind the free BitKeeper license and change
+licensing terms, making it impractical for Torvalds to continue to use
+BitKeeper for kernel development without requiring other developers to
+purchase a license.
+
+Torvalds, motivated by his desire for a DVCS that would allow for
+efficient and rapid merging, created a prototype of Git in 2005
+handing over the project to Git's current maintainer Junio Hamano
+later that year.  In just eight years, Git has become the primary tool
+used in open source development, and it has made significant inroads
+into corporate development.
+
+==== Git: Toward an Acceptance of DVCS
+
+By the time Torvalds created Git in 2005, the Linux Kernel had been at
+it for almost 15 years.  The decade-old Apache Software Foundation had
+largely finished a migration from CVS to Subversion, and the Eclipse Foundation
+was continuing to use CVS.  In the early part of the last decade
+centralized, client-server SCMs were the rule.  Proprietary systems
+such as Perforce, Clearcase, MKS Integrity, and (cringe) Visual
+SourceSafe along with the two main open source SCMs CVS and Subversion
+dominated the market.
+
+At the time, the VCS of choice for open source projects was
+Subversion, a centralized system, and there was some discussion on
+linux-kernel about using a tool like CVS or Subversion.  Torvalds
+decision to stick with a DVCS wasn't controversial, but Linux' use of
+a DVCS was certainly the exception in the OSS world. OSS efforts
+seemed to have a definite preference for central SCMs - Subversion,
+CVS.  Torvald's reaction to CVS and Subversion was telling, at the
+time he had some technical issues with the centralized version
+control, but his biggest objection to centralization was that they
+encouraged "politics around the question of who gets commit
+privileges".  Here is Torvald's reaction to CVS and Subversion in 2005
+from linux-kernel. http://marc.info/?l=git&m=113072612805233&w=2
+
+---- 
+The problem with a centralized model is that there's one point of
+contact: you can replicate the central database endlessly, but you can
+only really modify it in one place. Which means that anybody who wants
+to modify anything at all needs to have write access to that one
+repository.
+
+Now, you can limit write access in various ways ("user xyz can only
+write to these files"), but it still requires an a-priori trust
+network rather than a dynamic one. So every single CVS project (and
+SVN does zero in this regard) always ends up having politics around
+the question of who gets commit privileges, and what the rules for
+them are.
+
+So one of the worst downsides of CVS is _politics_. People, not
+technology.  
+----
+
+==== A Distributed Revolution
+
+As Git became more capable, open source projects and commercial
+developers alike started to experiment with more asynchronous
+approaches to collaboration.    Git continued to develop for two years
+before the arrival of Github, founed in 2008.  It wasn't until Github
+arrived that Git started to convert more and more open source
+projects.  The Rails project moved four years of Subversion activity
+dating back to 2004 to Git in April of 2008, and the number of
+developers, forks, and projects on Git skyrocketed.
+
+The ease with which communities could collaborate and the ability for
+independent developers to create forks and issue pull requests started
+to put pressure on traditional open source forges like Apache and
+Eclipse.  While these forges are not running toward Github, Github
+played an important part in popularizing Git.  Don't mistake Github
+for Git, the two are separate and you can certainly use Git without
+using Github.
+
+==== Git Features
+
+Git isn't the first distributed version control systems (DVCS) out
+there, but it is the most popular.  This section explores a few points
+that differentiate Git from the rest of the DVCS pack icluding: 
+Monotone, Darcs, Mercurial, BitKeeper, and Bazaar.
+
+The project driving the requirements for Git is the largest, most
+complex collaborative effort in the history of the species. That may
+sound somewhat grandiose, but it's very much true. The Linux kernel is
+over 17 million lines of code and is growing at an average rate of
+3,500 lines per
+day:[http://royal.pingdom.com/2012/04/16/linux-kernel-development-numbers/].
+Nearly 1,300 developers contribute to Linux with versions like 2.6.25
+generating more than 12,000 patches. The Linux kernel powers over 93%
+of the TOP500
+Supercomputers:[http://en.wikipedia.org/wiki/Usage_share_of_operating_systems#Servers].
+The kernel is at the heart of the Android which has a nearly 60% share
+of the mobile operating system market with 1.5 million device
+activations a day. The kernel also powers millions of servers across
+companies that have helped transform the way we consume information
+and communicate with one another such as Yahoo, Google, Facebook, and
+Twitter.
+
+This project can be thought of as a multi-layered tree of
+collaborating developers. A patch submitted at the bottom of this tree
+might jump around in a non-linear path to inclusion in the
+kernel. Git supports this because it makes branching and merging
+easy.  In Git, a branch isn't a separate object, it is a reference to
+a commit.  Contrast this approach to that of Subversion where branches
+and tags are distinct objects (in Subversion's case a branch is a
+directory).  That approach isn't nearly as flexible.  If a patch was
+thrown around to ten different developers over the course of several
+weeks, in Git you simply have a moving reference to a commit and the ability
+to integrate that commit into the end-product.  In Subversion
+individual developers would have to selectively merge specific commits
+across different branch directories.  It's a mess in anything other
+than Git.
+
+Distributed, Efficient, Easy to Branch and Merge, Free and Open Source
+
+==== Flexibility
+
+Git does not force you into a completely different mode of
+development, regardless of where your development process is centered
+now. Neither Git nor GitHub force you to change your workflow if your
+development team philosophies are currently "centralized" rather than
+"distributed." You can still make GitHub (or another Git hosting
+service) act as the centralized repository and require team members to
+push changes into the service.  
+
+Zachary Kessin has created an eBook, hosted on GitHub, which documents
+various patterns of DVCSes, and it is especially relevant to teams
+coming from a centralized model and trying out Git or GitHub. The book
+describes several workflows fitting many standard team member
+paradigms from the Linux Kernel development team to the "solo-coder"
+with or without clients. If you have concerns about how to map your
+existing workflow to GitHub, or how to transition from a centralized
+system to a distributed system, this book is worth a look. 
+
+https://github.com/zkessin/dvcs-workflows
+
+==== Popularity
+
+===== in Open Source
+
+image::images/bootstrapping-git-rails-network.png[]
+
+These graphs display the network of participation for the popular web
+framework "Ruby on Rails." Rails migrated from Subversion (SVN) to Git
+in 2008 at the moment when GitHub launched as a company. Without
+reading too much into the graphs, notice a slight upward trend that
+begins in 2008 and continues to today, and also notice a slight
+downward trend from the inception of the project in 2005 until right
+before switching to Git. Was there stagnation in the Rails project as
+it grew, and more developer finger started poking in the pie? Did
+switching to Git improve the workflow for developers and make it a
+more  frictionless process for making additions? One of the benefits
+and designs of Git has been that it is suitable for "programming in
+the large," that development should be fluid even as team size grows,
+and the health of the Rails project seems to have benefitted (or at
+least encountered no stumbling blocks) since switching to Git.
+
+image::images/bootstrapping-git-node-network.png[]
+
+Node is another popular project on GitHub, allowing an author to run
+JavaScript, traditionally a web client-side language, on the server
+side. Node emphasizes providing developers with a set of tools for
+developing responsive and high performance applications with a
+familiar language. Peering into the graphs underneath the project
+level commit graph, you see the project's creator, Ryan Dahl,
+initially made a large majority of the changes in the project. As he
+has stepped back, others like "isaacs" (Isaac Z. Schlueter) and
+"bnoordhuis" (Ben Noordhuis) have taken over and are now making the
+majority of changes. Git and GitHub make these transitions of
+ownership and contribution levels seamless and without conflict. 
+
+==== Comparisons to Alternatives
+
+Git is not the only popular DVCS, but it is the most popular. Here is
+a quick comparison of the other major DVCSes, from both technical and
+cultural viewpoints. 
+
+===== Darcs
+
+Darcs supports the same set of basic operations as Git does, but
+differs internally in that it manages a set of patches independently
+rather than as a connected directed acyclic graph (DAG). In other
+words, darcs allows you to create a set of changes and then push
+individual patches from that set without the need to rewrite the
+history graph. This internal structure makes branching even cheaper
+than with git, one of the most touted benefits of using git. There is
+controversy around "cherry-picking" within the world of DVCS, but this
+part of darcs makes cherry picking trivial. Darcs is written in
+Haskell. Unfortunately, as of this writing, there is no strong
+equivalent to GitHub for darcs hosting. The leading candidate
+"darcsden.com" has a copyright notice from 2011 and most projects show
+activity no later than 2011 as well. Darcs uses the GPL license. 
+
+===== Bazaar (bzr)
+
+Bazaar (which uses the command line command "bzr") is an open source
+DVCS that offers the majority of operations that Git offers. Bazaar is
+sponsored by Canonical, the company which develops Ubuntu, the most
+popular distribution of Linux. Canonical offers a functional hosting
+service called Launchpad.net which offers good code management across
+teams but does not have near the polish of GitHub. Bazaar uses
+sequential commit numbers (1,2,3) rather than git-style SHA hashes
+(d670460b4b4a..., 1f7a7a472abf...), which means it is easier to tell
+which commit comes before or after another; you are simply comparing
+an integer to another integer, but this does add complexity (handled
+by the bzr tools generally) to managing these commit numbers when you
+start introducing other team member commits. Another technical
+difference is that directories are first class objects, meaning bzr
+can rename directories and this operation is stored as a rename
+operation in the commit log. Compare this to Git which does not store
+directories inside commit history and notice how git requires you to
+place files like ".gitkeep" in order to maintain empty
+directories. Mark Shuttlesworth, the founder of Ubuntu, has written at
+length about the benefits of renaming and how bzr wins against other
+DVCS, including git. Bzr is written in Python and licensed under the
+GPLv2. Bazaar was originally forked from the arch DVCS. 
+
+===== Mercurial (hg)
+
+Mercurial (which uses the command line command "hg") is another DVCS,
+offering much of the same functionality as git. Unlike git, Mercurial
+is distributed as a single monolithic binary instead of multiple git
+commands (over 140 individual commands, depending on which build
+version you are using of git). You can tell git came from the Linux
+world which favors small chainable commands, but let's not go so far
+to say that Mercurial was designed in the basements of Redmond,
+WA. Mercurial also uses a DAG to keep change history, like
+Git. Mercurial favors immutable histories, meaning there are no tools
+to rewrite history like the "git revert" command. Mercurial has the
+best code hosting alternative to GitHub in BitBucket.org, a service of
+Atlassian. Mercurial is licensed under the GPLv2 and is written in
+Python. 
+
+===== Monotone
+
+If a movie studio ever decides to remake "Back to the Future" with the
+main character named Git instead of Marty, there will be a scene where
+Git sees his hand disappearing in front of his eyes while strumming a
+guitar, as Linus Torvalds dances and falls in love with Monotone,
+dooming us all to a future world without Git. Fortunately, right as
+Linus is about to falls deeply in love with Monotone, she says: "So,
+you know, my father Bjarne Stroustrup said..." Looking incredulous,
+Linus interrupts her and says: "Wait! You're C\+\+?!?!" And, he rushes
+out, leaving Monotone alone on the dance floor, securing our future
+with Git and GitHub. Back to reality, Monotone was initially favored
+by Linus as the replacement to BitKeeper and CVS within the Linux
+kernel community, but Linus could never overcome his revulsion to the
+performance of C++, the language in which Monotone was
+written. Ideologically, Linus agrees with the ommission of cherry
+picking in Monotone, though ironically this is a feature available in
+the git of today. Unfortunately, Monotone has lost momentum; for
+example, the mailing list for the Monotone Eclipse plugin has seen no
+activity since 2008. Monotone is licensed under the GPL. 
+
+===== BitKeeper
+
+BitKeeper was the early inspiration for many of these open source
+DVCSes. The maintainers of the Linux kernel used BitKeeper for a short
+while, but differences over its closed source licensing inspired Linux
+kernel developers to seek out an alternative and resulted in Linus
+building his own, now called Git. Unfortunately, for many open source
+developers, a closed source system which manages their source code is
+a no go, and there are many viable alternatives offering the same
+features as BitKeeper, so while BitKeeper continues to have some
+traction in the enterprise, there are very few open source projects
+using it. 
+
+=== Git Needed a Hub
+
+Git was thriving on its own, so why did GitHub emerge and why did
+developers, startups and now large businesses flock to it? There are
+various reasons why. 
+
+* Hosting a Git repository is not complicated but it is not trivial
+  either. Developers wanted something that just worked so they could
+  focus on software   development, not hosting a Git
+  repository. Paying a small fee to a trusted community member made
+  sense to many early adopters.
+* GitHub was built by members of the Ruby community who kept
+  building trust in that community. Tom Preston-Werner, Chris
+  Wanstrath, PJ Hyett and Scott Chacon all made significant
+  contributions to open source projects. The authenticity in which
+  they worked served as their sales pitch, inviting developers to use
+  their service. 
+* And, it "just worked." GitHub was launched with a minimal layer on top of a
+  powerful tool that users already understood. GitHub got out of the
+  way and exposed just the right amount of Git to you, and the
+  features GitHub added were truly additive, rather than lock-in
+  driven or fluffy and distracting.
+* GitHub quickly offered a transition path to tighter security with
+  their GitHub Enterprise project, making it possible to keep your
+  GitHub data inside a corporate firewall.
+
+GitHub had hyper growth at the beginning, and decisions were being
+made from a technological perspective, not from a business
+perspective. In other words, the founders were making choices that
+made their customers happy (the founders have written about "optimize
+for happiness") and were the path of least resistance. We've all
+experienced using products or services which were clearly designed to
+prevent us from using them given some restriction which benefitted the
+company and was to the detriment of its users. We've all used a
+product that was beyond contemptuous of its attempts to lock-in its
+users. We've all used products that treated its users as infantile. 
+
+GitHub was built by its founders to be a collaboration community, not
+a money making opportunity. This was the missing component for many
+developers, a place where they could build great things with others.
+
+=== Beyond GitHub as Just a Git Repository Service
+
+Like most useful sites and services today, GitHub is less a site that
+you simply visit in isolation and more and more becoming a utility
+intertwined and integrated with other developer-centered sites on the
+Internet. If you develop in Ruby, Node.js, and, increasingly, Java you
+are going to encounter GitHub as the foundational SCM used by a number
+of leading projects and libraries available for your language or
+platform.  
+
+This ubiquitous presence continues to develop as GitHub's APIs have
+started to mature and offer basic utilities for sites that need to
+integrate with it. Just like you can sign on to many services with
+your Facebook or Twitter logins, GitHub has started to act as an
+OAuth 2 provider for many sites and services that depend on GitHub as
+a provider of both user identity and Git activity. 
+
+As more developer-focused sites start to offer the ability to "Login
+with GitHub", and as GitHub continues to offer more low-level
+infrastructure for development GitHub goes from just a simple service to a
+necessary infrastructure for collaboration. In more than a few ways,
+GitHub is to developers as Facebook is to social networks and the API
+is a critical component of that transformation.
+
+=== High-level Areas of the GitHub API
+
+The GitHub API is broken into several logical components. These
+components are tied to a scope. Applications that authenticate using
+the GitHub oAuth token flow are only allowed to view and modify data
+for those scopes which were specified during authentication. And, you
+can limit whether the information is read only or read and write.
+
+==== Activity
+
+Activity includes Events, Feeds, Notifications, Starring, and
+Watching.  If you are building a site or service that is focused
+on supporting developers this portion of the API provides information about 
+activity that affects everything: users, repositories, and organizations.
+
+==== Gists
+
+Gists are code snippets that can be shared and embedded in other
+sites. Using the GitHub API you can retrieve and populate Gist
+content and use GitHub as the infrastructure for sharing pieces of code.
+
+==== Git Data
+
+This portion of the API allows you to do anything with the GitHub
+API that you can do with the Git command.  If you are familiar
+with the way that Git's plumbing (not the porcelain) works, you
+could write systems that read, create, and manipulate the basic
+building blocks of Git's content-addressable storage backend
+including blobs, trees, tags, and commits.
+
+==== Issues
+
+GitHub's issues management systems is made fully availabel to you
+via the GitHub API.  If you need to create custom systems to
+create and read GitHub issues, issue comments, issues events,
+issue labels, or if you want to see which issues relate to a
+repository milestone the Issues section of the API is where you'll look.
+
+==== Misc
+
+The GitHub API is structured around the endpoints necessary for 
+managing information stored inside a source code repository. There
+are tools which don't fit into any of the existing hierarchies,
+and GitHub placed those here. You might think of this as a
+utilities category instead if that makes more sense. This section
+provides access to tools which help you render markdown content,
+generate emojis, and manage gitignore files.
+
+==== Orgs
+
+Repositories and individuals associated with organizations can be
+read and manipualted from the Org Teams API.  If you wanted to
+render a list of developers contributing to a repository on a web
+site you could use this section of the API to obtain this information.
+
+==== Pull Requests
+
+With the Pull Requests section of the GitHub API you can create a
+pull request, view a pull request, updated a pull request, comment
+on a pull request, and merge a pull request.
+
+==== Repositories
+
+The Repos API gives you access to lists of repositories by user
+and by organization. It also provides access to teams, tags,
+branches, and contributors associated with a repository.
+
+==== Users
+
+You can read a user, read the current authenicated user, update
+your own user, list a user's followers, update followers, and
+check to see if a user if following another.  This section of the
+API also allows you to see public keys for a user and 
+
+==== Search
+
+GitHub has spent a good amont of effort over the past few years
+creating a very feature-rich search function and they've made this
+search apability available via the GitHub API.
+
+==== Enterprise
+
+For the most part, enterprise (behind the firewall) versions of
+GitHub have the same API offerings as the main GitHub.com site.
+However, a few extra pieces of functionality are provided inside
+this section, like managing users (which is not something the
+GitHub.com API provides under any circumstances).
+
+=== Complete Coverage
+
+In summary, you would have to work to figure out something that GitHub
+isn't making available via the GitHub API.  They done this for a few
+reasons, one is that GitHub has become an essential piece of
+infrastructure for a large portion of both open source and proprietary
+development.  Allowing other companies and sites to build upon GitHub
+via the API only guarantees that it will continue to provide these
+features and functions going forward.
+
+The other reason GitHub has invested in what some would consider a
+radically open approach to its API is that the founders of the company
+understand that they don't hold a monopoly on good ideas. Throughout
+its history GitHub has had a track record of nonchalantly allowing
+people to do what they will with the service.  By enabling others to
+build upon these APIs, GitHub understands that others may show up with
+better ideas of how to assemble these functions into viable products.
+
+This isn't to say that GitHub is disinterested in your use of the
+API.  The company exists to make money, but as money-making ventures
+go, GitHub has yet to exercise the sort of measured caution you would
+expect from other, more "corporate" attempts at providing an API.
+Nowhere in this API do you see anything that hints of GitHub
+attempting to hide a property or make something unavailable to attain
+a unique market advantage.  
+
+One thing to keep in mind, despite the current, ideal approach that
+GitHub is taking to its API is that your use of this API is still
+subject to the arbitrary whim of a commercial entity.
+

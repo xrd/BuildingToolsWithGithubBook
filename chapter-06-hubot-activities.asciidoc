@@ -607,9 +607,9 @@ robot = undefined
 describe "#probot", ->
         beforeEach () ->
                 robot = {
-                        respond: jasmine.createSpy()
+                        respond: jasmine.createSpy( 'respond' )
                         router: {
-                                post: jasmine.createSpy()
+                                post: jasmine.createSpy( 'router' )
                                 }
                         }
 
