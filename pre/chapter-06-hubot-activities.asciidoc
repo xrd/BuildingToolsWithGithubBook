@@ -1008,7 +1008,7 @@ tests and then our library.
 
 [source,coffeescript]
 -----
-[language="json", sha="19118b0:support/slacker-hubot/spec/pr-delegator.spec.coffee",  lines="27..-1"]
+[language="json", sha="91969de:support/slacker-hubot/spec/pr-delegator.spec.coffee",  lines="27..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1153,7 +1153,7 @@ parse the JSON for members, and then issue the PR request.
 
 [source,coffeescript]
 -----
-[language="json", sha="bf2141d:support/slacker-hubot/spec/pr-delegator.spec.coffee" lines="32..-1"]
+[language="json", sha="91969de:support/slacker-hubot/spec/pr-delegator.spec.coffee" lines="32..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

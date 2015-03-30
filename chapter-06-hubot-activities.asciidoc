@@ -1045,9 +1045,9 @@ tests and then our library.
                 
                 beforeEach ->
                         robot = {
-                                messageRoom: jasmine.createSpy()
+                                messageRoom: jasmine.createSpy( 'messageRoom' )
                                 }
-                        res = { send: jasmine.createSpy() }
+                        res = { send: jasmine.createSpy( 'send' ) }
                         Handler.setSecret secret
                 
                 it "should disallow calls without the secret", (done) ->
@@ -1243,12 +1243,9 @@ parse the JSON for members, and then issue the PR request.
 -----
                 beforeEach ->
                         robot = {
-                                messageRoom: jasmine.createSpy()
-                                http: () -> { get: () -> 
-                                        ( func ) -> func( undefined, undefined,
-                                        '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }' ) }
+                                messageRoom: jasmine.createSpy( 'messageRoom' )
                                 }
-                        res = { send: jasmine.createSpy() }
+                        res = { send: jasmine.createSpy( 'send' ) }
                         Handler.setSecret secret
                 
                 it "should disallow calls without the secret", (done) ->
@@ -1258,15 +1255,8 @@ parse the JSON for members, and then issue the PR request.
                         expect( res.send ).toHaveBeenCalled()
                         done()
 
-                it "should disallow calls without the url", (done) ->
-                        req = { body: { secret: secret } }
-                        Handler.prHandler( robot, req, res )
-                        expect( robot.messageRoom ).not.toHaveBeenCalled()
-                        expect( res.send ).toHaveBeenCalled()
-                        done()
-                        
                 it "should allow calls with the secret", (done) ->
-                        req = { body: { secret: secret, url: "http://pr/1" } }
+                        req = { body: { secret: secret } }
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).toHaveBeenCalled()
                         expect( res.send ).toHaveBeenCalled()
