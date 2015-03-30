@@ -1114,11 +1114,32 @@ more characters to write out the explanation in English!
 
 [source,coffeescript]
 --------
-
+[language="json", sha="f200692:support/slacker-hubot/lib/handler.coffee"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 --------
 
-* Randomly selecting a user
-* Asking them for confirmation (use hubot `robot.respond` and `msg.reply`)
+Observant types will notice we retrieve a URL from our body and then
+provide it to the randomly selected user. To test this using our cURL
+command, we can modify it slightly:
+
+[source,bash]
+---
+$ curl --data 'secret=XYZABC&url=http://pr/1' http://localhost:8080/pr
+---
+
+Our randomly selected user will see the text `username: Hey, want a
+PR? http://pr/1` (and the Slack client will format it as a clickable URL).
+
+Unfortunately, if we run our tests, we get a failure: `TypeError:
+Object #<Object> has no method 'http'`. Our faked Robot object does
+not have this method, so we should add it to the tests.
+
+
+===== Responding to the PR Request
+
+Now, we need to build 
 
 ===== Checking in on the review
 
