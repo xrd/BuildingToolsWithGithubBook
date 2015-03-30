@@ -1125,16 +1125,60 @@ provide it to the randomly selected user. To test this using our cURL
 command, we can modify it slightly:
 
 [source,bash]
----
+------
 $ curl --data 'secret=XYZABC&url=http://pr/1' http://localhost:8080/pr
----
+------
 
 Our randomly selected user will see the text `username: Hey, want a
 PR? http://pr/1` (and the Slack client will format it as a clickable URL).
 
-Unfortunately, if we run our tests, we get a failure: `TypeError:
+Unfortunately, our tests are now broken, and we now have this failure: `TypeError:
 Object #<Object> has no method 'http'`. Our faked Robot object does
-not have this method, so we should add it to the tests.
+not have the http interface that comes with Hubot, so we should add it
+to the tests. The method signature for the http client (which comes from the
+`node-scoped-http-client` NodeJS package) is hairy: you chain calls
+together to build up an HTTP client request and end up with a function
+returned into which you pass a callback where you handle the response
+body. This module makes you write code that is not particularly
+testable (said another way, it was challenging for me to understand
+what the faked test implementation should look like), so we do our
+best here. We simulate the same chain,  
+defining a `http` attribute on the mocked robot object, an attribute
+which resolves to a function call itself. Calling that function
+returns an object which has a `get` method, and calling that function
+returns a function callback which when called executes that function
+with three parameters. In real life that function callback would
+contain the error code, the response object, and the JSON. In our
+case, as long as the error code is empty, our implementation will
+parse the JSON for members, and then issue the PR request. 
+
+[source,coffeescript]
+-----
+[language="json", sha="bf2141d:support/slacker-hubot/spec/pr-delegator.spec.coffee" lines="32..-1"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+This was definitely not a piece of code where testing came easy; I refactored
+this multiple times to find a balance between an easy to read test and
+easy to read code. In the end, even though the test coverage was not
+perfect (we are missing a spy on the `http` method or the `get` call)
+we got our initial tests to pass and added a third test which verifies
+the URL is present before issuing the call. The URL is passed in as
+request parameters; the real information will be passed in using a
+very different structure. GitHub generates a much larger JSON blob
+that it sends us, but because we have tests that cover the major paths
+inside our robot, we are in a good place to add this functionality and
+make sure other pieces still work.
+
+[source,coffeescript]
+-----
+[language="json", sha="bf2141d:support/slacker-hubot/lib/handler.coffee", lines="15..26"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
 
 
 ===== Responding to the PR Request

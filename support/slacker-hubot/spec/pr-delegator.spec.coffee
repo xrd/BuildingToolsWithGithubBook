@@ -31,12 +31,14 @@ describe "#probot", ->
                 
                 beforeEach ->
                         robot = {
-                                messageRoom: jasmine.createSpy()
-                                http: () -> { get: () -> 
-                                        ( func ) -> func( undefined, undefined,
-                                        '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }' ) }
+                                messageRoom: jasmine.createSpy( 'messageRoom' )
+                                http: () -> { get: jasmine.createSpy( 'http' ).andReturn(
+                                        ( func ) ->
+                                                console.log "Inside the cb #{func.toString()}"
+                                                func( undefined, undefined,
+                                                        '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }' ) ) }
                                 }
-                        res = { send: jasmine.createSpy() }
+                        res = { send: jasmine.createSpy( 'send' ) }
                         Handler.setSecret secret
                 
                 it "should disallow calls without the secret", (done) ->
@@ -57,6 +59,8 @@ describe "#probot", ->
                         req = { body: { secret: secret, url: "http://pr/1" } }
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).toHaveBeenCalled()
+                        # console.log "http spy: #{robot.http().get.toString()}"
+                        expect( robot.http().get() ).toHaveBeenCalled()
                         expect( res.send ).toHaveBeenCalled()
                         done()
 
