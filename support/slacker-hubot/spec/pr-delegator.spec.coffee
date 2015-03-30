@@ -8,15 +8,15 @@ robot = undefined
 describe "#probot", ->
         beforeEach () ->
                 robot = {
-                        respond: jasmine.createSpy()
+                        respond: jasmine.createSpy( 'respond' )
                         router: {
-                                post: jasmine.createSpy()
+                                post: jasmine.createSpy( 'post' )
                                 }
                         }
 
         it "should verify our calls to respond", (done) ->
                 pr = Probot robot
-                expect( robot.respond.calls.length ).toEqual( 2 )
+                expect( robot.respond.calls.count() ).toEqual( 2 )
                 done()
 
         it "should verify our calls to router.post", (done) ->
@@ -32,12 +32,12 @@ describe "#probot", ->
                 beforeEach ->
                         robot = {
                                 messageRoom: jasmine.createSpy( 'messageRoom' )
-                                http: () -> { get: jasmine.createSpy( 'http' ).andReturn(
+                                http: () -> { get: () ->
                                         ( func ) ->
-                                                console.log "Inside the cb #{func.toString()}"
                                                 func( undefined, undefined,
-                                                        '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }' ) ) }
+                                                        '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }' ) }
                                 }
+                                
                         res = { send: jasmine.createSpy( 'send' ) }
                         Handler.setSecret secret
                 
@@ -59,8 +59,6 @@ describe "#probot", ->
                         req = { body: { secret: secret, url: "http://pr/1" } }
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).toHaveBeenCalled()
-                        # console.log "http spy: #{robot.http().get.toString()}"
-                        expect( robot.http().get() ).toHaveBeenCalled()
                         expect( res.send ).toHaveBeenCalled()
                         done()
 
