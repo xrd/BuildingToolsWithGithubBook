@@ -7,21 +7,22 @@ anyoneButProbot = (members) ->
                 user = undefined if "probot" == user
         user
 
+sendPrRequest = ( robot, body, room, url ) ->
+        parsed = JSON.parse( body )
+        user = anyoneButProbot( parsed.members )
+        robot.messageRoom room, "#{user}: Hey, want a PR? #{url}"
+
 exports.prHandler = ( robot, req, res ) ->
         secret = req.body?.secret
-        if secret == _SECRET
-                url = req.body?.url
-                room = "general"
+        url = req.body?.url
 
+        if secret == _SECRET and url
+                room = "general"
                 robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
                         .get() (err, response, body) ->
-                                unless err
-                                        parsed = JSON.parse( body )
-                                        user = anyoneButProbot( parsed.members )
-                                        robot.messageRoom room, "#{user}: Hey, want a PR? #{url}"
-
+                                sendPrRequest( robot, body, room, url ) unless err
         else
-                console.log "Invalid secret"
+                console.log "Invalid secret or no URL specified"
         res.send "OK\n"
 
 exports.setSecret = (secret) ->
