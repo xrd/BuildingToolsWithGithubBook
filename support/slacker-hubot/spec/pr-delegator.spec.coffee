@@ -53,7 +53,6 @@ describe "#probot", ->
                         expect( res.send ).toHaveBeenCalled()
                         done()
                         
-
                 it "should allow calls with the secret", (done) ->
                         req = { body: { secret: secret, url: "http://pr/1" } }
                         Handler.prHandler( robot, req, res )
