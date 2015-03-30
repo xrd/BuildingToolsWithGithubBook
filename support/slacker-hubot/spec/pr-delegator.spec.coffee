@@ -32,7 +32,7 @@ describe "#probot", ->
                 beforeEach ->
                         robot = {
                                 messageRoom: jasmine.createSpy()
-                                http: () -> { get: () -> # jasmine.createSpy().andReturn () ->
+                                http: () -> { get: () -> 
                                         ( func ) -> func( undefined, undefined,
                                         '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }' ) }
                                 }
@@ -57,7 +57,6 @@ describe "#probot", ->
                 it "should allow calls with the secret", (done) ->
                         req = { body: { secret: secret, url: "http://pr/1" } }
                         Handler.prHandler( robot, req, res )
-                        # expect( robot.http().get ).toHaveBeenCalled()
                         expect( robot.messageRoom ).toHaveBeenCalled()
                         expect( res.send ).toHaveBeenCalled()
                         done()
