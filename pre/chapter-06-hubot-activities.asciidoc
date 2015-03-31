@@ -1267,7 +1267,7 @@ attacker.
 [source,coffeescript]
 -----
 ...
-[language="coffeescript", sha="9b0f47c:support/slacker-hubot/lib/handler.coffee", lines="16..29"]
+[language="coffeescript", sha="f7884d9:support/slacker-hubot/lib/handler.coffee", lines="16..31"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1281,8 +1281,19 @@ hashes, when using naive comparison operators like `==` provide
 information back to attackers. To eliminate this risk, we use a module
 called secure-compare that obscures this timing information when
 making a comparison. To load this module, we need to add it to our
-package file with the command `npm install secure-compare --save`.
+package.json manifest file with the command `npm install secure-compare --save`.
 
+Now we can adjust our tests to fit the new reality of our handler.
+
+[source,coffeescript]
+-----
+...
+[language="coffeescript", sha="f7884d9:support/slacker-hubot/lib/handler.coffee", lines="16..31"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
 
 
 ===== Responding to the PR Request

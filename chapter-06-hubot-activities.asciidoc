@@ -1419,10 +1419,11 @@ attacker.
 [source,coffeescript]
 -----
 ...
+
 getSecureHash = (body, secret) ->
         hash = crypto.createHmac( 'sha1', secret ).update( "sha1=" + body ).digest('hex')
         console.log "Hash: #{hash}"
-        #  return halt 500, "Signatures didn't match!" unless Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
+        hash
 
 exports.prHandler = ( robot, req, res ) ->
         body = req.body
@@ -1430,8 +1431,9 @@ exports.prHandler = ( robot, req, res ) ->
         url = pr.pull_request.url if pr
         secureHash = getSecureHash( body, _SECRET ) if body
         webhookProvidedHash = req.headers['HTTP_X_HUB_SIGNATURE' ] if req?.headers
-        
-        if secureHash == webhookProvidedHash and url
+        secureCompare = require 'secure-compare'
+
+        if secureCompare( secureHash, webhookProvidedHash ) and url
                 room = "general"
 ...
 -----
@@ -1443,8 +1445,31 @@ hashes, when using naive comparison operators like `==` provide
 information back to attackers. To eliminate this risk, we use a module
 called secure-compare that obscures this timing information when
 making a comparison. To load this module, we need to add it to our
-package file with the command `npm install secure-compare --save`.
+package.json manifest file with the command `npm install secure-compare --save`.
 
+Now we can adjust our tests to fit the new reality of our handler.
+
+[source,coffeescript]
+-----
+...
+
+getSecureHash = (body, secret) ->
+        hash = crypto.createHmac( 'sha1', secret ).update( "sha1=" + body ).digest('hex')
+        console.log "Hash: #{hash}"
+        hash
+
+exports.prHandler = ( robot, req, res ) ->
+        body = req.body
+        pr = JSON.parse body if body
+        url = pr.pull_request.url if pr
+        secureHash = getSecureHash( body, _SECRET ) if body
+        webhookProvidedHash = req.headers['HTTP_X_HUB_SIGNATURE' ] if req?.headers
+        secureCompare = require 'secure-compare'
+
+        if secureCompare( secureHash, webhookProvidedHash ) and url
+                room = "general"
+...
+-----
 
 
 ===== Responding to the PR Request
