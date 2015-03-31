@@ -30,7 +30,6 @@ describe "#probot", ->
                 res = undefined
 
                 json = '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }'
-
                 httpSpy = jasmine.createSpy( 'http' ).and.returnValue(
                         { get: () -> ( func ) ->
                                 func( undefined, undefined, json ) } )
@@ -53,7 +52,7 @@ describe "#probot", ->
                         done()
 
                 it "should disallow calls without the url", (done) ->
-                        req = { body: { secret: secret } }
+                        req = { body: '{ "pull_request" : { "url" : "http://pr/1" } }', headers: { 'HTTP_X_HUB_SIGNATURE' : "ABC" } }
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).not.toHaveBeenCalled()
                         expect( httpSpy ).not.toHaveBeenCalled()
@@ -61,7 +60,9 @@ describe "#probot", ->
                         done()
                         
                 it "should allow calls with the secret", (done) ->
-                        req = { body: { secret: secret, url: "http://pr/1" } }
+                        req = { body: '{ "pull_request" : { "url" : "http://pr/1" } }', headers: { 'HTTP_X_HUB_SIGNATURE' : "ABC" } }
+                        # req = { body: '{ "pull_request" : { "url" : "http://pr/1" } }' }
+                        # req = { body: { secret: secret, url: "http://pr/1" } }
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).toHaveBeenCalled()
                         expect( httpSpy ).toHaveBeenCalled()

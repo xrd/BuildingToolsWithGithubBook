@@ -951,9 +951,9 @@ test directory.
 [source,bash]
 ------
 # Modify these three variables
-AUTH_TOKEN=d71053e8d73ca9f6f59e6ffb4758e50093958894
+AUTH_TOKEN=b2ac1f43aeb8d73b69754d2fe337de7035ec9df7
 USERNAME=xrd
-REPOSTORY=testing_repostory
+REPOSITORY=test_repository
 
 DATE=$(date "+%s")
 NEW_BRANCH=$DATE
@@ -961,15 +961,17 @@ git checkout -b $NEW_BRANCH
 echo "Adding some content" >> test.txt
 git commit -m "Adding test file to test branch at $DATE" -a
 git push origin $NEW_BRANCH
-CONFIG=$(echo "{ "title": "PR on '$DATE'", "body" : "Pull this PR'$DATE'", "head": "'$NEW_BRANCH'", "base": "master" }')
-curl -H "Authorization: token $AUTH_TOKEN" -H "Content-Type: application/json" -X POST -d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/pulls
+CONFIG=$(echo '{ "title": "PR on '$DATE'", "body" : "Pull this PR'$DATE'", "head": "'$NEW_BRANCH'", "base": "master" }' )
+URL=https://api.github.com/repos/$USERNAME/$REPOSITORY/pulls
+curl -H "Authorization: token $AUTH_TOKEN" -H "Content-Type: application/json" -X POST -d "$CONFIG" "$URL"   
 ------
 
 This script generates a unique string based on the current time. It
 then creates and checks out a new branch based on that name, adds some
 content to a file, commits it, pushes it into GitHub, and generates a
-pull request using the API. All you will need to do is update the three
-variables at the top of the script to match your information. This
+pull request using the API. All you will need to do is make a one-time
+update to the three variables at the top of the script to match your
+information. This 
 script is resilient in that even if your auth token were incorrect (or
 had expired) this command will do nothing other than add testing data
 to your test repository, so you can experiement safely. Just be sure
@@ -1223,10 +1225,11 @@ PR? http://pr/1` (and the Slack client will format it as a clickable URL).
 Unfortunately, our tests are now broken, and we now have this failure: `TypeError:
 Object #<Object> has no method 'http'`. Our faked Robot object does
 not have the http interface that comes with Hubot, so we should add it
-to the tests. The method signature for the http client (which comes from the
-`node-scoped-http-client` NodeJS package) is hairy: you chain calls
-together to build up an HTTP client request and end up with a function
-returned into which you pass a callback where you handle the response
+to our mocked Robot so our tests pass. The method signature for the
+http client (which comes from the `node-scoped-http-client` NodeJS
+package) is hairy: you chain calls together to build up an HTTP client
+request and end up with a function returned into which you pass a
+callback where you handle the response 
 body. This module makes you write code that is not particularly
 testable (said another way, it was challenging for me to understand
 what the faked test implementation should look like), so we do our
@@ -1242,13 +1245,16 @@ parse the JSON for members, and then issue the PR request.
 
 [source,coffeescript]
 -----
+                json = '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }'
+
+                httpSpy = jasmine.createSpy( 'http' ).and.returnValue(
+                        { get: () -> ( func ) ->
+                                func( undefined, undefined, json ) } )
+                
                 beforeEach ->
                         robot = {
                                 messageRoom: jasmine.createSpy( 'messageRoom' )
-                                http: () -> { get: () ->
-                                        ( func ) ->
-                                                func( undefined, undefined,
-                                                        '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }' ) }
+                                http: httpSpy
                                 }
                                 
                         res = { send: jasmine.createSpy( 'send' ) }
@@ -1258,6 +1264,7 @@ parse the JSON for members, and then issue the PR request.
                         req = {}
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).not.toHaveBeenCalled()
+                        expect( httpSpy ).not.toHaveBeenCalled()
                         expect( res.send ).toHaveBeenCalled()
                         done()
 
@@ -1265,6 +1272,7 @@ parse the JSON for members, and then issue the PR request.
                         req = { body: { secret: secret } }
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).not.toHaveBeenCalled()
+                        expect( httpSpy ).not.toHaveBeenCalled()
                         expect( res.send ).toHaveBeenCalled()
                         done()
                         
@@ -1272,6 +1280,7 @@ parse the JSON for members, and then issue the PR request.
                         req = { body: { secret: secret, url: "http://pr/1" } }
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).toHaveBeenCalled()
+                        expect( httpSpy ).toHaveBeenCalled()
                         expect( res.send ).toHaveBeenCalled()
                         done()
 
@@ -1281,16 +1290,19 @@ parse the JSON for members, and then issue the PR request.
 
 The code we write here was definitely not a piece of code where
 testing came easy; I refactored this multiple times to find a balance
-between an easy to read test and  easy to read code. In the end, even
-though the test coverage was not 
-perfect (we are missing a spy on the `http` method or the `get` call)
-we got our initial tests to pass and added a third test which verifies
-the URL is present before issuing the call. The URL is passed in as
-request parameters; the real information will be passed in using a
-very different structure. GitHub generates a much larger JSON blob
-that it sends us, but because we have tests that cover the major paths
-inside our robot, we are in a good place to add this functionality and
-make sure other pieces still work.
+between an easy to read test and easy to read code. Writing test code
+takes effort, but when both your tests and code are readable and
+minimal, you generally can be sure you have a good implementation.
+We were able to get our initial tests to pass and added a third test
+which verifies the URL is present before issuing the call. Inside each
+test we verify whether the http method is called on the robot; we only
+want to see the http method invoked when the input 
+parameters are validated (the secret matches and the URL to post is
+present).  The URL is passed in as request parameters; the real
+information will be passed in using a very different structure. GitHub
+generates a much larger JSON blob that it sends us, but because we
+have tests that cover the major paths inside our robot, we are in a
+good place to add this functionality and make sure other pieces still work.
 
 [source,coffeescript]
 -----
@@ -1308,6 +1320,48 @@ exports.prHandler = ( robot, req, res ) ->
         res.send "OK\n"
 -----
 
+===== Sending PR Data via Webhook
+
+Our wiring is almost complete, so let's actually send real pull
+request information. If we run our script `issue-pull-request.sh` we
+will see it sending data out to our Probot. Once we have deployed to
+Heroku, our Probot is listening on a public hostname. GitHub will
+accept the pull request and then send a JSON inside the body of a POST
+request made to our Probot. This JSON looks very different from the
+url encoded parameters we provide in our cURL script, so we need to
+modify our code to fit.
+
+If we retrieve the JSON from a POST, it will look something like this
+(reformatted for clarity and brevity):
+
+[source,json]
+-------
+{ 
+    "action":"opened",
+    "number":13,
+    "pull_request": {
+      "locked" : false,
+      "comments_url" :
+      "https://api.github.com/repos/xrd/isagh/issues/13/comments",
+      "url" : "https://api.github.com/repos/xrd/isagh/pulls/13",
+      }
+      ...
+}
+-------
+
+Most importantly, you see a URL which we will use inside our Probot
+message to the user. Retrieving the json and parsing it is trivial
+inside our Probot:
+
+
+
+===== Securing the Webhook
+
+Our Probot is now in a position where it will operate correctly if the
+secret passes validation and the webhook data is passed properly. Now
+we need to secure the webhook. GitHub provides a way to assign a
+secret to the webhook which, you guessed it, we will retrieve and use
+inside our Probot. 
 
 ===== Responding to the PR Request
 
