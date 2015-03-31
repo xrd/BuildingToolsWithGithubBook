@@ -1229,6 +1229,21 @@ we need to secure the webhook. GitHub provides a way to assign a
 secret to the webhook which, you guessed it, we will retrieve and use
 inside our Probot. 
 
+We need to make some modifications to our PR handler code. First, we will need to
+retrieve the secure hash GitHub provides to use inside our
+headers. Then, we will need to calculate the hash ourselves using the
+secret we maintain internally. If these hashes match, then we know the
+incoming request and JSON is truly from GitHub and not an
+attacker. Our new code looks like this:
+
+[source,coffeescript]
+-----
+[language="json", sha="bf2141d:support/slacker-hubot/lib/handler.coffee", lines="15..26"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
 ===== Responding to the PR Request
 
 Now, we need to build 

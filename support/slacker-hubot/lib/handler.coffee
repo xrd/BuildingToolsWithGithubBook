@@ -14,16 +14,18 @@ sendPrRequest = ( robot, body, room, url ) ->
         robot.messageRoom room, "#{user}: Hey, want a PR? #{url}"
 
 getSecureHash = (body, secret) ->
-        crypto.createHmac('sha1', secret).update( "sha1=" + body ).digest('hex')
+        hash = crypto.createHmac( 'sha1', secret ).update( "sha1=" + body ).digest('hex')
+        console.log "Hash: #{hash}"
         #  return halt 500, "Signatures didn't match!" unless Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
 
 exports.prHandler = ( robot, req, res ) ->
         body = req.body
         pr = JSON.parse body if body
-        secureHash = getSecureHash( body, _SECRET )
-        url = pr.pull_request.url
+        url = pr.pull_request.url if pr
+        secureHash = getSecureHash( body, _SECRET ) if body
+        webhookProvidedHash = req.headers['HTTP_X_HUB_SIGNATURE' ] if req?.headers
         
-        if secureHash == req?.headers['HTTP_X_HUB_SIGNATURE' ]  and url
+        if secureHash == webhookProvidedHash and url
                 room = "general"
                 robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
                         .get() (err, response, body) ->

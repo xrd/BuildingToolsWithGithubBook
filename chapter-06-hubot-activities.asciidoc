@@ -1363,6 +1363,29 @@ we need to secure the webhook. GitHub provides a way to assign a
 secret to the webhook which, you guessed it, we will retrieve and use
 inside our Probot. 
 
+We need to make some modifications to our PR handler code. First, we will need to
+retrieve the secure hash GitHub provides to use inside our
+headers. Then, we will need to calculate the hash ourselves using the
+secret we maintain internally. If these hashes match, then we know the
+incoming request and JSON is truly from GitHub and not an
+attacker. Our new code looks like this:
+
+[source,coffeescript]
+-----
+exports.prHandler = ( robot, req, res ) ->
+        secret = req.body?.secret
+        url = req.body?.url
+
+        if secret == _SECRET and url
+                room = "general"
+                robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
+                        .get() (err, response, body) ->
+                                sendPrRequest( robot, body, room, url ) unless err
+        else
+                console.log "Invalid secret or no URL specified"
+        res.send "OK\n"
+-----
+
 ===== Responding to the PR Request
 
 Now, we need to build 
