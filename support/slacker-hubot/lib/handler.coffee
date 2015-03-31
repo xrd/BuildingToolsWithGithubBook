@@ -1,6 +1,7 @@
 _SECRET = undefined
 crypto = require 'crypto'
 
+
 anyoneButProbot = (members) ->
         user = undefined
         while not user
@@ -18,17 +19,15 @@ getSecureHash = (body, secret) ->
         console.log "Hash: #{hash}"
         hash
 
-        # secureHash = getSecureHash( body, _SECRET ) if body
-        # webhookProvidedHash = req.headers['HTTP_X_HUB_SIGNATURE' ] if req?.headers
-        # if secureHash == webhookProvidedHash and url        
-
 exports.prHandler = ( robot, req, res ) ->
         body = req.body
         pr = JSON.parse body if body
         url = pr.pull_request.url if pr
-        secret = pr.secret if pr
+        secureHash = getSecureHash( body, _SECRET ) if body
+        webhookProvidedHash = req.headers['HTTP_X_HUB_SIGNATURE' ] if req?.headers
+        secureCompare = require 'secure-compare'
 
-        if secret == _SECRET and url
+        if secureCompare( secureHash, webhookProvidedHash ) and url
                 room = "general"
                 robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
                         .get() (err, response, body) ->

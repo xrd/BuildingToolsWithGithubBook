@@ -1238,11 +1238,16 @@ Our tests are simple, and require that we send in JSON.
 [source,coffeescript]
 -----
 ...
-[language="coffeescript", sha="b93fe0c:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="47..-1"]
+[language="coffeescript", sha="6e326cc:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="47..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
+
+We are putting the secret inside the JSON as a convenience. The secret
+will not come in with the JSON when GitHub sends us JSON via the
+webhook, but this is an easy way to provide it to our handler for the
+moment. If we run our tests, they should pass now.
 
 ===== Securing the Webhook
 
@@ -1253,14 +1258,11 @@ secret to the webhook which, you guessed it, we will retrieve and use
 inside our Probot. 
 
 We need to make some modifications to our PR handler code. First, we will need to
-retrieve the secure hash GitHub provides to use inside our
-headers. Then, we will need to calculate the hash ourselves using the
+retrieve the secure hash GitHub provides inside the request
+headers. Then, we will need to calculate the hash ourselves using the 
 secret we maintain internally. If these hashes match, then we know the
 incoming request and JSON is truly from GitHub and not an
 attacker. 
-
-Our new code retrieves the body and then processes it as JSON. We
-extract the URL from the 
 
 [source,coffeescript]
 -----
@@ -1271,6 +1273,17 @@ To be replaced
 snippet~~~~~
 ...
 -----
+
+There is an attack vector when using HMAC cryptography which involves
+asking a user to compare a string and then using the time it took to
+make that comparison as a way to attack secure hashes. Different
+hashes, when using naive comparison operators like `==` provide
+information back to attackers. To eliminate this risk, we use a module
+called secure-compare that obscures this timing information when
+making a comparison. To load this module, we need to add it to our
+package file with the command `npm install secure-compare --save`.
+
+
 
 ===== Responding to the PR Request
 
