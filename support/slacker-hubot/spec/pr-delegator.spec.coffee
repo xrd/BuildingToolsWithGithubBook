@@ -53,7 +53,7 @@ describe "#probot", ->
                         done()
 
                 it "should allow calls with the secret and url", (done) ->
-                        req = { body: '{ "pull_request" : { "url" : "http://pr/1" }}', headers: { "HTTP_X_HUB_SIGNATURE" : "ENTER_HMAC_HASH" } }
+                        req = { body: '{ "pull_request" : { "url" : "http://pr/1" }}', headers: { "HTTP_X_HUB_SIGNATURE" : "cd970490d83c01b678fa9af55f3c7854b5d22918" } }
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).toHaveBeenCalled()
                         expect( httpSpy ).toHaveBeenCalled()

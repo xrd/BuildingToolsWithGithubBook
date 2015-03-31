@@ -1452,25 +1452,34 @@ Now we can adjust our tests to fit the new reality of our handler.
 [source,coffeescript]
 -----
 ...
+                it "should disallow calls without the secret and url", (done) ->
+                        req = {}
+                        Handler.prHandler( robot, req, res )
+                        expect( robot.messageRoom ).not.toHaveBeenCalled()
+                        expect( httpSpy ).not.toHaveBeenCalled()
+                        expect( res.send ).toHaveBeenCalled()
+                        done()
 
-getSecureHash = (body, secret) ->
-        hash = crypto.createHmac( 'sha1', secret ).update( "sha1=" + body ).digest('hex')
-        console.log "Hash: #{hash}"
-        hash
+                it "should allow calls with the secret and url", (done) ->
+                        req = { body: '{ "pull_request" : { "url" : "http://pr/1" }}', headers: { "HTTP_X_HUB_SIGNATURE" : "ENTER_HMAC_HASH" } }
+                        Handler.prHandler( robot, req, res )
+                        expect( robot.messageRoom ).toHaveBeenCalled()
+                        expect( httpSpy ).toHaveBeenCalled()
+                        expect( res.send ).toHaveBeenCalled()
+                        done()
 
-exports.prHandler = ( robot, req, res ) ->
-        body = req.body
-        pr = JSON.parse body if body
-        url = pr.pull_request.url if pr
-        secureHash = getSecureHash( body, _SECRET ) if body
-        webhookProvidedHash = req.headers['HTTP_X_HUB_SIGNATURE' ] if req?.headers
-        secureCompare = require 'secure-compare'
 
-        if secureCompare( secureHash, webhookProvidedHash ) and url
-                room = "general"
-...
+
 -----
 
+You'll notice we moved the secret out of the JSON and into the
+headers. This is where the GitHub webhook will encode the secure
+hash sing the HTTP_X_HUB_SIGNATURE key. Inside our test we will need
+to provide the same signature. We could duplicate our code from the
+handler, or we could just run our tests once, watch for the
+console.log output which says "Hash: H7612..." and copy this into our
+tests. If we do this, the test will pass. We'll leave this as an
+exercise to the reader.
 
 ===== Responding to the PR Request
 

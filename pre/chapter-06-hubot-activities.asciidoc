@@ -1288,13 +1288,20 @@ Now we can adjust our tests to fit the new reality of our handler.
 [source,coffeescript]
 -----
 ...
-[language="coffeescript", sha="f7884d9:support/slacker-hubot/lib/handler.coffee", lines="16..31"]
+[language="coffeescript", sha="37cd462:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="47..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
-...
 -----
 
+You'll notice we moved the secret out of the JSON and into the
+headers. This is where the GitHub webhook will encode the secure
+hash sing the HTTP_X_HUB_SIGNATURE key. Inside our test we will need
+to provide the same signature. We could duplicate our code from the
+handler, or we could just run our tests once, watch for the
+console.log output which says "Hash: H7612..." and copy this into our
+tests. If we do this, the test will pass. We'll leave this as an
+exercise to the reader.
 
 ===== Responding to the PR Request
 
