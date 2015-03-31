@@ -1351,7 +1351,7 @@ If we retrieve the JSON from a POST, it will look something like this
 
 Most importantly, you see a URL which we will use inside our Probot
 message to the user. Retrieving the json and parsing it is trivial
-inside our Probot, and requires a three line change.
+inside our Probot.
 
 [source,coffeescript]
 -----
@@ -1360,9 +1360,43 @@ exports.prHandler = ( robot, req, res ) ->
         body = req.body
         pr = JSON.parse body if body
         url = pr.pull_request.url if pr
-secret = pr.secret
+        secret = pr.secret if pr
+
+        if secret == _SECRET and url
+                room = "general"
+...
 -----
 
+Here you see we pull out the body contents, process them as JSON,
+extract the secret and the URL from the parsed JSON, and then go
+through our normal routine.
+
+Our tests are simple, and require that we send in JSON.
+
+[source,coffeescript]
+-----
+...
+                it "should disallow calls without the secret and url", (done) ->
+                        req = {}
+                        Handler.prHandler( robot, req, res )
+                        expect( robot.messageRoom ).not.toHaveBeenCalled()
+                        expect( httpSpy ).not.toHaveBeenCalled()
+                        expect( res.send ).toHaveBeenCalled()
+                        done()
+
+                it "should allow calls with the secret and url", (done) ->
+                        req = { body: '{ "pull_request" : { "url" : "http://pr/1" }, "secret": "ABCDEF" }' }
+                        # req = { body: '{ "pull_request" : { "url" : "http://pr/1" } }' }
+                        # req = { body: { secret: secret, url: "http://pr/1" } }
+                        Handler.prHandler( robot, req, res )
+                        expect( robot.messageRoom ).toHaveBeenCalled()
+                        expect( httpSpy ).toHaveBeenCalled()
+                        expect( res.send ).toHaveBeenCalled()
+                        done()
+
+
+
+-----
 
 ===== Securing the Webhook
 

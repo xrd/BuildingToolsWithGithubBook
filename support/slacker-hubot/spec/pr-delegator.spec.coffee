@@ -54,8 +54,6 @@ describe "#probot", ->
 
                 it "should allow calls with the secret and url", (done) ->
                         req = { body: '{ "pull_request" : { "url" : "http://pr/1" }, "secret": "ABCDEF" }' }
-                        # req = { body: '{ "pull_request" : { "url" : "http://pr/1" } }' }
-                        # req = { body: { secret: secret, url: "http://pr/1" } }
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).toHaveBeenCalled()
                         expect( httpSpy ).toHaveBeenCalled()

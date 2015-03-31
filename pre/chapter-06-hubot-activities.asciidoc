@@ -1217,18 +1217,32 @@ If we retrieve the JSON from a POST, it will look something like this
 
 Most importantly, you see a URL which we will use inside our Probot
 message to the user. Retrieving the json and parsing it is trivial
-inside our Probot, and requires a three line change.
+inside our Probot.
 
 [source,coffeescript]
 -----
 ...
-[language="coffeescript", sha="9b0f47c:support/slacker-hubot/lib/handler.coffee", lines="21..24"]
+[language="coffeescript", sha="b93fe0c:support/slacker-hubot/lib/handler.coffee", lines="25..32"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
-secret = pr.secret
+...
 -----
 
+Here you see we pull out the body contents, process them as JSON,
+extract the secret and the URL from the parsed JSON, and then go
+through our normal routine.
+
+Our tests are simple, and require that we send in JSON.
+
+[source,coffeescript]
+-----
+...
+[language="coffeescript", sha="b93fe0c:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="47..-1"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
 
 ===== Securing the Webhook
 
