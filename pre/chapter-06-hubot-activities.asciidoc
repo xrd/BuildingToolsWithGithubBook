@@ -1217,8 +1217,17 @@ If we retrieve the JSON from a POST, it will look something like this
 
 Most importantly, you see a URL which we will use inside our Probot
 message to the user. Retrieving the json and parsing it is trivial
-inside our Probot:
+inside our Probot, and requires a three line change.
 
+[source,coffeescript]
+-----
+...
+[language="coffeescript", sha="9b0f47c:support/slacker-hubot/lib/handler.coffee", lines="21..24"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+secret = pr.secret
+-----
 
 
 ===== Securing the Webhook
@@ -1234,14 +1243,19 @@ retrieve the secure hash GitHub provides to use inside our
 headers. Then, we will need to calculate the hash ourselves using the
 secret we maintain internally. If these hashes match, then we know the
 incoming request and JSON is truly from GitHub and not an
-attacker. Our new code looks like this:
+attacker. 
+
+Our new code retrieves the body and then processes it as JSON. We
+extract the URL from the 
 
 [source,coffeescript]
 -----
-[language="json", sha="bf2141d:support/slacker-hubot/lib/handler.coffee", lines="15..26"]
+...
+[language="coffeescript", sha="9b0f47c:support/slacker-hubot/lib/handler.coffee", lines="16..29"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
+...
 -----
 
 ===== Responding to the PR Request

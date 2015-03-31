@@ -16,7 +16,7 @@ sendPrRequest = ( robot, body, room, url ) ->
 getSecureHash = (body, secret) ->
         hash = crypto.createHmac( 'sha1', secret ).update( "sha1=" + body ).digest('hex')
         console.log "Hash: #{hash}"
-        #  return halt 500, "Signatures didn't match!" unless Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
+        hash
 
 exports.prHandler = ( robot, req, res ) ->
         body = req.body
