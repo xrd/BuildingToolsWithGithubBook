@@ -28,6 +28,7 @@ describe "#probot", ->
                 secret = "ABCDEF"
                 robot = undefined
                 res = undefined
+                # req = { body: '{ "pull_request" : { "url" : "http://pr/1" } }', headers: { 'HTTP_X_HUB_SIGNATURE' : "ABC" } }
 
                 json = '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }'
                 httpSpy = jasmine.createSpy( 'http' ).and.returnValue(
@@ -43,7 +44,7 @@ describe "#probot", ->
                         res = { send: jasmine.createSpy( 'send' ) }
                         Handler.setSecret secret
                 
-                it "should disallow calls without the secret", (done) ->
+                it "should disallow calls without the secret and url", (done) ->
                         req = {}
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).not.toHaveBeenCalled()
@@ -51,16 +52,8 @@ describe "#probot", ->
                         expect( res.send ).toHaveBeenCalled()
                         done()
 
-                it "should disallow calls without the url", (done) ->
-                        req = { body: '{ "pull_request" : { "url" : "http://pr/1" } }', headers: { 'HTTP_X_HUB_SIGNATURE' : "ABC" } }
-                        Handler.prHandler( robot, req, res )
-                        expect( robot.messageRoom ).not.toHaveBeenCalled()
-                        expect( httpSpy ).not.toHaveBeenCalled()
-                        expect( res.send ).toHaveBeenCalled()
-                        done()
-                        
-                it "should allow calls with the secret", (done) ->
-                        req = { body: '{ "pull_request" : { "url" : "http://pr/1" } }', headers: { 'HTTP_X_HUB_SIGNATURE' : "ABC" } }
+                it "should allow calls with the secret and url", (done) ->
+                        req = { body: '{ "pull_request" : { "url" : "http://pr/1" }, "secret": "ABCDEF" }' }
                         # req = { body: '{ "pull_request" : { "url" : "http://pr/1" } }' }
                         # req = { body: { secret: secret, url: "http://pr/1" } }
                         Handler.prHandler( robot, req, res )

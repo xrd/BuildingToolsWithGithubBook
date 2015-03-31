@@ -18,14 +18,17 @@ getSecureHash = (body, secret) ->
         console.log "Hash: #{hash}"
         hash
 
+        # secureHash = getSecureHash( body, _SECRET ) if body
+        # webhookProvidedHash = req.headers['HTTP_X_HUB_SIGNATURE' ] if req?.headers
+        # if secureHash == webhookProvidedHash and url        
+
 exports.prHandler = ( robot, req, res ) ->
         body = req.body
         pr = JSON.parse body if body
         url = pr.pull_request.url if pr
-        secureHash = getSecureHash( body, _SECRET ) if body
-        webhookProvidedHash = req.headers['HTTP_X_HUB_SIGNATURE' ] if req?.headers
-        
-        if secureHash == webhookProvidedHash and url
+        secret = pr.secret if pr
+
+        if secret == _SECRET and url
                 room = "general"
                 robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
                         .get() (err, response, body) ->
