@@ -13,7 +13,8 @@ why Git has been so widely adopted by developers around the world. Git
 (an open source project) grew out of necessity from another open
 source project, the Linux kernel. We'll trace the history of Git and
 why it was so important technologically and politically to the team
-working on the Linux kernel.
+working on the Linux kernel. By the end of this book, you'll know how
+to use the GitHub API and you know why it was built the way it is.
 
 ===  Git: a Sea Change for Software Development
 
@@ -35,18 +36,19 @@ tools like Git make it possible for anyone to take a project like
 Linux, fork it, and take it in whatever direction they prefer.  This
 distributed development is made possible by Git - a version control
 system which facilitates distributed development and places an
-emphasis on making merges between two separate forks easy.
+emphasis on making it easy to merge between two separate forks.
 
 The alternative is an approach that involves strict control of code and a
 rigorous approach to project planning and that model is clearly quite
 different than the ad-hoc, distributed approach to collaboration
 described above. If you read any MBA textbook from the past fifty
 years, however, you could not help but immediately question whether
-this could ever work. Yet, Linux is at the heart of most of the
-internet, and it powers the most popular mobile operating system in
-the world. Who's managing these developers?  How do they agree on
+this decentralized world could ever deliver reliable software. Yet,
+Linux is at the heart of most of the 
+internet, and it powers the most popular mobile operating system
+(Android) in the world. Who's managing these developers?  How do they agree on
 standards?  How could this team of strangers ever create quality
-software?  Despite these concerns it works very and Linux is empirical
+software? Despite these concerns it works somehow and Linux is empirical
 proof that distributed development and distributed version control
 provide the appropriate background for wide-scale, open-source
 collaboration. And, the people idealogically invested in the more
