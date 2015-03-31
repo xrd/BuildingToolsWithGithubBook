@@ -28,14 +28,17 @@ describe "#probot", ->
                 secret = "ABCDEF"
                 robot = undefined
                 res = undefined
+
+                json = '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }'
+
+                httpSpy = jasmine.createSpy( 'http' ).and.returnValue(
+                        { get: () -> ( func ) ->
+                                func( undefined, undefined, json ) } )
                 
                 beforeEach ->
                         robot = {
                                 messageRoom: jasmine.createSpy( 'messageRoom' )
-                                http: () -> { get: () ->
-                                        ( func ) ->
-                                                func( undefined, undefined,
-                                                        '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }' ) }
+                                http: httpSpy
                                 }
                                 
                         res = { send: jasmine.createSpy( 'send' ) }
@@ -45,6 +48,7 @@ describe "#probot", ->
                         req = {}
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).not.toHaveBeenCalled()
+                        expect( httpSpy ).not.toHaveBeenCalled()
                         expect( res.send ).toHaveBeenCalled()
                         done()
 
@@ -52,6 +56,7 @@ describe "#probot", ->
                         req = { body: { secret: secret } }
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).not.toHaveBeenCalled()
+                        expect( httpSpy ).not.toHaveBeenCalled()
                         expect( res.send ).toHaveBeenCalled()
                         done()
                         
@@ -59,6 +64,7 @@ describe "#probot", ->
                         req = { body: { secret: secret, url: "http://pr/1" } }
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).toHaveBeenCalled()
+                        expect( httpSpy ).toHaveBeenCalled()
                         expect( res.send ).toHaveBeenCalled()
                         done()
 

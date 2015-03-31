@@ -1185,21 +1185,22 @@ anyoneButProbot = (members) ->
                 user = undefined if "probot" == user
         user
 
+sendPrRequest = ( robot, body, room, url ) ->
+        parsed = JSON.parse( body )
+        user = anyoneButProbot( parsed.members )
+        robot.messageRoom room, "#{user}: Hey, want a PR? #{url}"
+
 exports.prHandler = ( robot, req, res ) ->
         secret = req.body?.secret
-        if secret == _SECRET
-                url = req.body?.url
-                room = "general"
+        url = req.body?.url
 
+        if secret == _SECRET and url
+                room = "general"
                 robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
                         .get() (err, response, body) ->
-                                unless err
-                                        parsed = JSON.parse( body )
-                                        user = anyoneButProbot( parsed.members )
-                                        robot.messageRoom room, "#{user}: Hey, want a PR? #{url}"
-
+                                sendPrRequest( robot, body, room, url ) unless err
         else
-                console.log "Invalid secret"
+                console.log "Invalid secret or no URL specified"
         res.send "OK\n"
 
 exports.setSecret = (secret) ->
@@ -1244,7 +1245,12 @@ parse the JSON for members, and then issue the PR request.
                 beforeEach ->
                         robot = {
                                 messageRoom: jasmine.createSpy( 'messageRoom' )
+                                http: () -> { get: () ->
+                                        ( func ) ->
+                                                func( undefined, undefined,
+                                                        '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }' ) }
                                 }
+                                
                         res = { send: jasmine.createSpy( 'send' ) }
                         Handler.setSecret secret
                 
@@ -1255,8 +1261,15 @@ parse the JSON for members, and then issue the PR request.
                         expect( res.send ).toHaveBeenCalled()
                         done()
 
-                it "should allow calls with the secret", (done) ->
+                it "should disallow calls without the url", (done) ->
                         req = { body: { secret: secret } }
+                        Handler.prHandler( robot, req, res )
+                        expect( robot.messageRoom ).not.toHaveBeenCalled()
+                        expect( res.send ).toHaveBeenCalled()
+                        done()
+                        
+                it "should allow calls with the secret", (done) ->
+                        req = { body: { secret: secret, url: "http://pr/1" } }
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).toHaveBeenCalled()
                         expect( res.send ).toHaveBeenCalled()
@@ -1266,9 +1279,10 @@ parse the JSON for members, and then issue the PR request.
 
 -----
 
-This was definitely not a piece of code where testing came easy; I refactored
-this multiple times to find a balance between an easy to read test and
-easy to read code. In the end, even though the test coverage was not
+The code we write here was definitely not a piece of code where
+testing came easy; I refactored this multiple times to find a balance
+between an easy to read test and  easy to read code. In the end, even
+though the test coverage was not 
 perfect (we are missing a spy on the `http` method or the `get` call)
 we got our initial tests to pass and added a third test which verifies
 the URL is present before issuing the call. The URL is passed in as

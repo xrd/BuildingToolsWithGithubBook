@@ -1113,7 +1113,7 @@ more characters to write out the explanation in English!
 
 [source,coffeescript]
 --------
-[language="json", sha="f200692:support/slacker-hubot/lib/handler.coffee"]
+[language="json", sha="f331955:support/slacker-hubot/lib/handler.coffee"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1153,15 +1153,16 @@ parse the JSON for members, and then issue the PR request.
 
 [source,coffeescript]
 -----
-[language="json", sha="91969de:support/slacker-hubot/spec/pr-delegator.spec.coffee" lines="32..-1"]
+[language="json", sha="f331955:support/slacker-hubot/spec/pr-delegator.spec.coffee" lines="32..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
-This was definitely not a piece of code where testing came easy; I refactored
-this multiple times to find a balance between an easy to read test and
-easy to read code. In the end, even though the test coverage was not
+The code we write here was definitely not a piece of code where
+testing came easy; I refactored this multiple times to find a balance
+between an easy to read test and  easy to read code. In the end, even
+though the test coverage was not 
 perfect (we are missing a spy on the `http` method or the `get` call)
 we got our initial tests to pass and added a third test which verifies
 the URL is present before issuing the call. The URL is passed in as
