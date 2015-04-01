@@ -7,6 +7,7 @@
 === Expedited
 
 
+
 Now that you know the basics of the GitHub API, let's build something
 interesting with it. GitHub offers libraries which work within other
 programming languages and frameworks, and other chapters discuss the
@@ -376,7 +377,7 @@ $ wget https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-mocks.js
 
 Then, create a file called `karma.config.js` and enter the following contents:
 
-[source,javascript karma.config.js]
+[source,javascript]
 -------
 module.exports = function(config) {
   config.set({

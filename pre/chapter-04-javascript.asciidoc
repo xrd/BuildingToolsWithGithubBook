@@ -377,7 +377,7 @@ $ wget https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-mocks.js
 
 Then, create a file called `karma.config.js` and enter the following contents:
 
-[source,javascript karma.config.js]
+[source,javascript]
 -------
 [filename=".", language="js", sha="2204ef0:support/js/karma.config.js"]
 snippet~~~~~
