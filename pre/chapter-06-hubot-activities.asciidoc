@@ -83,7 +83,7 @@ You've likely heard of DevOps, a term coined to recognize the
 convergence of tools and responsibilities held by modern software
 developers. More concretely, software developers no longer operate in
 silos isolated from operations people. Until recently developers
-would commit code and then hand that over to n operations team who
+would commit code and then hand that over to an operations team who
 would deploys it. For many cutting edge startups, there is an
 expectation when you are hired that developers excel at not only
 coding but at deployment as well.
@@ -130,7 +130,7 @@ conversational chat log; not anyone can parse SSH server logs. Though
 GitHub has many of the smartest people within the software world
 working for it, their tools are built for the lowest common denominator.
 
-==== Deficiencies and Limitations
+==== Limitations
 
 Hubot requires a server which hosts it and requires a chat endpoint on
 which the chat rooms are hosted. Hubot is written in NodeJS and
@@ -165,8 +165,8 @@ There are a few pitfalls to avoid when naming your Hubot. First, don't
 name your hubot the same as any of the adapters. More concretely,
 don't call this hubot "slack". And, all Slack chat sites come with
 their own helper hubot, which is named "slackbot" (you'll see it in
-your site). So, give our Hubot a unique name and call our Hubot
-"probot". The name is configured by the integration (on the Slack 
+your site). So, give our Hubot a unique name and call it "Probot". The
+name is configured by the integration (on the Slack  
 side) so you are not able to rename it with the command line switch
 `--name`. You can always change the name later if you feel the need.
 
