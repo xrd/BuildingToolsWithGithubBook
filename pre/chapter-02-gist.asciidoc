@@ -23,9 +23,8 @@ your team.
 
 === Complete
 
-
-
 === Expansive
+
 === Expedited
 
 GitHub "gists" are a place to share snippets of code. To create a gist, go to

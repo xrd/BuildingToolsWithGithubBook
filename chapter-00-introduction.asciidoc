@@ -1,6 +1,5 @@
 [[developer-api]]
 
-
 == GitHub
 
 This is a book about using the GitHub API. Before we investigate the
@@ -16,7 +15,7 @@ why it was so important technologically and politically to the team
 working on the Linux kernel. By the end of this book, you'll know how
 to use the GitHub API and you know why it was built the way it is.
 
-===  Git: a Sea Change for Software Development
+====  Git: a Sea Change for Software Development
 
 Some of biggest Open Source projects, such as the Linux kernel, have
 been using a decentralized approach to development for decades.  In

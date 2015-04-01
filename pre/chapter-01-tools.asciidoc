@@ -1,4 +1,3 @@
-
 == Tools
 
 To use this book, you will need familiarity with some tools that might
@@ -192,7 +191,7 @@ There are other languages presented which require different
 installation procedures, but these two are vital if you plan on
 writing code that integrates with GitHub.
 
-== Simple Access for Anyone on Any System
+=== Simple Access for Anyone on Any System
 
 There are many client libraries which wrap the GitHub API in an
 idiomatic tool. These client libraries make your life easier by
@@ -200,7 +199,7 @@ removing or limiting your exposure to the complexity of the GitHub
 API. But, often you want to quickly access information from the API
 without writing a program. This is where cURL becomes handy.
 
-=== API Overview via cURL
+==== API Overview via cURL
 
 The GitHub API is a set of REST services that speak JSON.  Some of
 these services are available anonymously without the need for
@@ -357,7 +356,6 @@ it easy to access these APIs, but they can hide information useful to
 debugging. cURL provides an alternative viewpoint to the GitHub API
 and the data it exposes, and no matter what client library you use,
 cURL is a great complementary tool.
-
 
 === GitHub API Access
 
