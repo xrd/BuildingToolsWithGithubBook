@@ -379,7 +379,7 @@ Then, create a file called `karma.config.js` and enter the following contents:
 
 [source,javascript]
 -------
-[filename=".", language="js", sha="2204ef0:support/js/karma.config.js"]
+[filename=".", language="js", sha="1d0ecba7a:support/js/karma.config.js.asciidocified"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
