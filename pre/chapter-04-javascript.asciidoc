@@ -369,21 +369,21 @@ Karma can easily be installed using NPM, which we document in the
 first chapter.
 
 [source,bash]
------
+-------
 $ npm install karma -g
 $ karma init karma.config.js
 $ wget https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-mocks.js
------
+-------
 
 Then, create a file called `karma.config.js` and enter the following contents:
 
 [source,javascript karma.config.js]
------
+-------
 [filename=".", language="js", sha="2204ef0:support/js/karma.config.js"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
------
+-------
 
 To write the test, let's clarify what we want our code to do:
 
@@ -1209,3 +1209,4 @@ allowing safe user contributions. We were able to completely ignore
 all the administrative features of a data entry system, delegating all
 these to GitHub. Our single page app allows us a single point of
 focus: making a cool and useful application.
+

@@ -7,7 +7,6 @@
 === Expedited
 
 
-
 Now that you know the basics of the GitHub API, let's build something
 interesting with it. GitHub offers libraries which work within other
 programming languages and frameworks, and other chapters discuss the
@@ -369,16 +368,16 @@ Karma can easily be installed using NPM, which we document in the
 first chapter.
 
 [source,bash]
------
+-------
 $ npm install karma -g
 $ karma init karma.config.js
 $ wget https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-mocks.js
------
+-------
 
 Then, create a file called `karma.config.js` and enter the following contents:
 
 [source,javascript karma.config.js]
------
+-------
 module.exports = function(config) {
   config.set({
     basePath: '',
@@ -401,7 +400,7 @@ module.exports = function(config) {
   });
 };
 
------
+-------
 
 To write the test, let's clarify what we want our code to do:
 
@@ -1756,3 +1755,4 @@ allowing safe user contributions. We were able to completely ignore
 all the administrative features of a data entry system, delegating all
 these to GitHub. Our single page app allows us a single point of
 focus: making a cool and useful application.
+
