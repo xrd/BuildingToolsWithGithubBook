@@ -4,7 +4,7 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
     files: [
         'angular.js',
-        [-x]'fixtures-*.js',
+        [x-]'fixtures-*.js',
         'angular-mocks.js',
         'firebase-mock.js',
         'github.js',
