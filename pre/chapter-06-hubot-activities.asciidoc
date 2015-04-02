@@ -714,7 +714,8 @@ If you are using two-factor authentication (and you should [CALLOUT TO
 
 If you see this, then you will be receiving a one time password via
 your choice of two factor authentication alternative endpoint (either
-SMS or a two factor authentication like Google Authenticator). If you
+SMS or a two factor authentication app like Google Authenticator or
+recovery codes that you printed out). If you
 use text messaging, check your text messages and then resend the
 request appending a header using cURL.
 
@@ -725,12 +726,12 @@ $ curl https://api.github.com/authorizations --user $USERNAME --data
 Enter host password for user 'xrd':
 ```
 
-Enter your password again.
+Enter your password again and you are done.
 
 ==== Using the oAuth token to register for events
 
 If you have completed these steps correctly (regardless of whether you
-are using 2-factor auth or not)	you will then receive an oauth token.
+are using 2-factor auth or not) you will then receive an oauth token.
                                                  
 ```  
 {
@@ -978,8 +979,8 @@ our webhook.
 
 image::images/hubot-recent-deliveries.png[]
 
-These requests all failed; our Probot is not correct wired
-to properly handle real HTTP requests from GitHub. But, this does show
+These requests all failed; our Probot is not correctly wired
+to handle real HTTP requests from GitHub. But, this does show
 that GitHub is trying to do something when a pull request is
 received. We'll work on getting our handler code working and then issue
 another PR. 
@@ -1001,12 +1002,21 @@ the describe syntax and call it "#pr". The new functionality is
 simple: if the Probot receives the proper parameters (most importantly
 that the internal secret matches the secret sent on the request) then
 we accept the PR as valid and message our room with further
-instructions. Our handler then needs to expose two methods:
+instructions, namely inviting some user to review this pull
+request. Our handler then needs to expose two methods: 
 `prHandler` which is where we delegate any information coming from an
 HTTP request to the `/pr` route, and a method where we can configure
 the secret, which we call `setSecret`. Once we have established this
 internal signature for our handler library, we can add two simple
 tests and then our library.
+
+We have two tests: one which handles the correct flow and one which
+handles the incorrect flow. In a before block (this happens before
+each test) we setup a fake robot, and set the secret on our handler
+module. Our faked robot implements the same methods that a real Hubot
+robot does (the "messageRoom" and "send" methods), but we create
+Jasmine spies to verify these functions are called inside our
+implementation code.
 
 [source,coffeescript]
 -----
@@ -1039,7 +1049,8 @@ respond to the calling server by using the `send` method (`send` is
 provided by the built in *express* server that Hubot uses to provide
 an HTTP server). For debugging purposes we output that the secret
 was validated, if it was in fact validated, but otherwise the behavior
-of our response to the calling client is the same. We don't want to
+of our response to the calling client is the same regardless of
+whether they provided a correct secret or not. We don't want to
 provide an attacker with anything extra if they pass in an incorrect secret.
 
 If we run our tests we will see them all pass:
@@ -1102,10 +1113,12 @@ request.
 Now that we have an incoming pull request (albeit one which we are
 faking), we can write the code to find a random user and assign them
 to the pull request. To find a user in the room, we unfortunately have
-to perform this action outside of the hubot API and use the Slack API
-directly. Fortunately, Hubot comes with a built in HTTP client, which
-works great for accessing information over HTTP. The Slack API returns
-the list of members in the room currently; we can look over this list
+to perform this action outside of the Hubot API and use the Slack API
+directly. Querying the Slack API provides a mount point for asking
+what users are currently in a room; surprisingly this is not something
+easy to get from Hubot. Fortunately, Hubot comes with a built in HTTP client, which
+works great for accessing information over HTTP. Once we have the the
+list of members in the room we can look over this list 
 and randomly choose a member and deliver the PR request to them. It
 takes surprisingly little code to do all of this: in a little more
 than 10 lines of CoffeeScript code we can retrieve a JSON response
@@ -1131,9 +1144,10 @@ $ curl --data 'secret=XYZABC&url=http://pr/1' http://localhost:8080/pr
 ------
 
 Our randomly selected user will see the text `username: Hey, want a
-PR? http://pr/1` (and the Slack client will format it as a clickable URL).
+PR? http://pr/1` (and the Slack client will format that link as a
+clickable URL). 
 
-Unfortunately, our tests are now broken, and we now have this failure: `TypeError:
+Unfortunately, our tests are now broken: we now have the failure: `TypeError:
 Object #<Object> has no method 'http'`. Our faked Robot object does
 not have the http interface that comes with Hubot, so we should add it
 to our mocked Robot so our tests pass. The method signature for the
@@ -1253,9 +1267,8 @@ moment. If we run our tests, they should pass now.
 
 Our Probot is now in a position where it will operate correctly if the
 secret passes validation and the webhook data is passed properly. Now
-we need to secure the webhook. GitHub provides a way to assign a
-secret to the webhook which, you guessed it, we will retrieve and use
-inside our Probot. 
+we need to secure the webhook. GitHub provides a way to sign the data
+inside the webhook payload. 
 
 We need to make some modifications to our PR handler code. First, we will need to
 retrieve the secure hash GitHub provides inside the request
@@ -1275,10 +1288,12 @@ snippet~~~~~
 -----
 
 There is an attack vector when using HMAC cryptography which involves
-asking a user to compare a string and then using the time it took to
-make that comparison as a way to attack secure hashes. Different
+asking a user to compare a string and then analyzing the time it took to
+make that comparison. In certain cases, you can use the different
+times to compare different strings as informtion useful in an
+attack. Said another way, different
 hashes, when using naive comparison operators like `==` provide
-information back to attackers. To eliminate this risk, we use a module
+attackers with valuable information. To eliminate this risk, we use a module
 called secure-compare that obscures this timing information when
 making a comparison. To load this module, we need to add it to our
 package.json manifest file with the command `npm install secure-compare --save`.
