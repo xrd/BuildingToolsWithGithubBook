@@ -1323,7 +1323,25 @@ pass.
 
 ===== Responding to the PR Request
 
-Now, we need to build 
+Our Probot is programmed to generate a pull request review message and
+send it to a random user. What happens when they respond? They can
+respond in two ways obviously: affirmatively and negatively. We put
+placeholders in our Probot extension to notify us with a debugging
+message when the user response, but now we can actually wire up
+handling the response and adding to the pull request on GitHub.
+
+There are multiple ways in which a Hubot can interact with chat room
+messages. We chose the `respond` method, but there is another method
+`listen` which we could have used. `respond` is used when the message
+is preceeded by the Hubot name, so only messages that look like
+`probot: accept` or `@probot decline` or `/ accept` (if the Hubot name alias is
+enabled) will be processed by our Probot. We could have used `listen`
+but in our case we are processing a simple single word response, and
+without a clear direction for the message, it would be difficult to
+always make sure we were interpreting the message in the correct
+context. `respond` makes more sense here.
+
+
 
 ===== Checking in on the review
 
