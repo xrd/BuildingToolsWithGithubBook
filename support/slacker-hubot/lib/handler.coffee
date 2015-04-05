@@ -1,6 +1,7 @@
 _SECRET = undefined
 crypto = require 'crypto'
-
+_API_TOKEN = undefined
+_GITHUB = undefined
 
 anyoneButProbot = (members) ->
         user = undefined
@@ -35,6 +36,26 @@ exports.prHandler = ( robot, req, res ) ->
         else
                 console.log "Invalid secret or no URL specified"
         res.send "OK\n"
+
+
+exports.accept = ( res ) ->
+
+        msg = { user: 'abc', repo: 'abc', number: 12345, "@foobar said he would do this one." }
+                
+        _GITHUB.issues.createComment msg, ( err, data ) ->
+                unless err
+                        res.reply "Thanks, you got it!"
+                else
+                        res.reply "Something went wrong"
+                
+exports.decline = ( res ) ->
+        res.reply "OK, I'll find someone else"
+        console.log "Declined!"
+
+exports.setApiToken = (github, token) ->
+        _API_TOKEN = token
+        _GITHUB = github.authenticate type: "oauth", token: token
+        _GITHUB
 
 exports.setSecret = (secret) ->
         _SECRET = secret

@@ -546,8 +546,9 @@ reviewer.
 
 Our script has a simple vocabulary: it needs to recognize responses
 accepting a review request, or those that decline. Our extension
-script should be in the `scripts` directory and named `pr-delegator.coffee`:
-	  
+script should be in the `scripts` directory and named
+`pr-delegator.coffee`:
+
 [source,json]
 -----
 module.exports = (robot) ->
@@ -1501,25 +1502,45 @@ pass.
 
 ===== Responding to the PR Request
 
-Our Probot is programmed to generate a pull request review message and
+Our Probot is now programmed to generate a pull request review message and
 send it to a random user. What happens when they respond? They can
-respond in two ways obviously: affirmatively and negatively. We put
-placeholders in our Probot extension to notify us with a debugging
-message when the user response, but now we can actually wire up
-handling the response and adding to the pull request on GitHub.
+respond in two ways obviously: accepting the request or declining the
+request. We put placeholders in our Probot extension to notify us with
+a debugging message when the user response and send a message back to
+whoever sent us a message, but now we can actually wire up handling
+the response and adding to the pull request on GitHub based on the
+user who we are interacting with (provided they accepted). If they
+decline the request, we should take additional action and ask someone
+else. 
 
 There are multiple ways in which a Hubot can interact with chat room
 messages. We chose the `respond` method, but there is another method
-`listen` which we could have used. `respond` is used when the message
+`hear` which we could have used. `respond` is used when the message
 is preceeded by the Hubot name, so only messages that look like
 `probot: accept` or `@probot decline` or `/ accept` (if the Hubot name alias is
-enabled) will be processed by our Probot. We could have used `listen`
+enabled) will be processed by our Probot. We could have used `hear`
 but in our case we are processing a simple single word response, and
 without a clear direction for the message, it would be difficult to
 always make sure we were interpreting the message in the correct
 context. `respond` makes more sense here.
 
+Let's modify our Probot handler to deal with accepting or declining
+responses (and change our extension file to deal with this new
+interface). Of course, we will need to add to our tests. Finally, we
+will need to set up a way to provide the GitHub API key to our Probot
+handler, so we'll add a method to do that that looks almost exactly
+like the one for setting our secret key.
 
+We'll use a GitHub API NodeJs module called `node-github`, found on
+GitHub at https://github.com/mikedeboer/node-github. If we look
+at the API documentation, we see that it supports authentication using
+an oAuth token (using the `github.authenticate( {  'type' : 'oauth':
+'token' : '...' }` syntax), and has methods we can use to add a comment to an
+issue or pull request associated with a repository (using the
+`github.issues.createComment` method). 
+
+Knowing that this module handles most of the work for us between these
+two methods, we can start by writing our tests. 
 
 ===== Checking in on the review
 
