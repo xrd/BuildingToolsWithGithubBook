@@ -77,7 +77,7 @@ describe "#probot", ->
                         it "if accepted, it should tag the PR on GitHub", (done) ->
                                 Handler.accept( responder )
                                 expect( authenticate ).toHaveBeenCalled()
-                                expect( createComment ).toHaveBeenCalled() # With( jasmine.any(String), jasmine.any(Function))
+                                expect( createComment ).toHaveBeenCalled() 
                                 expect( responder.reply ).toHaveBeenCalled()
                                 done()
 

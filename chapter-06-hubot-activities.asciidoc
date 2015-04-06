@@ -1540,7 +1540,65 @@ issue or pull request associated with a repository (using the
 `github.issues.createComment` method). 
 
 Knowing that this module handles most of the work for us between these
-two methods, we can start by writing our tests. 
+two methods, we can start by writing our tests. We'll create a new
+describe block called `#response` which groups our tests together. As
+we noted above, our Probot can take affirmative and negative
+responses, so our tests should reflect these two code paths. Our setup
+block (the `beforeEach` section) in both cases should do the same
+thing for each response, make the pull request invitation to a random user: this all
+happens inside our `prHandler` code. We don't need to verify the
+expectations of this method since we've got that covered in prior
+tests. After we get our handler to the right state, we need to test
+that the handler works correctly with an `accept` and `decline` method
+(they don't yet exist in our handler code so we'll add them
+next). Accepting triggers our Probot to contact GitHub and add a comment to the pull request noting
+our chat user accepted the request, and this is done using the GitHub
+API bindings. We want to make this testable, so we should pass in the
+GitHub binding object inside our interface, and during the test, pass
+in a mocked object. Declining the request means nothing happens. If we
+mock out our GitHub API binding, acceptance should login (using the
+`authenticate` method) and then call `createComment`. These are
+directly pulled from the GitHub API NodeJS documentation. Finally, we
+should let the chat room know what happened.
+
+[source,coffeescript]
+-------------
+                describe "#response", ->
+                        createComment = jasmine.createSpy( 'createComment' ).and.
+                                callFake( ( msg, cb ) -> cb( false, "some data" ) )
+                        issues = { createComment: createComment }
+                        authenticate = jasmine.createSpy( 'ghAuthenticate' )
+                        responder = { reply: jasmine.createSpy( 'reply' ) }
+
+                        beforeEach ->
+                                githubBinding = { authenticate: authenticate, issues: issues }
+                                github = Handler.setApiToken( githubBinding, "ABCDEF" )
+                                req = { body: '{ "pull_request" : { "url" : "http://pr/1" }}', headers: { "HTTP_X_HUB_SIGNATURE" : "cd970490d83c01b678fa9af55f3c7854b5d22918" } }
+                                Handler.prHandler( robot, req, res )
+
+
+                        it "if accepted, it should tag the PR on GitHub", (done) ->
+                                Handler.accept( responder )
+                                expect( authenticate ).toHaveBeenCalled()
+                                expect( createComment ).toHaveBeenCalled() # With( jasmine.any(String), jasmine.any(Function))
+                                expect( responder.reply ).toHaveBeenCalled()
+                                done()
+
+                        it "if declined, it should not tag the PR on GitHub, and should message someone else", (done) ->
+                                Handler.decline( responder )
+                                expect( authenticate ).toHaveBeenCalled()
+                                expect( createComment ).not.toHaveBeenCalledWith()
+                                expect( responder.reply ).toHaveBeenCalled()
+                                done()
+                                
+                                
+                                
+
+
+
+-------------
+
+Our delegator extension looks like this:
 
 
 

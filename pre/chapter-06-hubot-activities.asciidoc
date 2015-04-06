@@ -1362,7 +1362,36 @@ issue or pull request associated with a repository (using the
 `github.issues.createComment` method). 
 
 Knowing that this module handles most of the work for us between these
-two methods, we can start by writing our tests. 
+two methods, we can start by writing our tests. We'll create a new
+describe block called `#response` which groups our tests together. As
+we noted above, our Probot can take affirmative and negative
+responses, so our tests should reflect these two code paths. Our setup
+block (the `beforeEach` section) in both cases should do the same
+thing for each response, make the pull request invitation to a random user: this all
+happens inside our `prHandler` code. We don't need to verify the
+expectations of this method since we've got that covered in prior
+tests. After we get our handler to the right state, we need to test
+that the handler works correctly with an `accept` and `decline` method
+(they don't yet exist in our handler code so we'll add them
+next). Accepting triggers our Probot to contact GitHub and add a comment to the pull request noting
+our chat user accepted the request, and this is done using the GitHub
+API bindings. We want to make this testable, so we should pass in the
+GitHub binding object inside our interface, and during the test, pass
+in a mocked object. Declining the request means nothing happens. If we
+mock out our GitHub API binding, acceptance should login (using the
+`authenticate` method) and then call `createComment`. These are
+directly pulled from the GitHub API NodeJS documentation. Finally, we
+should let the chat room know what happened.
+
+[source,coffeescript]
+-------------
+[language="json", sha="950590f:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="63..-1"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-------------
+
+Our delegator extension looks like this:
 
 
 
