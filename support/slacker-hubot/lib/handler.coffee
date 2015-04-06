@@ -1,7 +1,6 @@
 _SECRET = undefined
 crypto = require 'crypto'
 _API_TOKEN = undefined
-_GITHUB = undefined
 
 anyoneButProbot = (members) ->
         user = undefined
@@ -37,6 +36,7 @@ exports.prHandler = ( robot, req, res ) ->
                 console.log "Invalid secret or no URL specified"
         res.send "OK\n"
 
+_GITHUB = undefined
 
 exports.accept = ( res ) ->
 
