@@ -54,7 +54,8 @@ exports.decline = ( res ) ->
 
 exports.setApiToken = (github, token) ->
         _API_TOKEN = token
-        _GITHUB = github.authenticate type: "oauth", token: token
+        _GITHUB = github
+        _GITHUB.authenticate type: "oauth", token: token
         _GITHUB
 
 exports.setSecret = (secret) ->

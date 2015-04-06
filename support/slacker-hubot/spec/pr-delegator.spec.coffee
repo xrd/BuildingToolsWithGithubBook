@@ -61,13 +61,14 @@ describe "#probot", ->
                         done()
 
                 describe "#response", ->
-                        createComment = jasmine.createSpy( 'createComment' ) 
-                        authenticate = jasmine.createSpy( 'ghAuthenticate' ).
-                                        and.returnValue( { issues: { createComment: createComment } } )
+                        createComment = jasmine.createSpy( 'createComment' ).and.
+                                callFake( ( msg, cb ) -> cb( false, "some data" ) )
+                        issues = { createComment: createComment }
+                        authenticate = jasmine.createSpy( 'ghAuthenticate' )
                         responder = { reply: jasmine.createSpy( 'reply' ) }
 
                         beforeEach ->
-                                githubBinding = { authenticate: authenticate }
+                                githubBinding = { authenticate: authenticate, issues: issues }
                                 github = Handler.setApiToken( githubBinding, "ABCDEF" )
                                 req = { body: '{ "pull_request" : { "url" : "http://pr/1" }}', headers: { "HTTP_X_HUB_SIGNATURE" : "cd970490d83c01b678fa9af55f3c7854b5d22918" } }
                                 Handler.prHandler( robot, req, res )
@@ -76,15 +77,15 @@ describe "#probot", ->
                         it "if accepted, it should tag the PR on GitHub", (done) ->
                                 Handler.accept( responder )
                                 expect( authenticate ).toHaveBeenCalled()
-                                expect( createComment ).toHaveBeenCalledWith( jasmine.any(String), jasmine.any(Function))
-                                expect( responder ).toHaveBeenCalled()
+                                expect( createComment ).toHaveBeenCalled() # With( jasmine.any(String), jasmine.any(Function))
+                                expect( responder.reply ).toHaveBeenCalled()
                                 done()
 
                         it "if declined, it should not tag the PR on GitHub, and should message someone else", (done) ->
                                 Handler.decline( responder )
                                 expect( authenticate ).toHaveBeenCalled()
                                 expect( createComment ).not.toHaveBeenCalledWith()
-                                expect( responder ).toHaveBeenCalled()
+                                expect( responder.reply ).toHaveBeenCalled()
                                 done()
                                 
                                 
