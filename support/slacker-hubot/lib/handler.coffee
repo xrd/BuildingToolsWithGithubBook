@@ -37,10 +37,15 @@ exports.prHandler = ( robot, req, res ) ->
         res.send "OK\n"
 
 _GITHUB = undefined
+_PR_URL = undefined
+
+exports.decodePullRequest = (url) ->
+                
 
 exports.accept = ( res ) ->
 
-        msg = { user: 'abc', repo: 'abc', number: 12345, "@foobar said he would do this one." }
+        msg = exports.decodePullRequest( _PR_URL )
+        msg.body = "@foobar said he would do this one."
                 
         _GITHUB.issues.createComment msg, ( err, data ) ->
                 unless err

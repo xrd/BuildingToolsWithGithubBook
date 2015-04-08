@@ -1369,38 +1369,161 @@ responses, so our tests should reflect these two code paths. Our setup
 block (the `beforeEach` section) in both cases should do the same
 thing for each response, make the pull request invitation to a random user: this all
 happens inside our `prHandler` code. We don't need to verify the
-expectations of this method since we've got that covered in prior
+expectations of this method since that got that covered by prior
 tests. After we get our handler to the right state, we need to test
 that the handler works correctly with an `accept` and `decline` method
 (they don't yet exist in our handler code so we'll add them
-next). Accepting triggers our Probot to contact GitHub and add a comment to the pull request noting
-our chat user accepted the request, and this is done using the GitHub
+next). 
+
+Our accept request handler has code which triggers our Probot to
+contact GitHub and add a comment to the pull request noting 
+our targetted chat user accepted the request, and this is done using the GitHub
 API bindings. We want to make this testable, so we should pass in the
 GitHub binding object inside our interface, and during the test, pass
-in a mocked object. Declining the request means nothing happens. If we
+in a mocked object. If we review the documentation for the
+`createComment` in the GitHub API binding, we see it requires
+information about the repository such as the user or organization
+which owns the repository, the repository name, the issue number (pull
+requests also are referenced by issue numbers) and the comment
+itself. To get this information we simply need to decode it from the
+Probot handler which receives the pull request information, and we
+will add code which does this (and is exposed in our handler for
+testing). We saw that a pull request comes in through a large JSON
+response, and we can use the URL we used earlier as the way we decode
+this information
+
+Declining the request means nothing happens. If we
 mock out our GitHub API binding, acceptance should login (using the
 `authenticate` method) and then call `createComment`. These are
 directly pulled from the GitHub API NodeJS documentation. Finally, we
-should let the chat room know what happened.
+should let the chat room know what happened which happens using the
+reply method on our response object.
 
 [source,coffeescript]
 -------------
+...
 [language="json", sha="db082dc:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="63..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -------------
 
-Our delegator extension looks like this:
+We add the following code to the end of our delegator extension that looks like this.
 
 [source,coffeescript]
 -------------
-[language="json", sha="db082dc:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="63..-1"]
+...
+[language="json", sha="7de796b:support/slacker-hubot/lib/handler.coffee", lines="39..-0"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -------------
 
+We added an internal variable called `_GITHUB` where we will store a
+reference to our instantiation of the GitHub API binding. Our
+interface to the `setApiToken` call passes in the instatiation; this
+method takes our oAuth token and the binding because we can pass in a
+mocked binding inside our tests. It then authenticates against the
+GitHub API. 
+
+Our top level extension script looks like this now.
+
+[source,coffeescript]
+-------------
+[language="json", sha="7de796b:support/slacker-hubot/scripts/pr-delegator.coffee"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-------------
+
+===== Peering into the Response object
+
+The `respond` method provided by the Hubot API is documented mostly by
+way of the example scripts which come with hubot. There is very little
+information on what the parameter passed to your callback looks
+like. How can we investigate this and determine useful information
+contained there?
+
+Node provides a module called `util` which has useful utility
+functions. One of them is `inspect` which will dig into an object and
+create a pretty printed view. If we use this module and `console.log`
+we can see the full contents of a live response object passed into our
+`accept` function. A line like the following `console.log( require(
+'util' ).inspect( res ) )` produces a lot of information that is more
+interesting to our slack adapter than to us. We abbreviate the full
+output here, and show you that it contains information on the 
+user who sent the message to our Probot. We can access this
+information by using `response.message.user.name` if, for example, we
+wanted to retrieve the name of the user.
+
+[source,json]
+-----
+{ robot: 
+   { name: 'probot',
+     events: { domain: null, _events: [Object], _maxListeners: 10 },
+     brain: 
+      { data: [Object],
+        autoSave: false,
+        saveInterval: [Object],
+        _events: [Object] },
+     alias: false,
+     adapter: 
+      { customMessage: [Function],
+        message: [Function],
+  ...
+  message: 
+   { user: 
+      { id: '...',
+        name: 'xrd',
+        real_name: 'Chris Dawson',
+        email_address: 'cdawson@webiphany.com',
+        room: 'xrd' },
+     text: 'probot accept',
+     rawText: 'accept',
+     rawMessage: 
+      { _client: [Object],
+        deleteMessage: [Function],
+        updateMessage: [Function],
+        type: 'message',
+        channel: 'D038PNUP6',
+        user: 'U030YMBJY',
+        text: 'accept',
+        ts: '1428436496.000012',
+        team: 'T030YMBJU' },
+     id: '1428436496.000012',
+     done: false,
+     room: 'xrd' },
+  match: [ 'probot accept', index: 0, input: 'probot accept' ],
+  envelope: 
+   { room: 'xrd',
+     user: 
+      { id: 'A59YBMZQ',
+        name: 'xrd',
+        real_name: 'Chris Dawson',
+        email_address: 'cdawson@webiphany.com',
+        room: 'xrd' },
+     message: 
+      { user: [Object],
+        text: 'probot accept',
+        rawText: 'accept',
+        rawMessage: [Object],
+        id: '1428436496.000012',
+        done: false,
+        room: 'xrd' } } }
+-----
+
+This is our response object printed out. There is lots here: the full
+set of information that our slack adapter organizes and uses
+internally. Inside it all we can find information we need,
+specifically the user name and email. With this information in hand,
+we can properly comment on the pull request.
+
+===== Comparing Slack usernames to GitHub usernames via the Organization API
+
+Well, almost. If the username is the same on Slack and GitHub, then we
+can simply use that. If they match exactly, let's assume they are the
+same identity. We can use the organization API to look that up. If we
+don't see 
 
 ===== Checking in on the review
 
