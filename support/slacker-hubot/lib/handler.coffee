@@ -40,28 +40,33 @@ _GITHUB = undefined
 _PR_URL = undefined
 
 exports.decodePullRequest = (url) ->
-                
+        console.log "Got a URL"
+        {}
+
+exports.getUsernameFromResponse = ( res ) ->
+        console.log "Got a username"
+        "hello"
 
 exports.accept = ( res ) ->
 
         msg = exports.decodePullRequest( _PR_URL )
-        msg.body = "@foobar said he would do this one."
+        username = exports.getUsernameFromResponse( res )
+        msg.body = "#{username} will review this (via Probot)."
                 
         _GITHUB.issues.createComment msg, ( err, data ) ->
                 unless err
-                        res.reply "Thanks, you got it!"
+                        res.reply "Thanks, I've noted that in a PR comment!"
                 else
-                        res.reply "Something went wrong"
+                        res.reply "Something went wrong, I could not tag you on the PR comment"
                 
 exports.decline = ( res ) ->
-        res.reply "OK, I'll find someone else"
+        res.reply "OK, I'll find someone else."
         console.log "Declined!"
 
 exports.setApiToken = (github, token) ->
         _API_TOKEN = token
         _GITHUB = github
         _GITHUB.authenticate type: "oauth", token: token
-        _GITHUB
 
 exports.setSecret = (secret) ->
         _SECRET = secret

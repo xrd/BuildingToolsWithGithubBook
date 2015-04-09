@@ -65,14 +65,14 @@ describe "#probot", ->
                                 callFake( ( msg, cb ) -> cb( false, "some data" ) )
                         issues = { createComment: createComment }
                         authenticate = jasmine.createSpy( 'ghAuthenticate' )
-                        responder = { reply: jasmine.createSpy( 'reply' ) }
+                        responder = { reply: jasmine.createSpy( 'reply' ),
+                        send: jasmine.createSpy( 'send' ) }
 
                         beforeEach ->
                                 githubBinding = { authenticate: authenticate, issues: issues }
                                 github = Handler.setApiToken( githubBinding, "ABCDEF" )
                                 req = { body: '{ "pull_request" : { "url" : "http://pr/1" }}', headers: { "HTTP_X_HUB_SIGNATURE" : "cd970490d83c01b678fa9af55f3c7854b5d22918" } }
-                                Handler.prHandler( robot, req, res )
-
+                                Handler.prHandler( robot, req, responder )
 
                         it "if accepted, it should tag the PR on GitHub", (done) ->
                                 Handler.accept( responder )

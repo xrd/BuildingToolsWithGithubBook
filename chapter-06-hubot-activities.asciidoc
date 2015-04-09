@@ -1574,8 +1574,8 @@ Declining the request means nothing happens. If we
 mock out our GitHub API binding, acceptance should login (using the
 `authenticate` method) and then call `createComment`. These are
 directly pulled from the GitHub API NodeJS documentation. Finally, we
-should let the chat room know what happened which happens using the
-reply method on our response object.
+should record the result of this operation inside the chat room which
+happens using the reply method on our response object.
 
 [source,coffeescript]
 -------------
@@ -1648,10 +1648,10 @@ exports.setSecret = (secret) ->
 
 We added an internal variable called `_GITHUB` where we will store a
 reference to our instantiation of the GitHub API binding. Our
-interface to the `setApiToken` call passes in the instatiation; this
-method takes our oAuth token and the binding because we can pass in a
-mocked binding inside our tests. It then authenticates against the
-GitHub API. 
+interface to the `setApiToken` call passes in the instantiation; this
+method takes our oAuth token and the binding because using an
+interface like this means we can pass in a mocked binding inside our
+tests. This call then authenticates against the GitHub API. 
 
 Our top level extension script looks like this now.
 
@@ -1681,8 +1681,9 @@ information on what the parameter passed to your callback looks
 like. How can we investigate this and determine useful information
 contained there?
 
-Node provides a module called `util` which has useful utility
-functions. One of them is `inspect` which will dig into an object and
+NodeJS has a standard library module called `util` which includes
+useful utility functions, as you might expect from the name.
+One of them is `inspect` which will dig into an object and
 create a pretty printed view. If we use this module and `console.log`
 we can see the full contents of a live response object passed into our
 `accept` function. A line like the following `console.log( require(
@@ -1722,11 +1723,11 @@ wanted to retrieve the name of the user.
         deleteMessage: [Function],
         updateMessage: [Function],
         type: 'message',
-        channel: 'D038PNUP6',
-        user: 'U030YMBJY',
+        channel: 'D038PNPU6t',
+        user: '030YMBJYU',
         text: 'accept',
         ts: '1428436496.000012',
-        team: 'T030YMBJU' },
+        team: '0T03MYBJU' },
      id: '1428436496.000012',
      done: false,
      room: 'xrd' },
@@ -1734,7 +1735,7 @@ wanted to retrieve the name of the user.
   envelope: 
    { room: 'xrd',
      user: 
-      { id: 'A59YBMZQ',
+      { id: '5AY9MBQZ',
         name: 'xrd',
         real_name: 'Chris Dawson',
         email_address: 'cdawson@webiphany.com',
@@ -1749,18 +1750,37 @@ wanted to retrieve the name of the user.
         room: 'xrd' } } }
 -----
 
-This is our response object printed out. There is lots here: the full
-set of information that our slack adapter organizes and uses
-internally. Inside it all we can find information we need,
+Inside it all we can find information we need,
 specifically the user name and email. With this information in hand,
-we can properly comment on the pull request.
+we can properly comment on the pull request. Well, almost.
 
-===== Comparing Slack usernames to GitHub usernames via the Organization API
+===== Unifying Usernames via the Collaborators API
 
-Well, almost. If the username is the same on Slack and GitHub, then we
-can simply use that. If they match exactly, let's assume they are the
-same identity. We can use the organization API to look that up. If we
-don't see 
+If the Slack username for the person who accepted the pull request is an
+exact match with their GitHub username, then we can assume they are
+the same person in real life and create a comment inside the pull
+request reminding them (and anyone else) that they will be reviewing
+the PR. We can use the collaborator sub section of the Repository API
+to look up their name on GitHub. 
+
+If we don't find them inside the list of users and there is not an
+exact match with their Slack name then we have at least one problem,
+maybe two. First, we could just have a mismatch in their identities
+(their usernames are different on each site). If this is the case, we
+could ask them to clarify this inside the slack room. We do have
+another case: the user is not a collaborator on the repository. If
+this is the case, clarifying their username is not going to help. The
+Repository API does support adding a user to the list of collaborators
+so we could do that here, but this arguably is a moment where a larger
+discussion should happen (write access to a repository is a big
+resposibility in a way that being inside a chat room is not). Adding a
+user as a repository collaborator should not be automated inside a chat
+room. Because of the complexity here, we will write code to unify a
+username inside the chat room, but we won't handle the case where
+there is no clarification to be made because they are not in the
+repository collaborator list.
+
+
 
 ===== Checking in on the review
 
