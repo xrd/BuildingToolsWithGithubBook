@@ -1435,7 +1435,7 @@ nice to have coverage of our expectations represented in our tests.
 [source,coffeescript]
 -------------
 ...
-[language="json", sha="89acb2463591c:support/slacker-hubot/lib/handler.coffee", lines="39..-0"]
+[language="json", sha="d6087db:support/slacker-hubot/lib/handler.coffee", lines="39..-0"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1462,7 +1462,9 @@ snippet~~~~~
 
 ===== Peering into the Response object
 
-The `respond` method provided by the Hubot API is documented mostly by
+We need to get the username and it stands to reason the object passed
+to us when we get a respond callback might have it in there. The
+`respond` method provided by the Hubot API is documented mostly by 
 way of the example scripts which come with hubot. There is very little
 information on what the parameter passed to your callback looks
 like. How can we investigate this and determine useful information

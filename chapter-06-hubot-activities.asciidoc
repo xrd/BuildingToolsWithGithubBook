@@ -1656,12 +1656,17 @@ _GITHUB = undefined
 _PR_URL = undefined
 
 exports.decodePullRequest = (url) ->
-        console.log "Got a URL"
-        {}
+        rv = {}
+        if url
+                chunks = url.split "/"
+                if chunks.length == 7
+                        rv.user = chunks[3]
+                        rv.repository = chunks[4]
+                        rv.number = chunks[6]
+        rv
 
 exports.getUsernameFromResponse = ( res ) ->
-        console.log "Got a username"
-        "hello"
+        "username"
 
 exports.accept = ( res ) ->
 
@@ -1719,7 +1724,9 @@ module.exports = (robot) ->
 
 ===== Peering into the Response object
 
-The `respond` method provided by the Hubot API is documented mostly by
+We need to get the username and it stands to reason the object passed
+to us when we get a respond callback might have it in there. The
+`respond` method provided by the Hubot API is documented mostly by 
 way of the example scripts which come with hubot. There is very little
 information on what the parameter passed to your callback looks
 like. How can we investigate this and determine useful information
