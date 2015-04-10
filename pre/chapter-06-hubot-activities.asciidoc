@@ -1268,15 +1268,14 @@ moment. If we run our tests, they should pass now.
 
 Our Probot is now in a position where it will operate correctly if the
 secret passes validation and the webhook data is passed properly. Now
-we need to secure the webhook. GitHub provides a way to sign the data
-inside the webhook payload. 
-
-We need to make some modifications to our PR handler code. First, we will need to
-retrieve the secure hash GitHub provides inside the request
-headers. Then, we will need to calculate the hash ourselves using the 
-secret we maintain internally. If these hashes match, then we know the
-incoming request and JSON is truly from GitHub and not an
-attacker. 
+we need to secure the webhook. GitHub signs your data inside the
+webhook payload which provides you with a way to verify the data
+really came from an authorized host. We need to decode it inside our
+handler. To do this, we will need to retrieve the secure hash GitHub
+provides inside the request headers. Then, we will need to calculate
+the hash ourselves using the secret we maintain internally. If these
+hashes match, then we know the incoming request and JSON is truly from
+GitHub and not an attacker. 
 
 [source,coffeescript]
 -----
@@ -1288,14 +1287,13 @@ snippet~~~~~
 ...
 -----
 
-There is an attack vector when using HMAC cryptography which involves
-asking a user to compare a string and then analyzing the time it took to
-make that comparison. In certain cases, you can use the different
-times to compare different strings as informtion useful in an
-attack. Said another way, different
-hashes, when using naive comparison operators like `==` provide
-attackers with valuable information. To eliminate this risk, we use a module
-called secure-compare that obscures this timing information when
+HMAC cryptography is vulnerable to timing attacks. When you use this
+encryption technique, the time it takes to complete a comparison of
+the computed hash and the sent hash can be used by an attacker to gain
+forced access to a server. More specifically to JavaScript, when using
+naive comparison operators like `==` you can accidentally provide
+attackers with valuable information. To eliminate this risk, we use a
+module called secure-compare that obscures this timing information when
 making a comparison. To load this module, we need to add it to our
 package.json manifest file with the command `npm install secure-compare --save`.
 
@@ -1328,7 +1326,7 @@ Our Probot is now programmed to generate a pull request review message and
 send it to a random user. What happens when they respond? They can
 respond in two ways obviously: accepting the request or declining the
 request. We put placeholders in our Probot extension to notify us with
-a debugging message when the user response and send a message back to
+a debugging message when the user responds and send a message back to
 whoever sent us a message, but now we can actually wire up handling
 the response and adding to the pull request on GitHub based on the
 user who we are interacting with (provided they accepted). If they
@@ -1377,8 +1375,9 @@ next).
 
 Our accept request handler has code which triggers our Probot to
 contact GitHub and add a comment to the pull request noting 
-our targetted chat user accepted the request, and this is done using the GitHub
-API bindings. We want to make this testable, so we should pass in the
+our targetted chat user accepted the request, and the network
+connection to the GitHub API is done through the GitHub API bindings
+on the `node-github` module. We want to make this testable, so we should pass in the
 GitHub binding object inside our interface, and during the test, pass
 in a mocked object. If we review the documentation for the
 `createComment` in the GitHub API binding, we see it requires
@@ -1390,7 +1389,14 @@ Probot handler which receives the pull request information, and we
 will add code which does this (and is exposed in our handler for
 testing). We saw that a pull request comes in through a large JSON
 response, and we can use the URL we used earlier as the way we decode
-this information
+this information. So, we'll need to have two more tests inside our
+`#response` block, one for the decoding of the URL into a message
+object, and another to retrieve the username which we insert into the
+comment stored in the pull request on the repository. We know what our
+test URL looks like since we saw it in our PR webhook message, but we
+don't yet have the structure of the chat message from which we can
+pull out our username, so our test will need to be adjusted when we
+know what it really looks like.
 
 Declining the request means nothing happens. If we
 mock out our GitHub API binding, acceptance should login (using the
@@ -1413,7 +1419,7 @@ We add the following code to the end of our delegator extension that looks like 
 [source,coffeescript]
 -------------
 ...
-[language="json", sha="7de796b:support/slacker-hubot/lib/handler.coffee", lines="39..-0"]
+[language="json", sha="89acb2463591c:support/slacker-hubot/lib/handler.coffee", lines="39..-0"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1424,7 +1430,9 @@ reference to our instantiation of the GitHub API binding. Our
 interface to the `setApiToken` call passes in the instantiation; this
 method takes our oAuth token and the binding because using an
 interface like this means we can pass in a mocked binding inside our
-tests. This call then authenticates against the GitHub API. 
+tests. When we are not running inside a test, this method call
+authenticates against the GitHub API, readying the API binding to make
+connections to the GitHub API itself.
 
 Our top level extension script looks like this now.
 

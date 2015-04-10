@@ -74,22 +74,32 @@ describe "#probot", ->
                                 req = { body: '{ "pull_request" : { "url" : "http://pr/1" }}', headers: { "HTTP_X_HUB_SIGNATURE" : "cd970490d83c01b678fa9af55f3c7854b5d22918" } }
                                 Handler.prHandler( robot, req, responder )
 
-                        it "if accepted, it should tag the PR on GitHub", (done) ->
+                        it "should tag the PR on GitHub if the user accepts", (done) ->
                                 Handler.accept( responder )
                                 expect( authenticate ).toHaveBeenCalled()
                                 expect( createComment ).toHaveBeenCalled() 
                                 expect( responder.reply ).toHaveBeenCalled()
                                 done()
 
-                        it "if declined, it should not tag the PR on GitHub, and should message someone else", (done) ->
+                        it "should not tag the PR on GitHub if the user declines", (done) ->
                                 Handler.decline( responder )
                                 expect( authenticate ).toHaveBeenCalled()
                                 expect( createComment ).not.toHaveBeenCalledWith()
                                 expect( responder.reply ).toHaveBeenCalled()
                                 done()
+
+                        it "should decode the URL into a proper message object for the createMessage call", (done) ->
+                                url = "https://github.com/xrd/testing_repository/pull/1"
+                                msg = Handler.decodePullRequest( url )
+                                expect( msg.user ).toEqual( "xrd" )
+                                expect( msg.repository ).toEqual( "testing_repository" )
+                                expect( msg.number ).toEqual( "1" )
+                                done()
                                 
-                                
-                                
+                        it "should get the username from the response object", (done) ->
+                                res = { username: { name: "Chris Dawson" } }
+                                expect( Handler.getUsernameFromResponse( res ) ).toEqual "Chris Dawson"
+                                done()
 
 
 
