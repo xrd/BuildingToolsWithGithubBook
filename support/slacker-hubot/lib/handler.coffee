@@ -40,12 +40,17 @@ _GITHUB = undefined
 _PR_URL = undefined
 
 exports.decodePullRequest = (url) ->
-        console.log "Got a URL"
-        {}
+        rv = {}
+        if url
+                chunks = url.split "/"
+                if chunks.length == 7
+                        rv.user = chunks[3]
+                        rv.repository = chunks[4]
+                        rv.number = chunks[6]
+        rv
 
 exports.getUsernameFromResponse = ( res ) ->
-        console.log "Got a username"
-        "hello"
+        "username"
 
 exports.accept = ( res ) ->
 

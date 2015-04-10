@@ -1408,13 +1408,29 @@ happens using the reply method on our response object.
 [source,coffeescript]
 -------------
 ...
-[language="json", sha="db082dc:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="63..-1"]
+[language="json", sha="4d5a1a0:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="63..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -------------
 
-We add the following code to the end of our delegator extension that looks like this.
+Our tests will fail if we run them now. So, let's write the code at
+the end of our delegator extension. We need code which parses the URL into the
+appropriate structured message object, code to put the reminder into
+the pull request comment on GitHub and code which pulls the user out
+of the response object passed to us. The first two of these are within
+reach; basic JavaScript and reading the GitHub API
+binding documentation will get us to these two. The third one requires a
+little more investigation, so we will leave this as a placeholder for now.
+
+To convert the URL into the object necessary for the `createMessage`
+call, we just need to split the message into pieces by the slash
+character, and then retrieve the correct items by index. We probably
+could add some additional tests which cover passing in empty strings,
+or other edge cases, but we'll leave it as an exercise to the reader
+(or you can review the final test cases on the associated GitHub
+project page). Our code does not crash in these cases, but it would be
+nice to have coverage of our expectations represented in our tests.
 
 [source,coffeescript]
 -------------
@@ -1425,7 +1441,7 @@ To be replaced
 snippet~~~~~
 -------------
 
-We added an internal variable called `_GITHUB` where we will store a
+To summarize, we added an internal variable called `_GITHUB` where we will store a
 reference to our instantiation of the GitHub API binding. Our
 interface to the `setApiToken` call passes in the instantiation; this
 method takes our oAuth token and the binding because using an
