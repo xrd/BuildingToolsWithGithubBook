@@ -1,1 +1,20 @@
-= Search
+== Search
+
+=== What can it do?
+
+=== Our example application
+==== User flow
+==== Requirements
+
+=== Python
+==== Essential libraries
+- https://github.com/jpaugh/agithub
+- http://www.wxpython.org/
+- https://github.com/pyinstaller/pyinstaller
+
+=== The Code
+==== The window
+==== GitHub Search
+==== Results
+
+=== Summary
