@@ -56,7 +56,7 @@ exports.accept = ( res ) ->
 
         msg = exports.decodePullRequest( _PR_URL )
         username = exports.getUsernameFromResponse( res )
-        msg.body = "#{username} will review this (via Probot)."
+        msg.body = "@#{username} will review this (via Probot)."
                 
         _GITHUB.issues.createComment msg, ( err, data ) ->
                 unless err
