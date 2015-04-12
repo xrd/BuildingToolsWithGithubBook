@@ -1435,7 +1435,7 @@ nice to have coverage of our expectations represented in our tests.
 [source,coffeescript]
 -------------
 ...
-[language="json", sha="d6087db:support/slacker-hubot/lib/handler.coffee", lines="39..-0"]
+[language="json", sha="98ef835:support/slacker-hubot/lib/handler.coffee", lines="39..-0"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
