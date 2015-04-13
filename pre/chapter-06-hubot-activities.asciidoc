@@ -1454,7 +1454,7 @@ Our top level extension script looks like this now.
 
 [source,coffeescript]
 -------------
-[language="json", sha="7de796b:support/slacker-hubot/scripts/pr-delegator.coffee"]
+[language="json", sha="eeaff6b:support/slacker-hubot/scripts/pr-delegator.coffee"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1568,6 +1568,22 @@ room. Because of the complexity here, we will write code to unify a
 username inside the chat room, but we won't handle the case where
 there is no clarification to be made because they are not in the
 repository collaborator list.
+
+So, let's grab the list of users from our room using the GitHub API
+binding we passed into our `setApiToken` call. The API binding
+provides a method called `getCollaborators` inside the `repos`
+namespace which we can use to retrieve the collaborators. It takes as
+the first parameter a 
+message which is used to specify the repository and owner, and then a
+callback when the request has completed. This message takes a page
+option and a page size, which can be used if the number of
+collaborators numbers more than 100. To reduce complexity in our
+sample code, we are only going to retrieve the first 100 and not deal
+with paging. Our code should retrieve the list of collaborators on the
+repository, and then when the list is returned, assure the username on
+GitHub and inside Slack are the same. If these conditions are met,
+then our Probot should tag the pull request with a comment confirming
+and message the room.
 
 
 

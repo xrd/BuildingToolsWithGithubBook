@@ -50,19 +50,30 @@ exports.decodePullRequest = (url) ->
         rv
 
 exports.getUsernameFromResponse = ( res ) ->
-        "username"
+        res.message.user.name
+
+exports.usernameMatchesGitHubUsernames = ( name, collaborators ) ->
+        rv = false
+        for collaborator in collaborators
+                if collaborator.username == name
+                        rv = true
+        rv
 
 exports.accept = ( res ) ->
 
         msg = exports.decodePullRequest( _PR_URL )
         username = exports.getUsernameFromResponse( res )
-        msg.body = "@#{username} will review this (via Probot)."
+
+        _GITHUB.repos.getCollaborators msg, ( err, collaborators ) ->
+                if exports.usernameMatchesGitHubUsernames( username, collaborators )
                 
-        _GITHUB.issues.createComment msg, ( err, data ) ->
-                unless err
-                        res.reply "Thanks, I've noted that in a PR comment!"
-                else
-                        res.reply "Something went wrong, I could not tag you on the PR comment"
+                        msg.body = "@#{username} will review this (via Probot)."
+                
+                        _GITHUB.issues.createComment msg, ( err, data ) ->
+                                unless err
+                                        res.reply "Thanks, I've noted that in a PR comment!"
+                                else
+                                        res.reply "Something went wrong, I could not tag you on the PR comment"
                 
 exports.decline = ( res ) ->
         res.reply "OK, I'll find someone else."

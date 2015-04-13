@@ -65,11 +65,13 @@ describe "#probot", ->
                                 callFake( ( msg, cb ) -> cb( false, "some data" ) )
                         issues = { createComment: createComment }
                         authenticate = jasmine.createSpy( 'ghAuthenticate' )
+                        repos = jasmine.createSpy( 'getCollaborators' ).and.
+                                callFake( ( msg, cb ) -> cb( false, collaborators ) )
                         responder = { reply: jasmine.createSpy( 'reply' ),
                         send: jasmine.createSpy( 'send' ) }
 
                         beforeEach ->
-                                githubBinding = { authenticate: authenticate, issues: issues }
+                                githubBinding = { authenticate: authenticate, issues: issues, repos: repos }
                                 github = Handler.setApiToken( githubBinding, "ABCDEF" )
                                 req = { body: '{ "pull_request" : { "url" : "http://pr/1" }}', headers: { "HTTP_X_HUB_SIGNATURE" : "cd970490d83c01b678fa9af55f3c7854b5d22918" } }
                                 Handler.prHandler( robot, req, responder )
@@ -97,7 +99,7 @@ describe "#probot", ->
                                 done()
                                 
                         it "should get the username from the response object", (done) ->
-                                res = { username: { name: "Chris Dawson" } }
+                                res = { message: { user: { name: "Chris Dawson" } } }
                                 expect( Handler.getUsernameFromResponse( res ) ).toEqual "Chris Dawson"
                                 done()
 
