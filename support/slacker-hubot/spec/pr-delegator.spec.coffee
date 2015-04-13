@@ -65,10 +65,13 @@ describe "#probot", ->
                                 callFake( ( msg, cb ) -> cb( false, "some data" ) )
                         issues = { createComment: createComment }
                         authenticate = jasmine.createSpy( 'ghAuthenticate' )
-                        repos = jasmine.createSpy( 'getCollaborators' ).and.
-                                callFake( ( msg, cb ) -> cb( false, collaborators ) )
                         responder = { reply: jasmine.createSpy( 'reply' ),
-                        send: jasmine.createSpy( 'send' ) }
+                        send: jasmine.createSpy( 'send' ),
+                        message: { user: { name: "Chris Dawson" } } }
+                        collaborators = [ { username: "Chris Dawson" }, { username: "Ben Straub" } ]
+                        getCollaborators = jasmine.createSpy( 'getCollaborators' ).and.
+                                callFake( ( msg, cb ) -> cb( false, collaborators ) )
+                        repos = { getCollaborators: getCollaborators }
 
                         beforeEach ->
                                 githubBinding = { authenticate: authenticate, issues: issues, repos: repos }
@@ -81,6 +84,7 @@ describe "#probot", ->
                                 expect( authenticate ).toHaveBeenCalled()
                                 expect( createComment ).toHaveBeenCalled() 
                                 expect( responder.reply ).toHaveBeenCalled()
+                                expect( repos.getCollaborators ).toHaveBeenCalled()
                                 done()
 
                         it "should not tag the PR on GitHub if the user declines", (done) ->
@@ -99,8 +103,7 @@ describe "#probot", ->
                                 done()
                                 
                         it "should get the username from the response object", (done) ->
-                                res = { message: { user: { name: "Chris Dawson" } } }
-                                expect( Handler.getUsernameFromResponse( res ) ).toEqual "Chris Dawson"
+                                expect( Handler.getUsernameFromResponse( responder ) ).toEqual "Chris Dawson"
                                 done()
 
 
