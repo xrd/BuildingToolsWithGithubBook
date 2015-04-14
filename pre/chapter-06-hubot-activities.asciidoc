@@ -774,7 +774,8 @@ $ CONFIG=$(echo '{
   ],
   "config": {
     "url": "'$WEBHOOK_URL'",
-    "content_type": "json"
+    "content_type": "form",
+    "secret" : "XYZABC"
   }
 }')
 $ curl -H "Authorization: token $TOKEN" -H "Content-Type: application/json" -X POST -d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/hooks
@@ -813,19 +814,26 @@ middle. If you want to see the result of that variable, type `echo
 $CONFIG` and you'll notice the snippet `... "url":
 "https://inqry-chatbot.herokuapp.com/pr" ...` properly interpolated.
 
-Here we use the heroku api URL as our webhook endpoint. Unfortunately, we
-cannot operate our Probot purely in local mode when we start
-integration with GitHub as GitHub cannot talk to our laptop inside a
-LAN, but review the Go chapter for an easy way to simulate this using
-ngrok.
+Here we use the heroku api URL as our webhook endpoint. This means we
+need to have things hosted on Heroku for the webhook to talk to our
+HTTP server properly. We can do some things (like connecting the Probot to
+the Slack service) from behind a firewall and have it talk with other
+chat room participants, but any webhook request will fail unless the
+chat client is running on a publicly available server.
+
+Be careful to make sure you use the `content_type` set to "form" (which
+is the default, so you could leave it blank). Setting this to `json` will
+make it difficult to retrieve the body inside your Probot when the
+post request is received.
 
 We will need to make sure all requests are real requests from GitHub
 and not a cracker attempting to maliciously inject themselves into our
 conversations. To protect from this possible situation, we verify each
-request back into GitHub by using the client id and secret generated
-when we created the webhook. A cracker might be able to guess about
-where our endpoint exists, but unless Heroku or GitHub is compromised,
-they won't know our webhook secret.
+request back into GitHub by using the secret generated
+when we created the webhook. We'll discuss this in detail later in this
+chapter, but for now, establish a secret when you create the hook. A
+cracker might be able to guess about where our endpoint exists, but
+unless Heroku or GitHub is compromised, they won't know our webhook secret.
 
 We should update our tests to make sure we anticipate this new
 functionality. We will be using the Hubot HTTP server, which
@@ -1266,6 +1274,8 @@ moment. If we run our tests, they should pass now.
 
 ===== Securing the Webhook
 
+DOH, MAKE SURE THE SECRET IS NOT STORED INSIDE THE FILE. USE PROCESS.ENV
+
 Our Probot is now in a position where it will operate correctly if the
 secret passes validation and the webhook data is passed properly. Now
 we need to secure the webhook. GitHub signs your data inside the
@@ -1621,7 +1631,35 @@ following the same patterns of generating spies to watch methods, and
 implementing our fake callbacks when necessary. We also can move our
 message inside the response object into the one created in our setup
 block so that we can use it inside all of our sub-tests, rather than
-creating a new object for each test inside the test body.
+creating a new object for each test inside the test body. We also
+create some fake collaborator data which we return using our faked
+callback for the response from the `getCollaborators` call. We will
+need to adjust this when we see what the real data looks like, but for
+now this matches our handler code and creates a clear recorded
+expectation of what we need and that we will be handling this data in
+a certain way.
+
+[source,coffeescript]
+-------------
+...
+[language="json", sha="3172087:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="71..89"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-------------
+
+Our handler then can implement the three methods.
+
+[source,coffeescript]
+-------------
+...
+[language="json", sha="3172087:support/slacker-hubot/lib/handler.coffee", lines="51..77"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-------------
 
 
 
