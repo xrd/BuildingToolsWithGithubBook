@@ -1,24 +1,24 @@
 #!/usr/bin/env python
 
-import wx
+import wx, subprocess, os, shlex
 from agithub import Github
 
-g = None
+# Change this to use an Enterprise installation
+GITHUB_HOST = 'github.com'
 
 class LoginPanel(wx.Panel):
     def __init__(self, *args, **kwargs):
+        self.callback = kwargs.pop('onlogin', None)
         wx.Panel.__init__(self, *args, **kwargs)
         sizer = wx.GridBagSizer(3,3)
 
         self.userLabel = wx.StaticText(self, label='Username:')
         self.userBox = wx.TextCtrl(self)
         self.passLabel = wx.StaticText(self, label='Password (or token):')
-        self.passBox = wx.TextCtrl(self, style=wx.TE_PASSWORD)
+        self.passBox = wx.TextCtrl(self)#, style=wx.TE_PASSWORD)
         self.login = wx.Button(self, label='Login')
-        def doLogin(x):
-            self.doLogin()
         self.Bind(wx.EVT_BUTTON, lambda x: self.doLogin(), self.login)
-        
+
         self.error = wx.StaticText(self, label='')
         self.error.SetForegroundColour((200,0,0))
 
@@ -39,36 +39,84 @@ class LoginPanel(wx.Panel):
         self.SetSizerAndFit(sizer)
 
     def doLogin(self):
-        global g
-        g = Github(self.userBox.GetValue(), self.passBox.GetValue())
+        u = self.userBox.GetValue()
+        p = self.passBox.GetValue()
+        g = Github(u, p)
         status,data = g.issues.get()
         if status != 200:
             self.error.SetLabel('ERROR: ' + data['message'])
         else:
-            print('what now?')
+            if callable(self.callback):
+                self.callback(u, p)
 
+class SearchPanel(wx.Panel):
+    def __init__(self, *args, **kwargs):
+        wx.Panel.__init__(self, *args, **kwargs)
+        wx.StaticText(self, label='Got it!')
 
 class SearchFrame(wx.Frame):
     def __init__(self, *args, **kwargs):
+        self.panel = None
+        
         kwargs.setdefault('size', (600,500))
         wx.Frame.__init__(self, *args, **kwargs)
+
+        self.credentials = {}
+        self.sizer = wx.BoxSizer(wx.VERTICAL)
+        self.SetSizer(self.sizer)
 
         # Set up a menu
         filemenu = wx.Menu()
         menuOpen = filemenu.Append(wx.ID_OPEN, '&Open')
-        menuAbout = filemenu.Append(wx.ID_ABOUT, '&About')
+        # menuAbout = filemenu.Append(wx.ID_ABOUT, '&About')
         menuExit = filemenu.Append(wx.ID_EXIT, '&Exit')
         menuBar = wx.MenuBar()
         menuBar.Append(filemenu, '&File')
         self.SetMenuBar(menuBar)
 
-        p = LoginPanel(self)
+        self.loadCredentials()
+        if 'username' in self.credentials and 'password' in self.credentials:
+            self.setPanel(SearchPanel(self))
+        else:
+            self.setPanel(LoginPanel(self, onlogin=self.login))
 
         self.Show()
 
-        
-import wx.lib.sized_controls as sized_ctrls
+    def setPanel(self, panel):
+        if self.panel:
+            self.sizer.Remove(self.panel)
+            self.panel.Destroy()
+        self.sizer.Add(panel, 0, wx.EXPAND)
+        self.panel = panel
 
-app = wx.App(False)
-SearchFrame(None)
-app.MainLoop()
+    def login(self, username, password):
+        self.credentials['username'] = username
+        self.credentials['password'] = password
+        self.setPanel(SearchPanel(self))
+
+    def loadCredentials(self):
+        env = os.environ
+        env['GIT_ASKPASS'] = 'true'
+        p = subprocess.Popen(['git', 'credential', 'fill'],
+                             stdout=subprocess.PIPE,
+                             stdin=subprocess.PIPE,
+                             stderr=subprocess.PIPE)
+        stdout,stderr = p.communicate('host=github.com\n\n')
+        for line in stdout.split('\n'):
+            try:
+                k,v = line.split('=')
+                self.credentials[k] = v
+            except ValueError:
+                return
+
+        # Test out the credentials
+        g = Github(self.credentials['username'], self.credentials['password'])
+        status,data = g.issues.get()
+        if status != 200:
+            print('bad credentials in store')
+            self.credentials = {}
+
+if __name__ == '__main__':
+    app = wx.App(False)
+    SearchFrame(None)
+    app.MainLoop()
