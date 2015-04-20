@@ -2,6 +2,7 @@
 
 import wx, subprocess, os
 from agithub import Github
+from config import credentials
 
 # Change this to use an Enterprise installation
 GITHUB_HOST = 'github.com'
@@ -78,8 +79,8 @@ class SearchFrame(wx.Frame):
         self.sizer.Hide(self.search_panel)
 
         # Try to pre-load credentials from Git's cache
-        self.loadCredentials()
-        if 'username' in self.credentials and 'password' in self.credentials:
+        self.credentials = credentials()
+        if self.testCredentials():
             self.switchToSearchPanel()
 
         self.SetSizer(self.sizer)
@@ -95,27 +96,15 @@ class SearchFrame(wx.Frame):
         self.credentials['password'] = password
         self.switchToSearchPanel()
 
-    def loadCredentials(self):
-        env = os.environ
-        env['GIT_ASKPASS'] = 'true'
-        p = subprocess.Popen(['git', 'credential', 'fill'],
-                             stdout=subprocess.PIPE,
-                             stdin=subprocess.PIPE,
-                             stderr=subprocess.PIPE)
-        stdout,stderr = p.communicate('host=github.com\n\n')
-        for line in stdout.split('\n'):
-            try:
-                k,v = line.split('=')
-                self.credentials[k] = v
-            except ValueError:
-                return
-
-        # Test out the credentials
+    def testCredentials(self):
+        if 'username' not in self.credentials or 'password' not in self.credentials:
+            return False
         g = Github(self.credentials['username'], self.credentials['password'])
         status,data = g.issues.get()
         if status != 200:
             print('bad credentials in store')
-            self.credentials = {}
+            return False
+        return True
 
 if __name__ == '__main__':
     app = wx.App(False)
