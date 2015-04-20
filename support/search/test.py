@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import wx, subprocess, os, shlex
+import wx, subprocess, os
 from agithub import Github
 
 # Change this to use an Enterprise installation
@@ -15,7 +15,7 @@ class LoginPanel(wx.Panel):
         self.userLabel = wx.StaticText(self, label='Username:')
         self.userBox = wx.TextCtrl(self)
         self.passLabel = wx.StaticText(self, label='Password (or token):')
-        self.passBox = wx.TextCtrl(self)#, style=wx.TE_PASSWORD)
+        self.passBox = wx.TextCtrl(self) #, style=wx.TE_PASSWORD)
         self.login = wx.Button(self, label='Login')
         self.Bind(wx.EVT_BUTTON, lambda x: self.doLogin(), self.login)
 
@@ -45,14 +45,13 @@ class LoginPanel(wx.Panel):
         status,data = g.issues.get()
         if status != 200:
             self.error.SetLabel('ERROR: ' + data['message'])
-        else:
-            if callable(self.callback):
-                self.callback(u, p)
+        elif callable(self.callback):
+            self.callback(u, p)
 
 class SearchPanel(wx.Panel):
     def __init__(self, *args, **kwargs):
         wx.Panel.__init__(self, *args, **kwargs)
-        wx.StaticText(self, label='Got it!')
+        wx.StaticText(self, label='search panel')
 
 class SearchFrame(wx.Frame):
     def __init__(self, *args, **kwargs):
@@ -63,36 +62,38 @@ class SearchFrame(wx.Frame):
 
         self.credentials = {}
         self.sizer = wx.BoxSizer(wx.VERTICAL)
-        self.SetSizer(self.sizer)
 
-        # Set up a menu
+        # Set up a menu. We only need the "exit" item
         filemenu = wx.Menu()
-        menuOpen = filemenu.Append(wx.ID_OPEN, '&Open')
-        # menuAbout = filemenu.Append(wx.ID_ABOUT, '&About')
-        menuExit = filemenu.Append(wx.ID_EXIT, '&Exit')
+        filemenu.Append(wx.ID_EXIT, '&Exit')
         menuBar = wx.MenuBar()
         menuBar.Append(filemenu, '&File')
         self.SetMenuBar(menuBar)
 
+        # Two client panels
+        self.login_panel = LoginPanel(self, onlogin=lambda u,p: self.login(u, p))
+        self.sizer.Add(self.login_panel, flag=wx.EXPAND | wx.ALL, border=20)
+        self.search_panel = SearchPanel(self)
+        self.sizer.Add(self.search_panel, flag=wx.EXPAND | wx.ALL, border=20)
+        self.sizer.Hide(self.search_panel)
+
+        # Try to pre-load credentials from Git's cache
         self.loadCredentials()
         if 'username' in self.credentials and 'password' in self.credentials:
-            self.setPanel(SearchPanel(self))
-        else:
-            self.setPanel(LoginPanel(self, onlogin=self.login))
+            self.switchToSearchPanel()
 
+        self.SetSizer(self.sizer)
         self.Show()
 
-    def setPanel(self, panel):
-        if self.panel:
-            self.sizer.Remove(self.panel)
-            self.panel.Destroy()
-        self.sizer.Add(panel, 0, wx.EXPAND)
-        self.panel = panel
+    def switchToSearchPanel(self):
+        self.sizer.Hide(self.login_panel)
+        self.sizer.Show(self.search_panel)
+        self.Layout()
 
     def login(self, username, password):
         self.credentials['username'] = username
         self.credentials['password'] = password
-        self.setPanel(SearchPanel(self))
+        self.switchToSearchPanel()
 
     def loadCredentials(self):
         env = os.environ
