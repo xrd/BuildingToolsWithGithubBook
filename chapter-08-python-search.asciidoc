@@ -1,0 +1,23 @@
+== Search
+
+=== What can it do?
+
+=== Our example application
+==== User flow
+==== Requirements
+
+=== Python
+==== Essential libraries
+- https://github.com/jpaugh/agithub (GitHub API helper)
+- http://www.wxpython.org/ (GUI toolkit)
+
+=== The Code
+==== Windowing and interface
+==== GitHub login
+==== GitHub search
+==== Displaying results
+
+=== Packaging
+- Use PyInstaller to package as a `.app` bundle
+
+=== Summary
