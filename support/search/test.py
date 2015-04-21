@@ -16,7 +16,7 @@ class LoginPanel(wx.Panel):
         self.userLabel = wx.StaticText(self, label='Username:')
         self.userBox = wx.TextCtrl(self)
         self.passLabel = wx.StaticText(self, label='Password (or token):')
-        self.passBox = wx.TextCtrl(self) #, style=wx.TE_PASSWORD)
+        self.passBox = wx.TextCtrl(self, style=wx.TE_PASSWORD)
         self.login = wx.Button(self, label='Login')
         self.Bind(wx.EVT_BUTTON, lambda x: self.doLogin(), self.login)
 
@@ -49,10 +49,50 @@ class LoginPanel(wx.Panel):
         elif callable(self.callback):
             self.callback(u, p)
 
+class SearchResult(wx.Panel):
+    def __init__(self, *args, **kwargs):
+        titlestr = kwargs.pop('title', None)
+        textstr = kwargs.pop('text', None)
+        callback = kwargs.pop('onclick', None)
+        wx.Panel.__init__(self, *args, **kwargs)
+
+        if callable(callback):
+            self.Bind(wx.EVT_LEFT_UP, callback)
+
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        title = wx.StaticText(self, label=titlestr)
+        titleFont = wx.Font(16, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        title.SetFont(titleFont)
+        text = wx.StaticText(self, label=textstr)
+
+        vbox.Add(title, flag=wx.EXPAND | wx.BOTTOM, border=2)
+        vbox.Add(text, flag=wx.EXPAND)
+
+        self.SetSizerAndFit(vbox)
+
 class SearchPanel(wx.Panel):
     def __init__(self, *args, **kwargs):
         wx.Panel.__init__(self, *args, **kwargs)
-        wx.StaticText(self, label='search panel')
+
+        searchTerm = wx.TextCtrl(self)
+        searchButton = wx.Button(self, label="Search")
+
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        grid = wx.GridBagSizer(1,2)
+        grid.Add(searchTerm, pos=(0,0), flag=wx.EXPAND)
+        grid.Add(searchButton, pos=(0,1), flag=wx.EXPAND | wx.LEFT, border=5)
+        grid.AddGrowableCol(0)
+        vbox.Add(grid, flag=wx.EXPAND)
+
+        from pprint import pprint
+        callback = lambda x: pprint(x)
+        vbox.Add(SearchResult(self, title='Title', text='Text text text', onclick = callback),
+                 flag=wx.BOTTOM | wx.TOP, border=10)
+        vbox.Add(SearchResult(self, title='Title', text='Text text text', onclick = callback),
+                 flag=wx.BOTTOM | wx.TOP, border=10)
+
+        self.SetSizerAndFit(vbox)
+
 
 class SearchFrame(wx.Frame):
     def __init__(self, *args, **kwargs):
@@ -94,7 +134,8 @@ class SearchFrame(wx.Frame):
     def login(self, username, password):
         self.credentials['username'] = username
         self.credentials['password'] = password
-        self.switchToSearchPanel()
+        if self.testCredentials():
+            self.switchToSearchPanel()
 
     def testCredentials(self):
         if 'username' not in self.credentials or 'password' not in self.credentials:
