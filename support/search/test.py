@@ -3,6 +3,7 @@
 import wx, subprocess, os
 from agithub import Github
 from config import credentials
+from collections import defaultdict
 
 # Change this to use an Enterprise installation
 GITHUB_HOST = 'github.com'
@@ -51,47 +52,72 @@ class LoginPanel(wx.Panel):
 
 class SearchResult(wx.Panel):
     def __init__(self, *args, **kwargs):
-        titlestr = kwargs.pop('title', None)
-        textstr = kwargs.pop('text', None)
-        callback = kwargs.pop('onclick', None)
+        result = kwargs.pop('result', defaultdict(str))
+        self.callback = kwargs.pop('onclick', None)
         wx.Panel.__init__(self, *args, **kwargs)
 
-        if callable(callback):
-            self.Bind(wx.EVT_LEFT_UP, callback)
+        self.Bind(wx.EVT_LEFT_UP, self.OnClick)
+
+        titlestr = result['title']
+        textstr = result['body'] or u''
+        print(titlestr, textstr)
 
         vbox = wx.BoxSizer(wx.VERTICAL)
         title = wx.StaticText(self, label=titlestr)
         titleFont = wx.Font(16, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         title.SetFont(titleFont)
-        text = wx.StaticText(self, label=textstr)
+        text = wx.StaticText(self, label=textstr, style=wx.ST_ELLIPSIZE_END)
 
         vbox.Add(title, flag=wx.EXPAND | wx.BOTTOM, border=2)
         vbox.Add(text, flag=wx.EXPAND)
 
         self.SetSizerAndFit(vbox)
 
+    def OnClick(self, event):
+        if callable(self.callback):
+            self.callback(event)
+
 class SearchPanel(wx.Panel):
     def __init__(self, *args, **kwargs):
         wx.Panel.__init__(self, *args, **kwargs)
 
-        searchTerm = wx.TextCtrl(self)
+        self.results = []
+        self.searchTerm = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
         searchButton = wx.Button(self, label="Search")
 
-        vbox = wx.BoxSizer(wx.VERTICAL)
+        searchButton.Bind(wx.EVT_BUTTON, self.DoSearch)
+        self.searchTerm.Bind(wx.EVT_TEXT_ENTER, self.DoSearch)
+
+        self.vbox = wx.BoxSizer(wx.VERTICAL)
         grid = wx.GridBagSizer(1,2)
-        grid.Add(searchTerm, pos=(0,0), flag=wx.EXPAND)
+        grid.Add(self.searchTerm, pos=(0,0), flag=wx.EXPAND)
         grid.Add(searchButton, pos=(0,1), flag=wx.EXPAND | wx.LEFT, border=5)
         grid.AddGrowableCol(0)
-        vbox.Add(grid, flag=wx.EXPAND)
+        self.vbox.Add(grid, flag=wx.EXPAND)
 
+        self.SetSizer(self.vbox)
+
+    def clearResults(self):
+        for r in self.results:
+            self.RemoveChild(r)
+            r.Destroy()
+        self.results = []
+        self.vbox.Layout()
+
+    def addResults(self, results):
+        for r in results:
+            sr = SearchResult(self, result=r)
+            self.vbox.Add(sr)
+            self.results.append(sr)
+        self.vbox.Layout()
+
+    def DoSearch(self, event):
+        self.clearResults()
+        term = self.searchTerm.GetValue()
+        g = Github(self.Parent.credentials['username'], self.Parent.credentials['password'])
         from pprint import pprint
-        callback = lambda x: pprint(x)
-        vbox.Add(SearchResult(self, title='Title', text='Text text text', onclick = callback),
-                 flag=wx.BOTTOM | wx.TOP, border=10)
-        vbox.Add(SearchResult(self, title='Title', text='Text text text', onclick = callback),
-                 flag=wx.BOTTOM | wx.TOP, border=10)
-
-        self.SetSizerAndFit(vbox)
+        code,result = g.search.issues.get(q=term)
+        self.addResults(result['items'])
 
 
 class SearchFrame(wx.Frame):
@@ -104,7 +130,7 @@ class SearchFrame(wx.Frame):
         self.credentials = {}
         self.sizer = wx.BoxSizer(wx.VERTICAL)
 
-        # Set up a menu. We only need the "exit" item
+        # Set up a menu. This is mainly for "Cmd-Q" behavior on OSX
         filemenu = wx.Menu()
         filemenu.Append(wx.ID_EXIT, '&Exit')
         menuBar = wx.MenuBar()
