@@ -531,6 +531,11 @@ randomly selecting developers involved in a project is a better (and
 more efficient) way to review code than asking the developer who
 created the code to determine these people.
 
+* Announcing what I'm working on. It's easy to see what I'm up to, just check the list of open PRs.
+* Validation of direction. If you're embarking on a big project, it's better to know that it's the wrong one early in its lifecycle.
+* Feedback while work is in progress. Feel free to chime in as much or as little as you like. I'll take your silence to mean "I trust you enough that I haven't looked" or "I can't find anything wrong with this."
+* The ability to ask you a question if I need to. I'll probably do this towards the end, just to get a sense of how you feel about the thing as a whole.
+
 Our Hubot will assign active chat room users to do code
 reviews when a new pull request is created. We will use the GitHub
 Activities API to subscribe to pull request events. When our Hubot
