@@ -24,26 +24,36 @@ getSecureHash = ( body ) ->
         hash
 
 exports.prHandler = ( robot, req, res ) ->
-        util = require 'util'
-        fs = require 'fs'
-        inspected = util.inspect( req )
-        fs.writeFile "request.txt", inspected, (err) ->
-                if err
-                        console.log "Unable to write"
-        # console.log "Body: " + util.inspect( req.body )
+        
+        # Looks like this:
+        # payload=%7B%22ref%22%3A%22refs%2Fheads%2F1429075063%22%2C%22before%22%3A%220000000000000000000000000000000000000000%22%2C%22after%22%3A%227ea3646be8e89
+        # 38caeb798b17fd9bb8821104e75%22%2C%22created%22%3Atrue%2C%22deleted%22%3Afals
+        #
+        # Command with tshark
+        #  sudo  tshark tcp port 8080  -V -R "http.request || http.response"
+
+        console.log "Inside prHandler"
 
         jsonBody = req.body
         json = req.body.payload
+
+        console.log "Got JSON: #{jsonBody}"
+        
         pr = JSON.parse json
+
+        # console.log "encoded: #{encodeURIComponent( json )}"
+        # %7B%22ref%22%3A%22refs%2Fheads%2F1429162618%22%2C%22before%22%3A%22000000000000000000000000000000000000000
+        
         if pr.pull_request
-                url = pr.pull_request.url if pr
-                secureHash = getSecureHash( "payload=#{encodeURIComponent(json)}" )
+                url = pr.pull_request.url
+                secureHash = getSecureHash( req.rawData )
                 signatureKey = "x-hub-signature"
                 webhookProvidedHash = req.headers[ signatureKey ] if req?.headers
                 console.log "WebHook Hash: #{webhookProvidedHash}"
+                console.log "secureHash: #{secureHash}"
                 secureCompare = require 'secure-compare'
         
-                if secureCompare( secureHash, webhookProvidedHash ) and url
+                if secureCompare( "sha1=#{secureHash}", webhookProvidedHash ) and url
                         room = "general"
                         robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
                                 .get() (err, response, body) ->
@@ -78,7 +88,9 @@ exports.usernameMatchesGitHubUsernames = ( name, collaborators ) ->
                         rv = true
         rv
 
-exports.accept = ( res ) ->
+exports.accept = ( req, res ) ->
+
+        console.log "rawBody: #{req.rawData}"
 
         msg = exports.decodePullRequest( _PR_URL )
         username = exports.getUsernameFromResponse( res )

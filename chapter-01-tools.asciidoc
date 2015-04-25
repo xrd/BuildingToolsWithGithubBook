@@ -2,219 +2,67 @@
 
 To use this book, you will need familiarity with some tools that might
 be new to you. This book covers the API from various vantage points,
-examining the API and through the idioms found in many different
+examining the API primarily through the idioms found in many different
 languages and their associated client libraries. Each chapter is
-designed so that you can follow it without intimacy to the 
-language or toolkit. However, much as a carpenter cannot survive with
-only a hammer, or only a saw, and needs both, it is useful to have facility with
-multiple basic tools to get things done. This chapter documents a
-minimum set of tools that are extremely helpful when exploring and
-using the GitHub API. 
+designed so that you can follow along without intimacy to the 
+language or toolkit. There are two languages and one tool which stand
+above the rest which you should actually install and use in order to
+get the most out of this book. This chapter documents a minimum set of
+tools vital to begin exploring and using the GitHub API.  
 
 These tools are:
 
 * Ruby: a simple, readable programming language used heavily by the
   founders of GitHub 
-* NodeJS: now that JavaScript runs on the server side as well, many
-  tools are appearing that use the 
-* cURL: there are many tools that speak HTTP, and cURL is one of the
-  best due to its elegant and useful command line interface.
+* NodeJS: JavaScript has been the most ubiquitous web-based client side
+  development language for ten years, and NodeJS takes that familiar
+  power to the server side, captivating tools authors on GitHub.
+* cURL: there are many tools that speak HTTP, but cURL is one of the
+  best due to its elegant and useful command line interface that
+  matches the minimalist interfaces of the best unix tools.
 
-If you spend a little time inside this chapter installing and
-familiarizing yourself with the concepts and practices inherent to
-usage of these tools, you will have a solid toolset for exploration of
-the GitHub API.
+If you spend a little time installing and familiarizing yourself with
+the concepts and practices inherent to these tools, you will have a
+solid toolset for exploration of the GitHub API.
 
-== GitHub started with Ruby
+Many of you picking up this book already have familiarity with Ruby
+or NodeJS. So, the basics and installation of them are in appendices
+in the back of the book. If you are new to Ruby or NodeJS, or want a
+quick refresh on either of them, please visit the appendices and then
+come back to this chapter. We don't spend any time discussing the
+syntax of these languages; we expect you have experience with other
+languages as a prerequisite and can read imperative code regardless of
+the language. These explanatory appendices discuss the history of
+these ools within the GitHub story as well as important usage notes
+like special files and installation options.
 
-Many of the tools written and used internally at GitHub are written in
-Ruby. The founders of GitHub have all made strong contributions to popular
-Ruby libraries, called "gems". To be successful with this book, you should
-at least have Ruby installed. 
-
-There are many ways to get Ruby but not all of them are created equal. 
-As a long time user I have experienced the pain of using a pre-installed Ruby 
-or one from a package manager, and generally these installation
-methods provide a suboptimal experience. If you are not familiar with
-Ruby, use this chapter to get through installation with the least
-friction and trouble. 
-
-You might already have a version of Ruby installed. Mac OSX comes
-bundled with Ruby and various flavors of Linux do as well (or provide
-a quick and easy installation through the built in package manager
-like "apt-get"). However, I recommend that you use the method of
-installation described below rather than using the stock installed
-version of Ruby you might already have on your system. Often ruby
-packages require a specific version of ruby though there 
-is a chance it will work with other versions. The problem is that you
-might encounter subtle bugs that have never been seen before and using
-the methods described here will make it trivial to install any version
-of Ruby that you need side by side with any other version. You can
-guarantee you are using the correct version, and the method described
-here will not interfere with any other previously installed version of
-Ruby you have already on your system. 
-
-=== Why Ruby at GitHub
-
-GitHub is a company with its foundations sitting on top of the Ruby
-language. Tom Preston Warner (one of three founders of GitHub) built
-the initial libraries for using git 
-with Ruby, a library called Grit. You can host blogs on GitHub for
-free, and this tool called Jekyll is built using Ruby. Gollum, the
-technology which powers GitHub wikis, is built using Grit and runs on
-Ruby. 
-
-To understand GitHub, it is best to understand a little bit of Ruby.
-You can use many of the tools used at GitHub by simply installing Ruby,
-and not knowing any Ruby syntax. This book will not require you to
-code in Ruby, but will ask you to read through Ruby code. We write in
-a literal, readable way, so that anyone with basic software developer
-skills and mastery of the English language should be able to
-understand the tools we are using. And, if you are someone
-who previously never wanted to learn Ruby, who knows, perhaps after
-reading these examples in Ruby you will learn to like it as a
-language. Ruby is not a perfect language, but is a useful addition to
-a developer's toolkit because of its focus on developer productivity.
-
-=== Installing Ruby
-
-To install Ruby, use RVM. RVM stands for Ruby Version Manager. RVM allows you to install
-multiple versions of Ruby on your machine and have them interoperate
-without conflict. You will probably only need to install a single
-version of Ruby to use the examples in the book. And, RVM makes it so
-that if you choose to install another version, you will not have to
-reconfigure any applications that relied on the other versions
-installed. 
-
-Installation of Ruby using RVM depends on your operating system. If
-you are using Mac OSX or Linux, your installation will probably be as
-simple as running these commands from a shell:
-
-[source,bash]
-$ \curl -sSL https://get.rvm.io | bash -s stable
-
-This will install RVM and Ruby.
-
-If you are running Windows, you can use RVM to install Ruby, but your
-instructions are a little more complicated. Refer to the documentation
-to do so. A better option is to consider installing something like VirtualBox (a virtual
-machine manager). If you do this, you can install RVM inside a Linux
-Virtual Machine (VM). Windows is, sadly, a second class citizen with
-Ruby and RVM and, for this reason, it is often better to install RVM
-inside a host system like Linux which has a wider community around it
-to support you. Virtual Box and Linux are free as in beer and as in
-speech, so you can try them out without cost (other than your time).
-There are many native gems for Ruby which don't properly compile if
-the host system is Windows, so you can save yourself considerable time
-by just using a completely free (as in beer) option like VirtualBox
-and a Linux virtual machine running on Windows instead of fighting
-with running everything directly on Windows. 
-
-=== Important Ruby and RVM Concepts
-
-Here are a few tips when using Ruby and RVM.
-
-* `Gemfile`: Ruby packages libraries in a format called a gem. A
-  gemfile is a manifest which describes which gems your application
-  needs. Gemfiles make it simple to install all the required
-  libraries: run the `bundle` command from a shell prompt and all
-  libraries will be installed, which can include downloading from the
-  network and building from source if compilation is required.
-* `.ruby-version` or `.rvmrc`: These two files tell your application
-  (or shell) which version of Ruby to use. Often applications will
-  include this file as a part of their package. If you use RVM, RVM
-  will either switch to that version of Ruby or prompt you to install
-  that version. Imagine you have an
-  application which only runs on Ruby 2.1.3. You can create a file
-  called `.ruby-version` which contains the string `ruby-2.1.3` and
-  when your application starts, it will automatically use that version
-  of Ruby. There are other Ruby based tools (like the
-  zero-configuration web server Pow) which are aware of files
-  like .ruby-version and will properly use correct version of Ruby if
-  they see this file.
-* `config.ru`: This is a file used to run Ruby applications using
-  Rack. Rack is a web server interface, compatible with many
-  application servers. If you see a config.ru file, you can run this
-  application with many different servers. These can be powerful front
-  ends used in production on many large sites on the Internet, or they
-  can be minimal servers used just on a single laptop; Rack makes it
-  easy to setup a server. 
-
-=== Potential problems installing Ruby.
-
-* Missing system tools: If you are running Mac OSX, you need to
-  install Xcode and the command line tools. If you are a software
-  developer, you probably have these already installed. If not, review
-  online documentation to install these. If you are running Linux, you
-  might not have installed the compiler chain; you can install all the
-  build tools you will ever need using this command: `sudo apt-get
-  install build-essential`. This can take a while, but will ensure you
-  have all the tools necessary for building RVM and any binary gems.
-* Missing developer libraries: There are some libraries which support
-  Ruby (readline support, as an example, which allows you to use
-  command line history inside of an interactive Ruby shell) that are
-  not always installed or available to the RVM tool. RVM has greatly
-  improved in detecting the correct libraries, and there are often
-  notes which tell you how to properly configure these libraries. Make
-  sure to read the output printed to the screen as you install Ruby
-  using RVM for special instructions specific to your platform.
-
-=== NodeJS
-
-NodeJS has gained immense popularity in the last few years. JavaScript
-is the language of client-side development on the web, and many people
-are excited about developing in the same language on the server side. One of
-the chapters in this book discusses Hubot, GitHub's "devops" chatbot.
-Hubot is written in NodeJS. Fortunately, installing NodeJS is simple
-using NVM.
-
-NVM stands for "Node Version Manager" and is a direct correlate
-to RVM. To install it run these commands from a shell prompt:
-
-[source,bash]
-$ curl https://raw.github.com/creationix/nvm/master/install.sh | sh
-
-==== package.json
-
-Much like Ruby has a Gemfile which indicates required libraries, so
-too does NodeJS have an equivalent file. In NodeJS, this file is
-called `package.json`.  To install all required libraries for any
-project, use the `npm` tool. Running without any arguments will
-install all libraries specified by the application if there is a
-`package.json` file included with the project. 
-
-==== Ruby and NodeJS
-
-Installing these two language management tools in advance will
-streamline your experience as you work through chapters in this book.
-There are other languages presented which require different
-installation procedures, but these two are vital if you plan on
-writing code that integrates with GitHub.
-
-=== Simple Access for Anyone on Any System
+=== cURL: Simple Access to APIs
 
 There are many client libraries which wrap the GitHub API in an
-idiomatic tool. These client libraries make your life easier by
+idiomatic interface. These client libraries make your life easier by
 removing or limiting your exposure to the complexity of the GitHub
 API. But, often you want to quickly access information from the API
-without writing a program. This is where cURL becomes handy.
+without writing a formal program. This is where cURL becomes extremely
+handy.
 
 ==== API Overview via cURL
 
 The GitHub API is a set of REST services that speak JSON.  Some of
 these services are available anonymously without the need for
-authentication, while others require a set of credentials.  The API is
-easy to access, and this chapter will use a command-line utility named
-cURL to demonstrate how to access this API.
+authentication, while others require a set of credentials.  
 
 .Installing cURL
 [NOTE]
 If you are running these examples on a Linux box, you should be able
 use your native package management tool to install cURL - either a
 "sudo yum install curl*" on a RedHat variant or "sudo apt-get
-install curl" on an Ubuntu (or Debian) system.  If you are on any recent version of OSX, you already
+install curl" on an Ubuntu (or Debian) system.  If you are on any
+recent version of OSX, you already 
 have cURL installed, but it you can't find it, take a look at the
-HomeBrew project (http://brew.sh/) or MacPorts project (http://www.macports.org/).  If you are running on Windows or another operating system, you best bet is to download cURL from the cURL web site here: http://curl.haxx.se/download.html
+HomeBrew project (http://brew.sh/) or MacPorts project
+(http://www.macports.org/).  If you are running on Windows or another
+operating system, you best bet is to download cURL from the cURL web
+site here: http://curl.haxx.se/download.html 
 
 ==== An Introductory API Command
 
@@ -230,21 +78,28 @@ provides.
 $ curl -i https://api.github.com/
 HTTP/1.1 200 OK
 Server: GitHub.com
-Date: Sun, 11 Aug 2013 22:37:26 GMT
+Date: Sat, 25 Apr 2015 05:36:16 GMT
 Content-Type: application/json; charset=utf-8
+Content-Length: 2004
 Status: 200 OK
 X-RateLimit-Limit: 60
-X-RateLimit-Remaining: 57
-X-RateLimit-Reset: 1376262655
-X-GitHub-Media-Type: github.beta
-X-Content-Type-Options: nosniff
-Content-Length: 1776
+X-RateLimit-Remaining: 58
+X-RateLimit-Reset: 1429943754
+Cache-Control: public, max-age=60, s-maxage=60
+ETag: "a5c656a9399ccd6b44e2f9a4291c8289"
+Vary: Accept
+X-GitHub-Media-Type: github.v3
+X-XSS-Protection: 1; mode=block
+X-Frame-Options: deny
+Content-Security-Policy: default-src 'none'
 Access-Control-Allow-Credentials: true
-Access-Control-Expose-Headers: ETag, Link, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes
+Access-Control-Expose-Headers: ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
 Access-Control-Allow-Origin: *
-ETag: "d20e5cc244a6cdb4056579e47e839e36"
-Cache-Control: max-age=0, private, must-revalidate
+X-GitHub-Request-Id: C0F1CF9E:567A:9610FCB:553B27D0
+Strict-Transport-Security: max-age=31536000; includeSubdomains; preload
+X-Content-Type-Options: nosniff
 Vary: Accept-Encoding
+X-Served-By: 13d09b732ebe76f892093130dc088652
 ----
 
 Let's do a quick walkthrough of this response.  The first thing we
@@ -266,18 +121,17 @@ handy when you are starting to retrieve text or blob content from the
 API.  when you make a request to the GitHub API you can specify the
 format you want to work with by sending an Accept header with your request.
 
-
 After the HTTP response headers shown above, the root directory of the
 GitHub API helpfully returns a JSON document listing all of the
 services available via the GitHub API.  You can print this out and use
-it as a map to the GitHub API.  We're going to run through most of
-these services in this chapter, but this is a helpful list to have
-access to, and to get it, just go to https://api.github.com/
+it as a map to the GitHub API.  
 
 ----
 {
   "current_user_url": "https://api.github.com/user",
+  "current_user_authorizations_html_url": "https://github.com/settings/connections/applications{/client_id}",
   "authorizations_url": "https://api.github.com/authorizations",
+  "code_search_url": "https://api.github.com/search/code?q={query}{&page,per_page,sort,order}",
   "emails_url": "https://api.github.com/user/emails",
   "emojis_url": "https://api.github.com/emojis",
   "events_url": "https://api.github.com/events",
@@ -285,16 +139,16 @@ access to, and to get it, just go to https://api.github.com/
   "following_url": "https://api.github.com/user/following{/target}",
   "gists_url": "https://api.github.com/gists{/gist_id}",
   "hub_url": "https://api.github.com/hub",
-  "issue_search_url": "https://api.github.com/legacy/issues/search/{owner}/{repo}/{state}/{keyword}",
+  "issue_search_url": "https://api.github.com/search/issues?q={query}{&page,per_page,sort,order}",
   "issues_url": "https://api.github.com/issues",
   "keys_url": "https://api.github.com/user/keys",
   "notifications_url": "https://api.github.com/notifications",
-  "organization_repositories_url": "https://api.github.com/orgs/{org}/repos/{?type,page,per_page,sort}",
+  "organization_repositories_url": "https://api.github.com/orgs/{org}/repos{?type,page,per_page,sort}",
   "organization_url": "https://api.github.com/orgs/{org}",
   "public_gists_url": "https://api.github.com/gists/public",
   "rate_limit_url": "https://api.github.com/rate_limit",
   "repository_url": "https://api.github.com/repos/{owner}/{repo}",
-  "repository_search_url": "https://api.github.com/legacy/repos/search/{keyword}{?language,start_page}",
+  "repository_search_url": "https://api.github.com/search/repositories?q={query}{&page,per_page,sort,order}",
   "current_user_repositories_url": "https://api.github.com/user/repos{?type,page,per_page,sort}",
   "starred_url": "https://api.github.com/user/starred{/owner}{/repo}",
   "starred_gists_url": "https://api.github.com/gists/starred",
@@ -302,7 +156,7 @@ access to, and to get it, just go to https://api.github.com/
   "user_url": "https://api.github.com/users/{user}",
   "user_organizations_url": "https://api.github.com/user/orgs",
   "user_repositories_url": "https://api.github.com/users/{user}/repos{?type,page,per_page,sort}",
-  "user_search_url": "https://api.github.com/legacy/user/search/{keyword}"
+  "user_search_url": "https://api.github.com/search/users?q={query}{&page,per_page,sort,order}"
 }
 ----
 
@@ -318,24 +172,32 @@ $ curl https://api.github.com/orgs/github
   "events_url": "https://api.github.com/orgs/github/events",
   "members_url": "https://api.github.com/orgs/github/members{/member}",
   "public_members_url": "https://api.github.com/orgs/github/public_members{/member}",
-  "avatar_url": "https://0.gravatar.com/avatar/61024896f291303615bcd4f7a0dcfb74?d=https%3A%2F%2Fidenticons.github.com%2Fae816a80e4c1c56caa2eb4e1819cbb2f.png",
+  "avatar_url": "https://avatars.githubusercontent.com/u/9919?v=3",
+  "description": "GitHub, the company.",
   "name": "GitHub",
   "company": null,
   "blog": "https://github.com/about",
   "location": "San Francisco, CA",
   "email": "support@github.com",
-  "public_repos": 114,
+  "public_repos": 106,
   "public_gists": 0,
-  "followers": 12,
+  "followers": 0,
   "following": 0,
   "html_url": "https://github.com/github",
   "created_at": "2008-05-11T04:37:31Z",
-  "updated_at": "2013-10-18T23:55:02Z",
+  "updated_at": "2015-04-25T05:17:01Z",
   "type": "Organization"
 }
 ----
 
-We've removed the `-i` switch from the cURL command so that we no longer see the headers. We took the URL named "organization_url" and added the parameter of "github" (replacing the {org} placeholder) to generate the full URL to the GitHub organization. You can see this tells us the company blog (https://github.com/about), that the company is located in San Francisco, and the creation date (which strangely does not match their blog post which states April 10th was their official launch date [https://github.com/blog/40-we-launched]).
+We've removed the `-i` switch from the cURL command so that we no
+longer see the headers. We took the URL named "organization_url" and
+added the parameter of "github" (replacing the {org} placeholder) to
+generate the full URL to the GitHub organization. You can see this
+tells us the company blog (https://github.com/about), that the company
+is located in San Francisco, and the creation date (which strangely
+does not match their blog post which states April 10th was their
+official launch date [https://github.com/blog/40-we-launched]). 
 
 ===== Why Learn About cURL?
 
@@ -357,11 +219,18 @@ debugging. cURL provides an alternative viewpoint to the GitHub API
 and the data it exposes, and no matter what client library you use,
 cURL is a great complementary tool.
 
-=== GitHub API Access
+=== Authenticated GitHub API Access
+
+All of the prior examples were performed without authentication into
+GitHub. Accessing private information stored inside GitHub requires
+authentication. There are two ways to authenticate when using the
+GitHub API: raw username/passwords combinations and oAuth tokens. 
 
 ==== Username and Password
 
-A bad idea!
+Using a username and password to retrieve protected information from
+the GitHub API is easy and works with any HTTP client that speaks HTTP
+authentication. 
 
 * No scoping
 * Insecure to ask user to provide user/pw. 
@@ -401,7 +270,7 @@ later ask for a greater scope. For example, when a user first accesses
 your application, you could only get the user scope to create a user
 object inside your service, and only when your application needs
 repository information for a user, then request to escalate
-priviledges. At this point the user will need to approve or disapprove
+privileges. At this point the user will need to approve or disapprove
 your request, but asking for everything up front (before you have a
 relationship with the user) often results in a user abandoning the login.
 
@@ -589,15 +458,16 @@ can use a caching HTTP proxy like Squid to take care of automatically
 caching content, storing content alongside ETags, and injecting the
 "If-None-Match" header into GitHub API requests. If you do this,
 you'll be automating the injection of conditional headers and helping
-to reduce the overall load on the GitHub API. If you use an API library, like Octokit for Ruby, there are some tricks we'll detail later which can assist in staying beneath the limits.
+to reduce the overall load on the GitHub API. If you use an API
+library, like Octokit for Ruby, there are some tricks we'll detail
+later which can assist in staying beneath the limits.
 
 Use of conditional request headers is encouraged to conserve resources
 and make sure that the infrastructure that supports GitHub's API isn't
 asked to generated content unnecessarily.
 
 [developer-api-accept]
-Specifying Response Content Format
-----------------------------------
+==== Specifying Response Content Format
 
 When you send a request to the GitHub API, you have some ability to
 specify the format of the response you expect.  For example, if you
@@ -743,8 +613,7 @@ Failure to specify the preview version in the Accept header will
 result in an HTTP 404 Not Found result.
 
 [developer-api-terms]
-GitHub API Terms of Service
----------------------------
+==== GitHub API Terms of Service
 
 Before you start building a system atop another service's API, it is
 always wise to understand what, if any, limitations are placed on that
@@ -770,8 +639,4 @@ has any explicit Terms of Service beyond the one every user agrees
 to.   It would be nice to know if there are any red lines that can't
 be crossed.
 ////
-
-===== How does OAuth Work?
-
- [OAuth](http://developer.github.com/v3/oauth/)
 
