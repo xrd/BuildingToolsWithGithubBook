@@ -1508,6 +1508,86 @@ console.log output which says "Hash: cd970490d83c..." and copy this
 hash into our mocked request object. Once we do this, our tests will
 pass. 
 
+Now, after reloading our Probot, if we issue a pull request using our
+`issue-pull-request.sh` script, we should see the matching
+hashes. But, we won't (at least if you used the same `package.json`
+file as we specified above) because of a critical bug inside of Hubot
+at the time of this writing.
+
+As we mentioned earlier, Hubot bundles Express.js, a high performance
+web framework for NodeJS. Express.js has a modular architecture, where
+middleware is inserted into a request and response chain. This
+approach to building functionality and the wide array of middleware
+allows web developers to string together various standardized
+middleware components to use only those features needed for the
+problem at hand. Common middleware includes static file handlers (for
+serving static files), cookie handlers, session handlers, and body
+parsers. You can imagine circumstances where you would not need all of
+the list above (or you might need others) and this flexibility makes
+Express.js a popular choice for building NodeJS web applications. 
+
+The body parser middleware is of particular interest to us here: the
+body parser middleware is used to convert the "body" of a request into
+a JavaScript object attached to the request object. Above you saw us
+access it inside a variable we called `req` inside our callback;
+obviously this stands for request. The body parser takes on converting
+whatever data content comes from inside the body of the HTTP request into a
+structured JavaScript associative array inside the `body` object inside our
+request object. If the body is url encoded (as the PR information is
+encoded if we create the webhook with the `content_type` set to
+`form`), then the body parser url decodes the content, parses it as
+JSON, and then sets the inflated object to the body attribute on our
+request object. Normally, this is a very handy process that removes a
+lot of grunt work for web application authors.
+
+Unfortunately, because express is bundled and configured for us long
+before our extension is loaded, we cannot interrupt the load order of
+the body parser middleware inside our extension and this means we
+cannot get access to the raw body content. The body parser middleware
+processes the stream of 
+data by registering for events inside of the HTTP request flow. NodeJS
+made a mark on web application development by providing a network
+application toolkit centered around one of the
+most controversial features of JavaScript: the asynchronous
+callback. In NodeJS, processes register for events and then return
+control to the host program. In other languages, like Ruby for
+example, when building services which receive data from clients, by
+default, you listen for incoming data, and the moment you tell your
+program to listen, you have blocked other processing. Asynchronous
+programming is by no means a new concept (threading in many languages,
+for example), but NodeJS offers a simple way to interact with
+asynchronous functions through event registration. In the case of
+express middleware, however, this event registration process bites us,
+because middleware loaded first gets first access to incoming data,
+and once the body parser has processed our body content, we no longer
+can access the original content. We need access to the raw body
+content, and there is no way to install our own middleware which would
+provide it inside our Probot exntesion when a PR request is received
+on the router.
+
+What options do we have then? Well, fortunately, every bit of our
+stack here is open source, and we can modify the code inside Hubot
+which sets up our express server to fit our needs. This code is
+installed by the `npm` tool into the `node_modules` directory and we
+can easily find where express is configured inside of Hubot. There are
+issues with doing it this way: if we re-run `npm install` we will blow
+away our `node_modules` directory, and this is something Heroku will
+do if it is not told otherwise. A better way might be to fork Hubot
+and store our own copy of Hubot inside of GitHub and then specify our
+forked copy inside of the `package.json` file. This has issues too; if
+Hubot gets updated with a critical security flaw, we need to merge
+those changes into our fork, a maintenance issue which we would avoid
+if we use tagged releases from the main repository. There is,
+unfortunately, no perfect way to resolve this problem that does not
+itself create other problems. 
+
+If you do choose to modify the built in hubot code, modify 
+
+[source,coffeescript]
+--------------
+[language="coffeescript", sha="bd8cb8f:support/slacker-hubot/node_modules/hubot/src/robot.coffee", lines="286..303"]
+--------------
+
 ===== Responding to the PR Request
 
 Our Probot is now programmed to generate a pull request review message and
@@ -1517,9 +1597,11 @@ request. We put placeholders in our Probot extension to notify us with
 a debugging message when the user responds and send a message back to
 whoever sent us a message, but now we can actually wire up handling
 the response and adding to the pull request on GitHub based on the
-user who we are interacting with (provided they accepted). If they
+user who we are interacting with (provided they accepted). 
+
+If they
 decline the request, we should take additional action and ask someone
-else. 
+else. ???
 
 There are multiple ways in which a Hubot can interact with chat room
 messages. We chose the `respond` method, but there is another method
