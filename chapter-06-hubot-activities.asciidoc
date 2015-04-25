@@ -1585,7 +1585,7 @@ If you do choose to modify the built in hubot code, modify
 
 [source,coffeescript]
 --------------
-[language="coffeescript", sha="bd8cb8f:support/slacker-hubot/node_modules/hubot/src/robot.coffee", lines="286..303"]
+[language="coffeescript", sha="53f3898:support/slacker-hubot/node_modules/hubot/src/robot.coffee", lines="286..303"]
 --------------
 
 ===== Responding to the PR Request
