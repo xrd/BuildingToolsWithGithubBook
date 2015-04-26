@@ -291,9 +291,9 @@ class Robot
 
     app.use (req, res, next) =>
       _logger.info "Added middleware"
-      req.rawData = ''
+      req.rawBody = ''
       req.on 'data', (chunk) ->
-        req.rawData += chunk
+        req.rawBody += chunk
       next()
 
     app.use express.basicAuth user, pass if user and pass

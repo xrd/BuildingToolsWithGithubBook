@@ -25,43 +25,33 @@ getSecureHash = ( body ) ->
 
 exports.prHandler = ( robot, req, res ) ->
         
-        # Looks like this:
-        # payload=%7B%22ref%22%3A%22refs%2Fheads%2F1429075063%22%2C%22before%22%3A%220000000000000000000000000000000000000000%22%2C%22after%22%3A%227ea3646be8e89
-        # 38caeb798b17fd9bb8821104e75%22%2C%22created%22%3Atrue%2C%22deleted%22%3Afals
-        #
-        # Command with tshark
-        #  sudo  tshark tcp port 8080  -V -R "http.request || http.response"
-
-        console.log "Inside prHandler"
-
-        jsonBody = req.body
-        json = req.body.payload
-
-        console.log "Got JSON: #{jsonBody}"
-        
-        pr = JSON.parse json
-
-        # console.log "encoded: #{encodeURIComponent( json )}"
-        # %7B%22ref%22%3A%22refs%2Fheads%2F1429162618%22%2C%22before%22%3A%22000000000000000000000000000000000000000
-        
-        if pr.pull_request
-                url = pr.pull_request.url
-                secureHash = getSecureHash( req.rawData )
-                signatureKey = "x-hub-signature"
-                webhookProvidedHash = req.headers[ signatureKey ] if req?.headers
-                console.log "WebHook Hash: #{webhookProvidedHash}"
-                console.log "secureHash: #{secureHash}"
-                secureCompare = require 'secure-compare'
-        
-                if secureCompare( "sha1=#{secureHash}", webhookProvidedHash ) and url
-                        room = "general"
-                        robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
-                                .get() (err, response, body) ->
-                                        sendPrRequest( robot, body, room, url ) unless err
+        rawBody = req.rawBody
+        body = rawBody.split( '=' ) if rawBody
+        payloadData = body[1] if body and body.length == 2
+        if payloadData
+                decodedJson = decodeURIComponent payloadData
+                pr = JSON.parse decodedJson
+                
+                if pr and pr.pull_request
+                        url = pr.pull_request.url
+                        secureHash = getSecureHash( rawBody )
+                        signatureKey = "x-hub-signature"
+                        webhookProvidedHash = req.headers[ signatureKey ] if req?.headers
+                        console.log "WebHook Hash: #{webhookProvidedHash}"
+                        console.log "secureHash: #{secureHash}"
+                        console.log "URL: #{url}"
+                        secureCompare = require 'secure-compare'
+                
+                        if secureCompare( "sha1=#{secureHash}", webhookProvidedHash ) and url
+                                room = "general"
+                                robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
+                                        .get() (err, response, body) ->
+                                                sendPrRequest( robot, body, room, url ) unless err
+                        else
+                                console.log "Invalid secret or no URL specified"
                 else
-                        console.log "Invalid secret or no URL specified"
-        else
-                console.log "No pull request in here"
+                        console.log "No pull request in here"
+                        
         res.send "OK\n"
 
 _GITHUB = undefined

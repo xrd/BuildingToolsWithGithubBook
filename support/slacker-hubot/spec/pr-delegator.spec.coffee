@@ -53,7 +53,11 @@ describe "#probot", ->
                         done()
 
                 it "should allow calls with the secret and url", (done) ->
-                        req = { payload: '{ "pull_request" : { "url" : "http://pr/1" } }', headers: { "HTTP_X_HUB_SIGNATURE" : "cd970490d83c01b678fa9af55f3c7854b5d22918" } }
+                        payload =  '{ "pull_request" : { "url" : "http://pr/1" } }'
+                        bodyPayload = "payload=#{encodeURIComponent(payload)}"
+                        req = { rawBody: bodyPayload,
+                        headers: { "x-hub-signature" : "sha1=dc827de09c5b57da3ee54dcfc8c5d09a3d3e6109" } }
+
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).toHaveBeenCalled()
                         expect( httpSpy ).toHaveBeenCalled()
@@ -76,7 +80,10 @@ describe "#probot", ->
                         beforeEach ->
                                 githubBinding = { authenticate: authenticate, issues: issues, repos: repos }
                                 github = Handler.setApiToken( githubBinding, "ABCDEF" )
-                                req = { payload: '{ "pull_request" : { "url" : "http://pr/1" } }', headers: { "HTTP_X_HUB_SIGNATURE" : "cd970490d83c01b678fa9af55f3c7854b5d22918" } }
+                                payload =  '{ "pull_request" : { "url" : "http://pr/1" } }'
+                                bodyPayload = "payload=#{encodeURIComponent(payload)}"
+                                req = { rawBody: bodyPayload,
+                                headers: { "x-hub-signature" : "sha1=dc827de09c5b57da3ee54dcfc8c5d09a3d3e6109" } }
                                 Handler.prHandler( robot, req, responder )
 
                         it "should tag the PR on GitHub if the user accepts", (done) ->
