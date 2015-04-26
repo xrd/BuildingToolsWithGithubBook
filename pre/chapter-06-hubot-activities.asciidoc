@@ -1408,7 +1408,7 @@ If you do choose to modify the built in hubot code, modify
 [source,coffeescript]
 --------------
 ...
-[language="coffeescript", sha="383ed3c74c3688312446c2abd2af687b8fc5ffbf:support/slacker-hubot/node_modules/hubot/src/robot.coffee", lines="286..303"]
+[language="coffeescript", sha="383ed3c74c3688312446c2abd2af687b8fc5ffbf:support/slacker-hubot/robot-hacked.coffee", lines="286..303"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
