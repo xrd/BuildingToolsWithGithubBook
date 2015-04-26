@@ -4,6 +4,7 @@ import wx, subprocess, os
 from agithub import Github
 from config import credentials
 from collections import defaultdict
+from pprint import pprint
 
 # Change this to use an Enterprise installation
 GITHUB_HOST = 'github.com'
@@ -77,48 +78,55 @@ class SearchResult(wx.Panel):
         if callable(self.callback):
             self.callback(event)
 
+class SearchResultsPanel(wx.PyScrolledWindow):
+    def __init__(self, *args, **kwargs):
+        results = kwargs.pop('results', [])
+        wx.PyScrolledWindow.__init__(self, *args, **kwargs)
+
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        for r in results:
+            pprint(r)
+            vbox.Add(SearchResult(self, result=r))
+
+        self.SetSizerAndFit(vbox)
+
+        self.SetScrollbars(0, 10, 0, 2000)
+        self.SetScrollRate(1,1)
+        
 class SearchPanel(wx.Panel):
     def __init__(self, *args, **kwargs):
         wx.Panel.__init__(self, *args, **kwargs)
 
-        self.results = []
+        self.scrollPanel = None
         self.searchTerm = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
         searchButton = wx.Button(self, label="Search")
 
         searchButton.Bind(wx.EVT_BUTTON, self.DoSearch)
         self.searchTerm.Bind(wx.EVT_TEXT_ENTER, self.DoSearch)
 
+        # Sizers
         self.vbox = wx.BoxSizer(wx.VERTICAL)
-        grid = wx.GridBagSizer(1,2)
-        grid.Add(self.searchTerm, pos=(0,0), flag=wx.EXPAND)
-        grid.Add(searchButton, pos=(0,1), flag=wx.EXPAND | wx.LEFT, border=5)
-        grid.AddGrowableCol(0)
-        self.vbox.Add(grid, flag=wx.EXPAND)
-
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        hbox.Add(self.searchTerm, 1, wx.EXPAND)
+        hbox.Add(searchButton, 0, wx.EXPAND | wx.LEFT, 5)
+        self.vbox.Add(hbox, 0, wx.EXPAND)
+        
         self.SetSizer(self.vbox)
 
-    def clearResults(self):
-        for r in self.results:
-            self.RemoveChild(r)
-            r.Destroy()
-        self.results = []
-        self.vbox.Layout()
-
-    def addResults(self, results):
-        for r in results:
-            sr = SearchResult(self, result=r)
-            self.vbox.Add(sr)
-            self.results.append(sr)
-        self.vbox.Layout()
-
     def DoSearch(self, event):
-        self.clearResults()
         term = self.searchTerm.GetValue()
         g = Github(self.Parent.credentials['username'], self.Parent.credentials['password'])
-        from pprint import pprint
         code,result = g.search.issues.get(q=term)
-        self.addResults(result['items'])
+        self.setResults(result['items'])
 
+    def setResults(self, results):
+        if self.scrollPanel:
+            self.vbox.Remove(self.scrollPanel)
+            self.scrollPanel.Destroy()
+        self.scrollPanel = SearchResultsPanel(self, -1, results=results)
+        # self.scrollPanel.SetBackgroundColour(wx.RED)
+        self.vbox.Add(self.scrollPanel, 1, wx.EXPAND | wx.TOP, 5)
+        self.vbox.Layout()
 
 class SearchFrame(wx.Frame):
     def __init__(self, *args, **kwargs):
@@ -139,9 +147,9 @@ class SearchFrame(wx.Frame):
 
         # Two client panels
         self.login_panel = LoginPanel(self, onlogin=lambda u,p: self.login(u, p))
-        self.sizer.Add(self.login_panel, flag=wx.EXPAND | wx.ALL, border=20)
+        self.sizer.Add(self.login_panel, 1, flag=wx.EXPAND | wx.ALL, border=20)
         self.search_panel = SearchPanel(self)
-        self.sizer.Add(self.search_panel, flag=wx.EXPAND | wx.ALL, border=20)
+        self.sizer.Add(self.search_panel, 1, flag=wx.EXPAND | wx.ALL, border=20)
         self.sizer.Hide(self.search_panel)
 
         # Try to pre-load credentials from Git's cache
