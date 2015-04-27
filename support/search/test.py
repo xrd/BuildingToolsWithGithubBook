@@ -33,6 +33,59 @@ def git_credentials():
         creds[k] = v
     return creds
 
+class SearchFrame(wx.Frame):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('size', (600,500))
+        wx.Frame.__init__(self, *args, **kwargs)
+
+        self.credentials = {}
+        self.orgs = []
+        self.sizer = wx.BoxSizer(wx.VERTICAL)
+
+        # Set up a menu. This is mainly for "Cmd-Q" behavior on OSX
+        filemenu = wx.Menu()
+        filemenu.Append(wx.ID_EXIT, '&Exit')
+        menuBar = wx.MenuBar()
+        menuBar.Append(filemenu, '&File')
+        self.SetMenuBar(menuBar)
+
+        # Start with a login UI
+        self.login_panel = LoginPanel(self, onlogin=self.login)
+        self.sizer.Add(self.login_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
+        self.SetSizer(self.sizer)
+
+        # Try to pre-load credentials from Git's cache
+        self.credentials = git_credentials()
+        if self.test_credentials():
+            self.switch_to_search_panel()
+
+        self.Show()
+
+    def login(self, username, password):
+        self.credentials['username'] = username
+        self.credentials['password'] = password
+        if self.test_credentials():
+            self.switch_to_search_panel()
+
+    def test_credentials(self):
+        if any(k not in self.credentials for k in ['username', 'password']):
+            return False
+        g = Github(self.credentials['username'], self.credentials['password'])
+        status,data = g.user.orgs.get()
+        if status != 200:
+            print('bad credentials in store')
+            return False
+        self.orgs = [o['login'] for o in data]
+        return True
+
+    def switch_to_search_panel(self):
+        self.login_panel.Destroy()
+        self.search_panel = SearchPanel(self,
+                                        orgs=self.orgs,
+                                        credentials=self.credentials)
+        self.sizer.Add(self.search_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
+        self.sizer.Layout()
+
 class LoginPanel(wx.Panel):
     def __init__(self, *args, **kwargs):
         self.callback = kwargs.pop('onlogin', None)
@@ -79,67 +132,6 @@ class LoginPanel(wx.Panel):
         elif callable(self.callback):
             self.callback(u, p)
 
-class SearchResult(wx.Panel):
-    def __init__(self, *args, **kwargs):
-        self.result = kwargs.pop('result', {})
-        wx.Panel.__init__(self, *args, **kwargs)
-
-        # Bind click events on this whole control
-        self.Bind(wx.EVT_LEFT_UP, self.on_click)
-
-        # Hover effect
-        self.Bind(wx.EVT_ENTER_WINDOW, self.enter)
-        self.Bind(wx.EVT_LEAVE_WINDOW, self.leave)
-
-        # Extract strings and create controls
-        titlestr = self.result['title']
-        if self.result['state'] != 'open':
-            titlestr += ' ({})'.format(self.result['state'])
-        textstr = self.first_line(self.result['body'])
-        self.title = wx.StaticText(self, label=titlestr)
-        self.text = wx.StaticText(self, label=textstr)
-
-        # Adjust the title font
-        titleFont = wx.Font(16, wx.FONTFAMILY_DEFAULT,
-                            wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
-        self.title.SetFont(titleFont)
-
-        # Layout
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.title, flag=wx.EXPAND | wx.BOTTOM, border=2)
-        vbox.Add(self.text, flag=wx.EXPAND)
-        self.SetSizer(vbox)
-
-    def enter(self, _):
-        self.title.SetForegroundColour(wx.BLUE)
-        self.text.SetForegroundColour(wx.BLUE)
-
-    def leave(self, _):
-        self.title.SetForegroundColour(wx.BLACK)
-        self.text.SetForegroundColour(wx.BLACK)
-
-    def on_click(self, event):
-        import webbrowser
-        webbrowser.open(self.result['html_url'])
-
-    def first_line(self, body):
-        return body.split('\n')[0].strip() or '(no body)'
-
-class SearchResultsPanel(wx.PyScrolledWindow):
-    def __init__(self, *args, **kwargs):
-        results = kwargs.pop('results', [])
-        wx.PyScrolledWindow.__init__(self, *args, **kwargs)
-
-        # Layout search result controls inside scrollable area
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        if not results:
-            vbox.Add(wx.StaticText(self, label="(no results)"), 0, wx.EXPAND)
-        for r in results:
-            vbox.Add(SearchResult(self, result=r),
-                     flag=wx.TOP|wx.BOTTOM, border=8)
-        self.SetSizer(vbox)
-        self.SetScrollbars(0, 4, 0, 0)
-        
 class SearchPanel(wx.Panel):
     def __init__(self, *args, **kwargs):
         self.orgs = kwargs.pop('orgs', [])
@@ -196,58 +188,66 @@ class SearchPanel(wx.Panel):
         self.vbox.Add(self.results_panel, 1, wx.EXPAND | wx.TOP, 5)
         self.vbox.Layout()
 
-class SearchFrame(wx.Frame):
+class SearchResultsPanel(wx.PyScrolledWindow):
     def __init__(self, *args, **kwargs):
-        kwargs.setdefault('size', (600,500))
-        wx.Frame.__init__(self, *args, **kwargs)
+        results = kwargs.pop('results', [])
+        wx.PyScrolledWindow.__init__(self, *args, **kwargs)
 
-        self.credentials = {}
-        self.orgs = []
-        self.sizer = wx.BoxSizer(wx.VERTICAL)
+        # Layout search result controls inside scrollable area
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        if not results:
+            vbox.Add(wx.StaticText(self, label="(no results)"), 0, wx.EXPAND)
+        for r in results:
+            vbox.Add(SearchResult(self, result=r),
+                     flag=wx.TOP|wx.BOTTOM, border=8)
+        self.SetSizer(vbox)
+        self.SetScrollbars(0, 4, 0, 0)
+        
+class SearchResult(wx.Panel):
+    def __init__(self, *args, **kwargs):
+        self.result = kwargs.pop('result', {})
+        wx.Panel.__init__(self, *args, **kwargs)
 
-        # Set up a menu. This is mainly for "Cmd-Q" behavior on OSX
-        filemenu = wx.Menu()
-        filemenu.Append(wx.ID_EXIT, '&Exit')
-        menuBar = wx.MenuBar()
-        menuBar.Append(filemenu, '&File')
-        self.SetMenuBar(menuBar)
+        # Bind click events on this whole control
+        self.Bind(wx.EVT_LEFT_UP, self.on_click)
 
-        # Start with a login UI
-        self.login_panel = LoginPanel(self, onlogin=self.login)
-        self.sizer.Add(self.login_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
-        self.SetSizer(self.sizer)
+        # Hover effect
+        self.Bind(wx.EVT_ENTER_WINDOW, self.enter)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.leave)
 
-        # Try to pre-load credentials from Git's cache
-        self.credentials = git_credentials()
-        if self.test_credentials():
-            self.switch_to_search_panel()
+        # Extract strings and create controls
+        titlestr = self.result['title']
+        if self.result['state'] != 'open':
+            titlestr += ' ({})'.format(self.result['state'])
+        textstr = self.first_line(self.result['body'])
+        self.title = wx.StaticText(self, label=titlestr)
+        self.text = wx.StaticText(self, label=textstr)
 
-        self.Show()
+        # Adjust the title font
+        titleFont = wx.Font(16, wx.FONTFAMILY_DEFAULT,
+                            wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        self.title.SetFont(titleFont)
 
-    def login(self, username, password):
-        self.credentials['username'] = username
-        self.credentials['password'] = password
-        if self.test_credentials():
-            self.switch_to_search_panel()
+        # Layout
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        vbox.Add(self.title, flag=wx.EXPAND | wx.BOTTOM, border=2)
+        vbox.Add(self.text, flag=wx.EXPAND)
+        self.SetSizer(vbox)
 
-    def test_credentials(self):
-        if any(k not in self.credentials for k in ['username', 'password']):
-            return False
-        g = Github(self.credentials['username'], self.credentials['password'])
-        status,data = g.user.orgs.get()
-        if status != 200:
-            print('bad credentials in store')
-            return False
-        self.orgs = [o['login'] for o in data]
-        return True
+    def enter(self, _):
+        self.title.SetForegroundColour(wx.BLUE)
+        self.text.SetForegroundColour(wx.BLUE)
 
-    def switch_to_search_panel(self):
-        self.login_panel.Destroy()
-        self.search_panel = SearchPanel(self,
-                                        orgs=self.orgs,
-                                        credentials=self.credentials)
-        self.sizer.Add(self.search_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
-        self.sizer.Layout()
+    def leave(self, _):
+        self.title.SetForegroundColour(wx.BLACK)
+        self.text.SetForegroundColour(wx.BLACK)
+
+    def on_click(self, event):
+        import webbrowser
+        webbrowser.open(self.result['html_url'])
+
+    def first_line(self, body):
+        return body.split('\n')[0].strip() or '(no body)'
 
 if __name__ == '__main__':
     app = wx.App(False)
