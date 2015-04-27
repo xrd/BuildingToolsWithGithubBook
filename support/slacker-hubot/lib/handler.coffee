@@ -37,11 +37,7 @@ exports.prHandler = ( robot, req, res ) ->
                         secureHash = getSecureHash( rawBody )
                         signatureKey = "x-hub-signature"
                         webhookProvidedHash = req.headers[ signatureKey ] if req?.headers
-                        console.log "WebHook Hash: #{webhookProvidedHash}"
-                        console.log "secureHash: #{secureHash}"
-                        console.log "URL: #{url}"
                         secureCompare = require 'secure-compare'
-                
                         if secureCompare( "sha1=#{secureHash}", webhookProvidedHash ) and url
                                 room = "general"
                                 robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )

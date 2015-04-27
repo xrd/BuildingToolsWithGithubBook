@@ -1562,7 +1562,7 @@ because middleware loaded first gets first access to incoming data,
 and once the body parser has processed our body content, we no longer
 can access the original content. We need access to the raw body
 content, and there is no way to install our own middleware which would
-provide it inside our Probot exntesion when a PR request is received
+provide it inside our Probot extension when a PR request is received
 on the router.
 
 What options do we have then? Well, fortunately, every bit of our
@@ -1639,6 +1639,66 @@ from GitHub. Our new tests will look like this:
 ...
 --------------
 
+Our implementation breaks out tests, so we will need to modify the
+cost to use the `rawBody` attribute on the request object, break it
+apart from the payload key-value pair, URI decode it, and then if all
+that works, parse the JSON and start the verification process. Our
+tests describe all this for us. The new `prHandler` method looks like
+this:
+
+[source,coffeescript]
+--------------
+...
+exports.prHandler = ( robot, req, res ) ->
+        
+        rawBody = req.rawBody
+        body = rawBody.split( '=' ) if rawBody
+        payloadData = body[1] if body and body.length == 2
+        if payloadData
+                decodedJson = decodeURIComponent payloadData
+                pr = JSON.parse decodedJson
+                
+                if pr and pr.pull_request
+                        url = pr.pull_request.url
+                        secureHash = getSecureHash( rawBody )
+                        signatureKey = "x-hub-signature"
+                        webhookProvidedHash = req.headers[ signatureKey ] if req?.headers
+                        console.log "WebHook Hash: #{webhookProvidedHash}"
+                        console.log "secureHash: #{secureHash}"
+                        console.log "URL: #{url}"
+                        secureCompare = require 'secure-compare'
+                
+                        if secureCompare( "sha1=#{secureHash}", webhookProvidedHash ) and url
+                                room = "general"
+                                robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
+                                        .get() (err, response, body) ->
+                                                sendPrRequest( robot, body, room, url ) unless err
+                        else
+                                console.log "Invalid secret or no URL specified"
+                else
+                        console.log "No pull request in here"
+                        
+        res.send "OK\n"
+
+...
+--------------
+
+When all is said and done, is verifying the signature even worth it?
+If we are not hosting our Probot on a service which handles our router
+requests over HTTPS, this HMAC verification could be compromised. And,
+given the issues with maintaining our own copy of the Hubot code in
+order to permit the validation inside our Hubot extension, it might be
+best to ignore the validation header. The worst case, as our extension
+is written now, would be that an attacker could fake a pull request
+notification, and falsely engage chat room users around it. If the PR
+the attacker used was fake, it might confuse our Probot, but no real
+harm would be done. If they used an existing real PR, an attacker
+could trick our Probot into adding data to the PR, adding confusion in
+the comments about who accepted the review request. We won't solve that 
+potential problem with this code, but you can imagine adding code to
+our Probot that handles a case like this (for example, by checking
+first to see if someone was already tagged on the PR, and ignoring
+successive incoming webhooks associated with that PR). 
 
 ===== Responding to the PR Request
 
