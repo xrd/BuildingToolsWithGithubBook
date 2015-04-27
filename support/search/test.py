@@ -4,6 +4,7 @@ import wx, subprocess, os
 from agithub import Github
 from config import credentials
 from collections import defaultdict
+import webbrowser
 from pprint import pprint
 
 # Change this to use an Enterprise installation
@@ -53,14 +54,14 @@ class LoginPanel(wx.Panel):
 
 class SearchResult(wx.Panel):
     def __init__(self, *args, **kwargs):
-        result = kwargs.pop('result', defaultdict(str))
+        self.result = kwargs.pop('result', defaultdict(str))
         self.callback = kwargs.pop('onclick', None)
         wx.Panel.__init__(self, *args, **kwargs)
 
-        self.Bind(wx.EVT_LEFT_UP, self.OnClick)
+        self.Bind(wx.EVT_LEFT_UP, self.onClick)
 
-        titlestr = result['title']
-        textstr = self.firstLine(result['body'])
+        titlestr = self.result['title']
+        textstr = self.firstLine(self.result['body'])
 
         vbox = wx.BoxSizer(wx.VERTICAL)
         title = wx.StaticText(self, label=titlestr)
@@ -73,9 +74,9 @@ class SearchResult(wx.Panel):
 
         self.SetSizer(vbox)
 
-    def OnClick(self, event):
-        if callable(self.callback):
-            self.callback(event)
+    def onClick(self, event):
+        pprint(self.result)
+        webbrowser.open(self.result['html_url'])
 
     def firstLine(self, body):
         return body.split('\n')[0].strip() or '(no body)'
