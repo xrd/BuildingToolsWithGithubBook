@@ -39,7 +39,7 @@ class LoginPanel(wx.Panel):
                   flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
 
         sizer.AddGrowableCol(1)
-        self.SetSizerAndFit(sizer)
+        self.SetSizer(sizer)
 
     def doLogin(self):
         u = self.userBox.GetValue()
@@ -60,23 +60,25 @@ class SearchResult(wx.Panel):
         self.Bind(wx.EVT_LEFT_UP, self.OnClick)
 
         titlestr = result['title']
-        textstr = result['body'] or u''
-        print(titlestr, textstr)
+        textstr = self.firstLine(result['body'])
 
         vbox = wx.BoxSizer(wx.VERTICAL)
         title = wx.StaticText(self, label=titlestr)
         titleFont = wx.Font(16, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         title.SetFont(titleFont)
-        text = wx.StaticText(self, label=textstr, style=wx.ST_ELLIPSIZE_END)
+        text = wx.StaticText(self, label=textstr)
 
         vbox.Add(title, flag=wx.EXPAND | wx.BOTTOM, border=2)
         vbox.Add(text, flag=wx.EXPAND)
 
-        self.SetSizerAndFit(vbox)
+        self.SetSizer(vbox)
 
     def OnClick(self, event):
         if callable(self.callback):
             self.callback(event)
+
+    def firstLine(self, body):
+        return body.split('\n')[0].strip() or '(no body)'
 
 class SearchResultsPanel(wx.PyScrolledWindow):
     def __init__(self, *args, **kwargs):
@@ -85,13 +87,10 @@ class SearchResultsPanel(wx.PyScrolledWindow):
 
         vbox = wx.BoxSizer(wx.VERTICAL)
         for r in results:
-            pprint(r)
-            vbox.Add(SearchResult(self, result=r))
+            vbox.Add(SearchResult(self, result=r), flag=wx.TOP|wx.BOTTOM, border=8)
 
-        self.SetSizerAndFit(vbox)
-
-        self.SetScrollbars(0, 10, 0, 2000)
-        self.SetScrollRate(1,1)
+        self.SetSizer(vbox)
+        self.SetScrollbars(0, 4, 0, 0)
         
 class SearchPanel(wx.Panel):
     def __init__(self, *args, **kwargs):
@@ -104,11 +103,13 @@ class SearchPanel(wx.Panel):
         searchButton.Bind(wx.EVT_BUTTON, self.DoSearch)
         self.searchTerm.Bind(wx.EVT_TEXT_ENTER, self.DoSearch)
 
-        # Sizers
-        self.vbox = wx.BoxSizer(wx.VERTICAL)
+        # Arrange the query box and "search" button horizontally
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         hbox.Add(self.searchTerm, 1, wx.EXPAND)
         hbox.Add(searchButton, 0, wx.EXPAND | wx.LEFT, 5)
+
+        # Stack the search group and the results panel vertically
+        self.vbox = wx.BoxSizer(wx.VERTICAL)
         self.vbox.Add(hbox, 0, wx.EXPAND)
         
         self.SetSizer(self.vbox)
@@ -121,7 +122,6 @@ class SearchPanel(wx.Panel):
 
     def setResults(self, results):
         if self.scrollPanel:
-            self.vbox.Remove(self.scrollPanel)
             self.scrollPanel.Destroy()
         self.scrollPanel = SearchResultsPanel(self, -1, results=results)
         # self.scrollPanel.SetBackgroundColour(wx.RED)
