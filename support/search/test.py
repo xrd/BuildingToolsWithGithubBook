@@ -145,7 +145,7 @@ class SearchPanel(wx.Panel):
         wx.Panel.__init__(self, *args, **kwargs)
 
         # Create controls
-        self.scrollPanel = None
+        self.results_panel = None
         self.orgChoice = wx.Choice(self, choices=self.orgs, style=wx.CB_SORT)
         self.searchTerm = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
         self.searchTerm.SetFocus()
@@ -171,12 +171,27 @@ class SearchPanel(wx.Panel):
         org = self.orgChoice.GetString(self.orgChoice.GetCurrentSelection())
         g = Github(self.Parent.credentials['username'], self.Parent.credentials['password'])
         code,data = g.search.issues.get(q="user:{} {}".format(org, term))
-        results = data['items']
+        if code != 200:
+            self.display_error(code, data)
+        else:
+            self.display_results(data['items'])
 
-        if self.scrollPanel:
-            self.scrollPanel.Destroy()
-        self.scrollPanel = SearchResultsPanel(self, -1, results=results)
-        self.vbox.Add(self.scrollPanel, 1, wx.EXPAND | wx.TOP, 5)
+    def display_error(self, code, data):
+        if self.results_panel:
+            self.results_panel.Destroy()
+        str = ''.join('\n\n{}'.format(e['message']) for e in data['errors'])
+        self.results_panel = wx.StaticText(self, label=str)
+        self.results_panel.SetForegroundColour((200,0,0))
+        self.vbox.Add(self.results_panel, 1, wx.EXPAND | wx.TOP, 5)
+        self.vbox.Layout()
+        width = self.results_panel.GetSize().x
+        self.results_panel.Wrap(width)
+
+    def display_results(self, results):
+        if self.results_panel:
+            self.results_panel.Destroy()
+        self.results_panel = SearchResultsPanel(self, -1, results=results)
+        self.vbox.Add(self.results_panel, 1, wx.EXPAND | wx.TOP, 5)
         self.vbox.Layout()
 
 class SearchFrame(wx.Frame):
