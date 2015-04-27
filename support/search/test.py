@@ -45,7 +45,7 @@ class LoginPanel(wx.Panel):
         self.userLabel = wx.StaticText(self, label='Username:')
         self.userBox = wx.TextCtrl(self)
         self.passLabel = wx.StaticText(self, label='Password (or token):')
-        self.passBox = wx.TextCtrl(self, style=wx.TE_PASSWORD)
+        self.passBox = wx.TextCtrl(self)#, style=wx.TE_PASSWORD)
         self.login = wx.Button(self, label='Login')
         self.Bind(wx.EVT_BUTTON, lambda x: self.doLogin(), self.login)
 
@@ -121,37 +121,43 @@ class SearchResultsPanel(wx.PyScrolledWindow):
         
 class SearchPanel(wx.Panel):
     def __init__(self, *args, **kwargs):
+        self.orgs = kwargs.pop('orgs', [])
         wx.Panel.__init__(self, *args, **kwargs)
 
+        # Create controls
         self.scrollPanel = None
+        # orgLabel = wx.StaticText(self, label="Organization:")
+        self.orgChoice = wx.Choice(self, choices=self.orgs, style=wx.CB_SORT)
         self.searchTerm = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
         searchButton = wx.Button(self, label="Search")
 
+        # Bind events
         searchButton.Bind(wx.EVT_BUTTON, self.DoSearch)
         self.searchTerm.Bind(wx.EVT_TEXT_ENTER, self.DoSearch)
 
-        # Arrange the query box and "search" button horizontally
+        # Layout: arrange org selection, query box, and search button horizontally
         hbox = wx.BoxSizer(wx.HORIZONTAL)
-        hbox.Add(self.searchTerm, 1, wx.EXPAND)
+        # hbox.Add(orgLabel, 0, wx.EXPAND | wx.RIGHT, 5)
+        hbox.Add(self.orgChoice, 0, wx.EXPAND)
+        hbox.Add(self.searchTerm, 1, wx.EXPAND | wx.LEFT, 5)
         hbox.Add(searchButton, 0, wx.EXPAND | wx.LEFT, 5)
 
-        # Stack the search group and the results panel vertically
+        # Layout: stack everything vertically, leaving room for the results
         self.vbox = wx.BoxSizer(wx.VERTICAL)
-        self.vbox.Add(hbox, 0, wx.EXPAND)
+        self.vbox.Add(hbox, 0, wx.EXPAND | wx.TOP, 10)
         
         self.SetSizer(self.vbox)
 
     def DoSearch(self, event):
         term = self.searchTerm.GetValue()
+        org = self.orgChoice.GetString(self.orgChoice.GetCurrentSelection())
         g = Github(self.Parent.credentials['username'], self.Parent.credentials['password'])
-        code,result = g.search.issues.get(q=term)
-        self.setResults(result['items'])
+        code,data = g.search.issues.get(q="user:{} {}".format(org, term))
+        results = data['items']
 
-    def setResults(self, results):
         if self.scrollPanel:
             self.scrollPanel.Destroy()
         self.scrollPanel = SearchResultsPanel(self, -1, results=results)
-        # self.scrollPanel.SetBackgroundColour(wx.RED)
         self.vbox.Add(self.scrollPanel, 1, wx.EXPAND | wx.TOP, 5)
         self.vbox.Layout()
 
@@ -163,6 +169,7 @@ class SearchFrame(wx.Frame):
         wx.Frame.__init__(self, *args, **kwargs)
 
         self.credentials = {}
+        self.orgs = []
         self.sizer = wx.BoxSizer(wx.VERTICAL)
 
         # Set up a menu. This is mainly for "Cmd-Q" behavior on OSX
@@ -172,12 +179,9 @@ class SearchFrame(wx.Frame):
         menuBar.Append(filemenu, '&File')
         self.SetMenuBar(menuBar)
 
-        # Two client panels
+        # Start with a login UI
         self.login_panel = LoginPanel(self, onlogin=lambda u,p: self.login(u, p))
-        self.sizer.Add(self.login_panel, 1, flag=wx.EXPAND | wx.ALL, border=20)
-        self.search_panel = SearchPanel(self)
-        self.sizer.Add(self.search_panel, 1, flag=wx.EXPAND | wx.ALL, border=20)
-        self.sizer.Hide(self.search_panel)
+        self.sizer.Add(self.login_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
 
         # Try to pre-load credentials from Git's cache
         self.credentials = credentials()
@@ -188,9 +192,10 @@ class SearchFrame(wx.Frame):
         self.Show()
 
     def switchToSearchPanel(self):
-        self.sizer.Hide(self.login_panel)
-        self.sizer.Show(self.search_panel)
-        self.Layout()
+        self.login_panel.Destroy()
+        self.search_panel = SearchPanel(self, orgs=self.orgs)
+        self.sizer.Add(self.search_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
+        self.sizer.Layout()
 
     def login(self, username, password):
         self.credentials['username'] = username
@@ -202,10 +207,11 @@ class SearchFrame(wx.Frame):
         if 'username' not in self.credentials or 'password' not in self.credentials:
             return False
         g = Github(self.credentials['username'], self.credentials['password'])
-        status,data = g.issues.get()
+        status,data = g.user.orgs.get()
         if status != 200:
             print('bad credentials in store')
             return False
+        self.orgs = [o['login'] for o in data]
         return True
 
 if __name__ == '__main__':
