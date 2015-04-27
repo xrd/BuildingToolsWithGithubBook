@@ -3,7 +3,6 @@
 import wx
 from agithub import Github
 from collections import defaultdict
-import webbrowser
 from pprint import pprint
 
 # Change this to use an Enterprise installation
@@ -30,12 +29,19 @@ def credentials():
                          stdout=subprocess.PIPE,
                          stdin=subprocess.PIPE,
                          stderr=subprocess.PIPE)
-    stdout,stderr = p.communicate('host=github.com\n\n')
+    stdout,stderr = p.communicate('host={}\n\n'.format(GITHUB_HOST))
     for line in stdout.split('\n')[:-1]:
         k,v = line.split('=')
         creds[k] = v
     return creds
 
+def open_in_browser(url):
+    """
+    Open a URL in the default web browser.
+    """
+    import webbrowser
+    webbrowser.open(url)
+    
 class LoginPanel(wx.Panel):
     def __init__(self, *args, **kwargs):
         self.callback = kwargs.pop('onlogin', None)
@@ -43,11 +49,14 @@ class LoginPanel(wx.Panel):
         sizer = wx.GridBagSizer(3,3)
 
         self.userLabel = wx.StaticText(self, label='Username:')
-        self.userBox = wx.TextCtrl(self)
+        self.userBox = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
         self.passLabel = wx.StaticText(self, label='Password (or token):')
-        self.passBox = wx.TextCtrl(self)
+        self.passBox = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
         self.login = wx.Button(self, label='Login')
-        self.Bind(wx.EVT_BUTTON, lambda x: self.doLogin(), self.login)
+        
+        self.login.Bind(wx.EVT_BUTTON, self.do_login)
+        self.userBox.Bind(wx.EVT_TEXT_ENTER, self.do_login)
+        self.passBox.Bind(wx.EVT_TEXT_ENTER, self.do_login)
 
         self.error = wx.StaticText(self, label='')
         self.error.SetForegroundColour((200,0,0))
@@ -68,7 +77,7 @@ class LoginPanel(wx.Panel):
         sizer.AddGrowableCol(1)
         self.SetSizer(sizer)
 
-    def doLogin(self):
+    def do_login(self, _):
         u = self.userBox.GetValue()
         p = self.passBox.GetValue()
         g = Github(u, p)
@@ -81,17 +90,16 @@ class LoginPanel(wx.Panel):
 class SearchResult(wx.Panel):
     def __init__(self, *args, **kwargs):
         self.result = kwargs.pop('result', defaultdict(str))
-        self.callback = kwargs.pop('onclick', None)
         wx.Panel.__init__(self, *args, **kwargs)
 
-        self.Bind(wx.EVT_LEFT_UP, self.onClick)
+        self.Bind(wx.EVT_LEFT_UP, self.on_click)
 
         titlestr = self.result['title']
-        textstr = self.firstLine(self.result['body'])
+        textstr = self.first_line(self.result['body'])
+        titleFont = wx.Font(16, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
 
         vbox = wx.BoxSizer(wx.VERTICAL)
         title = wx.StaticText(self, label=titlestr)
-        titleFont = wx.Font(16, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         title.SetFont(titleFont)
         text = wx.StaticText(self, label=textstr)
 
@@ -100,11 +108,11 @@ class SearchResult(wx.Panel):
 
         self.SetSizer(vbox)
 
-    def onClick(self, event):
+    def on_click(self, event):
         pprint(self.result)
-        webbrowser.open(self.result['html_url'])
+        open_in_browser(self.result['html_url'])
 
-    def firstLine(self, body):
+    def first_line(self, body):
         return body.split('\n')[0].strip() or '(no body)'
 
 class SearchResultsPanel(wx.PyScrolledWindow):
@@ -134,8 +142,8 @@ class SearchPanel(wx.Panel):
         searchButton = wx.Button(self, label="Search")
 
         # Bind events
-        searchButton.Bind(wx.EVT_BUTTON, self.DoSearch)
-        self.searchTerm.Bind(wx.EVT_TEXT_ENTER, self.DoSearch)
+        searchButton.Bind(wx.EVT_BUTTON, self.do_search)
+        self.searchTerm.Bind(wx.EVT_TEXT_ENTER, self.do_search)
 
         # Layout: arrange org selection, query box, and search button horizontally
         hbox = wx.BoxSizer(wx.HORIZONTAL)
@@ -150,7 +158,7 @@ class SearchPanel(wx.Panel):
         
         self.SetSizer(self.vbox)
 
-    def DoSearch(self, event):
+    def do_search(self, event):
         term = self.searchTerm.GetValue()
         org = self.orgChoice.GetString(self.orgChoice.GetCurrentSelection())
         g = Github(self.Parent.credentials['username'], self.Parent.credentials['password'])
@@ -182,18 +190,18 @@ class SearchFrame(wx.Frame):
         self.SetMenuBar(menuBar)
 
         # Start with a login UI
-        self.login_panel = LoginPanel(self, onlogin=lambda u,p: self.login(u, p))
+        self.login_panel = LoginPanel(self, onlogin=self.login)
         self.sizer.Add(self.login_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
 
         # Try to pre-load credentials from Git's cache
         self.credentials = credentials()
-        if self.testCredentials():
-            self.switchToSearchPanel()
+        if self.test_credentials():
+            self.switch_to_search_panel()
 
         self.SetSizer(self.sizer)
         self.Show()
 
-    def switchToSearchPanel(self):
+    def switch_to_search_panel(self):
         self.login_panel.Destroy()
         self.search_panel = SearchPanel(self, orgs=self.orgs)
         self.sizer.Add(self.search_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
@@ -202,10 +210,10 @@ class SearchFrame(wx.Frame):
     def login(self, username, password):
         self.credentials['username'] = username
         self.credentials['password'] = password
-        if self.testCredentials():
-            self.switchToSearchPanel()
+        if self.test_credentials():
+            self.switch_to_search_panel()
 
-    def testCredentials(self):
+    def test_credentials(self):
         if any(k not in self.credentials for k in ['username', 'password']):
             return False
         g = Github(self.credentials['username'], self.credentials['password'])
