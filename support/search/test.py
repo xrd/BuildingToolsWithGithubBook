@@ -45,7 +45,7 @@ class LoginPanel(wx.Panel):
         self.userLabel = wx.StaticText(self, label='Username:')
         self.userBox = wx.TextCtrl(self)
         self.passLabel = wx.StaticText(self, label='Password (or token):')
-        self.passBox = wx.TextCtrl(self)#, style=wx.TE_PASSWORD)
+        self.passBox = wx.TextCtrl(self)
         self.login = wx.Button(self, label='Login')
         self.Bind(wx.EVT_BUTTON, lambda x: self.doLogin(), self.login)
 
@@ -113,6 +113,8 @@ class SearchResultsPanel(wx.PyScrolledWindow):
         wx.PyScrolledWindow.__init__(self, *args, **kwargs)
 
         vbox = wx.BoxSizer(wx.VERTICAL)
+        if not results:
+            vbox.Add(wx.StaticText(self, label="(no results)"), 0, wx.EXPAND)
         for r in results:
             vbox.Add(SearchResult(self, result=r), flag=wx.TOP|wx.BOTTOM, border=8)
 
@@ -144,7 +146,7 @@ class SearchPanel(wx.Panel):
 
         # Layout: stack everything vertically, leaving room for the results
         self.vbox = wx.BoxSizer(wx.VERTICAL)
-        self.vbox.Add(hbox, 0, wx.EXPAND | wx.TOP, 10)
+        self.vbox.Add(hbox, 0, wx.EXPAND)
         
         self.SetSizer(self.vbox)
 
@@ -204,7 +206,7 @@ class SearchFrame(wx.Frame):
             self.switchToSearchPanel()
 
     def testCredentials(self):
-        if 'username' not in self.credentials or 'password' not in self.credentials:
+        if any(k not in self.credentials for k in ['username', 'password']):
             return False
         g = Github(self.credentials['username'], self.credentials['password'])
         status,data = g.user.orgs.get()
