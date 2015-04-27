@@ -135,7 +135,8 @@ class SearchResultsPanel(wx.PyScrolledWindow):
         if not results:
             vbox.Add(wx.StaticText(self, label="(no results)"), 0, wx.EXPAND)
         for r in results:
-            vbox.Add(SearchResult(self, result=r), flag=wx.TOP|wx.BOTTOM, border=8)
+            vbox.Add(SearchResult(self, result=r),
+                     flag=wx.TOP|wx.BOTTOM, border=8)
         self.SetSizer(vbox)
         self.SetScrollbars(0, 4, 0, 0)
         
@@ -169,7 +170,8 @@ class SearchPanel(wx.Panel):
     def do_search(self, event):
         term = self.searchTerm.GetValue()
         org = self.orgChoice.GetString(self.orgChoice.GetCurrentSelection())
-        g = Github(self.Parent.credentials['username'], self.Parent.credentials['password'])
+        g = Github(self.Parent.credentials['username'],
+                   self.Parent.credentials['password'])
         code,data = g.search.issues.get(q="user:{} {}".format(org, term))
         if code != 200:
             self.display_error(code, data)
