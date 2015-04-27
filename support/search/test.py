@@ -143,6 +143,7 @@ class SearchResultsPanel(wx.PyScrolledWindow):
 class SearchPanel(wx.Panel):
     def __init__(self, *args, **kwargs):
         self.orgs = kwargs.pop('orgs', [])
+        self.credentials = kwargs.pop('credentials', {})
         wx.Panel.__init__(self, *args, **kwargs)
 
         # Create controls
@@ -170,8 +171,7 @@ class SearchPanel(wx.Panel):
     def do_search(self, event):
         term = self.searchTerm.GetValue()
         org = self.orgChoice.GetString(self.orgChoice.GetCurrentSelection())
-        g = Github(self.Parent.credentials['username'],
-                   self.Parent.credentials['password'])
+        g = Github(self.credentials['username'], self.credentials['password'])
         code,data = g.search.issues.get(q="user:{} {}".format(org, term))
         if code != 200:
             self.display_error(code, data)
@@ -243,7 +243,9 @@ class SearchFrame(wx.Frame):
 
     def switch_to_search_panel(self):
         self.login_panel.Destroy()
-        self.search_panel = SearchPanel(self, orgs=self.orgs)
+        self.search_panel = SearchPanel(self,
+                                        orgs=self.orgs,
+                                        credentials=self.credentials)
         self.sizer.Add(self.search_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
         self.sizer.Layout()
 
