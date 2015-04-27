@@ -87,22 +87,34 @@ class SearchResult(wx.Panel):
         # Bind click events on this whole control
         self.Bind(wx.EVT_LEFT_UP, self.on_click)
 
+        # Hover effect
+        self.Bind(wx.EVT_ENTER_WINDOW, self.enter)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.leave)
+
         # Extract strings and create controls
         titlestr = self.result['title']
         textstr = self.first_line(self.result['body'])
-        title = wx.StaticText(self, label=titlestr)
-        text = wx.StaticText(self, label=textstr)
+        self.title = wx.StaticText(self, label=titlestr)
+        self.text = wx.StaticText(self, label=textstr)
 
         # Adjust the title font
         titleFont = wx.Font(16, wx.FONTFAMILY_DEFAULT,
                             wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
-        title.SetFont(titleFont)
+        self.title.SetFont(titleFont)
 
         # Layout
         vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(title, flag=wx.EXPAND | wx.BOTTOM, border=2)
-        vbox.Add(text, flag=wx.EXPAND)
+        vbox.Add(self.title, flag=wx.EXPAND | wx.BOTTOM, border=2)
+        vbox.Add(self.text, flag=wx.EXPAND)
         self.SetSizer(vbox)
+
+    def enter(self, _):
+        self.title.SetForegroundColour(wx.BLUE)
+        self.text.SetForegroundColour(wx.BLUE)
+
+    def leave(self, _):
+        self.title.SetForegroundColour(wx.BLACK)
+        self.text.SetForegroundColour(wx.BLACK)
 
     def on_click(self, event):
         import webbrowser
