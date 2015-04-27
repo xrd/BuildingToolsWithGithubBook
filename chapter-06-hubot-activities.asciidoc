@@ -1616,7 +1616,29 @@ the raw body which we can use when verifying the HMAC signature.
 ...
 --------------
 
-We now
+We now need to adjust our tests to fit this new requirement. We need
+to prime the pump with a request object that has this rawBody inside
+it, and we should properly encode the content using
+`encodeURIComponent` to match the format in which it will be appearing
+from GitHub. Our new tests will look like this:
+
+[source,coffeescript]
+--------------
+...
+                it "should allow calls with the secret and url", (done) ->
+                        payload =  '{ "pull_request" : { "url" : "http://pr/1" } }'
+                        bodyPayload = "payload=#{encodeURIComponent(payload)}"
+                        req = { rawBody: bodyPayload,
+                        headers: { "x-hub-signature" : "sha1=dc827de09c5b57da3ee54dcfc8c5d09a3d3e6109" } }
+
+                        Handler.prHandler( robot, req, res )
+                        expect( robot.messageRoom ).toHaveBeenCalled()
+                        expect( httpSpy ).toHaveBeenCalled()
+                        expect( res.send ).toHaveBeenCalled()
+                        done()
+...
+--------------
+
 
 ===== Responding to the PR Request
 
