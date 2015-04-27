@@ -93,6 +93,8 @@ class SearchResult(wx.Panel):
 
         # Extract strings and create controls
         titlestr = self.result['title']
+        if self.result['state'] != 'open':
+            titlestr += ' ({})'.format(self.result['state'])
         textstr = self.first_line(self.result['body'])
         self.title = wx.StaticText(self, label=titlestr)
         self.text = wx.StaticText(self, label=textstr)
