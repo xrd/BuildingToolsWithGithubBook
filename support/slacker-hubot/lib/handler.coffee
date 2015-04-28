@@ -74,9 +74,7 @@ exports.usernameMatchesGitHubUsernames = ( name, collaborators ) ->
                         rv = true
         rv
 
-exports.accept = ( req, res ) ->
-
-        console.log "rawBody: #{req.rawData}"
+exports.accept = ( res ) ->
 
         msg = exports.decodePullRequest( _PR_URL )
         username = exports.getUsernameFromResponse( res )
