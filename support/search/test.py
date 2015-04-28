@@ -40,19 +40,9 @@ class SearchFrame(wx.Frame):
 
         self.credentials = {}
         self.orgs = []
-        self.sizer = wx.BoxSizer(wx.VERTICAL)
 
-        # Set up a menu. This is mainly for "Cmd-Q" behavior on OSX
-        filemenu = wx.Menu()
-        filemenu.Append(wx.ID_EXIT, '&Exit')
-        menuBar = wx.MenuBar()
-        menuBar.Append(filemenu, '&File')
-        self.SetMenuBar(menuBar)
-
-        # Start with a login UI
-        self.login_panel = LoginPanel(self, onlogin=self.login)
-        self.sizer.Add(self.login_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
-        self.SetSizer(self.sizer)
+        self.create_controls()
+        self.do_layout()
 
         # Try to pre-load credentials from Git's cache
         self.credentials = git_credentials()
@@ -61,7 +51,23 @@ class SearchFrame(wx.Frame):
 
         self.Show()
 
-    def login(self, username, password):
+    def create_controls(self):
+        # Set up a menu. This is mainly for "Cmd-Q" behavior on OSX
+        filemenu = wx.Menu()
+        filemenu.Append(wx.ID_EXIT, '&Exit')
+        menuBar = wx.MenuBar()
+        menuBar.Append(filemenu, '&File')
+        self.SetMenuBar(menuBar)
+
+        # Start with a login UI
+        self.login_panel = LoginPanel(self, onlogin=self.login_accepted)
+
+    def do_layout(self):
+        self.sizer = wx.BoxSizer(wx.VERTICAL)
+        self.sizer.Add(self.login_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
+        self.SetSizer(self.sizer)
+
+    def login_accepted(self, username, password):
         self.credentials['username'] = username
         self.credentials['password'] = password
         if self.test_credentials():
@@ -90,9 +96,11 @@ class LoginPanel(wx.Panel):
     def __init__(self, *args, **kwargs):
         self.callback = kwargs.pop('onlogin', None)
         wx.Panel.__init__(self, *args, **kwargs)
-        sizer = wx.GridBagSizer(3,3)
 
-        # Create controls
+        self.create_controls()
+        self.do_layout()
+
+    def create_controls(self):
         self.userLabel = wx.StaticText(self, label='Username:')
         self.userBox = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
         self.passLabel = wx.StaticText(self, label='Password (or token):')
@@ -106,21 +114,29 @@ class LoginPanel(wx.Panel):
         self.userBox.Bind(wx.EVT_TEXT_ENTER, self.do_login)
         self.passBox.Bind(wx.EVT_TEXT_ENTER, self.do_login)
 
-        # Layout in grid pattern
-        sizer.Add(self.userLabel, pos=(0,0),
-                  flag=wx.TOP | wx.LEFT | wx.BOTTOM, border=5)
-        sizer.Add(self.userBox, pos=(0,1),
-                  flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
-        sizer.Add(self.passLabel, pos=(1,0),
-                  flag=wx.TOP | wx.LEFT | wx.BOTTOM, border=5)
-        sizer.Add(self.passBox, pos=(1,1),
-                  flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
-        sizer.Add(self.login, pos=(2,0), span=(1,2),
-                  flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
-        sizer.Add(self.error, pos=(3,0), span=(1,2),
-                  flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
-        sizer.AddGrowableCol(1)
-        self.SetSizer(sizer)
+    def do_layout(self):
+        # Grid arrangement for controls
+        grid = wx.GridBagSizer(3,3)
+        grid.Add(self.userLabel, pos=(0,0),
+                 flag=wx.TOP | wx.LEFT | wx.BOTTOM, border=5)
+        grid.Add(self.userBox, pos=(0,1),
+                 flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+        grid.Add(self.passLabel, pos=(1,0),
+                 flag=wx.TOP | wx.LEFT | wx.BOTTOM, border=5)
+        grid.Add(self.passBox, pos=(1,1),
+                 flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+        grid.Add(self.login, pos=(2,0), span=(1,2),
+                 flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+        grid.Add(self.error, pos=(3,0), span=(1,2),
+                 flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+        grid.AddGrowableCol(1)
+
+        # Center the grid vertically
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        vbox.Add((0,0), 1)
+        vbox.Add(grid, 0, wx.EXPAND)
+        vbox.Add((0,0), 1)
+        self.SetSizer(vbox)
 
     def do_login(self, _):
         u = self.userBox.GetValue()
@@ -138,24 +154,28 @@ class SearchPanel(wx.Panel):
         self.credentials = kwargs.pop('credentials', {})
         wx.Panel.__init__(self, *args, **kwargs)
 
-        # Create controls
+        self.create_controls()
+        self.do_layout()
+
+    def create_controls(self):
         self.results_panel = None
         self.orgChoice = wx.Choice(self, choices=self.orgs, style=wx.CB_SORT)
         self.searchTerm = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
         self.searchTerm.SetFocus()
-        searchButton = wx.Button(self, label="Search")
+        self.searchButton = wx.Button(self, label="Search")
 
         # Bind events
-        searchButton.Bind(wx.EVT_BUTTON, self.do_search)
+        self.searchButton.Bind(wx.EVT_BUTTON, self.do_search)
         self.searchTerm.Bind(wx.EVT_TEXT_ENTER, self.do_search)
 
-        # Layout: arrange choice, query box, and button horizontally
+    def do_layout(self):
+        # Arrange choice, query box, and button horizontally
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         hbox.Add(self.orgChoice, 0, wx.EXPAND)
         hbox.Add(self.searchTerm, 1, wx.EXPAND | wx.LEFT, 5)
-        hbox.Add(searchButton, 0, wx.EXPAND | wx.LEFT, 5)
+        hbox.Add(self.searchButton, 0, wx.EXPAND | wx.LEFT, 5)
 
-        # Layout: stack everything vertically, leaving room for the results
+        # Dock everything to the top, leaving room for the results
         self.vbox = wx.BoxSizer(wx.VERTICAL)
         self.vbox.Add(hbox, 0, wx.EXPAND)
         self.SetSizer(self.vbox)
@@ -199,7 +219,7 @@ class SearchResultsPanel(wx.PyScrolledWindow):
             vbox.Add(wx.StaticText(self, label="(no results)"), 0, wx.EXPAND)
         for r in results:
             vbox.Add(SearchResult(self, result=r),
-                     flag=wx.TOP|wx.BOTTOM, border=8)
+                     flag=wx.TOP | wx.BOTTOM, border=8)
         self.SetSizer(vbox)
         self.SetScrollbars(0, 4, 0, 0)
         
@@ -208,14 +228,10 @@ class SearchResult(wx.Panel):
         self.result = kwargs.pop('result', {})
         wx.Panel.__init__(self, *args, **kwargs)
 
-        # Bind click events on this whole control
-        self.Bind(wx.EVT_LEFT_UP, self.on_click)
+        self.create_controls()
+        self.do_layout()
 
-        # Hover effect
-        self.Bind(wx.EVT_ENTER_WINDOW, self.enter)
-        self.Bind(wx.EVT_LEAVE_WINDOW, self.leave)
-
-        # Extract strings and create controls
+    def create_controls(self):
         titlestr = self.result['title']
         if self.result['state'] != 'open':
             titlestr += ' ({})'.format(self.result['state'])
@@ -228,7 +244,12 @@ class SearchResult(wx.Panel):
                             wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         self.title.SetFont(titleFont)
 
-        # Layout
+        # Bind click and hover events on this whole control
+        self.Bind(wx.EVT_LEFT_UP, self.on_click)
+        self.Bind(wx.EVT_ENTER_WINDOW, self.enter)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.leave)
+
+    def do_layout(self):
         vbox = wx.BoxSizer(wx.VERTICAL)
         vbox.Add(self.title, flag=wx.EXPAND | wx.BOTTOM, border=2)
         vbox.Add(self.text, flag=wx.EXPAND)
