@@ -290,7 +290,6 @@ class Robot
     _logger = @logger
 
     app.use (req, res, next) =>
-      _logger.info "Added middleware"
       req.rawBody = ''
       req.on 'data', (chunk) ->
         req.rawBody += chunk

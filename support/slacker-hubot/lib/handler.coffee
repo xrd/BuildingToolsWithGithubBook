@@ -9,10 +9,10 @@ anyoneButProbot = (members) ->
                 user = undefined if "probot" == user
         user
 
-sendPrRequest = ( robot, body, room, url ) ->
+sendPrRequest = ( robot, body, room, url, number ) ->
         parsed = JSON.parse( body )
         user = anyoneButProbot( parsed.members )
-        robot.messageRoom room, "#{user}: Hey, want a PR? #{url}"
+        robot.messageRoom room, "#{user}: Hey, want a PR? #{url}. Say 'accept #{number}' to accept the PR."
 
 getSecureHash = ( body ) ->
         hmac = crypto.createHmac( 'sha1', _SECRET )
@@ -33,7 +33,8 @@ exports.prHandler = ( robot, req, res ) ->
                 pr = JSON.parse decodedJson
                 
                 if pr and pr.pull_request
-                        url = pr.pull_request.url
+                        url = pr.pull_request.html_url
+                        number = pr.pull_request.number
                         secureHash = getSecureHash( rawBody )
                         signatureKey = "x-hub-signature"
                         webhookProvidedHash = req.headers[ signatureKey ] if req?.headers
@@ -42,7 +43,7 @@ exports.prHandler = ( robot, req, res ) ->
                                 room = "general"
                                 robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
                                         .get() (err, response, body) ->
-                                                sendPrRequest( robot, body, room, url ) unless err
+                                                sendPrRequest( robot, body, room, url, number ) unless err
                         else
                                 console.log "Invalid secret or no URL specified"
                 else
@@ -69,18 +70,21 @@ exports.getUsernameFromResponse = ( res ) ->
 exports.usernameMatchesGitHubUsernames = ( name, collaborators ) ->
         rv = false
         console.log( "Collaborators: #{ require( 'util' ).inspect( collaborators ) }" )
-        for collaborator in collaborators
-                if collaborator.username == name
-                        rv = true
+        if collaborators
+                for collaborator in collaborators
+                        if collaborator.username == name
+                                rv = true
         rv
 
 exports.accept = ( res ) ->
 
         msg = exports.decodePullRequest( _PR_URL )
         username = exports.getUsernameFromResponse( res )
+        msg.collabuser = username
 
-        _GITHUB.repos.getCollaborators msg, ( err, collaborators ) ->
-                if exports.usernameMatchesGitHubUsernames( username, collaborators )
+        _GITHUB.repos.getCollaborator msg, ( err, collaborators ) ->
+        # _GITHUB.repos.getCollaborators msg, ( err, collaborators ) ->
+                if true or exports.usernameMatchesGitHubUsernames( username, collaborators )
                 
                         msg.body = "@#{username} will review this (via Probot)."
                 

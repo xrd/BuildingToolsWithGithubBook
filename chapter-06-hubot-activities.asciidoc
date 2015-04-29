@@ -536,11 +536,8 @@ reviews when a new pull request is created. We will use the GitHub
 Activities API to subscribe to pull request events. When our Hubot
 becomes aware that a pull request needs review, it will randomly
 assign a user in the chat room to do the review and then ask that user
-if they want to accept the challenge. Once a user has accepted, we
-will schedule a check in to make sure they have updated or reviewed
-the pull request, and if no action has been taken, our Hubot will
-invite the designated reviewer to rescind and then select another
-reviewer. 
+if they want to accept the challenge. If they accept, we will note
+that in the pull request comments. 
 
 ===== Extension Boilerplate
 
@@ -587,9 +584,10 @@ syntax where you specify a behavior as the first parameter to an `it`
 function, and as a second parameter, a function which is run as the
 test itself. Jasmine manages running each `it` call and displays a
 nice output of passing and failed tests at the end of your
-run. Jasmine tests are JavaScript tests, but the latest versions of
-Jasmine support tests written in CoffeeScript. To match our Hubot, let's write
-them in CoffeeScript as well. We need to put our tests inside a
+run. Jasmine tests are typically written in JavaScript, but the latest versions of
+Jasmine support tests also written in CoffeeScript. Hubot is written
+in CoffeeScript, so let's write our tests in CoffeeScript as
+well. We need to put our tests inside a 
 directory called "spec" and make sure our filename ends with
 `.spec.coffee`. Let's use `spec/pr-delegator.spec.coffee` as the
 complete filename. Jasmine expects spec files to have `.spec.` at the
@@ -843,7 +841,7 @@ middle. If you want to see the result of that variable, type `echo
 $CONFIG` and you'll notice the snippet `... "url":
 "https://inqry-chatbot.herokuapp.com/pr" ...` properly interpolated.
 
-Here we use the heroku api URL as our webhook endpoint. This means we
+Here we use the Heroku API URL as our webhook endpoint. This means we
 need to have things hosted on Heroku for the webhook to talk to our
 HTTP server properly. We can do some things (like connecting the Probot to
 the Slack service) from behind a firewall and have it talk with other
@@ -852,10 +850,9 @@ chat client is running on a publicly available server.
 
 Be careful to make sure you use the `content_type` set to "form" (which
 is the default, so you could leave it blank). Setting this to `json` will
-make it difficult to retrieve the body inside your Probot when the
-post request is received.
-
-We will need to make sure all requests are real requests from GitHub
+make it difficult to retrieve the raw body inside your Probot when the
+post request is received and validate the request using a secure
+digest. We want to make sure all requests are real requests from GitHub
 and not a cracker attempting to maliciously inject themselves into our
 conversations. To protect from this possible situation, we verify each
 request back into GitHub by using the secret generated
@@ -2123,12 +2120,12 @@ Our handler then can implement the three methods.
 [source,coffeescript]
 -------------
 ...
-
 exports.getUsernameFromResponse = ( res ) ->
         res.message.user.name
 
 exports.usernameMatchesGitHubUsernames = ( name, collaborators ) ->
         rv = false
+        console.log( "Collaborators: #{ require( 'util' ).inspect( collaborators ) }" )
         for collaborator in collaborators
                 if collaborator.username == name
                         rv = true
