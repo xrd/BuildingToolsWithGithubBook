@@ -28,17 +28,21 @@ describe "#probot", ->
                 secret = "ABCDEF"
                 robot = undefined
                 res = undefined
-                # req = { body: '{ "pull_request" : { "url" : "http://pr/1" } }', headers: { 'HTTP_X_HUB_SIGNATURE' : "ABC" } }
 
                 json = '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }'
                 httpSpy = jasmine.createSpy( 'http' ).and.returnValue(
                         { get: () -> ( func ) ->
                                 func( undefined, undefined, json ) } )
+                brainSpy = {
+                        set: jasmine.createSpy( 'setBrain' ),
+                        get: jasmine.createSpy( 'getBrain' ).and.returnValue( "https://github.com/xrd/testing_repository/pull/1" )
+                        }
                 
                 beforeEach ->
                         robot = {
                                 messageRoom: jasmine.createSpy( 'messageRoom' )
                                 http: httpSpy
+                                brain: brainSpy
                                 }
                                 
                         res = { send: jasmine.createSpy( 'send' ) }
@@ -53,10 +57,11 @@ describe "#probot", ->
                         done()
 
                 it "should allow calls with the secret and url", (done) ->
-                        payload =  '{ "pull_request" : { "url" : "http://pr/1" } }'
+                        payload =  '{ "pull_request" : { "html_url" : "https://github.com/xrd/testing_repository/pull/1" } }'
                         bodyPayload = "payload=#{encodeURIComponent(payload)}"
+                        payloadSignature = Handler.getSecureHash( bodyPayload )
                         req = { rawBody: bodyPayload,
-                        headers: { "x-hub-signature" : "sha1=dc827de09c5b57da3ee54dcfc8c5d09a3d3e6109" } }
+                        headers: { "x-hub-signature" : "sha1=#{payloadSignature}" } }
 
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).toHaveBeenCalled()
@@ -70,12 +75,13 @@ describe "#probot", ->
                         issues = { createComment: createComment }
                         authenticate = jasmine.createSpy( 'ghAuthenticate' )
                         responder = { reply: jasmine.createSpy( 'reply' ),
+                        match: [ undefined, "1" ],
                         send: jasmine.createSpy( 'send' ),
                         message: { user: { name: "Chris Dawson" } } }
                         collaborators = [ { username: "Chris Dawson" }, { username: "Ben Straub" } ]
-                        getCollaborators = jasmine.createSpy( 'getCollaborators' ).and.
+                        getCollaborator = jasmine.createSpy( 'getCollaborator' ).and.
                                 callFake( ( msg, cb ) -> cb( false, collaborators ) )
-                        repos = { getCollaborators: getCollaborators }
+                        repos = { getCollaborator: getCollaborator }
 
                         beforeEach ->
                                 githubBinding = { authenticate: authenticate, issues: issues, repos: repos }
@@ -87,11 +93,11 @@ describe "#probot", ->
                                 Handler.prHandler( robot, req, responder )
 
                         it "should tag the PR on GitHub if the user accepts", (done) ->
-                                Handler.accept( responder )
+                                Handler.accept( robot, responder )
                                 expect( authenticate ).toHaveBeenCalled()
                                 expect( createComment ).toHaveBeenCalled() 
                                 expect( responder.reply ).toHaveBeenCalled()
-                                expect( repos.getCollaborators ).toHaveBeenCalled()
+                                expect( repos.getCollaborator ).toHaveBeenCalled()
                                 done()
 
                         it "should not tag the PR on GitHub if the user declines", (done) ->
@@ -105,7 +111,7 @@ describe "#probot", ->
                                 url = "https://github.com/xrd/testing_repository/pull/1"
                                 msg = Handler.decodePullRequest( url )
                                 expect( msg.user ).toEqual( "xrd" )
-                                expect( msg.repository ).toEqual( "testing_repository" )
+                                expect( msg.repo ).toEqual( "testing_repository" )
                                 expect( msg.number ).toEqual( "1" )
                                 done()
                                 

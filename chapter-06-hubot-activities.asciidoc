@@ -1596,8 +1596,6 @@ the raw body which we can use when verifying the HMAC signature.
       res.setHeader "X-Powered-By", "hubot/#{@name}"
       next()
 
-    _logger = @logger
-
     app.use (req, res, next) =>
       req.rawBody = ''
       req.on 'data', (chunk) ->
@@ -1605,6 +1603,8 @@ the raw body which we can use when verifying the HMAC signature.
       next()
 
     app.use express.basicAuth user, pass if user and pass
+    app.use express.query()
+
 ...
 --------------
 
@@ -1718,10 +1718,30 @@ messages. We chose the `respond` method, but there is another method
 is preceeded by the Hubot name, so only messages that look like
 `probot: accept` or `@probot decline` or `/ accept` (if the Hubot name alias is
 enabled) will be processed by our Probot. We could have used `hear`
-but in our case we are processing a simple single word response, and
+but in our case we are processing a simple response, and
 without a clear direction for the message, it would be difficult to
 always make sure we were interpreting the message in the correct
-context. `respond` makes more sense here.
+context. `respond` makes more sense here. 
+
+We are asking someone to accept a pull request and there is a possible
+situation where two could come in within a very short period of
+time. For this reason, it probably makes sense for us to indicate the
+number for the pull request and communicate to users that they should
+reply with a string like `accept 112`. The Probot can then interpret
+this to mean they are accepting PR #112 and not the one which the
+probot invited John to respond to ten seconds later. 
+
+If we do this, our probot does need to save the state of pull request
+invitations. Fortunately, there is an extremely easy way to do this
+using the "brain" of our hubot. The brain is a persistent store,
+typically backed by Redis, into which you can keep any type of
+information. You simply reference the `robot.brain` and use methods
+like `get` or `set` to retrieve and store information. The `set`
+method takes any key and any value but note that the Hubot brain does
+not do much with your value if that value happens to be a complex
+object; if you want to properly serialize something beyond a flat
+value, you should probably call `JSON.stringify` on the object to
+maintain full control over the roundtrip storing and retrieval.
 
 Let's modify our Probot handler to deal with accepting or declining
 responses (and change our extension file to deal with this new

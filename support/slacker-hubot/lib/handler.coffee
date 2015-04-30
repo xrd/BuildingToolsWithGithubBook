@@ -16,7 +16,7 @@ sendPrRequest = ( robot, body, room, url, number ) ->
         pr = exports.decodePullRequest( url )
         robot.brain.set( pr.number, url )
 
-getSecureHash = ( body ) ->
+exports.getSecureHash = ( body ) ->
         hmac = crypto.createHmac( 'sha1', _SECRET )
         hmac.setEncoding( 'hex' )
         hmac.write( body )
@@ -37,7 +37,7 @@ exports.prHandler = ( robot, req, res ) ->
                 if pr and pr.pull_request
                         url = pr.pull_request.html_url
                         number = pr.pull_request.number
-                        secureHash = getSecureHash( rawBody )
+                        secureHash = exports.getSecureHash( rawBody )
                         signatureKey = "x-hub-signature"
                         webhookProvidedHash = req.headers[ signatureKey ] if req?.headers
                         secureCompare = require 'secure-compare'
