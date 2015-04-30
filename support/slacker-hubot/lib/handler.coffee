@@ -12,7 +12,9 @@ anyoneButProbot = (members) ->
 sendPrRequest = ( robot, body, room, url, number ) ->
         parsed = JSON.parse( body )
         user = anyoneButProbot( parsed.members )
-        robot.messageRoom room, "#{user}: Hey, want a PR? #{url}. Say 'accept #{number}' to accept the PR."
+        robot.messageRoom room, "#{user}: Hey, want a PR? #{url}. Enter 'accept #{number}' to accept the PR."
+        pr = exports.decodePullRequest( url )
+        robot.brain.set( pr.number, url )
 
 getSecureHash = ( body ) ->
         hmac = crypto.createHmac( 'sha1', _SECRET )
@@ -56,12 +58,14 @@ _PR_URL = undefined
 
 exports.decodePullRequest = (url) ->
         rv = {}
+        console.log "Decoding url: #{url}"
         if url
                 chunks = url.split "/"
                 if chunks.length == 7
                         rv.user = chunks[3]
-                        rv.repository = chunks[4]
+                        rv.repo = chunks[4]
                         rv.number = chunks[6]
+                console.log "RV: #{require( 'util' ).inspect( rv )}"
         rv
 
 exports.getUsernameFromResponse = ( res ) ->
@@ -76,11 +80,17 @@ exports.usernameMatchesGitHubUsernames = ( name, collaborators ) ->
                                 rv = true
         rv
 
-exports.accept = ( res ) ->
+exports.accept = ( robot, res ) ->
 
-        msg = exports.decodePullRequest( _PR_URL )
+        prNumber = res.match[1]
+        console.log "Accepted request for #{prNumber}"
+        url = robot.brain.get( prNumber )
+
+        msg = exports.decodePullRequest( url )
         username = exports.getUsernameFromResponse( res )
         msg.collabuser = username
+
+        console.log "Username: #{username}"
 
         _GITHUB.repos.getCollaborator msg, ( err, collaborators ) ->
         # _GITHUB.repos.getCollaborators msg, ( err, collaborators ) ->
@@ -90,9 +100,9 @@ exports.accept = ( res ) ->
                 
                         _GITHUB.issues.createComment msg, ( err, data ) ->
                                 unless err
-                                        res.reply "Thanks, I've noted that in a PR comment!"
+                                        res.reply "Thanks, I've noted that in a PR comment. Review the PR here: "
                                 else
-                                        res.reply "Something went wrong, I could not tag you on the PR comment"
+                                        res.reply "Something went wrong, I could not tag you on the PR comment: #{require('util').inspect( err )}"
                 
 exports.decline = ( res ) ->
         res.reply "OK, I'll find someone else."

@@ -287,8 +287,6 @@ class Robot
       res.setHeader "X-Powered-By", "hubot/#{@name}"
       next()
 
-    _logger = @logger
-
     app.use (req, res, next) =>
       req.rawBody = ''
       req.on 'data', (chunk) ->

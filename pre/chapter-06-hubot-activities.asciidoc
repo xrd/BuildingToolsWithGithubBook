@@ -1414,15 +1414,24 @@ the raw body which we can use when verifying the HMAC signature.
 [source,coffeescript]
 --------------
 ...
-[language="coffeescript", sha="a6ea10f:support/slacker-hubot/robot-hacked.coffee", lines="286..303"]
+[language="coffeescript", sha="29111e8:support/slacker-hubot/robot-hacked.coffee", lines="286..298"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 ...
 --------------
 
-We now need to adjust our tests to fit this new requirement. We need
-to prime the pump with a request object that has this rawBody inside
+Express middleware are really simple: they are a callback which receive a
+request, response and continuation function passed as parameters. We
+register a listener when data content (the body) is propagated, and
+then add the body content to a variable on the request object. When
+the request object is passed into our handler for pull requests within
+our Probot, we have the raw data prefilled. The `next()` function is
+used to indicate to the middleware host that the next middleware can
+proceed. 
+
+We now need to adjust our tests to fit this new requirement. We prime
+the pump with a request object that has this `rawBody` inside 
 it, and we should properly encode the content using
 `encodeURIComponent` to match the format in which it will be appearing
 from GitHub. Our new tests will look like this:
@@ -1437,7 +1446,7 @@ snippet~~~~~
 ...
 --------------
 
-Our implementation breaks out tests, so we will need to modify the
+Our implementation breaks our tests, so we will need to modify the
 cost to use the `rawBody` attribute on the request object, break it
 apart from the payload key-value pair, URI decode it, and then if all
 that works, parse the JSON and start the verification process. Our
