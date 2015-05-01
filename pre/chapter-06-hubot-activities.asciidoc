@@ -1820,7 +1820,7 @@ Our handler then can implement the three methods.
 [source,coffeescript]
 -------------
 ...
-[language="json", sha="2ef7a103e2233:support/slacker-hubot/lib/handler.coffee", lines="66..92"]
+[language="json", sha="13c8af6:support/slacker-hubot/lib/handler.coffee", lines="83..92"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

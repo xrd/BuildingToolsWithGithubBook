@@ -92,7 +92,6 @@ exports.accept = ( robot, res ) ->
         console.log "Username: #{username}"
 
         _GITHUB.repos.getCollaborator msg, ( err, collaborators ) ->
-        # _GITHUB.repos.getCollaborators msg, ( err, collaborators ) ->
                 if true or exports.usernameMatchesGitHubUsernames( username, collaborators )
                 
                         msg.body = "@#{username} will review this (via Probot)."

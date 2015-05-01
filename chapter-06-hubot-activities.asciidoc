@@ -2157,24 +2157,6 @@ Our handler then can implement the three methods.
 [source,coffeescript]
 -------------
 ...
-                        rv.repo = chunks[4]
-                        rv.number = chunks[6]
-                console.log "RV: #{require( 'util' ).inspect( rv )}"
-        rv
-
-exports.getUsernameFromResponse = ( res ) ->
-        res.message.user.name
-
-exports.usernameMatchesGitHubUsernames = ( name, collaborators ) ->
-        rv = false
-        console.log( "Collaborators: #{ require( 'util' ).inspect( collaborators ) }" )
-        if collaborators
-                for collaborator in collaborators
-                        if collaborator.username == name
-                                rv = true
-        rv
-
-exports.accept = ( robot, res ) ->
 
         prNumber = res.match[1]
         console.log "Accepted request for #{prNumber}"
@@ -2184,6 +2166,7 @@ exports.accept = ( robot, res ) ->
         username = exports.getUsernameFromResponse( res )
         msg.collabuser = username
 
+        console.log "Username: #{username}"
 ...
 -------------
 
