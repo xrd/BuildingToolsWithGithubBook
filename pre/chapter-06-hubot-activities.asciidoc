@@ -1781,22 +1781,16 @@ repository collaborator list.
 
 So, let's grab the list of users from our room using the GitHub API
 binding we passed into our `setApiToken` call. The API binding
-provides a method called `getCollaborators` inside the `repos`
-namespace which we can use to retrieve the collaborators. It takes as
-the first parameter a 
+provides a method called `getCollaborator` inside the `repos`
+namespace which we can use to verify that a username is on the list of
+collaborators. It takes as the first parameter a 
 message which is used to specify the repository and owner, and then a
-callback when the request has completed. This message takes a page
-option and a page size, which can be used if the number of
-collaborators numbers more than 100. To reduce complexity in our
-sample code, we are only going to retrieve the first 100 and not deal
-with paging. Our code should retrieve the list of collaborators on the
-repository, and then when the list is returned, assure the username on
-GitHub and inside Slack are the same. If these conditions are met,
-then our Probot should tag the pull request with a comment confirming
-and message the room.
+callback when the request has completed. If the callback returns
+without an error code, then our Probot should tag the pull request
+with a comment confirming and message the room.
 
-Our new test reflects usage of the `repos.getCollaborators` call. In
-our test setup block we mocking out the call to `getCollaborators`
+Our new test reflects usage of the `repos.getCollaborator` call. In
+our test setup block we mocking out the call to `getCollaborator`
 and using Jasmine to "spy on" it so we can assure it was called later
 in our actual test.  Our setup is more beefy than before, but we are
 following the same patterns of generating spies to watch methods, and
@@ -1805,7 +1799,7 @@ message inside the response object into the one created in our setup
 block so that we can use it inside all of our sub-tests, rather than
 creating a new object for each test inside the test body. We also
 create some fake collaborator data which we return using our faked
-callback for the response from the `getCollaborators` call. We will
+callback for the response from the `getCollaborator` call. We will
 need to adjust this when we see what the real data looks like, but for
 now this matches our handler code and creates a clear recorded
 expectation of what we need and that we will be handling this data in
@@ -1814,7 +1808,7 @@ a certain way.
 [source,coffeescript]
 -------------
 ...
-[language="json", sha="3172087:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="71..89"]
+[language="json", sha="2ef7a103e2233:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="72..109"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1826,87 +1820,10 @@ Our handler then can implement the three methods.
 [source,coffeescript]
 -------------
 ...
-[language="json", sha="9d17800:support/slacker-hubot/lib/handler.coffee", lines="66..92"]
+[language="json", sha="2ef7a103e2233:support/slacker-hubot/lib/handler.coffee", lines="66..92"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 ...
 -------------
 
-
-
-===== Checking in on the review
-
-* Check status of PR
-* Ask someone else to do it?
-
-===== Inviting others
-
-==== Limitations
-
-* If multiple PRs come in
-* Rebooting and lobotomizing our brain
-
-Hubot-PR Brain
-
-* current prs {} (key is URL)
-* current users: `brain.users`
-
-* use notification or repo scope
-* x-poll-header: use this to know when to retry. Obey this.
-  ** Do clients support this	     	      	 
-* Look for "reason" payload. Indicates why the notification was sent
-* API
-  ** list GET
-  ** list for repo GET
-  ** mark as read PUT
-  ** mark as read for all in repo PUT
-  ** view thread GET
-  ** mark thread as read PATCH
-  ** set thread subscription   
-     ** booleans: subscribed or ignored
-  ** delete thread subscription DELETE
-
-Starring
-
-* List stargazers (ro)
-* list repositories being starred (ro)
-* check if you are starring repo (ro)
-  ** If yes, 204, else 404. No body!
-* star repo (write)
-  ** Put request, content-length should be zero.
-* unstar repo (write)
-  ** Delete request
-
-Watching
-
-Clarify what the difference is between watching and notifications. 
-
-  ** Show difference in data and how you get there.
-  ** Subscribe to a repo and then interact with a repo @mention.
-     Is this simply legacy support and redundant?
-	/repos/:owner/:repo/subscribers (list watchers)
-	/users/:username/subscriptions (list repos being watched)
-	/user/subscriptions (my watch list)
-	/repos/:owner/:repo/subscription (get repo subscription)
-  ** if yes, JSON
-  ** if no, 404
-     PUT /repos/:owner/:repo/subscription
-  ** modify subscription
-     DELETE /repos/:owner/:repo/subscription
-  ** delete subscription
-
-Events
-Optimized for etag, which improves polling. No impact on rate limits if 
-
-All events have similar structure
-
-    ** type: Event
-    ** public: true/false
-    ** payload hash
-      ** repo
-      ** actor
-      ** org
-    ** dates
-
-Feeds

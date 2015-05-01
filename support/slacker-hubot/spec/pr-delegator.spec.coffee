@@ -61,7 +61,7 @@ describe "#probot", ->
                         bodyPayload = "payload=#{encodeURIComponent(payload)}"
                         payloadSignature = Handler.getSecureHash( bodyPayload )
                         req = { rawBody: bodyPayload,
-                        headers: { "x-hub-signature" : "sha1=#{payloadSignature}" } }
+                        headers: { "x-hub-signature" : "sha1=#{payloadSignature}"o } }
 
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).toHaveBeenCalled()

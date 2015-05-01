@@ -73,7 +73,6 @@ exports.getUsernameFromResponse = ( res ) ->
 
 exports.usernameMatchesGitHubUsernames = ( name, collaborators ) ->
         rv = false
-        console.log( "Collaborators: #{ require( 'util' ).inspect( collaborators ) }" )
         if collaborators
                 for collaborator in collaborators
                         if collaborator.username == name
