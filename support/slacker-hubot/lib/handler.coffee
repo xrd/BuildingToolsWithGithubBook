@@ -58,49 +58,34 @@ _PR_URL = undefined
 
 exports.decodePullRequest = (url) ->
         rv = {}
-        console.log "Decoding url: #{url}"
         if url
                 chunks = url.split "/"
                 if chunks.length == 7
                         rv.user = chunks[3]
                         rv.repo = chunks[4]
                         rv.number = chunks[6]
-                console.log "RV: #{require( 'util' ).inspect( rv )}"
         rv
 
 exports.getUsernameFromResponse = ( res ) ->
         res.message.user.name
 
-exports.usernameMatchesGitHubUsernames = ( name, collaborators ) ->
-        rv = false
-        if collaborators
-                for collaborator in collaborators
-                        if collaborator.username == name
-                                rv = true
-        rv
-
 exports.accept = ( robot, res ) ->
 
         prNumber = res.match[1]
-        console.log "Accepted request for #{prNumber}"
         url = robot.brain.get( prNumber )
 
         msg = exports.decodePullRequest( url )
         username = exports.getUsernameFromResponse( res )
         msg.collabuser = username
 
-        console.log "Username: #{username}"
-
         _GITHUB.repos.getCollaborator msg, ( err, collaborators ) ->
-                if true or exports.usernameMatchesGitHubUsernames( username, collaborators )
+                msg.body = "@#{username} will review this (via Probot)."
                 
-                        msg.body = "@#{username} will review this (via Probot)."
-                
-                        _GITHUB.issues.createComment msg, ( err, data ) ->
-                                unless err
-                                        res.reply "Thanks, I've noted that in a PR comment. Review the PR here: "
-                                else
-                                        res.reply "Something went wrong, I could not tag you on the PR comment: #{require('util').inspect( err )}"
+                _GITHUB.issues.createComment msg, ( err, data ) ->
+                        unless err
+                                res.reply "Thanks, I've noted that in a PR comment. Review the PR here: "
+                        else
+                                res.reply "Something went wrong, I could not tag you on the PR comment: #{require('util').inspect( err )}"
                 
 exports.decline = ( res ) ->
         res.reply "OK, I'll find someone else."
