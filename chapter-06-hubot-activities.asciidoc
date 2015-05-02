@@ -568,7 +568,7 @@ accepting a review request, or those that decline. Our extension
 script should be in the `scripts` directory and named
 `pr-delegator.coffee`:
 
-[source,json]
+[source,coffeescript]
 -----
 module.exports = (robot) ->
         robot.respond /accept/i, (res) ->
@@ -1389,13 +1389,35 @@ the HTTP Jasmine spy on the `get` function, so we will want to remove
 that inside our tests. We will need to provide a new function called
 `users` to the Probot inside the faked brain we created
 
-The data when we inspect the user object looks like this:
+Unfortunately, things don't just work when we change our code to this:
 
+[source,coffeescript]
+-----------
+...
+users = robot.brain.users()
+sendPrRequest( robot, users, room, url, number )
+...
+-----------
+
+It is likely that what we got back from the Slack API and what Hubot
+stores inside its brain for users are functionally the same
+information, but structural stored very differently. How can we
+investigate whether this assumption is correct? 
+NodeJS has a standard library module called `util` which includes
+useful utility functions, as you might expect from the name.
+One of them is `inspect` which will dig into an object and
+create a pretty printed view. If we use this module and `console.log`
+we can see the full contents of a live response object passed into our
+`accept` function. A line like the following `console.log( require(
+'util' ).inspect( users ) )` displays the following:
+
+[source,json]
+-------------
 { U04FVFE97: 
    { id: 'U04FVFE97',
      name: 'ben',
      real_name: 'Ben Straub',
-     email_address: 'ben@straub.cc' },
+     email_address: 'xxx' },
   U038PNUP2: 
    { id: 'U038PNUP2',
      name: 'probot',
@@ -1405,33 +1427,26 @@ The data when we inspect the user object looks like this:
    { id: 'U04624M1A',
      name: 'teddyhyde',
      real_name: 'Teddy Hyde',
-     email_address: 'chris@teddyhyde.com' },
+     email_address: 'xxx' },
   U030YMBJY: 
    { id: 'U030YMBJY',
      name: 'xrd',
      real_name: 'Chris Dawson',
-     email_address: 'cdawson@webiphany.com' },
+     email_address: 'xxx' },
   USLACKBOT: 
    { id: 'USLACKBOT',
      name: 'slackbot',
      real_name: 'Slack Bot',
      email_address: null } }
+-------------
 
-So, we need to refactor our inputs to the test to take an associative
-array instead of an array, and then we need a function to flatten it
-out.
-
-[source,coffeescript]
------
-...
-                users = { CDAWSON: { name: "Chris Dawson" }, BSTRAUB: { name: "Ben Straub" } }
-                brainSpy = {
-                        users: jasmine.createSpy( 'getUsers' ).and.returnValue( users ),
-                        set: jasmine.createSpy( 'setBrain' ),
-...
------
-
-Then, flatten out the user associative array and 
+Ah, we were right: the Slack API returns an array while this is an
+associate array (called a hash in other languages). So, we need to
+refactor our inputs to the test to take an associative array instead
+of an array, and then we need a function to flatten it 
+out (after that our code will work the same as before). We will return
+that when the user calls `robot.brain.users` so add a new spy as the
+`users` key inside our fake robot. 
 
 [source,coffeescript]
 -----
@@ -1440,6 +1455,29 @@ Then, flatten out the user associative array and
                 brainSpy = {
                         users: jasmine.createSpy( 'getUsers' ).and.returnValue( users ),
                         set: jasmine.createSpy( 'setBrain' ),
+...
+-----
+
+Inside our implementation code, flatten out the user associative array
+and find the user inside the new flattened array.
+
+[source,coffeescript]
+-----
+...
+flattenUsers = (users) ->
+        rv = []
+        for x in Object.keys( users )
+               rv.push users[x]
+        rv 
+
+anyoneButProbot = ( users ) ->
+        user = undefined
+        flattened = flattenUsers( users )
+        while not user
+                user = flattened[ parseInt( Math.random() * flattened.length ) ].name
+                user = undefined if "probot" == user
+        user
+
 ...
 -----
 
@@ -1469,12 +1507,13 @@ If we retrieve the JSON from a POST, it will look something like this
       "comments_url" :
       "https://api.github.com/repos/xrd/isagh/issues/13/comments",
       "url" : "https://api.github.com/repos/xrd/isagh/pulls/13",
+      "html_url" : "https://github.com/xrd/isagh/pulls/13",
       }
       ...
 }
 -------
 
-Most importantly, you see a URL which we will use inside our Probot
+Most importantly, you see a URL (the `html_url` more specifically) which we will use inside our Probot
 message to the user. Retrieving the json and parsing it is trivial
 inside our Probot.
 
@@ -2057,21 +2096,12 @@ to us when we get a respond callback might have it in there. The
 `respond` method provided by the Hubot API is documented mostly by 
 way of the example scripts which come with hubot. There is very little
 information on what the parameter passed to your callback looks
-like. How can we investigate this and determine useful information
-contained there?
-
-NodeJS has a standard library module called `util` which includes
-useful utility functions, as you might expect from the name.
-One of them is `inspect` which will dig into an object and
-create a pretty printed view. If we use this module and `console.log`
-we can see the full contents of a live response object passed into our
-`accept` function. A line like the following `console.log( require(
-'util' ).inspect( res ) )` produces a lot of information that is more
-interesting to our slack adapter than to us. We abbreviate the full
-output here, and show you that it contains information on the 
-user who sent the message to our Probot. We can access this
-information by using `response.message.user.name` if, for example, we
-wanted to retrieve the name of the user.
+like. Let's use the `util` library to inspect the data and print it to
+the console. We abbreviate the full output here, and show you that it
+contains information on the  user who sent the message to our
+Probot. We can access this information by using
+`response.message.user.name` if, for example, we wanted to retrieve
+the name of the user. 
 
 [source,json]
 -----
