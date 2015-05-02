@@ -1040,11 +1040,11 @@ our webhook.
 
 image::images/hubot-recent-deliveries.png[]
 
-These requests all failed; our Probot is not correctly wired
-to handle real HTTP requests from GitHub. But, this does show
-that GitHub is trying to do something when a pull request is
-received. We'll work on getting our handler code working and then issue
-another PR. 
+These requests all failed; our Probot is not correctly configured
+to handle real HTTP requests from GitHub (and we have not published
+our Probot onto a public endpoint). But, this does show that GitHub is
+trying to do something when a pull request is received. We'll work on
+getting our handler code working and then issue another PR. 
 
 ==== Handling PR Notifications as Post Requests over HTTP
 
@@ -1387,8 +1387,9 @@ If we retrieve the JSON from a POST, it will look something like this
     "pull_request": {
       "locked" : false,
       "comments_url" :
-      "https://api.github.com/repos/xrd/isagh/issues/13/comments",
-      "url" : "https://api.github.com/repos/xrd/isagh/pulls/13",
+      "https://api.github.com/repos/xrd/test_repository/issues/13/comments",
+      "url" : "https://api.github.com/repos/xrd/test_repository/pulls/13",
+      "html_url" : "https://github.com/xrd/test_repository/pulls/13",
       }
       ...
 }
@@ -1430,7 +1431,7 @@ Our tests are simple, and require that we send in JSON.
                         done()
 
                 it "should allow calls with the secret and url", (done) ->
-                        req = { body: '{ "pull_request" : { "url" : "http://pr/1" }, "secret": "ABCDEF" }' }
+                        req = { body: '{ "pull_request" : { "html_url" : "http://pr/1" }, "secret": "ABCDEF" }' }
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).toHaveBeenCalled()
                         expect( httpSpy ).toHaveBeenCalled()
@@ -1485,7 +1486,7 @@ exports.prHandler = ( robot, req, res ) ->
 
 HMAC cryptography is vulnerable to timing attacks. When you use this
 encryption technique, the time it takes to complete a comparison of
-the computed hash and the sent hash can be used by an attacker to gain
+the computed hash and the sent hash can be the starting point for an attacker to gain 
 forced access to a server. More specifically to JavaScript, when using
 naive comparison operators like `==` you can accidentally provide
 attackers with valuable information. To eliminate this risk, we use a
@@ -1753,7 +1754,7 @@ situation where two could come in within a very short period of
 time. For this reason, it probably makes sense for us to indicate the
 number for the pull request and communicate to users that they should
 reply with a string like `accept 112`. The Probot can then interpret
-this to mean they are accepting PR #112 and not the one which the
+this to mean they are accepting PR #112 and not the other pull request which the
 probot invited John to respond to ten seconds later. 
 
 If we do this, our probot does need to save the state of pull request

@@ -61,7 +61,7 @@ describe "#probot", ->
                         bodyPayload = "payload=#{encodeURIComponent(payload)}"
                         payloadSignature = Handler.getSecureHash( bodyPayload )
                         req = { rawBody: bodyPayload,
-                        headers: { "x-hub-signature" : "sha1=#{payloadSignature}"o } }
+                        headers: { "x-hub-signature" : "sha1=#{payloadSignature}" } }
 
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).toHaveBeenCalled()
@@ -86,7 +86,7 @@ describe "#probot", ->
                         beforeEach ->
                                 githubBinding = { authenticate: authenticate, issues: issues, repos: repos }
                                 github = Handler.setApiToken( githubBinding, "ABCDEF" )
-                                payload =  '{ "pull_request" : { "url" : "http://pr/1" } }'
+                                payload =  '{ "pull_request" : { "html_url" : "http://pr/1" } }'
                                 bodyPayload = "payload=#{encodeURIComponent(payload)}"
                                 req = { rawBody: bodyPayload,
                                 headers: { "x-hub-signature" : "sha1=dc827de09c5b57da3ee54dcfc8c5d09a3d3e6109" } }
