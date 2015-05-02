@@ -1982,7 +1982,6 @@ When we publish into Heroku, we will want to set theses environment variables us
 
 [source,bash]
 -------------
-
 $ heroku config:set PROBOT_API_TOKEN=926a701550d4dfae93250dbdc068cce887531 
 Adding config vars and restarting myapp... done, v12
 PROBOT_API_TOKEN=926a701550d4dfae93250dbdc068cce887531 
@@ -1990,6 +1989,14 @@ PROBOT_API_TOKEN=926a701550d4dfae93250dbdc068cce887531
 $ heroku config:set PROBOT_SECRET=XYZABC 
 Adding config vars and restarting myapp... done, v12
 PROBOT_SECRET=XYZABC 
+-------------
+
+Don't forget that when we run our tests, we will need to specify them as well on the command line.
+
+[source,bash]
+-------------
+PROBOT_SECRET=XYZABC PROBOT_API_TOKEN=926a701550d4dfae93250dbdc068cce887531 node_modules/jasmine-node/bin/jasmine-node --coffee spec/pr-de
+legator.spec.coffee 
 -------------
 
 
