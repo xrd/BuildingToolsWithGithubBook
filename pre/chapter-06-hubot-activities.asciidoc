@@ -2009,13 +2009,25 @@ Adding config vars and restarting myapp... done, v12
 PROBOT_SECRET=XYZABC 
 -------------
 
-Don't forget that when we run our tests, we will need to specify them as well on the command line.
+Don't forget that when we run our tests, we will need to specify the
+environment variables on the command line as well.
 
 [source,bash]
 -------------
 PROBOT_SECRET=XYZABC PROBOT_API_TOKEN=926a701550d4dfae93250dbdc068cce887531 node_modules/jasmine-node/bin/jasmine-node --coffee spec/pr-de
 legator.spec.coffee 
 -------------
+
+===== Final Notes
+
+Our Probot is alive. We went through building a robot which responds
+to us in a chat room, then broke out functionality into a highly
+testable module, and along the way, learned lots about the Hubot API
+and even how to modify (and the drawbacks surrounding) modifying the
+source code to Hubot itself. There is a natural fit to Hubot and the
+GitHub API, and this chapter hopefully demonstrates how easy and fun
+it can be, and how you can powerfully amplify and streamline developer
+processes inside a chat room.
 
 
 
