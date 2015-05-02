@@ -1231,6 +1231,64 @@ To be replaced
 snippet~~~~~
 -----
 
+I now have a confession to make. As I sit in bed writing late into the
+night, I realize I have made a mistake and misread the Hubot
+documentation. As it turns out, Hubot does store a list of users
+inside the "brain." So, all this code written above was wasted work,
+because using `robot.brain.users()` would have given us the same
+result, namely a list of users logged into our slack channel.
+
+I debated removing the entire previous section. But, I thought a
+mistake like this, and the ease in which we can quickly refactor it
+and then fix our tests, proves out the method of writing good quality
+test coverage of our code. So, let's quickly switch to using the
+internal cache of user objects and show how we can fix our code and
+fix our tests. And, the purpose of this chapter is not just to build
+a Probot but to explain how Hubot works, and maintaining a section
+on using the built in HTTP client seemed vital.
+
+Instead of the call to the Slack API, we can replace the code with a
+much simpler call to `robot.brain.users`. Calling into the Slack users
+API takes a callback, but the `brain.users` call does not, which
+simplifies our code. We do check in our tests that we make a call to
+the HTTP Jasmine spy on the `get` function, so we will want to remove
+that inside our tests. We will need to provide a new function called
+`users` to the Probot inside the faked brain we created
+
+The data when we inspect the user object looks like this:
+
+{ U04FVFE97: 
+   { id: 'U04FVFE97',
+     name: 'ben',
+     real_name: 'Ben Straub',
+     email_address: 'ben@straub.cc' },
+  U038PNUP2: 
+   { id: 'U038PNUP2',
+     name: 'probot',
+     real_name: '',
+     email_address: undefined },
+  U04624M1A: 
+   { id: 'U04624M1A',
+     name: 'teddyhyde',
+     real_name: 'Teddy Hyde',
+     email_address: 'chris@teddyhyde.com' },
+  U030YMBJY: 
+   { id: 'U030YMBJY',
+     name: 'xrd',
+     real_name: 'Chris Dawson',
+     email_address: 'cdawson@webiphany.com' },
+  USLACKBOT: 
+   { id: 'USLACKBOT',
+     name: 'slackbot',
+     real_name: 'Slack Bot',
+     email_address: null } }
+
+So, we need to refactor our inputs to the test to take an associative
+array instead of an array, and then we need a function to flatten it
+out.
+
+
+
 ===== Sending PR Data via Webhook
 
 Our wiring is almost complete, so let's actually send real pull
