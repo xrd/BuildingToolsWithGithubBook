@@ -1590,7 +1590,7 @@ this:
 [source,coffeescript]
 --------------
 ...
-[language="coffeescript", sha="e8e44f2:support/slacker-hubot/lib/handler.coffee", lines="26..52"]
+[language="coffeescript", sha="1866181:support/slacker-hubot/lib/handler.coffee", lines="26..52"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

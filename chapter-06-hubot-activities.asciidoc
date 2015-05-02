@@ -1804,7 +1804,7 @@ exports.prHandler = ( robot, req, res ) ->
                 pr = JSON.parse decodedJson
                 
                 if pr and pr.pull_request
-                        url = pr.pull_request.url
+                        url = pr.pull_request.html_url
                         secureHash = getSecureHash( rawBody )
                         signatureKey = "x-hub-signature"
                         webhookProvidedHash = req.headers[ signatureKey ] if req?.headers
