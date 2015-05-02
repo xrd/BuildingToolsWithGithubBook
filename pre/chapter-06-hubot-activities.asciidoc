@@ -1625,9 +1625,17 @@ whoever sent us a message, but now we can actually wire up handling
 the response and adding to the pull request on GitHub based on the
 user who we are interacting with (provided they accepted). 
 
-If they
-decline the request, we should take additional action and ask someone
-else. ???
+If they decline the request, there are a few options for what we could
+do. We could publicly shame the user inside the channel. This seems
+counter to a culture which supports creative individuals like software
+engineers, so let's not do that. We could ask another user in the
+slack channel to help. This is a better option. It will require
+modification to our code, but these modifications don't involve
+anything new inside the Hubot API and are a little tedious to
+explain. If you review the source code for the Probot repository that
+accompanies this chapter hosted on GitHub, you'll see a working
+version of decline that performs this second option. For purposes of
+this chapter, let's just graciously note that the offer was declined.
 
 There are multiple ways in which a Hubot can interact with chat room
 messages. We chose the `respond` method, but there is another method

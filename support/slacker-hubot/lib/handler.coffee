@@ -93,8 +93,7 @@ exports.accept = ( robot, res ) ->
                                 res.reply "Something went wrong, I could not tag you on the PR comment: #{require('util').inspect( err )}"
                 
 exports.decline = ( res ) ->
-        res.reply "OK, I'll find someone else."
-        console.log "Declined!"
+        res.reply "No problem, we'll go through this PR in a bug scrub"
 
 exports.setApiToken = (github, token) ->
         _API_TOKEN = token
