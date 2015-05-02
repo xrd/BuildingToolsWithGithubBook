@@ -1376,7 +1376,7 @@ inside our Probot.
 [source,coffeescript]
 -----
 ...
-[language="coffeescript", sha="b93fe0c:support/slacker-hubot/lib/handler.coffee", lines="25..32"]
+[language="coffeescript", sha="96dee0c:support/slacker-hubot/lib/handler.coffee", lines="25..32"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

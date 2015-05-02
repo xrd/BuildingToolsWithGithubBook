@@ -1523,7 +1523,7 @@ inside our Probot.
 exports.prHandler = ( robot, req, res ) ->
         body = req.body
         pr = JSON.parse body if body
-        url = pr.pull_request.url if pr
+        url = pr.pull_request.html_url if pr
         secret = pr.secret if pr
 
         if secret == _SECRET and url
