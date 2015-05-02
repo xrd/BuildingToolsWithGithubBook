@@ -59,6 +59,21 @@ memes or jokes. There is always a fine line between having fun and
 being disruptive, but Hubot works so hard for you that it seems a
 trifle that it also injects jocular moments into the conversation.
 
+=== What we'll build
+
+* A chat robot which receives pull request events
+* A chat robot  that Invites people in the chat room to comment on a pull request
+* A chat robot that receives information on a secure channel (with a
+  caveat)
+* A chat robot who communicates with an external service (the
+  Slack.com API)
+* A chat robot written in a way that his functionality is fully tested
+* A chat robot where we need to modify the source code to get 100% of
+  our needs
+* A chat robot which can receive simulated inputs and outputs from
+  different "angles"
+* A chat robot which we will host on a major Paas (Heroku)
+
 === Hubot
 
 If you visit hubot.github.com, you are told that "(Hubot) is a
@@ -159,16 +174,19 @@ simple guide will alleviate some of these challenges.
 ==== Creating your Hubot
 
 To build a Hubot you will need a working NodeJS installation, as
-specified in the first chapter.
+specified in the NodeJS appendix.
 
 There are a few pitfalls to avoid when naming your Hubot. First, don't
-name your hubot the same as any of the adapters. More concretely,
-don't call this hubot "slack". And, all Slack chat sites come with
+name your hubot exactly the same as the name of any of the
+adapters. In other words, don't call this hubot "slack". And, all
+Slack chat sites come with 
 their own helper hubot, which is named "slackbot" (you'll see it in
 your site). So, give our Hubot a unique name and call it "Probot". The
 name is configured by the integration (on the Slack  
 side) so you are not able to rename it with the command line switch
-`--name`. You can always change the name later if you feel the need.
+`--name`. You can always change the name later if you feel the need by
+going to the Slack.com site and adjusting the name in the preferences
+for your integration.
 
 [code,bash]
 -----
@@ -488,6 +506,12 @@ inside the scripts directory.
   only when they hear exact phrases or when keywords are found in any
   message, and you don't need to do the grunt work inside your code to
   determine the differences between these communication types.
+* Hubots include an HTTP server. You might need your Hubot to accept
+  requests from additional services beyond the chat service, and Hubot
+  makes it easy to accept these kinds of requests.
+* Hubot has a built in HTTP client. You can easily access HTTP
+  resources within Hubot; many popular extensions to Hubot access a
+  web service when Hubot receives a request.
 * Hubot commands can include parameters. You can tell a Hubot to
   do something multiple times and write a generic function which
   accepts options.
@@ -495,15 +519,13 @@ inside the scripts directory.
   events that are normalized to a common API. Hubots can be programmed
   to interact with these events. For example, Hubots can perform
   actions when a room topic changes or when users leave rooms.
-* Hubots include an HTTP server. You might need your Hubot to accept
-  requests from additional services beyond the chat service, and Hubot
-  makes it easy to accept these kinds of requests.
-* Hubot has a built in HTTP client. You can easily access HTTP
-  resources within Hubot; many popular extensions to Hubot access a
-  web service when Hubot receives a request.
 * Hubots can handle generic errors at the top level. Hubot can be
   programmed with a catch-all error handler so that no matter where
   you code failed, you can catch it without crashing your bot.
+
+Our Probot will use the first five of these features; there are
+examples of the other two features inside the examples script that
+ship with the Hubot source code.
 
 ==== Code reviews via Pull Requests
 
@@ -858,7 +880,10 @@ the end of the file.
 -----
 
 Now if we run our tests, they all pass. If they do, publish our new
-version of the app into Heroku.
+version of the app into Heroku. We'll omit this step in the future,
+but if you want to receive pull requests on the router you have setup,
+remember that you need to publish your files into Heroku so the
+endpoint is public.
 
 [source.bash]
 ------
@@ -951,7 +976,7 @@ update to the three variables at the top of the script to match your
 information. This 
 script is resilient in that even if your auth token were incorrect (or
 had expired) this command will do nothing other than add testing data
-to your test repository, so you can experiement safely. Just be sure
+to your test repository, so you can experiment safely. Just be sure
 to pay attention to whether you see a successful JSON request as shown
 below or an error message. And, as we are going to run this script as
 a command, make it executable using the `chmod` command. 
@@ -1826,4 +1851,5 @@ To be replaced
 snippet~~~~~
 ...
 -------------
+
 
