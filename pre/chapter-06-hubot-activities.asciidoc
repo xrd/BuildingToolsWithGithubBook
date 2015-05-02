@@ -1421,7 +1421,7 @@ GitHub and not an attacker.
 [source,coffeescript]
 -----
 ...
-[language="coffeescript", sha="f7884d9:support/slacker-hubot/lib/handler.coffee", lines="16..31"]
+[language="coffeescript", sha="9df752a:support/slacker-hubot/lib/handler.coffee", lines="16..31"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
