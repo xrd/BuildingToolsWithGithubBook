@@ -1952,4 +1952,13 @@ snippet~~~~~
 ...
 -------------
 
+===== Sanitizing our source code
+
+It is typically bad form to save passwords (or their equivalent, oAuth
+tokens or secrets) inside of source code. Right now we have hard coded
+them into our application inside of the `pr-delegator.coffee` file. We
+could instead retrieve them from the environment of the running
+process with code.
+
+
 

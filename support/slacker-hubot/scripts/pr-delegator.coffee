@@ -1,10 +1,9 @@
 handler = require '../lib/handler'
 
-handler.setSecret "XYZABC"
+handler.setSecret process.env.PROBOT_SECRET # "XYZABC"
 github = require 'github'
 ginst = new github version: '3.0.0'
-handler.setApiToken ginst, "926a501530dc4dae40350dbfaaeb06bccee27537"
-# "oe86d2f7df495be03bf32f67ea7f9ded3978cbf42"
+handler.setApiToken ginst, process.env.PROBOT_API_TOKEN # "926a501530dc4dae40350dbfaaeb06bccee27537"
 
 module.exports = (robot) ->
 
