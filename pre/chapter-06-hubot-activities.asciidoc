@@ -1958,7 +1958,19 @@ It is typically bad form to save passwords (or their equivalent, oAuth
 tokens or secrets) inside of source code. Right now we have hard coded
 them into our application inside of the `pr-delegator.coffee` file. We
 could instead retrieve them from the environment of the running
-process with code.
+process.
+
+[source,coffeescript]
+-------------
+...
+[language="json", sha="13c8af6:support/slacker-hubot/lib/handler.coffee", lines="74..92"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-------------
+
+
 
 
 
