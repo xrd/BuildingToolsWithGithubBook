@@ -1287,6 +1287,28 @@ So, we need to refactor our inputs to the test to take an associative
 array instead of an array, and then we need a function to flatten it
 out.
 
+[source,coffeescript]
+-----
+...
+[language="json", sha="c0cee28:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="36..39"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
+
+Then, flatten out the user associative array and 
+
+[source,coffeescript]
+-----
+...
+[language="json", sha="c0cee28:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="36..39"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
+
 
 
 ===== Sending PR Data via Webhook

@@ -9,7 +9,6 @@ flattenUsers = (users) ->
         rv 
 
 anyoneButProbot = ( users ) ->
-        console.log require( 'util' ).inspect( users )
         user = undefined
         flattened = flattenUsers( users )
         while not user

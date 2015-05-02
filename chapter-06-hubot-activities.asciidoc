@@ -1421,6 +1421,28 @@ So, we need to refactor our inputs to the test to take an associative
 array instead of an array, and then we need a function to flatten it
 out.
 
+[source,coffeescript]
+-----
+...
+                users = { CDAWSON: { name: "Chris Dawson" }, BSTRAUB: { name: "Ben Straub" } }
+                brainSpy = {
+                        users: jasmine.createSpy( 'getUsers' ).and.returnValue( users ),
+                        set: jasmine.createSpy( 'setBrain' ),
+...
+-----
+
+Then, flatten out the user associative array and 
+
+[source,coffeescript]
+-----
+...
+                users = { CDAWSON: { name: "Chris Dawson" }, BSTRAUB: { name: "Ben Straub" } }
+                brainSpy = {
+                        users: jasmine.createSpy( 'getUsers' ).and.returnValue( users ),
+                        set: jasmine.createSpy( 'setBrain' ),
+...
+-----
+
 
 
 ===== Sending PR Data via Webhook
