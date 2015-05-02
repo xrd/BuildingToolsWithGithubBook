@@ -28,12 +28,14 @@ describe "#probot", ->
                 secret = "ABCDEF"
                 robot = undefined
                 res = undefined
-
                 json = '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }'
                 httpSpy = jasmine.createSpy( 'http' ).and.returnValue(
                         { get: () -> ( func ) ->
                                 func( undefined, undefined, json ) } )
+
+                users = { CDAWSON: { name: "Chris Dawson" }, BSTRAUB: { name: "Ben Straub" } }
                 brainSpy = {
+                        users: jasmine.createSpy( 'getUsers' ).and.returnValue( users ),
                         set: jasmine.createSpy( 'setBrain' ),
                         get: jasmine.createSpy( 'getBrain' ).and.returnValue( "https://github.com/xrd/testing_repository/pull/1" )
                         }
@@ -65,7 +67,7 @@ describe "#probot", ->
 
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).toHaveBeenCalled()
-                        expect( httpSpy ).toHaveBeenCalled()
+                        # expect( httpSpy ).toHaveBeenCalled()
                         expect( res.send ).toHaveBeenCalled()
                         done()
 
@@ -78,9 +80,8 @@ describe "#probot", ->
                         match: [ undefined, "1" ],
                         send: jasmine.createSpy( 'send' ),
                         message: { user: { name: "Chris Dawson" } } }
-                        collaborators = [ { username: "Chris Dawson" }, { username: "Ben Straub" } ]
                         getCollaborator = jasmine.createSpy( 'getCollaborator' ).and.
-                                callFake( ( msg, cb ) -> cb( false, collaborators ) )
+                                callFake( ( msg, cb ) -> cb( false, true ) )
                         repos = { getCollaborator: getCollaborator }
 
                         beforeEach ->

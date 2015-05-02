@@ -568,7 +568,7 @@ accepting a review request, or those that decline. Our extension
 script should be in the `scripts` directory and named
 `pr-delegator.coffee`:
 
-[source,json]
+[source,coffeescript]
 -----
 module.exports = (robot) ->
         robot.respond /accept/i, (res) ->
@@ -1365,6 +1365,124 @@ exports.prHandler = ( robot, req, res ) ->
         res.send "OK\n"
 -----
 
+I now have a confession to make. As I sit in bed writing late into the
+night, I realize I have made a mistake and misread the Hubot
+documentation. As it turns out, Hubot does store a list of users
+inside the "brain." So, all this code written above was wasted work,
+because using `robot.brain.users()` would have given us the same
+result, namely a list of users logged into our slack channel.
+
+I debated removing the entire previous section. But, I thought a
+mistake like this, and the ease in which we can quickly refactor it
+and then fix our tests, proves out the method of writing good quality
+test coverage of our code. So, let's quickly switch to using the
+internal cache of user objects and show how we can fix our code and
+fix our tests. And, the purpose of this chapter is not just to build
+a Probot but to explain how Hubot works, and maintaining a section
+on using the built in HTTP client seemed vital.
+
+Instead of the call to the Slack API, we can replace the code with a
+much simpler call to `robot.brain.users`. Calling into the Slack users
+API takes a callback, but the `brain.users` call does not, which
+simplifies our code. We do check in our tests that we make a call to
+the HTTP Jasmine spy on the `get` function, so we will want to remove
+that inside our tests. We will need to provide a new function called
+`users` to the Probot inside the faked brain we created
+
+Unfortunately, things don't just work when we change our code to this:
+
+[source,coffeescript]
+-----------
+...
+users = robot.brain.users()
+sendPrRequest( robot, users, room, url, number )
+...
+-----------
+
+It is likely that what we got back from the Slack API and what Hubot
+stores inside its brain for users are functionally the same
+information, but structural stored very differently. How can we
+investigate whether this assumption is correct? 
+NodeJS has a standard library module called `util` which includes
+useful utility functions, as you might expect from the name.
+One of them is `inspect` which will dig into an object and
+create a pretty printed view. If we use this module and `console.log`
+we can see the full contents of a live response object passed into our
+`accept` function. A line like the following `console.log( require(
+'util' ).inspect( users ) )` displays the following:
+
+[source,json]
+-------------
+{ U04FVFE97: 
+   { id: 'U04FVFE97',
+     name: 'ben',
+     real_name: 'Ben Straub',
+     email_address: 'xxx' },
+  U038PNUP2: 
+   { id: 'U038PNUP2',
+     name: 'probot',
+     real_name: '',
+     email_address: undefined },
+  U04624M1A: 
+   { id: 'U04624M1A',
+     name: 'teddyhyde',
+     real_name: 'Teddy Hyde',
+     email_address: 'xxx' },
+  U030YMBJY: 
+   { id: 'U030YMBJY',
+     name: 'xrd',
+     real_name: 'Chris Dawson',
+     email_address: 'xxx' },
+  USLACKBOT: 
+   { id: 'USLACKBOT',
+     name: 'slackbot',
+     real_name: 'Slack Bot',
+     email_address: null } }
+-------------
+
+Ah, we were right: the Slack API returns an array while this is an
+associate array (called a hash in other languages). So, we need to
+refactor our inputs to the test to take an associative array instead
+of an array, and then we need a function to flatten it 
+out (after that our code will work the same as before). We will return
+that when the user calls `robot.brain.users` so add a new spy as the
+`users` key inside our fake robot. 
+
+[source,coffeescript]
+-----
+...
+                users = { CDAWSON: { name: "Chris Dawson" }, BSTRAUB: { name: "Ben Straub" } }
+                brainSpy = {
+                        users: jasmine.createSpy( 'getUsers' ).and.returnValue( users ),
+                        set: jasmine.createSpy( 'setBrain' ),
+...
+-----
+
+Inside our implementation code, flatten out the user associative array
+and find the user inside the new flattened array.
+
+[source,coffeescript]
+-----
+...
+flattenUsers = (users) ->
+        rv = []
+        for x in Object.keys( users )
+               rv.push users[x]
+        rv 
+
+anyoneButProbot = ( users ) ->
+        user = undefined
+        flattened = flattenUsers( users )
+        while not user
+                user = flattened[ parseInt( Math.random() * flattened.length ) ].name
+                user = undefined if "probot" == user
+        user
+
+...
+-----
+
+
+
 ===== Sending PR Data via Webhook
 
 Our wiring is almost complete, so let's actually send real pull
@@ -1395,7 +1513,7 @@ If we retrieve the JSON from a POST, it will look something like this
 }
 -------
 
-Most importantly, you see a URL which we will use inside our Probot
+Most importantly, you see a URL (the `html_url` more specifically) which we will use inside our Probot
 message to the user. Retrieving the json and parsing it is trivial
 inside our Probot.
 
@@ -1405,7 +1523,7 @@ inside our Probot.
 exports.prHandler = ( robot, req, res ) ->
         body = req.body
         pr = JSON.parse body if body
-        url = pr.pull_request.url if pr
+        url = pr.pull_request.html_url if pr
         secret = pr.secret if pr
 
         if secret == _SECRET and url
@@ -1978,21 +2096,12 @@ to us when we get a respond callback might have it in there. The
 `respond` method provided by the Hubot API is documented mostly by 
 way of the example scripts which come with hubot. There is very little
 information on what the parameter passed to your callback looks
-like. How can we investigate this and determine useful information
-contained there?
-
-NodeJS has a standard library module called `util` which includes
-useful utility functions, as you might expect from the name.
-One of them is `inspect` which will dig into an object and
-create a pretty printed view. If we use this module and `console.log`
-we can see the full contents of a live response object passed into our
-`accept` function. A line like the following `console.log( require(
-'util' ).inspect( res ) )` produces a lot of information that is more
-interesting to our slack adapter than to us. We abbreviate the full
-output here, and show you that it contains information on the 
-user who sent the message to our Probot. We can access this
-information by using `response.message.user.name` if, for example, we
-wanted to retrieve the name of the user.
+like. Let's use the `util` library to inspect the data and print it to
+the console. We abbreviate the full output here, and show you that it
+contains information on the  user who sent the message to our
+Probot. We can access this information by using
+`response.message.user.name` if, for example, we wanted to retrieve
+the name of the user. 
 
 [source,json]
 -----

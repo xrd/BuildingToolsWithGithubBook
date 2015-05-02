@@ -2,16 +2,22 @@ _SECRET = undefined
 crypto = require 'crypto'
 _API_TOKEN = undefined
 
-anyoneButProbot = (members) ->
+flattenUsers = (users) ->
+        rv = []
+        for x in Object.keys( users )
+               rv.push users[x]
+        rv 
+
+anyoneButProbot = ( users ) ->
         user = undefined
+        flattened = flattenUsers( users )
         while not user
-                user = members[ parseInt( Math.random() * members.length ) ].name
+                user = flattened[ parseInt( Math.random() * flattened.length ) ].name
                 user = undefined if "probot" == user
         user
 
-sendPrRequest = ( robot, body, room, url, number ) ->
-        parsed = JSON.parse( body )
-        user = anyoneButProbot( parsed.members )
+sendPrRequest = ( robot, users, room, url, number ) ->
+        user = anyoneButProbot( users )
         robot.messageRoom room, "#{user}: Hey, want a PR? #{url}. Enter 'accept #{number}' to accept the PR."
         pr = exports.decodePullRequest( url )
         robot.brain.set( pr.number, url )
@@ -43,9 +49,8 @@ exports.prHandler = ( robot, req, res ) ->
                         secureCompare = require 'secure-compare'
                         if secureCompare( "sha1=#{secureHash}", webhookProvidedHash ) and url
                                 room = "general"
-                                robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
-                                        .get() (err, response, body) ->
-                                                sendPrRequest( robot, body, room, url, number ) unless err
+                                users = robot.brain.users()
+                                sendPrRequest( robot, users, room, url, number )
                         else
                                 console.log "Invalid secret or no URL specified"
                 else
@@ -78,7 +83,7 @@ exports.accept = ( robot, res ) ->
         username = exports.getUsernameFromResponse( res )
         msg.collabuser = username
 
-        _GITHUB.repos.getCollaborator msg, ( err, collaborators ) ->
+        _GITHUB.repos.getCollaborator msg, ( err, collaborator ) ->
                 msg.body = "@#{username} will review this (via Probot)."
                 
                 _GITHUB.issues.createComment msg, ( err, data ) ->
