@@ -1625,6 +1625,17 @@ whoever sent us a message, but now we can actually wire up handling
 the response and adding to the pull request on GitHub based on the
 user who we are interacting with (provided they accepted). 
 
+There are multiple ways in which a Hubot can interact with chat room
+messages. We chose the `respond` method, but there is another method
+`hear` which we could have used. `respond` is used when the message
+is preceeded by the Hubot name, so only messages that look like
+`probot: accept` or `@probot decline` or `/ accept` (if the Hubot name alias is
+enabled) will be processed by our Probot. We could have used `hear`
+but in our case we are processing a simple response, and
+without a clear direction for the message, it would be difficult to
+always make sure we were interpreting the message in the correct
+context. `respond` makes more sense here. 
+
 If they decline the request, there are a few options for what we could
 do. We could publicly shame the user inside the channel. This seems
 counter to a culture which supports creative individuals like software
@@ -1637,16 +1648,15 @@ accompanies this chapter hosted on GitHub, you'll see a working
 version of decline that performs this second option. For purposes of
 this chapter, let's just graciously note that the offer was declined.
 
-There are multiple ways in which a Hubot can interact with chat room
-messages. We chose the `respond` method, but there is another method
-`hear` which we could have used. `respond` is used when the message
-is preceeded by the Hubot name, so only messages that look like
-`probot: accept` or `@probot decline` or `/ accept` (if the Hubot name alias is
-enabled) will be processed by our Probot. We could have used `hear`
-but in our case we are processing a simple response, and
-without a clear direction for the message, it would be difficult to
-always make sure we were interpreting the message in the correct
-context. `respond` makes more sense here. 
+[source,coffeescript]
+-------------
+...
+[language="json", sha="2a8a317:support/slacker-hubot/lib/handler.coffee", lines="95..97"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-------------
 
 We are asking someone to accept a pull request and there is a possible
 situation where two could come in within a very short period of
