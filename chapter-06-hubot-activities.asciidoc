@@ -1374,12 +1374,12 @@ result, namely a list of users logged into our slack channel.
 
 I debated removing the entire previous section. But, I thought a
 mistake like this, and the ease in which we can quickly refactor it
-and then fix our tests, proves out the method of writing good quality
-test coverage of our code. So, let's quickly switch to using the
-internal cache of user objects and show how we can fix our code and
-fix our tests. And, the purpose of this chapter is not just to build
-a Probot but to explain how Hubot works, and maintaining a section
-on using the built in HTTP client seemed vital.
+and then fix our tests, displays the value in writing tests to verify
+our code. So, let's quickly switch to using the
+internal cache of user objects inside the Hubot "brain" and show how
+we can fix our code and fix our tests. The purpose of this
+chapter is not just to build a Probot but to explain how Hubot works,
+and maintaining a section on using the built in HTTP client seemed vital.
 
 Instead of the call to the Slack API, we can replace the code with a
 much simpler call to `robot.brain.users`. Calling into the Slack users
@@ -2234,15 +2234,17 @@ username inside the chat room, but we won't handle the case where
 there is no clarification to be made because they are not in the
 repository collaborator list.
 
-So, let's grab the list of users from our room using the GitHub API
-binding we passed into our `setApiToken` call. The API binding
-provides a method called `getCollaborator` inside the `repos`
-namespace which we can use to verify that a username is on the list of
-collaborators. It takes as the first parameter a 
-message which is used to specify the repository and owner, and then a
-callback when the request has completed. If the callback returns
-without an error code, then our Probot should tag the pull request
-with a comment confirming and message the room.
+Using the GitHub API binding binding we passed into our `setApiToken`
+call we will verify the user exists as a collaborator on the
+repository. The API binding provides a method called `getCollaborator`
+inside the `repos` namespace which we can use to verify that a
+username is on the list of collaborators. It takes as the first
+parameter a  message which is used to specify the repository and
+owner, and then an attribute called `collabuser` which is the name you
+want to verify is a collaborator. The second parameter to the function
+is a callback that is executed once the request has completed. If the
+callback returns without an error code, then our Probot should tag the
+pull request with a comment confirming and message the room.
 
 Our new test reflects usage of the `repos.getCollaborator` call. In
 our test setup block we mocking out the call to `getCollaborator`
@@ -2257,28 +2259,13 @@ creating a new object for each test inside the test body.
 [source,coffeescript]
 -------------
 ...
-                describe "#response", ->
-                        createComment = jasmine.createSpy( 'createComment' ).and.
-                                callFake( ( msg, cb ) -> cb( false, "some data" ) )
-                        issues = { createComment: createComment }
-                        authenticate = jasmine.createSpy( 'ghAuthenticate' )
-                        responder = { reply: jasmine.createSpy( 'reply' ),
-                        match: [ undefined, "1" ],
                         send: jasmine.createSpy( 'send' ),
                         message: { user: { name: "Chris Dawson" } } }
-                        collaborators = [ { username: "Chris Dawson" }, { username: "Ben Straub" } ]
                         getCollaborator = jasmine.createSpy( 'getCollaborator' ).and.
-                                callFake( ( msg, cb ) -> cb( false, collaborators ) )
+                                callFake( ( msg, cb ) -> cb( false, true ) )
                         repos = { getCollaborator: getCollaborator }
 
-                        beforeEach ->
-                                githubBinding = { authenticate: authenticate, issues: issues, repos: repos }
-                                github = Handler.setApiToken( githubBinding, "ABCDEF" )
-                                payload =  '{ "pull_request" : { "url" : "http://pr/1" } }'
-                                bodyPayload = "payload=#{encodeURIComponent(payload)}"
-                                req = { rawBody: bodyPayload,
-                                headers: { "x-hub-signature" : "sha1=dc827de09c5b57da3ee54dcfc8c5d09a3d3e6109" } }
-                                Handler.prHandler( robot, req, responder )
+...
 
                         it "should tag the PR on GitHub if the user accepts", (done) ->
                                 Handler.accept( robot, responder )
@@ -2288,14 +2275,7 @@ creating a new object for each test inside the test body.
                                 expect( repos.getCollaborator ).toHaveBeenCalled()
                                 done()
 
-                        it "should not tag the PR on GitHub if the user declines", (done) ->
-                                Handler.decline( responder )
-                                expect( authenticate ).toHaveBeenCalled()
-                                expect( createComment ).not.toHaveBeenCalledWith()
-                                expect( responder.reply ).toHaveBeenCalled()
-                                done()
 
-...
 -------------
 
 Our handler then can implement the accept and decline methods in full.
