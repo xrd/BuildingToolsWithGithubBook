@@ -1379,7 +1379,7 @@ our code. So, let's quickly switch to using the
 internal cache of user objects inside the Hubot "brain" and show how
 we can fix our code and fix our tests. The purpose of this
 chapter is not just to build a Probot but to explain how Hubot works,
-and maintaining a section on using the built in HTTP client seemed vital.
+and maintaining a section on using the built in HTTP client seemed illustrative.
 
 Instead of the call to the Slack API, we can replace the code with a
 much simpler call to `robot.brain.users`. Calling into the Slack users
@@ -1811,9 +1811,8 @@ exports.prHandler = ( robot, req, res ) ->
                         secureCompare = require 'secure-compare'
                         if secureCompare( "sha1=#{secureHash}", webhookProvidedHash ) and url
                                 room = "general"
-                                robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
-                                        .get() (err, response, body) ->
-                                                sendPrRequest( robot, body, room, url ) unless err
+                                users = robot.brain.users()
+                                sendPrRequest( robot, users, room, url )
                         else
                                 console.log "Invalid secret or no URL specified"
                 else
@@ -1821,6 +1820,7 @@ exports.prHandler = ( robot, req, res ) ->
                         
         res.send "OK\n"
 
+_GITHUB = undefined
 ...
 --------------
 

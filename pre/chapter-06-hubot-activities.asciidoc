@@ -1245,7 +1245,7 @@ our code. So, let's quickly switch to using the
 internal cache of user objects inside the Hubot "brain" and show how
 we can fix our code and fix our tests. The purpose of this
 chapter is not just to build a Probot but to explain how Hubot works,
-and maintaining a section on using the built in HTTP client seemed vital.
+and maintaining a section on using the built in HTTP client seemed illustrative.
 
 Instead of the call to the Slack API, we can replace the code with a
 much simpler call to `robot.brain.users`. Calling into the Slack users
@@ -1590,7 +1590,7 @@ this:
 [source,coffeescript]
 --------------
 ...
-[language="coffeescript", sha="1866181:support/slacker-hubot/lib/handler.coffee", lines="26..52"]
+[language="coffeescript", sha="986634d:support/slacker-hubot/lib/handler.coffee", lines="26..52"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
