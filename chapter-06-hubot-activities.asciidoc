@@ -2252,13 +2252,7 @@ following the same patterns of generating spies to watch methods, and
 implementing our fake callbacks when necessary. We also can move our
 message inside the response object into the one created in our setup
 block so that we can use it inside all of our sub-tests, rather than
-creating a new object for each test inside the test body. We also
-create some fake collaborator data which we return using our faked
-callback for the response from the `getCollaborator` call. We will
-need to adjust this when we see what the real data looks like, but for
-now this matches our handler code and creates a clear recorded
-expectation of what we need and that we will be handling this data in
-a certain way.
+creating a new object for each test inside the test body. 
 
 [source,coffeescript]
 -------------
@@ -2328,138 +2322,41 @@ exports.accept = ( robot, res ) ->
         msg.collabuser = username
 
         console.log "Username: #{username}"
+
+        _GITHUB.repos.getCollaborator msg, ( err, collaborators ) ->
+        # _GITHUB.repos.getCollaborators msg, ( err, collaborators ) ->
+                if true or exports.usernameMatchesGitHubUsernames( username, collaborators )
 ...
 -------------
 
 ===== Sanitizing our source code
 
-It is typically bad form to save passwords (or their equivalent, oAuth
-tokens or secrets) inside of source code. Right now we have hard coded
-them into our application inside of the `pr-delegator.coffee` file. We
-could instead retrieve them from the environment of the running
-process.
+It is typically bad form to save passwords (or other access
+credentials, like oAuth tokens or secrets) inside of source
+code. Right now we have hard coded them into our application inside of
+the `pr-delegator.coffee` file. We could instead retrieve them from
+the environment of the running process.
 
 [source,coffeescript]
 -------------
 ...
-_SECRET = undefined
-crypto = require 'crypto'
-_API_TOKEN = undefined
-
-flattenUsers = (users) ->
-        rv = []
-        for x in Object.keys( users )
-               rv.push users[x]
-        rv 
-
-anyoneButProbot = ( users ) ->
-        user = undefined
-        flattened = flattenUsers( users )
-        while not user
-                user = flattened[ parseInt( Math.random() * flattened.length ) ].name
-                user = undefined if "probot" == user
-        user
-
-sendPrRequest = ( robot, users, room, url, number ) ->
-        user = anyoneButProbot( users )
-        robot.messageRoom room, "#{user}: Hey, want a PR? #{url}. Enter 'accept #{number}' to accept the PR."
-        pr = exports.decodePullRequest( url )
-        robot.brain.set( pr.number, url )
-
-exports.getSecureHash = ( body ) ->
-        hmac = crypto.createHmac( 'sha1', _SECRET )
-        hmac.setEncoding( 'hex' )
-        hmac.write( body )
-        hmac.end()
-        hash = hmac.read()
-        console.log "Hash: #{hash}"
-        hash
-
-exports.prHandler = ( robot, req, res ) ->
-        
-        rawBody = req.rawBody
-        body = rawBody.split( '=' ) if rawBody
-        payloadData = body[1] if body and body.length == 2
-        if payloadData
-                decodedJson = decodeURIComponent payloadData
-                pr = JSON.parse decodedJson
-                
-                if pr and pr.pull_request
-                        url = pr.pull_request.html_url
-                        number = pr.pull_request.number
-                        secureHash = exports.getSecureHash( rawBody )
-                        signatureKey = "x-hub-signature"
-                        webhookProvidedHash = req.headers[ signatureKey ] if req?.headers
-                        secureCompare = require 'secure-compare'
-                        if secureCompare( "sha1=#{secureHash}", webhookProvidedHash ) and url
-                                room = "general"
-                                users = robot.brain.users()
-                                sendPrRequest( robot, users, room, url, number )
-                        else
-                                console.log "Invalid secret or no URL specified"
-                else
-                        console.log "No pull request in here"
-                        
-        res.send "OK\n"
-
-_GITHUB = undefined
-_PR_URL = undefined
-
-exports.decodePullRequest = (url) ->
-        rv = {}
-        if url
-                chunks = url.split "/"
-                if chunks.length == 7
-                        rv.user = chunks[3]
-                        rv.repo = chunks[4]
-                        rv.number = chunks[6]
-        rv
-
-exports.getUsernameFromResponse = ( res ) ->
-        res.message.user.name
-
-exports.accept = ( robot, res ) ->
-
-        prNumber = res.match[1]
-        url = robot.brain.get( prNumber )
-
-        msg = exports.decodePullRequest( url )
-        username = exports.getUsernameFromResponse( res )
-        msg.collabuser = username
-
-        _GITHUB.repos.getCollaborator msg, ( err, collaborator ) ->
-                msg.body = "@#{username} will review this (via Probot)."
-                
-                _GITHUB.issues.createComment msg, ( err, data ) ->
-                        unless err
-                                res.reply "Thanks, I've noted that in a PR comment. Review the PR here: "
-                        else
-                                res.reply "Something went wrong, I could not tag you on the PR comment: #{require('util').inspect( err )}"
-                
-exports.decline = ( res ) ->
-        res.reply "OK, I'll find someone else."
-        console.log "Declined!"
-
-exports.setApiToken = (github, token) ->
-        _API_TOKEN = token
-        _GITHUB = github
-        _GITHUB.authenticate type: "oauth", token: token
-
-exports.setSecret = (secret) ->
-        _SECRET = secret
-
+handler.setSecret process.env.PROBOT_SECRET 
+github = require 'github'
+ginst = new github version: '3.0.0'
+handler.setApiToken ginst, process.env.PROBOT_API_TOKEN 
 ...
 -------------
 
 When we launch our probot from the command line, we will need to use a
-command like this as are testing.
+command like this as we are testing locally from our laptop.
 
 [source,bash]
 -------------
-PROBOT_SECRET=XYZABC PROBOT_API_TOKEN=926a701550d4dfae93250dbdc068cce887531 HUBOT_SLACK_TOKEN=xoxb-3295776784-nZxl1H3nyLsVcgdD29r1PZCq ./bin/hubot -a slack
+$ PROBOT_SECRET=XYZABC PROBOT_API_TOKEN=926a701550d4dfae93250dbdc068cce887531 HUBOT_SLACK_TOKEN=xoxb-3295776784-nZxl1H3nyLsVcgdD29r1PZCq ./bin/hubot -a slack
 -------------
 
-When we publish into Heroku, we will want to set theses environment variables using commands like this.
+When we publish into Heroku, we will want to set these as environment
+variables using the appropriate Heroku commands.
 
 [source,bash]
 -------------
@@ -2477,20 +2374,21 @@ environment variables on the command line as well.
 
 [source,bash]
 -------------
-PROBOT_SECRET=XYZABC PROBOT_API_TOKEN=926a701550d4dfae93250dbdc068cce887531 node_modules/jasmine-node/bin/jasmine-node --coffee spec/pr-de
+$ PROBOT_SECRET=XYZABC PROBOT_API_TOKEN=926a701550d4dfae93250dbdc068cce887531 node_modules/jasmine-node/bin/jasmine-node --coffee spec/pr-de
 legator.spec.coffee 
 -------------
 
 ===== Final Notes
 
-Our Probot is alive. We went through building a robot which responds
-to us in a chat room, then broke out functionality into a highly
-testable module, and along the way, learned lots about the Hubot API
-and even how to modify (and the drawbacks surrounding) modifying the
-source code to Hubot itself. There is a natural fit to Hubot and the
-GitHub API, and this chapter hopefully demonstrates how easy and fun
-it can be, and how you can powerfully amplify and streamline developer
-processes inside a chat room.
+Our Probot is alive. We went through building a robot which can
+interact with us inside a chat room, then refactored the robot so that its
+functionality is contained into a highly testable module. Along
+the way, we learned lots about the Hubot API, and even discussed how to
+modify (and the drawbacks surrounding) modifying the source code to
+Hubot itself. There is a natural fit to Hubot and the GitHub API, and
+this chapter hopefully demonstrates how easy and fun it can be, and
+how you can powerfully amplify and streamline developer workflow
+inside a chat room dialog. 
 
 
 
