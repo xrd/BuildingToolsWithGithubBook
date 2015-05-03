@@ -1568,12 +1568,12 @@ We now need to adjust our tests to fit this new requirement. We prime
 the pump with a request object that has this `rawBody` inside 
 it, and we should properly encode the content using
 `encodeURIComponent` to match the format in which it will be appearing
-from GitHub. Our new tests will look like this:
+from GitHub. 
 
 [source,coffeescript]
 --------------
 ...
-[language="coffeescript", sha="5523b36:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="55..65"]
+[language="coffeescript", sha="2e95f88:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="55..65"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
