@@ -1443,7 +1443,7 @@ Now we can adjust our tests to fit the new reality of our handler.
 [source,coffeescript]
 -----
 ...
-[language="coffeescript", sha="bd8cb8f:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="47..-1"]
+[language="coffeescript", sha="d39df4c:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="47..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
