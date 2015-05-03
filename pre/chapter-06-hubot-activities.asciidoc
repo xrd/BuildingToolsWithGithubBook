@@ -1957,7 +1957,7 @@ Our handler then can implement the accept and decline methods in full.
 [source,coffeescript]
 -------------
 ...
-[language="json", sha="13c8af6:support/slacker-hubot/lib/handler.coffee", lines="74..96"]
+[language="json", sha="d24c91b:support/slacker-hubot/lib/handler.coffee", lines="77..96"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

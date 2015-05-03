@@ -2303,29 +2303,26 @@ Our handler then can implement the accept and decline methods in full.
 [source,coffeescript]
 -------------
 ...
-exports.usernameMatchesGitHubUsernames = ( name, collaborators ) ->
-        rv = false
-        if collaborators
-                for collaborator in collaborators
-                        if collaborator.username == name
-                                rv = true
-        rv
-
 exports.accept = ( robot, res ) ->
 
         prNumber = res.match[1]
-        console.log "Accepted request for #{prNumber}"
         url = robot.brain.get( prNumber )
 
         msg = exports.decodePullRequest( url )
         username = exports.getUsernameFromResponse( res )
         msg.collabuser = username
 
-        console.log "Username: #{username}"
-
-        _GITHUB.repos.getCollaborator msg, ( err, collaborators ) ->
-        # _GITHUB.repos.getCollaborators msg, ( err, collaborators ) ->
-                if true or exports.usernameMatchesGitHubUsernames( username, collaborators )
+        _GITHUB.repos.getCollaborator msg, ( err, collaborator ) ->
+                msg.body = "@#{username} will review this (via Probot)."
+                
+                _GITHUB.issues.createComment msg, ( err, data ) ->
+                        unless err
+                                res.reply "Thanks, I've noted that in a PR comment. Review the PR here: "
+                        else
+                                res.reply "Something went wrong, I could not tag you on the PR comment: #{require('util').inspect( err )}"
+                
+exports.decline = ( res ) ->
+        res.reply "No problem, we'll go through this PR in a bug scrub"
 ...
 -------------
 

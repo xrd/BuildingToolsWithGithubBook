@@ -67,7 +67,6 @@ describe "#probot", ->
 
                         Handler.prHandler( robot, req, res )
                         expect( robot.messageRoom ).toHaveBeenCalled()
-                        # expect( httpSpy ).toHaveBeenCalled()
                         expect( res.send ).toHaveBeenCalled()
                         done()
 
