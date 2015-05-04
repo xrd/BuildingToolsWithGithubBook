@@ -2,6 +2,216 @@
 
 === What can it do?
 
+Once you have enough data, it's not enough to simply organize it.
+You need first-class search capability if you want to have any hope of finding anything at all.
+GitHub's search API gives you access to the full power of the built-in search function, and using operators, it provides access to a very powerful way of finding the thing you're looking for.
+
+==== General Principles
+
+The search API can be used over raw HTTP.
+The central anchor point is `https://api.github.com/v3/search`, or if you're searching an Enterprise instance, `https://<server>/api/v3/search`.
+You can search anonymously without authenticating as a GitHub user, but your results will be limited to public items – which means this won't work with an Enterprise install.
+Authentication is a bit of a complicated topic, but the library we use later on abstracts it for us, so we'll gloss over it for now, and rely on public results to get a feel for what comes back.
+
+===== Rate Limits
+
+Calls to these APIs are subject to rate limits, which are stricter than other APIs because search is computationally expensive.
+As of this writing, the documentation states that anonymous searches are limited to 5 per minute, where authenticated queries are limited at 20 per minute.
+Whatever the limit is when you're reading this, you can find out the status of your rate limit by checking the `X-RateLimit-*` headers that come with your response.
+They look like this:
+
+[source,console]
+----
+X-RateLimit-Limit: 10
+X-RateLimit-Remaining: 9
+X-RateLimit-Reset: 1430621780
+----
+
+The `Limit` header shows what your cap is, while the `Remaining` header tells you how many queries you have left.
+The `Reset` header is a tells you when the counter will reset, in UTC epoch seconds.
+
+===== Pagination
+
+The JSON returned from most calls will have this general format:
+
+[source,json]
+----
+{
+  "total_count": 824,
+  "incomplete_results": false,
+  "items": [ … ]
+}
+----
+
+The `total_count` field represents the total number of search results that turned up from this query; by default, only the first 30 are returned.
+You can customize this with `page` and `per_page` query parameters in the url.
+For example, a GET request to `search/repositories?q=foobar&page=2&page_size=100` will return 200 items, starting with the 101st result.
+Page sizes are generally limited to 100.
+
+The `incomplete_results` field refers to a computation limit placed on search results.
+If your search takes too long, the GitHub API will stop it partway through executing, return the results that did complete, and set this flag to `true`.
+For most queries this won't be a problem, and the `total_count` will represent all the results from the search, but if your query is complicated, you might only get a partial result set.
+
+===== Sorting
+
+Search results are returned in a non-arbitrary order.
+The default order is "best match," with the best of the best returned first.
+If you want to override this, you can pass `stars`, `forks`, or `updated` in the `sort` query parameter.
+
+You can also reverse the sort order using the `order` parameter.
+The default is `desc`, but `asc` is also accepted.
+
+
+===== Search Operators
+
+Your search term is passed through the `q` parameter, but that term has a powerful syntax.
+You can specify many operators, including these:
+
+- `user:<name>`, where _name_ is a user or organization
+- `repo:<name>`
+- `language:<name>`
+- `created:<date(s)>`
+- `extension:<pattern>` matches file extensions (like "py")
+
+Note that numerical matches and dates can have ranges:
+
+- `2015-02-01` will match only the given date
+- `<2015-02-01` will match any date previous to the one given
+- `2015-02-01..2015-03-01` will match dates within the given range, including the end points
+
+There are many other options besides.
+Check out https://github.com/search/advanced[] for a UI that can help you construct a query.
+
+
+==== Search APIs
+
+The search API is compartmentalized into four categories: repositories, code, issues, and users.
+The basic mechanism is the same for all four: provide a URL-encoded search term as the `q` parameter to a GET request.
+
+===== Repository Search
+
+The `search/repositories` endpoint responds with something that looks like this:
+
+[source,json]
+----
+{
+  "total_count": 824,
+  "incomplete_results": false,
+  "items": [
+    {
+      "id": 10869370,
+      "name": "foobar",
+      "full_name": "iwhitcomb/foobar",
+      "owner": {
+        "login": "iwhitcomb",
+        "id": 887528,
+        "avatar_url": "https://avatars.githubusercontent.com/u/887528?v=3",
+        …
+      },
+      …
+    },
+    …
+  ]
+}
+----
+
+What comes back is a list of items, each of which looks like the result of a query to the Repositories API.
+Each item in `items` is a representation of a repository, with all sorts of useful information about that repository and its owner.
+
+===== Code Search
+
+The `search/code` endpoint has a couple of limitations, stemming from the sheer amount of data available.
+It requires that you scope it to a user or organization, using the `user:<name>` search operator.
+Also, it only searches the default branch of any given project, which is usually `master`.
+
+The JSON returned looks something like this:
+
+[source,json]
+----
+{
+  "total_count": 9246,
+  "incomplete_results": false,
+  "items": [
+    {
+      "name": "migrated_0000.js",
+      "path": "test/fixtures/ES6/class/migrated_0000.js",
+      "sha": "37bdd2221a71b58576da9d3c2dc0ef0998263652",
+      "url": "…",
+      "git_url": "…",
+      "html_url": "…",
+      "repository": {
+        "id": 2833537,
+        "name": "esprima",
+        "full_name": "jquery/esprima",
+        "owner": {
+          "login": "jquery",
+          "id": 70142,
+          "avatar_url": "https://avatars.githubusercontent.com/u/70142?v=3",
+          …
+        },
+        "private": false,
+        …
+      },
+      "score": 2.3529532
+    },
+    …
+  ]
+}
+----
+
+Each item has some data about the file that turned up, including its name and URLs for a couple of representations of it.
+Then there's the blob of data about its repository, followed by a score, which is used for the default "best match" sorting.
+
+===== Issue Search
+
+[source,json]
+----
+{
+  "total_count": 1278397,
+  "incomplete_results": false,
+  "items": [
+    {
+      "url": "…",
+      "labels_url": "…",
+      "comments_url": "…",
+      "events_url": "…",
+      "html_url": "…",
+      "id": 69671218,
+      "number": 1,
+      "title": "Classes",
+      "user": {
+        "login": "reubeningber",
+        "id": 2552792,
+        "avatar_url": "…",
+        …
+      },
+      "labels": [
+        …
+      ],
+      "state": "open",
+      "locked": false,
+      "assignee": null,
+      "milestone": null,
+      "comments": 0,
+      "created_at": "2015-04-20T20:18:56Z",
+      "updated_at": "2015-04-20T20:18:56Z",
+      "closed_at": null,
+      "body": "There should be an option to add classes to the ul and li being generated. ",
+      "score": 22.575937
+    },
+  ]
+}
+----
+
+
+===== User Search
+
+===== More Details
+
+This chapter only scratches the surface of what's possible using the search API.
+GitHub provides live and complete documentation of these methods at https://developer.github.com/v3/search/[], and we encourage you to look there if you want to dig deeper.
+
+
 === Our example application
 ==== User flow
 ==== Requirements
