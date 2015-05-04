@@ -10,8 +10,7 @@
     "chapter-04-javascript.asciidoc",
     "chapter-05-jekyll.asciidoc",
     "chapter-06-hubot-activities.asciidoc",
-    "chapter-07-android.asciidoc",
-    "chapter-10-go.asciidoc"
+    "chapter-07-android.asciidoc"
   ],
   "formats": {
     "pdf": {
