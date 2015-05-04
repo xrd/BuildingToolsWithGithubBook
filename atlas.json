@@ -3,7 +3,6 @@
   "files": [
     "preface.asciidoc",
     "toc.asciidoc",
-    "chapter-00-introduction.asciidoc",
     "chapter-01-tools.asciidoc",
     "chapter-02-gist.asciidoc",
     "chapter-03-gollum.asciidoc",
