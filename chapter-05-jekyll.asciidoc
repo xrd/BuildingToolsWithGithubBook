@@ -1,14 +1,5 @@
 == Jekyll: nouveau, yet antiquated, blogging on GitHub
 
-=== Ease
-=== Depth
-=== Complete
-=== Expansive
-=== Expedited
-
-
-=== What is Jekyll?
-
 If you visit GitHub and go to the jekyll repository you'll see it state that 
 "Jekyll is a blog-aware, static site generator in Ruby." What does this mean?
 Jekyll is a set of technologies for building entire web sites. There are

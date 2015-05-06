@@ -1,16 +1,5 @@
 == Gollum
 
-=== Ease
-
-=== Depth
-=== Complete
-=== Expansive
-=== Expedited
-
-
-
-=== Using Gollum
-
 Gollum is the GitHub open sourced contribution to Wikis. A wiki is
 defined as "a website that allows collaborative editing of its content
 and structure by its users." Just as Git has revolutionized

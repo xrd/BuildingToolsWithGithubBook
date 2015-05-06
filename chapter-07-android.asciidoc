@@ -1,12 +1,5 @@
 == GitHub API on Android
 
-=== Ease
-=== Depth
-=== Complete
-=== Expansive
-=== Expedited
-
-
 Android is currently the most popular operating system for mobile
 devices, overtaking Symbian OS in 2010, experiencing incredible growth
 since its release in 2008. If it is not the case already, mobile OSes like 

@@ -1,7 +1,5 @@
 == Gists
 
-=== Ease
-
 GitHub revolutionized software development by responding to a deep
 desire to share information. Sharing information does a disservice to
 the tools GitHub provides: these tools remove barriers to
@@ -12,20 +10,12 @@ workforce. Gists service part of this need: they permit intimate code
 sharing and reuse, refactoring and play in a way not served by
 heavyweight tools predating it.
 
-=== Depth
-
 Gists are easy to create and the interface is stripped down to the
 barest level. You add a snippet of code and then share the URL. Gists
 autodetect the language in most cases and format it correctly. Gists
 can be used in more powerful ways than might appear at first glance
 and this chapter will explore other ways to share code and amplify
 your team.
-
-=== Complete
-
-=== Expansive
-
-=== Expedited
 
 GitHub "gists" are a place to share snippets of code. To create a gist, go to
 gist.github.com and enter in any textual data. You then choose public or
