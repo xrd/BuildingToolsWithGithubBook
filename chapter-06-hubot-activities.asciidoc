@@ -117,27 +117,6 @@ see rote tasks like this.  Hubot is the tool that emerged when
 GitHubbers asked the question: "What tool can we build to version
 deployment in a scalable way?"
 
-If you have worked with the Ruby on Rails framework, you might know
-about http://capistranorb.com:[Capistrano]. Capistrano was (and still
-is) an important tool, because it automated a complicated series of
-steps. But, GitHub took the idea further than other places. When a
-developer types "cap deploy" (the deployment command to deploy a
-server to a production server), there is an issue of accountability.
-When this command is run from that developer's laptop, the context of
-that command is lost (or at least hard to recover): who ran it, when did they 
-run it, what time did they do it. Sure, you can find this information,
-if you have the correct logins, and you have time to download the
-massive log files, and you know where to look. GitHubbers created a
-better way: a chat room that allows instantaneous communication across
-your team and in which resides a robot who can interpret devops
-commands (and a robot who is easily programmable). If the robot does
-the work for you, you can easily see who asked the robot to do what he
-did, when he did it and can see the contextual information as a
-conversation between team members as to why. Anyone can understand a
-conversational chat log; not anyone can parse SSH server logs. Though
-GitHub has many of the smartest people within the software world
-working for it, their tools are built for the lowest common denominator.
-
 ==== Limitations
 
 Hubot requires a server which hosts it and requires a chat endpoint on
@@ -162,7 +141,7 @@ varies by quality. As is the case with open source projects, community
 driven codebases often focus on documentation last if at all, and
 there are times where it feels like a Catch-22: you need to have Hubot
 running in order to configure it properly and run it. Hopefully, this
-simple guide will alleviate some of these challenges.
+chapter will provide a guide and alleviate some of these challenges.
 
 ==== Creating your Hubot
 
