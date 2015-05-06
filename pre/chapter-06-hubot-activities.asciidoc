@@ -1,13 +1,5 @@
 == Hubot and the GitHub Activities API
 
-=== Ease
-=== Depth
-=== Complete
-=== Expansive
-=== Expedited
-
-=== Social Coding
-
 Though the phrase has now been removed from their marketing materials,
 GitHub used to call itself a tool for "social coding." This idea is
 still central to the services GitHub provides, intimate access to the
@@ -59,20 +51,21 @@ memes or jokes. There is always a fine line between having fun and
 being disruptive, but Hubot works so hard for you that it seems a
 trifle that it also injects jocular moments into the conversation.
 
-=== What we'll build
+=== Our Blueprint
 
-* A chat robot which receives pull request events
-* A chat robot  that Invites people in the chat room to comment on a pull request
-* A chat robot that receives information on a secure channel (with a
-  caveat)
-* A chat robot who communicates with an external service (the
-  Slack.com API)
-* A chat robot written in a way that his functionality is fully tested
-* A chat robot where we need to modify the source code to get 100% of
-  our needs
-* A chat robot which can receive simulated inputs and outputs from
-  different "angles"
-* A chat robot which we will host on a major Paas (Heroku)
+We are going to build a chat robot. But a chat robot with some unusual
+features. This is a chat robot that...
+
+* listens for pull request events from GitHub
+* invites people in the chat room to comment on those pull requests
+* receives information on a secure channel (with a caveat)
+* communicates with an external service (the Slack.com API)
+* whose functionality is fully described by automated tests.
+* shows the power of open source by allowing modification of its
+* source code
+* that can receives simulated inputs and outputs which map to the
+  inputs and outputs it gets from APIs and services.
+* we can easily host on a major Paas (Heroku)
 
 === Hubot
 
