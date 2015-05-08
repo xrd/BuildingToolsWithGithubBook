@@ -75,6 +75,12 @@ Hubot provides the skeleton for our chat robot. We'll add the above
 functionality to Hubot and see how easy it is to combine these
 features into a coherent whole that solves a real problem.
 
+Just so we are clear about the differences between a vanilla Hubot and
+the extended Hubot we are going to build with this blueprint, let's
+give it a name: Probot. From now on, we will speak about unmodified
+Hubots by calling them Hubot, while we will call our amplified Hubot
+with PR delegation super powers the name "Probot."
+
 === The Why and What of Hubot
 
 If you visit hubot.github.com, you are told that "(Hubot) is a
@@ -264,7 +270,7 @@ We see that our hubot printed out the rules it
 abides by (published originally by Isaac Asimov in his "Runaround"
 short story in 1942).
 
-===== Experimenting in Isolation
+===== Exploring the Hubot Vocabulary
 
 Hubot out of the box supports many commands. To get a list, type "help".
 
@@ -300,7 +306,7 @@ not been claimed already by someone else, you can name it as you will.
 -----
 $ heroku create inqry-chatbot
 $ heroku config:add HEROKU_URL=https://inqry-chatbot.herokuapp.com/
-$ heroku config:add HUBOT_SLACK_TOKEN=xoxb-3295776784-nZxl1H3nyLsVcgdD29r1PZCq
+$ heroku config:add HUBOT_SLACK_TOKEN=xxbo-3957767284-ZnxlH1n3ysLVgcD2dr1PZ9Cq
 $ git push heroku master
 Fetching repository, done.
 Counting objects: 5, done.
@@ -311,26 +317,13 @@ Total 3 (delta 2), reused 0 (delta 0)
 
 -----> Node.js app detected
 -----> Requested node range:  0.10.x
------> Resolved node version: 0.10.33
------> Downloading and installing node
------> Restoring node_modules directory from cache
------> Pruning cached dependencies not specified in package.json
------> Exporting config vars to environment
------> Installing dependencies
-       npm WARN package.json hubot-maps@0.0.0 No repository field.
------> Caching node_modules directory for future builds
------> Cleaning up node-gyp and npm artifacts
------> Building runtime environment
------> Discovering process types
-       Procfile declares types -> web
-
+...
 -----> Compressing... done, 6.8MB
 -----> Launching... done, v9
        https://inqry-chatbot.herokuapp.com/ deployed to Heroku
 
 To git@heroku.com:inqry-chatbot.git
    d32e2db..3627218  master -> master
-
 -----
 
 If you need to troubleshoot issues with your Hubot, you can always run
@@ -345,19 +338,7 @@ as hubot
 GMT connect deprecated limit: Restrict request size at location of
 read at
 node_modules/hubot/node_modules/express/node_modules/connect/lib/middleware/multipart.js:86:15
-2014-11-18T07:07:19.052014+00:00 app[web.1]: [Tue Nov 18 2014 07:07:19
-GMT+0000 (UTC)] INFO Data for hubot brain retrieved from Redis
-2014-11-18T07:07:19.012425+00:00 app[web.1]: [Tue Nov 18 2014 07:07:19
-GMT+0000 (UTC)] INFO Discovered redis from REDISTOGO_URL environment
-variable
-2014-11-18T07:07:19.047427+00:00 app[web.1]: [Tue Nov 18 2014 07:07:19
-GMT+0000 (UTC)] INFO Successfully authenticated to Redis
-2014-11-18T07:07:19.195698+00:00 heroku[web.1]: State changed from
-starting to up
-2014-11-18T07:07:36.856287+00:00 heroku[router]: at=info method=GET
-path="/" host=webiphay-chatbot.herokuapp.com
-request_id=e0d4ee64-3823-4673-bf4d-1de2e5acf9ef fwd="54.204.130.199"
-dyno=web.1 connect=1ms service=8ms status=404 bytes=218
+...
 ----
 
 When you send commands into your chat room you will notice events
@@ -372,12 +353,12 @@ entirety of the source code for your Hubot for you, but does not have
 the additional tools, like user management, that GitHub does. For this
 reason, use your GitHub account as your code repository, the place where
 team members develop new features of your chat bot, and then pull
-locally and push into Heroku using the ease of source code tools as a
+locally and push into Heroku using the ease of the Git workflow as a
 deployment layer.
 
 === Activities API Overview
 
-The Activities API focuses on notifications: notifications are similar
+The Activities API centers around notifications: notifications are similar
 to the notifications you see on social networking sites, events that
 occur which document important points of interest inside a timeline of
 activity. GitHub activity events are often tied to important
@@ -410,28 +391,29 @@ can be very easy to lose focus (vital to building software) when you
 are constantly context switching by checking email, and notifications
 can often fly by. In addition, email is privately directed and
 prevents easily collaboration; generally people don't share email
-inboxes. Let's make a hubot which resolves these problems by taking
+inboxes. Let's extend our Hubot to help us resolve these problems by taking
 our GitHub notifications into a shared and "opt-in when you are logged-in"
 communication channel.
 
-==== Hubot Extensions
+==== Writing a Hubot Extension
 
 Hubot extensions are written in either JavaScript or
 CoffeeScript. CoffeeScript is a intermediate language which compiles
 directly to JavaScript. Many people prefer writing in CoffeeScript
 because it has a cleaner syntax and writes "safer"
-JavaScript. CoffeeScript outputs JavaScript that uses some clever
-conventions effective in preventing common JavaScript
-errors. CoffeeScript is a indentation based language (much like
+JavaScript (the syntax helps you avoid common tricky pitfalls in the
+JavaScript language, like what "this" refers to). 
+CoffeeScript is a indentation based language (much like
 Python) and after the initial learning curve, can feel easier to read
 than JavaScript, especially when you have many nested function
-callbacks as it is easier to see where a function begins and ends
-given the indentation levels. Hubot is itself written in CoffeeScript
-and we'll write our extension in CoffeeScript as well.
+callbacks (common in JavaScript programming); it is easier to see
+where a function begins and ends given the indentation levels. Hubot
+is itself written in CoffeeScript and we'll write our extension in
+CoffeeScript as well. 
 
 The Hubot extension module format is exceedingly simple. You write
 JavaScript modules (using the `export` syntax) and Hubot passes you in
-a robot object which you can then program. 
+a robot object which you program using several API methods. 
 
 There are a few concepts useful to programming Hubot. You can find
 an example of each of these methods inside the example.coffee file
@@ -465,11 +447,24 @@ inside the scripts directory.
   programmed with a catch-all error handler so that no matter where
   you code failed, you can catch it without crashing your bot.
 
-Our Probot will use the first five of these features; there are
-examples of the other two features inside the examples script that
-ship with the Hubot source code.
+Probot will use the first five of these features:
 
-==== Code reviews via Pull Requests
+* We will use the Hubot brain to store a PR review request. If Probot
+  asks a user to review a PR, it needs to keep track of this so that
+  when the user responds it has some context of the request.
+* We will use the respond method to program our Hubot to handle a
+  request when a user accepts or declines the review request.
+* We will use the HTTP server to accept PR notifications from GitHub
+  webhooks.
+* We will use the HTTP client to get a list of users from Slack.
+* We will use the parameterization of requests to Hubot to retrieve
+  the specific pull request ID from a chat user message.
+
+There are examples of the other two features (events and generic
+errors) inside the examples script that ship with the Hubot source
+code but we won't use those APIs in our Probot.
+
+==== Code Reviews via Pull Requests
 
 As we've seen in other chapters, pull requests are the mechanism used
 on GitHub to easily integrate code changes into a project. Contributors
@@ -489,15 +484,15 @@ code. And, it can have downsides as well: if the person is otherwise
 engaged, pull requests can linger when a notification email goes
 unread. And, there is good research to indicate that the best
 performing teams are those who share all tasks and responsibilities
-equally. It does not scale to ask everyone to participate in all code
+equally. It often does not scale to ask everyone to participate in all code
 reviews associated with a pull request. But, it might be the case that
 randomly selecting developers involved in a project is a better (and
 more efficient) way to review code than asking the developer who
 created the code to determine these people.
 
-Our Hubot will assign active chat room users to do code
+Probot will assign active chat room users to do code
 reviews when a new pull request is created. We will use the GitHub
-Activities API to subscribe to pull request events. When our Hubot
+Activities API to subscribe to pull request events. When Probot
 becomes aware that a pull request needs review, it will randomly
 assign a user in the chat room to do the review and then ask that user
 if they want to accept the challenge. If they accept, we will note
@@ -505,7 +500,9 @@ that in the pull request comments.
 
 ===== Extension Boilerplate
 
-Our script has a simple vocabulary: it needs to recognize responses
+We will start writing our extension by defining the high level
+interface we expect from our users. Our script has a simple
+vocabulary: it needs to recognize responses 
 accepting a review request, or those that decline. Our extension
 script should be in the `scripts` directory and named
 `pr-delegator.coffee`:
