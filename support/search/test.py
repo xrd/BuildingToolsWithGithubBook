@@ -49,6 +49,7 @@ class SearchFrame(wx.Frame):
         if self.test_credentials():
             self.switch_to_search_panel()
 
+        self.SetTitle('GitHub Issue Search')
         self.Show()
 
     def create_controls(self):
@@ -222,7 +223,7 @@ class SearchResultsPanel(wx.PyScrolledWindow):
                      flag=wx.TOP | wx.BOTTOM, border=8)
         self.SetSizer(vbox)
         self.SetScrollbars(0, 4, 0, 0)
-        
+
 class SearchResult(wx.Panel):
     def __init__(self, *args, **kwargs):
         self.result = kwargs.pop('result', {})
