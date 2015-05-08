@@ -206,18 +206,94 @@ Then there's the blob of data about its repository, followed by a score, which i
 
 ===== User Search
 
-===== More Details
+Querying the `search/users` endpoint gives you this kind of response:
+
+[source,json]
+----
+{
+  "total_count": 26873,
+  "incomplete_results": false,
+  "items": [
+    {
+      "login": "ben",
+      "id": 39902,
+      "avatar_url": "…",
+      "gravatar_id": "",
+      "url": "…",
+      "html_url": "…",
+      …
+      "score": 98.24275
+    },
+    {
+      "login": "bengottlieb",
+      "id": 53162,
+      "avatar_url": "…",
+      "gravatar_id": "",
+      "url": "…",
+      "html_url": "…",
+      …
+      "score": 35.834213
+    },
+  ]
+}
+----
+
+The list of items in this case look like the results from a query of `users/<name>`, and contain lots of bits of data about each user, as well as a search ranking score.
+
+===== More API Details
 
 This chapter only scratches the surface of what's possible using the search API.
 GitHub provides live and complete documentation of these methods at https://developer.github.com/v3/search/[], and we encourage you to look there if you want to dig deeper.
 
 
 === Our example application
+
+Let's do something useful with this API.
+Imagine your development team uses GitHub to store their Git repositories, and that there are lots of little repositories for parts of the application that work together at runtime.
+This kind of situation ends up being fairly difficult to work with for your non-technical colleagues; if they want to report an issue, they don't know where to go, and they don't know how to find issues that already exist.
+
+Search can make this possible, but doing a search across an entire organization's repositories involves using the `user:<organization>` operator, which is obtusely named, and kind of scary for non-programmers.
+
+The Search API can make this a bit easier.
+Let's make a GUI application with just a single search box, which makes it dead simple for a non-technical user to search all the issues in all the repositories in a single organization.
+It'll end up looking a bit like this:
+
+image::images/python-search.png[]
+
 ==== User flow
-==== Requirements
+
+Since the Search API is throttled pretty aggressively, and also because we want the ability to search private repositories' issues, we'll need the user to log in.
+Our program will try to get GitHub credentials from Git's credential store, but it'll fall back to a login form, which looks like this:
+
+image::images/python-login.png[]
+
+Once the user logs in, they'll be shown a search box.
+Typing in a search query and hitting enter results in a scrollable list of search results, with titles and the first line of the description.
+Clicking on a search result opens the issue in the user's browser.
+
+That's it!
+It's a simple, focused tool to solve a very tightly-defined problem, so the code shouldn't be too hard.
 
 === Python
-==== Essential libraries
+
+We'll use Python for our implementation language, for several reasons.
+First, because we haven't yet seen it in this book.
+One of our goals is to help the reader explore technologies they might not have seen before.
+
+Secondly, there's a library which includes facilities for building a GUI application which will run on OS X, Linux, and Windows.
+This is fairly unique feature among modern high-level programming languages.
+If you want this capability elsewhere, you usually have to use a high-complexity framework or a lower-level language like C++.
+
+Thirdly, this will make it easy to distribute.
+There exists a Python package which bundles an entire Python program and all of its dependencies into a single file (or `.app` bundle on OS X).
+So giving this program to a colleague is as easy as emailing her a ZIP file.
+
+==== Development libraries
+
+In order to follow along with the development of this application, you'll need to install a few Python packages.
+
+
+
 - https://github.com/jpaugh/agithub (GitHub API helper)
 - http://www.wxpython.org/ (GUI toolkit)
 
