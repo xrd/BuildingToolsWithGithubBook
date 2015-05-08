@@ -509,11 +509,16 @@ script should be in the `scripts` directory and named
 
 [source,coffeescript]
 -----
-[language="json", sha="578f4bf:support/slacker-hubot/scripts/pr-delegator.coffee", lines="1..15"]
+[language="json", sha="b911214:support/slacker-hubot/scripts/pr-delegator.coffee", lines="1..15"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
+
+There is a lot here if you are new to CoffeeScript, and it is
+amazingly powerful code.
+
+<1> First, we program the robot passed into us
 
 If Hubot is running, you will need to restart it to reload any
 scripts. Kill Hubot (using Ctrl-C), and then restart it, and then

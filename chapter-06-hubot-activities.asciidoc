@@ -510,21 +510,26 @@ script should be in the `scripts` directory and named
 [source,coffeescript]
 -----
 module.exports = (robot) ->
-        robot.respond /accept/i, (res) ->
+        robot.respond /accept/i, (res) -> # <1>
                 accept( res )
 
-        robot.respond /decline/i, (res) ->
+        robot.respond /decline/i, (res) -> # <2>
                 decline( res )
 
-        accept = ( res ) ->
+        accept = ( res ) -> # <3>
                 res.reply "Thanks, you got it!"
                 console.log "Accepted!"
                 
-        decline = ( res ) ->
+        decline = ( res ) -> # <4>
                 res.reply "OK, I'll find someone else"
                 console.log "Declined!"
 
 -----
+
+There is a lot here if you are new to CoffeeScript, and it is
+amazingly powerful code.
+
+<1> First, we program the robot passed into us
 
 If Hubot is running, you will need to restart it to reload any
 scripts. Kill Hubot (using Ctrl-C), and then restart it, and then
