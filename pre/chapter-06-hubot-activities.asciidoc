@@ -4,12 +4,15 @@ Though the phrase has now been removed from their marketing materials,
 GitHub used to call itself a tool for "social coding." This idea is
 still central to the services GitHub provides, intimate access to the
 social layer inside of GitHub through the Activity API. 
-This API includes notifications (comments issued to users through
-various events), stargazing tools (Facebook has "likes" while GitHub
-has "stars" to indicate approval or interest), watching (a way to
-track GitHub data) and events (a higher level activity stream useful for
-following actions of users). 
 
+The Activities API includes:
+
+* notifications (comments issued to users through various events)
+* stargazing tools (Facebook has "likes" while GitHub has "stars" to indicate approval or interest)
+* watching (a way to track GitHub data)
+* events (a higher level activity stream useful for following actions of users). 
+
+[NOTE]
 The Activity API section also includes "feeds." While feeds are
 grouped within the Activity API, they are not programmatic in the same
 way that an API is, and we won't cover them in depth here.  Feeds are
@@ -17,13 +20,13 @@ actually Atom feeds and not interactive beyond that. Atom feeds are
 similar to RSS feeds: a static feed you can subscribe to with an Atom
 client. 
 
-In this chapter we'll investigate the Activity API by playing with a
+In this chapter we'll investigate the Activity API by extending a chat
 robot. You might find it odd that a robot, generally considered an anti-social
 invention despite all best attempts, would play nicely with a social
 API, but this is a social robot. GitHubbers use an
 extensible chat robot called Hubot to record and automate their tasks,
 and to have fun on the Internet. If there were any robot suited for
-interacting  with the GitHub Activity API, it's Hubot. 
+interacting with the GitHub Activity API, it's Hubot. 
 
 Hubot is not only an exciting tool for automating and interacting with
 complicated software development systems, but provides a novel way of
@@ -53,21 +56,26 @@ trifle that it also injects jocular moments into the conversation.
 
 === Our Blueprint
 
-We are going to build a chat robot. But a chat robot with some unusual
-features. This is a chat robot that...
+We are going to build an extension to Hubot. When we are done, Hubot
+will be transformed into a robot that..
 
-* listens for pull request events from GitHub
+* listens for pull request events from GitHub by subscribing to
+  notifications using the GitHub Activities API
 * invites people in the chat room to comment on those pull requests
-* receives information on a secure channel (with a caveat)
-* communicates with an external service (the Slack.com API)
-* whose functionality is fully described by automated tests.
-* shows the power of open source by allowing modification of its
-* source code
-* that can receives simulated inputs and outputs which map to the
+* guarantees that communication between it and GitHub is securely delivered (with a caveat)
+* retrieves vital information from an external service (the Slack.com API)
+* has functionality fully described by automated tests.
+* opens itself to modification when necessary and displays the
+  benefits of a completely open source chat robot
+* allows easy simulation of inputs and outputs which map to the
   inputs and outputs it gets from APIs and services.
-* we can easily host on a major Paas (Heroku)
+* runs with ease host on a major Paas (Heroku)
 
-=== Hubot
+Hubot provides the skeleton for our chat robot. We'll add the above
+functionality to Hubot and see how easy it is to combine these
+features into a coherent whole that solves a real problem.
+
+=== The Why and What of Hubot
 
 If you visit hubot.github.com, you are told that "(Hubot) is a
 customizable, kegerator-powered life embetterment robot." What does
@@ -96,7 +104,7 @@ would deploys it. For many cutting edge startups, there is an
 expectation when you are hired that developers excel at not only
 coding but at deployment as well.
 
-There are good historical reasons to keep a Chinese wall between
+There are good historical reasons to keep a wall between
 developers and operations teams. Developers think of features and
 programming languages; operations people think of long term capacity
 planning and security. These are very different concerns and there was
@@ -117,48 +125,32 @@ see rote tasks like this.  Hubot is the tool that emerged when
 GitHubbers asked the question: "What tool can we build to version
 deployment in a scalable way?"
 
-==== Limitations
+==== Considerations and Limitations for Hubot
 
-Hubot requires a server which hosts it and requires a chat endpoint on
-which the chat rooms are hosted. Hubot is written in NodeJS and
-requires a hosting service that supports NodeJS. Chat endpoints are
-connected using adapters.
+If you want stability with your Hubot, you need to host it on a
+server. Hubot is written in NodeJS and requires a hosting service that
+supports NodeJS. Our Hubot needs to sit on a public IP address (not
+inside the firewall) because we receive notifications from GitHub. It
+is not strictly required that you host Hubot on a public server; if
+your Hubot does not need to receive requests from the outside world,
+you can host on a private internal server as well.
 
-The simplest and cheapest hosting service is to use Heroku.
-However, for various reasons, this may not be feasible given your
-security concerns. There are other ways to do this, but I found all of
-them difficult and error prone.  
+The simplest and cheapest hosting service for Hubot is Heroku. Once we
+generate our Hubot, we can simply do a git-push into Heroku to publish
+our chat robot for free. We'll show these steps later in the chapter.
 
-Many chat endpoints are supported: you can use almost any popular chat
-service or protocol: IRC, XMPP and many commercial services like
-Gchat, Basecamp, even Twitter. Slack is a relatively new entrant into
-the world of chat services, but despite their youth, the Slack API is
-solid and connecting third party clients to their chat service is
-simple and straightforward. We'll use Slack as our chat endpoint.
-
-The documentation for Hubot and their adapters is often incomplete and
-varies by quality. As is the case with open source projects, community
-driven codebases often focus on documentation last if at all, and
-there are times where it feels like a Catch-22: you need to have Hubot
-running in order to configure it properly and run it. Hopefully, this
-chapter will provide a guide and alleviate some of these challenges.
+Hubot works with many chat endpoints. Your Hubot can connect to almost
+any popular chat service or protocol: IRC, XMPP and many commercial
+services like Gchat, Basecamp, even Twitter. Slack is a relatively new
+entrant into the world of chat services, but despite their youth, the
+Slack API is solid and connecting third party clients to their chat
+service is simple and straightforward. We'll use Slack as our chat endpoint.
 
 ==== Creating your Hubot
 
 To build a Hubot you will need a working NodeJS installation, as
-specified in the NodeJS appendix.
-
-There are a few pitfalls to avoid when naming your Hubot. First, don't
-name your hubot exactly the same as the name of any of the
-adapters. In other words, don't call this hubot "slack". And, all
-Slack chat sites come with 
-their own helper hubot, which is named "slackbot" (you'll see it in
-your site). So, give our Hubot a unique name and call it "Probot". The
-name is configured by the integration (on the Slack  
-side) so you are not able to rename it with the command line switch
-`--name`. You can always change the name later if you feel the need by
-going to the Slack.com site and adjusting the name in the preferences
-for your integration.
+specified in the NodeJS appendix. The following commands create a
+directory with a bare bones Hubot.
 
 [code,bash]
 -----
@@ -172,24 +164,21 @@ $ npm install hubot-slack --save # <4>
 You may not be familiar with these commands, so let's go over the
 important ones.
 
-<1> NPM is the tool which installs packages for NodeJS (in
-fact it stands for "Node Package Manager"). The `npm install -g
+<1> NPM is the tool which installs packages for NodeJS (documented in
+the NodeJS appendix). The `npm install -g
 generator-hubot` command installs a command line tool called yeoman
-and a plugin for yeoman that configures hubot. 
+and a plugin for yeoman that scaffolds hubot. 
 <2> You should create a new directory and enter it so that when you
 create your Hubot you can store it entirely in its own space.
-<3> You run the generator using the `yo hubot` command.
-<4> The yo command is a generator for quickly scaffolding development
-projects. `yo hubot` generates the proper structure for our Hubot, which
-is a NodeJS application. Most NodeJS applications have a package
-manifest called `package.json` which documents required packages and
-other pieces of information important to a NodeJS application. The
-final command installs the Slack adapter for Hubot and saves the
-proper configuration into the `package.json` file. Depending on the
-version of the yeoman generator you use, you might be prompted for the
-adapter and can enter `slack`. If you do this, you can skip this step.
+<3> You run the generator using the `yo hubot` command. This builds
+out the set of files for a minimal Hubot.
+<4> We then install the slack adapter and save the package to the
+`package.json` file.
 
-==== Creating your slack account
+Now that we have a simple Hubot created we need to create the Slack site
+where our Hubot will live.
+
+==== Creating Your Slack Account
 
 Going to slack.com starts you on the process to create your own Slack
 site. You'll need to step through creating an account. Slack sites are
@@ -200,23 +189,18 @@ for your Slack site. Typically this is the name of your organization.
 
 Once you have your slack site created, you need to create a channel.
 
-image::images/hubot-create-channel.png[]
+image::images/hubot-create-channel.png[Creating the #generic channel]
 
 You can name the channel anything you want, but it is often a good
 mnemonic to use a name which suggests this is a channel where more
-serious work gets done. You can use hubot to indicate this is the
-hubot based channel, or any other name you prefer. Once you click on
+serious work gets done. You could use a name like "PR Discussion" to
+indicate this is the channel where PRs are discussed. To keep things
+simple, we will use the name "#general". Once you click on
 the link to create a channel, you'll see a popup asking for the name
-and an optional description.
+and an optional description. After you have created the channel,
+you will see a link to "Add a service integration." 
 
-image::images/hubot-create-channel-popup.png[]
-
-===== Adding service integration
-
-After you have created the channel, you'll immediately see a link to
-"Add a service integration." 
-
-image::images/hubot-add-service-integration.png[]
+image::images/hubot-add-service-integration.png[Adding service integrations to Slack]
 
 Slack supports many different service integrations, and one of them is
 Hubot.  
@@ -230,23 +214,28 @@ This token is used to verify the connection from your Hubot. This
 token can be revoked, and in fact the token from the image below
 has been revoked and can no longer be used to authenticate into
 Slack. If you ever accidentally publicize this token, you can easily
-revoke and reassign a token to your Hubot.
+revoke and reassign a token to your Hubot on this screen.
 
 You will also need to specify a name. Use "probot" and if you'd like,
 change the avatar associated with the Hubot.
 
-image::images/hubot-choose-username.png[]
+image::images/hubot-choose-username.png[Choose Hubot's name]
 
 Make sure you save your integration before continuing.
 
 ==== Starting a hubot locally
 
-As you are testing and developing your bot, you probably want to run
-Hubot locally. Hubot has no reduced functionality when running "locally"
-other than the fact that uptime is contingent on when your laptop is
-awake. We'll address hosting options for Hubot later and make sure
-Frank can deploy his build even when you are heading home on the train
-with your laptop in your backpack.
+Eventually you will want to run your Hubot on a server, but Hubot can
+run from a laptop behind a firewall as well. At the beginning of
+development, while testing and developing your bot and the changes are
+fast and furious, you probably want to run Hubot 
+locally. In fact, Hubot behind a firewall is almost identical in its
+feature set with one major exception: anything behind the firewall is
+inaccessible, obviously, to external services. We are eventually going
+to be configuring GitHub to send events to us when a pull request is
+created, and Hubot behind the firewall cannot receive those
+events. But, for almost all other functionality, running Hubot locally
+speeds up development cadence.
 
 To run your bot locally, make sure that you specify the variables on
 the command line:
@@ -267,10 +256,9 @@ Your bot should be setup and waiting in the #general room inside your
 Slack site. Go to the #general room. Then, you can test that probot
 is properly connectd by typing in the name of your Hubot
 and then a command like `the rules`. For example, if our Hubot is
-named `probot`, then we would type `probot the rules`. You'll see
-something like the following.
+named `probot`, then we would type `probot the rules`. 
 
-image::images/hubot-verify.png[]
+image::images/hubot-verify.png[Hubot telling us the rules]
 
 We see that our hubot printed out the rules it
 abides by (published originally by Isaac Asimov in his "Runaround"
@@ -278,25 +266,7 @@ short story in 1942).
 
 ===== Experimenting in Isolation
 
-Hubot comes with a bunch of built in commands. 
-To discover these commands, ask what commands are supported using
-the `help` command. However, be aware that the #general room is a
-shared room and all commands typed there will be seen by all people in
-that channel. In most cases, this is entirely the raison d'etre for
-hubot, to capture all interactions with the bot for auditing and post
-mortems. But, when you are experimenting and learning how to speak to
-your bot, you might want to keep these interactions to yourself. No
-matter how fluent you are in Japanese now, the mistakes you made in
-getting there, while very valuable to your learning, are nothing most
-anyone would be interested in reviewing (unless someday you become a head of
-state). To prevent these interactions from cluttering the
-public spaces, you can direct message your bot and keep those
-interactions on a private channel. On the side of the Slack UI, you
-should see a list of channels, and then a list of "Direct Message"
-options; look for the bot (named "hubot"), click on the name, and
-you'll be in a private channel. You can then enter the help command
-(and in this case don't need to address hubot at all by prefixing
-it to your command). 
+Hubot out of the box supports many commands. To get a list, type "help".
 
 image::images/hubot-help.png[]
 
