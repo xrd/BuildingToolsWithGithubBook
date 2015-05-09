@@ -290,15 +290,214 @@ So giving this program to a colleague is as easy as emailing her a ZIP file.
 
 ==== Development libraries
 
-In order to follow along with the development of this application, you'll need to install a few Python packages.
+In order to follow along with the development of this application, you'll need to install two Python packages.
+As is unfortunately typical with Python development, installation methods vary from package to package, so we'll tell you how to get each one onto your machine.
 
+===== WxPython
 
+WxPython is the toolkit we'll use for building our UI.
+It's an object-oriented Python layer over the top of a toolkit called WxWidgets, which is itself a common-code adapter for native UI toolkits.
+WxWidgets supports Linux, Mac, and Windows computers with native controls, so you can access all of those platforms through Python code.
 
-- https://github.com/jpaugh/agithub (GitHub API helper)
-- http://www.wxpython.org/ (GUI toolkit)
+Information about the WxPython project can be found at http://www.wxpython.org[], and you'll find a download link for your platform on the left-hand side of the page.
+The next version of WxPython, code-named Phoenix, will be installable via PIP, but as of this writing Phoenix is still pre-release software, so it's probably safer to use the stable version.
+
+[NOTE]
+====
+WxPython is the reason we use Python 2.7 for this example.
+Phoenix will support Python 3, but the stable versions don't.
+====
+
+===== AGitHub
+
+We'll use the Agnostic GitHub API (`agithub`) module as a layer over the GitHub API.
+`agithub` is a fairly thin layer that converts GitHub's REST API into method calls on objects, resulting in delightfully readable code.
+
+`agithub` can be found at https://github.com/jpaugh/agithub[], and the "installation" is simply to download a copy of the `agithub.py` source file and place it alongside your project files.
 
 === The Code
+
+Okay, let's dive in.
+Let's start with this skeleton file:
+
+[source,python]
+----
+#!/usr/bin/env python <1>
+
+import os, subprocess
+import wx
+from agithub import Github <2>
+
+class SearchFrame(wx.Frame): <3>
+    pass
+
+if __name__ == '__main__': <4>
+    app = wx.App() <5>
+    SearchFrame(None)
+    app.MainLoop()
+----
+
+If you run this program, you should get an empty window, which is always a hopeful start to any project.
+Let's take a look at a few key things:
+
+<1> The "shebang" specifies that this is a Python 2.7 program
+<2> Here we import our handy libraries.
+    We import WxPython (`wx`) whole cloth, but with `agithub` we only need the `Github` (note the capitalization) class.
+    `os` and `subprocess` come from the Python standard library.
+<3> This is the class for our main window.
+    We'll walk through the particulars later on when we discuss the real implementation.
+<4> This is how you write a "main" function in Python.
+<5> And this is how you write a "main" function in WxPython.
+    We instantiate an `App` instance, create an instance of our top-level frame, and run the app's main loop.
+
+==== Git credential helper
+
+Before we get into the UI code, let's define a function to help us get the user's GitHub credentials.
+We'll be cheating a bit, by asking Git if it has the user's login and password.
+
+Essentially, if you run `git credential fill` at a command line, and pass it `host=github.com` and two newlines through the standard input, it'll give you back a block of text which includes a login and password.
+The whole interaction looks a bit like this:
+
+[source,console]
+----
+$ git credential fill
+host=github.com
+<1>
+host=github.com <2>
+username=ben
+password=(redacted)
+----
+
+<1> This blank line is the last thing the user types.
+<2> This line and everything after are written by `git-credential`, and then the program exits.
+
+One other thing that you should know about `git-credential` is that by default, if it doesn't know anything about the host, it'll ask the user at the terminal.
+That's bad for a GUI app, so we're going to be disabling that feature through the use of the `GIT_ASKPASS` environment variable.
+
+Here's what our helper looks like:
+
+[source,python]
+----
+GITHUB_HOST = 'github.com'
+def git_credentials():
+    os.environ['GIT_ASKPASS'] = 'true' <1>
+    p = subprocess.Popen(['git', 'credential', 'fill'],
+                         stdout=subprocess.PIPE,
+                         stdin=subprocess.PIPE) <2>
+    stdout,_ = p.communicate('host={}\n\n'.format(GITHUB_HOST)) <3>
+
+    creds = {}
+    for line in stdout.split('\n')[:-1]: <4>
+        k,v = line.split('=')
+        creds[k] = v
+    return creds <5>
+----
+
+<1> Here we set `GIT_ASKPASS` to the string `'true'`, which is a UNIX program that always returns 0, which will cause `git-credential` to stop trying to get credentials when it gets to the "as the user" stage.
+<2> `subprocess.Popen` is the way you use a program with stdin and stdout in Python.
+    The first argument is the `argv` of the new program, and we also specify that we want stdin and stdout to be captured.
+<3> `p.communicate` does the work of writing to stdin and returning the contents of stdout.
+    It also returns the contents of stderr, which we ignore in this program.
+<4> Here we process the stdout contents by splitting each line at the '=' character, and slurping it into a dictionary.
+
+So the return value from this call should be a dictionary with `'username'` and `'password'` values.
+Handy!
+
+
 ==== Windowing and interface
+
+So that's all nice, but our main frame doesn't _do_ anything.
+Let's fix that by filling in the implementation:
+
+[source,python]
+----
+class SearchFrame(wx.Frame):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('size', (600,500))
+        wx.Frame.__init__(self, *args, **kwargs)
+
+        self.credentials = {}
+        self.orgs = []
+
+        self.create_controls()
+        self.do_layout()
+
+        # Try to pre-load credentials from Git's cache
+        self.credentials = git_credentials()
+        if self.test_credentials():
+            self.switch_to_search_panel()
+
+        self.SetTitle('GitHub Issue Search')
+        self.Show()
+
+    def create_controls(self):
+        # Set up a menu. This is mainly for "Cmd-Q" behavior on OSX
+        filemenu = wx.Menu()
+        filemenu.Append(wx.ID_EXIT, '&Exit')
+        menuBar = wx.MenuBar()
+        menuBar.Append(filemenu, '&File')
+        self.SetMenuBar(menuBar)
+
+        # Start with a login UI
+        self.login_panel = LoginPanel(self, onlogin=self.login_accepted)
+
+    def do_layout(self):
+        self.sizer = wx.BoxSizer(wx.VERTICAL)
+        self.sizer.Add(self.login_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
+        self.SetSizer(self.sizer)
+
+    def login_accepted(self, username, password):
+        self.credentials['username'] = username
+        self.credentials['password'] = password
+        if self.test_credentials():
+            self.switch_to_search_panel()
+
+    def test_credentials(self):
+        if any(k not in self.credentials for k in ['username', 'password']):
+            return False
+        g = Github(self.credentials['username'], self.credentials['password'])
+        status,data = g.user.orgs.get()
+        if status != 200:
+            print('bad credentials in store')
+            return False
+        self.orgs = [o['login'] for o in data]
+        return True
+
+    def switch_to_search_panel(self):
+        self.login_panel.Destroy()
+        self.search_panel = SearchPanel(self,
+                                        orgs=self.orgs,
+                                        credentials=self.credentials)
+        self.sizer.Add(self.search_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
+        self.sizer.Layout()
+----
+
+There's a lot going on here, but let's talk a bit about this class's job.
+It's responsible for maintaining the top-level "frame" (a window with a title bar, a menu, etc), and deciding what's displayed in that frame.
+In this case, we want to show a login UI first, and when we get valid credentials (either from Git or the user), we'll switch to a searching UI.
+
+The `__init__` method is the constructor, so this is where we start when the main function calls `SearchFrame()`.
+We pass most of the arguments straight through to the parent class's constructor, after setting a size that's a bit larger than WxPython's default.
+Once that's done, we set `self.credentials` (which we'll use to store GitHub login information) and `self.orgs` (which will contain the names of the user's organizations), and call a couple of functions.
+
+`create_controls` works as advertised.
+It creates a menu that only contains File>Exit, and a login panel, whose implementation we'll cover a bit later on.
+
+`do_layout` uses a WxWidgets feature called "sizers" to do some automated layout.
+Sizers are a pretty complex topic, but here's all you need to know about this snippet:
+
+* A `BoxSizer` stacks widgets in a single direction, in this case vertically.
+* The second parameter is a scaling factor.
+  If it's zero, the widget you're adding will always stay the same size if the parent window resizes; if it's anything else, all the things the sizer is controlling will adjust to fill their container.
+  There's only one control in this sizer, but we still want it to take up the full area of the window, so we pass `1`.
+* The `border` parameter tells the sizer how much area to leave around the widget as padding.
+* The `wx.EXPAND` flag tells the sizer that we want the widget to expand in the direction the sizer isn't stacking.
+  In this case, we're stacking vertically, but we also want this widget to expand horizontally.
+* The `wx.ALL` flag strangely enough specifies which edges of the widget should have the border area.
+
+Once both of those calls have completed, the window is ready to display, but we still want to try and get credentials before we show anything to the user, to avoid a flickering display.
+Here we call our credential helper from above
+
 ==== GitHub login
 ==== GitHub search
 ==== Displaying results
