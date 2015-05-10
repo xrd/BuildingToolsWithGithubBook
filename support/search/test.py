@@ -121,7 +121,7 @@ class LoginPanel(wx.Panel):
         vbox = wx.BoxSizer(wx.VERTICAL)
         vbox.Add((0,0), 1)
         vbox.Add(grid, 0, wx.EXPAND)
-        vbox.Add((0,0), 1)
+        vbox.Add((0,0), 2)
         self.SetSizer(vbox)
 
     def do_login(self, _):
@@ -197,7 +197,7 @@ class SearchPanel(wx.Panel):
 class SearchResultsPanel(wx.ScrolledWindow):
     def __init__(self, *args, **kwargs):
         results = kwargs.pop('results', [])
-        wx.PyScrolledWindow.__init__(self, *args, **kwargs)
+        wx.ScrolledWindow.__init__(self, *args, **kwargs)
 
         # Layout search result controls inside scrollable area
         vbox = wx.BoxSizer(wx.VERTICAL)

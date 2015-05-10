@@ -258,6 +258,7 @@ The Search API can make this a bit easier.
 Let's make a GUI application with just a single search box, which makes it dead simple for a non-technical user to search all the issues in all the repositories in a single organization.
 It'll end up looking a bit like this:
 
+.GitHub search GUI application
 image::images/python-search.png[]
 
 ==== User flow
@@ -265,6 +266,7 @@ image::images/python-search.png[]
 Since the Search API is throttled pretty aggressively, and also because we want the ability to search private repositories' issues, we'll need the user to log in.
 Our program will try to get GitHub credentials from Git's credential store, but it'll fall back to a login form, which looks like this:
 
+.Login UI
 image::images/python-login.png[]
 
 Once the user logs in, they'll be shown a search box.
@@ -496,13 +498,317 @@ Sizers are a pretty complex topic, but here's all you need to know about this sn
 * The `wx.ALL` flag strangely enough specifies which edges of the widget should have the border area.
 
 Once both of those calls have completed, the window is ready to display, but we still want to try and get credentials before we show anything to the user, to avoid a flickering display.
-Here we call our credential helper from above
+Here we call our credential helper from above, and try them out with `self.test_credentials()`, which tries to get a list of the GitHub organizations the user belongs to.
+It does this by using the `agithub` library, instantiating a `Github` object with the supplied username and password, and doing a `GET` on `/user/orgs`.
+Here you can see the usage pattern for `agithub` – the URL path is mapped to sub-object notation, and the HTTP verb is mapped to a method call.
+The return values are a status code and the data, which has been decoded into a dictionary object.
+If this succeeds (status is 200), we skip the login screen entirely, and switch to the search display.
+
+[NOTE]
+====
+We're doing a synchronous network call on the UI thread, which in general isn't a good idea, since the UI will become unresponsive until the network call completes.
+Ideally, we'd move this out onto another thread, and get the return value with a message, but for this simple example (and use case), it'll do.
+====
+
+Once that's done, there's just a tiny bit of housekeeping left: setting the title and making sure our window is visible, and the constructor can return.
+
+The methods that we haven't described yet are concerned with reacting to login input; notice that we passed `self.login_accepted` to the login panel's constructor.
+That method is called by the login panel when the user gives it credentials, so we store them locally, test them, and if they work, switch to the search UI.
+
+The last method handles the UI switch.
+The login panel is referenced by two things: the `SearchFrame` instance (the parent window), and the sizer that's controlling its layout.
+Fortunately, calling the `Destroy()` method cleans both of those up, so we can then create the `SearchPanel` instance and add it to our sizer.
+Doing this requires a specific call to the sizer's `Layout()` method; otherwise the sizer won't know that it needs to adjust the position and size of the new panel.
+
+That's it!
+Aside from managing a couple of fields, most of this code is managing the UI, which is pretty much exactly what we'd want from a UI class.
+Let's take a peek at one of the two panels that we swap in and out.
 
 ==== GitHub login
+
+The `LoginPanel` class is pretty similar in structure to the `SearchFrame` class, with a couple of key differences, which we'll describe after the wall of code.
+
+[source, python]
+----
+class LoginPanel(wx.Panel):
+    def __init__(self, *args, **kwargs):
+        self.callback = kwargs.pop('onlogin', None)
+        wx.Panel.__init__(self, *args, **kwargs)
+
+        self.create_controls()
+        self.do_layout()
+
+    def create_controls(self):
+        self.userLabel = wx.StaticText(self, label='Username:')
+        self.userBox = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
+        self.passLabel = wx.StaticText(self, label='Password (or token):')
+        self.passBox = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
+        self.login = wx.Button(self, label='Login')
+        self.error = wx.StaticText(self, label='')
+        self.error.SetForegroundColour((200,0,0))
+
+        # Bind events
+        self.login.Bind(wx.EVT_BUTTON, self.do_login)
+        self.userBox.Bind(wx.EVT_TEXT_ENTER, self.do_login)
+        self.passBox.Bind(wx.EVT_TEXT_ENTER, self.do_login)
+
+    def do_layout(self):
+        # Grid arrangement for controls
+        grid = wx.GridBagSizer(3,3)
+        grid.Add(self.userLabel, pos=(0,0),
+                 flag=wx.TOP | wx.LEFT | wx.BOTTOM, border=5)
+        grid.Add(self.userBox, pos=(0,1),
+                 flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+        grid.Add(self.passLabel, pos=(1,0),
+                 flag=wx.TOP | wx.LEFT | wx.BOTTOM, border=5)
+        grid.Add(self.passBox, pos=(1,1),
+                 flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+        grid.Add(self.login, pos=(2,0), span=(1,2),
+                 flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+        grid.Add(self.error, pos=(3,0), span=(1,2),
+                 flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+        grid.AddGrowableCol(1)
+
+        # Center the grid vertically
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        vbox.Add((0,0), 1)
+        vbox.Add(grid, 0, wx.EXPAND)
+        vbox.Add((0,0), 2)
+        self.SetSizer(vbox)
+
+    def do_login(self, _):
+        u = self.userBox.GetValue()
+        p = self.passBox.GetValue()
+        g = Github(u, p)
+        status,data = g.issues.get()
+        if status != 200:
+            self.error.SetLabel('ERROR: ' + data['message'])
+        elif callable(self.callback):
+            self.callback(u, p)
+----
+
+There's some structure that's similar to above.
+We'll start with the constructor.
+
+Recall that this panel is created with a keyword argument in the `SearchFrame` class, like `LoginPanel(self, onlogin=self.login_accepted)`.
+In the constructor definition, we pull that callback out and store it for later.
+Afterward, we just call the two other construction functions and return.
+
+`create_controls` has more to it than `SearchFrame`'s version, because this panel has more controls.
+Every static-text, text-input, and button control gets its own line of code.
+The `wx.TE_PROCESS_ENTER` style tells the library that we want an event to be triggered if the user presses the enter key while the cursor is inside that text box.
+
+The next block binds control events to method calls.
+Every event in WxPython will call the handler with a single argument, an object which contains information about the event.
+That means we can use the same event handler for any number of different kinds of events, so we do – the `ENTER` handlers for both text boxes and the `BUTTON` handler for the button all go through `self.do_login`.
+
+`do_layout` uses a different kind of sizer – a `GridBagSizer`.
+Again, the topic of sizers is _way_ outside the scope of this article, but just know that this kind arranges things in a grid, and you can allow some of the rows or columns to stretch to fill the container.
+Here we drop all of the controls into their positions with the `pos=(r,c)` notation (here "rows" come first, which isn't like most coordinate systems), and cause one control to span two columns with the `span` parameter.
+The `flags` and `border` parameters mostly mean the same thins as before, and the `AddGrowableCol` function tells the layout engine which parts of the grid should be allowed to stretch.
+
+Then we do something curious: we put the `GridBagSizer` _into another sizer_.
+This is a pretty power feature of sizers, and allows pretty much any arbitrary layout to be possible -- although perhaps not easy or simple.
+The vertical box sizer also contains some bare tuples; this special form is called "adding a spacer."
+In this case, we sandwich the sizer with all the controls between two spacers with different weights, making it float about a third of the way down the window.
+The effect is like this:
+
+.Resizing behavior of login UI
+image::images/python-sizers.png[]
+
+Then comes the `do_login` method, which tests out the given credentials, and if they work, passes them back through the callback set at construction time.
+If they don't work, it sets the text of a label, whose foreground color has been set to a nice, alarming shade of red.
+
 ==== GitHub search
+
+Once the user has successfully logged in, we switch up the UI to show the `SearchPanel`.
+
+
+[[source,python]]
+----
+class SearchPanel(wx.Panel):
+    def __init__(self, *args, **kwargs):
+        self.orgs = kwargs.pop('orgs', [])
+        self.credentials = kwargs.pop('credentials', {}) <1>
+        wx.Panel.__init__(self, *args, **kwargs)
+
+        self.create_controls()
+        self.do_layout()
+
+    def create_controls(self):
+        self.results_panel = None
+        self.orgChoice = wx.Choice(self, choices=self.orgs, style=wx.CB_SORT)
+        self.searchTerm = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
+        self.searchTerm.SetFocus()
+        self.searchButton = wx.Button(self, label="Search")
+
+        # Bind events
+        self.searchButton.Bind(wx.EVT_BUTTON, self.do_search)
+        self.searchTerm.Bind(wx.EVT_TEXT_ENTER, self.do_search)
+
+    def do_layout(self):
+        # Arrange choice, query box, and button horizontally
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        hbox.Add(self.orgChoice, 0, wx.EXPAND)
+        hbox.Add(self.searchTerm, 1, wx.EXPAND | wx.LEFT, 5)
+        hbox.Add(self.searchButton, 0, wx.EXPAND | wx.LEFT, 5)
+
+        # Dock everything to the top, leaving room for the results
+        self.vbox = wx.BoxSizer(wx.VERTICAL)
+        self.vbox.Add(hbox, 0, wx.EXPAND) <2>
+        self.SetSizer(self.vbox)
+
+    def do_search(self, event):
+        term = self.searchTerm.GetValue()
+        org = self.orgChoice.GetString(self.orgChoice.GetCurrentSelection())
+        g = Github(self.credentials['username'], self.credentials['password'])
+        code,data = g.search.issues.get(q="user:{} {}".format(org, term)) <3>
+        if code != 200:
+            self.display_error(code, data)
+        else:
+            self.display_results(data['items'])
+
+    def display_results(self, results): <4>
+        if self.results_panel:
+            self.results_panel.Destroy()
+        self.results_panel = SearchResultsPanel(self, -1, results=results)
+        self.vbox.Add(self.results_panel, 1, wx.EXPAND | wx.TOP, 5)
+        self.vbox.Layout()
+
+    def display_error(self, code, data): <5>
+        if self.results_panel:
+            self.results_panel.Destroy()
+        str = ''.join('\n\n{}'.format(e['message']) for e in data['errors'])
+        self.results_panel = wx.StaticText(self, label=str)
+        self.results_panel.SetForegroundColour((200,0,0))
+        self.vbox.Add(self.results_panel, 1, wx.EXPAND | wx.TOP, 5)
+        self.vbox.Layout()
+        width = self.results_panel.GetSize().x
+        self.results_panel.Wrap(width)
+----
+
+There's quite a bit here, but some of it is familiar.
+We'll skip the usual walkthrough, to point out a couple of interesting features.
+
+<1> When creating the panel, we pass in the user's credentials and list of organizations.
+<2> When we add the search bar to the sizer, we use `0` as a scale factor.
+    This means that it shouldn't exand to fit the available size, but keep its own size instead, to leave room to add a results panel later on.
+<3> Here's where the actual search is being done.
+<4> We pass the search results into another class, then add it to the main sizer with parameters to fill the remaining available space.
+<5> If an error is returned from the search call instead, we display it here.
+    There's some code to adjust the wrap width of the text, based on the laid-out width of the control.
+    This isn't a great approach; doing it better is left as an exercise for the reader.
+
+Again, there's a fair amount of code here, but most of it should be looking pretty familiar.
+
 ==== Displaying results
 
+Whenever search results are retrieved, we create a new instance of `SearchResultsPanel`, which then creates a series of `SearchResult` instances.
+Let's look at both of them together:
+
+[source,python]
+----
+class SearchResultsPanel(wx.ScrolledWindow): <1>
+    def __init__(self, *args, **kwargs):
+        results = kwargs.pop('results', [])
+        wx.PyScrolledWindow.__init__(self, *args, **kwargs)
+
+        # Layout search result controls inside scrollable area
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        if not results:
+            vbox.Add(wx.StaticText(self, label="(no results)"), 0, wx.EXPAND)
+        for r in results:
+            vbox.Add(SearchResult(self, result=r),
+                     flag=wx.TOP | wx.BOTTOM, border=8)
+        self.SetSizer(vbox)
+        self.SetScrollbars(0, 4, 0, 0)
+
+class SearchResult(wx.Panel):
+    def __init__(self, *args, **kwargs):
+        self.result = kwargs.pop('result', {})
+        wx.Panel.__init__(self, *args, **kwargs)
+
+        self.create_controls()
+        self.do_layout()
+
+    def create_controls(self): <2>
+        titlestr = self.result['title']
+        if self.result['state'] != 'open':
+            titlestr += ' ({})'.format(self.result['state'])
+        textstr = self.first_line(self.result['body'])
+        self.title = wx.StaticText(self, label=titlestr)
+        self.text = wx.StaticText(self, label=textstr)
+
+        # Adjust the title font
+        titleFont = wx.Font(16, wx.FONTFAMILY_DEFAULT,
+                            wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        self.title.SetFont(titleFont)
+
+        # Bind click and hover events on this whole control <3>
+        self.Bind(wx.EVT_LEFT_UP, self.on_click)
+        self.Bind(wx.EVT_ENTER_WINDOW, self.enter)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.leave)
+
+    def do_layout(self):
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        vbox.Add(self.title, flag=wx.EXPAND | wx.BOTTOM, border=2)
+        vbox.Add(self.text, flag=wx.EXPAND)
+        self.SetSizer(vbox)
+
+    def enter(self, _):
+        self.title.SetForegroundColour(wx.BLUE)
+        self.text.SetForegroundColour(wx.BLUE)
+
+    def leave(self, _):
+        self.title.SetForegroundColour(wx.BLACK)
+        self.text.SetForegroundColour(wx.BLACK)
+
+    def on_click(self, event): <4>
+        import webbrowser
+        webbrowser.open(self.result['html_url'])
+
+    def first_line(self, body):
+        return body.split('\n')[0].strip() or '(no body)'
+----
+
+<1> The containing panel is simple enough that it only consists of a constructor.
+    This class's job is to contain the results, and present them in a scroll window.
+<2> A `SearchResult` comprises two static text controls, which contain the issue's title and the first line of its body.
+<3> We're binding the click handler for this entire panel, but also the mouse-enter and mouse-leave events, so we can make it behavior more like a link in a browser.
+<4> Here's how you open the default browser to a URL in Python.
+
+There it is, a working GitHub issue-search UI.
+WxPython isn't so bad, once you get used to it.
+It lacks some facilities of newer frameworks, but there's nothing better for getting a basic cross-platform UI out the door quickly.
+
+Let's take a look at how a possibly-non-technical someone else might run this.
+
 === Packaging
-- Use PyInstaller to package as a `.app` bundle
+
+Well, we're not going to require them to install Python 2.7 and a bunch of packages.
+There's a project called PyInstaller which aims to make this distribution as easy as possible.
+You can install it onto your development machine by typing `sudo pip install pyinstaller`.
+
+Once that's done, the usage is pretty simple.
+Let's assume you wrote all the code above into a file called `search.py`, and `agithub.py` is sitting alongside it in the current directory.
+Here's how to tell PyInstaller to generate a single application for you:
+
+[source,console]
+----
+$ pyinstaller -w search.py
+----
+
+That's it!
+The `-w` flag tells PyInstaller to create a "windowed" build of your application, rather than the default console build.
+On OS X, this generates a `search.app` application bundle, and on Windows this generates a `search.exe` file.
+You can take either of these to a computer with no Python installed, and they'll run perfectly.
+
+That's because PyInstaller has copied everything necessary for your program to run, from the Python interpreter on up, inside that file.
+The one I just generated is 67MB, which seems large for a fairly simple program, but that number is more reasonable when you consider what's inside the package.
 
 === Summary
+
+In this chapter we took a look at the four different kinds of search GitHub exposes through their API: repositories, issues, code, and people.
+We also had a whirlwind tour through the world of Python GUI development, and wrote a simple application that shows filtered issue search results.
+
+
