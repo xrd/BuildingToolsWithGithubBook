@@ -1,4 +1,4 @@
-
+[appendix]
 == GitHub started with Ruby
 
 Many of the tools written and used internally at GitHub are written in
