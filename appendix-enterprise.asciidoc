@@ -1,3 +1,29 @@
 [appendix]
 == GitHub Enterprise
 
+
+Most people understandably equate GitHub (the company) with github.com (the website), but it's interesting to note that they're not one and the same.
+
+The GitHub website, as important it is to modern open- and closed-source software development, is not the only product that GitHub the company produces.
+The single largest other product from that team is called GitHub Enterprise, and it's a version of the GitHub software that can be deployed inside a corporate firewall – like your own private github.com, running on your own machine.
+The two products are very similar from a user point of view, but there are some important differences.
+
+For the purposes of this appendix, we'll try to compare GitHub Enterprise with an organization account on github.com, since those are likely the best comparison for the typical Enterprise customer.
+
+=== Environment
+
+GitHub Enterprise comes as a pre-packaged virtual machine.
+
+=== Cost
+
+Let's talk turkey.
+On the github.com site, organizational accounts range from free (all repositories public) to 200 USD per month (125 private repositories), with the most common paid plan running about 25 USD per month, and allowing up to 10 private repositories.
+GitHub Enterprise user accounts come in packs of ten, and each pack retails for 2,500 USD per year.
+
+That sounds like a lot of money, but it's only about 21 USD per user per month, or just less than the most common organizational plan.
+Also consider that the Enterprise product gives your users unlimited private repositories and unlimited organizations, plus control over the network and machine environment in which it runs.
+
+=== Administration
+
+=== API
+
