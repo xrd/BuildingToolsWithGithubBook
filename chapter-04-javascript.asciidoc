@@ -1,20 +1,13 @@
 == A Single Page App using the GitHub API with JavaScript
 
-=== Ease
-=== Depth
-=== Complete
-=== Expansive
-=== Expedited
-
-
-
-Now that you know the basics of the GitHub API, let's build something
-interesting with it. GitHub offers libraries which work within other
-programming languages and frameworks, and other chapters discuss the
-GitHub API on the server side. You don't need a server, however, to
-build applications which interact with the GitHub API. To demonstrate
-this, we will build a single page app, hosting everything on GitHub
-and using the GitHub API through a pure JavaScript client-side library.
+GitHub offers libraries which work within other programming languages
+and frameworks, and more often than not, these tools run on a server. 
+Runnig a server means finding and managing a server, often an onerous
+and expensive task. The GitHub API is accessible purely on the client
+side, however, if you use the JavaScript client library. To demonstrate 
+this library, we will build a single page app, hosting everything on
+GitHub and using the GitHub API through a pure JavaScript client-side
+library.
 
 === Using the GitHub API with JavaScript
 
