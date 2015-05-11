@@ -5,14 +5,41 @@
 Most people understandably equate GitHub (the company) with github.com (the website), but it's interesting to note that they're not one and the same.
 
 The GitHub website, as important it is to modern open- and closed-source software development, is not the only product that GitHub the company produces.
-The single largest other product from that team is called GitHub Enterprise, and it's a version of the GitHub software that can be deployed inside a corporate firewall – like your own private github.com, running on your own machine.
-The two products are very similar from a user point of view, but there are some important differences.
+The single largest other product from that team is called GitHub Enterprise, and it's a version of the GitHub software that can be deployed inside a corporate firewall – like having your own private github.com, running on your own machine.
 
+The two products are very similar from a user point of view, but there are some important differences.
+It can sometimes be hard to imagine the kinds of difficulties that Enterprise is designed to solve, but keep in mind it's for large teams.
+
+[NOTE]
+====
 For the purposes of this appendix, we'll try to compare GitHub Enterprise with an organization account on github.com, since those are likely the best comparison for the typical Enterprise customer.
+====
 
 === Environment
 
-GitHub Enterprise comes as a pre-packaged virtual machine.
+GitHub Enterprise comes as a pre-packaged virtual machine, which the customer is then responsible for hosting in their own infrastructure.
+A wide variety of virtual-machine formats are available, including native packages for Amazon AWS and Microsoft Azure, as well as virtual appliances for VMWare and other virtual hosting systems.
+
+=== Administration
+
+Since the customer is in control of the environment in which Enterprise runs, they now have a lot of concerns that the typical github.com user does not.
+Things like disk space, load management, DNS settings, how to send email, and so on.
+GitHub Enterprise has an administration UI that doesn't exist on github.com, which allows management of alerts, 
+
+Also, while github.com has its own user system, GitHub Enterprise plugs into an organization's existing authentication system.
+This allows a company's IT organization to manage user identities in one single place, rather than having to duplicate a lot of effort when a new team member hires on.
+It also eases the initial transition, when perhaps thousands of people will need new accounts.
+
+=== API
+
+The complete GitHub API is also available on an Enterprise instance; you just need to send your requests to http://<hostname>/api/v3[] instead of http://api.github.com/[].
+You can imagine that some users have accounts on both an Enterprise instance as well as github.com, and many applications have started supporting this scenario.
+
+There's also a new API section that isn't available on github.com, called the Management Console API.
+It allows you to do things like check settings, maintain SSH keys, manage your license, and so on.
+Nearly anything you can do from the web management console, you can do through the API.
+
+Documentation for this API is available at https://developer.github.com/v3/enterprise[].
 
 === Cost
 
@@ -23,7 +50,11 @@ GitHub Enterprise user accounts come in packs of ten, and each pack retails for 
 That sounds like a lot of money, but it's only about 21 USD per user per month, or just less than the most common organizational plan.
 Also consider that the Enterprise product gives your users unlimited private repositories and unlimited organizations, plus control over the network and machine environment in which it runs.
 
-=== Administration
+=== Summary
 
-=== API
+There are many reasons why your company might want to use Enterprise over (or in addition to) github.com.
+Maybe you have regulatory or legal requirements to maintain physical control over your source code – or you just want that control.
+Maybe your software too complex to fit inside a single github.com organization account.
+Or perhaps your team is large enough that Enterprise would actually be cheaper.
+Whatever the reason, GitHub Enterprise is every bit as fantastic a product as github.com, and has worked well for many organizations.
 
