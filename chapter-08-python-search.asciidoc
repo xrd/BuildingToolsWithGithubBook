@@ -352,7 +352,7 @@ Let's take a look at a few key things:
     `os` and `subprocess` come from the Python standard library.
 <3> This is the class for our main window.
     We'll walk through the particulars later on when we discuss the real implementation.
-<4> This is how you write a "main" function in Python.
+<4> In Python, you create the main entry point of an application using this syntax.
 <5> And this is how you write a "main" function in WxPython.
     We instantiate an `App` instance, create an instance of our top-level frame, and run the app's main loop.
 
