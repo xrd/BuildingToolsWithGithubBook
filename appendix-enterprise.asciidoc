@@ -41,15 +41,6 @@ Nearly anything you can do from the web management console, you can do through t
 
 Documentation for this API is available at https://developer.github.com/v3/enterprise[].
 
-=== Cost
-
-Let's talk turkey.
-On the github.com site, organizational accounts range from free (all repositories public) to 200 USD per month (125 private repositories), with the most common paid plan running about 25 USD per month, and allowing up to 10 private repositories.
-GitHub Enterprise user accounts come in packs of ten, and each pack retails for 2,500 USD per year.
-
-That sounds like a lot of money, but it's only about 21 USD per user per month, or just less than the most common organizational plan.
-Also consider that the Enterprise product gives your users unlimited private repositories and unlimited organizations, plus control over the network and machine environment in which it runs.
-
 === Summary
 
 There are many reasons why your company might want to use Enterprise over (or in addition to) github.com.
