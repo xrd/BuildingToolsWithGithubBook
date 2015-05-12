@@ -317,6 +317,10 @@ We'll use the Agnostic GitHub API (`agithub`) module as a layer over the GitHub 
 
 `agithub` can be found at https://github.com/jpaugh/agithub[], and the "installation" is simply to download a copy of the `agithub.py` source file and place it alongside your project files.
 
+xxxx
+I think this is actually very interesting: “agithub can be found at https://github.com/jpaugh/agithub, and the "installation" is simply to download a copy of theagithub.py source file and place it alongside your project files.” To me this says the GitHub API (with hypermedia) is discovered at runtime and agithub can layer a nice DSL on top of the API without a complicated dependency like a traditional library. Other libraries bind very tightly to the underlying API implementation and will break if the API is not versioned correctly; agithub looks like it avoids these issues?
+xxxx
+
 === The Code
 
 Okay, let's dive in.
