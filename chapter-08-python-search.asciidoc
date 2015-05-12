@@ -263,7 +263,7 @@ image::images/python-search.png[]
 
 ==== User flow
 
-Since the Search API is throttled pretty aggressively, and also because we want the ability to search private repositories' issues, we'll need the user to log in.
+Since the Search API is throttled somewhat aggressively, and also because we want the ability to search private repositories' issues, we'll need the user to log in.
 Our program will try to get GitHub credentials from Git's credential store, but it'll fall back to a login form, which looks like this:
 
 .Login UI
@@ -529,7 +529,7 @@ Doing this requires a specific call to the sizer's `Layout()` method; otherwise 
 It creates a menu that only contains File>Exit, and a login panel, whose implementation we'll cover a bit later on.
 
 `do_layout` uses a WxWidgets feature called "sizers" to do some automated layout.
-Sizers are a pretty complex topic, but here's all you need to know about this snippet:
+Sizers are a complex topic, but here's all you need to know about this snippet:
 
 * A `BoxSizer` stacks widgets in a single direction, in this case vertically.
 * The second parameter is a scaling factor.
@@ -564,12 +564,12 @@ Fortunately, calling the `Destroy()` method cleans both of those up, so we can t
 Doing this requires a specific call to the sizer's `Layout()` method; otherwise the sizer won't know that it needs to adjust the position and size of the new panel.
 
 That's it!
-Aside from managing a couple of fields, most of this code is managing the UI, which is pretty much exactly what we'd want from a UI class.
+Aside from managing a couple of fields, most of this code is managing the UI, which is almost exactly what we'd want from a UI class.
 Let's take a peek at one of the two panels that we swap in and out.
 
 ==== GitHub login
 
-The `LoginPanel` class is pretty similar in structure to the `SearchFrame` class, with a couple of key differences, which we'll describe after the wall of code.
+The `LoginPanel` class is similar in structure to the `SearchFrame` class, with a couple of key differences, which we'll describe after the wall of code.
 
 [source, python]
 ----
@@ -651,7 +651,7 @@ Here we drop all of the controls into their positions with the `pos=(r,c)` notat
 The `flags` and `border` parameters mostly mean the same thins as before, and the `AddGrowableCol` function tells the layout engine which parts of the grid should be allowed to stretch.
 
 Then we do something curious: we put the `GridBagSizer` _into another sizer_.
-This is a pretty power feature of sizers, and allows pretty much any arbitrary layout to be possible -- although perhaps not easy or simple.
+GridBagSizer nesting is a power feature of sizers, and allows almost any arbitrary layout to be possible -- although perhaps not easy or simple.
 The vertical box sizer also contains some bare tuples; this special form is called "adding a spacer."
 In this case, we sandwich the sizer with all the controls between two spacers with different weights, making it float about a third of the way down the window.
 The effect is like this:
@@ -742,7 +742,7 @@ We'll skip the usual walkthrough, to point out a couple of interesting features.
     There's some code to adjust the wrap width of the text, based on the laid-out width of the control.
     This isn't a great approach; doing it better is left as an exercise for the reader.
 
-Again, there's a fair amount of code here, but most of it should be looking pretty familiar.
+Again, there's a fair amount of code here, but most of it should look familiar.
 
 ==== Displaying results
 
@@ -832,7 +832,7 @@ Well, we're not going to require them to install Python 2.7 and a bunch of packa
 There's a project called PyInstaller which aims to make this distribution as easy as possible.
 You can install it onto your development machine by typing `sudo pip install pyinstaller`.
 
-Once that's done, the usage is pretty simple.
+Once that's done, the usage is dead simple.
 Let's assume you wrote all the code above into a file called `search.py`, and `agithub.py` is sitting alongside it in the current directory.
 Here's how to tell PyInstaller to generate a single application for you:
 
