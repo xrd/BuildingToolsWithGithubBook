@@ -438,22 +438,24 @@ class SearchFrame(wx.Frame):
 
         self.SetTitle('GitHub Issue Search')
         self.Show()
+----
 
-    def create_controls(self):
-        # Set up a menu. This is mainly for "Cmd-Q" behavior on OSX
-        filemenu = wx.Menu()
-        filemenu.Append(wx.ID_EXIT, '&Exit')
-        menuBar = wx.MenuBar()
-        menuBar.Append(filemenu, '&File')
-        self.SetMenuBar(menuBar)
+Our initialization function starts by setting up some layout dimensions. Then, we create the UI controls and 
+retrieve the credentials from the user using the `git crendentials fill` command and wrapper we described earlier. 
+We then change the title and display the application to the user. 
 
-        # Start with a login UI
-        self.login_panel = LoginPanel(self, onlogin=self.login_accepted)
+There's a lot going on here, but let's talk a bit about this class's job.
+It's responsible for maintaining the top-level "frame" (a window with a title bar, a menu, etc), and deciding what's displayed in that frame.
+In this case, we want to show a login UI first, and when we get valid credentials (either from Git or the user), we'll switch to a searching UI.
 
-    def do_layout(self):
-        self.sizer = wx.BoxSizer(wx.VERTICAL)
-        self.sizer.Add(self.login_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
-        self.SetSizer(self.sizer)
+The `__init__` method is the constructor, so this is where we start when the main function calls `SearchFrame()`.
+We pass most of the arguments straight through to the parent class's constructor, after setting a size that's a bit larger than WxPython's default.
+Once that's done, we set `self.credentials` (which we'll use to store GitHub login information) and `self.orgs` (which will contain the names of the user's organizations), and call a couple of functions.
+
+Now let's discuss the implementation of our credentials code and then finally we will discuss the layout code we need. 
+
+[source,python]
+----
 
     def login_accepted(self, username, password):
         self.credentials['username'] = username
@@ -481,13 +483,47 @@ class SearchFrame(wx.Frame):
         self.sizer.Layout()
 ----
 
-There's a lot going on here, but let's talk a bit about this class's job.
-It's responsible for maintaining the top-level "frame" (a window with a title bar, a menu, etc), and deciding what's displayed in that frame.
-In this case, we want to show a login UI first, and when we get valid credentials (either from Git or the user), we'll switch to a searching UI.
+Once both of those calls have completed, the window is ready to display, but we still want to try and get credentials before we show anything to the user, to avoid a flickering display.
+Here we call our credential helper from above, and try them out with `self.test_credentials()`, which tries to get a list of the GitHub organizations the user belongs to.
+It does this by using the `agithub` library, instantiating a `Github` object with the supplied username and password, and doing a `GET` on `/user/orgs`.
+Here you can see the usage pattern for `agithub` – the URL path is mapped to sub-object notation, and the HTTP verb is mapped to a method call.
+The return values are a status code and the data, which has been decoded into a dictionary object.
+If this succeeds (status is 200), we skip the login screen entirely, and switch to the search display.
 
-The `__init__` method is the constructor, so this is where we start when the main function calls `SearchFrame()`.
-We pass most of the arguments straight through to the parent class's constructor, after setting a size that's a bit larger than WxPython's default.
-Once that's done, we set `self.credentials` (which we'll use to store GitHub login information) and `self.orgs` (which will contain the names of the user's organizations), and call a couple of functions.
+[NOTE]
+====
+We're doing a synchronous network call on the UI thread, which in general isn't a good idea, since the UI will become unresponsive until the network call completes.
+Ideally, we'd move this out onto another thread, and get the return value with a message, but for this simple example (and use case), it'll do.
+====
+
+Once that's done, there's just a tiny bit of housekeeping left: setting the title and making sure our window is visible, and the constructor can return.
+
+The methods that we haven't described yet are concerned with reacting to login input; notice that we passed `self.login_accepted` to the login panel's constructor.
+That method is called by the login panel when the user gives it credentials, so we store them locally, test them, and if they work, switch to the search UI.
+
+The last method handles the UI switch.
+The login panel is referenced by two things: the `SearchFrame` instance (the parent window), and the sizer that's controlling its layout.
+Fortunately, calling the `Destroy()` method cleans both of those up, so we can then create the `SearchPanel` instance and add it to our sizer.
+Doing this requires a specific call to the sizer's `Layout()` method; otherwise the sizer won't know that it needs to adjust the position and size of the new panel.
+
+[source,python]
+----
+    def create_controls(self):
+        # Set up a menu. This is mainly for "Cmd-Q" behavior on OSX
+        filemenu = wx.Menu()
+        filemenu.Append(wx.ID_EXIT, '&Exit')
+        menuBar = wx.MenuBar()
+        menuBar.Append(filemenu, '&File')
+        self.SetMenuBar(menuBar)
+
+        # Start with a login UI
+        self.login_panel = LoginPanel(self, onlogin=self.login_accepted)
+        
+    def do_layout(self):
+        self.sizer = wx.BoxSizer(wx.VERTICAL)
+        self.sizer.Add(self.login_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
+        self.SetSizer(self.sizer)
+----
 
 `create_controls` works as advertised.
 It creates a menu that only contains File>Exit, and a login panel, whose implementation we'll cover a bit later on.
