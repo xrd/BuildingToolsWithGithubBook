@@ -3,7 +3,7 @@
 === What can it do?
 
 Once you have enough data, it's not enough to simply organize it.
-You need first-class search capability if you want to have any hope of finding anything at all.
+You need first-class search capability to truly use your data.
 GitHub's search API gives you access to the full power of the built-in search function, and using operators, it provides access to a very powerful way of finding the thing you're looking for.
 
 ==== General Principles
