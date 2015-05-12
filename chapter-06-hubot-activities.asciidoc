@@ -501,11 +501,12 @@ that in the pull request comments.
 ===== Extension Boilerplate
 
 We will start writing our extension by defining the high level
-interface we expect from our users. Our script has a simple
-vocabulary: it needs to recognize responses 
-accepting a review request, or those that decline. Our extension
-script should be in the `scripts` directory and named
-`pr-delegator.coffee`:
+communication format we expect from our users. Our script has a simple
+vocabulary: it needs to recognize responses accepting a review
+request, or those that decline. Our extension script should be in the
+`scripts` directory and named `pr-delegator.coffee`. This is just the
+back and forth we will be having with users; we are not yet writing
+any code to handle the pull request notifications.
 
 [source,coffeescript]
 -----
@@ -518,16 +519,17 @@ module.exports = (robot) -> # <1>
 
         accept = ( res ) -> # <4>
                 res.reply "Thanks, you got it!"
-                console.log "Accepted!"
+                console.log "Accepted!" # <5>
                 
-        decline = ( res ) -> # <5>
+        decline = ( res ) -> # <6>
                 res.reply "OK, I'll find someone else"
-                console.log "Declined!"
+                console.log "Declined!" 
 
 -----
 
-There is a lot here if you are new to CoffeeScript, and it is
-amazingly powerful code.
+This is a dense piece of code and can be confusing if you are new to
+CoffeeScript. At the same time, hopefully you will agree this is
+amazingly powerful code for such a small snippet after reading these notes.
 
 <1> All NodeJS modules work start by defining entrypoints using the
 `exports` syntax. This code defines a function that expects a single
@@ -555,17 +557,16 @@ see this message, our code before this was broken. The `console.log`
 is not visible to any users in the channel. It is good practice to
 remove this code when you finalize your production code, but if you
 forget, it won't affect anything happening in the channel.
-<6> 
+<6> We then define the `decline` method using the same APIs as for the
+`accept` method. 
 
-If Hubot is running, you will need to restart it to reload any
-scripts. Kill Hubot (using Ctrl-C), and then restart it, and then
+If Probot is running, you will need to restart it to reload any
+scripts. Kill Probot (using Ctrl-C), and then restart it, and then
 play with commands inside your Slack site. Entering the commands
-`probot accept` and `probot decline` and you'll see our Hubot
+`probot accept` and `probot decline` and you'll see Probot
 respoding inside the channel. You'll also see the message `Accepted!` or
-`Declined!` printed to the console on which your Hubot is
-running. Using `console.log` can be a quick way to troubleshoot your
-scripts and make sure your Hubot is working from within only a
-terminal session.
+`Declined!` printed to the console on which Probot is
+running. 
 
 ===== Writing tests for our Hubot
 
@@ -632,7 +633,8 @@ are feverishly coding away, animating our helpful Probot.
 You should see some similarities between the calls made to our robot
 (`robot.respond` and `robot.router.post`) and the tests. We setup
 "spies" using Jasmine that generate fake function calls capable of
-recording any interaction with themselves. Inside our `it` call, we
+recording any interaction from outside sources (either our production
+code or the test code harness). Inside our `it` call, we
 then verify that those calls were made. We use the `expect` function
 to verify that we have made two calls to the `respond` function
 defined on the robot, and that `robot.router.post` has been called as
@@ -746,11 +748,7 @@ $ curl https://api.github.com/authorizations --user $USERNAME --data
 Enter host password for user 'xrd':
 ```
 
-Enter your password again and you are done.
-
-==== Using the oAuth token to register for events
-
-If you have completed these steps correctly (regardless of whether you
+If all these steps complete successfully (regardless of whether you
 are using 2-factor auth or not) you will then receive an oauth token.
                                                  
 ```  
@@ -773,6 +771,8 @@ are using 2-factor auth or not) you will then receive an oauth token.
 }
 
 ```
+
+==== Using the oAuth token to register for events
 
 Once this is completed we now have our token which we can use to
 create a webhook. Make sure to use the correct repository name and
@@ -825,9 +825,9 @@ $ curl -H "Authorization: token $TOKEN" -H "Content-Type: application/json" -X P
 }
 ```
 
-There is a bit of bash trickery here, but nothing to be overly
+There is a bit of bash cleverness here, but nothing to be overly
 disturbed by. We create a few variables which we use in the final
-command. Since the $CONFIG variable is particularly long, we use echo
+command. Since the $CONFIG variable is particularly long, we use `echo`
 to print out a bunch of information with the webhook URL in the
 middle. If you want to see the result of that variable, type `echo
 $CONFIG` and you'll notice the snippet `... "url":
@@ -902,6 +902,9 @@ Delta compression using up to 8 threads.
 ...
 ------
 
+We now have an end-to-end Probot setup, ready to receive webhook
+notifications. 
+
 ==== Triggering Real Pull Requests
 
 We can now start testing our Probot with real GitHub
@@ -960,21 +963,26 @@ REPOSITORY=test_repository
 DATE=$(date "+%s")
 NEW_BRANCH=$DATE
 git checkout -b $NEW_BRANCH
-echo "Adding some content" >> test.txt
+echo "Adding some content" >> test-$DATE.txt
 git commit -m "Adding test file to test branch at $DATE" -a
 git push origin $NEW_BRANCH
-CONFIG=$(echo '{ "title": "PR on '$DATE'", "body" : "Pull this PR'$DATE'", "head": "'$NEW_BRANCH'", "base": "master" }' )
+CONFIG=$(echo '
+{ "title": "PR on '$DATE'", 
+  "body" : "Pull this PR'$DATE'", 
+  "head": "'$NEW_BRANCH'", 
+  "base": "master" 
+}' )
 URL=https://api.github.com/repos/$USERNAME/$REPOSITORY/pulls
-curl -H "Authorization: token $AUTH_TOKEN" -H "Content-Type: application/json" -X POST -d "$CONFIG" "$URL"   
+curl -H "Authorization: token $AUTH_TOKEN" \
+-H "Content-Type: application/json" -X POST -d "$CONFIG" "$URL"   
 ------
 
 This script generates a unique string based on the current time. It
 then creates and checks out a new branch based on that name, adds some
-content to a file, commits it, pushes it into GitHub, and generates a
+content to a unique file, commits it, pushes it into GitHub, and generates a
 pull request using the API. All you will need to do is make a one-time
 update to the three variables at the top of the script to match your
-information. This 
-script is resilient in that even if your auth token were incorrect (or
+information. This script is resilient in that even if your auth token were incorrect (or
 had expired) this command will do nothing other than add testing data
 to your test repository, so you can experiment safely. Just be sure
 to pay attention to whether you see a successful JSON request as shown
@@ -1011,10 +1019,10 @@ our webhook.
 image::images/hubot-recent-deliveries.png[]
 
 These requests all failed; our Probot is not correctly configured
-to handle real HTTP requests from GitHub (and we have not published
-our Probot onto a public endpoint). But, this does show that GitHub is
+to handle real HTTP requests from GitHub. This does show that GitHub is
 trying to do something when a pull request is received. We'll work on
-getting our handler code working and then issue another PR. 
+getting our handler code written and pushed into Heroku, and then
+issue another PR. 
 
 ==== Handling PR Notifications as Post Requests over HTTP
 
@@ -1121,7 +1129,8 @@ If we run our tests we will see them all pass:
 
 [source,bash]
 ------
-$ node_modules/jasmine-node/bin/jasmine-node --coffee spec/pr-delegator.spec.coffee 
+$ node_modules/jasmine-node/bin/jasmine-node \
+--coffee spec/pr-delegator.spec.coffee 
 ....
 
 Finished in 0.01 seconds
@@ -1138,7 +1147,8 @@ switch with cURL).
 
 [source,bash]
 --------
-$ ( HUBOT_SLACK_TOKEN=xoxb-3295776784-nZxl1H3nyLsVcgdD29r1PZCq ./bin/hubot -a slack 2> /dev/null | grep -i secret & )
+$ ( HUBOT_SLACK_TOKEN=xoxb-3295776784-nZxl1H3nyLsVcgdD29r1PZCq \
+./bin/hubot -a slack 2> /dev/null | grep -i secret & )
 $ curl --data '' http://localhost:8080/pr                                                                                             
 Invalid secret
 OK
@@ -1166,11 +1176,14 @@ should quit.
 
 Provided you connected correctly to your Slack site, you'll also see a
 message inside your #general channel which says "OMG, GitHub is on my
-caller-id!?!" 
-
-We now have a simple way to trigger a pull request notification
+caller-id!?!" We now have a simple way to trigger a pull request notification
 without going through the formality of actually generating a pull
-request. 
+request. Between our script which issues real pull requests through the
+GitHub API and this one that fakes a webhook notification, we have the
+ability to test our code externally as we develop it. Of course, our
+tests are valuable, but sometimes we it is impossible to understand
+what is happening inside of our Probot without running against the
+real Probot and not a test harness.
 
 ===== Assigning an active chat room user
 
