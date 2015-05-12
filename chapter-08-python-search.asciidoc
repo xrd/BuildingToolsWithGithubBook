@@ -646,7 +646,7 @@ Every event in WxPython will call the handler with a single argument, an object 
 That means we can use the same event handler for any number of different kinds of events, so we do – the `ENTER` handlers for both text boxes and the `BUTTON` handler for the button all go through `self.do_login`.
 
 `do_layout` uses a different kind of sizer – a `GridBagSizer`.
-Again, the topic of sizers is _way_ outside the scope of this article, but just know that this kind arranges things in a grid, and you can allow some of the rows or columns to stretch to fill the container.
+Again, the topic of sizers is _way_ outside the scope of this chapter, but just know that this kind arranges things in a grid, and you can allow some of the rows or columns to stretch to fill the container.
 Here we drop all of the controls into their positions with the `pos=(r,c)` notation (here "rows" come first, which isn't like most coordinate systems), and cause one control to span two columns with the `span` parameter.
 The `flags` and `border` parameters mostly mean the same thins as before, and the `AddGrowableCol` function tells the layout engine which parts of the grid should be allowed to stretch.
 
