@@ -617,25 +617,7 @@ result in an HTTP 404 Not Found result.
 Before you start building a system atop another service's API, it is
 always wise to understand what, if any, limitations are placed on that
 API's usage. Aside from the limitations on bandwidth, GitHub's API is also covered
-by the overall GitHub Terms of Service.   While you can read these terms of
-servic here: https://help.github.com/articles/github-terms-of-service
-- here is a summary of the terms.
+by the overall GitHub Terms of Service.   You can read these terms of
+service here: https://help.github.com/articles/github-terms-of-service
 
-. GitHub isn't liable for any damages that result from your use of the
-API.  
-. If you abuse the API, GitHub can suspend your account's access to
-the API.  They will attempt to contact you before this happens.
-. They can change the API.  They can discontinue a part of the API.
-They can change it without notice.
-
-This is fairly standard stuff when it comes to terms for an API.
-We're not liable, don't abuse it, and we can change it or take it
-away.
-
-////
-We need guidance from GitHub here.  I don't see that the GitHub API
-has any explicit Terms of Service beyond the one every user agrees
-to.   It would be nice to know if there are any red lines that can't
-be crossed.
-////
 
