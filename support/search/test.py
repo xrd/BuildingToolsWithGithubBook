@@ -179,7 +179,10 @@ class SearchPanel(wx.Panel):
     def display_error(self, code, data):
         if self.results_panel:
             self.results_panel.Destroy()
-        str = ''.join('\n\n{}'.format(e['message']) for e in data['errors'])
+        if 'errors' in data:
+            str = ''.join('\n\n{}'.format(e['message']) for e in data['errors'])
+        else:
+            str = data['message']
         self.results_panel = wx.StaticText(self, label=str)
         self.results_panel.SetForegroundColour((200,0,0))
         self.vbox.Add(self.results_panel, 1, wx.EXPAND | wx.TOP, 5)
