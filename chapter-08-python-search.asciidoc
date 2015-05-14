@@ -440,19 +440,20 @@ class SearchFrame(wx.Frame):
         self.Show()
 ----
 
-Our initialization function starts by setting up some layout dimensions. Then, we create the UI controls and 
-retrieve the credentials from the user using the `git crendentials fill` command and wrapper we described earlier. 
-We then change the title and display the application to the user. 
+The `__init__` method is the constructor, so this is where we start when the main function calls `SearchFrame()`.
+Here's what's happening at a high level – we'll dig into the details in a bit:
 
-There's a lot going on here, but let's talk a bit about this class's job.
-It's responsible for maintaining the top-level "frame" (a window with a title bar, a menu, etc), and deciding what's displayed in that frame.
+. Set up some layout dimensions and pass to the parent class's constructor
+. Create the UI controls
+. Retrieve the credentials from the user using the `git crendentials fill` wrapper we described earlier
+. Change the title and display the application to the user
+
+Before we get to _how_ all those things are done, let's step back a bit and talk about this class's job.
+It's responsible for maintaining the top-level "frame" (a window with a title bar, a menu, and so on), and deciding what's displayed in that frame.
 In this case, we want to show a login UI first, and when we get valid credentials (either from Git or the user), we'll switch to a searching UI.
 
-The `__init__` method is the constructor, so this is where we start when the main function calls `SearchFrame()`.
-We pass most of the arguments straight through to the parent class's constructor, after setting a size that's a bit larger than WxPython's default.
-Once that's done, we set `self.credentials` (which we'll use to store GitHub login information) and `self.orgs` (which will contain the names of the user's organizations), and call a couple of functions.
-
-Now let's discuss the implementation of our credentials code and then finally we will discuss the layout code we need. 
+Alright, enough background.
+Let's walk through the code for getting and checking credentials.
 
 [source,python]
 ----
@@ -483,23 +484,21 @@ Now let's discuss the implementation of our credentials code and then finally we
         self.sizer.Layout()
 ----
 
-Once both of those calls have completed, the window is ready to display, but we still want to try and get credentials before we show anything to the user, to avoid a flickering display.
-Here we call our credential helper from above, and try them out with `self.test_credentials()`, which tries to get a list of the GitHub organizations the user belongs to.
-It does this by using the `agithub` library, instantiating a `Github` object with the supplied username and password, and doing a `GET` on `/user/orgs`.
-Here you can see the usage pattern for `agithub` – the URL path is mapped to sub-object notation, and the HTTP verb is mapped to a method call.
+Each of these three methods comes in at a different point.
+If our credentials are coming from Git, we proceed straight to `test_credentials`; if they're coming from the login panel, they go through the `login_accepted` callback first (see below), which then calls `test_credentials`.
+
+Either way, what we do is try to fetch a list of the user's organizations using `agithub`'s `Github` class.
+Here you can see the usage pattern for `agithub` – the URL path is mapped to object-property notation, and the HTTP verb is mapped to a method call.
 The return values are a status code and the data, which has been decoded into a dictionary object.
-If this succeeds (status is 200), we skip the login screen entirely, and switch to the search display.
+If it fails — meaning the returned status is not `200` — we send the user to the login panel.
+If it succeeds, we call `switch_to_search_panel`.
 
 [NOTE]
 ====
-We're doing a synchronous network call on the UI thread, which in general isn't a good idea, since the UI will become unresponsive until the network call completes.
-Ideally, we'd move this out onto another thread, and get the return value with a message, but for this simple example (and use case), it'll do.
+We're doing a synchronous network call on the UI thread.
+This is usually a bad idea, because the UI will become unresponsive until the network call completes.
+Ideally we'd move this out onto another thread, and get the return value with a message, but for this simple example (and use case), it'll do.
 ====
-
-Once that's done, there's just a tiny bit of housekeeping left: setting the title and making sure our window is visible, and the constructor can return.
-
-The methods that we haven't described yet are concerned with reacting to login input; notice that we passed `self.login_accepted` to the login panel's constructor.
-That method is called by the login panel when the user gives it credentials, so we store them locally, test them, and if they work, switch to the search UI.
 
 The last method handles the UI switch.
 The login panel is referenced by two things: the `SearchFrame` instance (the parent window), and the sizer that's controlling its layout.
@@ -525,43 +524,22 @@ Doing this requires a specific call to the sizer's `Layout()` method; otherwise 
         self.SetSizer(self.sizer)
 ----
 
-`create_controls` works as advertised.
-It creates a menu that only contains File>Exit, and a login panel, whose implementation we'll cover a bit later on.
+`create_controls` is fairly straightforward.
+It instantiates a menu that only contains File>Exit, and a login panel, whose implementation we'll cover a bit later on.
+Note that when we create a visible control, we pass `self` as the first parameter to the constructor.
+That's because the `SearchFrame` instance we're constructing is the parent window of that control.
 
 `do_layout` uses a WxWidgets feature called "sizers" to do some automated layout.
 Sizers are a complex topic, but here's all you need to know about this snippet:
 
 * A `BoxSizer` stacks widgets in a single direction, in this case vertically.
-* The second parameter is a scaling factor.
+* The second parameter to `sizer.Add` is a scaling factor.
   If it's zero, the widget you're adding will always stay the same size if the parent window resizes; if it's anything else, all the things the sizer is controlling will adjust to fill their container.
   There's only one control in this sizer, but we still want it to take up the full area of the window, so we pass `1`.
 * The `border` parameter tells the sizer how much area to leave around the widget as padding.
 * The `wx.EXPAND` flag tells the sizer that we want the widget to expand in the direction the sizer isn't stacking.
   In this case, we're stacking vertically, but we also want this widget to expand horizontally.
-* The `wx.ALL` flag strangely enough specifies which edges of the widget should have the border area.
-
-Once both of those calls have completed, the window is ready to display, but we still want to try and get credentials before we show anything to the user, to avoid a flickering display.
-Here we call our credential helper from above, and try them out with `self.test_credentials()`, which tries to get a list of the GitHub organizations the user belongs to.
-It does this by using the `agithub` library, instantiating a `Github` object with the supplied username and password, and doing a `GET` on `/user/orgs`.
-Here you can see the usage pattern for `agithub` – the URL path is mapped to sub-object notation, and the HTTP verb is mapped to a method call.
-The return values are a status code and the data, which has been decoded into a dictionary object.
-If this succeeds (status is 200), we skip the login screen entirely, and switch to the search display.
-
-[NOTE]
-====
-We're doing a synchronous network call on the UI thread, which in general isn't a good idea, since the UI will become unresponsive until the network call completes.
-Ideally, we'd move this out onto another thread, and get the return value with a message, but for this simple example (and use case), it'll do.
-====
-
-Once that's done, there's just a tiny bit of housekeeping left: setting the title and making sure our window is visible, and the constructor can return.
-
-The methods that we haven't described yet are concerned with reacting to login input; notice that we passed `self.login_accepted` to the login panel's constructor.
-That method is called by the login panel when the user gives it credentials, so we store them locally, test them, and if they work, switch to the search UI.
-
-The last method handles the UI switch.
-The login panel is referenced by two things: the `SearchFrame` instance (the parent window), and the sizer that's controlling its layout.
-Fortunately, calling the `Destroy()` method cleans both of those up, so we can then create the `SearchPanel` instance and add it to our sizer.
-Doing this requires a specific call to the sizer's `Layout()` method; otherwise the sizer won't know that it needs to adjust the position and size of the new panel.
+* The `wx.ALL` flag specifies which edges of the widget should have the border area.
 
 That's it!
 Aside from managing a couple of fields, most of this code is managing the UI, which is almost exactly what we'd want from a UI class.
@@ -651,7 +629,7 @@ Here we drop all of the controls into their positions with the `pos=(r,c)` notat
 The `flags` and `border` parameters mostly mean the same thins as before, and the `AddGrowableCol` function tells the layout engine which parts of the grid should be allowed to stretch.
 
 Then we do something curious: we put the `GridBagSizer` _into another sizer_.
-GridBagSizer nesting is a power feature of sizers, and allows almost any arbitrary layout to be possible -- although perhaps not easy or simple.
+Sizer nesting is a powerful feature, and allows almost any window layout to be possible -- although perhaps not easy or simple.
 The vertical box sizer also contains some bare tuples; this special form is called "adding a spacer."
 In this case, we sandwich the sizer with all the controls between two spacers with different weights, making it float about a third of the way down the window.
 The effect is like this:
