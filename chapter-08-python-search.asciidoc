@@ -317,9 +317,9 @@ We'll use the Agnostic GitHub API (`agithub`) module as a layer over the GitHub 
 
 `agithub` can be found at https://github.com/jpaugh/agithub[], and the "installation" is simply to download a copy of the `agithub.py` source file and place it alongside your project files.
 
-xxxx
+////
 I think this is actually very interesting: “agithub can be found at https://github.com/jpaugh/agithub, and the "installation" is simply to download a copy of theagithub.py source file and place it alongside your project files.” To me this says the GitHub API (with hypermedia) is discovered at runtime and agithub can layer a nice DSL on top of the API without a complicated dependency like a traditional library. Other libraries bind very tightly to the underlying API implementation and will break if the API is not versioned correctly; agithub looks like it avoids these issues?
-xxxx
+////
 
 === The Code
 
@@ -358,11 +358,11 @@ Let's take a look at a few key things:
 
 ==== Git credential helper
 
-xxx
+////
 I had not used “git credential fill” before. Can you clarify why you would do this? This is a program that will retrieve the username and password when stored inside a git preferences file or something? So, if the user has stored their credentials within keychain (OS X), etc. this will retrieve it for them?
 
 If you have not used it before (as I had not) it seems like it gives a different result. I was unsure if I was supposed to type these things in (I needed to), or if this was the result of using it?
-xxx
+////
 
 Before we get into the UI code, let's define a function to help us get the user's GitHub credentials.
 We'll be cheating a bit, by asking Git if it has the user's login and password.
