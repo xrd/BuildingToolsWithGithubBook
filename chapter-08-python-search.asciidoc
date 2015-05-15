@@ -1,37 +1,47 @@
 == Search
 
-=== What can it do?
+Once you have enough data, no amount of organization will make everything easy to find.
+As Google has taught us, the only organizational system that works at this scale is search.
+When you use GitHub, you're exposed to both sides of this phenomenon: the repositories you have direct access to -- which are relatively small in number -- are given a single level of hierarchy, so you can keep them straight in your head.
+However, you also have access to a vast number of other peoples' public repositories, so GitHub also provides an excellent search feature.
 
-Once you have enough data, it's not enough to simply organize it.
-You need first-class search capability to truly use your data.
-GitHub's search API gives you access to the full power of the built-in search function, and using operators, it provides access to a very powerful way of finding the thing you're looking for.
+Helpfully, they also expose this capability for your applications.
+GitHub's search API gives you access to the full power of the built-in search function, including the ability to narrow your search through the use of operators and logical combinations.
+By integrating this feature with your application, you can provide your users a very powerful way of finding what they're looking for.
+Let's take a close look at this API, and try building something with it.
 
 ==== General Principles
 
-The search API can be used over raw HTTP.
-The central anchor point is `https://api.github.com/v3/search`, or if you're searching an Enterprise instance, `https://<server>/api/v3/search`.
-You can search anonymously without authenticating as a GitHub user, but your results will be limited to public items – which means this won't work with an Enterprise install.
-Authentication is a bit of a complicated topic, but the library we use later on abstracts it for us, so we'll gloss over it for now, and rely on public results to get a feel for what comes back.
+The search API has four separate parts, but they all adhere to a few conventions, and there are some rules that govern all of them.
 
-===== Rate Limits
+===== Authentication
 
-Calls to these APIs are subject to rate limits, which are stricter than other APIs because search is computationally expensive.
-As of this writing, the documentation states that anonymous searches are limited to 5 per minute, where authenticated queries are limited at 20 per minute.
-Whatever the limit is when you're reading this, you can find out the status of your rate limit by checking the `X-RateLimit-*` headers that come with your response.
+We cover authentication in <<authentication>>, but this API is also available without logging in.
+However, there are a few limitations to this approach.
+
+First, you'll only be able to search public repositories.
+This is probably fine if you're primarily working with open-source software, but users of your application will probably expect to have access to their private code, as well as that of any organizations they belong to.
+Also, since _all_ Enterprise repositories are private, anonymous search is completely useless there.
+
+Secondly, authenticating opens up your rate limit.
+The limits on search are stricter than other APIs anyways, because search is computationally expensive, but anonymous searches are stricter still.
+As of this writing, and according to the documentation, anonymous searches are limited to 5 per minute, and you can do 20 authenticated queries per minute.
+You can find out your standing by checking the `X-RateLimit-*` headers that come with your response.
 They look like this:
 
 [source,console]
 ----
-X-RateLimit-Limit: 10
+X-RateLimit-Limit: 20
 X-RateLimit-Remaining: 9
 X-RateLimit-Reset: 1430621780
 ----
 
 The `Limit` header shows what your cap is, while the `Remaining` header tells you how many queries you have left.
-The `Reset` header is a tells you when the counter will reset, in UTC epoch seconds.
+The `Reset` header tells you when the counter will reset, in UTC epoch seconds.
 
 ===== Pagination
 
+Search results can be voluminous, so the API will paginate them for you.
 The JSON returned from most calls will have this general format:
 
 [source,json]
@@ -43,30 +53,22 @@ The JSON returned from most calls will have this general format:
 }
 ----
 
-The `total_count` field represents the total number of search results that turned up from this query; by default, only the first 30 are returned.
-You can customize this with `page` and `per_page` query parameters in the url.
-For example, a GET request to `search/repositories?q=foobar&page=2&page_size=100` will return 200 items, starting with the 101st result.
+The `total_count` field represents the total number of search results that turned up from this query.
+By default, only the first 30 are returned, but you can customize this with `page` and `per_page` query parameters in the url.
+For example, a GET request to `search/repositories?q=foobar&page=2&page_size=45` will return 45 items, starting with the 46th result.
 Page sizes are generally limited to 100.
 
 The `incomplete_results` field refers to a computation limit placed on search results.
 If your search takes too long, the GitHub API will stop it partway through executing, return the results that did complete, and set this flag to `true`.
 For most queries this won't be a problem, and the `total_count` will represent all the results from the search, but if your query is complicated, you might only get a partial result set.
 
-===== Sorting
-
-Search results are returned in a non-arbitrary order.
-The default order is "best match," with the best of the best returned first.
-If you want to override this, you can pass `stars`, `forks`, or `updated` in the `sort` query parameter.
-
-You can also reverse the sort order using the `order` parameter.
-The default is `desc`, but `asc` is also accepted.
-
-
 ===== Search Operators
 
-Your search term is passed through the `q` parameter, but that term has a powerful syntax.
+Your URL-encoded search term is given with the `q` parameter.
+Most of the term will be free text, but the API supports a powerful syntax.
 You can specify many operators, including these:
 
+- `x AND y`, as well as `OR` and `NOT`
 - `user:<name>`, where _name_ is a user or organization
 - `repo:<name>`
 - `language:<name>`
@@ -82,6 +84,15 @@ Note that numerical matches and dates can have ranges:
 There are many other options besides.
 Check out https://github.com/search/advanced[] for a UI that can help you construct a query.
 
+
+===== Sorting
+
+Search results are returned in a specific order.
+The default order is "best match," which sorts your results based on their search score, best score first.
+If you want to override this, you can pass `stars`, `forks`, or `updated` in the `sort` query parameter, as incomplete `search/repositories?q=foobar&sort=stars`.
+
+You can also reverse the sort order using the `order` parameter.
+The default is `desc`, but `asc` is also accepted.
 
 ==== Search APIs
 
@@ -256,16 +267,18 @@ Search can make this possible, but doing a search across an entire organization'
 
 The Search API can make this a bit easier.
 Let's make a GUI application with just a single search box, which makes it dead simple for a non-technical user to search all the issues in all the repositories in a single organization.
-It'll end up looking a bit like this:
+It'll end up looking a bit like <<search_app>>.
 
-.GitHub search GUI application
+[[search_app]]
+.GitHub search application
 image::images/python-search.png[]
 
 ==== User flow
 
 Since the Search API is throttled somewhat aggressively, and also because we want the ability to search private repositories' issues, we'll need the user to log in.
-Our program will try to get GitHub credentials from Git's credential store, but it'll fall back to a login form, which looks like this:
+Our program will try to get GitHub credentials from Git's credential store, but it'll fall back to a login form, which looks like <<search_login_ui>>.
 
+[[search_login_ui]]
 .Login UI
 image::images/python-login.png[]
 
@@ -632,8 +645,9 @@ Then we do something curious: we put the `GridBagSizer` _into another sizer_.
 Sizer nesting is a powerful feature, and allows almost any window layout to be possible -- although perhaps not easy or simple.
 The vertical box sizer also contains some bare tuples; this special form is called "adding a spacer."
 In this case, we sandwich the sizer with all the controls between two spacers with different weights, making it float about a third of the way down the window.
-The effect is like this:
+The effect is like <<search_resizing>>.
 
+[[search_resizing]]
 .Resizing behavior of login UI
 image::images/python-sizers.png[]
 
