@@ -2,21 +2,20 @@
 
 The GitHub API is accessible from many different angles. You can use
 any one of the huge number of client libraries available in almost
-every major programming language, and often multiple client options
-for each of the many languages. This book will take you on an
+every major programming language (and there often are multiple client options
+for any given language). This book will take you on an
 exploration of several different language clients for the GitHub API
 pointing out the different idioms and methodologies inherent in the
 client libraries and illuminating the darker corners of the GitHub
 API. Each chapter is designed so that you can follow along without
 intimacy to the  language or toolkit. You will get the most value if
-you install and play with those languages, but the story behind the
+you install the language and associated tools, but the story behind the
 projects we will build will be interesting even if you don't actually
-type a line of code in a language within this book you are
-disinterested in learning on its own.
+type a line of code from the chapter.
 
-There are two languages and one tool, however, which stand above the
-rest which you should actually install and use in order to get the
-most out of this book. These tools are:
+There are two languages and one command line tool, however, which
+are so fundamentally linked to GitHub which you need to install and
+use in order to get the most out of this book.
 
 * Ruby: a simple, readable programming language used heavily by the
   founders of GitHub.
@@ -25,7 +24,7 @@ most out of this book. These tools are:
   power to the server side, captivating tools authors on GitHub.
 * cURL: there are many tools that speak HTTP, but cURL is one of the
   best due to its elegant and useful command line interface that
-  matches the minimalist interfaces of the best unix tools.
+  aligns with the minimalist interfaces of the best unix tools.
 
 If you spend a little time installing and familiarizing yourself with
 the concepts and practices inherent to these tools, you will have a
@@ -39,7 +38,7 @@ come back to this chapter. We don't spend any time discussing the
 syntax of these languages; we expect you have experience with other
 languages as a prerequisite and can read code from any imperative
 language regardless of the syntax. These explanatory appendices
-discuss the history of these ools within the GitHub story as well as
+discuss the history of these tools within the GitHub story as well as
 important usage notes like special files and installation options.
 
 === cURL: Simple Access to APIs
@@ -57,13 +56,13 @@ get access to the raw HTTP request headers and content. Or, where you
 might even question the implementation of a client library and need
 confirmation it is doing the right thing from another vantage
 point. These are all examples where cURL becomes extremely handy: cURL
-is the rawest viewpoint on the GitHub API you can find beyond a
-network traffic analysis tool. cURL, like the HTTP protocol which
-it speaks intimately, is stateless, meaning it is challenging
+is the rawest vantage point you will have to the GitHub API without
+using a network traffic analysis tool. cURL, like the HTTP protocol
+which it speaks intimately, is stateless, meaning it is challenging
 to use cURL to hit a URL and then use the results with a secondary
 request. We will use cURL in a later chapter within a shell script
-that solves this problem, but note that cURL works best with one-off
-requests.
+that explores solutions to this problem, but note that cURL works best
+with one-off requests.
 
 .Installing cURL
 [NOTE]
@@ -618,25 +617,7 @@ result in an HTTP 404 Not Found result.
 Before you start building a system atop another service's API, it is
 always wise to understand what, if any, limitations are placed on that
 API's usage. Aside from the limitations on bandwidth, GitHub's API is also covered
-by the overall GitHub Terms of Service.   While you can read these terms of
-servic here: https://help.github.com/articles/github-terms-of-service
-- here is a summary of the terms.
+by the overall GitHub Terms of Service.   You can read these terms of
+service here: https://help.github.com/articles/github-terms-of-service
 
-. GitHub isn't liable for any damages that result from your use of the
-API.  
-. If you abuse the API, GitHub can suspend your account's access to
-the API.  They will attempt to contact you before this happens.
-. They can change the API.  They can discontinue a part of the API.
-They can change it without notice.
-
-This is fairly standard stuff when it comes to terms for an API.
-We're not liable, don't abuse it, and we can change it or take it
-away.
-
-////
-We need guidance from GitHub here.  I don't see that the GitHub API
-has any explicit Terms of Service beyond the one every user agrees
-to.   It would be nice to know if there are any red lines that can't
-be crossed.
-////
 

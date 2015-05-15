@@ -2,32 +2,17 @@
 
 import wx
 from agithub import Github
+import os, subprocess
 
-# Change this to use an Enterprise installation
 GITHUB_HOST = 'github.com'
-
 def git_credentials():
-    """
-    Tries to load GitHub credentials from Git's credential store.
-    Returns a dictionary with all of the values returned, e.g.:
-    {
-        'host': 'github.com',
-        'username': 'jim',
-        'password': 's3krit'
-    }
-    Note that username and password will not be included if
-    git-credential doesn't have any login information for github.com.
-    """
-
-    import os, subprocess
-    creds = {}
-    env = os.environ
-    env['GIT_ASKPASS'] = 'true'
+    os.environ['GIT_ASKPASS'] = 'true'
     p = subprocess.Popen(['git', 'credential', 'fill'],
                          stdout=subprocess.PIPE,
-                         stdin=subprocess.PIPE,
-                         stderr=subprocess.PIPE)
-    stdout,stderr = p.communicate('host={}\n\n'.format(GITHUB_HOST))
+                         stdin=subprocess.PIPE)
+    stdout,_ = p.communicate('host={}\n\n'.format(GITHUB_HOST))
+
+    creds = {}
     for line in stdout.split('\n')[:-1]:
         k,v = line.split('=')
         creds[k] = v
@@ -49,6 +34,7 @@ class SearchFrame(wx.Frame):
         if self.test_credentials():
             self.switch_to_search_panel()
 
+        self.SetTitle('GitHub Issue Search')
         self.Show()
 
     def create_controls(self):
@@ -135,7 +121,7 @@ class LoginPanel(wx.Panel):
         vbox = wx.BoxSizer(wx.VERTICAL)
         vbox.Add((0,0), 1)
         vbox.Add(grid, 0, wx.EXPAND)
-        vbox.Add((0,0), 1)
+        vbox.Add((0,0), 2)
         self.SetSizer(vbox)
 
     def do_login(self, _):
@@ -193,7 +179,10 @@ class SearchPanel(wx.Panel):
     def display_error(self, code, data):
         if self.results_panel:
             self.results_panel.Destroy()
-        str = ''.join('\n\n{}'.format(e['message']) for e in data['errors'])
+        if 'errors' in data:
+            str = ''.join('\n\n{}'.format(e['message']) for e in data['errors'])
+        else:
+            str = data['message']
         self.results_panel = wx.StaticText(self, label=str)
         self.results_panel.SetForegroundColour((200,0,0))
         self.vbox.Add(self.results_panel, 1, wx.EXPAND | wx.TOP, 5)
@@ -208,10 +197,10 @@ class SearchPanel(wx.Panel):
         self.vbox.Add(self.results_panel, 1, wx.EXPAND | wx.TOP, 5)
         self.vbox.Layout()
 
-class SearchResultsPanel(wx.PyScrolledWindow):
+class SearchResultsPanel(wx.ScrolledWindow):
     def __init__(self, *args, **kwargs):
         results = kwargs.pop('results', [])
-        wx.PyScrolledWindow.__init__(self, *args, **kwargs)
+        wx.ScrolledWindow.__init__(self, *args, **kwargs)
 
         # Layout search result controls inside scrollable area
         vbox = wx.BoxSizer(wx.VERTICAL)
@@ -222,7 +211,7 @@ class SearchResultsPanel(wx.PyScrolledWindow):
                      flag=wx.TOP | wx.BOTTOM, border=8)
         self.SetSizer(vbox)
         self.SetScrollbars(0, 4, 0, 0)
-        
+
 class SearchResult(wx.Panel):
     def __init__(self, *args, **kwargs):
         self.result = kwargs.pop('result', {})
@@ -271,6 +260,6 @@ class SearchResult(wx.Panel):
         return body.split('\n')[0].strip() or '(no body)'
 
 if __name__ == '__main__':
-    app = wx.App(False)
+    app = wx.App()
     SearchFrame(None)
     app.MainLoop()

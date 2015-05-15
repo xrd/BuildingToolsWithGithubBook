@@ -2,22 +2,816 @@
 
 === What can it do?
 
+Once you have enough data, it's not enough to simply organize it.
+You need first-class search capability if you want to have any hope of finding anything at all.
+GitHub's search API gives you access to the full power of the built-in search function, and using operators, it provides access to a very powerful way of finding the thing you're looking for.
+
+==== General Principles
+
+The search API can be used over raw HTTP.
+The central anchor point is `https://api.github.com/v3/search`, or if you're searching an Enterprise instance, `https://<server>/api/v3/search`.
+You can search anonymously without authenticating as a GitHub user, but your results will be limited to public items – which means this won't work with an Enterprise install.
+Authentication is a bit of a complicated topic, but the library we use later on abstracts it for us, so we'll gloss over it for now, and rely on public results to get a feel for what comes back.
+
+===== Rate Limits
+
+Calls to these APIs are subject to rate limits, which are stricter than other APIs because search is computationally expensive.
+As of this writing, the documentation states that anonymous searches are limited to 5 per minute, where authenticated queries are limited at 20 per minute.
+Whatever the limit is when you're reading this, you can find out the status of your rate limit by checking the `X-RateLimit-*` headers that come with your response.
+They look like this:
+
+[source,console]
+----
+X-RateLimit-Limit: 10
+X-RateLimit-Remaining: 9
+X-RateLimit-Reset: 1430621780
+----
+
+The `Limit` header shows what your cap is, while the `Remaining` header tells you how many queries you have left.
+The `Reset` header is a tells you when the counter will reset, in UTC epoch seconds.
+
+===== Pagination
+
+The JSON returned from most calls will have this general format:
+
+[source,json]
+----
+{
+  "total_count": 824,
+  "incomplete_results": false,
+  "items": [ … ]
+}
+----
+
+The `total_count` field represents the total number of search results that turned up from this query; by default, only the first 30 are returned.
+You can customize this with `page` and `per_page` query parameters in the url.
+For example, a GET request to `search/repositories?q=foobar&page=2&page_size=100` will return 200 items, starting with the 101st result.
+Page sizes are generally limited to 100.
+
+The `incomplete_results` field refers to a computation limit placed on search results.
+If your search takes too long, the GitHub API will stop it partway through executing, return the results that did complete, and set this flag to `true`.
+For most queries this won't be a problem, and the `total_count` will represent all the results from the search, but if your query is complicated, you might only get a partial result set.
+
+===== Sorting
+
+Search results are returned in a non-arbitrary order.
+The default order is "best match," with the best of the best returned first.
+If you want to override this, you can pass `stars`, `forks`, or `updated` in the `sort` query parameter.
+
+You can also reverse the sort order using the `order` parameter.
+The default is `desc`, but `asc` is also accepted.
+
+
+===== Search Operators
+
+Your search term is passed through the `q` parameter, but that term has a powerful syntax.
+You can specify many operators, including these:
+
+- `user:<name>`, where _name_ is a user or organization
+- `repo:<name>`
+- `language:<name>`
+- `created:<date(s)>`
+- `extension:<pattern>` matches file extensions (like "py")
+
+Note that numerical matches and dates can have ranges:
+
+- `2015-02-01` will match only the given date
+- `<2015-02-01` will match any date previous to the one given
+- `2015-02-01..2015-03-01` will match dates within the given range, including the end points
+
+There are many other options besides.
+Check out https://github.com/search/advanced[] for a UI that can help you construct a query.
+
+
+==== Search APIs
+
+The search API is compartmentalized into four categories: repositories, code, issues, and users.
+The basic mechanism is the same for all four: provide a URL-encoded search term as the `q` parameter to a GET request.
+
+===== Repository Search
+
+The `search/repositories` endpoint responds with something that looks like this:
+
+[source,json]
+----
+{
+  "total_count": 824,
+  "incomplete_results": false,
+  "items": [
+    {
+      "id": 10869370,
+      "name": "foobar",
+      "full_name": "iwhitcomb/foobar",
+      "owner": {
+        "login": "iwhitcomb",
+        "id": 887528,
+        "avatar_url": "https://avatars.githubusercontent.com/u/887528?v=3",
+        …
+      },
+      …
+    },
+    …
+  ]
+}
+----
+
+What comes back is a list of items, each of which looks like the result of a query to the Repositories API.
+Each item in `items` is a representation of a repository, with all sorts of useful information about that repository and its owner.
+
+===== Code Search
+
+The `search/code` endpoint has a couple of limitations, stemming from the sheer amount of data available.
+It requires that you scope it to a user or organization, using the `user:<name>` search operator.
+Also, it only searches the default branch of any given project, which is usually `master`.
+
+The JSON returned looks something like this:
+
+[source,json]
+----
+{
+  "total_count": 9246,
+  "incomplete_results": false,
+  "items": [
+    {
+      "name": "migrated_0000.js",
+      "path": "test/fixtures/ES6/class/migrated_0000.js",
+      "sha": "37bdd2221a71b58576da9d3c2dc0ef0998263652",
+      "url": "…",
+      "git_url": "…",
+      "html_url": "…",
+      "repository": {
+        "id": 2833537,
+        "name": "esprima",
+        "full_name": "jquery/esprima",
+        "owner": {
+          "login": "jquery",
+          "id": 70142,
+          "avatar_url": "https://avatars.githubusercontent.com/u/70142?v=3",
+          …
+        },
+        "private": false,
+        …
+      },
+      "score": 2.3529532
+    },
+    …
+  ]
+}
+----
+
+Each item has some data about the file that turned up, including its name and URLs for a couple of representations of it.
+Then there's the blob of data about its repository, followed by a score, which is used for the default "best match" sorting.
+
+===== Issue Search
+
+[source,json]
+----
+{
+  "total_count": 1278397,
+  "incomplete_results": false,
+  "items": [
+    {
+      "url": "…",
+      "labels_url": "…",
+      "comments_url": "…",
+      "events_url": "…",
+      "html_url": "…",
+      "id": 69671218,
+      "number": 1,
+      "title": "Classes",
+      "user": {
+        "login": "reubeningber",
+        "id": 2552792,
+        "avatar_url": "…",
+        …
+      },
+      "labels": [
+        …
+      ],
+      "state": "open",
+      "locked": false,
+      "assignee": null,
+      "milestone": null,
+      "comments": 0,
+      "created_at": "2015-04-20T20:18:56Z",
+      "updated_at": "2015-04-20T20:18:56Z",
+      "closed_at": null,
+      "body": "There should be an option to add classes to the ul and li being generated. ",
+      "score": 22.575937
+    },
+  ]
+}
+----
+
+
+===== User Search
+
+Querying the `search/users` endpoint gives you this kind of response:
+
+[source,json]
+----
+{
+  "total_count": 26873,
+  "incomplete_results": false,
+  "items": [
+    {
+      "login": "ben",
+      "id": 39902,
+      "avatar_url": "…",
+      "gravatar_id": "",
+      "url": "…",
+      "html_url": "…",
+      …
+      "score": 98.24275
+    },
+    {
+      "login": "bengottlieb",
+      "id": 53162,
+      "avatar_url": "…",
+      "gravatar_id": "",
+      "url": "…",
+      "html_url": "…",
+      …
+      "score": 35.834213
+    },
+  ]
+}
+----
+
+The list of items in this case look like the results from a query of `users/<name>`, and contain lots of bits of data about each user, as well as a search ranking score.
+
+===== More API Details
+
+This chapter only scratches the surface of what's possible using the search API.
+GitHub provides live and complete documentation of these methods at https://developer.github.com/v3/search/[], and we encourage you to look there if you want to dig deeper.
+
+
 === Our example application
+
+Let's do something useful with this API.
+Imagine your development team uses GitHub to store their Git repositories, and that there are lots of little repositories for parts of the application that work together at runtime.
+This kind of situation ends up being fairly difficult to work with for your non-technical colleagues; if they want to report an issue, they don't know where to go, and they don't know how to find issues that already exist.
+
+Search can make this possible, but doing a search across an entire organization's repositories involves using the `user:<organization>` operator, which is obtusely named, and kind of scary for non-programmers.
+
+The Search API can make this a bit easier.
+Let's make a GUI application with just a single search box, which makes it dead simple for a non-technical user to search all the issues in all the repositories in a single organization.
+It'll end up looking a bit like this:
+
+.GitHub search GUI application
+image::images/python-search.png[]
+
 ==== User flow
-==== Requirements
+
+Since the Search API is throttled pretty aggressively, and also because we want the ability to search private repositories' issues, we'll need the user to log in.
+Our program will try to get GitHub credentials from Git's credential store, but it'll fall back to a login form, which looks like this:
+
+.Login UI
+image::images/python-login.png[]
+
+Once the user logs in, they'll be shown a search box.
+Typing in a search query and hitting enter results in a scrollable list of search results, with titles and the first line of the description.
+Clicking on a search result opens the issue in the user's browser.
+
+That's it!
+It's a simple, focused tool to solve a very tightly-defined problem, so the code shouldn't be too hard.
 
 === Python
-==== Essential libraries
-- https://github.com/jpaugh/agithub (GitHub API helper)
-- http://www.wxpython.org/ (GUI toolkit)
+
+We'll use Python for our implementation language, for several reasons.
+First, because we haven't yet seen it in this book.
+One of our goals is to help the reader explore technologies they might not have seen before.
+
+Secondly, there's a library which includes facilities for building a GUI application which will run on OS X, Linux, and Windows.
+This is fairly unique feature among modern high-level programming languages.
+If you want this capability elsewhere, you usually have to use a high-complexity framework or a lower-level language like C++.
+
+Thirdly, this will make it easy to distribute.
+There exists a Python package which bundles an entire Python program and all of its dependencies into a single file (or `.app` bundle on OS X).
+So giving this program to a colleague is as easy as emailing her a ZIP file.
+
+==== Development libraries
+
+In order to follow along with the development of this application, you'll need to install two Python packages.
+As is unfortunately typical with Python development, installation methods vary from package to package, so we'll tell you how to get each one onto your machine.
+
+===== WxPython
+
+WxPython is the toolkit we'll use for building our UI.
+It's an object-oriented Python layer over the top of a toolkit called WxWidgets, which is itself a common-code adapter for native UI toolkits.
+WxWidgets supports Linux, Mac, and Windows computers with native controls, so you can access all of those platforms through Python code.
+
+Information about the WxPython project can be found at http://www.wxpython.org[], and you'll find a download link for your platform on the left-hand side of the page.
+The next version of WxPython, code-named Phoenix, will be installable via PIP, but as of this writing Phoenix is still pre-release software, so it's probably safer to use the stable version.
+
+[NOTE]
+====
+WxPython is the reason we use Python 2.7 for this example.
+Phoenix will support Python 3, but the stable versions don't.
+====
+
+===== AGitHub
+
+We'll use the Agnostic GitHub API (`agithub`) module as a layer over the GitHub API.
+`agithub` is a fairly thin layer that converts GitHub's REST API into method calls on objects, resulting in delightfully readable code.
+
+`agithub` can be found at https://github.com/jpaugh/agithub[], and the "installation" is simply to download a copy of the `agithub.py` source file and place it alongside your project files.
 
 === The Code
+
+Okay, let's dive in.
+Let's start with this skeleton file:
+
+[source,python]
+----
+#!/usr/bin/env python <1>
+
+import os, subprocess
+import wx
+from agithub import Github <2>
+
+class SearchFrame(wx.Frame): <3>
+    pass
+
+if __name__ == '__main__': <4>
+    app = wx.App() <5>
+    SearchFrame(None)
+    app.MainLoop()
+----
+
+If you run this program, you should get an empty window, which is always a hopeful start to any project.
+Let's take a look at a few key things:
+
+<1> The "shebang" specifies that this is a Python 2.7 program
+<2> Here we import our handy libraries.
+    We import WxPython (`wx`) whole cloth, but with `agithub` we only need the `Github` (note the capitalization) class.
+    `os` and `subprocess` come from the Python standard library.
+<3> This is the class for our main window.
+    We'll walk through the particulars later on when we discuss the real implementation.
+<4> This is how you write a "main" function in Python.
+<5> And this is how you write a "main" function in WxPython.
+    We instantiate an `App` instance, create an instance of our top-level frame, and run the app's main loop.
+
+==== Git credential helper
+
+Before we get into the UI code, let's define a function to help us get the user's GitHub credentials.
+We'll be cheating a bit, by asking Git if it has the user's login and password.
+
+Essentially, if you run `git credential fill` at a command line, and pass it `host=github.com` and two newlines through the standard input, it'll give you back a block of text which includes a login and password.
+The whole interaction looks a bit like this:
+
+[source,console]
+----
+$ git credential fill
+host=github.com
+<1>
+host=github.com <2>
+username=ben
+password=(redacted)
+----
+
+<1> This blank line is the last thing the user types.
+<2> This line and everything after are written by `git-credential`, and then the program exits.
+
+One other thing that you should know about `git-credential` is that by default, if it doesn't know anything about the host, it'll ask the user at the terminal.
+That's bad for a GUI app, so we're going to be disabling that feature through the use of the `GIT_ASKPASS` environment variable.
+
+Here's what our helper looks like:
+
+[source,python]
+----
+GITHUB_HOST = 'github.com'
+def git_credentials():
+    os.environ['GIT_ASKPASS'] = 'true' <1>
+    p = subprocess.Popen(['git', 'credential', 'fill'],
+                         stdout=subprocess.PIPE,
+                         stdin=subprocess.PIPE) <2>
+    stdout,_ = p.communicate('host={}\n\n'.format(GITHUB_HOST)) <3>
+
+    creds = {}
+    for line in stdout.split('\n')[:-1]: <4>
+        k,v = line.split('=')
+        creds[k] = v
+    return creds <5>
+----
+
+<1> Here we set `GIT_ASKPASS` to the string `'true'`, which is a UNIX program that always returns 0, which will cause `git-credential` to stop trying to get credentials when it gets to the "as the user" stage.
+<2> `subprocess.Popen` is the way you use a program with stdin and stdout in Python.
+    The first argument is the `argv` of the new program, and we also specify that we want stdin and stdout to be captured.
+<3> `p.communicate` does the work of writing to stdin and returning the contents of stdout.
+    It also returns the contents of stderr, which we ignore in this program.
+<4> Here we process the stdout contents by splitting each line at the '=' character, and slurping it into a dictionary.
+
+So the return value from this call should be a dictionary with `'username'` and `'password'` values.
+Handy!
+
+
 ==== Windowing and interface
+
+So that's all nice, but our main frame doesn't _do_ anything.
+Let's fix that by filling in the implementation:
+
+[source,python]
+----
+class SearchFrame(wx.Frame):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('size', (600,500))
+        wx.Frame.__init__(self, *args, **kwargs)
+
+        self.credentials = {}
+        self.orgs = []
+
+        self.create_controls()
+        self.do_layout()
+
+        # Try to pre-load credentials from Git's cache
+        self.credentials = git_credentials()
+        if self.test_credentials():
+            self.switch_to_search_panel()
+
+        self.SetTitle('GitHub Issue Search')
+        self.Show()
+
+    def create_controls(self):
+        # Set up a menu. This is mainly for "Cmd-Q" behavior on OSX
+        filemenu = wx.Menu()
+        filemenu.Append(wx.ID_EXIT, '&Exit')
+        menuBar = wx.MenuBar()
+        menuBar.Append(filemenu, '&File')
+        self.SetMenuBar(menuBar)
+
+        # Start with a login UI
+        self.login_panel = LoginPanel(self, onlogin=self.login_accepted)
+
+    def do_layout(self):
+        self.sizer = wx.BoxSizer(wx.VERTICAL)
+        self.sizer.Add(self.login_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
+        self.SetSizer(self.sizer)
+
+    def login_accepted(self, username, password):
+        self.credentials['username'] = username
+        self.credentials['password'] = password
+        if self.test_credentials():
+            self.switch_to_search_panel()
+
+    def test_credentials(self):
+        if any(k not in self.credentials for k in ['username', 'password']):
+            return False
+        g = Github(self.credentials['username'], self.credentials['password'])
+        status,data = g.user.orgs.get()
+        if status != 200:
+            print('bad credentials in store')
+            return False
+        self.orgs = [o['login'] for o in data]
+        return True
+
+    def switch_to_search_panel(self):
+        self.login_panel.Destroy()
+        self.search_panel = SearchPanel(self,
+                                        orgs=self.orgs,
+                                        credentials=self.credentials)
+        self.sizer.Add(self.search_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
+        self.sizer.Layout()
+----
+
+There's a lot going on here, but let's talk a bit about this class's job.
+It's responsible for maintaining the top-level "frame" (a window with a title bar, a menu, etc), and deciding what's displayed in that frame.
+In this case, we want to show a login UI first, and when we get valid credentials (either from Git or the user), we'll switch to a searching UI.
+
+The `__init__` method is the constructor, so this is where we start when the main function calls `SearchFrame()`.
+We pass most of the arguments straight through to the parent class's constructor, after setting a size that's a bit larger than WxPython's default.
+Once that's done, we set `self.credentials` (which we'll use to store GitHub login information) and `self.orgs` (which will contain the names of the user's organizations), and call a couple of functions.
+
+`create_controls` works as advertised.
+It creates a menu that only contains File>Exit, and a login panel, whose implementation we'll cover a bit later on.
+
+`do_layout` uses a WxWidgets feature called "sizers" to do some automated layout.
+Sizers are a pretty complex topic, but here's all you need to know about this snippet:
+
+* A `BoxSizer` stacks widgets in a single direction, in this case vertically.
+* The second parameter is a scaling factor.
+  If it's zero, the widget you're adding will always stay the same size if the parent window resizes; if it's anything else, all the things the sizer is controlling will adjust to fill their container.
+  There's only one control in this sizer, but we still want it to take up the full area of the window, so we pass `1`.
+* The `border` parameter tells the sizer how much area to leave around the widget as padding.
+* The `wx.EXPAND` flag tells the sizer that we want the widget to expand in the direction the sizer isn't stacking.
+  In this case, we're stacking vertically, but we also want this widget to expand horizontally.
+* The `wx.ALL` flag strangely enough specifies which edges of the widget should have the border area.
+
+Once both of those calls have completed, the window is ready to display, but we still want to try and get credentials before we show anything to the user, to avoid a flickering display.
+Here we call our credential helper from above, and try them out with `self.test_credentials()`, which tries to get a list of the GitHub organizations the user belongs to.
+It does this by using the `agithub` library, instantiating a `Github` object with the supplied username and password, and doing a `GET` on `/user/orgs`.
+Here you can see the usage pattern for `agithub` – the URL path is mapped to sub-object notation, and the HTTP verb is mapped to a method call.
+The return values are a status code and the data, which has been decoded into a dictionary object.
+If this succeeds (status is 200), we skip the login screen entirely, and switch to the search display.
+
+[NOTE]
+====
+We're doing a synchronous network call on the UI thread, which in general isn't a good idea, since the UI will become unresponsive until the network call completes.
+Ideally, we'd move this out onto another thread, and get the return value with a message, but for this simple example (and use case), it'll do.
+====
+
+Once that's done, there's just a tiny bit of housekeeping left: setting the title and making sure our window is visible, and the constructor can return.
+
+The methods that we haven't described yet are concerned with reacting to login input; notice that we passed `self.login_accepted` to the login panel's constructor.
+That method is called by the login panel when the user gives it credentials, so we store them locally, test them, and if they work, switch to the search UI.
+
+The last method handles the UI switch.
+The login panel is referenced by two things: the `SearchFrame` instance (the parent window), and the sizer that's controlling its layout.
+Fortunately, calling the `Destroy()` method cleans both of those up, so we can then create the `SearchPanel` instance and add it to our sizer.
+Doing this requires a specific call to the sizer's `Layout()` method; otherwise the sizer won't know that it needs to adjust the position and size of the new panel.
+
+That's it!
+Aside from managing a couple of fields, most of this code is managing the UI, which is pretty much exactly what we'd want from a UI class.
+Let's take a peek at one of the two panels that we swap in and out.
+
 ==== GitHub login
+
+The `LoginPanel` class is pretty similar in structure to the `SearchFrame` class, with a couple of key differences, which we'll describe after the wall of code.
+
+[source, python]
+----
+class LoginPanel(wx.Panel):
+    def __init__(self, *args, **kwargs):
+        self.callback = kwargs.pop('onlogin', None)
+        wx.Panel.__init__(self, *args, **kwargs)
+
+        self.create_controls()
+        self.do_layout()
+
+    def create_controls(self):
+        self.userLabel = wx.StaticText(self, label='Username:')
+        self.userBox = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
+        self.passLabel = wx.StaticText(self, label='Password (or token):')
+        self.passBox = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
+        self.login = wx.Button(self, label='Login')
+        self.error = wx.StaticText(self, label='')
+        self.error.SetForegroundColour((200,0,0))
+
+        # Bind events
+        self.login.Bind(wx.EVT_BUTTON, self.do_login)
+        self.userBox.Bind(wx.EVT_TEXT_ENTER, self.do_login)
+        self.passBox.Bind(wx.EVT_TEXT_ENTER, self.do_login)
+
+    def do_layout(self):
+        # Grid arrangement for controls
+        grid = wx.GridBagSizer(3,3)
+        grid.Add(self.userLabel, pos=(0,0),
+                 flag=wx.TOP | wx.LEFT | wx.BOTTOM, border=5)
+        grid.Add(self.userBox, pos=(0,1),
+                 flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+        grid.Add(self.passLabel, pos=(1,0),
+                 flag=wx.TOP | wx.LEFT | wx.BOTTOM, border=5)
+        grid.Add(self.passBox, pos=(1,1),
+                 flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+        grid.Add(self.login, pos=(2,0), span=(1,2),
+                 flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+        grid.Add(self.error, pos=(3,0), span=(1,2),
+                 flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+        grid.AddGrowableCol(1)
+
+        # Center the grid vertically
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        vbox.Add((0,0), 1)
+        vbox.Add(grid, 0, wx.EXPAND)
+        vbox.Add((0,0), 2)
+        self.SetSizer(vbox)
+
+    def do_login(self, _):
+        u = self.userBox.GetValue()
+        p = self.passBox.GetValue()
+        g = Github(u, p)
+        status,data = g.issues.get()
+        if status != 200:
+            self.error.SetLabel('ERROR: ' + data['message'])
+        elif callable(self.callback):
+            self.callback(u, p)
+----
+
+There's some structure that's similar to above.
+We'll start with the constructor.
+
+Recall that this panel is created with a keyword argument in the `SearchFrame` class, like `LoginPanel(self, onlogin=self.login_accepted)`.
+In the constructor definition, we pull that callback out and store it for later.
+Afterward, we just call the two other construction functions and return.
+
+`create_controls` has more to it than `SearchFrame`'s version, because this panel has more controls.
+Every static-text, text-input, and button control gets its own line of code.
+The `wx.TE_PROCESS_ENTER` style tells the library that we want an event to be triggered if the user presses the enter key while the cursor is inside that text box.
+
+The next block binds control events to method calls.
+Every event in WxPython will call the handler with a single argument, an object which contains information about the event.
+That means we can use the same event handler for any number of different kinds of events, so we do – the `ENTER` handlers for both text boxes and the `BUTTON` handler for the button all go through `self.do_login`.
+
+`do_layout` uses a different kind of sizer – a `GridBagSizer`.
+Again, the topic of sizers is _way_ outside the scope of this article, but just know that this kind arranges things in a grid, and you can allow some of the rows or columns to stretch to fill the container.
+Here we drop all of the controls into their positions with the `pos=(r,c)` notation (here "rows" come first, which isn't like most coordinate systems), and cause one control to span two columns with the `span` parameter.
+The `flags` and `border` parameters mostly mean the same thins as before, and the `AddGrowableCol` function tells the layout engine which parts of the grid should be allowed to stretch.
+
+Then we do something curious: we put the `GridBagSizer` _into another sizer_.
+This is a pretty power feature of sizers, and allows pretty much any arbitrary layout to be possible -- although perhaps not easy or simple.
+The vertical box sizer also contains some bare tuples; this special form is called "adding a spacer."
+In this case, we sandwich the sizer with all the controls between two spacers with different weights, making it float about a third of the way down the window.
+The effect is like this:
+
+.Resizing behavior of login UI
+image::images/python-sizers.png[]
+
+Then comes the `do_login` method, which tests out the given credentials, and if they work, passes them back through the callback set at construction time.
+If they don't work, it sets the text of a label, whose foreground color has been set to a nice, alarming shade of red.
+
 ==== GitHub search
+
+Once the user has successfully logged in, we switch up the UI to show the `SearchPanel`.
+
+
+[[source,python]]
+----
+class SearchPanel(wx.Panel):
+    def __init__(self, *args, **kwargs):
+        self.orgs = kwargs.pop('orgs', [])
+        self.credentials = kwargs.pop('credentials', {}) <1>
+        wx.Panel.__init__(self, *args, **kwargs)
+
+        self.create_controls()
+        self.do_layout()
+
+    def create_controls(self):
+        self.results_panel = None
+        self.orgChoice = wx.Choice(self, choices=self.orgs, style=wx.CB_SORT)
+        self.searchTerm = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
+        self.searchTerm.SetFocus()
+        self.searchButton = wx.Button(self, label="Search")
+
+        # Bind events
+        self.searchButton.Bind(wx.EVT_BUTTON, self.do_search)
+        self.searchTerm.Bind(wx.EVT_TEXT_ENTER, self.do_search)
+
+    def do_layout(self):
+        # Arrange choice, query box, and button horizontally
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        hbox.Add(self.orgChoice, 0, wx.EXPAND)
+        hbox.Add(self.searchTerm, 1, wx.EXPAND | wx.LEFT, 5)
+        hbox.Add(self.searchButton, 0, wx.EXPAND | wx.LEFT, 5)
+
+        # Dock everything to the top, leaving room for the results
+        self.vbox = wx.BoxSizer(wx.VERTICAL)
+        self.vbox.Add(hbox, 0, wx.EXPAND) <2>
+        self.SetSizer(self.vbox)
+
+    def do_search(self, event):
+        term = self.searchTerm.GetValue()
+        org = self.orgChoice.GetString(self.orgChoice.GetCurrentSelection())
+        g = Github(self.credentials['username'], self.credentials['password'])
+        code,data = g.search.issues.get(q="user:{} {}".format(org, term)) <3>
+        if code != 200:
+            self.display_error(code, data)
+        else:
+            self.display_results(data['items'])
+
+    def display_results(self, results): <4>
+        if self.results_panel:
+            self.results_panel.Destroy()
+        self.results_panel = SearchResultsPanel(self, -1, results=results)
+        self.vbox.Add(self.results_panel, 1, wx.EXPAND | wx.TOP, 5)
+        self.vbox.Layout()
+
+    def display_error(self, code, data): <5>
+        if self.results_panel:
+            self.results_panel.Destroy()
+        if 'errors' in data:
+            str = ''.join('\n\n{}'.format(e['message']) for e in data['errors'])
+        else:
+            str = data['message']
+        self.results_panel = wx.StaticText(self, label=str)
+        self.results_panel.SetForegroundColour((200,0,0))
+        self.vbox.Add(self.results_panel, 1, wx.EXPAND | wx.TOP, 5)
+        self.vbox.Layout()
+        width = self.results_panel.GetSize().x
+        self.results_panel.Wrap(width)
+----
+
+There's quite a bit here, but some of it is familiar.
+We'll skip the usual walkthrough, to point out a couple of interesting features.
+
+<1> When creating the panel, we pass in the user's credentials and list of organizations.
+<2> When we add the search bar to the sizer, we use `0` as a scale factor.
+    This means that it shouldn't exand to fit the available size, but keep its own size instead, to leave room to add a results panel later on.
+<3> Here's where the actual search is being done.
+<4> We pass the search results into another class, then add it to the main sizer with parameters to fill the remaining available space.
+<5> If an error is returned from the search call instead, we display it here.
+    There's some code to adjust the wrap width of the text, based on the laid-out width of the control.
+    This isn't a great approach; doing it better is left as an exercise for the reader.
+
+Again, there's a fair amount of code here, but most of it should be looking pretty familiar.
+
 ==== Displaying results
 
+Whenever search results are retrieved, we create a new instance of `SearchResultsPanel`, which then creates a series of `SearchResult` instances.
+Let's look at both of them together:
+
+[source,python]
+----
+class SearchResultsPanel(wx.ScrolledWindow): <1>
+    def __init__(self, *args, **kwargs):
+        results = kwargs.pop('results', [])
+        wx.PyScrolledWindow.__init__(self, *args, **kwargs)
+
+        # Layout search result controls inside scrollable area
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        if not results:
+            vbox.Add(wx.StaticText(self, label="(no results)"), 0, wx.EXPAND)
+        for r in results:
+            vbox.Add(SearchResult(self, result=r),
+                     flag=wx.TOP | wx.BOTTOM, border=8)
+        self.SetSizer(vbox)
+        self.SetScrollbars(0, 4, 0, 0)
+
+class SearchResult(wx.Panel):
+    def __init__(self, *args, **kwargs):
+        self.result = kwargs.pop('result', {})
+        wx.Panel.__init__(self, *args, **kwargs)
+
+        self.create_controls()
+        self.do_layout()
+
+    def create_controls(self): <2>
+        titlestr = self.result['title']
+        if self.result['state'] != 'open':
+            titlestr += ' ({})'.format(self.result['state'])
+        textstr = self.first_line(self.result['body'])
+        self.title = wx.StaticText(self, label=titlestr)
+        self.text = wx.StaticText(self, label=textstr)
+
+        # Adjust the title font
+        titleFont = wx.Font(16, wx.FONTFAMILY_DEFAULT,
+                            wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        self.title.SetFont(titleFont)
+
+        # Bind click and hover events on this whole control <3>
+        self.Bind(wx.EVT_LEFT_UP, self.on_click)
+        self.Bind(wx.EVT_ENTER_WINDOW, self.enter)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.leave)
+
+    def do_layout(self):
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        vbox.Add(self.title, flag=wx.EXPAND | wx.BOTTOM, border=2)
+        vbox.Add(self.text, flag=wx.EXPAND)
+        self.SetSizer(vbox)
+
+    def enter(self, _):
+        self.title.SetForegroundColour(wx.BLUE)
+        self.text.SetForegroundColour(wx.BLUE)
+
+    def leave(self, _):
+        self.title.SetForegroundColour(wx.BLACK)
+        self.text.SetForegroundColour(wx.BLACK)
+
+    def on_click(self, event): <4>
+        import webbrowser
+        webbrowser.open(self.result['html_url'])
+
+    def first_line(self, body):
+        return body.split('\n')[0].strip() or '(no body)'
+----
+
+<1> The containing panel is simple enough that it only consists of a constructor.
+    This class's job is to contain the results, and present them in a scroll window.
+<2> A `SearchResult` comprises two static text controls, which contain the issue's title and the first line of its body.
+<3> We're binding the click handler for this entire panel, but also the mouse-enter and mouse-leave events, so we can make it behavior more like a link in a browser.
+<4> Here's how you open the default browser to a URL in Python.
+
+There it is, a working GitHub issue-search UI.
+WxPython isn't so bad, once you get used to it.
+It lacks some facilities of newer frameworks, but there's nothing better for getting a basic cross-platform UI out the door quickly.
+
+Let's take a look at how a possibly-non-technical someone else might run this.
+
 === Packaging
-- Use PyInstaller to package as a `.app` bundle
+
+Well, we're not going to require them to install Python 2.7 and a bunch of packages.
+There's a project called PyInstaller which aims to make this distribution as easy as possible.
+You can install it onto your development machine by typing `sudo pip install pyinstaller`.
+
+Once that's done, the usage is pretty simple.
+Let's assume you wrote all the code above into a file called `search.py`, and `agithub.py` is sitting alongside it in the current directory.
+Here's how to tell PyInstaller to generate a single application for you:
+
+[source,console]
+----
+$ pyinstaller -w search.py
+----
+
+That's it!
+The `-w` flag tells PyInstaller to create a "windowed" build of your application, rather than the default console build.
+On OS X, this generates a `search.app` application bundle, and on Windows this generates a `search.exe` file.
+You can take either of these to a computer with no Python installed, and they'll run perfectly.
+
+That's because PyInstaller has copied everything necessary for your program to run, from the Python interpreter on up, inside that file.
+The one I just generated is 67MB, which seems large for a fairly simple program, but that number is more reasonable when you consider what's inside the package.
 
 === Summary
+
+In this chapter we took a look at the four different kinds of search GitHub exposes through their API: repositories, issues, code, and people.
+We also had a whirlwind tour through the world of Python GUI development, and wrote a simple application that shows filtered issue search results.
+
+
