@@ -40,12 +40,3 @@ It allows you to do things like check settings, maintain SSH keys, manage your l
 Nearly anything you can do from the web management console, you can do through the API.
 
 Documentation for this API is available at https://developer.github.com/v3/enterprise[].
-
-=== Summary
-
-There are many reasons why your company might want to use Enterprise over (or in addition to) github.com.
-Maybe you have regulatory or legal requirements to maintain physical control over your source code – or you just want that control.
-Maybe your software too complex to fit inside a single github.com organization account.
-Or perhaps your team is large enough that Enterprise would actually be cheaper.
-Whatever the reason, GitHub Enterprise is every bit as fantastic a product as github.com, and has worked well for many organizations.
-
