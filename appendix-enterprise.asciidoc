@@ -4,35 +4,36 @@
 
 Most people understandably equate GitHub (the company) with github.com (the website), but it's interesting to note that they're not one and the same.
 
-The GitHub website, as important it is to modern open- and closed-source software development, is not the only product that GitHub the company produces.
-The single largest other product from that team is called GitHub Enterprise, and it's a version of the GitHub software that can be deployed inside a corporate firewall – like having your own private github.com, running on your own machine.
+The GitHub website, as important it is to modern open- and closed-source software development, is not the only product that GitHub (the company) produces.
+The single largest other product from that team is called GitHub Enterprise, and it's a version of the GitHub software that can be deployed inside a corporate firewall – like having your own private github.com.
 
 The two products are very similar from a user point of view, but there are some important differences.
 It can sometimes be hard to imagine the kinds of difficulties that Enterprise is designed to solve, but keep in mind it's for large teams.
 
-[NOTE]
-====
-For the purposes of this appendix, we'll try to compare GitHub Enterprise with an organization account on github.com, since those are likely the best comparison for the typical Enterprise customer.
-====
+=== Installation
 
-=== Environment
+Using GitHub Enterprise isn't as easy as signing up for an account.
+You're responsible for all the infrastructure and maintenance, including installation, updates, system maintenance, keeping the machine running, and so on.
+However, if your company is considering Enterprise, it's likely you already have specialists who are already doing this for other services.
 
-GitHub Enterprise comes as a pre-packaged virtual machine, which the customer is then responsible for hosting in their own infrastructure.
-A wide variety of virtual-machine formats are available, including native packages for Amazon AWS and Microsoft Azure, as well as virtual appliances for VMWare and other virtual hosting systems.
+The GitHub team has also made it pretty easy for them.
+The software comes as a pre-packaged virtual machine in a variety of formats, so you'll likely find something that fits into your infrastructure.
+Once the machine is running, most of the configuration can be done with a web interface, but there are some tricky bits like network configuration and port forwarding that aren't easy for the layperson to get right.
 
 === Administration
 
-Since the customer is in control of the environment in which Enterprise runs, they now have a lot of concerns that the typical github.com user does not.
-Things like disk space, load management, DNS settings, how to send email, and so on.
-GitHub Enterprise has an administration UI that doesn't exist on github.com, which allows management of alerts, 
+Since you're in control of the environment in which Enterprise runs, you now have a lot of concerns that the typical github.com user does not.
+GitHub Enterprise has an administration interface for dealing with these issues, which doesn't exist on github.com.
+It allows management of things like system resources, reports, search, and many others.
 
-Also, while github.com has its own user system, GitHub Enterprise plugs into an organization's existing authentication system.
+Also, while github.com has its own user system, GitHub Enterprise can optionally plug into your organization's existing authentication system.
 This allows a company's IT organization to manage user identities in one single place, rather than having to duplicate a lot of effort when a new team member hires on.
 It also eases the initial transition, when perhaps thousands of people will need new accounts.
+Several systems are supported, including LDAP and SAML, as well as plain old email and password.
 
 === API
 
-The complete GitHub API is also available on an Enterprise instance; you just need to send your requests to http://<hostname>/api/v3[] instead of http://api.github.com/[].
+The complete GitHub API is also available on an Enterprise instance; you just need to send your requests to https://<hostname>/api/v3[] instead of https://api.github.com/[].
 You can imagine that some users have accounts on both an Enterprise instance as well as github.com, and many applications have started supporting this scenario.
 
 There's also a new API section that isn't available on github.com, called the Management Console API.
