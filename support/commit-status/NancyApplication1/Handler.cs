@@ -53,7 +53,7 @@ namespace NancyApplication1
                 CommitState newState = Enum.Parse(typeof(CommitState), parms.status, true);
                 try
                 {
-                    CommitStatus newStatus = await client.Repository.CommitStatus.Create(
+                    await client.Repository.CommitStatus.Create(
                         parms.user, parms.repo, parms.sha, new NewCommitStatus
                         {
                             State = newState,
