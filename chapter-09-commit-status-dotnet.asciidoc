@@ -1,1 +1,26 @@
 == Commit Status
+
+- What this API does
+- how it shows up in the UI (screenshot or two)
+- Typical uses (CI)
+- Atypical uses (CLA bot, others?)
+
+=== The API
+==== Single statuses
+==== Combined statuses
+
+=== Let's write an app
+==== Requirements
+- Windows: Visual Studio
+- Others: Xamarin Studio
+
+==== Packages that will make this easy
+- Nancy
+- Octokit
+
+==== Aside: OAuth
+==== OAuth flow
+==== Endpoint handlers
+
+=== Summary
+
