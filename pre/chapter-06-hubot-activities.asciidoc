@@ -1380,7 +1380,7 @@ Our tests are simple, and require that we send in JSON.
 [source,coffeescript]
 -----
 ...
-[language="coffeescript", sha="96e339f:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="47..-1"]
+[language="coffeescript", sha="6564718:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="47..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
