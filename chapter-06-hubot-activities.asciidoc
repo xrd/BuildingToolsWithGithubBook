@@ -1556,8 +1556,6 @@ moment. If we run our tests, they should pass now.
 
 ===== Securing the Webhook
 
-DOH, MAKE SURE THE SECRET IS NOT STORED INSIDE THE FILE. USE PROCESS.ENV
-
 Our Probot is now in a position where it will operate correctly if the
 secret passes validation and the webhook data is passed properly. Now
 we need to secure the webhook. GitHub signs your data inside the
