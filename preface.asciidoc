@@ -1,4 +1,4 @@
-[[preface]]
+[preface]
 == Preface
 
 * Git, What is it?
@@ -76,7 +76,6 @@ tools!
 
 * Acknowledgements
 
-== Preface
 
 === Conventions Used in This Book
 
