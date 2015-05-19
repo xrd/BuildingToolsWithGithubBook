@@ -768,7 +768,10 @@ $ CONFIG=$(echo '{
     "secret" : "XYZABC"
   }
 }')
-$ curl -H "Authorization: token $TOKEN" -H "Content-Type: application/json" -X POST -d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/hooks
+$ curl -H "Authorization: token $TOKEN" \
+-H "Content-Type: application/json" \
+-X POST \
+-d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/hooks
 {
   "url": "https://api.github.com/repos/xrd/testing_repostory/hooks/3846063",
   "test_url":
@@ -1407,7 +1410,7 @@ GitHub and not an attacker.
 [source,coffeescript]
 -----
 ...
-[language="coffeescript", sha="9df752a:support/slacker-hubot/lib/handler.coffee", lines="16..31"]
+[language="coffeescript", sha="e870e70:support/slacker-hubot/lib/handler.coffee", lines="16..39"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

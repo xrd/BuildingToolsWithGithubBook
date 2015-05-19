@@ -797,7 +797,10 @@ $ CONFIG=$(echo '{
     "secret" : "XYZABC"
   }
 }')
-$ curl -H "Authorization: token $TOKEN" -H "Content-Type: application/json" -X POST -d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/hooks
+$ curl -H "Authorization: token $TOKEN" \
+-H "Content-Type: application/json" \
+-X POST \
+-d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/hooks
 {
   "url": "https://api.github.com/repos/xrd/testing_repostory/hooks/3846063",
   "test_url":
@@ -1572,7 +1575,10 @@ GitHub and not an attacker.
 ...
 
 getSecureHash = (body, secret) ->
-        hash = crypto.createHmac( 'sha1', secret ).update( "sha1=" + body ).digest('hex')
+        hash = crypto.
+                createHmac( 'sha1', secret ).
+                update( "sha1=" + body ).
+                digest('hex')
         console.log "Hash: #{hash}"
         hash
 
@@ -1586,6 +1592,11 @@ exports.prHandler = ( robot, req, res ) ->
 
         if secureCompare( secureHash, webhookProvidedHash ) and url
                 room = "general"
+                robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
+                        .get() (err, response, body) ->
+                                sendPrRequest( robot, body, room, url ) unless err
+        else
+                console.log "Invalid secret or no URL specified"
 ...
 -----
 
