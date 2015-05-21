@@ -363,9 +363,9 @@ to the notifications you see on social networking sites, events that
 occur which document important points of interest inside a timeline of
 activity. GitHub activity events are often tied to important
 milestones inside of a developer's day, activities like pushing
-commits into the main respository, asking questions on discussion
-threads associated with a repository, or assigning issues to a
-developer for review. 
+commits into the main remote repository, asking questions on
+discussion threads associated with a repository, or assigning issues
+to a developer for review. 
 
 These notifications are accessible to team members without
 programmatically accessing the GitHub API. Team members are notified
@@ -959,6 +959,8 @@ to pay attention to whether you see a successful JSON request as shown
 below or an error message. And, as we are going to run this script as
 a command, make it executable using the `chmod` command. 
 
+Now, let's run it and see what happens.
+
 [source,bash]
 -------
 $ chmod +x ./issue-pull-request.sh
@@ -979,12 +981,15 @@ $ ./issue-pull-request.sh
 -------
 
 This returns a huge JSON response (abbreviated here), but you can see
-the first item is the link to the pull request. Were we to visit this
-inside of GitHub, we could merge the pull request from the web UI. If
-we then went to the settings for our repository, and then followed the
-link to "Webhooks and Services" on the left navigation bar, at the
-very bottom of the page we would see a list of recent deliveries to
-our webhook.
+the first item is a link to the pull request. For a human readable
+link, we should use the link called `html_url`. Were we to visit this
+link, we could merge the pull request from within the GitHub web UI. 
+
+To see more context on what is happening with this pull request, once
+we are looking at this pull request inside of GitHub, we can then navigate to the
+settings for our repository, follow the link to "Webhooks and
+Services" on the left navigation bar, and we will then find at the
+very bottom of the page a list of recent deliveries to our webhook.
 
 image::images/hubot-recent-deliveries.png[]
 
@@ -1375,7 +1380,7 @@ Our tests are simple, and require that we send in JSON.
 [source,coffeescript]
 -----
 ...
-[language="coffeescript", sha="96e339f:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="47..-1"]
+[language="coffeescript", sha="6564718:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="47..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

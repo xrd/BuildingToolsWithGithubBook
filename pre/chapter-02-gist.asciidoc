@@ -1,7 +1,7 @@
 == Gists
 
 GitHub revolutionized software development by responding to a deep
-desire to share information. Sharing information does a disservice to
+desire to share information. But calling it just "sharing" does a disservice to
 the tools GitHub provides: these tools remove barriers to
 communication and streamline workflows and these tools also arose at
 exactly the moment when more and more companies permitted and more and
