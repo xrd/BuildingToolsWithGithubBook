@@ -1654,28 +1654,28 @@ Ruby for a moment and download the file manually.
 [source,ruby]
 -----
 ...
-  def process_title( i, title )
-    img = ( title / "img" ) # <1>
-    src = img.attr('src').text()
-    filename = src.split( "/" ).pop
-    
-    output = "assets/images/"
-    full = File.join( output, filename ) # <2>
-    
-    unless File.exists? full
-      root = "https://web.archive.org"
-      remote = root + src
-      contents = `wget --quiet -O #{full} #{remote}`  # <3>
-    end
-    
-    title = title.text()
-    if title
-      title.gsub!( /Title:/, "" )
-      title.strip!
-    end
-    [ title, filename ]  # <4>
-    
+def process_title( i, title )
+  img = ( title / "img" ) # <1>
+  src = img.attr('src').text()
+  filename = src.split( "/" ).pop
+  
+  output = "assets/images/"
+  full = File.join( output, filename ) # <2>
+  
+  unless File.exists? full
+    root = "https://web.archive.org"
+    remote = root + src
+    contents = `wget --quiet -O #{full} #{remote}`  # <3>
   end
+  
+  title = title.text()
+  if title
+    title.gsub!( /Title:/, "" )
+    title.strip!
+  end
+  [ title, filename ]  # <4>
+  
+end
 ...
 -----
 
@@ -1809,13 +1809,13 @@ the `process_creation_date` method inside the `get_ith_page` method.
 [source,ruby]
 -----
 ...
-  def process_location( i, row )
-    location, creation_date = row.text().split /last updated on:/  # <1>
+def process_location( i, row )
+  location, creation_date = row.text().split /last updated on:/  # <1>
 
-    location.gsub!( /Concerning: /, "" ) # <2>
-    location.strip!
-    return location # <3>
-  end  
+  location.gsub!( /Concerning: /, "" ) # <2>
+  location.strip!
+  return location # <3>
+end  
 ...
 -----
 

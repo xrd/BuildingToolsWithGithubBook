@@ -411,6 +411,14 @@ where a function begins and ends given the indentation levels. Hubot
 is itself written in CoffeeScript and we'll write our extension in
 CoffeeScript as well. 
 
+[NOTE]
+CoffeeScript is a language where indentation is important. For
+readability purposes, when we display a snippet of code from a longer
+file, there are times where we have changed the indentation of that
+snippet and removed the initial indentation. If you were to copy the
+code without realignment, the snippet would not work until you
+re-indented it to fit the context into which it sits. 
+
 The Hubot extension module format is exceedingly simple. You write
 JavaScript modules (using the `export` syntax) and Hubot passes you in
 a robot object which you program using several API methods. 
@@ -798,8 +806,7 @@ $ CONFIG=$(echo '{
   }
 }')
 $ curl -H "Authorization: token $TOKEN" \
--H "Content-Type: application/json" \
--X POST \
+-H "Content-Type: application/json" -X POST \
 -d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/hooks
 {
   "url": "https://api.github.com/repos/xrd/testing_repostory/hooks/3846063",
