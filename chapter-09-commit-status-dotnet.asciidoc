@@ -28,8 +28,79 @@ But it's tedious to check every incoming pull request to see if the author has s
 CLAHub is one such example: it checks to see if all of the authors of the contained commits have signed the CLA, and marks the latest commit as "error" if not.
 
 === The API
+
+This capability is powered mainly by services that do _not_ belong to GitHub itself, all of which are using an API to create status updates for commits.
+In addition to this, the repositories whose commits are being marked generally belong neither to the service nor GitHub, but another entirely separate person.
+This is all accomplished through OAuth.
+
+The commit-status API uses the `repo:status` scope, which allows read and write access to commit statuses *without* access to the rest of the contents of the repository.
+This scope is contained within the `repo` scope, so if the application already has that level of access it will also be able to work with statuses.
+
 ==== Single statuses
+
+Commit statuses exist as atomic entities, and each commit can have a practically unlimited number of them (the actual number is in the thousands).
+You can query for existing statuses by doing a GET request to the API server at `/repos/<user>/<repo>/<ref>/statuses`, and it will return a list of them that looks like this: 
+
+[source,json]
+----
+[
+  {
+    "url": "https://api.github.com/repos/…",
+    "id": 224503786,
+    "state": "success",
+    "description": "The Travis CI build passed",
+    "target_url": "https://travis-ci.org/libgit2/libgit2/builds/63428108",
+    "context": "continuous-integration/travis-ci/push",
+    "created_at": "2015-05-21T03:11:02Z",
+    "updated_at": "2015-05-21T03:11:02Z"
+  },
+  …
+]
+----
+
+Most of this is self-explanatory, but a couple of fields need explaining.
+The `state` field can be "success," "failure," "error," or "pending," depending on the state of the service's decision.
+The `target_url` is a URL for the specific decision made for this commit (in this case a build/test log).
+And the `context` parameter is used for correlating multiple status updates to a single service.
+
+This is useful for getting the raw data involved, but it gets complicated quickly.
+How do you decide if a given commit is "good?"
+What if there are (in this order) 3 pending statuses, one success, another pending, two failures, and another success?
+The `context` field can help you correlate a single service's updates, and you can order them by date to see how each one turned out, but that's a lot of work.
+Fortunately, the API server can do it for you.
+
 ==== Combined statuses
+
+If you instead do a GET to `/repos/<user>/<repo>/<ref>/status` (note the last word), you'll instead get a response that looks like this:
+
+[source,json]
+----
+{
+  "state": "success",
+  "statuses": [
+    {
+      "url": "https://api.github.com/repos/…",
+      …
+    },
+    { … }
+  ],
+  "sha": "6675aaba883952a1c1b28390866301ee5c281d37",
+  "total_count": 2,
+  "repository": { … },
+  "commit_url": "https://api.github.com/repos/…",
+  "url": "https://api.github.com/repos/…"
+}
+----
+
+The `statuses` array contains the very last status update for each context that has submitted them, and the `state` field contains an overall status that takes into account all of the contexts.
+Its value is:
+
+- `failure` if any of the contexts posted a `failure` or `error` state
+- `pending` if any of the contexts' latest state is `pending` (or if there are no statuses)
+- `success` if the latest status for every context is `success`
+
+That sounds right for most situations.
+If you find that your use case calls for different rules, you can always use the `statuses` endpoint to get the raw data and make your own combined status.
 
 === Let's write an app
 ==== Requirements
@@ -40,7 +111,6 @@ CLAHub is one such example: it checks to see if all of the authors of the contai
 - Nancy
 - Octokit
 
-==== Aside: OAuth
 ==== OAuth flow
 ==== Endpoint handlers
 
