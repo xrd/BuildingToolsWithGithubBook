@@ -1,3 +1,4 @@
+[appendix]
 === NodeJS
 
 NodeJS has gained immense popularity in the last few years. JavaScript
