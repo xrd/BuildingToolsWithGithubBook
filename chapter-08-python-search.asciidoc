@@ -843,7 +843,6 @@ The one I just generated is 67MB, which seems large for a fairly simple program,
 
 === Summary
 
-In this chapter we took a look at the four different kinds of search GitHub exposes through their API: repositories, issues, code, and people.
-We also had a whirlwind tour through the world of Python GUI development, and wrote a simple application that shows filtered issue search results.
-
-
+After reading this chapter, you should now be able to use the GitHub search API to help your users find what they're looking for.
+You've also learned a bit about Python, its graphical UI toolkit WxPython, as well as the powerful PyInstaller package, so you have a great toolkit for building cross-platform user interfaces that are easily given to friends and colleagues.
+In addition, you have now seen a slightly different take on a GitHub API library – `agithub` takes a hands-off approach to API names and return values, and the result is pretty powerful.
