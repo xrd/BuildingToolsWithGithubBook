@@ -41,7 +41,7 @@ Take a look at <<developer-api-rates>> for more on how to work with rate limits.
 
 ===== Pagination
 
-Search results can be voluminous, so the API will paginate them for you.
+The full result set from a single search can be quite large, so the server splits it up into pages.
 The JSON returned from most calls will have this general format:
 
 [source,json]
@@ -94,7 +94,7 @@ If you want to override this, you can pass `stars`, `forks`, or `updated` in the
 You can also reverse the sort order using the `order` parameter.
 The default is `desc`, but `asc` is also accepted.
 
-==== Search APIs
+==== Search APIs in Detail
 
 The search API is compartmentalized into four categories: repositories, code, issues, and users.
 The basic mechanism is the same for all four: provide a URL-encoded search term as the `q` parameter to a GET request.
