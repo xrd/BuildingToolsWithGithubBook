@@ -12,7 +12,17 @@ Let's take a close look at this API, and try building something with it.
 
 ==== General Principles
 
-The search API has four separate parts, but they all adhere to a few conventions, and there are some rules that govern all of them.
+The search API is split into four separate parts:
+
+- Repositories
+- Code
+- Issues
+- Users
+
+These APIs all have separate subject matter, but they all behave the same in a few key ways.
+Your identity as a user can determine the result set from a search query, so it's important to know about authentication.
+Searching such a large data set will inevitably return large result sets, so we'll talk a bit about pagination as well.
+We'll also cover search and sorting operators, since they can help you tune your search to find just the right result.
 
 ===== Authentication
 
