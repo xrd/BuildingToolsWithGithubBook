@@ -36,18 +36,8 @@ Also, since _all_ Enterprise repositories are private, anonymous search is compl
 Secondly, authenticating opens up your rate limit.
 The limits on search are stricter than other APIs anyways, because search is computationally expensive, but anonymous searches are stricter still.
 As of this writing, and according to the documentation, anonymous searches are limited to 5 per minute, and you can do 20 authenticated queries per minute.
-You can find out your standing by checking the `X-RateLimit-*` headers that come with your response.
-They look like this:
+Take a look at <<developer-api-rates>> for more on how to work with rate limits.
 
-[source,console]
-----
-X-RateLimit-Limit: 20
-X-RateLimit-Remaining: 9
-X-RateLimit-Reset: 1430621780
-----
-
-The `Limit` header shows what your cap is, while the `Remaining` header tells you how many queries you have left.
-The `Reset` header tells you when the counter will reset, in UTC epoch seconds.
 
 ===== Pagination
 
