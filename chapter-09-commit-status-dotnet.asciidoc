@@ -36,7 +36,7 @@ This is all accomplished through OAuth.
 The commit-status API uses the `repo:status` scope, which allows read and write access to commit statuses *without* access to the rest of the contents of the repository.
 This scope is contained within the `repo` scope, so if the application already has that level of access it will also be able to work with statuses.
 
-==== Single statuses
+==== Raw statuses
 
 Commit statuses exist as atomic entities, and each commit can have a practically unlimited number of them (the actual number is in the thousands).
 You can query for existing statuses by doing a GET request to the API server at `/repos/<user>/<repo>/<ref>/statuses`, and it will return a list of them that looks like this: 
@@ -69,7 +69,7 @@ What if there are (in this order) 3 pending statuses, one success, another pendi
 The `context` field can help you correlate a single service's updates, and you can order them by date to see how each one turned out, but that's a lot of work.
 Fortunately, the API server can do it for you.
 
-==== Combined statuses
+==== Combined status
 
 If you instead do a GET to `/repos/<user>/<repo>/<ref>/status` (note the last word), you'll instead get a response that looks like this:
 
@@ -99,17 +99,47 @@ Its value is:
 - `pending` if any of the contexts' latest state is `pending` (or if there are no statuses)
 - `success` if the latest status for every context is `success`
 
-That sounds right for most situations.
+That's probably useful for most situations.
 If you find that your use case calls for different rules, you can always use the `statuses` endpoint to get the raw data and make your own combined status.
 
 === Let's write an app
-==== Requirements
-- Windows: Visual Studio
-- Others: Xamarin Studio
 
-==== Packages that will make this easy
-- Nancy
-- Octokit
+How about a live example?
+In this chapter, we'll build a simple HTTP service that lets you read and write commit statuses for repositories you have access to.
+This system won't be super useful on its own, but if you ever have another service that needs to post commit statuses, you could hand it off to this one.
+
+The language this time is C#, running on the CLR (Common Language Runtime).
+At one point in the history of computing this wouldn't have been a good choice for a book like this, since it was only available on Windows.
+However, with the advent of Mono (an open-source implementation of the .NET runtime), the open-sourcing of the CLR core, and the availability of free development tools, C# is now a completely valid option for open-source or hobby developers.
+
+==== Requirements
+
+To follow along with this example, you'll need to install a development environment.
+
+If you're running Windows, you'll want to visit https://www.visualstudio.com/[] and download the Community edition of Visual Studio.
+Note that Visual Studio has lots of capabilities; for this example, we'll only need the "web developer" components.
+(If you have access to a higher tier of VS, or already have it installed, that will work as well.)
+
+On OS X and Linux, as of this writing the easiest way forward is to visit http://www.monodevelop.com/[] and install MonoDevelop.
+Mono is an open-source implementation of Microsoft's CLR specification, and MonoDevelop is a development environment that works much like Visual Studio, but is built on Mono, and is completely open-source.
+If you try to download MonoDevelop on a Windows or OS X machine, you'll be prompted to install Xamarin Studio instead; this is a newer version of MonoDevelop with more capabilities, and will work just as well for these examples.
+
+==== Libraries
+
+You'll be happy to find out that we won't be writing an entire HTTP server from scratch.
+There are a number of open-source packages that do this work for us, and for this project we'll be using Nancy.
+Nancy is a project that started as a CLR port of the Sinatra framework for Ruby, and takes its name from Frank Sinatra's daughter Nancy Sinatra.
+It's very capable, but also very succinct, as you'll see.
+
+We also won't be directly implementing access to the GitHub API, because GitHub provides a CLR library for that.
+It's called octokit.net, and it does all the right things with regard to asynchronicity and type safety.
+This is the same library used by the GitHub client for Windows, so it'll definitely do the job for our little application.
+
+==== Initial setup
+
+On Visual Studio, you'll want to install a plugin to make this process smoother – the Nancy project templates.
+Visit https://visualstudiogallery.msdn.microsoft.com/[] and search for "nancy.templates".
+The 
 
 ==== OAuth flow
 ==== Endpoint handlers
