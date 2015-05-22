@@ -417,7 +417,7 @@ readability purposes, when we display a snippet of code from a longer
 file, there are times where we have changed the indentation of that
 snippet and removed the initial indentation. If you were to copy the
 code without realignment, the snippet would not work until you
-re-indented it to fit the context into which it sits. 
+re-indented it to fit the context into which it sits.
 
 The Hubot extension module format is exceedingly simple. You write
 JavaScript modules (using the `export` syntax) and Hubot passes you in
