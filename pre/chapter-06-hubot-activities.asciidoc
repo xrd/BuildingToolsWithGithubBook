@@ -1417,12 +1417,12 @@ GitHub and not an attacker.
 [source,coffeescript]
 -----
 ...
-[language="coffeescript", sha="e870e70:support/slacker-hubot/lib/handler.coffee", lines="16..39"]
+[language="coffeescript", sha="2abde97:support/slacker-hubot/lib/handler.coffee", lines="16..41"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 ...
------
+	-----
 
 HMAC cryptography is vulnerable to timing attacks. When you use this
 encryption technique, the time it takes to complete a comparison of
@@ -1790,6 +1790,9 @@ To be replaced
 snippet~~~~~
 -------------
 
+Hopefully you will agree this is a very simple starting point for our
+extension, with the bulk of the work handled by our very testable handler.
+
 ===== Peering into the Response object
 
 We need to get the username and it stands to reason the object passed
@@ -1968,6 +1971,9 @@ snippet~~~~~
 ...
 -------------
 
+We now have a full implementation of both the `accept` and `decline`
+methods inside our Probot.
+
 ===== Sanitizing our source code
 
 It is typically bad form to save passwords (or other access
@@ -2027,7 +2033,7 @@ modify (and the drawbacks surrounding) modifying the source code to
 Hubot itself. There is a natural fit to Hubot and the GitHub API, and
 this chapter hopefully demonstrates how easy and fun it can be, and
 how you can powerfully amplify and streamline developer workflow
-inside a chat room dialog. 
+within a dialog happening between your vibrant developers and a helpful robot. 
 
 
 

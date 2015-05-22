@@ -1596,6 +1596,9 @@ getSecureHash = (body, secret) ->
         hash
 
 exports.prHandler = ( robot, req, res ) ->
+        slack_users_url =
+                "https://slack.com/api/users.list?token=" +
+                process.env.HUBOT_SLACK_TOKEN
         body = req.body
         pr = JSON.parse body if body
         url = pr.pull_request.html_url if pr
@@ -1605,13 +1608,12 @@ exports.prHandler = ( robot, req, res ) ->
 
         if secureCompare( secureHash, webhookProvidedHash ) and url
                 room = "general"
-                robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
+                robot.http( slack_users_url ) ->
                         .get() (err, response, body) ->
                                 sendPrRequest( robot, body, room, url ) unless err
         else
-                console.log "Invalid secret or no URL specified"
 ...
------
+	-----
 
 HMAC cryptography is vulnerable to timing attacks. When you use this
 encryption technique, the time it takes to complete a comparison of
@@ -2117,6 +2119,9 @@ module.exports = (robot) ->
 
 -------------
 
+Hopefully you will agree this is a very simple starting point for our
+extension, with the bulk of the work handled by our very testable handler.
+
 ===== Peering into the Response object
 
 We need to get the username and it stands to reason the object passed
@@ -2317,6 +2322,9 @@ exports.decline = ( res ) ->
 ...
 -------------
 
+We now have a full implementation of both the `accept` and `decline`
+methods inside our Probot.
+
 ===== Sanitizing our source code
 
 It is typically bad form to save passwords (or other access
@@ -2376,7 +2384,7 @@ modify (and the drawbacks surrounding) modifying the source code to
 Hubot itself. There is a natural fit to Hubot and the GitHub API, and
 this chapter hopefully demonstrates how easy and fun it can be, and
 how you can powerfully amplify and streamline developer workflow
-inside a chat room dialog. 
+within a dialog happening between your vibrant developers and a helpful robot. 
 
 
 
