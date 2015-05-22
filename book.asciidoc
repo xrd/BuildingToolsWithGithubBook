@@ -20,5 +20,3 @@ include::chapter-06-hubot-activities.asciidoc[]
 
 include::chapter-07-android.asciidoc[]
 
-include::appendix-enterprise.asciidoc[]
-

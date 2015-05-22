@@ -217,7 +217,7 @@ tells us the company blog (https://github.com/about), that the company
 is located in San Francisco, and the creation date (which strangely
 does not match their blog post which states April 10th was their
 official launch date [https://github.com/blog/40-we-launched]). 
-[authentication]
+
 === Authenticated GitHub API Access
 
 All of the prior examples were performed without authentication into

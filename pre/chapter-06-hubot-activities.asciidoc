@@ -1157,7 +1157,7 @@ more characters to write out the explanation in English!
 
 [source,coffeescript]
 --------
-[language="json", sha="f331955:support/slacker-hubot/lib/handler.coffee"]
+[language="json", sha="b889a6b:support/slacker-hubot/lib/handler.coffee"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1199,7 +1199,7 @@ parse the JSON for members, and then issue the PR request.
 
 [source,coffeescript]
 -----
-[language="json", sha="bfc9c99:support/slacker-hubot/spec/pr-delegator.spec.coffee" lines="32..-1"]
+[language="json", sha="bfc9c99:support/slacker-hubot/spec/pr-delegator.spec.coffee" lines="32..-1", flatten=true]
 snippet~~~~~
 To be replaced
 snippet~~~~~

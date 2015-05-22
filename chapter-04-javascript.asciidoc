@@ -1694,16 +1694,21 @@ from Firebase. But, surprisingly little else needs to change in our flow.
 
 [source,javascript]
 -----
+
 $scope.annotate = function( shop ) {
-        $scope.shopToAnnotate = shop;
+    $scope.shopToAnnotate = shop;
+
     $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
+
         $scope.me = user;
-            $scope.username = user.name;
+        $scope.username = user.name;
+
         $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
+
         if( $scope.annotation ) {
-                gh = ghs.create( $scope.me.accessToken ); // <3>
-                toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
-                toFork.fork( function( err ) {
+            gh = ghs.create( $scope.me.accessToken ); // <3>
+            toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
+            toFork.fork( function( err ) {
 -----
 
 <1> We call the `$login` method on our auth object created using the
