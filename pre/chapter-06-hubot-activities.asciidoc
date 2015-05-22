@@ -1199,7 +1199,7 @@ parse the JSON for members, and then issue the PR request.
 
 [source,coffeescript]
 -----
-[language="json", sha="bfc9c99:support/slacker-hubot/spec/pr-delegator.spec.coffee" lines="32..-1", flatten=true]
+[language="json", sha="bfc9c99:support/slacker-hubot/spec/pr-delegator.spec.coffee" lines="32..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
