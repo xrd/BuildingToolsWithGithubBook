@@ -1353,12 +1353,15 @@ good place to add this functionality and make sure other pieces still work.
 [source,coffeescript]
 -----
 exports.prHandler = ( robot, req, res ) ->
+        slack_users_url =
+                "https://slack.com/api/users.list?token=" +
+                process.env.HUBOT_SLACK_TOKEN
         secret = req.body?.secret
         url = req.body?.url
 
         if secret == _SECRET and url
                 room = "general"
-                robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
+                robot.http( slack_users_url ) ->
                         .get() (err, response, body) ->
                                 sendPrRequest( robot, body, room, url ) unless err
         else
