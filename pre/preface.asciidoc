@@ -1,11 +1,6 @@
 [[preface]]
 == Preface
 
-* Git, What is it?
-
-
-* Github, What is it?
-
 GitHub 
 
 * Chris' introduction
@@ -15,13 +10,13 @@ GitHub
 * Audience for this book
 
 This book should be an interesting source of information for people
-who have used Git or GitHub and want to "level-up" their skills
-related to these technologies. People without any experience using
-GitHub or Git should start with an introductory book on these
-technologies. 
+who have used Git or GitHub and want to amplify their developer
+experiences with Git through the GitHub API. People without any
+experience using GitHub or Git should start with an introductory book
+on these technologies. 
 
-Much of the book focuses on the technical capabilities exposed by
-GitHub and the powerful GitHub API. Perhaps you feel
+Much of the book focuses on the exciting capabilities exposed by
+GitHub when you start using the powerful GitHub API. Perhaps you feel
 constrained by using Git only from within a certain toolset; for
 example, if you are an Eclipse developer accidentally using Git to
 manage your Android source code and want to unlock Git in other places
@@ -61,6 +56,60 @@ within the command line. And, almost every chapter has an associated
 repository hosted on GitHub where you can review the code
 discussed. Fork away and take these samples into your own projects and
 tools!
+
+==== Five Principles Guiding This Book
+
+===== API Driven
+
+GitHub has one of the most comprehensive APIs you will find. Where
+many companies try to lock you in using an API that binds you to a
+paid service, the GitHub API is surprisingly powerful and open. This
+openness has led to an abundant selection of services integrated on
+top of GitHub. You can use these services, but more likely, after
+reading this book, you will discover the power to build your own
+custom services that are specific to your problem domain.
+
+===== Test Driven
+
+Wabi sabi: nothing lasts, nothing is finished and nothing is
+perfect. It's inevitable. APIs will change, APIs must change and so
+must your code. Your memory is faulty, and your code should be zen:
+requiring nothing in memory to run. If something breaks, you don't
+want the brokenness represented inside your head, you want tests that
+prove it. This book shows you how to test your code which runs against
+the APIs.
+
+===== Multilingual
+
+You might find it odd that almost every chapter uses a different
+language. There are many developers who can get away with only knowing
+one language, but there is a new trend put best by Martin Fowler:
+
+"For many developers, the one-language notion is a sign of lack of
+professionalism. This is best exemplified by the Pragmatic
+Programmers' advice to learn a new language every year. The point here
+is that programming languages do affect the way you think about
+programming, and learning new languages can do a lot to help you think
+about solving problems in different ways."
+
+Many languages are used and supported within GitHub. You need to know
+several, and we'll expose you to many here. As long as you know a
+imperative language, you can follow along with any of them. Along the
+way, you will be exposed to language idioms and the way they are
+translted to the respective client libraries, but perhaps more
+importantly, you will come away with a new perspective on thinking as
+a developer.
+
+There are two languages which are especially important: Ruby and
+NodeJS. We provide an appendix to clarify a few important concepts
+about these languages, and give a justification and explanation about
+why these two languages are more important than the others when
+learning about GitHub.
+
+===== Connected
+
+Like unix commands: chain together, work together. Need to learn
+command line tools! 
 
 * Font Conventions
 
