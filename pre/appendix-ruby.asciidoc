@@ -1,3 +1,9 @@
+== Ruby and JavaScript
+
+Between Ruby and JavaScript, you can write any web application you
+need. This chapter will give you the basics of using these two
+tools. NodeJS is the server side version of JavaScript, taking the
+world by storm. 
 
 == GitHub started with Ruby
 
@@ -132,3 +138,28 @@ Here are a few tips when using Ruby and RVM.
   notes which tell you how to properly configure these libraries. Make
   sure to read the output printed to the screen as you install Ruby
   using RVM for special instructions specific to your platform.
+
+=== NodeJS
+
+NodeJS has gained immense popularity in the last few years. JavaScript
+is the language of client-side development on the web, and many people
+are excited about developing in the same language on the server side. One of
+the chapters in this book discusses Hubot, GitHub's "devops" chatbot.
+Hubot is written in NodeJS. Fortunately, installing NodeJS is simple
+using NVM.
+
+NVM stands for "Node Version Manager" and is a direct correlate
+to RVM. To install it run these commands from a shell prompt:
+
+[source,bash]
+$ curl https://raw.github.com/creationix/nvm/master/install.sh | sh
+
+==== package.json
+
+Much like Ruby has a Gemfile which indicates required libraries, so
+too does NodeJS have an equivalent file. In NodeJS, this file is
+called `package.json`.  To install all required libraries for any
+project, use the `npm` tool. Running without any arguments will
+install all libraries specified by the application if there is a
+`package.json` file included with the project. 
+
