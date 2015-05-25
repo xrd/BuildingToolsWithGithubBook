@@ -31,33 +31,13 @@ This allows a company's IT organization to manage user identities in one single 
 It also eases the initial transition, when perhaps thousands of people will need new accounts.
 Several systems are supported, including LDAP and SAML, as well as plain old email and password.
 
-=== API
+=== Endpoints
 
-The complete GitHub API is also available on an Enterprise instance; you just need to send your requests to https://<hostname>/api/v3[] instead of https://api.github.com/[].
-You can imagine that some users have accounts on both an Enterprise instance as well as github.com, and many applications have started supporting this scenario.
-
-There's also a new API section that isn't available on github.com, called the Management Console API.
-It allows you to do things like check settings, maintain SSH keys, manage your license, and so on.
-Nearly anything you can do from the web management console, you can do through the API.
-
-Documentation for this API is available at https://developer.github.com/v3/enterprise[].
-
-=== Benefits
-
-Most organizations run an enterprise edition of GitHub inside their
-corporate firewall. This provides an extra, easy layer of security for
-their information; without access to the corporate network, you cannot
-reach the repository hosting service. 
-
-=== Limitations
-
-Management is the biggest issue: your team becomes responsible for
-making sure your instance of GitHub is running and up to date. 
-
-== Differences
-
-There are a few subtle differences when using the regular GitHub.com
-site and an enterprise instance.
+The complete GitHub API is also available on an Enterprise instance;
+you just need to send your requests to https://<hostname>/api/v3[]
+instead of https://api.github.com/[]. You can imagine that some users
+have accounts on both an Enterprise instance as well as github.com,
+and many applications have started supporting this scenario. 
 
 === Full Hostnames vs. Mount Points
 
@@ -120,4 +100,17 @@ github = Github.new
        	   endpoint: 'https://github.bigdevcorp.example.com/api/v3/'
 puts github.repos.list
 -----
+
+=== Management API
+
+Enterprise servers have a special additional API section that isn't
+available on github.com, called the Management Console API. It allows
+you to do things like check settings, maintain SSH keys, manage your
+license, and so on. Nearly anything you can do from the web management
+console, you can do through the API (so you can script management
+tasks when desirable).
+
+=== Documentation
+
+Documentation for the enterprise API is available at https://developer.github.com/v3/enterprise[].
 
