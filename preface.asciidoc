@@ -43,10 +43,10 @@ food by using the same tools they offer to their customers. These
 tools, like "pull requests" and "issues," stand in stark contrast and
 often replace tools other companies rely upon, like email. If you
 absorb not only the technical facets of using GitHub but also pay
-attention to the cultural and ideological changes offered behind the
-tools, you'll very likely see a new way of working in the modern
-age. We focus on these "meta" viewpoints as we discuss the tools
-themselves to help you see these extra opportunities. 
+attention to the cultural and ideological shifts occuring quietly
+behind the tools, you'll very likely see a new way of working in the
+modern age. We focus on these "meta" viewpoints as we discuss the
+tools themselves to help you see these extra opportunities. 
 
 If you are unfamiliar with the "command line" this book will give you
 a firm understanding of how to use it, and we bet you will find great
@@ -65,9 +65,9 @@ GitHub has one of the most comprehensive APIs you will find. Where
 many companies try to lock you in using an API that binds you to a
 paid service, the GitHub API is surprisingly powerful and open. This
 openness has led to an abundant selection of services integrated on
-top of GitHub. You can use these services, but more likely, after
-reading this book, you will discover the power to build your own
-custom services that are specific to your problem domain.
+top of GitHub. You can use these services, but a more exciting
+prospect is, after reading this book, discovering the power to build
+your own custom services that are specific to your problem domain.
 
 ===== Test Driven
 
@@ -93,12 +93,12 @@ programming, and learning new languages can do a lot to help you think
 about solving problems in different ways."
 
 Many languages are used and supported within GitHub. You need to know
-several, and we'll expose you to many here. As long as you know a
-imperative language, you can follow along with any of them. Along the
-way, you will be exposed to language idioms and the way they are
-translted to the respective client libraries, but perhaps more
-importantly, you will come away with a new perspective on thinking as
-a developer.
+several, and we'll expose you to many here. As long as you know at
+least one imperative language, you can follow along with any of the
+ones we use in the book. Along the way, you will be exposed to
+language idioms and the way they are translted to the respective
+client libraries, but perhaps more importantly, you will come away
+with a new perspective on thinking as a developer.
 
 There are two languages which are especially important: Ruby and
 NodeJS. We provide an appendix to clarify a few important concepts
