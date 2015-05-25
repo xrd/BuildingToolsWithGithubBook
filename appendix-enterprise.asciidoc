@@ -54,7 +54,12 @@ reach the repository hosting service.
 Management is the biggest issue: your team becomes responsible for
 making sure your instance of GitHub is running and up to date. 
 
-=== Differences
+== Differences
+
+There are a few subtle differences when using the regular GitHub.com
+site and an enterprise instance.
+
+=== Full Hostnames vs. Mount Points
 
 One of the main differences between GitHub.com and an enterprise setup
 is often in the way that hostnames are setup. GitHub.com has several
@@ -89,18 +94,20 @@ variable: "GITHUB_HOST".
 [source,bash]
 $ GITHUB_HOST=github.bigdevcorp.example.com hub clone myproject
 
-=== An example request against enterprise using cURL
+=== Command Line Client Tools: cURL
 
 We show in another chapter how to use cURL to make a request against
 the API on the main GitHub.com site. If you wanted to do this against
 an enterprise site, your request would look a little different:
 
 [source,bash]
+-----
 $ curl -i https://github.bigdevcorp.example.com/api/v3/search/repositories?q=@bs
+-----
 
 === Example request using a client library
 
-If you use a client library, almost any one of them will provide a way
+If you use a client library, most provide a way
 to configure the library to use a different endpoint, as is required
 when you are using an enterprise GitHub instance. 
 
@@ -108,7 +115,9 @@ The ruby client configuration looks like this:
 
 [source,ruby]
 -----
-github = Github.new basic_auth: 'login:password',
-       	 	    endpoint: 'https://github.bigdevcorp.example.com/api/v3/'
+github = Github.new 
+           basic_auth: 'login:password',
+       	   endpoint: 'https://github.bigdevcorp.example.com/api/v3/'
+puts github.repos.list
 -----
 
