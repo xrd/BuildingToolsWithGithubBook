@@ -604,7 +604,7 @@ demonstrates the use of curl to search repositories while specifying
 the appropriate Media type.
 
 ----
-$ curl -i https://api.github.com/search/repositories?q=@tobrien \
+$ curl -i https://api.github.com/search/repositories?q=@xrd \
           -H "Accept: application/vnd.github.preview+json"
 ----
 

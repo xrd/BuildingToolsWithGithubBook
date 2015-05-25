@@ -41,3 +41,74 @@ It allows you to do things like check settings, maintain SSH keys, manage your l
 Nearly anything you can do from the web management console, you can do through the API.
 
 Documentation for this API is available at https://developer.github.com/v3/enterprise[].
+
+=== Benefits
+
+Most organizations run an enterprise edition of GitHub inside their
+corporate firewall. This provides an extra, easy layer of security for
+their information; without access to the corporate network, you cannot
+reach the repository hosting service. 
+
+=== Limitations
+
+Management is the biggest issue: your team becomes responsible for
+making sure your instance of GitHub is running and up to date. 
+
+=== Differences
+
+One of the main differences between GitHub.com and an enterprise setup
+is often in the way that hostnames are setup. GitHub.com has several
+hostnames for various content served. An incomplete list includes:
+
+* github.io: hosting Jekyll blogs for users and project pages
+* gist.github.com: hosting "gists"
+* raw.githubusercontent.com: hosting raw pages (unprocessed files)
+
+For a variety of reasons, enterprise GitHub installations often don't
+retain the same mapping. An enteprise installation might look like:
+
+* github.bigdevcorp.example.com/pages/xrd/somerepo: hosting gh-pages sites
+* github.bigdevcorp.example.com/gists: hosting gists
+
+As you can see, enterprise installations often map the subdomains to a
+subdirectory rather than a different hostname. This simplifies setup
+of the enterprise installation. But it means that some tools require
+reconfiguration. 
+
+For the command line link:https://github.com/defunkt/gist[Gist tool]
+(https://github.com/defunkt/gist), you need to export an environment 
+variable which specifies the gist url:
+
+[source,bash]
+$ export GITHUB_URL=http://github.bigdevcorp.example.com/
+
+For the command line link:https://github.com/github/hub[Hub tool]
+(https://github.com/github/hub) you need to use a different
+variable: "GITHUB_HOST".
+
+[source,bash]
+$ GITHUB_HOST=github.bigdevcorp.example.com hub clone myproject
+
+=== An example request against enterprise using cURL
+
+We show in another chapter how to use cURL to make a request against
+the API on the main GitHub.com site. If you wanted to do this against
+an enterprise site, your request would look a little different:
+
+[source,bash]
+$ curl -i https://github.bigdevcorp.example.com/api/v3/search/repositories?q=@bs
+
+=== Example request using a client library
+
+If you use a client library, almost any one of them will provide a way
+to configure the library to use a different endpoint, as is required
+when you are using an enterprise GitHub instance. 
+
+The ruby client configuration looks like this:
+
+[source,ruby]
+-----
+github = Github.new basic_auth: 'login:password',
+       	 	    endpoint: 'https://github.bigdevcorp.example.com/api/v3/'
+-----
+
