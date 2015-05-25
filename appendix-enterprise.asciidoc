@@ -102,7 +102,7 @@ an enterprise site, your request would look a little different:
 
 [source,bash]
 -----
-$ curl -i https://github.bigdevcorp.example.com/api/v3/search/repositories?q=@bs
+$ curl -i https://github.bigdevcorp.example.com/api/v3/search/repositories?q=@ben
 -----
 
 === Example request using a client library
