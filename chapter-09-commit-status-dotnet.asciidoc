@@ -106,10 +106,10 @@ If you find that your use case calls for different rules, you can always use the
 
 How about a live example?
 In this chapter, we'll build a simple HTTP service that lets you read and write commit statuses for repositories you have access to.
-This system won't be super useful on its own, but if you ever have another service that needs to post commit statuses, you could hand it off to this one.
+This system won't be super useful on its own, but if you ever have another service that needs to post commit statuses, you could hand it off to this one, or use this as a starting point for a service that does something interesting.
 
 The language this time is C#, running on the CLR (Common Language Runtime).
-At one point in the history of computing this wouldn't have been a good choice for a book like this, since it was only available on Windows.
+At one point in the history of computing this wouldn't have been a good choice for a book like this, since it was only available on Windows, and the language and libraries were fairly limited.
 However, with the advent of Mono (an open-source implementation of the .NET runtime), the open-sourcing of the CLR core, and the availability of free development tools, C# is now a completely valid option for open-source or hobby developers.
 
 ==== Requirements
@@ -135,14 +135,313 @@ We also won't be directly implementing access to the GitHub API, because GitHub 
 It's called octokit.net, and it does all the right things with regard to asynchronicity and type safety.
 This is the same library used by the GitHub client for Windows, so it'll definitely do the job for our little application.
 
-==== Initial setup
 
-On Visual Studio, you'll want to install a plugin to make this process smoother – the Nancy project templates.
+
+==== Following along
+
+If you'd like to follow along with the code examples, here's how to set up a project with all the necessary elements.
+
+===== Visual Studio
+
+In order to make things just a little smoother, you'll want to install a plugin: the Nancy project templates.
 Visit https://visualstudiogallery.msdn.microsoft.com/[] and search for "nancy.templates".
-The 
+As of this writing, there appears to be some difficulty with file formats, so when you download it, it comes as a ZIP file.
+If this has been resolved by the time you're reading this, simply double-click the file to install the templates; if not, you'll have to rename it to have a `.vsix` extension first.
+
+The next step is to create a new project using one of the newly-installed templates.
+Go to "File>New Project…" and select "Visual C#>Web>Nancy Application with ASP.NET Hosting" from the template list (as shown in <<vs_new_project>>.
+Make sure the path and name settings at the bottom are to your liking, and click OK.
+
+[[vs_new_project]]
+.Creating a Nancy application in Visual Studio
+image::images/vs-new-project.png[]
+
+The next step is to change the target CLR framework version to something that will build Octokit.
+Right-click on the project's node in the Solution Explorer, and select "Properties."
+In the "Application" section, set Target Framework to be ".NET 4.5" (or later), and save.
+You may be prompted to re-load the solution.
+
+The very last step is to add NuGet packages for Octokit and Nancy.
+Right-click on the project node in Solution Explorer, and select "Manage NuGet Packages…"
+Do a search for "Nancy", and upgrade it if necessary – there's a chance the Nancy project template specifies an out-of-date version.
+Then do a search for "Octokit," and install that.
+At this point, you should have an empty solution, configured and ready for our example code.
+
+===== Xamarin Studio
+
+If you're using Xamarin Studio or MonoDevelop, your flow is slightly different.
+There are no Nancy-specific project templates for these IDEs, so you'll just start with an empty web project.
+Go to "File>New>Solution…", and choose "ASP.NET>Empty ASP.NET Project" from the template chooser, as shown in <<xamarin_new_project>>.
+
+[[xamarin_new_project]]
+.Creating an empty ASP.NET application in Xamarin Studio
+image::images/xamarin-new-project.png[]
+
+The rest of the wizard steps are about the project name and location; feel free to call and put this project however you like.
+
+Next, update the target framework setting.
+Control- or right-click on the node in the solution explorer that corresponds with your project (_not_ your solution), and select "Options" from the menu.
+Under "Build>General," set the Target Framework to "Mono / .NET 4.5" (or later) and click OK.
+
+Lastly, install the Nancy and Octokit NuGet packages.
+Go to "Project>Add NuGet Packages…" in the menu to open the package manager.
+Search for Nancy, check the box next to it, search for Octokit, check its box, and click "Add Packages" at the bottom right.
+Once the process is complete, your project is ready for our example code.
+
+==== First steps
+
+First, let's get our Nancy application up and running.
+Here's what it looks like to do perform a simple request using Nancy and Octokit.
+
+[source,cs]
+----
+using Nancy;
+using Octokit;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Web;
+
+namespace NancyApp
+{
+    public class Handler : NancyModule // <1>
+    {
+        private readonly GitHubClient client =
+            new GitHubClient(new ProductHeaderValue("MyHello")); // <2>
+
+        public Handler()
+        {
+            Get["/{user}", true] = async (parms, ct) => // <3>
+                {
+                    var user = await client.User.Get(parms.user.ToString()); // <4>
+                    return String.Format("{0} people love {1}!",
+                                         user.Followers, user.Name); // <5>
+                };
+        }
+    }
+}    
+----
+
+<1> Here we derive a class from `NancyModule`, which is all you have to do to start receiving and processing HTTP requests in Nancy.
+<2> The `GitHubClient` class is the entry point for Octokit.
+    Here we create an instance with a placeholder product name, which we'll use later on.
+<3> The constructor for the module sets up route mappings.
+    We map `/{user}` to a lambda function using the `Get` dictionary that comes with `NancyModule`.
+    The second parameter to the index operator says that the handler will be asynchronous.
+<4> Here we see how to get the `{user}` part of the request URL, and how to query the GitHub User API using Octokit.
+    Note that we have to `await` the result of the network query, since it may take some time.
+<5> Nancy request handlers can simply return a text string, which will be marked as HTML for the viewing browser.
+    Here we return a simple string with the user's real name and number of followers.
+
+This example is a bit more complicated than "hello, world," but it's still fairly succinct and clear.
+This bodes well, because we're about to introduce some complexity.
 
 ==== OAuth flow
-==== Endpoint handlers
+
+In order to post a status update for a commit, we're going to have to ask the user for permission.
+Apart from asking for their username and password (which gives way too much control, and if two-factor authentication is enabled may not even be enough), the only way to do this is OAuth, which is not straightforward.
+
+Here's a simple outline of the OAuth process, from our little server's point of view:
+
+. We need an authorization token, because we don't have one, or the one we have is expired.
+  This is just a string of characters, but we can't generate it ourselves, so we ask GitHub for one.
+  This involves redirecting the user to a GitHub API endpoint, with the kind of permission we're asking for and some other details as query parameters.
+. The user's browser then tells them that an application is requesting some permissions, and they can either allow or deny them.
+. If the user allows this access, their browser redirects them to a URL we specified in step 1.
+  A "code" is passed as a query parameter; this is not the access token we want, but a time-limited key to get one.
+  (The granted access is stored on the GitHub end, so we can skip the user-gated part of this process in the future.)
+. From inside the handler for this request, we can use a REST API to get the access token.
+  Once we have it, we can skip this whole process the next time the user accesses our server, so we should store it somewhere safe.
+. Now we have permission, and we can use the GitHub API with authentication.
+
+OAuth seems convoluted, but its design achieves several goals.
+First, permission can be scoped – an application is almost never given full access to the user's account and data.
+Second, the whole exchange is secure; at least one part of this has to go through the user, and cannot be automated.
+Third, the access token is never transmitted to the user's browser, which avoids a class of security vulnerabilities.
+
+Here's how we implement the OAuth flow in our tiny little server.
+First, once we have a token, we should store it so we're not going through the entire redirect cycle for every user request.
+We're going to put it in a cookie, though since this goes back and forth to the user's browser, a production application would probably use a database.
+Nancy can help us with this, but first we have to enable it, and the way this is accomplished is by using a bootstrapper.
+We're going to add this class to our application:
+
+[source,cs]
+----
+
+using Nancy;
+using Nancy.Bootstrapper;
+using Nancy.Session;
+using Nancy.TinyIoc;
+
+namespace NancyApp
+{
+    public class Bootstrapper : DefaultNancyBootstrapper
+    {
+        protected override void ApplicationStartup(TinyIoCContainer container,
+                                                   IPipelines pipelines)
+        {
+            CookieBasedSessions.Enable(pipelines);
+        }
+    }
+}
+----
+
+Nancy will automatically detect a bootstrapper class, and use it to initialize our server.
+Now, from within a `NancyModule`, we can use the `Session` property to store and retrieve values that are transmitted as cookies.
+
+Next, we have to include our application's ID and secret in some of the requests, so we embed them in the code by adding these fields to the `Handler` class:
+
+[source,cs]
+----
+        private const string clientId = "<clientId>";
+        private const string clientSecret = "<clientSecret>";
+----
+
+Obviously, you should use values from your own API application if you're following along.
+After that, we'll need a helper method that kicks off the process:
+
+[source,cs]
+----
+        private Response RedirectToOAuth()
+        {
+            var csrf = Guid.NewGuid().ToString();
+            Session["CSRF:State"] = csrf; // <1>
+            Session["OrigUrl"] = this.Request.Path; // <2>
+
+            var request = new OauthLoginRequest(clientId)
+                {
+                    Scopes = { "repo:status" }, // <3>
+                    State = csrf
+                };
+            var oauthLoginUrl = client.Oauth.GetGitHubLoginUrl(request);
+            return Response.AsRedirect(oauthLoginUrl.ToString()); // <4>
+        }
+----
+
+<1> CSRF stands for "cross-site request forgery."
+    This is a mechanism by which we can be sure the OAuth request process really did originate from our site.
+    The GitHub OAuth API will pass this value back to us when the user authorizes access, so we store it in the cookie for later reference.
+<2> This is a UX feature; once the OAuth process has completed, we want to send the user back to what they were _trying_ to do in the first place.
+<3> This is the permission set we're asking for.
+    Note that we're also including our CSRF token; this is so GitHub can give it back to us later.
+<4> Here we use Octokit to generate the redirect URL, and send the user's browser there.
+
+This is a method that can be called from any route handler in our module, if it's discovered that the token is missing or invalid.
+We'll see how it's called a bit later, but for now let's follow the rest of the OAuth process.
+
+In our GitHub application settings (TODO: URL), we specify an authorization URL.
+In this case, we've specified `localhost:8080/authorize`, and that's where GitHub will redirect the user's browser if they authorize our application.
+Here's the handler for that endpoint, which has been inserted into the module constructor:
+
+[source,cs]
+----
+            Get["/authorize", true] = async (parms, ct) =>
+                {
+                    var csrf = Session["CSRF:State"] as string;
+                    Session.Delete("CSRF:State");
+                    if (csrf != Request.Query["state"]) // <1>
+                    {
+                        return HttpStatusCode.Unauthorized;
+                    }
+
+                    var successUrl = "http://localhost:8080/authorize/success";
+                    var queryCode = Request.Query["code"].ToString();
+                    var tokenReq =  new OauthTokenRequest(clientId, // <2>
+                                                          clientSecret,
+                                                          queryCode)
+                    {
+                        RedirectUri = new Uri(successUrl)
+                    };
+                    var token = await client.Oauth.CreateAccessToken(tokenReq);
+                    Session["accessToken"] = token.AccessToken; // <3>
+                    return Response.AsRedirect(successUrl);
+                };
+----
+
+<1> Here we verify the CSRF token we generated before.
+    If it doesn't match, something shady is happening, so we return a 401.
+<2> This is the REST call that converts our OAuth code to an access token.
+    In order to verify that this really is our application asking for the token, we pass in both the client ID and secret, as well as the code given to us by GitHub.
+<3> This is where we store the resulting token in the session cookie.
+    Again, this wouldn't be a good idea for a real application, but for our purposes it'll do.
+
+*_TODO:_* figure out this `/authorize/success` thing
+
+Once all that is done, we've got our token and are able to continue on our merry way.
+All our handlers have to do to trigger an OAuth sequence is to call `RedirectToOAuth()` if it's necessary, and we'll automatically return the user to where they were when the process completes.
+
+==== Status handler
+
+Having done all that, let's see what it takes to create a new commit status.
+We're going to add this snippet to our Nancy module constructor:
+
+[source,cs]
+----
+
+            Get["/{user}/{repo}/{sha}/{status}", true] = async (parms, ct) => // <1>
+                {
+                    var accessToken = Session["accessToken"] as string;
+                    if (string.IsNullOrEmpty(accessToken))
+                        return RedirectToOAuth();
+                    client.Credentials = new Credentials(accessToken);
+
+                    CommitState newState = Enum.Parse(typeof(CommitState), // <2>
+                                                      parms.status,
+                                                      true);
+                    try
+                    {
+                        var newStatus = new NewCommitStatus // <3>
+                        {
+                            State = newState,
+                            Context = "example-api-app",
+                            TargetUrl = new Uri(Request.Url.SiteBase),
+                        };
+                        await client.Repository.CommitStatus.Create(parms.user, // <4>
+                                                                    parms.repo,
+                                                                    parms.sha,
+                                                                    newStatus);
+                    }
+                    catch (NotFoundException) // <5>
+                    {
+                        return HttpStatusCode.NotFound;
+                    }
+
+                    var template = @"Done! Go to <a href=""https://" // <6>
+                    + @"api.github.com/repos/{0}/{1}/commits/{2}/status"
+                    + @""">this API endpiont</a>";
+                    return String.Format(template,
+                                         parms.user, parms.repo, parms.sha);
+                };
+----
+
+<0> Note the request path for this handler: a GET request to `localhost:8080/user/repo/<sha>` will create a new status.
+    This is easy to test with the browser, but also makes it easy for web crawlers to unknowingly trigger this API.
+    For this example it's okay, but for a real application you'd probably want to require this to be a POST request.
+<1> Here we're trying to parse the last segment of the request URL into a member of the `CommitState` enumeration.
+    Octokit tries to maintain type safety for all of its APIs, so strings aren't accepted for this API.
+<2> The `NewCommitStatus` object encapsulates all the things you can set when creating a new status.
+    Here we set the state we parsed earlier, a hopefully-unique context value that identifies our service, and a not-very-useful target URL (which should explain how the result was derived).
+<3> This is the REST call to create the new status, which is asynchronous.
+<4> There are a number of exceptions that could be thrown from the API, but the biggest one we want to handle is the `NotFoundException`, which has been translated from the HTTP 404 status.
+    Here we translate it back to make for a nice experience for the user.
+<5> If we succeed, we render a snippet of HTML and return it from our handler.
+    Nancy will set the content-type for responses to HTML by default, so the user will get a nice clickable link.
+
+That's it!
+If you've typed all this into a project of your own, you should be able to run it under the debugger and create commit statuses for your projects.
+We noted this a bit earlier, but it bears repeating: this particular example is usable with a browser, since it responds to GET requests, but for a real service like this you'd probably want creation of statuses to use a POST request.
 
 === Summary
 
+If you've read this far, you've learned how the commit-status API can help you write services that augment the use of pull requests on GitHub.
+These usually take a form like continuous integration, but there are many other possibilities that are enabled by this API.
+
+You've gotten a basic introduction to OAuth, and how it works on the server side.
+There's definitely a lot more to learn, but the basic flow you've seen works, and solves quite a few hard problems.
+
+You've gained a passing knowledge of C#, including its package system, at least one IDE, lambda functions, extended constructors, and more.
+C# has become a very capable language in recent years, and it should come as no surprise that many developers choose it first for their projects.
+
+You've learned about Nancy, a lightweight toolkit for building HTTP services.
+And you've had an introduction to Octokit, a type-safe implementation of a REST API, with built-in asynchrony and OAuth helpers.
