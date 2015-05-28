@@ -1,6 +1,7 @@
 [appendix]
 == GitHub started with Ruby
 
+
 GitHub is a company with its foundations sitting on top of the Ruby
 language. Tom Preston Warner (one of three founders of GitHub) built
 the initial libraries for using git with Ruby, a library called
