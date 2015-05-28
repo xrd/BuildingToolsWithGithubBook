@@ -1,3 +1,4 @@
+[appendix]
 == GitHub started with Ruby
 
 GitHub is a company with its foundations sitting on top of the Ruby
