@@ -4,10 +4,10 @@ The GitHub API is accessible from many different angles. You can use
 any one of the huge number of client libraries available in almost
 every major programming language (and there often are multiple client options
 for any given language). This book will take you on an
-exploration of several different language clients for the GitHub API
-pointing out the different idioms and methodologies inherent in the
-client libraries and illuminating the darker corners of the GitHub
-API. Each chapter is designed so that you can follow along without
+exploration of several different language clients for the GitHub API.
+Along the way, we'll point out the different idioms and methodologies
+inherent to those client libraries and shed light on the darker corners
+of the GitHub API. Each chapter is designed so that you can follow along without
 intimacy to the  language or toolkit. You will get the most value if
 you install the language and associated tools, but the story behind the
 projects we will build will be interesting even if you don't actually
@@ -19,9 +19,9 @@ use in order to get the most out of this book.
 
 * Ruby: a simple, readable programming language used heavily by the
   founders of GitHub.
-* NodeJS: JavaScript has been the most ubiquitous web-based client side
-  development language for ten years, and NodeJS takes that familiar
-  power to the server side, captivating tools authors on GitHub.
+* NodeJS: the only ubiquitous browser side programming language, its
+  importance has grown to new heights with the introduction of
+  NodeJS. 
 * cURL: there are many tools that speak HTTP, but cURL is one of the
   best due to its elegant and useful command line interface that
   aligns with the minimalist interfaces of the best unix tools.
