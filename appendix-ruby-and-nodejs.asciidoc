@@ -14,11 +14,9 @@ and not knowing any Ruby syntax. This book will not require you to
 become an expert in Ruby, but will ask you to read through Ruby
 code. We write in a literal, readable way, so that anyone with basic
 software developer skills and mastery of the English language should
-be able to understand the tools we are using. And, if you are someone
-who previously never wanted to learn Ruby, who knows, perhaps after
-reading these examples in Ruby you will learn to like it as a
-language. Ruby is not a perfect language, but is a useful addition to
-a developer's toolkit because of its focus on developer productivity.
+be able to understand the tools we are using. Ruby is not a perfect
+language, but is a useful addition to a developer's toolkit because of
+its focus on developer productivity. 
 
 === Installing Ruby
 
