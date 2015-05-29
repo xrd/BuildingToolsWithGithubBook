@@ -166,6 +166,8 @@ Right-click on the project node in Solution Explorer, and select "Manage NuGet P
 Do a search for "Nancy", and upgrade it if necessary – there's a chance the Nancy project template specifies an out-of-date version.
 Then do a search for "Octokit," and install that.
 At this point, you should have an empty solution, configured and ready for our example code.
+To run it with debugging, go to "Debug>Start Debugging…," or hit F5. 
+Visual Studio will start the server under a debugger, and open an IE instance on http://localhost:12008/[], which should give you the default Nancy 404 page.
 
 ===== Xamarin Studio
 
@@ -187,6 +189,8 @@ Lastly, install the Nancy and Octokit NuGet packages.
 Go to "Project>Add NuGet Packages…" in the menu to open the package manager.
 Search for Nancy, check the box next to it, search for Octokit, check its box, and click "Add Packages" at the bottom right.
 Once the process is complete, your project is ready for our example code.
+To run it under the debugger, go to "Run>Start Debugging…," or type ⌘-Enter.
+Xamarin will start the server and open a browser window to http://127.0.0.1:80080[], which at this point will just show the default 404 page.
 
 ==== First steps
 
