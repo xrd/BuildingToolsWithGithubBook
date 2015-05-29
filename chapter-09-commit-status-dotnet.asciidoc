@@ -238,6 +238,14 @@ namespace NancyApp
 <5> Nancy request handlers can simply return a text string, which will be marked as HTML for the viewing browser.
     Here we return a simple string with the user's real name and number of followers.
 
+[NOTE]
+====
+The `await` keyword bears special mention.
+It was introduced in .NET 4.0, in 2012, and it lets you write asynchronous code as though it were synchronous.
+The above code will actually return a promise from the line that includes the `await` keyword, and the event loop will pick up the execution on the following line once the promise is fulfilled.
+This is but one of the features that make C# the favorite of many developers.
+====
+
 This example is a bit more complicated than "hello, world," but it's still fairly succinct and clear.
 This bodes well, because we're about to introduce some complexity.
 
