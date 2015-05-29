@@ -1,10 +1,24 @@
-
+[appendix]
 == GitHub started with Ruby
 
-Many of the tools written and used internally at GitHub are written in
-Ruby. The founders of GitHub have all made strong contributions to popular
-Ruby libraries, called "gems". To be successful with this book, you should
-at least have Ruby installed. 
+GitHub is a company with its foundations sitting on top of the Ruby
+language. Tom Preston Warner (one of three founders of GitHub) built
+the initial libraries for using git with Ruby, a library called
+Grit. You can host blogs on GitHub for free, and this tool called
+Jekyll is built using Ruby. Gollum, the technology which powers GitHub
+wikis, is built using Grit and runs on Ruby. 
+
+To understand GitHub, it is best to understand a little bit of Ruby.
+You can use many of the tools used at GitHub by simply installing Ruby,
+and not knowing any Ruby syntax. This book will not require you to
+become an expert in Ruby, but will ask you to read through Ruby
+code. We write in a literal, readable way, so that anyone with basic
+software developer skills and mastery of the English language should
+be able to understand the tools we are using. Ruby is not a perfect
+language, but is a useful addition to a developer's toolkit because of
+its focus on developer productivity. 
+
+=== Installing Ruby
 
 There are many ways to get Ruby but not all of them are created equal. 
 As a long time user I have experienced the pain of using a pre-installed Ruby 
@@ -28,30 +42,6 @@ guarantee you are using the correct version, and the method described
 here will not interfere with any other previously installed version of
 Ruby you have already on your system. 
 
-=== Why Ruby at GitHub
-
-GitHub is a company with its foundations sitting on top of the Ruby
-language. Tom Preston Warner (one of three founders of GitHub) built
-the initial libraries for using git 
-with Ruby, a library called Grit. You can host blogs on GitHub for
-free, and this tool called Jekyll is built using Ruby. Gollum, the
-technology which powers GitHub wikis, is built using Grit and runs on
-Ruby. 
-
-To understand GitHub, it is best to understand a little bit of Ruby.
-You can use many of the tools used at GitHub by simply installing Ruby,
-and not knowing any Ruby syntax. This book will not require you to
-code in Ruby, but will ask you to read through Ruby code. We write in
-a literal, readable way, so that anyone with basic software developer
-skills and mastery of the English language should be able to
-understand the tools we are using. And, if you are someone
-who previously never wanted to learn Ruby, who knows, perhaps after
-reading these examples in Ruby you will learn to like it as a
-language. Ruby is not a perfect language, but is a useful addition to
-a developer's toolkit because of its focus on developer productivity.
-
-=== Installing Ruby
-
 To install Ruby, use RVM. RVM stands for Ruby Version Manager. RVM allows you to install
 multiple versions of Ruby on your machine and have them interoperate
 without conflict. You will probably only need to install a single
@@ -71,18 +61,18 @@ This will install RVM and Ruby.
 
 If you are running Windows, you can use RVM to install Ruby, but your
 instructions are a little more complicated. Refer to the documentation
-to do so. A better option is to consider installing something like VirtualBox (a virtual
-machine manager). If you do this, you can install RVM inside a Linux
-Virtual Machine (VM). Windows is, sadly, a second class citizen with
-Ruby and RVM and, for this reason, it is often better to install RVM
-inside a host system like Linux which has a wider community around it
-to support you. Virtual Box and Linux are free as in beer and as in
-speech, so you can try them out without cost (other than your time).
-There are many native gems for Ruby which don't properly compile if
-the host system is Windows, so you can save yourself considerable time
-by just using a completely free (as in beer) option like VirtualBox
-and a Linux virtual machine running on Windows instead of fighting
-with running everything directly on Windows. 
+to do so. A better option is to consider installing something like
+VirtualBox (a virtual machine manager). If you do this, you can
+install RVM inside a Linux Virtual Machine (VM). Windows is, sadly, a
+second class citizen with Ruby and RVM and, for this reason, it is
+often better to install RVM inside a host system like Linux which has
+a wider community around it to support you. Virtual Box and Linux are
+free as in beer and as in speech, so you can try them out without cost
+(other than your time). There are many native gems for Ruby which
+don't properly compile if the host system is Windows, so you can save
+yourself considerable time by just using a completely free (as in
+beer) option like VirtualBox and a Linux virtual machine running on
+Windows instead of fighting with running everything directly on Windows. 
 
 === Important Ruby and RVM Concepts
 
@@ -132,3 +122,60 @@ Here are a few tips when using Ruby and RVM.
   notes which tell you how to properly configure these libraries. Make
   sure to read the output printed to the screen as you install Ruby
   using RVM for special instructions specific to your platform.
+
+== GitHub is excited about NodeJS
+
+NodeJS is the server side version of JavaScript. JavaScript is the
+only ubiquitious client side programming language for the web. Between
+Ruby and JavaScript, you can build any web application you
+need. Tools like Hubot show the benefits of using a language like
+JavaScript running on the NodeJS platform, which facilitates building
+"fast, scalable networked applications." 
+
+=== NodeJS Installation
+
+The nodejs.org web page offers various binary installers. These are
+generally the best way to install the most recent version of NodeJS. 
+
+=== Node Version Manager
+
+NVM stands for "Node Version Manager" and is a direct correlate
+to RVM. Like RVM, NVM allows you to install multiple versions of
+NodeJS on a single machine and switch between them seamlessly. This
+can be very useful when using a tool like NodeJS which is iterating
+rapidly (and whose modules are also often tested against only a very
+new version of NodeJS). NVM runs on OSX or Linux. To install, run
+these commands from a shell prompt: 
+
+[source,bash]
+$ curl -o- \
+https://raw.githubusercontent.com/creationix/nvm/v0.25.3/install.sh | \
+bash 
+
+This will install NVM for you. You then might need to run `source
+~/.bash_profile` to load the NVM scripts. Once this is completed, you
+are able to run NVM commands.
+
+[source,bash]
+-----
+$ nvm install 0.10 # Install version 0.10
+$ nvm use 0.10     # Use version 0.10
+-----
+
+There are many more commands available with NVM, all of which can be
+found at the repository where the tool is hosted:
+https://github.com/creationix/nvm. 
+
+==== package.json
+
+Much like Ruby has a Gemfile which indicates required libraries, so
+too does NodeJS have an equivalent file. In NodeJS, this file is
+called `package.json`.  To install all required libraries for any
+project, use the `npm` tool (installed by default when you install
+NodeJS using NVM). Running `npm` without any arguments will
+install all libraries specified by the application if there is a
+`package.json` file included with the project. If you want to add a
+package to an existing `package.json` file, you can append `--save` to
+the npm command and npm will update package.json for you once the
+installation of the package has completed.
+
