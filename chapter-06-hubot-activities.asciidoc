@@ -1207,7 +1207,7 @@ faking), we need to write the code to find a random user and assign them
 to the pull request. 
 
 [WARNING]
-This next section is actually completely redundant; our Probot will function
+This next section is redundant; our Probot will function
 exactly as we need it to if you were to disregard any code from this
 section. As I was writing this book, I was initially unable to find an example
 inside the Hubot source code which provided a list of currently logged
