@@ -334,7 +334,7 @@ After that, we'll need a helper method that kicks off the process:
 This is a method that can be called from any route handler in our module, if it's discovered that the token is missing or invalid.
 We'll see how it's called a bit later, but for now let's follow the rest of the OAuth process.
 
-In our GitHub application settings (TODO: URL), we specify an authorization URL.
+In our GitHub application settings (check https://github.com/settings/developers[] for a list of your applications), we specify an authorization URL.
 In this case, we've specified `localhost:8080/authorize`, and that's where GitHub will redirect the user's browser if they authorize our application.
 Here's the handler for that endpoint, which has been inserted into the module constructor:
 
@@ -349,17 +349,16 @@ Here's the handler for that endpoint, which has been inserted into the module co
                         return HttpStatusCode.Unauthorized;
                     }
 
-                    var successUrl = "http://localhost:8080/authorize/success";
                     var queryCode = Request.Query["code"].ToString();
                     var tokenReq =  new OauthTokenRequest(clientId, // <2>
                                                           clientSecret,
-                                                          queryCode)
-                    {
-                        RedirectUri = new Uri(successUrl)
-                    };
+                                                          queryCode);
                     var token = await client.Oauth.CreateAccessToken(tokenReq);
                     Session["accessToken"] = token.AccessToken; // <3>
-                    return Response.AsRedirect(successUrl);
+
+                    var origUrl = Session["OrigUrl"].ToString();
+                    Session.Delete("OrigUrl");
+                    return Response.AsRedirect(origUrl); // <4>
                 };
 ----
 
@@ -369,8 +368,7 @@ Here's the handler for that endpoint, which has been inserted into the module co
     In order to verify that this really is our application asking for the token, we pass in both the client ID and secret, as well as the code given to us by GitHub.
 <3> This is where we store the resulting token in the session cookie.
     Again, this wouldn't be a good idea for a real application, but for our purposes it'll do.
-
-*_TODO:_* figure out this `/authorize/success` thing
+<4> Here we redirect the user back to what they were originally trying to do, with as little disruption as possble.
 
 Once all that is done, we've got our token and are able to continue on our merry way.
 All our handlers have to do to trigger an OAuth sequence is to call `RedirectToOAuth()` if it's necessary, and we'll automatically return the user to where they were when the process completes.
