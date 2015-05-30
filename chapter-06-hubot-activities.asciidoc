@@ -411,6 +411,14 @@ where a function begins and ends given the indentation levels. Hubot
 is itself written in CoffeeScript and we'll write our extension in
 CoffeeScript as well. 
 
+[NOTE]
+CoffeeScript is a language where indentation is important. For
+readability purposes, when we display a snippet of code from a longer
+file, there are times where we have changed the indentation of that
+snippet and removed the initial indentation. If you were to copy the
+code without realignment, the snippet would not work until you
+re-indented it to fit the context into which it sits.
+
 The Hubot extension module format is exceedingly simple. You write
 JavaScript modules (using the `export` syntax) and Hubot passes you in
 a robot object which you program using several API methods. 
@@ -649,12 +657,12 @@ specifies that the minimum version of jasmine node we will use is
 [source,javascript]
 -----
 ...
-    "hubot-shipit": "^0.1.1",
-    "hubot-slack": "^3.2.1",
-    "hubot-youtube": "^0.1.2",
-    "jasmine-node": "^2.0.0"
-  },
-  "engines": {
+  "hubot-shipit": "^0.1.1",
+  "hubot-slack": "^3.2.1",
+  "hubot-youtube": "^0.1.2",
+  "jasmine-node": "^2.0.0"
+},
+"engines": {
 ...
 -----
 
@@ -797,7 +805,9 @@ $ CONFIG=$(echo '{
     "secret" : "XYZABC"
   }
 }')
-$ curl -H "Authorization: token $TOKEN" -H "Content-Type: application/json" -X POST -d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/hooks
+$ curl -H "Authorization: token $TOKEN" \
+-H "Content-Type: application/json" -X POST \
+-d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/hooks
 {
   "url": "https://api.github.com/repos/xrd/testing_repostory/hooks/3846063",
   "test_url":
@@ -862,10 +872,10 @@ end of our spec file.
 
 [source,coffeescript]
 -----
-        it "should verify our calls to router.post", (done) ->
-                pr = Probot robot
-                expect( robot.router.post ).toHaveBeenCalled()
-                done()
+it "should verify our calls to router.post", (done) ->
+        pr = Probot robot
+        expect( robot.router.post ).toHaveBeenCalled()
+        done()
 
 -----
 
@@ -1064,31 +1074,31 @@ implementation code.
 
 [source,coffeescript]
 -----
-        describe "#pr", ->
-                secret = "ABCDEF"
-                robot = undefined
-                res = undefined
-                
-                beforeEach ->
-                        robot = {
-                                messageRoom: jasmine.createSpy( 'messageRoom' )
-                                }
-                        res = { send: jasmine.createSpy( 'send' ) }
-                        Handler.setSecret secret
-                
-                it "should disallow calls without the secret", (done) ->
-                        req = {}
-                        Handler.prHandler( robot, req, res )
-                        expect( robot.messageRoom ).not.toHaveBeenCalled()
-                        expect( res.send ).toHaveBeenCalled()
-                        done()
+describe "#pr", ->
+        secret = "ABCDEF"
+        robot = undefined
+        res = undefined
+        
+        beforeEach ->
+                robot = {
+                        messageRoom: jasmine.createSpy( 'messageRoom' )
+                        }
+                res = { send: jasmine.createSpy( 'send' ) }
+                Handler.setSecret secret
+        
+        it "should disallow calls without the secret", (done) ->
+                req = {}
+                Handler.prHandler( robot, req, res )
+                expect( robot.messageRoom ).not.toHaveBeenCalled()
+                expect( res.send ).toHaveBeenCalled()
+                done()
 
-                it "should allow calls with the secret", (done) ->
-                        req = { body: { secret: secret } }
-                        Handler.prHandler( robot, req, res )
-                        expect( robot.messageRoom ).toHaveBeenCalled()
-                        expect( res.send ).toHaveBeenCalled()
-                        done()
+        it "should allow calls with the secret", (done) ->
+                req = { body: { secret: secret } }
+                Handler.prHandler( robot, req, res )
+                expect( robot.messageRoom ).toHaveBeenCalled()
+                expect( res.send ).toHaveBeenCalled()
+                done()
 
 
 
@@ -1225,12 +1235,15 @@ sendPrRequest = ( robot, body, room, url ) ->
         robot.messageRoom room, "#{user}: Hey, want a PR? #{url}"
 
 exports.prHandler = ( robot, req, res ) ->
+        slack_users_url =
+                "https://slack.com/api/users.list?token=" +
+                process.env.HUBOT_SLACK_TOKEN
         secret = req.body?.secret
         url = req.body?.url
 
         if secret == _SECRET and url
                 room = "general"
-                robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
+                robot.http( slack_users_url )
                         .get() (err, response, body) ->
                                 sendPrRequest( robot, body, room, url ) unless err
         else
@@ -1278,44 +1291,44 @@ parse the JSON for members, and then issue the PR request.
 
 [source,coffeescript]
 -----
-                json = '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }'
+json = '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }'
 
-                httpSpy = jasmine.createSpy( 'http' ).and.returnValue(
-                        { get: () -> ( func ) ->
-                                func( undefined, undefined, json ) } )
-                
-                beforeEach ->
-                        robot = {
-                                messageRoom: jasmine.createSpy( 'messageRoom' )
-                                http: httpSpy
-                                }
-                                
-                        res = { send: jasmine.createSpy( 'send' ) }
-                        Handler.setSecret secret
-                
-                it "should disallow calls without the secret", (done) ->
-                        req = {}
-                        Handler.prHandler( robot, req, res )
-                        expect( robot.messageRoom ).not.toHaveBeenCalled()
-                        expect( httpSpy ).not.toHaveBeenCalled()
-                        expect( res.send ).toHaveBeenCalled()
-                        done()
+httpSpy = jasmine.createSpy( 'http' ).and.returnValue(
+        { get: () -> ( func ) ->
+                func( undefined, undefined, json ) } )
 
-                it "should disallow calls without the url", (done) ->
-                        req = { body: { secret: secret } }
-                        Handler.prHandler( robot, req, res )
-                        expect( robot.messageRoom ).not.toHaveBeenCalled()
-                        expect( httpSpy ).not.toHaveBeenCalled()
-                        expect( res.send ).toHaveBeenCalled()
-                        done()
-                        
-                it "should allow calls with the secret", (done) ->
-                        req = { body: { secret: secret, url: "http://pr/1" } }
-                        Handler.prHandler( robot, req, res )
-                        expect( robot.messageRoom ).toHaveBeenCalled()
-                        expect( httpSpy ).toHaveBeenCalled()
-                        expect( res.send ).toHaveBeenCalled()
-                        done()
+beforeEach ->
+        robot = {
+                messageRoom: jasmine.createSpy( 'messageRoom' )
+                http: httpSpy
+                }
+                
+        res = { send: jasmine.createSpy( 'send' ) }
+        Handler.setSecret secret
+
+it "should disallow calls without the secret", (done) ->
+        req = {}
+        Handler.prHandler( robot, req, res )
+        expect( robot.messageRoom ).not.toHaveBeenCalled()
+        expect( httpSpy ).not.toHaveBeenCalled()
+        expect( res.send ).toHaveBeenCalled()
+        done()
+
+it "should disallow calls without the url", (done) ->
+        req = { body: { secret: secret } }
+        Handler.prHandler( robot, req, res )
+        expect( robot.messageRoom ).not.toHaveBeenCalled()
+        expect( httpSpy ).not.toHaveBeenCalled()
+        expect( res.send ).toHaveBeenCalled()
+        done()
+        
+it "should allow calls with the secret", (done) ->
+        req = { body: { secret: secret, url: "http://pr/1" } }
+        Handler.prHandler( robot, req, res )
+        expect( robot.messageRoom ).toHaveBeenCalled()
+        expect( httpSpy ).toHaveBeenCalled()
+        expect( res.send ).toHaveBeenCalled()
+        done()
 
 
 
@@ -1340,12 +1353,15 @@ good place to add this functionality and make sure other pieces still work.
 [source,coffeescript]
 -----
 exports.prHandler = ( robot, req, res ) ->
+        slack_users_url =
+                "https://slack.com/api/users.list?token=" +
+                process.env.HUBOT_SLACK_TOKEN
         secret = req.body?.secret
         url = req.body?.url
 
         if secret == _SECRET and url
                 room = "general"
-                robot.http( "https://slack.com/api/users.list?token=#{process.env.HUBOT_SLACK_TOKEN}" )
+                robot.http( slack_users_url ) ->
                         .get() (err, response, body) ->
                                 sendPrRequest( robot, body, room, url ) unless err
         else
@@ -1439,10 +1455,10 @@ that when the user calls `robot.brain.users` so add a new spy as the
 [source,coffeescript]
 -----
 ...
-                users = { CDAWSON: { name: "Chris Dawson" }, BSTRAUB: { name: "Ben Straub" } }
-                brainSpy = {
-                        users: jasmine.createSpy( 'getUsers' ).and.returnValue( users ),
-                        set: jasmine.createSpy( 'setBrain' ),
+users = { CDAWSON: { name: "Chris Dawson" }, BSTRAUB: { name: "Ben Straub" } }
+brainSpy = {
+        users: jasmine.createSpy( 'getUsers' ).and.returnValue( users ),
+        set: jasmine.createSpy( 'setBrain' ),
 ...
 -----
 
@@ -1528,22 +1544,22 @@ Our tests are simple, and require that we send in JSON.
 [source,coffeescript]
 -----
 ...
-                it "should disallow calls without the secret and url", (done) ->
-                        req = {}
-                        Handler.prHandler( robot, req, res )
-                        expect( robot.messageRoom ).not.toHaveBeenCalled()
-                        expect( httpSpy ).not.toHaveBeenCalled()
-                        expect( res.send ).toHaveBeenCalled()
-                        done()
+it "should disallow calls without the secret and url", (done) ->
+        req = {}
+        Handler.prHandler( robot, req, res )
+        expect( robot.messageRoom ).not.toHaveBeenCalled()
+        expect( httpSpy ).not.toHaveBeenCalled()
+        expect( res.send ).toHaveBeenCalled()
+        done()
 
-                it "should allow calls with the secret and url", (done) ->
-                        req = { body: '{ "pull_request" : { "html_url" : "http://pr/1" },
-                        "secret": "ABCDEF" }' }
-                        Handler.prHandler( robot, req, res )
-                        expect( robot.messageRoom ).toHaveBeenCalled()
-                        expect( httpSpy ).toHaveBeenCalled()
-                        expect( res.send ).toHaveBeenCalled()
-                        done()
+it "should allow calls with the secret and url", (done) ->
+        req = { body: '{ "pull_request" : { "html_url" : "http://pr/1" },
+        "secret": "ABCDEF" }' }
+        Handler.prHandler( robot, req, res )
+        expect( robot.messageRoom ).toHaveBeenCalled()
+        expect( httpSpy ).toHaveBeenCalled()
+        expect( res.send ).toHaveBeenCalled()
+        done()
 
 
 
@@ -1555,8 +1571,6 @@ webhook, but this is an easy way to provide it to our handler for the
 moment. If we run our tests, they should pass now.
 
 ===== Securing the Webhook
-
-DOH, MAKE SURE THE SECRET IS NOT STORED INSIDE THE FILE. USE PROCESS.ENV
 
 Our Probot is now in a position where it will operate correctly if the
 secret passes validation and the webhook data is passed properly. Now
@@ -1574,11 +1588,17 @@ GitHub and not an attacker.
 ...
 
 getSecureHash = (body, secret) ->
-        hash = crypto.createHmac( 'sha1', secret ).update( "sha1=" + body ).digest('hex')
+        hash = crypto.
+                createHmac( 'sha1', secret ).
+                update( "sha1=" + body ).
+                digest('hex')
         console.log "Hash: #{hash}"
         hash
 
 exports.prHandler = ( robot, req, res ) ->
+        slack_users_url =
+                "https://slack.com/api/users.list?token=" +
+                process.env.HUBOT_SLACK_TOKEN
         body = req.body
         pr = JSON.parse body if body
         url = pr.pull_request.html_url if pr
@@ -1588,8 +1608,12 @@ exports.prHandler = ( robot, req, res ) ->
 
         if secureCompare( secureHash, webhookProvidedHash ) and url
                 room = "general"
+                robot.http( slack_users_url ) ->
+                        .get() (err, response, body) ->
+                                sendPrRequest( robot, body, room, url ) unless err
+        else
 ...
------
+	-----
 
 HMAC cryptography is vulnerable to timing attacks. When you use this
 encryption technique, the time it takes to complete a comparison of
@@ -1606,21 +1630,21 @@ Now we can adjust our tests to fit the new reality of our handler.
 [source,coffeescript]
 -----
 ...
-                it "should disallow calls without the secret and url", (done) ->
-                        req = {}
-                        Handler.prHandler( robot, req, res )
-                        expect( robot.messageRoom ).not.toHaveBeenCalled()
-                        expect( httpSpy ).not.toHaveBeenCalled()
-                        expect( res.send ).toHaveBeenCalled()
-                        done()
+it "should disallow calls without the secret and url", (done) ->
+        req = {}
+        Handler.prHandler( robot, req, res )
+        expect( robot.messageRoom ).not.toHaveBeenCalled()
+        expect( httpSpy ).not.toHaveBeenCalled()
+        expect( res.send ).toHaveBeenCalled()
+        done()
 
-                it "should allow calls with the secret and url", (done) ->
-                        req = { body: '{ "pull_request" : { "html_url" : "http://pr/1" }}', headers: { "HTTP_X_HUB_SIGNATURE" : "cd970490d83c01b678fa9af55f3c7854b5d22918" } }
-                        Handler.prHandler( robot, req, res )
-                        expect( robot.messageRoom ).toHaveBeenCalled()
-                        expect( httpSpy ).toHaveBeenCalled()
-                        expect( res.send ).toHaveBeenCalled()
-                        done()
+it "should allow calls with the secret and url", (done) ->
+        req = { body: '{ "pull_request" : { "html_url" : "http://pr/1" }}', headers: { "HTTP_X_HUB_SIGNATURE" : "cd970490d83c01b678fa9af55f3c7854b5d22918" } }
+        Handler.prHandler( robot, req, res )
+        expect( robot.messageRoom ).toHaveBeenCalled()
+        expect( httpSpy ).toHaveBeenCalled()
+        expect( res.send ).toHaveBeenCalled()
+        done()
 
 
 
@@ -1725,18 +1749,18 @@ the raw body which we can use when verifying the HMAC signature.
 [source,coffeescript]
 --------------
 ...
-    app.use (req, res, next) =>
-      res.setHeader "X-Powered-By", "hubot/#{@name}"
-      next()
+app.use (req, res, next) =>
+  res.setHeader "X-Powered-By", "hubot/#{@name}"
+  next()
 
-    app.use (req, res, next) =>
-      req.rawBody = ''
-      req.on 'data', (chunk) ->
-        req.rawBody += chunk
-      next()
+app.use (req, res, next) =>
+  req.rawBody = ''
+  req.on 'data', (chunk) ->
+    req.rawBody += chunk
+  next()
 
-    app.use express.basicAuth user, pass if user and pass
-    app.use express.query()
+app.use express.basicAuth user, pass if user and pass
+app.use express.query()
 
 ...
 --------------
@@ -1759,17 +1783,17 @@ from GitHub.
 [source,coffeescript]
 --------------
 ...
-                it "should allow calls with the secret and url", (done) ->
-                        payload =  '{ "pull_request" : { "html_url" : "http://pr/1" } }'
-                        bodyPayload = "payload=#{encodeURIComponent(payload)}"
-                        req = { rawBody: bodyPayload,
-                        headers: { "x-hub-signature" : "sha1=dc827de09c5b57da3ee54dcfc8c5d09a3d3e6109" } }
+it "should allow calls with the secret and url", (done) ->
+        payload =  '{ "pull_request" : { "html_url" : "http://pr/1" } }'
+        bodyPayload = "payload=#{encodeURIComponent(payload)}"
+        req = { rawBody: bodyPayload,
+        headers: { "x-hub-signature" : "sha1=dc827de09c5b57da3ee54dcfc8c5d09a3d3e6109" } }
 
-                        Handler.prHandler( robot, req, res )
-                        expect( robot.messageRoom ).toHaveBeenCalled()
-                        expect( httpSpy ).toHaveBeenCalled()
-                        expect( res.send ).toHaveBeenCalled()
-                        done()
+        Handler.prHandler( robot, req, res )
+        expect( robot.messageRoom ).toHaveBeenCalled()
+        expect( httpSpy ).toHaveBeenCalled()
+        expect( res.send ).toHaveBeenCalled()
+        done()
 ...
 --------------
 
@@ -1957,46 +1981,46 @@ happens using the reply method on our response object.
 [source,coffeescript]
 -------------
 ...
-                describe "#response", ->
-                        createComment = jasmine.createSpy( 'createComment' ).and.
-                                callFake( ( msg, cb ) -> cb( false, "some data" ) )
-                        issues = { createComment: createComment }
-                        authenticate = jasmine.createSpy( 'ghAuthenticate' )
-                        responder = { reply: jasmine.createSpy( 'reply' ),
-                        send: jasmine.createSpy( 'send' ) }
+describe "#response", ->
+        createComment = jasmine.createSpy( 'createComment' ).and.
+                callFake( ( msg, cb ) -> cb( false, "some data" ) )
+        issues = { createComment: createComment }
+        authenticate = jasmine.createSpy( 'ghAuthenticate' )
+        responder = { reply: jasmine.createSpy( 'reply' ),
+        send: jasmine.createSpy( 'send' ) }
 
-                        beforeEach ->
-                                githubBinding = { authenticate: authenticate, issues: issues }
-                                github = Handler.setApiToken( githubBinding, "ABCDEF" )
-                                req = { body: '{ "pull_request" : { "url" : "http://pr/1" }}', headers: { "HTTP_X_HUB_SIGNATURE" : "cd970490d83c01b678fa9af55f3c7854b5d22918" } }
-                                Handler.prHandler( robot, req, responder )
+        beforeEach ->
+                githubBinding = { authenticate: authenticate, issues: issues }
+                github = Handler.setApiToken( githubBinding, "ABCDEF" )
+                req = { body: '{ "pull_request" : { "url" : "http://pr/1" }}', headers: { "HTTP_X_HUB_SIGNATURE" : "cd970490d83c01b678fa9af55f3c7854b5d22918" } }
+                Handler.prHandler( robot, req, responder )
 
-                        it "should tag the PR on GitHub if the user accepts", (done) ->
-                                Handler.accept( responder )
-                                expect( authenticate ).toHaveBeenCalled()
-                                expect( createComment ).toHaveBeenCalled() 
-                                expect( responder.reply ).toHaveBeenCalled()
-                                done()
+        it "should tag the PR on GitHub if the user accepts", (done) ->
+                Handler.accept( responder )
+                expect( authenticate ).toHaveBeenCalled()
+                expect( createComment ).toHaveBeenCalled() 
+                expect( responder.reply ).toHaveBeenCalled()
+                done()
 
-                        it "should not tag the PR on GitHub if the user declines", (done) ->
-                                Handler.decline( responder )
-                                expect( authenticate ).toHaveBeenCalled()
-                                expect( createComment ).not.toHaveBeenCalledWith()
-                                expect( responder.reply ).toHaveBeenCalled()
-                                done()
+        it "should not tag the PR on GitHub if the user declines", (done) ->
+                Handler.decline( responder )
+                expect( authenticate ).toHaveBeenCalled()
+                expect( createComment ).not.toHaveBeenCalledWith()
+                expect( responder.reply ).toHaveBeenCalled()
+                done()
 
-                        it "should decode the URL into a proper message object for the createMessage call", (done) ->
-                                url = "https://github.com/xrd/testing_repository/pull/1"
-                                msg = Handler.decodePullRequest( url )
-                                expect( msg.user ).toEqual( "xrd" )
-                                expect( msg.repository ).toEqual( "testing_repository" )
-                                expect( msg.number ).toEqual( "1" )
-                                done()
-                                
-                        it "should get the username from the response object", (done) ->
-                                res = { username: { name: "Chris Dawson" } }
-                                expect( Handler.getUsernameFromResponse( res ) ).toEqual "Chris Dawson"
-                                done()
+        it "should decode the URL into a proper message object for the createMessage call", (done) ->
+                url = "https://github.com/xrd/testing_repository/pull/1"
+                msg = Handler.decodePullRequest( url )
+                expect( msg.user ).toEqual( "xrd" )
+                expect( msg.repository ).toEqual( "testing_repository" )
+                expect( msg.number ).toEqual( "1" )
+                done()
+                
+        it "should get the username from the response object", (done) ->
+                res = { username: { name: "Chris Dawson" } }
+                expect( Handler.getUsernameFromResponse( res ) ).toEqual "Chris Dawson"
+                done()
 
 
 
@@ -2095,6 +2119,9 @@ module.exports = (robot) ->
 
 -------------
 
+Hopefully you will agree this is a very simple starting point for our
+extension, with the bulk of the work handled by our very testable handler.
+
 ===== Peering into the Response object
 
 We need to get the username and it stands to reason the object passed
@@ -2173,10 +2200,10 @@ look like this:
 [source,coffeescript]
 -------------
 ...
-                        it "should get the username from the response object", (done) ->
-                                res = { message: { user: { name: "Chris Dawson" } } }
-                                expect( Handler.getUsernameFromResponse( res ) ).toEqual "Chris Dawson"
-                                done()
+it "should get the username from the response object", (done) ->
+        res = { message: { user: { name: "Chris Dawson" } } }
+        expect( Handler.getUsernameFromResponse( res ) ).toEqual "Chris Dawson"
+        done()
 
 ...
 -------------
@@ -2248,21 +2275,21 @@ creating a new object for each test inside the test body.
 [source,coffeescript]
 -------------
 ...
-                        send: jasmine.createSpy( 'send' ),
-                        message: { user: { name: "Chris Dawson" } } }
-                        getCollaborator = jasmine.createSpy( 'getCollaborator' ).and.
-                                callFake( ( msg, cb ) -> cb( false, true ) )
-                        repos = { getCollaborator: getCollaborator }
+send: jasmine.createSpy( 'send' ),
+message: { user: { name: "Chris Dawson" } } }
+getCollaborator = jasmine.createSpy( 'getCollaborator' ).and.
+        callFake( ( msg, cb ) -> cb( false, true ) )
+repos = { getCollaborator: getCollaborator }
 
 ...
 
-                        it "should tag the PR on GitHub if the user accepts", (done) ->
-                                Handler.accept( robot, responder )
-                                expect( authenticate ).toHaveBeenCalled()
-                                expect( createComment ).toHaveBeenCalled() 
-                                expect( responder.reply ).toHaveBeenCalled()
-                                expect( repos.getCollaborator ).toHaveBeenCalled()
-                                done()
+it "should tag the PR on GitHub if the user accepts", (done) ->
+        Handler.accept( robot, responder )
+        expect( authenticate ).toHaveBeenCalled()
+        expect( createComment ).toHaveBeenCalled() 
+        expect( responder.reply ).toHaveBeenCalled()
+        expect( repos.getCollaborator ).toHaveBeenCalled()
+        done()
 
 
 -------------
@@ -2294,6 +2321,9 @@ exports.decline = ( res ) ->
         res.reply "No problem, we'll go through this PR in a bug scrub"
 ...
 -------------
+
+We now have a full implementation of both the `accept` and `decline`
+methods inside our Probot.
 
 ===== Sanitizing our source code
 
@@ -2354,7 +2384,7 @@ modify (and the drawbacks surrounding) modifying the source code to
 Hubot itself. There is a natural fit to Hubot and the GitHub API, and
 this chapter hopefully demonstrates how easy and fun it can be, and
 how you can powerfully amplify and streamline developer workflow
-inside a chat room dialog. 
+within a dialog happening between your vibrant developers and a helpful robot. 
 
 
 

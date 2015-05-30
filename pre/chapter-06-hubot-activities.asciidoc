@@ -411,6 +411,14 @@ where a function begins and ends given the indentation levels. Hubot
 is itself written in CoffeeScript and we'll write our extension in
 CoffeeScript as well. 
 
+[NOTE]
+CoffeeScript is a language where indentation is important. For
+readability purposes, when we display a snippet of code from a longer
+file, there are times where we have changed the indentation of that
+snippet and removed the initial indentation. If you were to copy the
+code without realignment, the snippet would not work until you
+re-indented it to fit the context into which it sits.
+
 The Hubot extension module format is exceedingly simple. You write
 JavaScript modules (using the `export` syntax) and Hubot passes you in
 a robot object which you program using several API methods. 
@@ -768,7 +776,9 @@ $ CONFIG=$(echo '{
     "secret" : "XYZABC"
   }
 }')
-$ curl -H "Authorization: token $TOKEN" -H "Content-Type: application/json" -X POST -d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/hooks
+$ curl -H "Authorization: token $TOKEN" \
+-H "Content-Type: application/json" -X POST \
+-d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/hooks
 {
   "url": "https://api.github.com/repos/xrd/testing_repostory/hooks/3846063",
   "test_url":
@@ -1147,7 +1157,7 @@ more characters to write out the explanation in English!
 
 [source,coffeescript]
 --------
-[language="json", sha="f331955:support/slacker-hubot/lib/handler.coffee"]
+[language="json", sha="b889a6b:support/slacker-hubot/lib/handler.coffee"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1213,7 +1223,7 @@ good place to add this functionality and make sure other pieces still work.
 
 [source,coffeescript]
 -----
-[language="json", sha="bf2141d:support/slacker-hubot/lib/handler.coffee", lines="15..26"]
+[language="json", sha="4be76bc:support/slacker-hubot/lib/handler.coffee", lines="15..29"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1393,8 +1403,6 @@ moment. If we run our tests, they should pass now.
 
 ===== Securing the Webhook
 
-DOH, MAKE SURE THE SECRET IS NOT STORED INSIDE THE FILE. USE PROCESS.ENV
-
 Our Probot is now in a position where it will operate correctly if the
 secret passes validation and the webhook data is passed properly. Now
 we need to secure the webhook. GitHub signs your data inside the
@@ -1409,12 +1417,12 @@ GitHub and not an attacker.
 [source,coffeescript]
 -----
 ...
-[language="coffeescript", sha="9df752a:support/slacker-hubot/lib/handler.coffee", lines="16..31"]
+[language="coffeescript", sha="2abde97:support/slacker-hubot/lib/handler.coffee", lines="16..41"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 ...
------
+	-----
 
 HMAC cryptography is vulnerable to timing attacks. When you use this
 encryption technique, the time it takes to complete a comparison of
@@ -1782,6 +1790,9 @@ To be replaced
 snippet~~~~~
 -------------
 
+Hopefully you will agree this is a very simple starting point for our
+extension, with the bulk of the work handled by our very testable handler.
+
 ===== Peering into the Response object
 
 We need to get the username and it stands to reason the object passed
@@ -1960,6 +1971,9 @@ snippet~~~~~
 ...
 -------------
 
+We now have a full implementation of both the `accept` and `decline`
+methods inside our Probot.
+
 ===== Sanitizing our source code
 
 It is typically bad form to save passwords (or other access
@@ -2019,7 +2033,7 @@ modify (and the drawbacks surrounding) modifying the source code to
 Hubot itself. There is a natural fit to Hubot and the GitHub API, and
 this chapter hopefully demonstrates how easy and fun it can be, and
 how you can powerfully amplify and streamline developer workflow
-inside a chat room dialog. 
+within a dialog happening between your vibrant developers and a helpful robot. 
 
 
 

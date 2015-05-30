@@ -1063,78 +1063,78 @@ Add these lines to the bottom of the file, but before the last closing braces.
 [source,javascript]
 -----
   ...
-    }
-    
-    $scope.geolocationError = function( error ) {
-        console.log( "Inside failure" );
-    };
+}
 
-    $scope.annotate = function( shop ) {
-        $scope.shopToAnnotate = shop;
+$scope.geolocationError = function( error ) {
+    console.log( "Inside failure" );
+};
 
-        $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
+$scope.annotate = function( shop ) {
+    $scope.shopToAnnotate = shop;
 
-            $scope.me = user;
-            $scope.username = user.username;
+    $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
 
-            $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
+        $scope.me = user;
+        $scope.username = user.username;
 
-            if( $scope.annotation ) {
-                gh = ghs.create( $scope.me.accessToken ); // <3>
-                toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
-                toFork.fork( function( err ) {
-                    if( !err ) {
-                        $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
-                        $timeout( $scope.annotateAfterForkCompletes, 10000 ); 
-                        $scope.$apply();
-                    }
-                } );
-            }
-            
-        } );
+        $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
 
-    };
-
-
-    $scope.annotateAfterForkCompletes = function() {
-        $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" ); 
-        $scope.forkedRepo.read( "gh-pages", "cities.json", function(err, data) { 
-            if( err ) {
-                $timeout( $scope.annotateAfterForkCompletes, 10000 );
-            }
-            else {
-                $scope.notifyWaiting( "annotating", "Annotating data on GitHub" );
-                // Write the new data into our repository
-                $scope.appendQuirkToShop();
-
-                function stripHashKey( key, value ) { if( key == "$$hashKey" ) { return undefined; } return value; } // <4>
-                var newData = JSON.stringify( $scope.shops, stripHashKey, 2 );
-                $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', newData, 'Added my quirky information', function(err) { // <5>
-                    if( !err ) {
-                        // Annotate our data using a pull request
-                        var pull = {
-                            title: "Adding quirky information to " + $scope.shopToAnnotate.name,
-                            body: "Created by :" + $scope.username,
-                            base: "gh-pages",
-                            head: $scope.username + ":" + "gh-pages"
-                        };
-                        target = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <6>
-                        target.createPullRequest( pull, function( err, pullRequest ) {
-                            if( !err ) { // <7>
-                                $scope.notifyWaiting( "annotated", "Successfully sent annotation request" );
-                                $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 );
-                                $scope.$apply();
-                            }
-                        } );
-                    }
+        if( $scope.annotation ) {
+            gh = ghs.create( $scope.me.accessToken ); // <3>
+            toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
+            toFork.fork( function( err ) {
+                if( !err ) {
+                    $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
+                    $timeout( $scope.annotateAfterForkCompletes, 10000 ); 
                     $scope.$apply();
-                });
-            }
-            $scope.$apply();
-        } );
+                }
+            } );
+        }
         
-        $scope.notifyWaiting( "annotated" );
-    };    
+    } );
+
+};
+
+
+$scope.annotateAfterForkCompletes = function() {
+    $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" ); 
+    $scope.forkedRepo.read( "gh-pages", "cities.json", function(err, data) { 
+        if( err ) {
+            $timeout( $scope.annotateAfterForkCompletes, 10000 );
+        }
+        else {
+            $scope.notifyWaiting( "annotating", "Annotating data on GitHub" );
+            // Write the new data into our repository
+            $scope.appendQuirkToShop();
+
+            function stripHashKey( key, value ) { if( key == "$$hashKey" ) { return undefined; } return value; } // <4>
+            var newData = JSON.stringify( $scope.shops, stripHashKey, 2 );
+            $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', newData, 'Added my quirky information', function(err) { // <5>
+                if( !err ) {
+                    // Annotate our data using a pull request
+                    var pull = {
+                        title: "Adding quirky information to " + $scope.shopToAnnotate.name,
+                        body: "Created by :" + $scope.username,
+                        base: "gh-pages",
+                        head: $scope.username + ":" + "gh-pages"
+                    };
+                    target = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <6>
+                    target.createPullRequest( pull, function( err, pullRequest ) {
+                        if( !err ) { // <7>
+                            $scope.notifyWaiting( "annotated", "Successfully sent annotation request" );
+                            $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 );
+                            $scope.$apply();
+                        }
+                    } );
+                }
+                $scope.$apply();
+            });
+        }
+        $scope.$apply();
+    } );
+    
+    $scope.notifyWaiting( "annotated" );
+};    
 
   ...
 -----
@@ -1587,44 +1587,44 @@ To test our code, we make the following changes to our
 
 [source,javascript]
 -----
-    beforeEach( module( "coffeetech" ) );
+beforeEach( module( "coffeetech" ) );
 
-    var mockFirebase = mockSimpleLogin = undefined;
-    function generateMockFirebaseSupport() { // <1>
-        mockFirebase = function() {};
-        mockSimpleLogin = function() {
-            return { 
-                '$login': function() {
-                    return { then: function( cb ) {
-                        cb( { name: "someUser",
-                              accessToken: "abcdefghi" } );
-                    } };
-                }
+var mockFirebase = mockSimpleLogin = undefined;
+function generateMockFirebaseSupport() { // <1>
+    mockFirebase = function() {};
+    mockSimpleLogin = function() {
+        return { 
+            '$login': function() {
+                return { then: function( cb ) {
+                    cb( { name: "someUser",
+                          accessToken: "abcdefghi" } );
+                } };
             }
-        };
-    }
+        }
+    };
+}
 
-    var $timeout;
-    beforeEach( inject( function ($controller, $rootScope, $injector ) {
-        generateMockRepositorySupport();
-        generateMockPrompt();
-        generateMockFirebaseSupport(); // <2>
-        $timeout = $injector.get( '$timeout' );
-        scope = $rootScope.$new();
-        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter, '$firebase': mockFirebase, '$firebaseSimpleLogin': mockSimpleLogin } ); // <3>
-    } ) );
+var $timeout;
+beforeEach( inject( function ($controller, $rootScope, $injector ) {
+    generateMockRepositorySupport();
+    generateMockPrompt();
+    generateMockFirebaseSupport(); // <2>
+    $timeout = $injector.get( '$timeout' );
+    scope = $rootScope.$new();
+    ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter, '$firebase': mockFirebase, '$firebaseSimpleLogin': mockSimpleLogin } ); // <3>
+} ) );
 
 
-    describe( "#annotate", function() {
-        it( "should annotate a shop", function() {
-            scope.auth = mockSimpleLogin( mockFirebase() ); // <4>
-            scope.city = PORTLAND
-            var shop = { name: "A coffeeshop" }
-            scope.annotate( shop );
-            expect( prompter.prompt.calls.length ).toEqual( 1 ); // <5>
-            expect( scope.shopToAnnotate ).toBeTruthy();
-            expect( scope.username ).not.toBeFalsy();
-            expect( scope.annotation ).not.toBeFalsy();
+describe( "#annotate", function() {
+    it( "should annotate a shop", function() {
+        scope.auth = mockSimpleLogin( mockFirebase() ); // <4>
+        scope.city = PORTLAND
+        var shop = { name: "A coffeeshop" }
+        scope.annotate( shop );
+        expect( prompter.prompt.calls.length ).toEqual( 1 ); // <5>
+        expect( scope.shopToAnnotate ).toBeTruthy();
+        expect( scope.username ).not.toBeFalsy();
+        expect( scope.annotation ).not.toBeFalsy();
 
 -----
 
@@ -1695,20 +1695,20 @@ from Firebase. But, surprisingly little else needs to change in our flow.
 [source,javascript]
 -----
 
-    $scope.annotate = function( shop ) {
-        $scope.shopToAnnotate = shop;
+$scope.annotate = function( shop ) {
+    $scope.shopToAnnotate = shop;
 
-        $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
+    $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
 
-            $scope.me = user;
-            $scope.username = user.name;
+        $scope.me = user;
+        $scope.username = user.name;
 
-            $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
+        $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
 
-            if( $scope.annotation ) {
-                gh = ghs.create( $scope.me.accessToken ); // <3>
-                toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
-                toFork.fork( function( err ) {
+        if( $scope.annotation ) {
+            gh = ghs.create( $scope.me.accessToken ); // <3>
+            toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
+            toFork.fork( function( err ) {
 -----
 
 <1> We call the `$login` method on our auth object created using the
