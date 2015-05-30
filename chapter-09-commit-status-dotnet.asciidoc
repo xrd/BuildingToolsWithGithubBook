@@ -105,8 +105,8 @@ If you find that your use case calls for different rules, you can always use the
 === Let's write an app
 
 How about a live example?
-In this chapter, we'll build a simple HTTP service that lets you read and write commit statuses for repositories you have access to.
-This system won't be super useful on its own, but if you ever have another service that needs to post commit statuses, you could hand it off to this one, or use this as a starting point for a service that does something interesting.
+In this chapter, we'll build a simple HTTP service that lets you create commit statuses for repositories you have access to, using the OAuth web flow for authorization.
+The system we'll build will be fairly limited in scope, but it's a great starting point for customizing to your specific needs.
 
 The language this time is C#, running on the CLR (Common Language Runtime).
 At one point in the history of computing this wouldn't have been a good choice for a book like this, since it was only available on Windows, and the language and libraries were fairly limited.
@@ -238,11 +238,13 @@ namespace NancyApp
 <5> Nancy request handlers can simply return a text string, which will be marked as HTML for the viewing browser.
     Here we return a simple string with the user's real name and number of followers.
 
-[NOTE]
+[aside]
 ====
-The `await` keyword bears special mention.
-It was introduced in .NET 4.0, in 2012, and it lets you write asynchronous code as though it were synchronous.
-The above code will actually return a promise from the line that includes the `await` keyword, and the event loop will pick up the execution on the following line once the promise is fulfilled.
+The `async` and `await` keywords bear special mention.
+These comprise a syntactic nicety that encapsulates a series of functions that are running on an event loop.
+The code looks like it runs in order, but really when the `await` keyword is reached, the system starts an asynchronous request, and returns control back to the main event loop.
+Once the request has finished, and the promise is fulfilled, the event loop will then call back into the code that's expecting the return value of the `await` keyword, with all the scope variables intact.
+This feature was introduced in .NET 4.0 (which was released in 2012), and it lets you write asynchronous code almost as though it were synchronous.
 This is but one of the features that make C# the favorite of many developers.
 ====
 
@@ -334,12 +336,12 @@ After that, we'll need a helper method that kicks off the process:
 <1> CSRF stands for "cross-site request forgery."
     This is a mechanism by which we can be sure the OAuth request process really did originate from our site.
     The GitHub OAuth API will pass this value back to us when the user authorizes access, so we store it in the cookie for later reference.
-<2> This is a UX feature; once the OAuth process has completed, we want to send the user back to what they were _trying_ to do in the first place.
+<2> Storing the original URL in the session cookie is a UX feature; once the OAuth process has completed, we want to send the user back to what they were _trying_ to do in the first place.
 <3> This is the permission set we're asking for.
-    Note that we're also including our CSRF token; this is so GitHub can give it back to us later.
+    Note that we're also including our CSRF token; this is so GitHub can give it back to us later for verification.
 <4> Here we use Octokit to generate the redirect URL, and send the user's browser there.
 
-This is a method that can be called from any route handler in our module, if it's discovered that the token is missing or invalid.
+`RedirectToOAuth` is a method that can be called from any route handler in our module, if it's discovered that the token is missing or invalid.
 We'll see how it's called a bit later, but for now let's follow the rest of the OAuth process.
 
 In our GitHub application settings (check https://github.com/settings/developers[] for a list of your applications), we specify an authorization URL.
@@ -439,8 +441,8 @@ We're going to add this snippet to our Nancy module constructor:
     Nancy will set the content-type for responses to HTML by default, so the user will get a nice clickable link.
 
 That's it!
-If you've typed all this into a project of your own, you should be able to run it under the debugger and create commit statuses for your projects.
-We noted this a bit earlier, but it bears repeating: this particular example is usable with a browser, since it responds to GET requests, but for a real service like this you'd probably want creation of statuses to use a POST request.
+If you've typed all this into a project of your own, you should be able to run it under the debugger, or host it in an ASP.NET server, and create commit statuses for your projects by opening URLs in your browser.
+We noted this a bit earlier, but it bears repeating: this particular example responds to GET requests for ease of testing, but for a real service like this you'd probably want creation of statuses to use a POST request.
 
 === Summary
 
