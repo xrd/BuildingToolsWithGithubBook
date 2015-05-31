@@ -1,11 +1,6 @@
 [[preface]]
 == Preface
 
-* Git, What is it?
-
-
-* Github, What is it?
-
 GitHub 
 
 * Chris' introduction
@@ -14,53 +9,102 @@ GitHub
 
 * Audience for this book
 
+=== Introduction
+
+In Oxford, England, The Eagle and Child simmered with creativity in
+the 1930s as JRR Tolkien and CS Lewis philosophized and created their
+fantasy worlds. Heian court life in 11th century Kyoto, Japan cradled
+Murasaki Shibu and produced The Tale of Genji, Japan's greatest novel.
+In the 7th century during the Umayyad Caliphate of modern day
+Damascus, Syria, glittering Arabic palaces provided fertile ground for
+the creation of a new form of poetry, the ghazal ("love poems") the
+influence of which still courses through modern Arabic poetry. 
+
+Each era of major creative innovation has been backdropped by a unique
+and plumb space where collaboration and creativity flourished. Today,
+the collaborative space where some of the world's greatest artists
+(artists who also happen to be software developers) have gathered is a
+virtual town square, a site called GitHub. 
+
+=== Who You Are
+
 This book should be an interesting source of information for people
 who have used Git or GitHub and want to "level-up" their skills
 related to these technologies. People without any experience using
 GitHub or Git should start with an introductory book on these
 technologies. 
 
-Much of the book focuses on the technical capabilities exposed by
-GitHub and the powerful GitHub API. Perhaps you feel
-constrained by using Git only from within a certain toolset; for
-example, if you are an Eclipse developer accidentally using Git to
-manage your Android source code and want to unlock Git in other places
-in your life as a developer, this book provides a wider vista to learn
-about the power of Git and GitHub. If you have fallen into using Git
-for your own projects and are now interested in using Git within a
-larger community, this book can teach you all about "social coding."
-This book provides a stepping stone for software developers who have
-used other distributed version control systems and are looking for a
-bridge to using their skills with Git and within a web service like
-GitHub. Like any seasoned developer, automation of your tools is
-important to you, and this book provides recipes for taking mundane
-tasks and converting them into automated services, and we show how to
-do this using a variety of languages talking to the GitHub API. This
-book provides a concise and directed approach to learning about the
-various features and tools offered by GitHub. 
+You should have a good familiarity with at least one imperative modern
+programming language. You don't need to be an expert programmer to
+read this book, but having some programming experience and familiarity
+with at least one language is essential. 
 
-And, the bigger opportunity for readers of this book is to find a way
-to transform your coding experience using the "GitHub way." GitHub is
-phenomenom in the startup world, bootstrapping itself to 1.7M users
-before taking any investment, and this success came about in part from
-their distinct and vibrant culture. "GitHubbers" eat their own dog
-food by using the same tools they offer to their customers. These
-tools, like "pull requests" and "issues," stand in stark contrast and
-often replace tools other companies rely upon, like email. If you
-absorb not only the technical facets of using GitHub but also pay
-attention to the cultural and ideological changes offered behind the
-tools, you'll very likely see a new way of working in the modern
-age. We focus on these "meta" viewpoints as we discuss the tools
-themselves to help you see these extra opportunities. 
+=== What You Will Learn
+
+Much of the book focuses on the technical capabilities exposed by
+GitHub and the powerful GitHub API. Perhaps you feel constrained by
+using Git only from within a certain toolset; for example, if you are
+an Eclipse developer accidentally using Git to manage your Android
+source code and want to unlock Git in other places in your life as a
+developer, this book provides a wider vista to learn about the power
+of Git and GitHub. If you have fallen into using Git for your own
+projects and are now interested in using Git within a larger
+community, this book can teach you all about "social coding." This
+book provides a stepping stone for software developers who have used
+other distributed version control systems and are looking for a bridge
+to using their skills with Git and within a web service like GitHub.  
+
+Like any seasoned developer, automation of your tools is important to
+you, and this book provides examples of mundane tasks that we then
+convert them into automated tools, and we show how to do this using a
+variety of languages talking to the GitHub API.  
 
 If you are unfamiliar with the "command line" this book will give you
 a firm understanding of how to use it, and we bet you will find great
 power there. To make this book accessible to everyone, regardless of
 their editor or operating system, many of the programming samples work
-within the command line. And, almost every chapter has an associated
-repository hosted on GitHub where you can review the code
-discussed. Fork away and take these samples into your own projects and
-tools!
+within the command line.  
+
+If you absorb not only the technical facets of using GitHub but also
+pay attention to the cultural and ideological changes offered behind
+the tools, you'll very likely see a new way of working in the modern
+age. We focus on these "meta" viewpoints as we discuss the tools
+themselves to help you see these extra opportunities. 
+
+Almost every chapter has an associated repository hosted on GitHub
+where you can review the code discussed. Fork away and take these
+samples into your own projects and tools! 
+
+Finally, we help you write testable API backed code. You will find
+ways to embrace the "wabi sabi" of your code: nothing lasts, nothing
+is finished and nothing is perfect, especially when using APIs. APIs
+will change, APIs must change and your code must adapt quickly to this
+reality. Though many developers pretend otherwise, memory is
+unrealiable, and your code must be zen: you should be able to come
+back to a piece of code a thousand years later and know whether it
+works or not without remembering details the implementation. The only way
+to have this surety is to write tests that prove success or
+failure. Traditionally writing tests is challenging, and especially
+when you are testing something backed by an API.  To help you get past
+this roadblock, whenever possible, this book shows you how to write
+code which is testable and interacts with the GitHub API. 
+
+=== Who This Book is Not For
+
+If you are looking for a discussion of the GitHub API that focuses on
+a single language, you will be disappointed to find that we look at
+the API through many different languages. We do this to describe the
+API from not only the way the GitHub team designed it to work, but the
+aspirational way that client library authors made it work within
+diverse programming languages and communities. We think there is a lot
+to learn from this approach, but if you are interested in only a
+specific language and how it works with the GitHub API, this is not
+the book for you. 
+
+
+===== Test Driven
+
+
 
 * Font Conventions
 
