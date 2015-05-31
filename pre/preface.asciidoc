@@ -11,20 +11,20 @@ GitHub
 
 === Introduction
 
-In Oxford, England, The Eagle and Child simmered with creativity in
-the 1930s as JRR Tolkien and CS Lewis philosophized and created their
-fantasy worlds. Heian court life in 11th century Kyoto, Japan cradled
+In the 1930s, The Eagle and Child, a pub in Oxford, England simmered
+with creativity as JRR Tolkien and CS Lewis philosophized and created
+their fantasy worlds. Heian court life in 11th century Kyoto, Japan cradled
 Murasaki Shibu and produced The Tale of Genji, Japan's greatest novel.
 In the 7th century during the Umayyad Caliphate of modern day
-Damascus, Syria, glittering Arabic palaces provided fertile ground for
+Damascus, Syria, Arabic palaces provided fertile ground for
 the creation of a new form of poetry, the ghazal ("love poems") the
 influence of which still courses through modern Arabic poetry. 
 
 Each era of major creative innovation has been backdropped by a unique
 and plumb space where collaboration and creativity flourished. Today,
-the collaborative space where some of the world's greatest artists
-(artists who also happen to be software developers) have gathered is a
-virtual town square, a site called GitHub. 
+the collaborative gathering space for some of the world's greatest artists
+(artists who work as software developers) is a virtual town square, a
+site called GitHub. 
 
 === Who You Are
 
@@ -100,11 +100,6 @@ diverse programming languages and communities. We think there is a lot
 to learn from this approach, but if you are interested in only a
 specific language and how it works with the GitHub API, this is not
 the book for you. 
-
-
-===== Test Driven
-
-
 
 * Font Conventions
 
