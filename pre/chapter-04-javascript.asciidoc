@@ -30,7 +30,6 @@ the functionality works as we expect.
 
 ==== Building our coffee shop database
 
-
 In many of the software development shops where I have worked in Portland, there is
 an almost disturbing obsession with coffee. I suffer from
 the same malady, and it means I will drag my poor wife and infant son
