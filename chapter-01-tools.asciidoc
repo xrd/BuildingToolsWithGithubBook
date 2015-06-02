@@ -7,39 +7,44 @@ for any given language). This book will take you on an
 exploration of several different language clients for the GitHub API.
 Along the way, we'll point out the different idioms and methodologies
 inherent to those client libraries and shed light on the darker corners
-of the GitHub API. Each chapter is designed so that you can follow along without
-intimacy to the  language or toolkit. You will get the most value if
-you install the language and associated tools, but the story behind the
-projects we will build will be interesting even if you don't actually
+of the GitHub API. Don't be alarmed if you thumb through the chapters
+and see a language which you don't know at all: each chapter is
+designed so that you can follow along without intimacy to the
+language or toolkit. You will get the most value if you install the
+language and associated tools, but the story behind the projects we
+will build will be interesting even if you don't actually 
 type a line of code from the chapter.
 
 There are two languages and one command line tool, however, which
-are so fundamentally linked to GitHub which you need to install and
+are so fundamentally linked to GitHub that you do need to install and
 use in order to get the most out of this book.
 
 * Ruby: a simple, readable programming language used heavily by the
   founders of GitHub.
 * NodeJS: the only ubiquitous browser side programming language, its
   importance has grown to new heights with the introduction of
-  NodeJS. 
+  NodeJS, rivaling even the popularity of Ruby on Rails as a server
+  side toolkit for web applications, especially for independent
+  developers. 
 * cURL: there are many tools that speak HTTP, but cURL is one of the
   best due to its elegant and useful command line interface that
   aligns with the minimalist interfaces of the best unix tools.
 
-If you spend a little time installing and familiarizing yourself with
-the concepts and practices inherent to these tools, you will have a
-solid toolset for exploration of the GitHub API.
+Your time will not be wasted if you install and play with these three
+tools. Between these three you will have a solid toolset to begin
+exploration of the GitHub API.
 
-Many of you picking up this book already have familiarity with Ruby
-or NodeJS. So, the basics and installation of them are in appendices
-in the back of the book. If you are new to Ruby or NodeJS, or want a
-quick refresh on either of them, please visit the appendices and then
-come back to this chapter. We don't spend any time discussing the
-syntax of these languages; we expect you have experience with other
-languages as a prerequisite and can read code from any imperative
-language regardless of the syntax. These explanatory appendices
-discuss the history of these tools within the GitHub story as well as
-important usage notes like special files and installation options.
+Undoubtedly, many of you picking up this book already have familiarity
+with Ruby or NodeJS. So, the basics and installation of them are in
+appendices in the back of the book. The appendices don't cover syntax
+of these languages; we expect you have experience with other languages
+as a prerequisite and can read code from any imperative language
+regardless of the syntax. Later chapters which do discuss a facet of
+the API go into language details at times, and the code is readable
+regardless of your familiarity with that particular language. These
+explanatory appendices discuss the history of these tools within the
+GitHub story as well as important usage notes like special files and
+installation options.
 
 === cURL: Simple Access to APIs
 
@@ -56,13 +61,13 @@ get access to the raw HTTP request headers and content. Or, where you
 might even question the implementation of a client library and need
 confirmation it is doing the right thing from another vantage
 point. These are all examples where cURL becomes extremely handy: cURL
-is the rawest vantage point you will have to the GitHub API without
-using a network traffic analysis tool. cURL, like the HTTP protocol
-which it speaks intimately, is stateless, meaning it is challenging
-to use cURL to hit a URL and then use the results with a secondary
-request. We will use cURL in a later chapter within a shell script
-that explores solutions to this problem, but note that cURL works best
-with one-off requests.
+gives you the most naked vantage point you will find for the GitHub
+API without using a network traffic analysis tool. cURL, like the HTTP
+protocol which it speaks intimately, is stateless, meaning it is
+challenging to use cURL to hit a URL and then use the results with a
+secondary request. We will use cURL in a later chapter within a shell
+script that explores solutions to this problem, but note that cURL
+works best with one-off requests.
 
 .Installing cURL
 [NOTE]
