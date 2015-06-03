@@ -702,8 +702,8 @@ $ curl https://api.github.com/authorizations --user $USERNAME --data
 '{"scopes":["repo"], "note": "Probot access to PRs" }' -X POST
 ```
 
-If you are using two-factor authentication (and you should [CALLOUT TO
-2-FACTOR AUTH]), then you will see a response message like this:
+If you are using two-factor authentication then you will see a
+response message like this:  
 
 ```
 {
