@@ -51,18 +51,113 @@ HomeBrew project (http://brew.sh/) or MacPorts project
 operating system, you best bet is to download cURL from the cURL web
 site here: http://curl.haxx.se/download.html 
 
-=== GitHub Has Amazing API Documentation
+Our first cURL request looks like this:
 
-It is tempting to write extensively about the API when used from a
-tool like curl. But, the GitHub team has already done this: their API
-overview includes examples of curl with almost every facet of the
-overview. Bookmark this URL: https://developer.github.com/v3/
-You'll use it often. Do note that this URL is tied, obviously, to the
-current API "Version 3", so this URL will change when a new version is
-released. 
+[source,bash]
+-----
+$ curl https://api.github.com
+{
+  "current_user_url": "https://api.github.com/user",
+  "current_user_authorizations_html_url":
+  "https://github.com/settings/connections/applications{/client_id}",
+  "authorizations_url": "https://api.github.com/authorizations",
+  "code_search_url":
+  "https://api.github.com/search/code?q={query}{&page,per_page,sort,order}",
+  "emails_url": "https://api.github.com/user/emails",
+  "emojis_url": "https://api.github.com/emojis",
+  ...
+}
+-----
 
-Between this chapter and that URL you will have a good baseline for
-how the API works. 
+We've abbreviated the response to make it more readable. A few salient
+things to notice: the response is JSON by default, there are a lot of
+URLs pointing to secondary information, and parameters are included in
+the URLs. 
+
+=== The GitHub API is self describing
+
+The GitHub API is a hypermedia API. Though discussion of what
+hypermedia is deserves an entire book on its own (Check out O'Reilly's
+"Hypermedia APIs with HTML5 and Node"), you can absorb much of it by
+just looking at a response. First, you can see from the API response
+above that by making a request to the API, you actually get back a map
+of how you should make additional responses. Not all clients use this
+information, of course, but one goal behind Hypermedia APIs is that
+clients can dynamically adjust their endpoints without recoding the
+client code. In other words, the API should be able to adjust its map,
+and then clients will adjust themselves, but you as the application
+developer using the client libraries will not need to understand or
+even be aware of the changes. If this sounds worriesome, don't fret
+too much: GitHub is very dilligent about maintaining and supporting
+their API in a way that most companies could emulate. But, you should
+know that you can rely on having a API reference inside the API itself,
+rather than inside documentation which could or could not be
+updated. 
+
+This map includes not just URLs, but also information about how to
+provide parameters to the URLs. For example, the `code_search_url` key
+references a URL which obviously allows you to search within code on
+GitHub, but also tells you how to structure the parameters passed to
+this URL. If you have an intelligent client who can follow this simple
+format, you could dynamically generate the query without involving a
+developer who can read API documentation. At least that is the dream
+that Hypermedia points us to; if you are skeptical, at least know that
+APIs such as GitHub encode documentation into themselves, and you can
+bet GitHub has test coverage to prove that this documentation matches
+the information delivered by the API endpoints. That's a strong
+guarantee that is sadly missing from many other APIs.
+
+=== JSON
+
+JSON is a "lightweight data interchange format" (according to the
+JSON.org website). There are other competing and effective formats,
+such as XML or YAML, but JSON is quickly becoming the defacto 
+standard for web services.
+
+A few of the reasons why JSON is so popular:
+
+* JSON is readable: JSON has a nice balance of human readability when
+  compared to serialization formats like XML.
+* JSON can be used within JavaScript with very little modification
+  (and cognitive processing on the part of the programmer). A data
+  format which works equally well on both the client and server side
+  was bound to be victorious, as JSON has been.
+
+==== Parsing JSON from the Command Line
+
+JSON is a text format, so you could use any command line text processing tool, such
+as AWK, to process JSON responses. However, there is a fantastic JSON
+specific parsing tool which complements cURL that is worth knowing:
+jq. For example, in the prior example, to retrieve the text from the rate
+limit request:
+
+[source,bash]
+------
+$ curl -u xrd https://api.github.com/rate_limit | jq '.rate.remaining'
+4995
+------
+
+What just happened? The `jq` tool parsed the JSON, and using the
+`.rate.remaining` filter, it retrieved content from the JSON
+response. If you look at the response again, you'll notice it has
+key/value pairs inside an associative array which has a single key:
+`rate`. The filter we provided pulls out the information keyed by
+`rate` and then find the key value pair keyed by `remaining` and then
+prints the result. 
+
+.Installing jq
+[NOTE]
+jq can be installed from source, using package managers like `brew` or
+`apt-get`, and there are binaries on the downloads page. 
+
+Jq is a powerful tool for quickly retrieving content from an arbitray
+JSON request. 
+
+=== Debugging Switches for cURL
+
+`-v` : print all request and response information.
+
+`-i` : print just header information
 
 === Authentication
 
@@ -73,10 +168,11 @@ API: username and passwords, and oAuth tokens.
 
 You can access protected content inside GitHub using a username and
 password combination. Username authentication works by using the HTTP
-basic authentication supported by the `-u` flag in curl.
+basic authentication supported by the `-u` flag in curl. HTTP Basic
+Authentication is synonymous with username and password authentication.
 
 ----
-$ curl -i -u xrd https://api.github.com/rate_limit
+$ curl -u xrd https://api.github.com/rate_limit
 Enter host password for user 'xrd': xxxxxxxx
 {
   "rate": {
@@ -99,7 +195,7 @@ as this is a core feature of the HTTP standard, so if you use any
 standard HTTP library when building your own client, you will be able
 to access content inside the GitHub API.
 
-===== Downsides
+===== Downsides to Username Authentication
 
 There are many reasons why username and password authentication is the
 wrong way to manage your GitHub API access. 
@@ -134,21 +230,48 @@ Internet of Things toaster. And, importantly, you can revoke tokens
 without impacting other tokens. 
 
 The main downside to oAuth tokens is that they introduce a level of
-complexity that you may not be familiar with if you have only used 
+complexity that you may not be familiar with if you have only used
+HTTP basic which generally only requires an extra header to the HTTP
+request, or an extra flag to a client tool like cURL.
+
+oAuth solves the problems described above by linking tokens to scopes
+(specified subsets of functionality inside a webs service) and
+issuing as many tokens as you need to multiple clients. 
 
 ===== Scopes
 
-Each component, as described above, creates a scope. When your
-application asks for access to a user's data, you provide a
-scope. This gives users clarity on what information you will be
-reading, and gives them better control over how their information is
-used, and whether they want to provide this information.
+When you generate an oAuth token, you specify the access rights you
+require. Don't be confused by the following example which uses HTTP
+basic authentication to create an oAuth token and asks for the
+`public_repo` rights. If this token is properly issued, the oAuth
+token will have permissions to read and write to public repositories
+owned by that user.
+
+[source,bash]
+-----
+$ curl -u username -d '{"scopes":["public_repo"]}' https://api.github.com/authorizations`
+-----
+
+Scopes clarify how a service or application will use data inside the
+GitHub API. This makes it easy to audit how you are using the
+information if this was a token issued for your own personal use. But,
+most importantly, this provides valuable clarity and protection for
+those times when a third party application wants to access your
+information: you can be assured the application is limited in what
+data it can access, and you can revoke access easily. 
 
 ===== Scope Limitations
 
-* Cannot do fine-grained access to certain repositories only.
-* Some information requires granting scope to user object, but is not
-* really necessary
+There is one major limitation of scopes to be aware of: you cannot do
+fine-grained access to certain repositories only. If you provide
+access to any of your private repositories, you are providing access
+to all repositories.  
+
+It is likely that GitHub will change the way scopes work and address
+some of these issues. The great thing about the way oAuth works is
+that to support these changes you will simply need to request a new
+token with the scope modified, but otherwise, the application
+authentication flow will be unchaged.
 
 Beware when you ask for a scope; users will evaluate your application
 based on the scopes requested; if they don't think you need that
@@ -168,7 +291,17 @@ relationship with the user) often results in a user abandoning the login.
 
 ===== Simplified oAuth Flow 
 
-oAuth has many variants, but GitHub uses oAuth2. 
+oAuth has many variants, but GitHub uses oAuth2. oAuth2 specifies a
+flow where:
+
+* the application requests access
+* the service provider (GitHub) requests authentication: username and
+  password usually.
+* if two-factor authentication is enabled, ask for the OTP code.
+* GitHub responds with a token inside a JSON payload
+* the application uses the oAuth token to make requests of the API.
+
+A real world flow is described in full in the Hubot chapter.
 
 === Status Codes
 
@@ -729,3 +862,10 @@ by the overall GitHub Terms of Service.   You can read these terms of
 service here: https://help.github.com/articles/github-terms-of-service
 
 
+=== GitHub Has Amazing API Documentation
+
+The GitHub team has already provided very thorough documentation on
+their API with examples using cURL. Bookmark this URL:
+https://developer.github.com/v3/. You'll use it often. Do note that
+this URL is tied, obviously, to the current API "Version 3", so this
+URL will change when a new version is released. 
