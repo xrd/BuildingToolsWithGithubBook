@@ -380,6 +380,182 @@ is located in San Francisco, and the creation date (which strangely
 does not match their blog post which states April 10th was their
 official launch date: https://github.com/blog/40-we-launched).
 
+=== Authentication
+
+There are two ways to authenticate when making a request to the GitHub
+API: username and passwords, and oAuth tokens. 
+
+==== Username and Password Authentication
+
+You can access protected content inside GitHub using a username and
+password combination. Username authentication works by using the HTTP
+basic authentication supported by the `-u` flag in curl. HTTP Basic
+Authentication is synonymous with username and password authentication.
+
+----
+$ curl -u xrd https://api.github.com/rate_limit
+Enter host password for user 'xrd': xxxxxxxx
+{
+  "rate": {
+    "limit": 5000,
+    "remaining": 4995,
+    "reset": 1376251941
+  }
+}
+----
+
+Here we retrieve information about our own specific rate limits for
+our user account, protected information only available as a logged in user.
+
+===== Benefits of Username Authentication
+
+Almost any client library you use will support HTTP basic
+authentication. All the GitHub API clients we looked at support
+username and passwords. And, writing your own specific client is easy
+as this is a core feature of the HTTP standard, so if you use any
+standard HTTP library when building your own client, you will be able
+to access content inside the GitHub API.
+
+===== Downsides to Username Authentication
+
+There are many reasons why username and password authentication is the
+wrong way to manage your GitHub API access. 
+
+* HTTP basic is an old protocol which never anticipated the
+  granularity of web services. It is not possible to specify only
+  certain features of a web service if you ask users to authenticate
+  with username/passwords.
+* If you use a username and password to access GitHub API content from
+  your cell phone, and then access API content from your laptop, you
+  have no way to block access to one without blocking the other. 
+* HTTP basic authentication does not support extensions to the
+  authentication flow. Many modern services now support two-factor
+  authentication and there is no way to inject this into the process
+  without changing the HTTP clients (web browsers, for example) or at
+  least the flow they expect (making the browser repeat the request).
+
+All of these problems are solved (or at least supported) with oAuth
+flows. For these reasons, there are very few reasons to use username
+and passwords. If you do need simple and quick access to the GitHub
+API (and you don't use two factor authentication) then HTTP basic
+authentication can help you in a small subset of use cases.
+
+==== oAuth 
+
+oAuth is an authentication mechanism where tokens are tied to
+functionality or clients. In other words, you can specify what
+features of a service you want to permit an oAuth token to carry with
+it, and you can issue multiple tokens and tie those to specific
+clients: a cell phone app, a laptop, a smart watch, or even an
+Internet of Things toaster. And, importantly, you can revoke tokens
+without impacting other tokens. 
+
+The main downside to oAuth tokens is that they introduce a level of
+complexity that you may not be familiar with if you have only used
+HTTP basic which generally only requires an extra header to the HTTP
+request, or an extra flag to a client tool like cURL.
+
+oAuth solves the problems described above by linking tokens to scopes
+(specified subsets of functionality inside a webs service) and
+issuing as many tokens as you need to multiple clients. 
+
+===== Scopes
+
+When you generate an oAuth token, you specify the access rights you
+require. Don't be confused because we start with HTTP basic to
+generate the oAuth token: once you have the token, you no longer need
+to use HTTP basic in successive requests. If this token is properly
+issued, the oAuth token will have permissions to read and write to
+public repositories owned by that user. 
+
+[source,bash]
+-----
+$ curl -u username -d '{"scopes":["public_repo"]}' https://api.github.com/authorizations
+{
+  "id": 1234567,
+  "url": "https://api.github.com/authorizations/1234567",
+  "app": {
+    "name": "My app",
+    "url": "https://developer.github.com/v3/oauth_authorizations/",
+    "client_id": "00000000000000000000"
+  },
+  "token": "abcdef87654321
+  ...
+}
+-----
+
+The JSON response, upon success, has a token you can extract and use
+for applications that need access to the GitHub API.
+
+If you are using two factor authentication, this flow requires
+additional steps, all of which are documented within the Hubot chapter.
+
+To use this token, you specify the token inside an authorization
+header. It is a little bit early to talk about exactly how to interact
+with the API, but the syntax in cURL looks like the following. For a
+full flow, check out the Hubot chapter which shows how to use cURL
+with an oAuth token.
+
+[source,bash]
+-------
+$ curl -H "Authorization: token abcdef87654321" ...
+-------
+
+Scopes clarify how a service or application will use data inside the
+GitHub API. This makes it easy to audit how you are using the
+information if this was a token issued for your own personal use. But,
+most importantly, this provides valuable clarity and protection for
+those times when a third party application wants to access your
+information: you can be assured the application is limited in what
+data it can access, and you can revoke access easily. 
+
+===== Scope Limitations
+
+There is one major limitation of scopes to be aware of: you cannot do
+fine-grained access to certain repositories only. If you provide
+access to any of your private repositories, you are providing access
+to all repositories.  
+
+It is likely that GitHub will change the way scopes work and address
+some of these issues. The great thing about the way oAuth works is
+that to support these changes you will simply need to request a new
+token with the scope modified, but otherwise, the application
+authentication flow will be unchaged.
+
+[WARNING]
+Be very careful about the scopes you request when building a service
+or application. Users are (rightly) paranoid about the data they are
+handing over to you, and will evaluate your application based on the scopes
+requested. If they don't think you need that scope, be sure to remove
+it from the list you provide to GitHub when authorizing and consider
+escalation to a higher scope after you have developed some trust with
+your users.
+
+===== Scope Escalation
+
+You can ask for scope at one point which is very limited, and then
+later ask for a greater scope. For example, when a user first accesses
+your application, you could only get the user scope to create a user
+object inside your service, and only when your application needs
+repository information for a user, then request to escalate
+privileges. At this point the user will need to approve or disapprove
+your request, but asking for everything up front (before you have a
+relationship with the user) often results in a user abandoning the login.
+
+===== Simplified oAuth Flow 
+
+oAuth has many variants, but GitHub uses oAuth2. oAuth2 specifies a
+flow where:
+
+* the application requests access
+* the service provider (GitHub) requests authentication: username and
+  password usually.
+* if two-factor authentication is enabled, ask for the OTP (one time password) code.
+* GitHub responds with a token inside a JSON payload
+* the application uses the oAuth token to make requests of the API.
+
+A real world flow is described in full in the Hubot chapter.
+
 === Status Codes
 
 The GitHub API uses HTTP status codes. With only a few sane
@@ -428,7 +604,7 @@ Here we attempt to generate a new gist by using the endpoint described
 at the Gist API documentation:
 https://developer.github.com/v3/gists/#create-a-gist. We'll detail
 Gists in more detail in a later chapter. This issue fails because we
-are not using JSON (this looks more like YAML, which we will discuss
+are not using JSON (this looks it could be YAML, which we will discuss
 in the Jekyll chapter). The payload is sent using the `-d`
 switch. GitHub responds with advice on where to find the documentation
 for the correct format at the `documentation_url` key inside the JSON
@@ -482,8 +658,7 @@ Now, let's use valid JSON and see what happens:
 [source,bash]
 -----
 $ curl -i -u xrd \
--d '{"description": "A", "public": true, ' \
-'"files": { "a.txt": { "content": "B" } } }' \
+-d '{"description":"A","public":true,"files":{"a.txt":{"content":"B"}}} \
 https://api.github.com/gists
 Enter host password for user 'xrd':
 HTTP/1.1 201 Created
@@ -502,7 +677,10 @@ HTTP/1.1 201 Created
 -----
 
 Success! We created a gist and got a 201 status code indicating things
-worked properly.
+worked properly. To make our command more readable we used the
+backslash character to allow parameters to span across lines. Also,
+notice the JSON does not require whitespace which we have completely
+removed from the string passed to the `-d` switch.
 
 ==== Nothing Has Changed (304)
 
@@ -690,191 +868,79 @@ authenticated requests.
 Calls to the Rate Limit API are not deducted from your Rate Limit.
 Isn't that nice of them?
 
-=== Authentication
+=== Accessing Content from the Web
 
-There are two ways to authenticate when making a request to the GitHub
-API: username and passwords, and oAuth tokens. 
+If you are using the GitHub API from a server side program or the
+command line then you are free to issue any network calls as long as
+your network permits it. If you are attempting to access the GitHub
+API from within a browser using JavaScript and the XHR
+(XmlHttpRequest) object, then you should be aware of limitations
+imposed by the browser's same-origin policy. In a nutshell, you are
+not able to access domains from JavaScript using standard XHR requests
+outside of the domain from whichb you retrieved the original
+page. There are two options for getting around this restriction, one
+clever and one fully supported but slightly more onerous.
 
-==== Username and Password Authentication
+==== JSON-P 
 
-You can access protected content inside GitHub using a username and
-password combination. Username authentication works by using the HTTP
-basic authentication supported by the `-u` flag in curl. HTTP Basic
-Authentication is synonymous with username and password authentication.
+JSON-P is a browser hack, more or less, that allows retrieval of
+information from servers outside of the same-origin policy. JSON-P
+works because <script> tags are not checked against the same-origin
+policy. With JSON-P, you load a JavaScript file which resolves to a
+specially encoded data payload and callback function. The GitHub API
+supports this syntax: you request a script with a parameter on the URL
+indicating what callback you want the script to execute once loaded.
 
-----
-$ curl -u xrd https://api.github.com/rate_limit
-Enter host password for user 'xrd': xxxxxxxx
-{
-  "rate": {
-    "limit": 5000,
-    "remaining": 4995,
-    "reset": 1376251941
+[source,bash]
+-----
+$ curl https://api.github.com/?callback=myCallback                                    
+/**/myCallback({
+  "meta": {
+    "X-RateLimit-Limit": "60",
+    "X-RateLimit-Remaining": "52",
+    "X-RateLimit-Reset": "1433461950",
+    "Cache-Control": "public, max-age=60, s-maxage=60",
+    "Vary": "Accept",
+    "ETag": "\"a5c656a9399ccd6b44e2f9a4291c8289\"",
+    "X-GitHub-Media-Type": "github.v3",
+    "status": 200
+  },
+  "data": {
+    "current_user_url": "https://api.github.com/user",
+    "current_user_authorizations_html_url":
+    "https://github.com/settings/connections/applications{/client_id}",
+    "authorizations_url": "https://api.github.com/authorizations",
+    ...
+  }
+ })
+-----
+
+If you used the same URL we used with cURL inside a script tag on a
+web page (`<script src="https://api.github.com/?callback=myCallback"
+type="text/javascript"></script>`), your browser would load the
+content displayed above, and then a JavaScript function you defined
+called `myCallback` would be executed with the data shown. This
+function could be implemented like this inside your web page.
+
+[source,javascript]
+-----
+<script>
+function myCallback( payload ) {
+  if( 200 == payload.status ) {
+    document.getElementById("success").innerHTML = payload.data.current_user_url;
+  } else {
+    document.getElementById("error").innerHTML = "An error occurred";
   }
 }
-----
-
-Here we retrieve information about our own specific rate limits for
-our user account, protected information only available as a logged in user.
-
-===== Benefits of Username Authentication
-
-Almost any client library you use will support HTTP basic
-authentication. All the GitHub API clients we looked at support
-username and passwords. And, writing your own specific client is easy
-as this is a core feature of the HTTP standard, so if you use any
-standard HTTP library when building your own client, you will be able
-to access content inside the GitHub API.
-
-===== Downsides to Username Authentication
-
-There are many reasons why username and password authentication is the
-wrong way to manage your GitHub API access. 
-
-* HTTP basic is an old protocol which never anticipated the
-  granularity of web services. It is not possible to specify only
-  certain features of a web service if you ask users to authenticate
-  with username/passwords.
-* If you use a username and password to access GitHub API content from
-  your cell phone, and then access API content from your laptop, you
-  have no way to block access to one without blocking the other. 
-* HTTP basic authentication does not support extensions to the
-  authentication flow. Many modern services now support two-factor
-  authentication and there is no way to inject this into the process
-  without changing the HTTP clients (web browsers, for example) or at
-  least the flow they expect (making the browser repeat the request).
-
-All of these problems are solved (or at least supported) with oAuth
-flows. For these reasons, there are very few reasons to use username
-and passwords. If you do need simple and quick access to the GitHub
-API (and you don't use two factor authentication) then HTTP basic
-authentication can help you in a small subset of use cases.
-
-==== oAuth 
-
-oAuth is an authentication mechanism where tokens are tied to
-functionality or clients. In other words, you can specify what
-features of a service you want to permit an oAuth token to carry with
-it, and you can issue multiple tokens and tie those to specific
-clients: a cell phone app, a laptop, a smart watch, or even an
-Internet of Things toaster. And, importantly, you can revoke tokens
-without impacting other tokens. 
-
-The main downside to oAuth tokens is that they introduce a level of
-complexity that you may not be familiar with if you have only used
-HTTP basic which generally only requires an extra header to the HTTP
-request, or an extra flag to a client tool like cURL.
-
-oAuth solves the problems described above by linking tokens to scopes
-(specified subsets of functionality inside a webs service) and
-issuing as many tokens as you need to multiple clients. 
-
-===== Scopes
-
-When you generate an oAuth token, you specify the access rights you
-require. Don't be confused because we start with HTTP basic to
-generate the oAuth token: once you have the token, you no longer need
-to use HTTP basic in successive requests. If this token is properly
-issued, the oAuth token will have permissions to read and write to
-public repositories owned by that user. 
-
-[source,bash]
------
-$ curl -u username -d '{"scopes":["public_repo"]}' https://api.github.com/authorizations
-{
-  "id": 1234567,
-  "url": "https://api.github.com/authorizations/1234567",
-  "app": {
-    "name": "My app",
-    "url": "https://developer.github.com/v3/oauth_authorizations/",
-    "client_id": "00000000000000000000"
-  },
-  "token": "abcdef87654321
-  ...
-}
+</script>
 -----
 
-The JSON response, upon success, has a token you can extract and use
-for applications that need access to the GitHub API.
-
-If you are using two factor authentication, this flow requires
-additional steps, all of which are documented within the Hubot chapter.
-
-To use this token, you specify the token inside an authorization
-header. It is a little bit early to talk about exactly how to interact
-with the API, but the syntax in cURL looks like the following. For a
-full flow, check out the Hubot chapter which shows how to use cURL
-with an oAuth token.
-
-[source,bash]
--------
-$ curl -H "Authorization: token abcdef87654321" ...
--------
-
-Scopes clarify how a service or application will use data inside the
-GitHub API. This makes it easy to audit how you are using the
-information if this was a token issued for your own personal use. But,
-most importantly, this provides valuable clarity and protection for
-those times when a third party application wants to access your
-information: you can be assured the application is limited in what
-data it can access, and you can revoke access easily. 
-
-===== Scope Limitations
-
-There is one major limitation of scopes to be aware of: you cannot do
-fine-grained access to certain repositories only. If you provide
-access to any of your private repositories, you are providing access
-to all repositories.  
-
-It is likely that GitHub will change the way scopes work and address
-some of these issues. The great thing about the way oAuth works is
-that to support these changes you will simply need to request a new
-token with the scope modified, but otherwise, the application
-authentication flow will be unchaged.
-
-[WARNING]
-Be very careful about the scopes you request when building a service
-or application. Users are (rightly) paranoid about the data they are
-handing over to you, and will evaluate your application based on the scopes
-requested. If they don't think you need that scope, be sure to remove
-it from the list you provide to GitHub when authorizing and consider
-escalation to a higher scope after you have developed some trust with
-your users.
-
-===== Scope Escalation
-
-You can ask for scope at one point which is very limited, and then
-later ask for a greater scope. For example, when a user first accesses
-your application, you could only get the user scope to create a user
-object inside your service, and only when your application needs
-repository information for a user, then request to escalate
-privileges. At this point the user will need to approve or disapprove
-your request, but asking for everything up front (before you have a
-relationship with the user) often results in a user abandoning the login.
-
-===== Simplified oAuth Flow 
-
-oAuth has many variants, but GitHub uses oAuth2. oAuth2 specifies a
-flow where:
-
-* the application requests access
-* the service provider (GitHub) requests authentication: username and
-  password usually.
-* if two-factor authentication is enabled, ask for the OTP (one time password) code.
-* GitHub responds with a token inside a JSON payload
-* the application uses the oAuth token to make requests of the API.
-
-A real world flow is described in full in the Hubot chapter.
-
-=== Accessing Content from the Web
+This example shows taking the `current_user_url` from the data inside
+the payload and putting it into a div that might look like `<div
+id="success"></div>`.
 
 ==== CORS Support
 
-** Makes it possible to do ajax requests to content
-
-==== JSON-P Suppor
-
-** Make it easy to do callbacks with script loading
 
 [developer-api-accept]
 ==== Specifying Response Content Format
@@ -892,34 +958,41 @@ you can specify either version 3 or beta of the API.
 The Accept header you send with a request can affect the format of
 text returned by the GitHub API.  As an example, let's assume you
 wanted to read the body of a GitHub Issue. An issue's body is stored
-in markdown and can be retrieved with the following request by sending
-"application/vnd.github.raw+json" as the Accept header.
-
-By default we return the markdown. If we specify HTML, then we get the HTML. 
+in markdown and will be sent back in the request by default. If we
+wanted to render the response as HTML instead of markdown, we could do
+this by sending a different accept header, as the following cURL
+commands demonstrate.
 
 [source,bash]
 ----
-$ curl -s https://api.github.com/repos/rails/rails/issues/11819 -H "Accept: application/vnd.github.html+json" | jq '.body_html'
-"<p>Hi, </p>\n\n<p>I have a problem with strong parameters in rails 4. </p>\n\n<p>I have a one-to-many association that accept nested attributes.</p>\n\n<p>I try to permit nested attributes with following line :</p>\n\n<div class=\"highlight highlight-ruby\"><pre>event_params <span class=\"pl-k\">=</span> params.<span class=\"pl-k\">require</span>(<span class=\"pl-c1\">:event</span>).permit(<span class=\"pl-c1\">:description</span>, \n<span class=\"pl-c1\">event_parts_attributes:</span> [<span class=\"pl-c1\">:start_date</span>, <span class=\"pl-c1\">:start_time</span>])</pre></div>\n\n<p>description is present but event_parts_attributes aren't added to event_params. They are well present in params.</p>\n\n<p>When I remove require(:event) it's work. </p>\n\n<p>Thanks</p>"
+$ curl -s https://api.github.com/repos/rails/rails/issues/11819 | jq '.body'
+"Hi, \r\n\r\nI have a problem with strong parameters in rails 4...."
 $ curl https://api.github.com/repos/rails/rails/issues/11819 | jq '.body_html'
 null
-$ curl -s https://api.github.com/repos/rails/rails/issues/11819 -H "Accept: application/vnd.github.raw" | jq '.body'
-"Hi, \r\n\r\nI have a problem with strong parameters in rails 4. \r\n\r\nI have a one-to-many association that accept nested attributes.\r\n\r\nI try to permit nested attributes with following line :\r\n\r\n```ruby\r\nevent_params = params.require(:event).permit(:description, \r\nevent_parts_attributes: [:start_date, :start_time])\r\n```\r\n\r\ndescription is present but event_parts_attributes aren't added to event_params. They are well present in params.\r\n\r\nWhen I remove require(:event) it's work. \r\n\r\nThanks"
+$ curl -s https://api.github.com/repos/rails/rails/issues/11819 \
+-H "Accept: application/vnd.github.html+json" | jq '.body_html'
+"<p>Hi, </p>\n\n<p>I have a problem with strong parameters in rails..."
 ----
+
+In the first instance, we get the internal representation of the data,
+sent as markdown. If we don't request the HTML representation, we
+don't see it in the JSON. If we use a customized accept header like in
+the third instance, then our JSON is populated with a rendered version
+of the body in HTML.
 
 Besides "raw" and "html" there are two other format options that
 influence how Markdown content is delivered via the GitHub API.  If
 you specify "text" as a format, the issue body would have been
-returned as plaintext.   If you specify "full" then the content will
+returned as plaintext.  If you specify "full" then the content will
 be rendered multiple times including the raw Markdown, rendered HTML,
 and rendered plaintext.
 
 In addition to controlling the format of text content, you can also
 retrieve GitHub blobs either as raw binary or as a BASE64 encoded
-text.   When retrieving commits, you can also specify that the content
+text.  When retrieving commits, you can also specify that the content
 be returned either as a diff or as a patch.  For more information
 about these fine-grained controls for formatting, see the GitHub API
-documentation here: http://developer.github.com
+documentation.
 
 [developer-api-terms]
 ==== GitHub API Terms of Service
