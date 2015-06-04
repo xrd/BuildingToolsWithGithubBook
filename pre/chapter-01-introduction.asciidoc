@@ -76,23 +76,23 @@ response format is JSON.
 
 === The GitHub API is self describing
 
-The GitHub API is a hypermedia API. Though discussion of what
-hypermedia is deserves an entire book on its own (Check out O'Reilly's
-"Hypermedia APIs with HTML5 and Node"), you can absorb much of it by
-just looking at a response. First, you can see from the API response
-above that by making a request to the API, you actually get back a map
-of how you should make additional responses. Not all clients use this
-information, of course, but one goal behind Hypermedia APIs is that
-clients can dynamically adjust their endpoints without recoding the
-client code. In other words, the API should be able to adjust its map,
-and then clients will adjust themselves, but you as the application
-developer using the client libraries will not need to understand or
-even be aware of the changes. If this sounds worriesome, don't fret
-too much: GitHub is very dilligent about maintaining and supporting
-their API in a way that most companies could emulate. But, you should
-know that you can rely on having a API reference inside the API itself,
-rather than inside documentation which could or could not be
-updated. 
+The GitHub API is a Hypermedia API. Though a discussion on what constitutes
+hypermedia deserves an entire book of its own (Check out O'Reilly's
+"Hypermedia APIs with HTML5 and Node"), you can absorb much of what
+makes hypermedia interesting by just looking at a response. First, you
+can see from the API response above that by making a request to the
+API, you actually get back a map of how you should make additional
+responses. Not all clients use this information, of course, but one
+goal behind Hypermedia APIs is that clients can dynamically adjust
+their endpoints without recoding the client code. In other words, the
+API should be able to adjust its map, and then clients will adjust
+themselves, but you as the application developer using the client
+libraries will not need to understand or even be aware of the
+changes. If this sounds worriesome, don't fret too much: GitHub is
+very dilligent about maintaining and supporting their API in a way
+that most companies could emulate. But, you should know that you can
+rely on having a API reference inside the API itself, rather than
+inside documentation which could or could not be updated. 
 
 This map includes not just URLs, but also information about how to
 provide parameters to the URLs. For example, the `code_search_url` key
