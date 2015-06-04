@@ -386,12 +386,13 @@ The GitHub API uses HTTP status codes. With only a few sane
 exceptions, you will get back status codes that tell you definitive
 information about how your request was processed.
 
-==== Success (200)
+==== Success (200 or 201)
 
 If you have worked with any HTTP clients whatsoever, you know what the
 HTTP status code "200" means: success. GitHub will respond with a 200
 status code when your request destination URL and associated
-parameters are correct.
+parameters are correct. If your request creates content on the server,
+then you will get a 201 status code, indicating successful creation.
 
 [source,bash]
 -----
@@ -423,21 +424,22 @@ Status: 400 Bad Request
 }
 -----
 
-Here we attempt to generate a new gist (we'll detail Gists in more
-detail in its own chapter), but we are not using JSON (this looks more
-like YAML, which we discuss in the Jekyll chapter). The payload is
-sent using the `-d` switch. GitHub responds with advice on where to
-find the documentation for the correct format at the
-`documentation_url` key inside the JSON response.  Notice that we use
-the `-X POST` switch and value to tell cURL to make a POST request to GitHub. 
+Here we attempt to generate a new gist by using the endpoint described
+at the Gist API documentation:
+https://developer.github.com/v3/gists/#create-a-gist. We'll detail
+Gists in more detail in a later chapter. This issue fails because we
+are not using JSON (this looks more like YAML, which we will discuss
+in the Jekyll chapter). The payload is sent using the `-d`
+switch. GitHub responds with advice on where to find the documentation
+for the correct format at the `documentation_url` key inside the JSON
+response.  Notice that we use the `-X POST` switch and value to tell
+cURL to make a POST request to GitHub.  
 
 ==== Improper JSON (422)
 
 If any of the fields in your request are invalid, GitHub will respond
-with a 422 error. Let's attempt to fix the previous request, by going
-to the documentation for Gists within the GitHub API, found here:
-https://developer.github.com/v3/gists/#create-a-gist. The
-documentation indicates the JSON should look like this:
+with a 422 error. Let's attempt to fix the previous request. The
+documentation indicates the JSON payload should look like this:
 
 [source,json]
 -----
@@ -452,14 +454,55 @@ documentation indicates the JSON should look like this:
 }
 -----
 
-First, let's see what happens when the JSON is valid, but the fields
-are wrong.
+What happens if the JSON is valid, but the fields are incorrect?
 
 [source,json]
 -----
-{"description": "A", "public": true, "files": { "a.txt": { "content": "B" } } }
+curl -i -u chris@burningon.com -d '{ "a" : "b" }' -X POST
+https://api.github.com/gists
+Enter host password for user 'chris@burningon.com':
+HTTP/1.1 422 Unprocessable Entity
+...
+
+{
+  "message": "Invalid request.\n\n\"files\" wasn't supplied.",
+  "documentation_url": "https://developer.github.com/v3"
+}
 -----
 
+There are two important things to note: first, we get a 422 error,
+which indicates the JSON was valid, but the fields were incorrect. We
+also get a response which indicates why: we are missing the `files`
+key inside the request payload.
+
+==== 201 Successful Creation
+
+Now, let's use valid JSON and see what happens:
+
+[source,bash]
+-----
+$ curl -i -u xrd \
+-d '{"description": "A", "public": true, ' \
+'"files": { "a.txt": { "content": "B" } } }' \
+https://api.github.com/gists
+Enter host password for user 'xrd':
+HTTP/1.1 201 Created
+...
+
+{
+  "url": "https://api.github.com/gists/4a86ed1ca6f289d0f6a4",
+  "forks_url":
+  "https://api.github.com/gists/4a86ed1ca6f289d0f6a4/forks",
+  "commits_url":
+  "https://api.github.com/gists/4a86ed1ca6f289d0f6a4/commits",
+  "id": "4a86ed1ca6f289d0f6a4",
+  "git_pull_url": "https://gist.github.com/4a86ed1ca6f289d0f6a4.git",
+  ...
+}
+-----
+
+Success! We created a gist and got a 201 status code indicating things
+worked properly.
 
 ==== Nothing Has Changed (304)
 
