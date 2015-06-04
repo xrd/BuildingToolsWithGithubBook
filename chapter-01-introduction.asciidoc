@@ -367,6 +367,18 @@ HTTP status code "200" means: success. GitHub will respond with a 200
 status code when your request destination URL and associated
 parameters are correct.
 
+==== Naughty JSON (400)
+
+If your payload (the JSON you send to a request) is invalid, the
+GitHub API will respond with a 400 error. 
+
+==== Improper JSON (422)
+
+If any of the fields in your request are invalid, GitHub will respond
+with a 422 error.
+
+
+
 ==== Nothing Has Changed (304)
 
 304s are like 200s in that they say to the client: yes, your request
@@ -643,7 +655,7 @@ public repositories owned by that user.
 
 [source,bash]
 -----
-$ curl -u username -d '{"scopes":["public_repo"]}' https://api.github.com/authorizations`
+$ curl -u username -d '{"scopes":["public_repo"]}' https://api.github.com/authorizations
 {
   "id": 1234567,
   "url": "https://api.github.com/authorizations/1234567",
@@ -728,14 +740,6 @@ flow where:
 * the application uses the oAuth token to make requests of the API.
 
 A real world flow is described in full in the Hubot chapter.
-
-==== Naughty JSON (400)
-
-** 400: Bad JSON
-
-==== Improper JSON (422)
-
-** 422: Invalid fields
 
 === Accessing Content from the Web
 
