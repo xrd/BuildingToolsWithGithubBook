@@ -1014,8 +1014,8 @@ specify the format of the response you expect.  For example, if you
 are requesting content that contains text from a commit's comment
 thread, you can use the Accept header to ask for the raw markdown or
 for the HTML this markdown generates.  You also have the ability to
-specify this version of the GitHub API you are using.  At this point,
-you can specify either version 3 or beta of the API.
+specify the version of the GitHub API you are using with an Accept header, 
+were GitHub to provide a new beta version of the API.
 
 ===== Retrieving Formatted Content
 
