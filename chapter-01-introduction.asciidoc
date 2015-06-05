@@ -887,7 +887,7 @@ clever and one fully supported but slightly more onerous.
 ==== JSON-P 
 
 JSON-P is a browser hack, more or less, that allows retrieval of
-information from servers outside of the same-origin policy. JSON-P
+data from servers outside the same-origin limits. JSON-P
 works because <script> tags are not checked against the same-origin
 policy; in other words, you can specify your page should load scripts
 from any domain and the browser will permit it. With JSON-P, you load
