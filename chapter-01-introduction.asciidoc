@@ -923,8 +923,7 @@ $ curl https://api.github.com/?callback=myCallback
 -----
 
 If you used the same URL we used above inside a script tag on a
-web page (`<script src="https://api.github.com/?callback=myCallback"
-type="text/javascript"></script>`), your browser would load the
+web page, your browser would load the
 content displayed above, and then a JavaScript function you defined
 called `myCallback` would be executed with the data shown. This
 function could be implemented like this inside your web page.
@@ -940,11 +939,17 @@ function myCallback( payload ) {
   }
 }
 </script>
+<script src="https://api.github.com/?callback=myCallback"
+type="text/javascript"></script>
+
+<div id="success"></div>
 -----
 
 This example demonstrates taking the `current_user_url` from the data inside
-the payload and putting it into a DIV, one that might look like `<div
-id="success"></div>`.
+the payload and putting it into a DIV. You'll note we defined the callback function before we 
+loaded the JSON-P script tag, otherwise the JSON-P data and callback would 
+have been loaded and called before the function was available (and we would not
+have seen the `myCallback` function executed).
 
 Because JSON-P works via <script> tags, only GET requests to the API
 are supported. If you only need read-only access to the API, JSON-P
