@@ -420,8 +420,8 @@ There are many reasons why username and password authentication is the
 wrong way to manage your GitHub API access. 
 
 * HTTP Basic is an old protocol which never anticipated the
-  granularity of web services. It is not possible to specify only
-  certain features of a web service if you ask users to authenticate
+  granularity of web services. It is not possible to restrict access to only
+  certain features of a web service from the server side if you ask users to authenticate
   with username/passwords.
 * If you use a username and password to access GitHub API content from
   your cell phone, and then access API content from your laptop, you
