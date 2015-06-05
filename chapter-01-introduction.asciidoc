@@ -165,7 +165,7 @@ key/value pairs inside an associative array. It uses the
 `current_user_url` as a key into that associative array and prints out
 the value there.
 
-You also will notice that curl printed out transfer time
+You also will notice that cURL printed out transfer time
 information (to standard error, so jq did not see it). If we want to
 restrict that information and clean up the request we should use the
 `-s` switch, which runs cURL in "silent" mode.
@@ -391,7 +391,7 @@ API: username and passwords (HTTP Basic), and oAuth tokens.
 
 You can access protected content inside GitHub using a username and
 password combination. Username authentication works by using the HTTP
-Basic authentication supported by the `-u` flag in curl. HTTP Basic
+Basic authentication supported by the `-u` flag in cURL. HTTP Basic
 Authentication is synonymous with username and password authentication.
 
 ----
@@ -747,7 +747,7 @@ would use ETag:
 ** If the server doesn't have a newer version it returns an HTTP 304
 
 The following command listing demonstrates to commands.  The first
-curl call to the GitHub API generates an ETag value, and the second
+cURL call to the GitHub API generates an ETag value, and the second
 value passes this ETag value as an If-None-Match header.  You'll note
 that the second response is an HTTP 304 which tells the caller that
 there is no new content available.
@@ -829,7 +829,7 @@ limit you are subject to, the number of requests you have remaining,
 and the timestamp (in seconds since 1970).  Note that this timestamp
 has a timezone in Coordinated Universal Time (UTC).
 
-The following command listing uses curl to retrieve the rate limit
+The following command listing uses cURL to retrieve the rate limit
 for an anonymous request.   This response is abbreviated to save space
 in this book, but you'll notice that the quota information is supplied
 twice: once in the HTTP response headers and again in the JSON
