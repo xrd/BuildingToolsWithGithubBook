@@ -17,13 +17,6 @@ type a line of code from the chapter.
 
 === cURL: Simple Access to APIs
 
-There are many client libraries which wrap the GitHub API in an
-idiomatic interface. These client libraries make your life easier by
-removing or limiting your exposure to the complexity of the GitHub
-API. They often save significant time by doing the "right thing" when
-accessing content inside a Git repository, protecting you from knowing
-too much about the internals of a Git repository.  
-
 There will be times when you want to quickly access information from
 the API without writing a formal program. Or, when you want to quickly
 get access to the raw HTTP request headers and content. Or, where you
@@ -90,9 +83,10 @@ themselves, but you as the application developer using the client
 libraries will not need to understand or even be aware of the
 changes. If this sounds worriesome, don't fret too much: GitHub is
 very dilligent about maintaining and supporting their API in a way
-that most companies could emulate. But, you should know that you can
-rely on having a API reference inside the API itself, rather than
-inside documentation which could or could not be updated. 
+that most companies would do well to emulate. But, you should know
+that you can rely on having a API reference inside the API itself,
+rather than hosted externally in documentation which very easily could
+turn out to be out of date with the API itself. 
 
 This map includes not just URLs, but also information about how to
 provide parameters to the URLs. For example, the `code_search_url` key
@@ -109,7 +103,7 @@ guarantee that is sadly missing from many other APIs.
 
 === JSON
 
-JSON is a "lightweight data interchange format" (according to the
+JSON is a "lightweight data interchange format" (read more on the
 JSON.org website). There are other competing and effective formats,
 such as XML or YAML, but JSON is quickly becoming the defacto 
 standard for web services.
@@ -124,14 +118,14 @@ A few of the reasons why JSON is so popular:
   was bound to be victorious, as JSON has been.
 
 You might expect that a site like GitHub, originally built on the Ruby
-on Rails stack (and some of that code is still live) that you could
-specify an alternative format like XML, but XML is no longer
+on Rails stack (and some of that code is still live), would support
+specifying an alternative format like XML, but XML is no longer
 supported. Long live JSON.
 
 JSON is very straightforward if you have used any other text based
-interchange format. One note about JSON that is not always obvious to
-people new to JSON: the format only supports using double-quotes, not
-single-quotes.
+interchange format. One note about JSON that is not always obvious or
+expected to people new to JSON: the format only supports using
+double-quotes, not single-quotes.
 
 ==== Parsing JSON from the Command Line
 
@@ -220,7 +214,10 @@ The first JSON we pass into jq works, while the second, because it
 uses invalid single quote characters, fails with an error. Jq filters
 are strings passed as arguments, and the shell which provides the
 string to jq does not care, however, if you use single quotes or
-double quotes, as you see above. 
+double quotes, as you see above. The echo command, if you didn't
+already know, prints out whatever string you provide to it; when we
+combine this with the pipe character we can easily provide that string
+to jq through standard input.
 
 Jq is a powerful tool for quickly retrieving content from an arbitray
 JSON request. Jq has many other powerful features, documented at
@@ -340,11 +337,12 @@ X-Served-By: 13d09b732ebe76f892093130dc088652
 }
 ----
 
-There is a lot of fun information inside this. What information does
-GitHub itself publish? We can use the organizational URL and
+Using this map, is there anything interesting we can retrieve, perhaps
+information about GitHub itself? We can use the organizational URL and
 substitute "github" in the placeholder.
 
 [source,bash]
+-----
 $ curl https://api.github.com/orgs/github
 {
   "login": "github",
@@ -372,7 +370,7 @@ $ curl https://api.github.com/orgs/github
   "updated_at": "2015-04-25T05:17:01Z",
   "type": "Organization"
 }
-----
+-----
 
 You can see this
 tells us the company blog (https://github.com/about), that the company
@@ -383,13 +381,13 @@ official launch date: https://github.com/blog/40-we-launched).
 === Authentication
 
 There are two ways to authenticate when making a request to the GitHub
-API: username and passwords, and oAuth tokens. 
+API: username and passwords (HTTP Basic), and oAuth tokens. 
 
 ==== Username and Password Authentication
 
 You can access protected content inside GitHub using a username and
 password combination. Username authentication works by using the HTTP
-basic authentication supported by the `-u` flag in curl. HTTP Basic
+Basic authentication supported by the `-u` flag in curl. HTTP Basic
 Authentication is synonymous with username and password authentication.
 
 ----
@@ -409,7 +407,7 @@ our user account, protected information only available as a logged in user.
 
 ===== Benefits of Username Authentication
 
-Almost any client library you use will support HTTP basic
+Almost any client library you use will support HTTP Basic
 authentication. All the GitHub API clients we looked at support
 username and passwords. And, writing your own specific client is easy
 as this is a core feature of the HTTP standard, so if you use any
@@ -421,14 +419,14 @@ to access content inside the GitHub API.
 There are many reasons why username and password authentication is the
 wrong way to manage your GitHub API access. 
 
-* HTTP basic is an old protocol which never anticipated the
+* HTTP Basic is an old protocol which never anticipated the
   granularity of web services. It is not possible to specify only
   certain features of a web service if you ask users to authenticate
   with username/passwords.
 * If you use a username and password to access GitHub API content from
   your cell phone, and then access API content from your laptop, you
   have no way to block access to one without blocking the other. 
-* HTTP basic authentication does not support extensions to the
+* HTTP Basic authentication does not support extensions to the
   authentication flow. Many modern services now support two-factor
   authentication and there is no way to inject this into the process
   without changing the HTTP clients (web browsers, for example) or at
@@ -452,7 +450,7 @@ without impacting other tokens.
 
 The main downside to oAuth tokens is that they introduce a level of
 complexity that you may not be familiar with if you have only used
-HTTP basic which generally only requires an extra header to the HTTP
+HTTP Basic which generally only requires an extra header to the HTTP
 request, or an extra flag to a client tool like cURL.
 
 oAuth solves the problems described above by linking tokens to scopes
@@ -462,9 +460,9 @@ issuing as many tokens as you need to multiple clients.
 ===== Scopes
 
 When you generate an oAuth token, you specify the access rights you
-require. Don't be confused because we start with HTTP basic to
+require. Don't be confused because we start with HTTP Basic to
 generate the oAuth token: once you have the token, you no longer need
-to use HTTP basic in successive requests. If this token is properly
+to use HTTP Basic in successive requests. If this token is properly
 issued, the oAuth token will have permissions to read and write to
 public repositories owned by that user. 
 
@@ -558,17 +556,17 @@ A real world flow is described in full in the Hubot chapter.
 
 === Status Codes
 
-The GitHub API uses HTTP status codes. With only a few sane
-exceptions, you will get back status codes that tell you definitive
-information about how your request was processed.
+The GitHub API uses HTTP status codes to tell you definitive
+information about how your request was processed. 
 
 ==== Success (200 or 201)
 
 If you have worked with any HTTP clients whatsoever, you know what the
-HTTP status code "200" means: success. GitHub will respond with a 200
+HTTP status code "200" means success. GitHub will respond with a 200
 status code when your request destination URL and associated
 parameters are correct. If your request creates content on the server,
-then you will get a 201 status code, indicating successful creation.
+then you will get a 201 status code, indicating a successful creation on
+the server.
 
 [source,bash]
 -----
@@ -680,7 +678,8 @@ Success! We created a gist and got a 201 status code indicating things
 worked properly. To make our command more readable we used the
 backslash character to allow parameters to span across lines. Also,
 notice the JSON does not require whitespace which we have completely
-removed from the string passed to the `-d` switch.
+removed from the string passed to the `-d` switch (in order to save
+space and make this command a little bit more readable).
 
 ==== Nothing Has Changed (304)
 
@@ -877,7 +876,7 @@ API from within a browser using JavaScript and the XHR
 (XmlHttpRequest) object, then you should be aware of limitations
 imposed by the browser's same-origin policy. In a nutshell, you are
 not able to access domains from JavaScript using standard XHR requests
-outside of the domain from whichb you retrieved the original
+outside of the domain from which you retrieved the original
 page. There are two options for getting around this restriction, one
 clever and one fully supported but slightly more onerous.
 
@@ -886,10 +885,14 @@ clever and one fully supported but slightly more onerous.
 JSON-P is a browser hack, more or less, that allows retrieval of
 information from servers outside of the same-origin policy. JSON-P
 works because <script> tags are not checked against the same-origin
-policy. With JSON-P, you load a JavaScript file which resolves to a
-specially encoded data payload and callback function. The GitHub API
-supports this syntax: you request a script with a parameter on the URL
-indicating what callback you want the script to execute once loaded.
+policy; in other words, you can specify your page should load scripts
+from any domain and the browser will permit it. With JSON-P, you load
+a JavaScript file which resolves to a specially encoded data payload
+wrapped in a callback function you implement. The GitHub API supports
+this syntax: you request a script with a parameter on the URL
+indicating what callback you want the script to execute once loaded.  
+
+We can simulate this request in cURL:
 
 [source,bash]
 -----
@@ -915,7 +918,7 @@ $ curl https://api.github.com/?callback=myCallback
  })
 -----
 
-If you used the same URL we used with cURL inside a script tag on a
+If you used the same URL we used above inside a script tag on a
 web page (`<script src="https://api.github.com/?callback=myCallback"
 type="text/javascript"></script>`), your browser would load the
 content displayed above, and then a JavaScript function you defined
@@ -935,37 +938,35 @@ function myCallback( payload ) {
 </script>
 -----
 
-This example shows taking the `current_user_url` from the data inside
-the payload and putting it into a div that might look like `<div
+This example demonstrates taking the `current_user_url` from the data inside
+the payload and putting it into a DIV, one that might look like `<div
 id="success"></div>`.
 
 Because JSON-P works via <script> tags, only GET requests to the API
-are supported. 
+are supported. If you only need read-only access to the API, JSON-P
+can fulfill that need in many cases, and it is easy to configure.
 
 ==== CORS Support
 
 CORS is the "correct" way to access GitHub content from within a browser
 context. CORS requires that the server be properly configured in
 advance; the server must be indicate when queried that it allows cross
-domain requests. If the server
-effectively says "yes, you can access my 
-content from a different domain" then CORS requests are
-permitted. Typically JavaScript developers don't use the XHR object
-directly but access it from within a library (like jQuery, which has
-support for making CORS requests). If you
-need to hand code a CORS request, then the HTML5Rocks website has a
-grea tutorial: http://www.html5rocks.com/en/tutorials/cors/. 
+domain requests. If the server effectively says "yes, you can access
+my content from a different domain" then CORS requests are
+permitted. The HTML5Rocks website has a great tutorial explaining many
+details of CORS:
+http://www.html5rocks.com/en/tutorials/cors/.  
 
-Because XHR using CORS permits XHR to work normally, you can make
-requests beyond GET to the GitHub API: POST, DELETE and
-UPDATE. Between JSON-P and CORS there are options to retrieve content
-from the GitHub API. The choice is between the simplicity of JSON-P and
-the power and extra configuration of CORS.
+Because XHR using CORS allows the same type of XHR requests as you get
+from the same domain origin, you can make requests beyond GET to the
+GitHub API: POST, DELETE and UPDATE. Between JSON-P and CORS there are
+options to retrieve content from the GitHub API. The choice is between
+the simplicity of JSON-P and the power and extra configuration of CORS.
 
-We can show the proper server response using cURL. In this case we
-only care about the headers, so we use the `-I` switch which tells
-cURL to make a HEAD request, telling the server not to respond with
-body content.
+We can prove using cURL that the GitHub API server is responding correctly for
+CORS request. In this case we only care about the headers, so we use
+the `-I` switch which tells cURL to make a HEAD request, telling the
+server not to respond with body content.
 
 [source,bash]
 -----
@@ -985,9 +986,16 @@ Strict-Transport-Security: max-age=31536000; includeSubdomains;
 preload
 -----
 
-We can see the "Content-Security-Policy" header which is what our CORS
-request will use in a preflight request to verify CORS requests are
-permitted. 
+We can see the "Access-Control-Allow-Credentials" header is set to
+true. It depends on the browser implementation, but some JavaScript
+host browsers will automatically make a "preflight" request to verify
+this header is set to true (and that other headers, like the
+"Access-Control-Allow-Origin" are set correctly and permit requests
+from that origin to proceed). Other JavaScript host browsers will need
+you to make that request. Once the browser has used the headers to
+confirm that CORS is permitted, you can make XHR requests to the
+GitHub API domain as you would any other XHR request going into the
+same domain. 
 
 [developer-api-accept]
 ==== Specifying Response Content Format

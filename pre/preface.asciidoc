@@ -44,7 +44,7 @@ with at least one language is essential.
 Much of the book focuses on the technical capabilities exposed by
 GitHub and the powerful GitHub API. Perhaps you feel constrained by
 using Git only from within a certain toolset; for example, if you are
-an Eclipse developer accidentally using Git to manage your Android
+an Android developer accidentally using Git to manage your app
 source code and want to unlock Git in other places in your life as a
 developer, this book provides a wider vista to learn about the power
 of Git and GitHub. If you have fallen into using Git for your own
@@ -56,8 +56,8 @@ to using their skills with Git and within a web service like GitHub.
 
 Like any seasoned developer, automation of your tools is important to
 you, and this book provides examples of mundane tasks that we then
-convert them into automated tools, and we show how to do this using a
-variety of languages talking to the GitHub API.  
+convert them into automated and repeatable processes, and we show how
+to do this using a variety of languages talking to the GitHub API.  
 
 If you are unfamiliar with the "command line" this book will give you
 a firm understanding of how to use it, and we bet you will find great
@@ -75,25 +75,20 @@ Almost every chapter has an associated repository hosted on GitHub
 where you can review the code discussed. Fork away and take these
 samples into your own projects and tools! 
 
-Finally, we help you write testable API backed code. You will find
-ways to embrace the "wabi sabi" of your code: nothing lasts, nothing
-is finished and nothing is perfect, especially when using APIs. APIs
-will change, APIs must change and your code must adapt quickly to this
-reality. Though many developers pretend otherwise, memory is
-unrealiable, and your code must be zen: you should be able to come
-back to a piece of code a thousand years later and know whether it
-works or not without remembering details the implementation. The only way
-to have this surety is to write tests that prove success or
-failure. Traditionally writing tests is challenging, and especially
-when you are testing something backed by an API.  To help you get past
-this roadblock, whenever possible, this book shows you how to write
-code which is testable and interacts with the GitHub API. 
+Finally, we help you write testable API backed code. Even the most experienced
+developers often find that writing tests for their code is a
+challenge, despite the massive literature connecting quality code with
+tests. Testing can be especially challenging when you are testing
+something backed by an API; it requires a different level of thinking
+than is found in strict unit testing. To help you get past this
+roadblock, whenever possible, this book shows you how to write code
+which interacts with the GitHub API and is testable. 
 
-=== What You Should Know Already
+=== First Class Languages You Need to Know
 
-There are two languages and one command line tool, however, which
-are so fundamentally linked to GitHub that you do need to install and
-use them in order to get the most out of this book.
+There are two languages which are so fundamentally linked to GitHub
+that you do need to install and use them in order to get the most out
+of this book. 
 
 * Ruby: a simple, readable programming language used heavily by the
   founders of GitHub.
@@ -102,13 +97,12 @@ use them in order to get the most out of this book.
   NodeJS, rivaling even the popularity of Ruby on Rails as a server
   side toolkit for web applications, especially for independent
   developers. 
-* cURL: there are many tools that speak HTTP, but cURL is one of the
-  best due to its elegant and useful command line interface that
-  aligns with the minimalist interfaces of the best unix tools.
 
-Your time will not be wasted if you install and play with these three
+Your time will not be wasted if you install and play with these two
 tools. Between them you will have a solid toolset to begin
-exploration of the GitHub API.
+exploration of the GitHub API. Several chapters in this book use Ruby
+or NodeJS, so putting in some time to learn at least a little bit will
+make the journey through this book richer for you.
 
 Undoubtedly, many of you picking up this book already have familiarity
 with Ruby or NodeJS. So, the basics and installation of them are in
