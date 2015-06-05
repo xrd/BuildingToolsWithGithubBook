@@ -939,8 +939,27 @@ This example shows taking the `current_user_url` from the data inside
 the payload and putting it into a div that might look like `<div
 id="success"></div>`.
 
+Because JSON-P works via <script> tags, only GET requests to the API
+are supported. 
+
 ==== CORS Support
 
+CORS is the "correct" way to access content from within a browser
+context. CORS requires support from the server; the server must be
+configured such that a browser loaded JavaScript process can query it
+specifically. If the server effectively says "yes, you can access my
+content from a different domain" then CORS requests are
+permitted. Typically JavaScript developers don't use the XHR object
+directly but access it from within a library (like jQuery, which has
+support for making CORS requests). If you
+need to hand code a CORS request, then the HTML5Rocks website has a
+grea tutorial: http://www.html5rocks.com/en/tutorials/cors/. 
+
+Because XHR using CORS permits XHR to work normally, you can make
+requests beyond GET to the GitHub API: POST, DELETE and
+UPDATE. Between JSON-P and CORS there are options to retrieve content
+from the GitHub API. The choice is between the simplicity of JSON-P and
+the power and extra configuration of CORS.
 
 [developer-api-accept]
 ==== Specifying Response Content Format
