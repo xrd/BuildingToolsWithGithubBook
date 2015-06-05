@@ -687,8 +687,8 @@ space and make this command a little bit more readable).
 
 ==== Nothing Has Changed (304)
 
-304s are like 200s in that they say to the client: yes, your request
-succeeded. They give a little bit of extra information, however, in
+304 status codes are similar to 200s in that they say to the client: "yes, your request
+succeeded." They give a little bit of extra information, however, in
 that they tell the client that the data has not changed since the last
 time the same request was made. This is valuable information if you
 are concerned about your usage limits (and in most cases you will
@@ -698,7 +698,7 @@ to your request.
 ===== Conditional Requests to Avoid Rate Limits
 
 If you are querying the GitHub APIs to obtain activity data for a user
-or a repository, there's a good chance that mamy of your requests
+or a repository, there's a good chance that many of your requests
 won't return much activity.  If you check for new activity once every
 few minutes, there will be time periods over which no activity has
 occurred.  These requests, these constant polls still use up requests
