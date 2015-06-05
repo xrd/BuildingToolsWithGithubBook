@@ -944,10 +944,11 @@ are supported.
 
 ==== CORS Support
 
-CORS is the "correct" way to access content from within a browser
-context. CORS requires support from the server; the server must be
-configured such that a browser loaded JavaScript process can query it
-specifically. If the server effectively says "yes, you can access my
+CORS is the "correct" way to access GitHub content from within a browser
+context. CORS requires that the server be properly configured in
+advance; the server must be indicate when queried that it allows cross
+domain requests. If the server
+effectively says "yes, you can access my 
 content from a different domain" then CORS requests are
 permitted. Typically JavaScript developers don't use the XHR object
 directly but access it from within a library (like jQuery, which has
@@ -960,6 +961,33 @@ requests beyond GET to the GitHub API: POST, DELETE and
 UPDATE. Between JSON-P and CORS there are options to retrieve content
 from the GitHub API. The choice is between the simplicity of JSON-P and
 the power and extra configuration of CORS.
+
+We can show the proper server response using cURL. In this case we
+only care about the headers, so we use the `-I` switch which tells
+cURL to make a HEAD request, telling the server not to respond with
+body content.
+
+[source,bash]
+-----
+curl -I https://api.github.com
+HTTP/1.1 200 OK
+Server: GitHub.com
+...
+X-Frame-Options: deny
+Content-Security-Policy: default-src 'none'
+Access-Control-Allow-Credentials: true
+Access-Control-Expose-Headers: ETag, Link, X-GitHub-OTP,
+X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+Access-Control-Allow-Origin: *
+X-GitHub-Request-Id: C0F1CF9E:07AD:3C493B:557107C7
+Strict-Transport-Security: max-age=31536000; includeSubdomains;
+preload
+-----
+
+We can see the "Content-Security-Policy" header which is what our CORS
+request will use in a preflight request to verify CORS requests are
+permitted. 
 
 [developer-api-accept]
 ==== Specifying Response Content Format
