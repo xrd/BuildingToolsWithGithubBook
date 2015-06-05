@@ -966,12 +966,6 @@ permitted. The HTML5Rocks website has a great tutorial explaining many
 details of CORS:
 http://www.html5rocks.com/en/tutorials/cors/.  
 
-Because XHR using CORS allows the same type of XHR requests as you get
-from the same domain origin, you can make requests beyond GET to the
-GitHub API: POST, DELETE and UPDATE. Between JSON-P and CORS there are
-options to retrieve content from the GitHub API. The choice is between
-the simplicity of JSON-P and the power and extra configuration of CORS.
-
 We can prove using cURL that the GitHub API server is responding correctly for
 CORS request. In this case we only care about the headers, so we use
 the `-I` switch which tells cURL to make a HEAD request, telling the
@@ -1005,6 +999,12 @@ you to make that request. Once the browser has used the headers to
 confirm that CORS is permitted, you can make XHR requests to the
 GitHub API domain as you would any other XHR request going into the
 same domain. 
+
+XHR using CORS allows the same type of XHR requests as you get
+from the same domain origin, so you can make requests beyond GET to the
+GitHub API: POST, DELETE and UPDATE. Between JSON-P and CORS there are
+options to retrieve content from the GitHub API. The choice is between
+the simplicity of JSON-P and the power and extra configuration of CORS.
 
 [developer-api-accept]
 ==== Specifying Response Content Format
