@@ -632,9 +632,9 @@ What happens if the JSON is valid, but the fields are incorrect?
 
 [source,json]
 -----
-curl -i -u chris@burningon.com -d '{ "a" : "b" }' -X POST
+curl -i -u xrd -d '{ "a" : "b" }' -X POST
 https://api.github.com/gists
-Enter host password for user 'chris@burningon.com':
+Enter host password for user 'xrd':
 HTTP/1.1 422 Unprocessable Entity
 ...
 
