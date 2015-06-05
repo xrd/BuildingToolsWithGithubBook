@@ -878,9 +878,9 @@ command line then you are free to issue any network calls as long as
 your network permits it. If you are attempting to access the GitHub
 API from within a browser using JavaScript and the XHR
 (XmlHttpRequest) object, then you should be aware of limitations
-imposed by the browser's same-origin policy. In a nutshell, you are
-not able to access domains from JavaScript using standard XHR requests
-outside of the domain from which you retrieved the original
+imposed by the browser's same-origin policy. In a nutshell, you are by default
+restricted from accessing domains from JavaScript using standard XHR requests
+beyond the domain from which you retrieved the original
 page. There are two options for getting around this restriction, one
 clever and one fully supported but slightly more onerous.
 
