@@ -1140,20 +1140,42 @@ real Probot and not a test harness.
 ===== Assigning an active chat room user
 
 Now that we have an incoming pull request (albeit one which we are
-faking), we can write the code to find a random user and assign them
-to the pull request. To find a user in the room, we unfortunately have
-to perform this action outside of the Hubot API and use the Slack API
-directly. Querying the Slack API provides a mount point for asking
-what users are currently in a room; surprisingly this is not something
-easy to get from Hubot. Fortunately, Hubot comes with a built in HTTP client, which
-works great for accessing information over HTTP. Once we have the the
+faking), we need to write the code to find a random user and assign them
+to the pull request. 
+
+[WARNING]
+This next section is actually completely redundant; our Probot will function
+exactly as we need it to if you were to disregard any code from this
+section. As I was writing this book, I was initially unable to find an example
+inside the Hubot source code which provided a list of currently logged
+in users. Looking for other avenues to get this information, I
+discovered the Slack.com API provided this information. After writing
+all the code, tests and story for this section based on using the
+Slack.com API, I re-read the Hubot source code and discovered I was
+wrong: Hubot does provide the list of users inside the `brain` object
+inside the robot passed into a handler. Initially I planned to remove
+this entire section. However, it does demonstrate the ease of using an
+external service through the built in HTTP client, which is a powerful
+feature of Hubot. And, it also demonstrates how powerful tests aid you 
+when developing a Hubot extension; I was able to refactor to use a
+radically different internal code path for getting the list of users
+and maintain faith that the end to end process of my code works by
+refactoring and then fixing broken tests. If you want to skip to the
+next section, you will have all the code to build our Probot as we
+described earlier. But, I think it is a worthwhile read for general
+Hubot understanding.
+
+To find a user in the room, one option is to go
+outside the Hubot API and use the Slack.com API to query for a list of
+users. The Slack.com API provides an endpoint that responds with what
+users are currently in a room. To access the Slack.com API, we will
+use the built in Hubot HTTP client. Once we have the the
 list of members in the room we can look over this list 
 and randomly choose a member and deliver the PR request to them. It
 takes surprisingly little code to do all of this: in a little more
 than 10 lines of CoffeeScript code we can retrieve a JSON response
 from an API, parse the response, generate a message for a random user,
-and then send a request to them into our chat room. It almost takes
-more characters to write out the explanation in English!
+and then send a request to them into our chat room. 
 
 [source,coffeescript]
 --------
@@ -1177,13 +1199,13 @@ PR? http://pr/1` (and the Slack client will format that link as a
 clickable URL). 
 
 Unfortunately, our tests are now broken: we now have the failure: `TypeError:
-Object #<Object> has no method 'http'`. Our faked Robot object does
-not have the http interface that comes with Hubot, so we should add it
-to our mocked Robot so our tests pass. The method signature for the
-http client (which comes from the `node-scoped-http-client` NodeJS
-package) is hairy: you chain calls together to build up an HTTP client
-request and end up with a function returned into which you pass a
-callback where you handle the response 
+Object #<Object> has no method 'http'`. Our mocked Robot object that
+we pass into our tests does not have the http interface that comes
+with Hubot, so we should add it to our custom Robot. The method
+signature for the  http client (which comes from the
+`node-scoped-http-client` NodeJS package) is hairy: you chain calls
+together to build up an HTTP client request and end up with a function
+returned into which you pass a callback where you handle the response 
 body. This module makes you write code that is not particularly
 testable (said another way, it was challenging for me to understand
 what the faked test implementation should look like), so we do our
@@ -1229,26 +1251,16 @@ To be replaced
 snippet~~~~~
 -----
 
-I now have a confession to make. As I sit in bed writing late into the
-night, I realize I have made a mistake and misread the Hubot
-documentation. As it turns out, Hubot does store a list of users
-inside the "brain." So, all this code written above was wasted work,
-because using `robot.brain.users()` would have given us the same
-result, namely a list of users logged into our slack channel.
+We now have a functional and complete implementation of the code to
+retrieve a list of users and assign an incoming pull request out to a
+randomly selected user from that list.
 
-I debated removing the entire previous section. But, I thought a
-mistake like this, and the ease in which we can quickly refactor it
-and then fix our tests, displays the value in writing tests to verify
-our code. So, let's quickly switch to using the
-internal cache of user objects inside the Hubot "brain" and show how
-we can fix our code and fix our tests. The purpose of this
-chapter is not just to build a Probot but to explain how Hubot works,
-and maintaining a section on using the built in HTTP client seemed illustrative.
+===== Getting a list of users from the Hubot brain 
 
-Instead of the call to the Slack API, we can replace the code with a
+Instead of using the Slack API, we can replace the code with a
 much simpler call to `robot.brain.users`. Calling into the Slack users
 API takes a callback, but the `brain.users` call does not, which
-simplifies our code. We do check in our tests that we make a call to
+simplifies our code. We do verify inside our tests that we make a call to
 the HTTP Jasmine spy on the `get` function, so we will want to remove
 that inside our tests. We will need to provide a new function called
 `users` to the Probot inside the faked brain we created
@@ -1422,7 +1434,7 @@ snippet~~~~~
 To be replaced
 snippet~~~~~
 ...
-	-----
+-----
 
 HMAC cryptography is vulnerable to timing attacks. When you use this
 encryption technique, the time it takes to complete a comparison of
