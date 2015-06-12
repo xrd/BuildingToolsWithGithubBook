@@ -1,15 +1,4 @@
 [[preface]]
-== Preface
-
-GitHub 
-
-* Chris' introduction
-
-* Ben's introduction
-
-* Audience for this book
-
-=== Introduction
 
 In the 1930s, The Eagle and Child, a pub in Oxford, England simmered
 with creativity as JRR Tolkien and CS Lewis philosophized and created
@@ -142,8 +131,6 @@ the book for you.
 
 * Acknowledgements
 
-== Preface
-
 === Conventions Used in This Book
 
 The following typographical conventions are used in this book:
@@ -225,23 +212,8 @@ Watch us on YouTube: link:$$http://www.youtube.com/oreillymedia$$[]
 
 === Acknowledgments
 
-[[preface]]
-Preface
-
-* Git, What is it?
-
-* Github, What is it?
-
-* Font Conventions
-
-* Github Writing Conventions
-
-* Downloading Code Examples
-
-* Using Code Examples
-
-* Safari Books Online
-
-* How to Contact Us
-
-* Acknowledgements
+Chris wants to thank his lovely wife, Nicole. I hope that I have added
+to this book even a tiny bit of the wit and wisdom you provide to me
+and our family every day. My son Roosevelt's energy continues to
+inspire me and keep me going even when I am at my limits, even when
+you take me to the limit. To my daughter Charlotte, you are my Zen.
