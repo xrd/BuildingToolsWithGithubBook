@@ -22,14 +22,18 @@ the API without writing a formal program. Or, when you want to quickly
 get access to the raw HTTP request headers and content. Or, where you
 might even question the implementation of a client library and need
 confirmation it is doing the right thing from another vantage
-point. These are all examples where cURL becomes extremely handy: cURL
-gives you the most naked vantage point you will find for the GitHub
-API (barring using a network traffic analysis tool). cURL, like the HTTP
-protocol which it speaks intimately, is stateless, meaning it is
-challenging to use cURL to hit a service and then use the results with a
-secondary request. We will use cURL in a later chapter within a shell
-script that explores solutions to this problem, but note that cURL
-works best with one-off requests.
+point. In these situations, cURL, a simple command line HTTP tool, is
+the perfect fit. cURL, like the best unix tools, is a small program
+with a very specific and purposefully limited set of features for
+accessing HTTP servers. 
+
+cURL gives you the most naked vantage point you will find for the GitHub
+API (barring using a network traffic analysis tool). cURL, like the
+HTTP protocol which it speaks intimately, is stateless, meaning it is
+challenging to use cURL to hit a service and then use the results with
+a secondary request. We will use cURL in a later chapter within a
+shell script that explores solutions to this problem, but note that
+cURL works best with one-off requests.
 
 .Installing cURL
 [NOTE]
