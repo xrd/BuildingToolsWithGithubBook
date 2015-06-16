@@ -9,6 +9,15 @@ with GitHub, such that you can quickly build and associate a wiki with any
 repository, and create a collaborative documentation system around any
 repository hosted on GitHub.
 
+In this chapter we'll explore the basics of using Gollum, creating a
+wiki on GitHub and then understanding how to edit it on GitHub, and as
+a repostory on our local machine. We will then create a Gollum wiki by
+hand from the command line, and show the bare minimum set of files to
+call something a Gollum repository. Finally, we will build a project
+management tool which allows us to edit a Gollum wiki in an entirely
+different way, but still publishes information into GitHub as a
+regular Gollum wiki. 
+
 ==== Creating a Wiki on GitHub
 
 Any repository, public or private, can have an associated Gollum wiki.
@@ -38,7 +47,7 @@ Gollum files can be written in any of the supported "Github Markup" formats, whi
 includes ASCIIdoc, Creole, Markdown, Org Mode, Pod, RDoc,
 ReStructuredText, Textile, and MediaWiki. The variety of markup
 languages brings flexibility but it can be confusing to know which one
-to use. Markdown (and its variant cousins) is the most popular Markup
+to use. Markdown (and its variant cousins) is the most popular markup
 language on GitHub, and is well liked on other popular sites like
 Stack Overflow. If you are unsure which language to use, Markdown is a
 safe bet, but there are pros and cons of each language depending on
@@ -64,20 +73,20 @@ having similar syntax. One such example is MediaWiki, where links with
 titles use the opposite ordering `[[A link to
 foobar|http://foobar.com]]`, so caveat emptor.
 
-Inserting images uses the same tag format `[[ceo.png]]`. Overloading this
-syntax makes it simple to remember the basics of adding relationships
-inside your wiki, whether they be images or page links. There are many
-options you can provide when generating image tags. For example, to
-add a frame and an alt tag, you could use syntax like
-`[[ceo.png|frame|alt=Our CEO relaxing on the beach]]`. Review the
-documentation on the Gollum repository for more details about the breadth
-of the image options.
+Images are inserting into your document using the same tag format
+`[[ceo.png]]`. Overloading this syntax makes it simple to remember the
+basics of adding relationships inside your wiki, whether they be
+images or page links. There are many options you can provide when
+generating image tags. For example, to add a frame and an alt tag, you
+could use syntax like `[[ceo.png|frame|alt=Our CEO relaxing on the
+beach]]`. Review the documentation on the Gollum repository for more
+details about the breadth of the image options.
 
-Gollum comes from GitHub, a company dedicated to improving the lives
-of software developers, so it stands to reason Gollum wikis would
-support code snippets. To include a snippet of code, use three
-backticks, followed by the language name, and close the block of code using
-three more backticks.
+Gollum (the wiki) was invented at GitHub, a company dedicated to
+improving the lives of software developers, so it stands to reason
+Gollum wikis would support code snippets. To include a snippet of
+code, use three backticks, followed by the language name, and close
+the block of code using three more backticks.
 
 [source,ruby]
 ----
@@ -143,8 +152,8 @@ you include a file called `_Sidebar.ext` inside your repository,
 you'll see it as a sidebar for every file rendered. Sidebars are
 automatically added to any file and any file from subdirectories that
 do not have their own sidebar files. If you wanted to add sidebars
-specific to a subdirectory, add another file there and this file will
-override the top level sidebar file. 
+specific to a subdirectory, add another file in the subdirectory and
+this file will override the top level sidebar file. 
 
 Finally, for security reasons, Gollum strips out all CSS and
 JavaScript from raw markup files. You can include your own JavaScript
@@ -192,18 +201,12 @@ back and forth  between editing within the web browser interface and
 jumping into the command line and using your editor to create or
 modify files when you need to use "power commands."  
 
-[WARNING]
-Remember that Gollum only processes files that have been checked into
-the repository; files which are only in the working directory or which
-have been added to the index but not yet commited are *not* processed
-by gollum. So, if you add a file using your editor or from the command
-line, use `git add` and `git commit` to make sure you see them in the
-browser interface. 
+==== Editing with the Command Line
 
-==== Editing Gotchas with the Command Line
-
-To illustrate this "gotcha" let's go through the steps to add a
-sidebar to our wiki. Adding a sidebar means you need to create a file
+Gollum wiki content reflects only the files inside the repository; another way
+to say this is that files in your working directory but not yet
+committed are not used by Gollum. To illustrate this, let's go through the steps
+to add a sidebar to our wiki. Adding a sidebar means you need to create a file 
 called _Sidebar.md. This is a special file which Gollum recognizes and
 generates a sidebar for you; the first part of the name is fixed, but
 you can change the extension to whatever extension you prefer for your
@@ -228,66 +231,21 @@ libraries do all the work to commit new files into the repository. If
 you use the command line, you'll need to remember to commit files
 manually to see them inside your wiki.
 
-==== Editing Gollum Wikis Anytime, Anywhere
+We now can display and allow editing from our locally running Gollum
+server. This Gollum server actually can be made to be accessible to
+anyone who can access your laptop's IP address. So, we could permit
+editing by others in our office. But, what if we want to disallow
+editing unless the user has permission to do so? We need an
+authentication mechanism. 
 
-Gollum adds all the powerful features that automatically come with
-usage of a DCVS; you can edit your files offline, which is simply not
-the case with most wikis. If you check out your gollum repository and
-then hop on a plane without a wifi connection, you can edit files as
-you would any other Git repository. Once you have landed, you do the
-normal pull/push sequence as you would do with any other repository.
-If others have modified the repository, you use your standard tools
-within a normal Git workflow to merge those changes and deal with
-conflicts.
+==== Adding Authentication 
 
-A word of caution when using the gollum command in server mode to edit
-files locally inside a web browser. If you start the gollum server
-from the command line you do have the capability to edit the files
-from any computer within the same network. In other words, you could
-find your IP address and use that address from your Chromebook or your
-tablet to view and edit your wiki. However, remember that the gollum
-server command does not have an authentication system built into it,
-which means that gollum thinks anyone accessing the wiki is the same
-user that started the gollum command. This is fine if you are in the
-other room editing on your tablet while gollum runs on your work
-laptop. However, the gollum server is not a good solution for offering
-a wiki up to many people within a subnet. If multiple people edit
-files, there is no way that gollum can track the different user
-contributions in the change log. This is not a problem when editing
-your Gollum wiki inside GitHub.com: the GitHub site knows who you are
-and properly assigns your changes to your username inside the
-change log.  
-
-==== Hacking Gollum
-
-Gollum is a great way to build up living documentation of any project.
-As everything is built on Git, you get history for free, and more
-importantly, a way to extract that history using all your familiar Git
-tools, either within the command line, or from GitHub. We've explored
-how easy it is to edit Gollum wikis: from within the command line,
-from the web browser, or from within GitHub. However, there might be
-times when you need to provide an entirely customized editing modality. As long
-as you write files into the repository in the way the gollum libraries
-understand, you can write your own editing interface to suit your own
-needs. Let's build one and dive deeper.
-
-==== Limits of Gollum Locally
-
-Gollum is a great tool when working locally. However, there is a bug
-currently where images are not displayed, so although you can fully
-edit files using the local `gollum` command, you will not be be able
-to view them when viewing your wiki on you local machine. To view
-image files correctly, publish them into GitHub.
-
-===== Adding Authentication 
-
-There are solutions to managing authentication if you self host a
-Gollum wiki. As Gollum is built on top of Sinatra (a ruby library) you
-can utilize authentication gems like `omnigollum` or write your own
-authentication handler and run gollum inside that. 
-http://stackoverflow.com/questions/9634703/strong-access-control-for-gollum/13357591#13357591:[This
-thread on StackOverflow]
-explains how to install your own handler:
+As Gollum is built on top of Sinatra (a ruby library which we will
+discuss in more detail shortly) you can utilize authentication gems
+like `omnigollum` or write your own authentication handler and run
+gollum inside that.
+http://stackoverflow.com/questions/9634703/strong-access-control-for-gollum/13357591#13357591:[This 
+thread on StackOverflow] explains how to install your own handler:
  
 [source,ruby]
 -------
@@ -311,73 +269,122 @@ gollum --config authentication.rb
 You'll then be prompted for the username and password, and can use
 "admin" and "admin". 
 
-Why "Precious?" Hackers love to use puns and wordplay within their code. If you peek
-into the Gollum code itself, you'll see that the Gollum libraries use
-a namespace called "Precious" (the word used to refer to the ring by
-the character Gollum in the Lord of the Rings books) as the base class
-for the Gollum wrapper around Sinatra. This code extends the instance
-of Sinatra running your Gollum wiki and adds an authentication layer.
+Why "Precious" as the module name? If you peek into the Gollum code
+itself, you'll see that the Gollum libraries use a namespace called
+"Precious" (the word used to refer to the ring by the character Gollum in the
+Lord of the Rings books) as the base class for the Gollum wrapper
+around Sinatra. This code extends the instance of Sinatra running your
+Gollum wiki and adds an authentication layer. 
+
+[WARNING]
+A word of caution when using the gollum command in server mode to edit
+files locally inside a web browser. If you start the gollum server
+from the command line you do have the capability to edit the files
+from any computer within the same network. In other words, you could
+find your IP address and use that address from your Chromebook or your
+tablet to view and edit your wiki. However, remember that the gollum
+server command does not have an authentication system built into it,
+which means that gollum thinks anyone accessing the wiki is the same
+user that started the gollum command. This is fine if you are in the
+other room editing on your tablet while gollum runs on your work
+laptop. However, the gollum server is not a good solution for offering
+a wiki up to many people within a subnet. If multiple people edit
+files, there is no way that gollum can track the different user
+contributions in the change log. This is not a problem when editing
+your Gollum wiki inside GitHub.com: the GitHub site knows who you are
+and properly assigns your changes to your username inside the
+change log.  
+
+==== Hacking Gollum
+
+Once you understand Git repositories, you can see the power of Gollum
+as a wiki format: as everything is built on Git, you can manage your
+wiki using all the great tools that come with Git. We've explored
+how easy it is to edit Gollum wikis: from within the command line,
+from the web browser, or from within GitHub. However, there might be
+times when you need to provide an entirely customized editing modality. As long
+as you write files into the repository in the way the gollum libraries
+understand, you can write your own editing interface to suit your own
+needs. Let's build one and dive deeper.
+
+[WARNING]
+Gollum is a tool that provides flexibility by allowing local usage:
+this can be very handy when you are on a plane and don't want to pay
+for Wi-Fi. However, at the time of this writing there is a bug
+where images are not displayed, so although you can fully edit files
+using the local `gollum` command, you will not be be able to view them
+when viewing your wiki on you local machine. To view image files
+correctly, publish them into GitHub. 
 
 ===== Documenting Wireframe Discussions: Needs versus Reality
 
-If you do much software development within a team
-you will find this idealized scenario: a
-business person develops the structure of the application with
-higher-up stakeholders, these ideas are passed down to a  UI/UX
+Team software development often revolves around this idealized
+scenario: a business person develops the structure of the application
+with higher-up stakeholders, these ideas are passed down to a UI/UX
 designer who then creates wireframes and mockups of the interactions,
 and then a software developer takes these wireframes and builds the
 software. Put another way, executives figure out what features provide
-the most value to users, which then trickles 
-down into the wireframes as real interactions. Many hidden blocking
-paths are fleshed out here, places where the application would confuse
-the user, and time is saved because the software developer does not
-have to waste time building something that would not work anyway. By
-the time it reaches the developer, the UI interaction is streamlined
-and the costly and inflexible stage of building software has all the
-inefficiencies optimized away. The developer can simply work on a
-piece of software and know there are no changes, changes which would
-be extremely costly to implement. 
+the most value to users, which then trickles down into the wireframes
+as real interactions. Many hidden blocking paths are fleshed out here,
+places where the application would confuse the user, and time is saved
+because the software developer does not have to waste time building
+something that would not work anyway. By the time it reaches the
+developer, the UI interaction is streamlined and the costly and
+inflexible stage of building software has all the inefficiencies
+optimized away. The developer can simply work on a piece of software
+and know there are no changes, changes which would be extremely costly
+to implement.  
 
-In practice, this process is never so smooth. What typically happens
-is the business people never completely understand all the
-requirements, and ask for changes, which trickle down into the
-designs. The mockups are changed and this then needs to be
-communicated to the developer, who has already started building
-something that was "set in stone." Or, the developer, as they build
-the software, realize there are missing steps to get to places inside
-the application, and they need to communicate this back to the
-designer. If you have multiple people doing software development on a
-project, this information then needs to fan out to them if their areas
-are affected by these changes. This information must traverse many
-different people, with many different methods of communication. 
+In practice, this process is almost never so smooth. What typically happens
+is the business people don't completely understand all the
+requirements when they document the structure they want, so after they
+have committed to a structure they later ask for changes, which
+trickle down into the designs. The "final and approved" mockups have
+to be changed and this then needs to be communicated to the developer,
+who has already started building something that was "set in stone."
+Or, the developer, as she is building the software, realizes there are 
+missing steps to get to places inside the application, and needs
+to communicate this back to the designer. If you have multiple people
+doing software development on a project, this information then needs
+to fan out to them if their areas are affected by these changes. This
+information must traverse many different people, with many different
+methods of communication.  
 
-Wikis are a great way to store this information. Information which changes. Information which must be retrieved
-by many people and edited by many people. What better than to manage
-these informational transitions than a change tracking system like
-Git, and what better way to absorb this information than a Wiki built
-on top of Git, hosted on GitHub.
+Wikis are a great way to store this kind of information. Information
+which changes. Information which must be retrieved by many people and
+edited by many people. What better than to manage these informational
+transitions than a change tracking system like Git, and what better
+way to absorb this information than a Wiki built on top of Git, hosted
+on GitHub. 
 
 ===== A Simple Wireframe Review Tool
 
-Let's build a simple tool which stores these types of changes. We'll build an image editor that hosts changes 
-to UI mockups. This will give our executives a place where they can see changes and updates. This will allow
-our UI designer a place to store their images and annotate them with vital information. And, we'll have a place
-where developers can retrieve information without reviewing their email and wondering "Do I have the most
-up-to-date mockups?" We'll buid a special interface which allows quickly editing and reviewing these files locally. 
-And all of it can be published into GitHub for review (though we won't allow editing of the information there,
-since GitHub has its own editing modality.)
+Let's build a simple tool which stores these types of changes. We'll
+build an image editor that hosts changes  to UI mockups. This will
+give our executives a place where they can see changes and
+updates. This will allow our UI designer a place to store their images
+and annotate them with vital information. And, we'll have a place
+where developers can retrieve information without reviewing their
+email and wondering "Do I have the most up-to-date mockups?" We'll
+buid a special interface which allows quickly editing and reviewing
+these files locally.  And all of it can be published into GitHub for
+review (though we won't allow editing of the information there, since
+GitHub has its own editing modality.) 
 
-Gollum is built on ruby and uses the grit library underneath. It is
-simplest to use Ruby to build this, so let's use Sinatra, a super
-simple web server framework for Ruby. In fact, coincidentally, the
-`gollum` command is a customized wrapper around Sinatra, so getting to
-know Sinatra better is not a bad thing anyway.
+Gollum is built on Ruby and uses the Grit library underneath. Using
+Ruby makes sense because we can leverage the existing Grit and Gollum
+libraries. We'll also use Sinatra, a super
+simple web server framework for Ruby, as the web application host. 
 
-This will be a dual purpose repository. We can use it with gollum as
-a standard wiki. And, we can use it with our application to enter data
-in a more powerful way than gollum permits from its default interface.
-The data will still be compatible with gollum and will be hosted on
-GitHub.
+[NOTE]
+In fact the `gollum` command is a customized wrapper around Sinatra,
+so getting to know Sinatra better is not a bad thing. 
+
+This will be a dual purpose repository. We can use the repository with
+gollum as a standard wiki. And, we can use it with our application to
+enter data in a more powerful way than gollum permits from its default
+interface. The data will still be compatible with gollum and will be
+hosted on GitHub.
 
 To begin, initialize our repository.
 

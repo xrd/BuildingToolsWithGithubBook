@@ -1,3 +1,6 @@
+[[Hubot Chapter]]
+.Hubot Chapter
+
 == Hubot and the GitHub Activities API
 
 Though the phrase has now been removed from their marketing materials,
