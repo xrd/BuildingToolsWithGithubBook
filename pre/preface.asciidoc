@@ -1,11 +1,11 @@
 [[preface]]
 
-In the 1930s, The Eagle and Child, a pub in Oxford, England simmered
+In the 1930s, The Eagle and Child, a pub in Oxford simmered
 with creativity as JRR Tolkien and CS Lewis philosophized and created
-their fantasy worlds. Heian court life in 11th century Kyoto, Japan cradled
+their fantasy worlds. Heian court life in 11th century Kyoto cradled
 Murasaki Shibu and produced The Tale of Genji, Japan's greatest novel.
 In the 7th century during the Umayyad Caliphate of modern day
-Damascus, Syria, Arabic palaces provided fertile ground for
+Damascus, glittering Arabic palaces provided fertile ground for
 the creation of a new form of poetry, the ghazal ("love poems") the
 influence of which still courses through modern Arabic poetry. 
 
@@ -28,6 +28,12 @@ programming language. You don't need to be an expert programmer to
 read this book, but having some programming experience and familiarity
 with at least one language is essential. 
 
+Familiariy with web APIs is helpful, although this book simultaneously
+aspires to provide a guide showing how a well thought out,
+well designed, and well tested web API creates a foundation for building
+fun and powerful tools. If you have not used web APIs extensively, but
+have experience using other types of APIs, this is good company.
+
 === What You Will Learn
 
 Much of the book focuses on the technical capabilities exposed by
@@ -38,10 +44,11 @@ source code and want to unlock Git in other places in your life as a
 developer, this book provides a wider vista to learn about the power
 of Git and GitHub. If you have fallen into using Git for your own
 projects and are now interested in using Git within a larger
-community, this book can teach you all about "social coding." This
-book provides a stepping stone for software developers who have used
-other distributed version control systems and are looking for a bridge
-to using their skills with Git and within a web service like GitHub.  
+community, this book can teach you all about the "social coding" style
+pioneered and dogfooded by the GitHub team. This book provides a
+stepping stone for software developers who have used other distributed
+version control systems and are looking for a bridge to using their
+skills with Git and within a web service like GitHub.
 
 Like any seasoned developer, automation of your tools is important to
 you, and this book provides examples of mundane tasks that we then
@@ -52,7 +59,9 @@ If you are unfamiliar with the "command line" this book will give you
 a firm understanding of how to use it, and we bet you will find great
 power there. To make this book accessible to everyone, regardless of
 their editor or operating system, many of the programming samples work
-within the command line.  
+within the command line. If you have hated the command line since your
+father forced you to use it when you were five, this is the perfect
+book to rekindle a loving relationship with the bash shell.
 
 If you absorb not only the technical facets of using GitHub but also
 pay attention to the cultural and ideological changes offered behind
@@ -66,12 +75,12 @@ samples into your own projects and tools!
 
 Finally, we help you write testable API backed code. Even the most experienced
 developers often find that writing tests for their code is a
-challenge, despite the massive literature connecting quality code with
-tests. Testing can be especially challenging when you are testing
-something backed by an API; it requires a different level of thinking
-than is found in strict unit testing. To help you get past this
-roadblock, whenever possible, this book shows you how to write code
-which interacts with the GitHub API and is testable. 
+challenge, despite the massive body of literature connecting quality
+code with tests. Testing can be especially challenging when you are
+testing something backed by an API; it requires a different level of
+thinking than is found in strict unit testing. To help you get past
+this roadblock, whenever possible, this book shows you how to write
+code which interacts with the GitHub API and is testable. 
 
 === First Class Languages You Need to Know
 
@@ -81,7 +90,7 @@ of this book.
 
 * Ruby: a simple, readable programming language used heavily by the
   founders of GitHub.
-* NodeJS: the only ubiquitous browser side programming language, its
+* JavaScript: the only ubiquitous browser side programming language, its
   importance has grown to new heights with the introduction of
   NodeJS, rivaling even the popularity of Ruby on Rails as a server
   side toolkit for web applications, especially for independent
@@ -90,11 +99,11 @@ of this book.
 Your time will not be wasted if you install and play with these two
 tools. Between them you will have a solid toolset to begin
 exploration of the GitHub API. Several chapters in this book use Ruby
-or NodeJS, so putting in some time to learn at least a little bit will
+or JavaScript, so putting in some time to learn at least a little bit will
 make the journey through this book richer for you.
 
 Undoubtedly, many of you picking up this book already have familiarity
-with Ruby or NodeJS. So, the basics and installation of them are in
+with Ruby or JavaScript/NodeJS. So, the basics and installation of them are in
 appendices in the back of the book. The appendices don't cover syntax
 of these languages; we expect you have experience with other languages
 as a prerequisite and can read code from any imperative language
