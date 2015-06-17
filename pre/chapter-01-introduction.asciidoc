@@ -1,19 +1,21 @@
 == Introduction
 
-The GitHub API has amazing documentation (find it here:
-https://developer.github.com/v3/). Let's summarize the sections here:
+The GitHub API is extremely comprehensive, permitting access and
+modification of almost all data stored inside a Git
+repository. Here is a summary of those sections ordered alphabetically
+as they are on the GitHub API documentation site (https://developer.github.com/v3/):
 
 * Activity: notifications of interesting events in your developer life
 * Gists: programmatically create and share code snippets
 * Git Data: raw access to Git data over a remote API
 * Issues: add and modify issues
+* Miscellaneous: whatever does not fit into the general API
+  categorization
+* Organizations: access and retrieve organizational membership data
 * Pull Requests: a powerful API layer on the popular merge process
 * Repositories: modify everything and anything related to repositories
 * Search: code driven search within the entire GitHub database
 * Users: access user data 
-* Miscellaneous: whatever does not fit into the general API
-  categorization
-* Organizations: access and retrieve organizational membership data
 * Enterprise: specifics about using the API when using the private
   corporate GitHub
 
@@ -25,17 +27,19 @@ covered in the API documentation:
 * Gollum: wikis tied to a repository
 * Hubot: a programmable chat robot used extensively at GitHub
 
-Each of these sections of the GitHub technology stack are covered in
-various chapters. The GitHub API documentation is a stellar reference
-which you will use constantly when writing any application that talks
+With just one or two exceptions, Each of these sections of the GitHub
+technology stack are covered in various chapters. The GitHub API
+documentation is a stellar reference which you will use constantly
+when writing any application that talks 
 to the API, but the chapters in this book serve a different purpose:
-these chapters are stories about building something using on top of
-the technologies provided by GitHub, and the tradeoffs and
-considerations you will make when doing that. Chapters in this book
-often cover multiple pieces of the API when appropriate for the story
-we are telling. We've generally tried to focus on a major API section
-and limit exposure to other pieces as much as possible, but most
-chapters do need to bring in small pieces of more than one section.
+these chapters are stories about building applications on top of
+the technologies provided by GitHub. Within these stories you will learn
+the tradeoffs and considerations you will face when you use the GitHub
+API. Chapters in this book often cover multiple pieces of the API
+when appropriate for the story we are telling. We've generally tried
+to focus on a major API section and limit exposure to other pieces as
+much as possible, but most chapters do need to bring in small pieces
+of more than one section. 
 
 * The "cURL" chapter: the chapter you are reading now covers a
   first look at the API through the command line HTTP client called
@@ -86,6 +90,11 @@ We don't cover the organization API: this is a small facet of the API
 with only the ability to list organizations and modify metadata about
 your organization; once you have used other parts of the API this API
 section will be very intuitive.
+
+We also don't cover the users section of the API. While you could
+expect it to be an important part of the API, the users API is really
+nothing more than an endpoint to list information about users, add or
+remove SSH keys, email addresses or followers. 
 
 There is not a chapter on issues. Historically GitHub used to group
 issues and pull requests into the same API section, but with the
