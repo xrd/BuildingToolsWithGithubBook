@@ -1,9 +1,10 @@
 == Introduction
 
 The GitHub API is extremely comprehensive, permitting access and
-modification of almost all data stored inside a Git
-repository. Here is a summary of those sections ordered alphabetically
-as they are on the GitHub API documentation site (https://developer.github.com/v3/):
+modification of almost all data and metadata stored or associated with
+a Git repository. Here is a summary of those sections ordered
+alphabetically as they are on the GitHub API documentation site
+(https://developer.github.com/v3/): 
 
 * Activity: notifications of interesting events in your developer life
 * Gists: programmatically create and share code snippets
