@@ -1,0 +1,14 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    asciidoctor (1.5.2)
+    oreilly-snippets (0.0.8)
+    rack (1.6.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  asciidoctor
+  oreilly-snippets
+  rack

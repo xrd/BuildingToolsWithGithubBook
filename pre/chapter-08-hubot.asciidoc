@@ -1,8 +1,0 @@
-== Hubot
-
-===== Hubot
-===== Installing on Heroku
-===== Extending
-===== Using with base camp
-===== Running locally
-===== Reviewing logs
