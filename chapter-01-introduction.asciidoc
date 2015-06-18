@@ -69,9 +69,10 @@ of more than one section.
   from the Internet Archive into the Jekyll format using Ruby. We show
   how to respectfully spider a site using caching, a valuable
   technique when using APIs or third party public information.
-* The "Hubot" chapter: Hubot is a chat robot written in JavaScript
-  (for NodeJS) which documents DevOps through "ChatOps" The Hubot
-  chapter illustrates using the Activities and Pull Requests section
+* The "Hubot" chapter: Hubot is a JavaScript (NodeJS) chat robot
+  enabling technologists to go beyond developer operations ("DevOps")
+  to a new frontier called "ChatOps." The Hubot chapter illustrates
+  using the Activities and Pull Requests section 
   of the API. In addition we show how you can simulate GitHub
   notifications and how to write testable Hubot extensions (which is
   often a challenge when writing JavaScript code).
@@ -92,13 +93,14 @@ with only the ability to list organizations and modify metadata about
 your organization; once you have used other parts of the API this API
 section will be very intuitive.
 
-We also don't cover the users section of the API. While you could
+We also don't cover the users section of the API. While you might
 expect it to be an important part of the API, the users API is really
 nothing more than an endpoint to list information about users, add or
-remove SSH keys, email addresses or followers. 
+remove SSH keys, adjust email addresses and modify your list of
+followers. 
 
-There is not a chapter on issues. Historically GitHub used to group
-issues and pull requests into the same API section, but with the
+There is not a specific chapter on issues. Historically GitHub used to
+group issues and pull requests into the same API section, but with the
 growing importance of pull requests they have separated them in the
 API documentation. In fact, they are still internally stored in the
 same database and pull requests are, at least for now, just another
