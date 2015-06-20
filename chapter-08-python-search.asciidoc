@@ -142,7 +142,7 @@ Its response looks something like this:
       "description": "Drupal 8 Module Example",
       "fork": false,
       …
-      "score": 59.32314 <1>
+      "score": 59.32314
     },
     …
   ]
