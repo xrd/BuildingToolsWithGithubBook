@@ -373,38 +373,38 @@ Here's the handler for that endpoint, which has been inserted into the module co
 
 [source,cs]
 ----
-Get["/authorize", true] = async (parms, ct) => // <0>
+Get["/authorize", true] = async (parms, ct) => // <1>
     {
         var csrf = Session["CSRF:State"] as string;
         Session.Delete("CSRF:State");
-        if (csrf != Request.Query["state"]) // <1>
+        if (csrf != Request.Query["state"]) // <2>
         {
             return HttpStatusCode.Unauthorized;
         }
 
         var queryCode = Request.Query["code"].ToString();
-        var tokenReq =  new OauthTokenRequest(clientId, // <2>
+        var tokenReq =  new OauthTokenRequest(clientId, // <3>
                                               clientSecret,
                                               queryCode);
         var token = await client.Oauth.CreateAccessToken(tokenReq);
-        Session["accessToken"] = token.AccessToken; // <3>
+        Session["accessToken"] = token.AccessToken; // <4>
 
         var origUrl = Session["OrigUrl"].ToString();
         Session.Delete("OrigUrl");
-        return Response.AsRedirect(origUrl); // <4>
+        return Response.AsRedirect(origUrl); // <5>
     };
 ----
 
-<0> This is how you map paths to handler functions in Nancy.
+<1> This is how you map paths to handler functions in Nancy.
     Any class that derives from `NancyModule` has an indexable object for every HTTP verb, and you can attach a synchronous or asynchronous handler to any one of them.
     There are also ways to include dynamic portions of URLs, which we'll see later on.
-<1> Here we verify the CSRF token we generated before.
+<2> Here we verify the CSRF token we generated before.
     If it doesn't match, something shady is happening, so we return a 401.
-<2> This is the REST call that converts our OAuth code to an access token.
+<3> This is the REST call that converts our OAuth code to an access token.
     In order to verify that this really is our application asking for the token, we pass in both the client ID and secret, as well as the code given to us by GitHub.
-<3> This is where we store the resulting token in the session cookie.
+<4> This is where we store the resulting token in the session cookie.
     Again, this wouldn't be a good idea for a real application, but for our purposes it'll do.
-<4> Here we redirect the user back to what they were originally trying to do, with as little disruption as possible.
+<5> Here we redirect the user back to what they were originally trying to do, with as little disruption as possible.
 
 Once all that is done, we've got our token and are able to continue on our merry way.
 All our handlers have to do to trigger an OAuth sequence is to call `RedirectToOAuth()` if it's necessary, and we'll automatically return the user to where they were when the process completes.
