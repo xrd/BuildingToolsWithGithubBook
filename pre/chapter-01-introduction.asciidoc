@@ -1,10 +1,123 @@
 == Introduction
 
-The GitHub API is accessible from many different angles. You can use
-any one of the huge number of client libraries available in almost
-every major programming language (and there often are multiple client options
-for any given language). This book will take you on an
-exploration of several different language clients for the GitHub API.
+The GitHub API is extremely comprehensive, permitting access and
+modification of almost all data and metadata stored or associated with
+a Git repository. Here is a summary of those sections ordered
+alphabetically as they are on the GitHub API documentation site
+(https://developer.github.com/v3/): 
+
+* Activity: notifications of interesting events in your developer life
+* Gists: programmatically create and share code snippets
+* Git Data: raw access to Git data over a remote API
+* Issues: add and modify issues
+* Miscellaneous: whatever does not fit into the general API
+  categorization
+* Organizations: access and retrieve organizational membership data
+* Pull Requests: a powerful API layer on the popular merge process
+* Repositories: modify everything and anything related to repositories
+* Search: code driven search within the entire GitHub database
+* Users: access user data 
+* Enterprise: specifics about using the API when using the private
+  corporate GitHub
+
+In addition, though not a part of the API, there are other important
+technologies you should know about when using GitHub which are not
+covered in the API documentation:
+
+* Jekyll: hosting blogs and static documentation
+* Gollum: wikis tied to a repository
+* Hubot: a programmable chat robot used extensively at GitHub
+
+With just one or two exceptions, Each of these sections of the GitHub
+technology stack are covered in various chapters. The GitHub API
+documentation is a stellar reference which you will use constantly
+when writing any application that talks 
+to the API, but the chapters in this book serve a different purpose:
+these chapters are stories about building applications on top of
+the technologies provided by GitHub. Within these stories you will learn
+the tradeoffs and considerations you will face when you use the GitHub
+API. Chapters in this book often cover multiple pieces of the API
+when appropriate for the story we are telling. We've generally tried
+to focus on a major API section and limit exposure to other pieces as
+much as possible, but most chapters do need to bring in small pieces
+of more than one section. 
+
+* The "cURL" chapter: the chapter you are reading now covers a
+  first look at the API through the command line HTTP client called
+  cURL. We talk a bit about the response format and how to parse it
+  within the command line, and also document authentication.
+* The "Gist" chapter: covers the Gist API, as well as command line
+  tools and the Ruby language "Octokit" API client.
+* The "Gollum" chapter: explains usage of the Gollum command line tool
+  and associated Ruby library (gem) which is backed by Grit, the
+  C-language bindings for accessing Git repositories. We also
+  document some details of the Git storage format and how it applies
+  to storing large files inside of a Git repository, and show how to
+  use the git command line tools to play with this information.
+* The "JavaScript" chapter: did you know you can host an entire
+  "single page application" on GitHub? We show how you can build an
+  application backed by a database called GitHub using the JavaScript
+  language. Importanly, we show how you can write a testable
+  JavaScript application that mocks out the GitHub API when needed.
+* The "Jekyll" chapter: if you push a specifically organized
+  repository into GitHub, GitHub will host a fully featured blog,
+  equivalent in most ways to a Wordpress site (well, except for the
+  complexity part). This chapter documents how to format your
+  repository, how to use Markdown within Jekyll, how to use
+  programmatic looping constructs provided 
+  by Liquid Templates, and then shows how to import an entire web site
+  from the Internet Archive into the Jekyll format using Ruby. We show
+  how to respectfully spider a site using caching, a valuable
+  technique when using APIs or third party public information.
+* The "Hubot" chapter: Hubot is a JavaScript (NodeJS) chat robot
+  enabling technologists to go beyond developer operations ("DevOps")
+  to a new frontier called "ChatOps." The Hubot chapter illustrates
+  using the Activities and Pull Requests section 
+  of the API. In addition we show how you can simulate GitHub
+  notifications and how to write testable Hubot extensions (which is
+  often a challenge when writing JavaScript code).
+* The "Android" chapter: in this chapter we create a mobile
+  application targeting the Android OS. Our application reads and
+  writes information into a Jekyll repository from the Git Data
+  section of the API. We show how to create user interface tests for
+  Android which verify GitHub API responses using the Calabash UI
+  testing tool.
+* The "Search" chapter: we build a GUI search app using Python. 
+* The "Commit Status" chapter: our final chapter documents a
+  relatively new part of the API which documents the interactions
+  between third party tools and your code. This chapter builds an
+  application using C# and the Nancy .NET GitHub API libraries.
+
+We don't cover the organization API: this is a small facet of the API
+with only the ability to list organizations and modify metadata about
+your organization; once you have used other parts of the API this API
+section will be very intuitive.
+
+We also don't cover the users section of the API. While you might
+expect it to be an important part of the API, the users API is really
+nothing more than an endpoint to list information about users, add or
+remove SSH keys, adjust email addresses and modify your list of
+followers. 
+
+There is not a specific chapter on issues. Historically GitHub used to
+group issues and pull requests into the same API section, but with the
+growing importance of pull requests they have separated them in the
+API documentation. In fact, they are still internally stored in the
+same database and pull requests are, at least for now, just another
+type of issue. The Hubot chapter documents using pull requests and
+is a good reference for issues in that way.
+
+The enterprise API works almost exactly the same as the GitHub.com
+site API. We don't have a chapter telling a story about the enterprise
+API, but we do provide an appendix which provides a few notes about
+how to use it with a few API client libraries.
+
+With these chapters we cover the entire API and hope to give you an
+inside look into the inner workings of the brain of a developer
+building on top of the GitHub API. 
+
+As you might have noticed, this book will take you on an exploration
+of several different language clients for the GitHub API. 
 Along the way, we'll point out the different idioms and methodologies
 inherent to those client libraries and shed light on the darker corners
 of the GitHub API. Don't be alarmed if you thumb through the chapters
@@ -15,7 +128,10 @@ language and associated tools, but the story behind the projects we
 will build will be interesting even if you don't actually 
 type a line of code from the chapter.
 
-=== cURL: Simple Access to APIs
+Enough of the theoretical: let's jump into using the API with
+the powerful cURL tool.
+
+=== cURL: a starting point for API exploration
 
 There will be times when you want to quickly access information from
 the API without writing a formal program. Or, when you want to quickly
@@ -48,7 +164,8 @@ HomeBrew project (http://brew.sh/) or MacPorts project
 operating system, you best bet is to download cURL from the cURL web
 site here: http://curl.haxx.se/download.html 
 
-Our first cURL request looks like this:
+Let's make a request. We'll start with the most basic GitHub API
+endpoint found at https://api.github.com. 
 
 [source,bash]
 -----
@@ -71,7 +188,9 @@ things to notice: there are a lot of URLs pointing to secondary
 information, parameters are included in the URLs, and the
 response format is JSON.
 
-=== The GitHub API is self describing
+What can we learn from this API response? 
+
+=== Responses are Breadcrumbs to the Rest of the API
 
 The GitHub API is a Hypermedia API. Though a discussion on what constitutes
 hypermedia deserves an entire book of its own (Check out O'Reilly's
@@ -105,11 +224,14 @@ bet GitHub has test coverage to prove that this documentation matches
 the information delivered by the API endpoints. That's a strong
 guarantee that is sadly missing from many other APIs.
 
+Now let's briefly discuss the format of all GitHub API responses: JSON.
+
 === JSON
 
-JSON is a "lightweight data interchange format" (read more on the
-JSON.org website). There are other competing and effective formats,
-such as XML or YAML, but JSON is quickly becoming the defacto 
+Every response you get back from the GitHub API will be in the JSON
+format. JSON is a "lightweight data interchange format" (read more on
+the JSON.org website). There are other competing and effective
+formats, such as XML or YAML, but JSON is quickly becoming the defacto 
 standard for web services.
 
 A few of the reasons why JSON is so popular:
@@ -130,6 +252,10 @@ JSON is very straightforward if you have used any other text based
 interchange format. One note about JSON that is not always obvious or
 expected to people new to JSON: the format only supports using
 double-quotes, not single-quotes.
+
+We are using a command line tool, cURL, to retrieve data from the
+API. It would be handy to have a simple command line tool that also
+processes that JSON. Let's talk about one such tool next.
 
 ==== Parsing JSON from the Command Line
 
@@ -171,9 +297,9 @@ restrict that information and clean up the request we should use the
 `-s` switch, which runs cURL in "silent" mode.
 
 It should be easy to understand how the jq filter is applied to the
-response JSON. For a more complicated request (obtaining a list of
-public repositories for a user), we can see the pattern for the jq
-pattern parameter emerging.
+response JSON. For a more complicated request (for example, we might
+want to obtain a list of public repositories for a user), we can see
+the pattern for the jq pattern parameter emerging.
 
 [source,bash]
 ------
@@ -227,6 +353,13 @@ Jq is a powerful tool for quickly retrieving content from an arbitray
 JSON request. Jq has many other powerful features, documented at
 stedolan.github.io/jq.
 
+We now know how to retrieve some interesting information from the
+GitHub API and parse out bits of information from that response, all
+in a single line. But, there will be times when you incorrectly
+specify parameters to cURL or the API, and the data is not what you
+expect. Now we'll learn about how to debug the cURL tool and the API
+service itself to provide more context when things go wrong.
+
 ==== Debugging Switches for cURL
 
 As mentioned, cURL is a great tool when you are verifying that a
@@ -278,8 +411,16 @@ $ curl -v https://api.github.com
 With the `-v` switch you get everything: DNS lookups, information on
 the SSL chain, and the full request and response information.
 
+[NOTE]
 Be aware that if you print out headers, a tool like jq will get
 confused because you are no longer providing it with pure JSON.
+
+This section shows us that there is interesting information not only
+in the body (the JSON data) but also in the headers. It is important
+to understand what headers are here and which ones are
+important. There are a lot of them which the HTTP specification
+requires, and we can often ignore those, but there are a few that are
+vital when you start making more than just a few isolated request.
 
 === All The Headers and Data
 
@@ -382,6 +523,12 @@ is located in San Francisco, and the creation date (which strangely
 does not match their blog post which states April 10th was their
 official launch date: https://github.com/blog/40-we-launched).
 
+So far all of our requests have been to publicly available
+information. But, the GitHub APi starts getting really interesting
+when we authenticate and access private information and publicly
+inaccessible services, like writing data to GitHub. We'll discuss how
+and why you want to use authentication next.
+
 === Authentication
 
 There are two ways to authenticate when making a request to the GitHub
@@ -406,8 +553,9 @@ Enter host password for user 'xrd': xxxxxxxx
 }
 ----
 
-Here we retrieve information about our own specific rate limits for
-our user account, protected information only available as a logged in user.
+This cURL command, authenticates into the GitHub API and then
+retrieves  information about our own specific rate limits for our user
+account, protected information only available as a logged in user.
 
 ===== Benefits of Username Authentication
 
@@ -461,7 +609,7 @@ oAuth solves the problems described above by linking tokens to scopes
 (specified subsets of functionality inside a webs service) and
 issuing as many tokens as you need to multiple clients. 
 
-===== Scopes
+===== Scopes: specified actions tied to authentication tokens
 
 When you generate an oAuth token, you specify the access rights you
 require. Don't be confused because we start with HTTP Basic to
@@ -490,7 +638,7 @@ The JSON response, upon success, has a token you can extract and use
 for applications that need access to the GitHub API.
 
 If you are using two factor authentication, this flow requires
-additional steps, all of which are documented within the Hubot chapter.
+additional steps, all of which are documented within the <<Hubot Chapter>>.
 
 To use this token, you specify the token inside an authorization
 header. It is a little bit early to talk about exactly how to interact

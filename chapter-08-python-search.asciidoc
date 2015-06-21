@@ -26,18 +26,20 @@ We'll also cover search and sorting operators, since they can help you tune your
 
 ===== Authentication
 
-We cover authentication in <<authentication>>, but this API is also available without logging in.
-However, there are a few limitations to this approach.
-
-First, you'll only be able to search public repositories.
-This is probably fine if you're primarily working with open-source software, but users of your application will probably expect to have access to their private code, as well as that of any organizations they belong to.
-Also, since _all_ Enterprise repositories are private, anonymous search is completely useless there.
-
-Secondly, authenticating opens up your rate limit.
-The limits on search are stricter than other APIs anyways, because search is computationally expensive, but anonymous searches are stricter still.
-As of this writing, and according to the documentation, anonymous searches are limited to 5 per minute, and you can do 20 authenticated queries per minute.
-Take a look at <<developer-api-rates>> for more on how to work with rate limits.
-
+This API is also available without logging in. However, there are a
+few limitations to this approach. First, you'll only be able to search
+public repositories. This is probably fine if you're primarily working
+with open-source software, but users of your application will probably
+expect to have access to their private code, as well as that of any organizations
+they belong to. Also, since _all_ Enterprise repositories are private,
+anonymous search is completely useless there. Secondly, authenticating
+opens up your rate limit. The limits on search are stricter than other
+APIs anyways, because search is computationally expensive, but
+anonymous searches are stricter still. As of this writing, and
+according to the documentation, anonymous searches are limited to 5
+per minute, and you can do 20 authenticated queries per minute. Take a
+look at <<developer-api-rates>> for more on how to work with rate
+limits. 
 
 ===== Pagination
 
