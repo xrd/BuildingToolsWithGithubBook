@@ -1209,10 +1209,9 @@ together to build up an HTTP client request and end up with a function
 returned into which you pass a callback where you handle the response 
 body. This module makes you write code that is not particularly
 testable (said another way, it was challenging for me to understand
-what the faked test implementation should look like), so we do our
-best here. We simulate the same chain,  
-defining a `http` attribute on the mocked robot object, an attribute
-which resolves to a function call itself. Calling that function
+what the faked test implementation should look like). We simulate the
+same chain, defining a `http` attribute on the mocked robot object, an
+attribute which resolves to a function call itself. Calling that function
 returns an object which has a `get` method, and calling that function
 returns a function callback which when called executes that function
 with three parameters. In real life that function callback would
