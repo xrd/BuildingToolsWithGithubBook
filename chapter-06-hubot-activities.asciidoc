@@ -1212,24 +1212,22 @@ to the pull request.
 [WARNING]
 This next section is actually completely redundant; our Probot will function
 exactly as we need it to if you were to disregard any code from this
-section. As I was writing this book, I was initially unable to find an example
-inside the Hubot source code which provided a list of currently logged
-in users. Looking for other avenues to get this information, I
-discovered the Slack.com API provided this information. After writing
-all the code, tests and story for this section based on using the
-Slack.com API, I re-read the Hubot source code and discovered I was
-wrong: Hubot does provide the list of users inside the `brain` object
-inside the robot passed into a handler. Initially I planned to remove
+section. As I was writing this book, I mistakenly missed the fact that
+the Hubot `brain` contains a list of users and found another avenue to
+getting that data, the Slack API. I wrote the chapter using the Slack
+API, and then discovered my mistake. Initially I planned to remove
 this entire section. However, it does demonstrate the ease of using an
 external service through the built in HTTP client, which is a powerful
 feature of Hubot. And, it also demonstrates how powerful tests aid you 
 when developing a Hubot extension; I was able to refactor to use a
 radically different internal code path for getting the list of users
 and maintain faith that the end to end process of my code works by
-refactoring and then fixing broken tests. If you want to skip to the
-next section, you will have all the code to build our Probot as we
-described earlier. But, I think it is a worthwhile read for general
-Hubot understanding.
+refactoring and then fixing broken tests. And, though not important
+for this section per-se, the Slack API provides much richer data on
+the users logged into a room, which could be valuable in other
+situations. If you want to skip to the next section, you will have all
+the code to build our Probot as we described earlier. But, I think it
+is a worthwhile read for general Hubot understanding.
 
 To find a user in the room, one option is to go
 outside the Hubot API and use the Slack.com API to query for a list of
