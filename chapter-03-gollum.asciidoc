@@ -1,29 +1,35 @@
 == Gollum
 
-Gollum is the GitHub open sourced contribution to Wikis. Just as Git
-has revolutionized collaborative editing of code, Gollum wikis layer
-the benefits of Git onto a proven publishing metaphor. And, Gollum
-wikis are tightly integrated with GitHub, such that you can quickly
+Wikis have revolutionized the way we create and digest
+information. It turns out they are a great complement to technical
+projects, like code repositories, because they allow non-technical
+users to contribute information. Gollum is GitHub's open source
+version of a wiki. Just as Git has revolutionized collaborative
+editing of code, Gollum wikis layer the benefits of Git onto a proven
+publishing workflow. The true power of Gollum wikis reveal themselves
+when you see how tightly integrated with GitHub they are. You can quickly 
 build and associate a wiki with any repository, and create a
-collaborative documentation system around any repository hosted on GitHub.
+collaborative documentation system around any repository hosted on
+GitHub. 
 
 In this chapter we'll explore the basics of using Gollum, creating a
 wiki on GitHub and then understanding how to edit it on GitHub, and as
 a repostory on our local machine. We will then create a Gollum wiki by
 hand from the command line, and show the bare minimum set of files to
-call something a Gollum repository. Finally, we will build a project
-management tool which allows us to edit a Gollum wiki in an entirely
-different way, but still publishes information into GitHub as a
-regular Gollum wiki. 
+call something a Gollum repository. Finally, we will build a simple
+image organization tool which allows us to edit a Gollum wiki in an
+entirely different way, but still publishes information into GitHub as
+a regular Gollum wiki, exploring a little bit of the internals of Git
+along the way.
 
-==== Creating a Wiki on GitHub
+==== Creating a Gollum Wiki on GitHub
 
 Any repository, public or private, can have an associated Gollum wiki.
 To create one, visit the repository page and then look in the
 rightmost colum. You'll see an icon which looks like a book, next to
 which will be the word "Wiki." 
 
-image::images/gollum-wiki.png[]
+image::images/gollum-wiki.png[Integrated Gollum Wiki in the Sidebar]
 
 Clicking on this link will bring you to a page where you are asked to
 create a wiki for the first time. GitHub will ask you to create the
@@ -32,7 +38,7 @@ automatically create a page template with the project name; you can
 customize this information to suit your own needs. Clicking on the
 "Save Page" will save your first page and create the wiki for you.
 
-image::images/gollum-wiki-create.png[]
+image::images/gollum-wiki-create.png[Starting a Gollum Wiki]
 
 Your wiki is now as public as your repository is public. Public
 repositories have public wikis, accessible to anyone. Private
@@ -56,20 +62,30 @@ In addition to the standard markup language tags, Gollum adds its own
 set of markup tags specific to writing Wikis. There 
 are often subtle differences from other Wiki markup so it is worth reviewing
 the https://github.com/gollum/gollum/wiki:[Gollum
-repository documentation page]; we'll summarize a few of those tags here.
+repository documentation page]. 
 
-Links use the syntax `[[Link]]`. You can add a link title using
-the bar character: `[[http://foobar.com|A link to foobar]]`. Links can
-be either external or internal links. A link like `[[Review Images]]`
-will be converted to a relative link to the page `review-images.ext`
-(where ext is the preferred extension you are using with your wiki,
-most likely Markdown). Wikis are generally a collection of pages
+===== Links 
+
+Let's summarize a bit of Gollum syntax. Links are a good place to start.
+
+* Links use the syntax `[[Link]]`. 
+* You can add a link title using the bar character:
+  `[[http://foobar.com|A link to foobar]]`. 
+* Links can be either external or internal links. 
+* A link like `[[Review Images]]` will be converted to a relative link
+  to the page `review-images.ext` (where ext is the preferred
+  extension you are using with your wiki, most likely Markdown). 
+
+Wikis are generally a collection of pages
 linked together in myriad ways, and this assumption about the
-structure of links makes writing pages easier. As we mentioned, there
-are differences between Gollum wiki tags and other wikis despite
+structure of links makes writing pages easier. 
+
+As we mentioned, there are differences between Gollum wiki tags and other wikis despite
 having similar syntax. One such example is MediaWiki, where links with
 titles use the opposite ordering `[[A link to
 foobar|http://foobar.com]]`, so caveat emptor.
+
+===== Inserting Images
 
 Images are inserting into your document using the same tag format
 `[[ceo.png]]`. Overloading this syntax makes it simple to remember the
@@ -79,6 +95,8 @@ generating image tags. For example, to add a frame and an alt tag, you
 could use syntax like `[[ceo.png|frame|alt=Our CEO relaxing on the
 beach]]`. Review the documentation on the Gollum repository for more
 details about the breadth of the image options.
+
+===== Code Snippets
 
 Gollum (the wiki) was invented at GitHub, a company dedicated to
 improving the lives of software developers, so it stands to reason
@@ -145,6 +163,8 @@ following include
 Note that we've referenced the branch named after the specific SHA
 hash we want. 
 
+===== Gollum Structural Components
+
 Gollum includes capabilities to add sidebars, headers, and footers. If
 you include a file called `_Sidebar.ext` inside your repository,
 you'll see it as a sidebar for every file rendered. Sidebars are
@@ -153,13 +173,15 @@ do not have their own sidebar files. If you wanted to add sidebars
 specific to a subdirectory, add another file in the subdirectory and
 this file will override the top level sidebar file. 
 
+===== No Styling or JavaScript
+
 Finally, for security reasons, Gollum strips out all CSS and
 JavaScript from raw markup files. You can include your own JavaScript
 or CSS file when running Gollum locally using the `--custom-css` or
 `--custom-js` switches, but there is no way to include these files on a
 Wiki when your Gollum wiki is hosted on GitHub.
 
-==== Installing Gollum locally
+==== Running Gollum on your Laptop
 
 Gollum wikis hosted on GitHub can be edited using only a web browser;
 GitHub offers a simple editor which supports the basics of Gollum
@@ -184,15 +206,19 @@ tool when the word is lowercased and fixed width font (`gollum`).
 ==== Many Editing Modalities
 
 Editing Gollum content is flexible in that there are many ways to do
-it, depending on what editing metaphor you prefer. Gollum wikis are editable locally
-within a web browser: run the `gollum` command locally on your laptop
-(which spawns a mini web server hosting your wiki) and then browse to
-http://localhost:4567. Gollum wikis are editable remotely using a web
-browser: edit on GitHub as just another repository using the standard
-GitHub web enabled editor tools. And, gollum wikis can be edited at
-the file system level using your favorite editor, allowing you the
-flexibility of staying within the same workflow you use to edit any
-other file within a local repository. 
+it, depending on what editing metaphor you prefer. 
+
+* Gollum wikis are editable locally
+  within a web browser: run the `gollum` command locally on your laptop
+  (which spawns a mini web server hosting your wiki) and then browse to
+  http://localhost:4567. 
+* Gollum wikis are editable remotely using a web
+  browser: edit on GitHub as just another repository using the standard
+  GitHub web enabled editor tools. 
+* Gollum wikis can be edited at
+  the file system level using your favorite editor, allowing you the
+  flexibility of staying within the same workflow you use to edit any
+ other file within a local repository. 
 
 You might use a hybrid approach to editing your Gollum wiki, switching
 back and forth  between editing within the web browser interface and
