@@ -1223,7 +1223,7 @@ when developing a Hubot extension; I was able to refactor to use a
 radically different internal code path for getting the list of users
 and maintain faith that the end to end process of my code works by
 refactoring and then fixing broken tests. And, though not important
-for this section per-se, the Slack API provides much richer data on
+for this section per se, the Slack API provides much richer data on
 the users logged into a room, which could be valuable in other
 situations. If you want to skip to the next section, you will have all
 the code to build our Probot as we described earlier. But, I think it
