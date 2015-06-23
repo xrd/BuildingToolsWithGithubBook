@@ -1,13 +1,11 @@
 == Gollum
 
-Gollum is the GitHub open sourced contribution to Wikis. A wiki is
-defined as "a website that allows collaborative editing of its content
-and structure by its users." Just as Git has revolutionized
-collaborative editing of code, Gollum wikis layer the benefits of Git
-onto a proven publishing metaphor. And, Gollum wikis are tightly integrated
-with GitHub, such that you can quickly build and associate a wiki with any
-repository, and create a collaborative documentation system around any
-repository hosted on GitHub.
+Gollum is the GitHub open sourced contribution to Wikis. Just as Git
+has revolutionized collaborative editing of code, Gollum wikis layer
+the benefits of Git onto a proven publishing metaphor. And, Gollum
+wikis are tightly integrated with GitHub, such that you can quickly
+build and associate a wiki with any repository, and create a
+collaborative documentation system around any repository hosted on GitHub.
 
 In this chapter we'll explore the basics of using Gollum, creating a
 wiki on GitHub and then understanding how to edit it on GitHub, and as
