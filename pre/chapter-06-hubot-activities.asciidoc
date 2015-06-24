@@ -1584,7 +1584,7 @@ from GitHub.
 [source,coffeescript]
 --------------
 ...
-[language="coffeescript", sha="2e95f88:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="55..65"]
+[language="coffeescript", sha="2373026:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="55..65"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
