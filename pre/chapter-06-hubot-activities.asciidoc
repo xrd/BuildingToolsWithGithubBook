@@ -521,7 +521,7 @@ any code to handle the pull request notifications.
 
 [source,coffeescript]
 -----
-[language="json", sha="2b80fa0:support/slacker-hubot/scripts/pr-delegator.coffee", lines="1..15"]
+[language="json", sha="28275be:support/slacker-hubot/scripts/pr-delegator.coffee", lines="1..15"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
