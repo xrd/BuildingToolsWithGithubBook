@@ -1799,7 +1799,7 @@ Our top level extension script looks like this now.
 
 [source,coffeescript]
 -------------
-[language="json", sha="eeaff6b:support/slacker-hubot/scripts/pr-delegator.coffee"]
+[language="json", sha="c350d0d:support/slacker-hubot/scripts/pr-delegator.coffee"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
