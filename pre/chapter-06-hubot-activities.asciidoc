@@ -521,7 +521,7 @@ any code to handle the pull request notifications.
 
 [source,coffeescript]
 -----
-[language="json", sha="2b80fa0:support/slacker-hubot/scripts/pr-delegator.coffee", lines="1..15"]
+[language="json", sha="28275be:support/slacker-hubot/scripts/pr-delegator.coffee", lines="1..15"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -590,7 +590,7 @@ recognize it as a test.
 
 [source,coffeescript]
 -----
-[language="coffeescript", sha="51b053c:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="1..20"]
+[language="coffeescript", sha="59d297c:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="1..20"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1047,7 +1047,7 @@ implementation code.
 
 [source,coffeescript]
 -----
-[language="json", sha="91969de:support/slacker-hubot/spec/pr-delegator.spec.coffee",  lines="27..-1"]
+[language="json", sha="a9393b1:support/slacker-hubot/spec/pr-delegator.spec.coffee",  lines="27..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1248,7 +1248,7 @@ good place to add this functionality and make sure other pieces still work.
 
 [source,coffeescript]
 -----
-[language="json", sha="4be76bc:support/slacker-hubot/lib/handler.coffee", lines="15..29"]
+[language="json", sha="abd2af5:support/slacker-hubot/lib/handler.coffee", lines="15..29"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1389,7 +1389,7 @@ inside our Probot.
 [source,coffeescript]
 -----
 ...
-[language="coffeescript", sha="96dee0c:support/slacker-hubot/lib/handler.coffee", lines="25..32"]
+[language="coffeescript", sha="3365b4e:support/slacker-hubot/lib/handler.coffee", lines="25..32"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1405,7 +1405,7 @@ Our tests are simple, and require that we send in JSON.
 [source,coffeescript]
 -----
 ...
-[language="coffeescript", sha="6564718:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="47..-1"]
+[language="coffeescript", sha="e53a26b:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="47..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1432,7 +1432,7 @@ GitHub and not an attacker.
 [source,coffeescript]
 -----
 ...
-[language="coffeescript", sha="2abde97:support/slacker-hubot/lib/handler.coffee", lines="16..41"]
+[language="coffeescript", sha="d46eb7f:support/slacker-hubot/lib/handler.coffee", lines="16..41"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1454,7 +1454,7 @@ Now we can adjust our tests to fit the new reality of our handler.
 [source,coffeescript]
 -----
 ...
-[language="coffeescript", sha="d39df4c:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="47..-1"]
+[language="coffeescript", sha="dbaa822:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="47..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1584,7 +1584,7 @@ from GitHub.
 [source,coffeescript]
 --------------
 ...
-[language="coffeescript", sha="2e95f88:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="55..65"]
+[language="coffeescript", sha="2373026:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="55..65"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1601,7 +1601,7 @@ this:
 [source,coffeescript]
 --------------
 ...
-[language="coffeescript", sha="986634d:support/slacker-hubot/lib/handler.coffee", lines="26..52"]
+[language="coffeescript", sha="9c18dbd:support/slacker-hubot/lib/handler.coffee", lines="26..52"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1799,7 +1799,7 @@ Our top level extension script looks like this now.
 
 [source,coffeescript]
 -------------
-[language="json", sha="eeaff6b:support/slacker-hubot/scripts/pr-delegator.coffee"]
+[language="json", sha="c350d0d:support/slacker-hubot/scripts/pr-delegator.coffee"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
