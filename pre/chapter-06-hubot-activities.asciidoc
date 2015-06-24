@@ -1047,7 +1047,7 @@ implementation code.
 
 [source,coffeescript]
 -----
-[language="json", sha="91969de:support/slacker-hubot/spec/pr-delegator.spec.coffee",  lines="27..-1"]
+[language="json", sha="a9393b1:support/slacker-hubot/spec/pr-delegator.spec.coffee",  lines="27..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
