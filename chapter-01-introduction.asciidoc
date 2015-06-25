@@ -1217,3 +1217,14 @@ their API with examples using cURL. Bookmark this URL:
 https://developer.github.com/v3/. You'll use it often. Do note that
 this URL is tied, obviously, to the current API "Version 3", so this
 URL will change when a new version is released. 
+
+=== Summary
+
+In this first chapter you got a gentle introduction to the GitHub API,
+and were exposed to a starting point for exploration using the map
+inside any API response. We also showed how to easily extract
+information from verbose API responses using the jq tool. And, we
+documented using the variety of HTTP headers available to ensure we
+stay within our rate limits and retrieve rendered content when
+necessary. 
+

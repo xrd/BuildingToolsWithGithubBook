@@ -17,7 +17,7 @@ can be used in more powerful ways than might appear at first glance
 and this chapter will explore other ways to share code and amplify
 your team.
 
-GitHub "gists" are a place to share snippets of code. To create a gist, go to
+To create a gist, go to
 gist.github.com and enter in any textual data. You then choose public or
 secret access and create the gist. After creating the gist, you receive a
 shareable URL with the code. If the type of textual data is specified,
@@ -63,12 +63,11 @@ are not searchable, but they are accessible to anyone who knows
 the URL. Don't post any code to gist which you need to keep secret as
 once you put it there, it is only as safe as the URL is secret.  
 
-=== Embedding Gists
+Most people share gists through the URL. But, you can embed gists
+inside of other contexts (like blogs) and get a simple and pretty
+snippet of code.
 
-Gists are embeddable as shareable code snippets inside of blogs or any
-web page. 
-
-==== Inside HTML pages
+==== Embedding Gists Inside HTML
 
 To embed inside of an HTML page look for the "Embed this gist" box to
 the left of a gist. Copy the code listed there (which will look
@@ -76,7 +75,7 @@ something like `<script
 src="https://gist.github.com/xrd/8923697.js"></script>` and paste it
 into your HTML. 
 
-==== Inside Jekyll blogs
+==== Embedding Inside Jekyll blogs
 
 Jekyll supports a fast shortcut code to embed a public gist inside of your
 Jekyll blog hosted on GitHub, or on any site built on the
@@ -471,3 +470,11 @@ the API via Hypermedia make me uncomfortable using it in production.
 image::images/gists-hypermedia-broken.png[]
 
 ////
+
+=== Summary
+
+
+
+In the next chapter we will look at Gollum, the GitHub wiki. This
+chapter provides an introduction to the Ruby library for accessing Git
+repositories and the Ruby library for accessing GitHub. 
