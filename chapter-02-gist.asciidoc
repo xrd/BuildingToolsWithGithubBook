@@ -75,11 +75,19 @@ something like `<script
 src="https://gist.github.com/xrd/8923697.js"></script>` and paste it
 into your HTML. 
 
+If you wish to include only a particular file from the Gist (if it
+contains multiple files), then add `?file=hi.rb` to the end of the
+URL specified in the src attribute.
+
 ==== Embedding Inside Jekyll blogs
+
+Though we have not yet explained how Jekyll works (the GitHub blogging
+tool), it seems valid to point out the ease in which you can publish
+gists into a blog if that blog happens to be Jekyll hosted on GitHub.
 
 Jekyll supports a fast shortcut code to embed a public gist inside of your
 Jekyll blog hosted on GitHub, or on any site built on the
-"github-pages" branch mechanism (described in the "GitHub Pages"
+"github-pages" branch mechanism (described in the <<Jekyll>>
 chapter).  The shortcut `{% gist 8138797 %}` will embed a private gist
 which would be found at `http://gist.github.com/8138797`. 
 
