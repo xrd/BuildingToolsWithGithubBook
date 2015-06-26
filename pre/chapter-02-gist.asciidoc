@@ -158,14 +158,6 @@ into a gist using the `-P` switch.
 There are many other fun features of the gist command. To learn more
 run the gist command with the `--help` switch. 
 
-[source,bash]
------
-[filename=".", language="js", sha="30afd95:support/gists/gist.help"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
------
-
 === Gists as fully functioning apps
 
 You can use gists to store entire apps. Let's create a
@@ -474,7 +466,6 @@ image::images/gists-hypermedia-broken.png[]
 === Summary
 
 
-
 In the next chapter we will look at Gollum, the GitHub wiki. This
-chapter provides an introduction to the Ruby library for accessing Git
+chapter provides an introduction to the Rugged Ruby library for accessing Git
 repositories and the Ruby library for accessing GitHub. 
