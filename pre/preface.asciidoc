@@ -131,20 +131,6 @@ to learn from this approach, but if you are interested in only a
 specific language and how it works with the GitHub API, this is not
 the book for you. 
 
-* Font Conventions
-
-* Github Writing Conventions
-
-* Downloading Code Examples
-
-* Using Code Examples
-
-* Safari Books Online
-
-* How to Contact Us
-
-* Acknowledgements
-
 === Conventions Used in This Book
 
 The following typographical conventions are used in this book:
