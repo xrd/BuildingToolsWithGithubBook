@@ -190,7 +190,7 @@ response format is JSON.
 
 What can we learn from this API response? 
 
-=== Responses are Breadcrumbs to the Rest of the API
+=== Breadcrumbs to Successive API Paths
 
 The GitHub API is a Hypermedia API. Though a discussion on what constitutes
 hypermedia deserves an entire book of its own (Check out O'Reilly's
@@ -226,13 +226,13 @@ guarantee that is sadly missing from many other APIs.
 
 Now let's briefly discuss the format of all GitHub API responses: JSON.
 
-=== JSON
+=== The JavaScript Object Notation (JSON) Format
 
 Every response you get back from the GitHub API will be in the JSON
 format. JSON is a "lightweight data interchange format" (read more on
 the JSON.org website). There are other competing and effective
 formats, such as XML or YAML, but JSON is quickly becoming the defacto 
-standard for web services.
+standard for web services. 
 
 A few of the reasons why JSON is so popular:
 
@@ -299,7 +299,9 @@ restrict that information and clean up the request we should use the
 It should be easy to understand how the jq filter is applied to the
 response JSON. For a more complicated request (for example, we might
 want to obtain a list of public repositories for a user), we can see
-the pattern for the jq pattern parameter emerging.
+the pattern for the jq pattern parameter emerging. Let's get a more
+complicated set of information, a user's list of repositories and see
+how we can extract information from the response using jq.
 
 [source,bash]
 ------
@@ -327,8 +329,9 @@ specify a numeric index, and then key into the successive associative
 arrays inside of it to reach the desired content: the owner id.
 
 Jq is a great tool for checking the validity of JSON. As mentioned
-before, JSON only uses double-quotes, not single quotes. You can
-verify that JSON is valid with jq as well.
+before, JSON key/values are stored only with double-quotes, not single
+quotes. You can verify that JSON is valid and satisfies this
+requirement using jq.
 
 [source,bash]
 -----
@@ -704,12 +707,19 @@ flow where:
 * GitHub responds with a token inside a JSON payload
 * the application uses the oAuth token to make requests of the API.
 
-A real world flow is described in full in the Hubot chapter.
+A real world flow is described in full in the <<Hubot chapter>>.
+
+Now let's review an important fundamental when using web services, the
+importance of the HTTP status code.
 
 === Status Codes
 
 The GitHub API uses HTTP status codes to tell you definitive
-information about how your request was processed. 
+information about how your request was processed. If you are using a
+basic client like cURL, it will be important to validate the status
+code before you look at any of the data retrieved. If you are writing
+your own API client, pay close attention to the status code before
+anything else.
 
 ==== Success (200 or 201)
 
@@ -729,7 +739,7 @@ Status: 200 OK
 ==== Naughty JSON (400)
 
 If your payload (the JSON you send to a request) is invalid, the
-GitHub API will respond with a 400 error. 
+GitHub API will respond with a 400 error, as shown below.
 
 [source,bash]
 -----
@@ -861,7 +871,7 @@ with a HTTP 304 response code, this request is not deducted from your
 rate limit.
 
 The following command listing is an example of passing in the
-If-Modified-Since HTTP header to the GitHub API.   Here we've
+If-Modified-Since HTTP header to the GitHub API. Here we've
 specified that we're only interested in receiving content if the
 Twitter Boostrap repositories has been altered after 7:49 PM GMT on
 Sunday, August 11, 2013.  The GitHub API responds with a HTTP 304
@@ -1236,3 +1246,14 @@ their API with examples using cURL. Bookmark this URL:
 https://developer.github.com/v3/. You'll use it often. Do note that
 this URL is tied, obviously, to the current API "Version 3", so this
 URL will change when a new version is released. 
+
+=== Summary
+
+In this chapter we learned how to access the GitHub API from the
+simplest client available: the command line cURL HTTP tool. We also
+explored the API by looking at the JSON and played with a command line
+tool (jq) that when paired with cURL gives us the ability to quickly
+find information in the often large body of data the GitHub API
+provides. We learned about the different authentication schemes
+supported by GitHub, and also learned about the possibilities and
+tradeoffs when accessing the GitHub API from within a browser context. 
