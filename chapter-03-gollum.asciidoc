@@ -2,15 +2,16 @@
 
 Wikis have revolutionized the way we create and digest
 information. It turns out they are a great complement to technical
-projects, like code repositories, because they allow non-technical
-users to contribute information. Gollum is GitHub's open source
-version of a wiki. Just as Git has revolutionized collaborative
-editing of code, Gollum wikis layer the benefits of Git onto a proven
-publishing workflow. The true power of Gollum wikis reveal themselves
-when you see how tightly integrated with GitHub they are. You can quickly 
-build and associate a wiki with any repository, and create a
-collaborative documentation system around any repository hosted on
-GitHub. 
+projects (code repositories) because they allow non-technical
+users to contribute information without disturbing developers. Gollum
+is GitHub's open source version of a wiki. Just as Git has
+revolutionized collaborative editing of code, Gollum wikis layer the
+benefits of Git onto a proven publishing workflow. The true power of
+Gollum wikis reveal themselves when you see how tightly integrated
+with GitHub they are. You can quickly build and associate a wiki with
+any repository, and create a collaborative documentation system around
+any repository hosted on GitHub. And, you can pull in information from
+git repositories with ease, linking documentation with live code.
 
 In this chapter we'll explore the basics of using Gollum, creating a
 wiki on GitHub and then understanding how to edit it on GitHub, and as
@@ -22,12 +23,23 @@ entirely different way, but still publishes information into GitHub as
 a regular Gollum wiki, exploring a little bit of the internals of Git
 along the way.
 
-==== Creating a Gollum Wiki on GitHub
+=== "The Story of Smeagol..."
+
+Gollum wikis are simply an agreed upon file structure. At its most
+basic form, a Gollum wiki is a git repository with a single file,
+`Home.ext` (`ext` would be any of the supported wiki markup formats,
+which we will talk about later). 
+
+First, let's learn how to create a gollum wiki from the GitHub
+interface, and then later we'll move into creating one from scratch as
+a git repository.
+
+==== Repository Linked Wikis
 
 Any repository, public or private, can have an associated Gollum wiki.
-To create one, visit the repository page and then look in the
-rightmost colum. You'll see an icon which looks like a book, next to
-which will be the word "Wiki." 
+To create a wiki linked to a GitHub repository, visit the repository
+page and then look in the rightmost colum. You'll see an icon which
+looks like a book, next to which will be the word "Wiki." 
 
 image::images/gollum-wiki.png[Integrated Gollum Wiki in the Sidebar]
 
@@ -45,7 +57,11 @@ repositories have public wikis, accessible to anyone. Private
 repositories have private wikis, accessible only to those users or
 organizations which have rights to edit the repository data. 
 
-==== Gollum Markup and Structure
+Wikis are powerful collaboration tools because they use a special
+language which compiles into HTML. Let's review the options for Gollum
+wikis.
+
+==== Markup and Structure
 
 Gollum files can be written in any of the supported "Github Markup" formats, which
 includes ASCIIdoc, Creole, Markdown, Org Mode, Pod, RDoc,
@@ -54,15 +70,15 @@ languages brings flexibility but it can be confusing to know which one
 to use. Markdown (and its variant cousins) is the most popular markup
 language on GitHub, and is well liked on other popular sites like
 Stack Overflow. If you are unsure which language to use, Markdown is a
-safe bet, but there are pros and cons of each language depending on
-your application. For more specifics on Markdown, see the chapter on
-Jekyll blogging.
+safe bet because it is ubiquitous across GitHub. The <<Jekyll>>
+chapter has a much deeper overview of Markdown.
 
-In addition to the standard markup language tags, Gollum adds its own
-set of markup tags specific to writing Wikis. There 
-are often subtle differences from other Wiki markup so it is worth reviewing
-the https://github.com/gollum/gollum/wiki:[Gollum
-repository documentation page]. 
+If you do choose Markdown, In addition to the standard vanilla
+Markdown language tags, Gollum adds its own set wiki specific tags. There 
+are often subtle (or conflicting) differences from other Wiki markup
+so it is worth reviewing the
+https://github.com/gollum/gollum/wiki:[Gollum repository documentation
+page]. We'll go over the most important ones here.
 
 ===== Links 
 
@@ -181,13 +197,15 @@ or CSS file when running Gollum locally using the `--custom-css` or
 `--custom-js` switches, but there is no way to include these files on a
 Wiki when your Gollum wiki is hosted on GitHub.
 
-==== Running Gollum on your Laptop
+Now that we have investigated the structure and format of using Gollum
+wikis, we can dig into the power tools that come with Gollum.
 
-Gollum wikis hosted on GitHub can be edited using only a web browser;
-GitHub offers a simple editor which supports the basics of Gollum
-markup and you can always use raw Markup commands when necessary. If
-you want to run Gollum locally, and there are many benefits to 
-doing so, then you need to install the gollum command line tools. 
+=== Moving Gollum to Your Laptop
+
+Though many people edit Gollum wikis exclusively from within the
+GitHub online editor, there is a real flexibility and power when
+hosting your wiki locally and editing it from your laptop. To do this
+you need to install the command line tools for Gollum.
 
 [source,bash]
 -------
@@ -203,27 +221,31 @@ a project. To differentiate between them, remember that we are talking
 about the suite when the word is capitalized ("Gollum"), and the command line
 tool when the word is lowercased and fixed width font (`gollum`).
 
-==== Many Editing Modalities
+What additional options are opened up when running locally? Let's take
+a deeper look.
 
-Editing Gollum content is flexible in that there are many ways to do
-it, depending on what editing metaphor you prefer. 
+==== Alternative Editing Options
+
+When you run your Gollum wiki from your laptop instead of viewing and
+editing on GitHub exclusively, you then get a few additional options
+for editing.
 
 * Gollum wikis are editable locally
   within a web browser: run the `gollum` command locally on your laptop
   (which spawns a mini web server hosting your wiki) and then browse to
   http://localhost:4567. 
-* Gollum wikis are editable remotely using a web
-  browser: edit on GitHub as just another repository using the standard
-  GitHub web enabled editor tools. 
 * Gollum wikis can be edited at
   the file system level using your favorite editor, allowing you the
   flexibility of staying within the same workflow you use to edit any
- other file within a local repository. 
+  other file within a local repository. 
 
 You might use a hybrid approach to editing your Gollum wiki, switching
 back and forth  between editing within the web browser interface and
 jumping into the command line and using your editor to create or
-modify files when you need to use "power commands."  
+modify files when you need to use "power commands." And, it is nice to
+know you can use any simple text processing language to make
+programmatic changes to your wiki once you have it locally on your
+laptop as a Git repository.
 
 ==== Editing with the Command Line
 
@@ -319,7 +341,10 @@ your Gollum wiki inside GitHub.com: the GitHub site knows who you are
 and properly assigns your changes to your username inside the
 change log.  
 
-==== Hacking Gollum
+We've played a bit with the gollum command line tools. Let's put these
+skills to use and make our own special gollum tool.
+
+=== Building a Gollum Editor
 
 Once you understand Git repositories, you can see the power of Gollum
 as a wiki format: as everything is built on Git, you can manage your
@@ -329,7 +354,8 @@ from the web browser, or from within GitHub. However, there might be
 times when you need to provide an entirely customized editing modality. As long
 as you write files into the repository in the way the gollum libraries
 understand, you can write your own editing interface to suit your own
-needs. Let's build one and dive deeper.
+needs. Let's experiment with this idea and build a new editing
+interface for Gollum wikis.
 
 [WARNING]
 Gollum is a tool that provides flexibility by allowing local usage:
@@ -340,14 +366,14 @@ using the local `gollum` command, you will not be be able to view them
 when viewing your wiki on you local machine. To view image files
 correctly, publish them into GitHub. 
 
-===== Documenting Wireframe Discussions: Needs versus Reality
+==== Hacking Gollum
 
 Team software development often revolves around this idealized
 scenario: a business person develops the structure of the application
 with higher-up stakeholders, these ideas are passed down to a UI/UX
 designer who then creates wireframes and mockups of the interactions,
 and then a software developer takes these wireframes and builds the
-software. Put another way, executives figure out what features provide
+software. Put another way, program managers figure out what features provide
 the most value to users, which then trickles down into the wireframes
 as real interactions. Many hidden blocking paths are fleshed out here,
 places where the application would confuse the user, and time is saved
@@ -381,7 +407,7 @@ transitions than a change tracking system like Git, and what better
 way to absorb this information than a Wiki built on top of Git, hosted
 on GitHub. 
 
-===== A Simple Wireframe Review Tool
+==== Wireframe Review Tool
 
 Let's build a simple tool which stores these types of changes. We'll
 build an image editor that hosts changes  to UI mockups. This will
@@ -397,12 +423,11 @@ GitHub has its own editing modality.)
 
 Gollum is built on Ruby and uses the Grit library underneath. Using
 Ruby makes sense because we can leverage the existing Grit and Gollum
-libraries. We'll also use Sinatra, a super
-simple web server framework for Ruby, as the web application host. 
+libraries. We'll also use Sinatra, the same web application library we
+used in the last chapter.
 
 [NOTE]
-In fact the `gollum` command is a customized wrapper around Sinatra,
-so getting to know Sinatra better is not a bad thing. 
+The `gollum` command is, in fact, a customized wrapper around Sinatra.
 
 This will be a dual purpose repository. We can use the repository with
 gollum as a standard wiki. And, we can use it with our application to
@@ -450,7 +475,7 @@ Once you open this in your browser, you'll see a report of the files
 that exist in our Gollum wiki right now. We've only added one file,
 the `Home.md` file.
 
-==== Unpack Images from a Zip File
+==== Programmatically Handling Images
 
 Let's add to our server. We want to support uploading ZIP files into
 our system that we will then unpack and add to our repository, as well
@@ -552,7 +577,7 @@ Writing out: IMG5678.png
 ...
 ----
 
-==== Adding Git Support
+==== Leveraging the Rugged Library
 
 Our end goal for this script is to add files to our Gollum wiki, which
 means adding files to the repository which backs our Gollum wiki.
@@ -687,8 +712,6 @@ write them using the Rugged calls, and if we do this, we cannot
 reference them inside our wiki page when we are running Gollum
 locally. We'll fix this in the next section.
 
-===== Adding to our Wiki
-
 We've now added the files to our repository, but we have not exposed
 these files inside our wiki. Let's modify our server script to write
 out each file to a wiki page for review. As we mentioned in the
@@ -697,7 +720,7 @@ the working index and the repository (using the Rugged library `write`
 call). Then we can generate a Review file which details all the images
 uploaded.
 
-===== Git Handles Duplicates Gracefully
+==== Optimizing for Image Storage
 
 Often while a designer is receiving feedback from stakeholders, they
 will incorporate that feedback into the UI comps, and then resend the
@@ -1012,7 +1035,14 @@ this link.
 
 === Summary
 
-Gollum provides a powerful front end to wikis. Combining the power of
-a distributed versioning system, and simple Git libraries like Rugged,
-offers an elegant way to manage content for both highly technical
-people and those less technical.
+In this chapter we learned how to create a Gollum wiki from
+scratch, both on GitHub and as a fresh repository from the comman
+line. We then looked at the different ways to use the `gollum` command
+line tool and learned why this is a nice option when we want to run
+our own Gollum server. Finally, we built a customized Gollum
+image-centric editor using the Rugged library for Ruby.
+
+Our next chapter explores the GitHub API from what might be an
+unexpected vantage point: JavaScript. In this chapter we will show you
+how to host an entire application on GitHub, no server required, that
+still allows modification of data inside of GitHub by its users.
