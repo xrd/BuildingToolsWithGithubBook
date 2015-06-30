@@ -1,23 +1,27 @@
 == A Single Page App using the GitHub API with JavaScript
 
-GitHub offers libraries which work within other programming languages
-and frameworks, and more often than not, these tools run on a server. 
-Runnig a server means finding and managing a server, often an onerous
-and expensive task. The GitHub API is accessible purely on the client
-side, however, if you use the JavaScript client library. To demonstrate 
-this library, we will build a single page app, hosting everything on
-GitHub and using the GitHub API through a pure JavaScript client-side
-library.
+Most GitHub API applications are some kind of code, be it Python or
+Ruby or Go, running on a server. Usually you, as the author of said
+code, will need to set up and maintain this server, and this can be an
+onerous role. If you use, however, a special combination of branches within your 
+repository and your code is hosted on GitHub, you can completely
+remove reliance on a server and manage your application solely as a
+git repository. This type of application must run on
+another host, the user's web browser, and the only language ubiquitous
+there is JavaScript. You might be surprised to know that there is a
+pure JavaScript GitHub API library. It works well so let's use it to
+build a single page applications hosted entirely on GitHub, no server
+required.
 
-=== Using the GitHub API with JavaScript
-
-JavaScript is the lingua franca of the web, invented in
+Beyond saving us some money in hosting fees, there are other good
+reasons to know JavaScript. JavaScript is the lingua franca of the web, invented in
 1995 as a scripting language embedded inside the first web browsers.
 JavaScript has recently found its way to the server side as well with
 NodeJS, an innovative toolkit for building high performance network
 servers. JavaScript is a useful language to know, whether on the
 server side or strictly client side web development. 
 
+[NOTE]
 The main weakness of JavaScript has always been testability. Mainly
 due to the asynchronous nature of JavaScript, writing tests has never
 been easy; polling for changes when a callback returns was until
@@ -27,6 +31,10 @@ not only easy but elegant as well. Building applications on top of
 third party services makes testing even more important than it already
 was, and we'll make sure to add testing to our application to verify
 the functionality works as we expect.
+
+A single page application should server a single simple purpose. It
+has to be important and direct. It should help us do something
+important. Logically, this application should help us find coffee.
 
 ==== Building our coffee shop database
 
@@ -88,15 +96,12 @@ instead of the longer `git push origin gh-pages`.
 
 ===== Mapping our site to a live hostname
 
-As we discussed in the Jekyll chapter, once we publish these files
-into GitHub inside a repository we can connect the repository to a
+Once we publish these files into GitHub inside a repository we can connect the repository to a
 real hostname. There are two steps to take to do this:
 
 * Add a CNAME file which tells GitHub under which server name this service should resolve. 
 * Setup DNS records so that the hostname maps to the correct IP
-  address at GitHub. [TODO: add specific information on IP address
-  according to this link:
-  https://help.github.com/articles/setting-up-a-custom-domain-with-pages ]
+  address at GitHub.
 
 Imagine you have the hostname myspecialhostname.com. If you map this
 repository to a subdomain called coffeetech, then you would do
@@ -121,6 +126,8 @@ Generally it takes several hours to even a few days to propagate DNS
 settings out into the wild, so make sure you choose and setup a
 hostname far in advance if your site has to be live by a certain point.
 =====
+
+Now we can install the libraries needed for this application.
 
 ===== Adding the support libraries
 
@@ -283,12 +290,13 @@ AngularJS handles putting the results into our web page.
 
 If you load this up in your browser, you will see something like this:
 
-image::images/javascript-gollum.png[]
+image::images/javascript-gollum.png[The Whole Messy JSON]
 
 Yikes, that is a lot of data. AngularJS's JSON filter pretty printed
 it for us, but this is a bit too much. 
 
-Modify the HTML to show just a few vital pieces of information.
+Modify the HTML to show just a few vital pieces of information:
+retreive the `subscriber_count` and the `network_count` from the repo JSON.
 
 [source,html index.html]
 -------
@@ -313,7 +321,7 @@ src="angular.js"></script>
 
 Now we see something more palatable.
 
-image::images/javascript-gollum-precise.png[]
+image::images/javascript-gollum-precise.png[Pulling Out What We Want]
 
 We've just extracted the subscriber and network count from the gollum
 repository hosted on GitHub using the GitHub API and placed it into
@@ -321,9 +329,10 @@ our single page app.
 
 ===== Visualize Application Data Structure
 
-Let's build our application. First, consider how we
-will structure our data. We are going to use GitHub as our data store.
-GitHub is built on top of Git, a technology that could not be better suited for
+To really build this application we will need to take a step back and
+consider how we want to structure our data. Since we won't be using a
+server at all, we are going to use GitHub as our data store. GitHub is
+built on top of Git, a technology that could not be better suited for 
 storing content. However, there is a major difference between
 accessing data stored inside a Git repository and a traditional database:
 searchability. Git repositories are great for storing data, and
@@ -358,8 +367,8 @@ Testing facilitates "social coding."
 
 We'll use a tool called `karma`. Karma simplifies writing JavaScript
 unit tests. We need to first install the tool, then write a test or two.
-Karma can easily be installed using NPM, which we document in the
-first chapter.
+Karma can easily be installed using NPM (installation of which is
+documented in the <<appendix>>).
 
 [source,bash]
 -------
@@ -377,6 +386,10 @@ snippet~~~~~
 To be replaced
 snippet~~~~~
 -------
+
+This is more or less a default Karma configuration file, with the
+`files` section specifying the load order of our JavaScript
+implementations and the test scripts.
 
 To write the test, let's clarify what we want our code to do:
 
@@ -607,7 +620,7 @@ Uncaught TypeError: Cannot call method 'select' of undefined
 
 If you click on the link to the right for github.js, you'll see this.
 
-image::images/javascript-underscore-missing.png[]
+image::images/javascript-underscore-missing.png[An Unexpected Error]
 
 You see at the point of error that we are calling `select` on the tree.
 Select appears to be a method defined on an underscore character. If
@@ -918,7 +931,7 @@ their settings as well. With oAuth we can revoke a single token at any
 time (and GitHub makes it easy to do this) without affecting access to
 other services.  
 
-==== Everything on GitHub, except for one piece
+==== Authentication Requires a Server
 
 We would like to host everything on GitHub, but sadly there is one
 piece which we cannot host there: the authentication component.
@@ -990,7 +1003,7 @@ snippet~~~~~
 Now, we need to create a new GitHub application. In the top right
 corner on GitHub.com, click on the "Account settings" link, and then
 navigate to the "Applications" link towards the bottom. Click on the
-"Register new application" button, and you'll see the following.
+"Register new application" button.
 
 image::images/javascript-new-application.png[]
 
@@ -1008,7 +1021,9 @@ of course.
 
 [source,bash]
 -----
-GITHUB_CLIENT_ID=1234567890abcdefghijk GITHUB_CLIENT_SECRET=0987654321kmnopqrstuv node node/github-local-login.js
+$ GITHUB_CLIENT_ID=1234567890abcdefghijk \
+GITHUB_CLIENT_SECRET=0987654321kmnopqrstuv \
+node node/github-local-login.js
 -----
 
 To be brutally honest, this code is not entirely intuitive, is it?
@@ -1065,7 +1080,7 @@ Once you have created the app, click on "View Firebase" button. You'll
 then see a settings screen, and click on "Simple Login" and then
 "GitHub."
 
-image::images/javascript-view-firebase.png[]
+image::images/javascript-view-firebase.png[Creating the Firebase Hosted Login]
 
 Next, in our GitHub oAuth application settings, change the
 "Authorization callback URL" to
@@ -1203,3 +1218,4 @@ all the administrative features of a data entry system, delegating all
 these to GitHub. Our single page app allows us a single point of
 focus: making a cool and useful application.
 
+In the next chapter we will look at Jekyll, the GitHub blogging tool. 
