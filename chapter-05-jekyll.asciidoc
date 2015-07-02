@@ -1,3 +1,4 @@
+[[Jekyll]]
 == Jekyll: nouveau, yet antiquated, blogging on GitHub
 
 The GitHub Jekyll repository (https://github.com/jekyll/jekyll) calls
