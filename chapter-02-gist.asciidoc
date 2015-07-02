@@ -172,11 +172,11 @@ fully working and packaged applications inside a Git repository.
 
 === Gists as fully functioning apps
 
-To demonstrate this ability, let's build a simple Sinatr
+To demonstrate this ability, let's build a simple Sinatra
 application. Sinatra is a ruby library for creating dead-simple web
-servers. A sinatra program looks as simple as this:
+servers. A Sinatra program looks as simple as this:
 
-[code,ruby]
+[source,ruby]
 -----
 require 'sinatra'
 
@@ -214,7 +214,7 @@ hi.rb
 
 To run this code, enter `ruby hi.rb`
 
-If you had not used sinatra with ruby before, this will cause an
+If you had not used Sinatra with ruby before, this will cause an
 error. This program requires a library called "sinatra" and 
 you have not yet installed it. We could write a README, or add
 documentation into this file itself. Another 
@@ -228,7 +228,7 @@ best way:
 $ printf "source 'https://rubygems.org'\ngem 'sinatra'" > Gemfile
 -----
 
-The `bundle` command (from the bundler gem) will install sinatra and
+The `bundle` command (from the bundler gem) will install Sinatra and
 the associated dependencies.
 
 [source,bash]
@@ -298,7 +298,7 @@ Zimmer http://www.bostonglobe.com/ideas/2012/05/05/dude-this-headline-meta-dude-
 
 Add a view `index.erb` at the root of our directory.
 
-[code,ruby]
+[source,ruby]
 -----
 <html>
 <body>
@@ -320,7 +320,7 @@ gem "octokit"
 Run `bundle` to install octokit. Then, modify our hi.rb app to look
 like this:
 
-[code,ruby]
+[source,ruby]
 -----
 require 'sinatra'
 require 'octokit'
