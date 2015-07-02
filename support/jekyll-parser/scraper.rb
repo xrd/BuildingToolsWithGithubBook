@@ -110,11 +110,12 @@ TEMPLATE
   end
   
   def get_ith_page( i )
-    root = "https://web.archive.org/web/20030502080831/http://www.bytravelers.com/journal/entry/#{i}"
+    root = "https://web.archive.org/web/20030502080831/" + 
+      "http://www.bytravelers.com/journal/entry/#{i}"
     begin
-      VCR.use_cassette("bt_#{i}") do 
+      VCR.use_cassette("bt_#{i}") do # <1>
         mechanize.get( root ) do |page|
-          rows = ( page / "table[valign=top] tr" ) 
+          rows = ( page / "table[valign=top] tr" ) # <2>
           if rows and rows.length > 3
             title = process_title( i, rows[1] )
             body = process_body( title, i, rows[4] ) 
