@@ -7,13 +7,13 @@ Murasaki Shibu and produced The Tale of Genji, Japan's greatest novel.
 In the 7th century during the Umayyad Caliphate of modern day
 Damascus, glittering Arabic palaces provided fertile ground for
 the creation of a new form of poetry, the ghazal ("love poems") the
-influence of which still courses through modern Arabic poetry. 
+influence of which still courses through modern Arabic poetry.
 
 Each era of major creative innovation has been backdropped by a unique
 and plumb space where collaboration and creativity flourished. Today,
 the collaborative gathering space for some of the world's greatest artists
 (artists who work as software developers) is a virtual town square, a
-site called GitHub. 
+site called GitHub.
 
 === Who You Are
 
@@ -21,12 +21,12 @@ This book should be an interesting source of information for people
 who have used Git or GitHub and want to "level-up" their skills
 related to these technologies. People without any experience using
 GitHub or Git should start with an introductory book on these
-technologies. 
+technologies.
 
 You should have a good familiarity with at least one imperative modern
 programming language. You don't need to be an expert programmer to
 read this book, but having some programming experience and familiarity
-with at least one language is essential. 
+with at least one language is essential.
 
 You should understand the basics of the HTTP protocol. The GitHub team
 uses a very standard RESTful approach for its API. You should
@@ -58,7 +58,7 @@ skills with Git and within a web service like GitHub.
 Like any seasoned developer, automation of your tools is important to
 you, and this book provides examples of mundane tasks that we then
 convert them into automated and repeatable processes, and we show how
-to do this using a variety of languages talking to the GitHub API.  
+to do this using a variety of languages talking to the GitHub API.
 
 If you are unfamiliar with the "command line" this book will give you
 a firm understanding of how to use it, and we bet you will find great
@@ -72,11 +72,11 @@ If you absorb not only the technical facets of using GitHub but also
 pay attention to the cultural and ideological changes offered behind
 the tools, you'll very likely see a new way of working in the modern
 age. We focus on these "meta" viewpoints as we discuss the tools
-themselves to help you see these extra opportunities. 
+themselves to help you see these extra opportunities.
 
 Almost every chapter has an associated repository hosted on GitHub
 where you can review the code discussed. Fork away and take these
-samples into your own projects and tools! 
+samples into your own projects and tools!
 
 Finally, we help you write testable API backed code. Even the most experienced
 developers often find that writing tests for their code is a
@@ -85,13 +85,13 @@ code with tests. Testing can be especially challenging when you are
 testing something backed by an API; it requires a different level of
 thinking than is found in strict unit testing. To help you get past
 this roadblock, whenever possible, this book shows you how to write
-code which interacts with the GitHub API and is testable. 
+code which interacts with the GitHub API and is testable.
 
 === First Class Languages You Need to Know
 
 There are two languages which are so fundamentally linked to GitHub
 that you do need to install and use them in order to get the most out
-of this book. 
+of this book.
 
 * Ruby: a simple, readable programming language used heavily by the
   founders of GitHub.
@@ -99,7 +99,7 @@ of this book.
   importance has grown to new heights with the introduction of
   NodeJS, rivaling even the popularity of Ruby on Rails as a server
   side toolkit for web applications, especially for independent
-  developers. 
+  developers.
 
 Your time will not be wasted if you install and play with these two
 tools. Between them you will have a solid toolset to begin
@@ -129,21 +129,7 @@ aspirational way that client library authors made it work within
 diverse programming languages and communities. We think there is a lot
 to learn from this approach, but if you are interested in only a
 specific language and how it works with the GitHub API, this is not
-the book for you. 
-
-* Font Conventions
-
-* Github Writing Conventions
-
-* Downloading Code Examples
-
-* Using Code Examples
-
-* Safari Books Online
-
-* How to Contact Us
-
-* Acknowledgements
+the book for you.
 
 === Conventions Used in This Book
 
@@ -230,7 +216,10 @@ Chris wants to thank his lovely wife, Nicole. I hope that I have added
 to this book even a tiny bit of the wit and wisdom you provide to me
 and our family every day. My son Roosevelt's energy continues to
 inspire me and keep me going even when I am at my limits, even when
-you take me to the limit. To my daughter Charlotte, you are my 
+you take me to the limit. To my daughter Charlotte, you are my
 little smiling Buddha. To my mother, who showed me how and why to
 write. To Tim O'Brien who invited me into this project, I hope we can
-collaborate again. 
+collaborate again.
+
+Ben would like to thank his wife, Becky, for her ongoing support and (when needed) push from behind.
+None of this would have happened without you.
