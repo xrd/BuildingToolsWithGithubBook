@@ -190,7 +190,7 @@ response format is JSON.
 
 What can we learn from this API response? 
 
-=== Responses are Breadcrumbs to the Rest of the API
+=== Breadcrumbs to Successive API Paths
 
 The GitHub API is a Hypermedia API. Though a discussion on what constitutes
 hypermedia deserves an entire book of its own (Check out O'Reilly's
@@ -226,13 +226,13 @@ guarantee that is sadly missing from many other APIs.
 
 Now let's briefly discuss the format of all GitHub API responses: JSON.
 
-=== JSON
+=== The JavaScript Object Notation (JSON) Format
 
 Every response you get back from the GitHub API will be in the JSON
 format. JSON is a "lightweight data interchange format" (read more on
 the JSON.org website). There are other competing and effective
 formats, such as XML or YAML, but JSON is quickly becoming the defacto 
-standard for web services.
+standard for web services. 
 
 A few of the reasons why JSON is so popular:
 
@@ -299,7 +299,9 @@ restrict that information and clean up the request we should use the
 It should be easy to understand how the jq filter is applied to the
 response JSON. For a more complicated request (for example, we might
 want to obtain a list of public repositories for a user), we can see
-the pattern for the jq pattern parameter emerging.
+the pattern for the jq pattern parameter emerging. Let's get a more
+complicated set of information, a user's list of repositories and see
+how we can extract information from the response using jq.
 
 [source,bash]
 ------
@@ -327,8 +329,9 @@ specify a numeric index, and then key into the successive associative
 arrays inside of it to reach the desired content: the owner id.
 
 Jq is a great tool for checking the validity of JSON. As mentioned
-before, JSON only uses double-quotes, not single quotes. You can
-verify that JSON is valid with jq as well.
+before, JSON key/values are stored only with double-quotes, not single
+quotes. You can verify that JSON is valid and satisfies this
+requirement using jq.
 
 [source,bash]
 -----
@@ -704,12 +707,19 @@ flow where:
 * GitHub responds with a token inside a JSON payload
 * the application uses the oAuth token to make requests of the API.
 
-A real world flow is described in full in the Hubot chapter.
+A real world flow is described in full in the <<Hubot chapter>>.
+
+Now let's review an important fundamental when using web services, the
+importance of the HTTP status code.
 
 === Status Codes
 
 The GitHub API uses HTTP status codes to tell you definitive
-information about how your request was processed. 
+information about how your request was processed. If you are using a
+basic client like cURL, it will be important to validate the status
+code before you look at any of the data retrieved. If you are writing
+your own API client, pay close attention to the status code before
+anything else.
 
 ==== Success (200 or 201)
 
@@ -729,7 +739,7 @@ Status: 200 OK
 ==== Naughty JSON (400)
 
 If your payload (the JSON you send to a request) is invalid, the
-GitHub API will respond with a 400 error. 
+GitHub API will respond with a 400 error, as shown below.
 
 [source,bash]
 -----
@@ -843,10 +853,10 @@ are concerned about your usage limits (and in most cases you will
 be). You need to trigger 304s manually by adding conditional headers
 to your request.
 
-===== Conditional Requests to Avoid Rate Limits
+=== Conditional Requests to Avoid Rate Limitations
 
 If you are querying the GitHub APIs to obtain activity data for a user
-or a repository, there's a good chance that mamy of your requests
+or a repository, there's a good chance that many of your requests
 won't return much activity.  If you check for new activity once every
 few minutes, there will be time periods over which no activity has
 occurred.  These requests, these constant polls still use up requests
@@ -861,7 +871,7 @@ with a HTTP 304 response code, this request is not deducted from your
 rate limit.
 
 The following command listing is an example of passing in the
-If-Modified-Since HTTP header to the GitHub API.   Here we've
+If-Modified-Since HTTP header to the GitHub API. Here we've
 specified that we're only interested in receiving content if the
 Twitter Boostrap repositories has been altered after 7:49 PM GMT on
 Sunday, August 11, 2013.  The GitHub API responds with a HTTP 304
@@ -935,6 +945,9 @@ to reduce the overall load on the GitHub API.
 Use of conditional request headers is encouraged to conserve resources
 and make sure that the infrastructure that supports GitHub's API isn't
 asked to generated content unnecessarily.
+
+You might now be wondering: what are my rate limits and when should I
+care about them? 
 
 [[developer-api-rates]]
 ==== GitHub API Rate Limits
@@ -1019,6 +1032,12 @@ authenticated requests.
 Calls to the Rate Limit API are not deducted from your Rate Limit.
 Isn't that nice of them?
 
+At this point we have been accessing the GitHub API from a cURL
+client, and as long as our network permits it, we can do whatever we
+want. The GitHub API is accessible in other situations as well, like
+from within a browser context, and certain restrictions apply there,
+so let's discuss that next.
+
 === Accessing Content from the Web
 
 If you are using the GitHub API from a server side program or the
@@ -1030,7 +1049,7 @@ imposed by the browser's same-origin policy. In a nutshell, you are
 not able to access domains from JavaScript using standard XHR requests
 outside of the domain from which you retrieved the original
 page. There are two options for getting around this restriction, one
-clever and one fully supported but slightly more onerous.
+clever (JSON-P) and one fully supported but slightly more onerous (CORS).
 
 ==== JSON-P 
 
@@ -1098,6 +1117,9 @@ Because JSON-P works via <script> tags, only GET requests to the API
 are supported. If you only need read-only access to the API, JSON-P
 can fulfill that need in many cases, and it is easy to configure.
 
+If JSON-P seems too limiting or hackish, CORS is a more complicated
+but official way to access external services from within a web page.
+
 ==== CORS Support
 
 CORS is the "correct" way to access GitHub content from within a browser
@@ -1149,7 +1171,11 @@ confirm that CORS is permitted, you can make XHR requests to the
 GitHub API domain as you would any other XHR request going into the
 same domain. 
 
-[developer-api-accept]
+We've covered much of the details of connecting and dissecting the
+GitHub API, but there are a few other options to know about when using
+it. One of them is that you can use the GitHub API service to provide
+rendered content when you need it.
+
 ==== Specifying Response Content Format
 
 When you send a request to the GitHub API, you have some ability to
@@ -1158,7 +1184,7 @@ are requesting content that contains text from a commit's comment
 thread, you can use the Accept header to ask for the raw markdown or
 for the HTML this markdown generates.  You also have the ability to
 specify this version of the GitHub API you are using.  At this point,
-you can specify either version 3 or beta of the API.
+you can specify either version 3 or beta of the API. 
 
 ===== Retrieving Formatted Content
 
@@ -1172,18 +1198,21 @@ commands demonstrate.
 
 [source,bash]
 ----
-$ curl -s https://api.github.com/repos/rails/rails/issues/11819 | jq '.body'
-"Hi, \r\n\r\nI have a problem with strong parameters in rails 4...."
-$ curl https://api.github.com/repos/rails/rails/issues/11819 | jq '.body_html'
-null
-$ curl -s https://api.github.com/repos/rails/rails/issues/11819 \
+$ URL='https://api.github.com/repos/rails/rails/issues/11819'
+$ curl -s $URL | jq '.body'
+"Hi, \r\n\r\nI have a problem with strong...." # <1>
+$ curl -s $URL | jq '.body_html' 
+null # <2>
+$ curl -s $URL \
 -H "Accept: application/vnd.github.html+json" | jq '.body_html'
-"<p>Hi, </p>\n\n<p>I have a problem with strong parameters in rails..."
+"<p>Hi, </p>\n\n<p>I have a problem with..." # <3>
 ----
 
-In the first instance, we get the internal representation of the data,
-sent as markdown. If we don't request the HTML representation, we
-don't see it in the JSON. If we use a customized accept header like in
+<1> Without specifying an extra header, we get the internal
+representation of the data, sent as markdown. 
+<2> Note that if we don't request the HTML representation, we
+don't see it in the JSON by default.
+<3> If we use a customized accept header like in
 the third instance, then our JSON is populated with a rendered version
 of the body in HTML.
 
@@ -1217,3 +1246,14 @@ their API with examples using cURL. Bookmark this URL:
 https://developer.github.com/v3/. You'll use it often. Do note that
 this URL is tied, obviously, to the current API "Version 3", so this
 URL will change when a new version is released. 
+
+=== Summary
+
+In this chapter we learned how to access the GitHub API from the
+simplest client available: the command line cURL HTTP tool. We also
+explored the API by looking at the JSON and played with a command line
+tool (jq) that when paired with cURL gives us the ability to quickly
+find information in the often large body of data the GitHub API
+provides. We learned about the different authentication schemes
+supported by GitHub, and also learned about the possibilities and
+tradeoffs when accessing the GitHub API from within a browser context. 
