@@ -1,3 +1,4 @@
+[[JavaScript]]
 == A Single Page App using the GitHub API with JavaScript
 
 GitHub offers libraries which work within other programming languages

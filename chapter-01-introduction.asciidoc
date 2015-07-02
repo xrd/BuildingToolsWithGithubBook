@@ -529,7 +529,6 @@ when we authenticate and access private information and publicly
 inaccessible services, like writing data to GitHub. We'll discuss how
 and why you want to use authentication next.
 
-[[authentication]]
 === Authentication
 
 There are two ways to authenticate when making a request to the GitHub

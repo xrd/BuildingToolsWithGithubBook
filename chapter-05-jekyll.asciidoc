@@ -46,7 +46,7 @@ complexity and freedom. When you look at a site built by Jekyll, you
 are looking at a set of static files, backed by nothing more complex
 than the same web server technologies available in 1998.
 
-==== The need for Jekyll
+=== The need for Jekyll
 
 Though you won't see it in the documentation, the popularity of Jekyll
 is due in large part to the desire of bloggers, especially very technical ones,
@@ -120,7 +120,7 @@ dependencies so that a site that works on our local laptop also works
 when published into GitHub. If you don't take care of this, you'll
 occasionally get an email like this from GitHub: 
 
-[quote]
+[source,bash]
 ----
 
  The page build failed with the following error:
@@ -130,7 +130,6 @@ occasionally get an email like this from GitHub:
  For information on troubleshooting Jekyll see
  https://help.github.com/articles/using-jekyll-with-pages#troubleshooting
  If you have any questions please contact GitHub Support.
-
 
 ----
 
@@ -322,8 +321,21 @@ this file and investigate some of the important pieces.
 
 ==== YFM: YAML Front Matter
 
-Starting at the top, we see the YAML Front
-Matter (YFM). YFM is a snippet of YAML ("YAML Aint Markup Language")
+The first thing we see in a Jekyll file is the YAML Front
+Matter (YFM). 
+
+[source,yaml]
+-----
+---
+layout: post
+title:  "Welcome to Jekyll!"
+date:   2014-03-03 12:56:40
+categories: jekyll update
+---
+-----
+
+
+YFM is a snippet of YAML ("YAML Aint Markup Language")
 delimited by three hyphens on both the top and bottom. YAML is a simple structured
 data serialization language used by many open source projects instead
 of XML. Many people find it more readable and editable by humans
@@ -399,6 +411,13 @@ Markdown, you'll find Markdown to be insidiously clever in the way it
 provides formatting characters without the onerous weight that HTML
 requires to offer the same explicit formatting.
 
+[source,yaml]
+-----
+Check out the [Jekyll docs][jekyll] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll's GitHub repo][jekyll-gh].
+
+[jekyll-gh]: https://github.com/mojombo/jekyll
+-----
+
 Links can be specified using `[format][link]`, where `link` is the
 fully qualified URL (like "http://example.com"), or a reference to a
 link at the bottom of the page. In our page we have two references,
@@ -468,7 +487,9 @@ push it into your repository.
 Jekyll does not support theming internally, but it is trivial to add
 any CSS files or entire CSS frameworks. You could do this yourself, or
 you could just fork an existing jekyll blog which has the theming you
-like. The most popular themed Jekyll blog structure is Octopress. 
+like. The most popular themed Jekyll blog structure is Octopress. We
+don't display this here, but you another easy option is to add the
+Bootstrap CSS library just as we did in the <<JavaScript>> chapter.
 
 ==== Publishing on GitHub
 
@@ -772,7 +793,7 @@ source code and database, could we recover the site from just the
 Internet Archive? Let's retrieve the articles from the Internet
 Archive and make them into a modern Jekyll site. 
 
-===== Jekyll scraping tactics
+==== Jekyll Scraping Tactics
 
 We'll use Ruby to scrape the site; Ruby has some intuitive gems like
 mechanize which provide automation of web clients. There is an API for
@@ -840,7 +861,7 @@ path we need to take inside the DOM to reach this particular piece of content. W
 indications in hand, we can start to write our parser to extract this
 text from pages scraped from the archive.
 
-====== Writing our Parser
+===== Writing our Parser
 
 Let's start by writing a parser class. You might raise an eyebrow and
 think that making our scraper script into an object oriented program
@@ -956,112 +977,25 @@ and the title by implementing the `get_ith_page` method.
 
 [source,ruby]
 -----
-    body = page[1]
-    creation_date = page[2]
-    location = page[3]
-    
-    title.gsub!( /"/, '' )
-    
-    template = <<"TEMPLATE" 
----
-layout: post   
-title: "#{title}"  
-published: true
-image: #{image}
-location: #{location}
----
-
-#{body}
-TEMPLATE
-
-    title_for_filename = title.downcase.gsub( /,+/, '' ).gsub( /[\s\/\:\;]+/, '-') 
-    # puts "Title: #{title_for_filename}"
-    filename = "_posts/#{creation_date}-#{title_for_filename}.md"
-    File.open( filename, "w+" ) do |f|
-      f.write template
-    end
-  end
-
-  def run
-    100.times do |i| 
-      get_ith_page( i ) 
-    end
-    100.times do |i|
-      if pages[i]
-        write_post( pages[i] ) 
-      end
-    end
-  end
-
-  def process_creation_date( i, row )
-    location, creation_date = row.text().split /last updated on:/ 
-    creation_date.strip()
-  end  
-
-  def process_location( i, row )
-    location, creation_date = row.text().split /last updated on:/  # <1>
-
-    location.gsub!( /Concerning: /, "" ) # <2>
-    location.strip!
-    return location # <3>
-  end  
-
-  
-  def process_body( name, i, row )
-    body = ""
-    if row
-      ( row / "p" ).each do |p|
-        text = p.text()
-        text.strip!
-        text.gsub!( /\*\s*/, '' )
-        body += text + "\n\n"
-      end
-    end
-    body 
-  end
-
-  def process_title( i, title )
-    img = ( title / "img" ) 
-    src = img.attr('src').text()
-    filename = src.split( "/" ).pop
-    
-    output = "assets/images/"
-    full = File.join( output, filename ) 
-    
-    unless File.exists? full
-      root = "https://web.archive.org"
-      remote = root + src
-      contents = `wget --quiet -O #{full} #{remote}`  
-    end
-    
-    title = title.text()
-    if title
-      title.gsub!( /Title:/, "" )
-      title.strip!
-    end
-    [ title, filename ] 
-    
-  end
-  
-  def get_ith_page( i )
-    root = "https://web.archive.org/web/20030502080831/http://www.bytravelers.com/journal/entry/#{i}"
-    begin
-      VCR.use_cassette("bt_#{i}") do 
-        mechanize.get( root ) do |page|
-          rows = ( page / "table[valign=top] tr" ) 
-          if rows and rows.length > 3
-            title = process_title( i, rows[1] )
-            body = process_body( title, i, rows[4] ) 
-            creation_date = process_creation_date( i, rows[3] )
-            location = process_location( i, rows[3] )
-            pages[ i ] = [ title, body, creation_date, location ]
-          end
+def get_ith_page( i )
+  root = "https://web.archive.org/web/20030502080831/http://www.bytravelers.com/journal/entry/#{i}"
+  begin
+    VCR.use_cassette("bt_#{i}") do 
+      mechanize.get( root ) do |page|
+        rows = ( page / "table[valign=top] tr" ) 
+        if rows and rows.length > 3
+          title = process_title( i, rows[1] )
+          body = process_body( title, i, rows[4] ) 
+          creation_date = process_creation_date( i, rows[3] )
+          location = process_location( i, rows[3] )
+          pages[ i ] = [ title, body, creation_date, location ]
         end
       end
-    rescue Exception => e
-      puts "Error: #{e}"
     end
+  rescue Exception => e
+    puts "Error: #{e}"
   end
+end
 -----
 
 <1> First, we load up a VCR cassette; this code says "store any HTTP requests
