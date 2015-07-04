@@ -167,7 +167,7 @@ site here: http://curl.haxx.se/download.html
 Let's make a request. We'll start with the most basic GitHub API
 endpoint found at https://api.github.com. 
 
-[source,bash]
+[source]
 -----
 $ curl https://api.github.com
 {
@@ -275,7 +275,7 @@ Going deeper, in the prior example, let's pull out something
 interesting from the API map that we receive when we access
 api.github.com. 
 
-[source,bash]
+[source]
 ------
 $ curl https://api.github.com | jq '.current_user_url'
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
@@ -301,7 +301,7 @@ response JSON. For a more complicated request (for example, we might
 want to obtain a list of public repositories for a user), we can see
 the pattern for the jq pattern parameter emerging.
 
-[source,bash]
+[source]
 ------
 $ curl -s https://api.github.com/users/xrd/repos
 [ 
@@ -330,7 +330,7 @@ Jq is a great tool for checking the validity of JSON. As mentioned
 before, JSON only uses double-quotes, not single quotes. You can
 verify that JSON is valid with jq as well.
 
-[source,bash]
+[source]
 -----
 $ echo '{ "a" : "b" }' | jq '.'
 {
@@ -370,7 +370,7 @@ prints out request headers, and the `-v` switch prints out both
 request and response headers (the `>` character indicates request
 data, and the `<` character indicates response data).
 
-[source,bash]
+[source]
 -----
 $ curl -i https://api.github.com                                                     
 HTTP/1.1 200 OK
@@ -436,7 +436,7 @@ format you want to work with by sending an Accept header with your request.
 
 Let's look at the full response from the original request.
 
-[source,bash]
+[source]
 ----
 $ curl -i https://api.github.com/
 HTTP/1.1 200 OK
@@ -486,7 +486,7 @@ Using this map, is there anything interesting we can retrieve, perhaps
 information about GitHub itself? We can use the organizational URL and
 substitute "github" in the placeholder.
 
-[source,bash]
+[source]
 -----
 $ curl https://api.github.com/orgs/github
 {
@@ -619,7 +619,7 @@ to use HTTP Basic in successive requests. If this token is properly
 issued, the oAuth token will have permissions to read and write to
 public repositories owned by that user. 
 
-[source,bash]
+[source]
 -----
 $ curl -u username -d '{"scopes":["public_repo"]}' https://api.github.com/authorizations
 {
@@ -647,7 +647,7 @@ with the API, but the syntax in cURL looks like the following. For a
 full flow, check out the Hubot chapter which shows how to use cURL
 with an oAuth token.
 
-[source,bash]
+[source]
 -------
 $ curl -H "Authorization: token abcdef87654321" ...
 -------
@@ -721,7 +721,7 @@ parameters are correct. If your request creates content on the server,
 then you will get a 201 status code, indicating a successful creation on
 the server.
 
-[source,bash]
+[source]
 -----
 $ curl -s -i https://api.github.com | grep Status
 Status: 200 OK
@@ -732,7 +732,7 @@ Status: 200 OK
 If your payload (the JSON you send to a request) is invalid, the
 GitHub API will respond with a 400 error. 
 
-[source,bash]
+[source]
 -----
 $ curl -i -u xrd -d 'yaml: true' -X POST https://api.github.com/gists
 Enter host password for user 'xrd':
@@ -806,7 +806,7 @@ key inside the request payload.
 
 Now, let's use valid JSON and see what happens:
 
-[source,bash]
+[source]
 -----
 $ curl -i -u xrd \
 -d '{"description":"A","public":true,"files":{"a.txt":{"content":"B"}}} \
@@ -1047,7 +1047,7 @@ indicating what callback you want the script to execute once loaded.
 
 We can simulate this request in cURL:
 
-[source,bash]
+[source]
 -----
 $ curl https://api.github.com/?callback=myCallback                                    
 /**/myCallback({
@@ -1121,7 +1121,7 @@ CORS request. In this case we only care about the headers, so we use
 the `-I` switch which tells cURL to make a HEAD request, telling the
 server not to respond with body content.
 
-[source,bash]
+[source]
 -----
 curl -I https://api.github.com
 HTTP/1.1 200 OK
@@ -1171,7 +1171,7 @@ wanted to render the response as HTML instead of markdown, we could do
 this by sending a different accept header, as the following cURL
 commands demonstrate.
 
-[source,bash]
+[source]
 ----
 $ curl -s https://api.github.com/repos/rails/rails/issues/11819 | jq '.body'
 "Hi, \r\n\r\nI have a problem with strong parameters in rails 4...."
