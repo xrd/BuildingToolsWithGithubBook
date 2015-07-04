@@ -106,7 +106,7 @@ involvement among the users of the tool.
 To use jekyll, you'll need the `jekyll` gem. You could do this by
 running the command:
 
-[source,bash]
+[source]
 ------
 $ gem install jekyll
 ------
@@ -120,7 +120,7 @@ dependencies so that a site that works on our local laptop also works
 when published into GitHub. If you don't take care of this, you'll
 occasionally get an email like this from GitHub: 
 
-[source,bash]
+[source]
 ----
 
  The page build failed with the following error:
@@ -145,7 +145,7 @@ to make sure that everything is properly setup and synchronized and
 generally this will reproduce the issues on your local setup, which is
 a much faster place to fix them.
 
-[source,bash]
+[source]
 ------
 $ printf "gem 'github-pages' >> Gemfile
 $ bundle install
@@ -159,7 +159,7 @@ way to your jekyll tool synced with the version running on GitHub.
 Now that we have our required tools, let's create a simple blog. Run
 these commands.
 
-[source,bash]
+[source]
 -----
 $ jekyll new myblog
 $ cd myblog
@@ -257,7 +257,7 @@ jekyll command, and whether to use pygments to do syntax highlighting.
 
 To view this site locally run this command:
 
-[source,bash]
+[source]
 -----
 $ jekyll serve
 -----
@@ -491,7 +491,7 @@ and pushing your files up. If you use the `hub` gem (a gem for interacting with 
 you can go from start to finish with a few simple commands. Make sure
 to change the first line to reflect your username. 
 
-[source,bash]
+[source]
 ------
 $ export USERNAME=xrd 
 $ jekyll new $USERNAME.github.io
@@ -522,7 +522,7 @@ the GitHub servers.
 To work on the gh-pages branch, check it out and create the branch
 inside your repository. 
 
-[source,bash]
+[source]
 -----
 $ git checkout -b gh-pages
 $ rake post title="My next big blog post"
@@ -541,7 +541,7 @@ the gh-pages branch whenever you do a push.
 The CNAME file is a simple text file with the domain name inside of
 it. 
 
-[source,bash]
+[source]
 -----
 $ echo 'mydomain.com' > CNAME
 $ git add CNAME
@@ -555,7 +555,7 @@ admin page of your repository. An easy way to get there is using the
 `github` gem, no longer actively maintained but still a useful command
 line tool.
 
-[source,bash]
+[source]
 -----
 $ gem install github
 $ github admin # Opens up https://github.com/username/repo/settings
@@ -623,7 +623,7 @@ are installed alongside the other tools packaged with this bundle.
 Once you have the `jekyll-import` gem, you can convert a Wordpress
 blog using a command like this:
 
-[source,bash]
+[source]
 ----
 $ ruby -rubygems -e 'require "jekyll-import";  
     JekyllImport::Importers::WordPress.run({
@@ -660,7 +660,7 @@ false`.
 Another alternative is to export the entire database as an XML file.
 Then, you can run the importer on that file.
 
-[source,bash]
+[source]
 ----
 ruby -rubygems -e 'require "jekyll-import";
     JekyllImport::Importers::WordpressDotCom.run({
@@ -881,7 +881,7 @@ function just prints out the index it is supposed to scrape.
 Like other chapters which use Ruby, we create a `Gemfile` to manage
 our dependencies and then install them using the `bundle` command.
 
-[source,bash]
+[source]
 -----
 $ printf "source 'https://rubygems.org'\ngem 'vcr'\ngem 'mechanize'\ngem 'webmock'\n" >> Gemfile
 $ bundle
@@ -901,7 +901,7 @@ snippet~~~~~
 
 If we run this code now, we will just see our debug output.
 
-[source,bash]
+[source]
 -----
 $ ruby run.rb
 ...
@@ -954,7 +954,7 @@ index in parentheses, the title and the first 50 characters of the body.
 
 If we run our code now, we will see the body of our journal entries.
 
-[source,bash]
+[source]
 -------
 $ ruby run.rb
 (4) Third day in Salvador :: I'm now entering the my third day in Salvador.  Th
@@ -1029,7 +1029,7 @@ We need to create a Git repository which we can push into GitHub.
 There is no reason why we cannot store our scraper scripts inside it,
 so let's just add the files to the same directory
 
-[source,bash]
+[source]
 ------
 $ git init
 $ mkdir _posts
@@ -1153,7 +1153,7 @@ snippet~~~~~
 Taking a moment to add our files to the Git repository, we can then
 take a look at our site using the `jekyll` command line tool.
 
-[source,bash]
+[source]
 ----
 $ git add .
 $ git commit -m "Make this into a Jekyll site"
@@ -1183,7 +1183,7 @@ individually and change the line `published: false` inside our YFM to
 inside our site. Let's do this for three of the files. Notice the
 server regenerates our files each time we change one of them.
 
-[source,bash]
+[source]
 -------
 ...
       Regenerating: 1 files at 2014-06-20 12:54:52 ...done.
@@ -1259,7 +1259,7 @@ our site, and automatically propagate changes down into lower layout files.
 
 Add these changes to the index, and commit them.
 
-[source,bash]
+[source]
 -----
 $ git add .
 $ git commit -m "Added layout specific to posts"
@@ -1289,7 +1289,7 @@ that our post files have changed. We can also verify that we made the
 correct changes by using the `git diff _posts` command. The result
 will be something like the following.
 
-[source,bash]
+[source]
 ------
 $ git diff _posts
 diff --git a/support/jekyll-parser/_posts/2000-05-23-third-day-in-salvador.md b/support/jekyll-parser/_posts/2000-05-23-third-day-in-salvador.md
@@ -1550,7 +1550,7 @@ Like any other GitHub repository, we can then publish our blog using
 the same commands we saw with earlier repositories. Obviously you
 should change the username and blog name to suit your own needs. 
 
-[source,bash]
+[source]
 ----
 $ export BLOG_NAME=xrd/bytravelers.com
 $ gem install hub
