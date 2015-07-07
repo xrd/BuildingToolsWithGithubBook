@@ -16,13 +16,13 @@ more elegant way to do things.
 More concretely, Jekyll specifies a format that will take a set of
 files and compile them into HTML. Jekyll builds on top of two proven
 tools: Markdown, a markup language which is surprisingly readable and
-surprisingly expressive, and Liquid Templates, a simple programming
-language which gives you just enough components to build modern web
+expressive, and Liquid Templates, a simple programming language which
+gives you just enough components to build modern web 
 pages requiring conditionals and loops, but safe enough that you can
 run untrusted pages on public servers. With these two technologies and
 agreement on a layout structure, Jekyll can build very complicated web
-sites without starting from a complicated structure of files and
-technologies. 
+sites paradoxically without requiring a complicated structure of files
+and technologies. 
 
 Jekyll works natively with GitHub because a Jekyll blog is
 stored as a Git repository. When you push files into GitHub from a
@@ -38,15 +38,20 @@ tools.
 Oddly enough, Jekyll takes us back to the advent of
 the web when all pages were static, and often created by hand. 
 Nowadays most modern sites are dynamically generated using a
-database backend. Jekyll suprises us with a tool that recognizes we
-only need to be dynamic when new content is created not when a new visitor
-requests the same page as the previous visitor. Unexpectedly, this
-acknoledgement results in a massive reduction in
-complexity and freedom. When you look at a site built by Jekyll, you
-are looking at a set of static files, backed by nothing more complex
-than the same web server technologies available in 1998.
+database backend. Jekyll provides us with a tool that recognizes we
+only need to be dynamic when new content is created and not when a new
+visitor requests the same page as the previous visitor. This is 
+unfortunately how many sites work right now, resulting in the same
+page being regenerated over and over, and has led to overwrought
+solutions like page caching which has layered more lipstick on the
+pig. By acknowledging these facts, there is a massive reduction in
+complexity of Jekyll sites and with it, immense freedom. It may feel
+like you have traveled back in time, because when you look at a site
+built by Jekyll, you are looking at a set of static files, backed by
+nothing more complex than the same web server technologies available
+before the dot com bust of 2000.
 
-=== The need for Jekyll
+=== The Toxic Brew that Spawned Jekyll
 
 Though you won't see it in the documentation, the popularity of Jekyll
 is due in large part to the desire of bloggers, especially very technical ones,
@@ -90,7 +95,7 @@ benefit of doing things the "Jekyll" way is that all dependencies can
 sit within a repository, and this means your entire site can be hosted
 on GitHub. 
 
-==== The father of Jekyll
+==== (Less Than) Evil Scientist Parents
 
 Like many of the open source technologies in heavy usage at GitHub,
 jekyll was originally developed by Tom Preson Warner, one of the
@@ -101,10 +106,10 @@ brilliance of the original developers or the brilliance of the idea,
 but the way that those original developers cultivated community and
 involvement among the users of the tool.
 
-==== Running Jekyll locally
+==== Operating Jekyll Locally
 
-To use jekyll, you'll need the `jekyll` gem. You could do this by
-running the command:
+To really use jekyll, you'll need the `jekyll` gem. As we explain in
+the <<appendix>>, we could install a ruby gem using this command:
 
 [source]
 ------
@@ -152,9 +157,11 @@ $ bundle install
 ------
 
 Creating and managing your dependencies inside a Gemfile is the smart
-way to your jekyll tool synced with the version running on GitHub.
+way to get your jekyll tool synced with the version running on GitHub.
 
-==== Jekyll quick start
+Now we are ready to create a Jekyll blog.
+
+=== A Jekyll Blog in 15 Minutes
 
 Now that we have our required tools, let's create a simple blog. Run
 these commands.
@@ -633,7 +640,7 @@ prefer Markdown, but they work fine with HTML content, so you can
 often convert a blog with minimal effort, and there are good tools
 which automate things for you.
 
-==== Wordpress to Jekyll
+==== From Wordpress
 
 The most popular importer is the Wordpress importer. You will need the 
 the 'jekyll-import' gem, which is installed separately from the jekyll
@@ -712,7 +719,7 @@ which provides a much higher level of fidelity between the original
 Wordpress site and the final Jekyll site, but has a longer learning
 curve and option set.
 
-==== Exporting from Worpdress alternatives
+==== Exporting from Wordpress alternatives
 
 If you use another blog format other than Wordpress, chances are there
 is a Jekyll importer for it. Jekyll has dozens of importers, well
@@ -726,18 +733,31 @@ from Tumblr blogs.
 $ ruby -rubygems -e 'require "jekyll-import";
     JekyllImport::Importers::Tumblr.run({
       "url"            => "http://myblog.tumblr.com",
-      "format"         => "html", # or "md"
-      "grab_images"    => false,  # whether to download images as well.
-      "add_highlights" => false,  # whether to wrap code blocks (indented 4 spaces) in a Liquid "highlight" tag
-      "rewrite_urls"   => false   # whether to write pages that redirect from the old Tumblr paths to the new Jekyll paths
+      "format"         => "html", # <1>
+      "grab_images"    => false,  
+      "add_highlights" => false,  
+      "rewrite_urls"   => false   
     })'
 ------
+
+A few datil
+
+<1> Write out HTML with this specification, or use Markdown with `md`.
+<2> This importer will grab images if you provide a true value.
+<3> Wrap code blocks (indented 4 spaces) in a Liquid "highlight" tag
+if this is set to true
+<4> Write pages that redirect from the old Tumblr paths to the new
+Jekyll paths using this configuration option.
 
 Exporting from Tumblr is considerably easier than Wordpress. The
 Tumblr exporter scrapes all public posts from the blog, and then
 converts to a Jekyll compatible post format.
 
-=== Scraping a site into Jekyll
+We've seen how we can use the importers available on
+import.jekyllrb.com to import. What if we have a non-standard site
+that we need to import?
+
+=== Scraping Sites into Jekyll
 
 If you are stuck with a site that does not fit any of the standard
 importers, you could write your own importer by perusing the
@@ -861,7 +881,7 @@ path we need to take inside the DOM to reach this particular piece of content. W
 indications in hand, we can start to write our parser to extract this
 text from pages scraped from the archive.
 
-===== Writing our Parser
+==== Writing our Parser
 
 Let's start by writing a parser class. You might raise an eyebrow and
 think that making our scraper script into an object oriented program
@@ -870,8 +890,8 @@ can instantiate the parser class inside a runner script, but we
 can also then instantiate the same class inside a test harness. As we will
 find out, there are edge cases we will need to cover when scraping
 data and converting it to Markdown, and having a testable class structure will
-help make our code testable in a way that a purely imperative script
-would not.
+make it easy for us to add support for these edge cases without
+worry over breakage of our baseline functionality.
 
 [source,ruby]
 -----
@@ -926,7 +946,10 @@ which we want to scrape. We loop 100 times over a function called
 `get_ith_page` which will do the scraping for us. Right now this
 function just prints out the index it is supposed to scrape.
 
-===== Installation of our libraries
+Now that we have a harness for our scraper, let's install our scraper
+libraries.
+
+===== Scraper Library Installation
 
 Like other chapters which use Ruby, we create a `Gemfile` to manage
 our dependencies and then install them using the `bundle` command.
@@ -937,9 +960,12 @@ $ printf "source 'https://rubygems.org'\ngem 'vcr'\ngem 'mechanize'\ngem 'webmoc
 $ bundle
 -----
 
-===== The Runner
+With that we have the libraries we'll use to retrieve the content, so
+we can commence writing our wrapper script.
 
-Our runner is simple (this means our test cases will be too).
+===== A Testable Runner
+
+Our runner is simple (and this means our test cases should be too).
 
 [source,ruby]
 -----
@@ -970,7 +996,7 @@ Loading 99th page
 ...
 -----
 
-===== Implementing get_ith_page
+===== Implementing Our Page Iterator
 
 Now let's write the code which pulls out the information for the body
 and the title by implementing the `get_ith_page` method.
@@ -1508,7 +1534,7 @@ index 1873972..a4dbc21 100644
 The astute amongst you will also note that this shows we can add
 comments inside of our YAML Front Matter when needed. 
 
-===== Customizing our CSS 
+===== Customizing Styling
 
 Adding a CSS framework like Bootstrap helps things considerably, but
 we should match the original colors as well. The easiest way to get
@@ -1557,7 +1583,7 @@ to allow our style changes to "cascade" to all our other files.
 ...
 -----
 
-===== Adding in original images
+===== Grabbing Original Images
 
 Our site is bare beyond text and the original colors; adding the
 images would add some pop. We can easily modify our `scraper.rb`
@@ -1731,7 +1757,7 @@ an improvement.
 .Restoring the original colors and images
 image::images/jekyll-now-livelier.png[Restoring our blog using images and colors]
 
-===== Adding maps
+===== Mapping Integration
 
 This is a site about travel information, so it makes sense to add maps
 as well. We can process the location information we retrieved from the
@@ -1819,7 +1845,7 @@ layout: default
 
 ----
 
-===== Inviting contributions via forking
+===== Inviting Contributions with GitHub "Fork"
 
 When you publish a Jekyll blog, the fact that it is a repository on
 GitHub makes it simple to manage and track changes. In addition,
