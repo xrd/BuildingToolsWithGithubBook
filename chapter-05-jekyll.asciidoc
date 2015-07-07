@@ -1001,33 +1001,27 @@ Loading 99th page
 Now let's write the code which pulls out the information for the body
 and the title by implementing the `get_ith_page` method.
 
+
 [source,ruby]
 -----
-    100.times do |i| 
-      get_ith_page( i ) # <4>
-    end
-  end
-
-  def get_ith_page( i )
-    root = "https://web.archive.org/web/20030502080831/" +
-      "http://www.bytravelers.com/journal/entry/#{i}"
-    begin
-      VCR.use_cassette("bt_#{i}") do # <1>
-        @mechanize.get( root ) do |page|
-          rows = ( page / "table[valign=top] tr" ) # <2>
-          if rows and rows.length > 3
-            self.process_body( i, rows[4] ) # <3>
-          end
+def get_ith_page( i )
+  root = "https://web.archive.org/web/20030502080831/" +
+    "http://www.bytravelers.com/journal/entry/#{i}"
+  begin
+    VCR.use_cassette("bt_#{i}") do # <1>
+      @mechanize.get( root ) do |page|
+        rows = ( page / "table[valign=top] tr" ) # <2>
+        if rows and rows.length > 3
+          self.process_body( i, rows[4] ) # <3>
         end
       end
-    rescue Exception => e
     end
+  rescue Exception => e
   end
+end
 
-  def process_body( i, row )
-    puts "#{i}: #{row.text().strip()[0...50]}"
-  end
-  
+def process_body( i, row )
+  puts "#{i}: #{row.text().strip()[0...50]}" # <4>
 end
 
 -----
@@ -1047,9 +1041,9 @@ then finding all the `<tr>` tags inside that. Recalling the DOM
 hierarchy we saw inside the Chrome Inspector, we can start to see how
 we will easily retrieve content from a scraped page.
 <3> We then take the 2nd and 5th (ruby uses zero-based offsets) rows, and
-process it using a method called `process` which, you guessed it,
+process it using a method called `process_body` which, you guessed it,
 processes the two rows as title and body respectively.
-<4> The `process` method takes the retrieved DOM nodes and
+<4> The `process_body` method takes the retrieved DOM nodes and
 converts them to pure text (as opposed to leaving us with the HTML tags)
 and then strips whitespace from the front and end, and then prints the
 index in parentheses, the title and the first 50 characters of the body.
