@@ -950,7 +950,7 @@ and the title by implementing the `get_ith_page` method.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="6be532b0bd:support/jekyll-parser/scraper.rb" lines="112..-4"]
+[filename=".", language="ruby", sha="6156c23:support/jekyll-parser/scraper.rb" lines="25..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
