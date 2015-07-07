@@ -22,24 +22,24 @@ class ByTravelersProcessor
     end
   end
 
-  def process_body( i, row )
-    puts "#{i}: #{row.text().strip()[0...50]}"
-  end
-  
   def get_ith_page( i )
-    root = "https://web.archive.org/web/20030502080831/http://www.bytravelers.com/journal/entry/#{i}"
+    root = "https://web.archive.org/web/20030502080831/" +
+      "http://www.bytravelers.com/journal/entry/#{i}"
     begin
-      VCR.use_cassette("bt_#{i}") do
+      VCR.use_cassette("bt_#{i}") do # <1>
         @mechanize.get( root ) do |page|
-          rows = ( page / "table[valign=top] tr" )
+          rows = ( page / "table[valign=top] tr" ) # <2>
           if rows and rows.length > 3
-            self.process_body( i, rows[4] )
+            self.process_body( i, rows[4] ) # <3>
           end
         end
       end
     rescue Exception => e
     end
-    
+  end
+
+  def process_body( i, row )
+    puts "#{i}: #{row.text().strip()[0...50]}"
   end
   
 end
