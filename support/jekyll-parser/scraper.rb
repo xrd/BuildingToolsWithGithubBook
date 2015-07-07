@@ -39,7 +39,7 @@ class ByTravelersProcessor
   end
 
   def process_body( i, row )
-    puts "#{i}: #{row.text().strip()[0...50]}"
+    puts "#{i}: #{row.text().strip()[0...50]}" # <4>
   end
   
 end
