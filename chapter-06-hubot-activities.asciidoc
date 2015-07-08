@@ -31,8 +31,27 @@ extensible chat robot called Hubot to record and automate their tasks,
 and to have fun on the Internet. If there were any robot suited for
 interacting with the GitHub Activity API, it's Hubot. 
 
-Hubot is not only an exciting tool for automating and interacting with
-complicated software development systems, but provides a novel way of
+As a popular open source project on GitHub, you can download and
+install Hubot in a matter of minutes (we'll clarify this installation
+process later in the chapter). Out of the box it is less than
+useful as a developer tool: you can tell Hubot to send images of pugs
+frolicking, add mustaches to images, or find YouTube videos. If those
+are the most important parts of your day as a developer, are you
+accepting resumes? Most likely the utility of this Hubot functionality
+ends at being simply a way to blow off steam. 
+
+Where Hubot shines is in its extensibility. Once you have Hubot
+installed, you can then quickly install any of its hundreds of
+plugins. To find plugins, use the NPM tool with the command `npm
+search hubot-scripts github` or go to the
+https://www.npmjs.com/browse/keyword/hubot-scripts[NPM hosting
+service] and browse until you find the one you want. If there is a 
+developer service your team uses, odds are there is a Hubot plugin
+already available for it.
+
+Hubot is not only an exciting tool for
+automating and interacting with complicated software development
+systems, but provides a novel way of 
 collaboration, especially within remote teams. Through the use of
 various APIs, including the GitHub API, chat robots can interact with
 developers, and developers can control remote systems. All of this
@@ -48,14 +67,9 @@ factor. Hubot minimized this impact immensely, and was crucial to
 scaling the growth of both people and products at a fast growing startup
 like GitHub. 
 
-Because Hubot is easily programmable, it can be extended to do
-complicated tasks easily, and this hackability means it can also be
-extended quickly for trivial and fun tasks. There are plugins for
-Hubot which randomly display a mustache on top of an image, display
-images of celebrities with funny captions and many other internet
-memes or jokes. There is always a fine line between having fun and
-being disruptive, but Hubot works so hard for you that it seems a
-trifle that it also injects jocular moments into the conversation.
+Though you can most certainly find a Hubot extension for whatever
+technology you want, it might not work exactly the way your team
+needs. So, let's build our own extension using the Hubot extension API.
 
 === Our Blueprint
 
@@ -68,8 +82,6 @@ will be transformed into a robot that..
 * guarantees that communication between it and GitHub is securely delivered (with a caveat)
 * retrieves vital information from an external service (the Slack.com API)
 * has functionality fully described by automated tests.
-* opens itself to modification when necessary and displays the
-  benefits of a completely open source chat robot
 * allows easy simulation of inputs and outputs which map to the
   inputs and outputs it gets from APIs and services.
 * runs with ease host on a major Paas (Heroku)
@@ -3553,11 +3565,7 @@ faking), we need to write the code to find a random user and assign them
 to the pull request. 
 
 [WARNING]
-<<<<<<< HEAD
 This next section is redundant; our Probot will function
-=======
-This next section is actually completely redundant; our Probot will function
->>>>>>> f6d50de7c6abf93206c1e08117c64f13a4e70597
 exactly as we need it to if you were to disregard any code from this
 section. As I was writing this book, I mistakenly missed the fact that
 the Hubot `brain` contains a list of users and found another avenue to
