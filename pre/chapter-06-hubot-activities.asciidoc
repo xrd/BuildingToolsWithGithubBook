@@ -1,3 +1,6 @@
+[[Hubot Chapter]]
+.Hubot Chapter
+
 == Hubot and the GitHub Activities API
 
 Though the phrase has now been removed from their marketing materials,
@@ -76,10 +79,10 @@ functionality to Hubot and see how easy it is to combine these
 features into a coherent whole that solves a real problem.
 
 Just so we are clear about the differences between a vanilla Hubot and
-the extended Hubot we are going to build with this blueprint, let's
-give it a name: Probot. From now on, we will speak about unmodified
-Hubots by calling them Hubot, while we will call our amplified Hubot
-with PR delegation super powers the name "Probot."
+our extended Hubot following the above blueprint, let's give it a
+name: Probot. From now on, we will speak about unmodified  Hubots by
+calling them Hubot, while we will call our amplified Hubot with PR
+delegation super powers the name "Probot." 
 
 === The Why and What of Hubot
 
@@ -702,8 +705,8 @@ $ curl https://api.github.com/authorizations --user $USERNAME --data
 '{"scopes":["repo"], "note": "Probot access to PRs" }' -X POST
 ```
 
-If you are using two-factor authentication (and you should [CALLOUT TO
-2-FACTOR AUTH]), then you will see a response message like this:
+If you are using two-factor authentication then you will see a
+response message like this:  
 
 ```
 {

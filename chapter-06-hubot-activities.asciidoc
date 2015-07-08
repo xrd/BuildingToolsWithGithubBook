@@ -76,7 +76,7 @@ functionality to Hubot and see how easy it is to combine these
 features into a coherent whole that solves a real problem.
 
 Just so we are clear about the differences between a vanilla Hubot and
-the extended Hubot we are going to build with this blueprint, let's
+our extended Hubot following the above blueprint, let's
 give it a name: Probot. From now on, we will speak about unmodified
 Hubots by calling them Hubot, while we will call our amplified Hubot
 with PR delegation super powers the name "Probot."
@@ -731,8 +731,8 @@ $ curl https://api.github.com/authorizations --user $USERNAME --data
 '{"scopes":["repo"], "note": "Probot access to PRs" }' -X POST
 ```
 
-If you are using two-factor authentication (and you should [CALLOUT TO
-2-FACTOR AUTH]), then you will see a response message like this:
+If you are using two-factor authentication then you will see a
+response message like this:  
 
 ```
 {
@@ -1207,7 +1207,11 @@ faking), we need to write the code to find a random user and assign them
 to the pull request. 
 
 [WARNING]
+<<<<<<< HEAD
 This next section is redundant; our Probot will function
+=======
+This next section is actually completely redundant; our Probot will function
+>>>>>>> f6d50de7c6abf93206c1e08117c64f13a4e70597
 exactly as we need it to if you were to disregard any code from this
 section. As I was writing this book, I was initially unable to find an example
 inside the Hubot source code which provided a list of currently logged
