@@ -1210,7 +1210,11 @@ faking), we need to write the code to find a random user and assign them
 to the pull request. 
 
 [WARNING]
+<<<<<<< HEAD
+This next section is redundant; our Probot will function
+=======
 This next section is actually completely redundant; our Probot will function
+>>>>>>> f6d50de7c6abf93206c1e08117c64f13a4e70597
 exactly as we need it to if you were to disregard any code from this
 section. As I was writing this book, I mistakenly missed the fact that
 the Hubot `brain` contains a list of users and found another avenue to
