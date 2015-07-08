@@ -29,78 +29,9 @@ invention despite all best attempts, would play nicely with a social
 API, but this is a social robot. GitHubbers use an
 extensible chat robot called Hubot to record and automate their tasks,
 and to have fun on the Internet. If there were any robot suited for
-interacting with the GitHub Activity API, it's Hubot. 
-
-As a popular open source project on GitHub, you can download and
-install Hubot in a matter of minutes (we'll clarify this installation
-process later in the chapter). Out of the box it is less than
-useful as a developer tool: you can tell Hubot to send images of pugs
-frolicking, add mustaches to images, or find YouTube videos. If those
-are the most important parts of your day as a developer, are you
-accepting resumes? Most likely the utility of this Hubot functionality
-ends at being simply a way to blow off steam. 
-
-Where Hubot shines is in its extensibility. Once you have Hubot
-installed, you can then quickly install any of its hundreds of
-plugins. To find plugins, use the NPM tool with the command `npm
-search hubot-scripts github` or go to the
-https://www.npmjs.com/browse/keyword/hubot-scripts[NPM hosting
-service] and browse until you find the one you want. If there is a 
-developer service your team uses, odds are there is a Hubot plugin
-already available for it.
-
-Hubot is not only an exciting tool for
-automating and interacting with complicated software development
-systems, but provides a novel way of 
-collaboration, especially within remote teams. Through the use of
-various APIs, including the GitHub API, chat robots can interact with
-developers, and developers can control remote systems. All of this
-provides a chat log, which makes it easy to understand what happened
-when a post-mortems occurs. Perhaps most importantly, it is much
-easier to on-board new engineers quickly; new developers can train
-themselves by reading actual conversations between team members and
-robots, rather than asking someone to spend a day creating training
-materials and training someone. As Fred Brooks elegantly documented in
-his book "The Mythical Man Month", adding new people to an
-organization almost always destroys ship schedules like no other
-factor. Hubot minimized this impact immensely, and was crucial to
-scaling the growth of both people and products at a fast growing startup
-like GitHub. 
-
-Though you can most certainly find a Hubot extension for whatever
-technology you want, it might not work exactly the way your team
-needs. So, let's build our own extension using the Hubot extension API.
-
-=== Our Blueprint
-
-We are going to build an extension to Hubot. When we are done, Hubot
-will be transformed into a robot that..
-
-* listens for pull request events from GitHub by subscribing to
-  notifications using the GitHub Activities API
-* invites people in the chat room to comment on those pull requests
-* guarantees that communication between it and GitHub is securely delivered (with a caveat)
-* retrieves vital information from an external service (the Slack.com API)
-* has functionality fully described by automated tests.
-* allows easy simulation of inputs and outputs which map to the
-  inputs and outputs it gets from APIs and services.
-* runs with ease host on a major Paas (Heroku)
-
-Hubot provides the skeleton for our chat robot. We'll add the above
-functionality to Hubot and see how easy it is to combine these
-features into a coherent whole that solves a real problem.
-
-Just so we are clear about the differences between a vanilla Hubot and
-our extended Hubot following the above blueprint, let's give it a
-name: Probot. From now on, we will speak about unmodified  Hubots by
-calling them Hubot, while we will call our amplified Hubot with PR
-delegation super powers the name "Probot." 
-
-=== The Why and What of Hubot
-
-If you visit hubot.github.com, you are told that "(Hubot) is a
-customizable, kegerator-powered life embetterment robot." What does
-that mean?
+interacting with the GitHub Activity API, it's Hubot, described on the
+site hubot.github.io as "a customizable, kegerator-powered life
+embetterment robot." What does that mean?
 
 First, it means GitHubbers love beer. You don't have to love beer to
 love Hubot, for the record.
@@ -136,15 +67,86 @@ a developer, or vice-versa. Passing the buck does not only happen in
 the political realm. Entirely homegrown, developers and operations
 teams merged and devops was born.
 
-Another idea from GitHub: always build tools to manage complexity. At
-many places, there is a naive approach to getting things done where
-people follow the principle of insanity by repeating extremely
+One of the unusual approaches at GitHub is that GitHubbers receive
+space to build tools to manage complexity. At many software based
+businesses, there is a naive approach to getting things done where 
+people practice the principle of insanity by repeating extremely
 complicated tasks over and over again and again, never addressing
 quality issues that come up when people fatigue and are
 multitasking. GitHubbers do it differently: they build tools when they
 see rote tasks like this.  Hubot is the tool that emerged when
 GitHubbers asked the question: "What tool can we build to version
 deployment in a scalable way?"
+
+As a popular open source project on GitHub, you can download and
+install Hubot in a matter of minutes (we'll clarify this installation
+process later in the chapter). Out of the box it is less than
+useful as a developer tool: you can tell Hubot to send images of pugs
+frolicking, add mustaches to images, or find YouTube videos. If those
+are the most important parts of your day as a developer, are you
+accepting resumes? Most likely the utility of this Hubot functionality
+ends at being simply a way to blow off steam. 
+
+Where Hubot shines is in its extensibility. Once you have Hubot
+installed, you can then quickly install any of its hundreds of
+plugins. To find plugins, use the NPM tool with the command `npm
+search hubot-scripts github` (to filter a search for hubot scripts
+with the term "github") or go to the
+https://www.npmjs.com/browse/keyword/hubot-scripts[NPM hosting
+service] and browse until you find the one you want. If there is a 
+developer service your team uses, odds are there is a Hubot plugin
+already available for it. By searching NPM, you could, for example,
+find plugins for adding or searching tickets in JIRA, Asana 
+and Pivotal Tracker or ZenDesk, all popular ticket tracking systems
+used by thousands of developer teams worldwide. 
+
+Hubot is not only an exciting tool for
+automating and interacting with complicated software development
+systems, but provides a novel way of 
+collaboration, especially within remote teams. Through the use of
+various APIs, including the GitHub API, chat robots can interact with
+developers, and developers can control remote systems. All of this
+provides a chat log, which makes it easy to understand what happened
+when a post-mortems occurs. Perhaps most importantly, it is much
+easier to on-board new engineers quickly; new developers can train
+themselves by reading actual conversations between team members and
+robots, rather than asking someone to spend a day creating training
+materials and training someone. As Fred Brooks eloquently documented in
+his book "The Mythical Man Month", adding new people to an
+organization almost always destroys ship schedules like no other
+factor. Hubot minimized this impact immensely, and was crucial to
+scaling the growth of both people and products at a fast growing startup
+like GitHub. 
+
+Though you can likely find a plugin to support whatever developer
+service you search for on npmjs, it might not be perfectly suited to
+your workflow. So, let's build our own Hubot extension and get exactly
+what we want for our team.
+
+=== Our Blueprint
+
+We are going to build an extension to Hubot. When we are done, Hubot
+will be transformed into a robot that..
+
+* listens for pull request events from GitHub by subscribing to
+  notifications using the GitHub Activities API
+* invites people in the chat room to comment on those pull requests
+* guarantees that communication between it and GitHub is securely delivered (with a caveat)
+* retrieves vital information from an external service (the Slack.com API)
+* has functionality fully described by automated tests.
+* allows easy simulation of inputs and outputs which map to the
+  inputs and outputs it gets from APIs and services.
+* runs with ease host on a major Paas (Heroku)
+
+Hubot provides the skeleton for our chat robot. We'll add the above
+functionality to Hubot and see how easy it is to combine these
+features into a coherent whole that solves a real problem.
+
+Just so we are clear about the differences between a vanilla Hubot and
+our extended Hubot following the above blueprint, let's give it a
+name: Probot. From now on, we will speak about unmodified  Hubots by
+calling them Hubot, while we will call our amplified Hubot with PR
+delegation super powers the name "Probot." 
 
 ==== Considerations and Limitations for Hubot
 
@@ -167,7 +169,7 @@ entrant into the world of chat services, but despite their youth, the
 Slack API is solid and connecting third party clients to their chat
 service is simple and straightforward. We'll use Slack as our chat endpoint.
 
-==== Creating your Hubot
+==== Creating a Hubot
 
 To build a Hubot you will need a working NodeJS installation, as
 specified in the NodeJS appendix. The following commands create a
@@ -199,7 +201,7 @@ out the set of files for a minimal Hubot.
 Now that we have a simple Hubot created we need to create the Slack site
 where our Hubot will live.
 
-==== Creating Your Slack Account
+==== Creating a Slack Account
 
 Going to slack.com starts you on the process to create your own Slack
 site. You'll need to step through creating an account. Slack sites are
@@ -244,7 +246,7 @@ image::images/hubot-choose-username.png[Choose Hubot's name]
 
 Make sure you save your integration before continuing.
 
-==== Starting a hubot locally
+==== Running Hubot Locally
 
 Eventually you will want to run your Hubot on a server, but Hubot can
 run from a laptop behind a firewall as well. At the beginning of
@@ -370,6 +372,9 @@ reason, use your GitHub account as your code repository, the place where
 team members develop new features of your chat bot, and then pull
 locally and push into Heroku using the ease of the Git workflow as a
 deployment layer.
+
+Now that we have created and installed Hubot, let's look at the
+Activities API and determine how we want to code our extension.
 
 === Activities API Overview
 
@@ -587,9 +592,9 @@ respoding inside the channel. You'll also see the message `Accepted!` or
 `Declined!` printed to the console on which Probot is
 running. 
 
-===== Writing tests for our Hubot
+===== Writing Tests for Hubot Extensions
 
-Now that we have the basics of our Hubot working, let's make sure we
+Now that we have the basics of our Probot working, let's make sure we
 certify our code with some tests. We'll use the Jasmine testing
 framework for NodeJS. It offers an elegant behavior driven testing
 syntax where you specify a behavior as the first parameter to an `it`
@@ -609,26 +614,26 @@ recognize it as a test.
 
 [source,coffeescript]
 -----
-[[Hubot Chapter]]
-.Hubot Chapter
 
-== Hubot and the GitHub Activities API
+Probot = require "../scripts/pr-delegator"
+Handler = require "../lib/handler"
 
-Though the phrase has now been removed from their marketing materials,
-GitHub used to call itself a tool for "social coding." This idea is
-still central to the services GitHub provides, intimate access to the
-social layer inside of GitHub through the Activity API. 
+pr = undefined
+robot = undefined
 
-The Activities API includes:
+describe "#probot", ->
+        beforeEach () ->
+                robot = {
+                        respond: jasmine.createSpy( 'respond' )
+                        router: {
+                                post: jasmine.createSpy( 'post' )
+                                }
+                        }
 
-* notifications (comments issued to users through various events)
-* stargazing tools (Facebook has "likes" while GitHub has "stars" to indicate approval or interest)
-* watching (a way to track GitHub data)
-* events (a higher level activity stream useful for following actions of users). 
-
-[NOTE]
-The Activity API section also includes "feeds." While feeds are
-grouped within the Activity API, they are not programmatic in the same
+        it "should verify our calls to respond", (done) ->
+                pr = Probot robot
+                expect( robot.respond.calls.count() ).toEqual( 2 )
+                done()
 -----
 
 The first line in our test requires, or loads, the Hubot extension
@@ -3639,7 +3644,8 @@ command, we can modify it slightly:
 
 [source,bash]
 ------
-$ curl --data 'secret=XYZABC&url=http://pr/1' http://localhost:8080/pr
+$ curl --data 'secret=XYZABC&url=http://pr/1' \
+http://localhost:8080/pr
 ------
 
 Our randomly selected user will see the text `username: Hey, want a
