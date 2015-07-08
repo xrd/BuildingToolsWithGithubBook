@@ -2,7 +2,6 @@ require 'asciidoctor'
 require 'erb'
 require 'oreilly/snippets'
 
-#$:.unshift( "../gems/oreilly-snippets/lib" )
 require 'oreilly/snippets'
 
 init_script = '<script type="text/javascript" src="init.js"></script>';

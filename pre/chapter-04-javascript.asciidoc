@@ -512,7 +512,7 @@ Then add the `coffeetech.js` file:
 
 [source,javascript]
 -------
-[filename=".", language="js", sha="5393420:support/js/coffeetech.js.7693187"]
+[filename=".", language="js", sha="021262697f6798e0912519a874161dad1cc3ed9a:support/js/coffeetech.js.7693187"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
