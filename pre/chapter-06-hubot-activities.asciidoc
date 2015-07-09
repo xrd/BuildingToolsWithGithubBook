@@ -1052,7 +1052,7 @@ implementation code.
 
 [source,coffeescript]
 -----
-[language="json", sha="d0fe60469c208425da817a1422870bfba73eb06c:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="1..30"]
+[language="json", sha="d8b7375:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="27..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1173,15 +1173,11 @@ is a worthwhile read for general Hubot understanding.
 
 To find a user in the room, one option is to go
 outside the Hubot API and use the Slack.com API to query for a list of
-users. The Slack.com API provides an endpoint that responds with what
-users are currently in a room. To access the Slack.com API, we will
+users. The Slack.com API provides an endpoint giving you all
+users currently in a room. To access the Slack.com API, we will
 use the built in Hubot HTTP client. Once we have the the
 list of members in the room we can look over this list 
-and randomly choose a member and deliver the PR request to them. It
-takes surprisingly little code to do all of this: in a little more
-than 10 lines of CoffeeScript code we can retrieve a JSON response
-from an API, parse the response, generate a message for a random user,
-and then send a request to them into our chat room. 
+and randomly choose a member and deliver the PR request to them. 
 
 [source,coffeescript]
 --------
