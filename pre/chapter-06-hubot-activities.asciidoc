@@ -1181,7 +1181,7 @@ and randomly choose a member and deliver the PR request to them.
 
 [source,coffeescript]
 --------
-[language="json", sha="63b2078:support/slacker-hubot/lib/handler.coffee"]
+[language="json", sha="595cdba:support/slacker-hubot/lib/handler.coffee"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1201,11 +1201,12 @@ invitation.
 token to the base Slack API URL. 
 <4> As we did before, we pull out the secret and the PR URL, and then
 make sure they both exist.
-<5> 
+<5> We use the built in HTTP client to make a GET request to the
+Slack API. Unless we receive an error in the response callback, we
+use the data provided by the Slack API to initiate the PR review
+request.
 
-
-To test this using our cURL
-command, we can modify it slightly:
+To test this using our cURL command, we can modify it slightly:
 
 [source,bash]
 ------
@@ -1250,41 +1251,12 @@ testing came easy; I refactored this multiple times to find a balance
 between an easy to read test and easy to read code. Writing test code
 takes effort, but when both your tests and code are readable and
 minimal, you generally can be sure you have a good implementation.
-We were able to get our initial tests to pass and added a third test
-which verifies the URL is present before issuing the call. Inside each
-test we verify whether the http method is called on the robot; we only
-want to see the http method invoked when the input 
-parameters are validated (the secret matches and the URL to post is
-present).  The URL is passed in as request parameters; the real
-information will be passed in using a very different structure. GitHub
-generates a much larger JSON blob that it sends us, but because we
-have tests that cover the major paths inside our robot, we are in a
-good place to add this functionality and make sure other pieces still work.
-
-[source,coffeescript]
------
-exports.prHandler = ( robot, req, res ) ->
-        slack_users_url =
-                "https://slack.com/api/users.list?token=" +
-                process.env.HUBOT_SLACK_TOKEN
-        secret = req.body?.secret
-        url = req.body?.url
-
-        if secret == _SECRET and url
-                room = "general"
-                robot.http( slack_users_url ) ->
-                        .get() (err, response, body) ->
-                                sendPrRequest( robot, body, room, url ) unless err
-        else
-                console.log "Invalid secret or no URL specified"
-        res.send "OK\n"
------
 
 We now have a functional and complete implementation of the code to
 retrieve a list of users and assign an incoming pull request out to a
 randomly selected user from that list.
 
-===== Getting a list of users from the Hubot brain 
+===== The User List from the Hubot Brain
 
 Instead of using the Slack API, we can replace the code with a
 much simpler call to `robot.brain.users`. Calling into the Slack users
