@@ -1181,14 +1181,30 @@ and randomly choose a member and deliver the PR request to them.
 
 [source,coffeescript]
 --------
-[language="json", sha="b889a6b:support/slacker-hubot/lib/handler.coffee"]
+[language="json", sha="63b2078:support/slacker-hubot/lib/handler.coffee"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 --------
 
-Observant types will notice we retrieve a URL from our body and then
-provide it to the randomly selected user. To test this using our cURL
+<1> We define a method called `anyoneButProbot` that takes a list of
+users and finds a random one, as long as it is not the probot. You
+might notice there are some edge cases we should account for in our
+tests (endless while loop anyone?) which are left as an exercise for the
+reader. 
+<2> The `sendPrRequest` method parses the JSON returned from the Slack
+API and then sends the members inside of the object into the
+`anyoneButProbot` call. It then uses the Hubot API to send a message
+to the room asking if that user will accept the pull request review
+invitation. 
+<3> We build the URL to the Slack service by tacking on the Slack API
+token to the base Slack API URL. 
+<4> As we did before, we pull out the secret and the PR URL, and then
+make sure they both exist.
+<5> 
+
+
+To test this using our cURL
 command, we can modify it slightly:
 
 [source,bash]

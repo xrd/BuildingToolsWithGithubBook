@@ -1235,30 +1235,30 @@ and randomly choose a member and deliver the PR request to them.
 --------
 _SECRET = undefined
 
-anyoneButProbot = (members) ->
+anyoneButProbot = (members) ->  # <1>
         user = undefined
         while not user
                 user = members[ parseInt( Math.random() * members.length ) ].name
                 user = undefined if "probot" == user
         user
 
-sendPrRequest = ( robot, body, room, url ) ->
+sendPrRequest = ( robot, body, room, url ) -> # <2>
         parsed = JSON.parse( body )
         user = anyoneButProbot( parsed.members )
         robot.messageRoom room, "#{user}: Hey, want a PR? #{url}"
 
-exports.prHandler = ( robot, req, res ) ->
-        slack_users_url =
+exports.prHandler = ( robot, req, res ) -> 
+        slack_users_url =   # <3>
                 "https://slack.com/api/users.list?token=" +
                 process.env.HUBOT_SLACK_TOKEN
-        secret = req.body?.secret
+        secret = req.body?.secret # <4>
         url = req.body?.url
 
         if secret == _SECRET and url
                 room = "general"
-                robot.http( slack_users_url )
-                        .get() (err, response, body) ->
-                                sendPrRequest( robot, body, room, url ) unless err
+                robot.http( slack_users_url ) # <5>
+                        .get() (err, response, body) ->  # <6>
+                                sendPrRequest( robot, body, room, url ) unless err  # <7>
         else
                 console.log "Invalid secret or no URL specified"
         res.send "OK\n"
@@ -1268,8 +1268,24 @@ exports.setSecret = (secret) ->
 
 --------
 
-Observant types will notice we retrieve a URL from our body and then
-provide it to the randomly selected user. To test this using our cURL
+<1> We define a method called `anyoneButProbot` that takes a list of
+users and finds a random one, as long as it is not the probot. You
+might notice there are some edge cases we should account for in our
+tests (endless while loop anyone?) which are left as an exercise for the
+reader. 
+<2> The `sendPrRequest` method parses the JSON returned from the Slack
+API and then sends the members inside of the object into the
+`anyoneButProbot` call. It then uses the Hubot API to send a message
+to the room asking if that user will accept the pull request review
+invitation. 
+<3> We build the URL to the Slack service by tacking on the Slack API
+token to the base Slack API URL. 
+<4> As we did before, we pull out the secret and the PR URL, and then
+make sure they both exist.
+<5> 
+
+
+To test this using our cURL
 command, we can modify it slightly:
 
 [source,bash]
