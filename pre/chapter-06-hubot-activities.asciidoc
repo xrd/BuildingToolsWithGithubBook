@@ -31,10 +31,7 @@ extensible chat robot called Hubot to record and automate their tasks,
 and to have fun on the Internet. If there were any robot suited for
 interacting with the GitHub Activity API, it's Hubot, described on the
 site hubot.github.io as "a customizable, kegerator-powered life
-embetterment robot." What does that mean?
-
-First, it means GitHubbers love beer. You don't have to love beer to
-love Hubot, for the record.
+embetterment robot." 
 
 Hubot is a framework for developing chat robots. For many people, chat
 is at best a way to waste time and at worst an annoyance or
@@ -67,24 +64,23 @@ a developer, or vice-versa. Passing the buck does not only happen in
 the political realm. Entirely homegrown, developers and operations
 teams merged and devops was born.
 
-One of the unusual approaches at GitHub is that GitHubbers receive
-space to build tools to manage complexity. At many software based
-businesses, there is a naive approach to getting things done where 
-people practice the principle of insanity by repeating extremely
-complicated tasks over and over again and again, never addressing
-quality issues that come up when people fatigue and are
-multitasking. GitHubbers do it differently: they build tools when they
-see rote tasks like this.  Hubot is the tool that emerged when
-GitHubbers asked the question: "What tool can we build to version
-deployment in a scalable way?"
+One of the unusual approaches at GitHub is that GitHubbers are
+permitted the space to build tools when complexity gets too great to
+handle. At many software based businesses, the naive approach to
+getting things done is standard, where people practice the principle
+of insanity by repeating extremely complicated tasks over and over
+again and again. The quality issues that arise when people fatigue and are
+multitasking never receive attention. GitHubbers do it differently:
+they build tools when they see rote tasks like this.  Hubot is the
+tool that emerged when GitHubbers asked the question: "What tool can
+we build to version deployment in a scalable way?"
 
 As a popular open source project on GitHub, you can download and
 install Hubot in a matter of minutes (we'll clarify this installation
 process later in the chapter). Out of the box it is less than
 useful as a developer tool: you can tell Hubot to send images of pugs
-frolicking, add mustaches to images, or find YouTube videos. If those
-are the most important parts of your day as a developer, are you
-accepting resumes? Most likely the utility of this Hubot functionality
+frolicking, add mustaches to images, or find YouTube videos. 
+Though fun, most likely the utility of this Hubot functionality
 ends at being simply a way to blow off steam. 
 
 Where Hubot shines is in its extensibility. Once you have Hubot
@@ -100,28 +96,10 @@ find plugins for adding or searching tickets in JIRA, Asana
 and Pivotal Tracker or ZenDesk, all popular ticket tracking systems
 used by thousands of developer teams worldwide. 
 
-Hubot is not only an exciting tool for
-automating and interacting with complicated software development
-systems, but provides a novel way of 
-collaboration, especially within remote teams. Through the use of
-various APIs, including the GitHub API, chat robots can interact with
-developers, and developers can control remote systems. All of this
-provides a chat log, which makes it easy to understand what happened
-when a post-mortems occurs. Perhaps most importantly, it is much
-easier to on-board new engineers quickly; new developers can train
-themselves by reading actual conversations between team members and
-robots, rather than asking someone to spend a day creating training
-materials and training someone. As Fred Brooks eloquently documented in
-his book "The Mythical Man Month", adding new people to an
-organization almost always destroys ship schedules like no other
-factor. Hubot minimized this impact immensely, and was crucial to
-scaling the growth of both people and products at a fast growing startup
-like GitHub. 
-
 Though you can likely find a plugin to support whatever developer
 service you search for on npmjs, it might not be perfectly suited to
 your workflow. So, let's build our own Hubot extension and get exactly
-what we want for our team.
+what we want for our team of developers.
 
 === Our Blueprint
 
@@ -148,7 +126,7 @@ name: Probot. From now on, we will speak about unmodified  Hubots by
 calling them Hubot, while we will call our amplified Hubot with PR
 delegation super powers the name "Probot." 
 
-==== Considerations and Limitations for Hubot
+==== Considerations and Limitations
 
 If you want stability with your Hubot, you need to host it on a
 server. Hubot is written in NodeJS and requires a hosting service that
@@ -165,11 +143,13 @@ our chat robot for free. We'll show these steps later in the chapter.
 Hubot works with many chat endpoints. Your Hubot can connect to almost
 any popular chat service or protocol: IRC, XMPP and many commercial
 services like Gchat, Basecamp, even Twitter. Slack is a relatively new
-entrant into the world of chat services, but despite their youth, the
-Slack API is solid and connecting third party clients to their chat
+entrant into the world of chat services, but despite its youth, the
+Slack API is solid and connecting third party clients to the Slack 
 service is simple and straightforward. We'll use Slack as our chat endpoint.
 
-==== Creating a Hubot
+Now let's create our Hubot and configure it to use Slack.
+
+==== Creating a Vanilla Hubot
 
 To build a Hubot you will need a working NodeJS installation, as
 specified in the NodeJS appendix. The following commands create a
@@ -265,7 +245,8 @@ the command line:
 
 [code,bash]
 -----
-$ HUBOT_SLACK_TOKEN=xoxb-3295776784-nZxl1H3nyLsVcgdD29r1PZCq ./bin/hubot -a slack
+$ HUBOT_SLACK_TOKEN=xoxb-3295776784-nZxl1H3nyLsVcgdD29r1PZCq \
+./bin/hubot -a slack
 -----
 
 This command runs the hubot script with the slack adapter. The slack adapter
@@ -273,7 +254,7 @@ knows how to interact with the Slack.com service. It requires an
 authentication token, and this is provided via the environment
 variable at the beginning of the line.
 
-===== The first conversation
+===== A First Conversation
 
 Your bot should be setup and waiting in the #general room inside your
 Slack site. Go to the #general room. Then, you can test that probot
@@ -1071,7 +1052,7 @@ implementation code.
 
 [source,coffeescript]
 -----
-[language="json", sha="d0fe60469c208425da817a1422870bfba73eb06c:chapter-06-hubot-activities.asciidoc",  lines="27..-1"]
+[language="json", sha="d0fe60469c208425da817a1422870bfba73eb06c:support/slacker-hubot/spec/pr-delegator.spec.coffee", lines="1..30"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
