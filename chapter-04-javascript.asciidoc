@@ -635,28 +635,41 @@ for their GitHub credentials and annotation data.
 
 [source,javascript]
 -------
-$scope.retrieveCity = function() {
-    $scope.repo.read( "gh-pages", $scope.city.name + ".json", function(err, data) { 
+$scope.retrieveCity = function() { // <1>
+    $scope.repo.read( "gh-pages", $scope.city.name + ".json", function(err, data) {  
         $scope.shops = JSON.parse( data );
         $scope.$apply();
     });
 }
 
-$scope.getCurrentLocation = function( cb ) {
+$scope.loadCity = function( city ) { // <2>
+    $scope.repo.read( "gh-pages", city + ".json", function(err, data) { 
+        $scope.shops = JSON.parse( data ); 
+        $scope.$apply();
+    });
+}
+
+$scope.getCurrentLocation = function( cb ) { // <3>
     if( undefined != Geo ) {
         Geo.getCurrentPosition( cb, $scope.geolocationError );
     } else {
         console.error('not supported');
     }
-    
 };
 
-$scope.detectCurrentCity = function() {
+$scope.geolocationError = function( error ) {
+    console.log( "Inside failure" );
+};
+
+$scope.detectCurrentCity = function() {  // <4>
     // Calculate the distance from our current position and use
     // this to determine which city we are closest to and within
     // 25 miles
     for( var i = 0; i < $scope.cities.length; i++ ) {
-        var dist = $scope.calculateDistance( $scope.latitude, $scope.longitude, $scope.cities[i].latitude, $scope.cities[i].longitude );
+        var dist = $scope.calculateDistance( $scope.latitude, 
+                                             $scope.longitude, 
+                                             $scope.cities[i].latitude, 
+                                             $scope.cities[i].longitude );
         if( dist < 25 ) {
             $scope.city = $scope.cities[i];
             break;
@@ -668,30 +681,24 @@ toRad = function(Value) {
     return Value * Math.PI / 180;
 };
 
-$scope.calculateDistance = function( latitude1, longitude1, latitude2, longitude2 ) {
+$scope.calculateDistance = function( latitude1,   // <5>
+                                     longitude1, 
+                                     latitude2, 
+                                     longitude2 ) {
     R = 6371;
     dLatitude = toRad(latitude2 - latitude1);
     dLongitude = toRad(longitude2 - longitude1);
     latitude1 = toRad(latitude1);
     latitude2 = toRad(latitude2);
-    a = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) + Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) * Math.cos(latitude1) * Math.cos(latitude2);
+    a = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) + 
+        Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) * 
+        Math.cos(latitude1) * Math.cos(latitude2);
     c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     d = R * c;
     return d;
 }
 
-$scope.loadCity = function( city ) {
-    $scope.repo.read( "gh-pages", city + ".json", function(err, data) { 
-        $scope.shops = JSON.parse( data ); 
-        $scope.$apply();
-    });
-}
-
-$scope.geolocationError = function( error ) {
-    console.log( "Inside failure" );
-};
-
-$scope.annotate = function() {
+$scope.annotate = function() { // <6>
     user = Prompt( "Enter your github username" )
     password = Prompt( "Enter your github password" )
     data = Prompt( "Enter data to add" );
@@ -700,11 +707,22 @@ $scope.annotate = function() {
 ...
 -------
 
+<1> `retrieveCity` retrieves a list of shops in the same way that we
+retrieved the list of cities.
+<2> `loadCity` 
+<3>
+<4>
+<5>
+<6>
+<7>
+
 At first glance, the calculate distance function looks confusing, no?
-Unless you are a geocoding geek, how do we know this works as
-advertised? Well, let's write some tests to prove it. Add these lines
-to the bottom of your coffeetech.spec.js, just within the last `});`
-closing braces
+This was code I developed after reading a post on Geocoding using a
+stored procedure within the PostgreSQL database, and I converted the
+code to JavaScript. Unless you are a geocoding geek, how do we know
+this works as advertised? Well, let's write some tests to prove it.
+Add these lines to the bottom of your coffeetech.spec.js, just within
+the last `});` closing braces
 
 [source,javascript]
 -----
@@ -1211,10 +1229,10 @@ making many contributions per day, that all of a sudden you would need
 a complex system for managing, reviewing and accepting changes to your
 data set. GitHub gives you all these tools: diff'ing files, user
 management in case you wanted to delegate review to other people in
-your organization, among many other features GitHub provides for its
-users. This may not be the most obvious way to manage a database of
-information, but there are compelling reasons to consider it against a
-traditional database like Postgresql or Mysql.
+your organization, among many other features GitHub provides. This may
+not be the most obvious way to manage a database of information, but
+there are compelling reasons to consider it against a traditional
+database like Postgresql or Mysql.
 
 image::images/javascript-pull-request-diff.png[]
 
@@ -1223,9 +1241,11 @@ image::images/javascript-pull-request-diff.png[]
 
 If I saw this app in the wild and knew nothing about the authors, I
 would never use it to submit data. The app asks for my GitHub username
-and password. Given that I usually assign a random password which I
-have no hope of remembering, it is almost impossible that I could
-authenticate at all. Additionally, and more importantly, asking for my
+and password. My GitHub password is autogenerated, a random password which I
+purposefully used because I have no hope of remembering it, and it
+does not match any of my other passwords for other services. As such,
+it is almost impossible that I could authenticate at all into this
+kind of app. Additionally, and more importantly, asking for my
 username and password implicitly asks me to trust the authors of this
 application. Trust in this case means that I trust them to not
 maliciously use my credentials for nefarious purposes, and also asks
