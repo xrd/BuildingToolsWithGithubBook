@@ -2,8 +2,6 @@ require 'asciidoctor'
 require 'erb'
 require 'oreilly/snippets'
 
-require 'oreilly/snippets'
-
 init_script = '<script type="text/javascript" src="init.js"></script>';
 
 Oreilly::Snippets.config( flatten: true )
@@ -28,6 +26,7 @@ guard 'shell' do
                               :attributes => {'linkcss!' => ''})
 
     File.open( m[0]+ ".html", "w+" ) do |f|
+      out.gsub!( '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400">', '' )
       out.gsub!( '</body>', "</body>\n#{init_script}\n" )
       f.write out
     end

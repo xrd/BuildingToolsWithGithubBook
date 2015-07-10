@@ -8,12 +8,12 @@ onerous role. A special combination of branches within a
 repository and hosting code on GitHub allows you to instead completely
 remove reliance on a server and manage your application solely as a
 Git repository. This type of application must run on
-another host, the user's web browser, and the only language ubiquitous
-there is JavaScript. You might be surprised to know that there is a
-pure JavaScript GitHub API library, and you might be surprised again to know
-it works well for building real applications. Let's use the JS library to
-build a single page application (SPA) hosted entirely on GitHub, and
-save ourselves the headache of managing a server.
+another host, the user's web browser, and the only ubiquitous language
+inside a browser is JavaScript. You might be surprised to know that there is a
+pure JavaScript GitHub API library, and you might be even more
+surprised to know it works well for building real applications. Let's
+use the JS library to build a single page application (SPA) hosted
+entirely on GitHub, and save ourselves the headache of managing a server.
 
 Beyond saving us some money in server rental fees, there are other good
 reasons to know JavaScript. JavaScript is the lingua franca of the web, invented in
@@ -148,18 +148,31 @@ you prefer, edit the index.html file to look like this:
 <html>
 <head>
 <title>CoffeeTe.ch</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> // <1>
 <link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
 </head>
-<body ng-app>
+<body ng-app> // <2>
 <div class="container">
-{{'Welcome to Coffeete.ch'}}
+{{'Welcome to Coffeete.ch'}} // <3>
 </div>
 <script src="angular.js"></script>
 <script src="github.js"></script>
 </body>
 </html>
 -------
+
+I am assuming you have a firm grasp on most HTML concepts, but a few
+of the advanced topics here:
+
+<1> The `meta` tag makes our page work well with mobile browsers and
+  enables the resposive features of Bootstrap.
+<2> The `ng-app` attribute in the body tag tells AngularJS to initialize
+  and compile our page from the body tag downward. 
+<3> The `{{ }}` (double brackets) are an AngularJS two-way data binding
+  directive. This sanity checks whether AngularJS is working for us;
+  if we see "Welcome to Coffeete.ch" without the braces then we know
+  AngularJS is loading and working properly. If we see the braces,
+  then there is some error in our setup to resolve.
 
 Then, download the necessary files locally using these commands. We
 include AngularJS, Github.js and Bootstrap CSS
@@ -171,20 +184,9 @@ $ wget https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css
 $ wget https://github.com/michael/github/raw/master/github.js
 -------
 
-I am assuming you have a firm grasp on most HTML concepts, but a few
-of the advanced topics here:
+Now we are ready to use the GitHub library inside our SPA.
 
-* The `meta` tag makes our page work well with mobile browsers and
-  enables the resposive features of Bootstrap.
-* The `ng-app` attribute in the body tag tells AngularJS to initialize
-  and compile our page from the body tag downward. 
-* The `{{ }}` (double brackets) are an AngularJS two-way data binding
-  directive. This sanity checks whether AngularJS is working for us;
-  if we see "Welcome to Coffeete.ch" without the braces then we know
-  AngularJS is loading and working properly. If we see the braces,
-  then there is some error in our setup to resolve.
-
-===== Adding GitHub to our Single Page App
+===== Inserting GitHub Data using github.js
 
 Now that we have our page setup, let's add some GitHub data to it.
 
@@ -558,7 +560,8 @@ var PORTLAND = [ { "name" : "Very Good Coffee Shop", "latitude" : 45.52292,  "lo
 
 -------
 
-Then add the `coffeetech.js` file:
+Then add the `coffeetech.js` file. We'll focus just on the setup code
+and the changes to the init function for now.
 
 [source,javascript]
 -------
@@ -598,72 +601,7 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', 'Prompt', function( $
             });
         });
     };
-
-    $scope.retrieveCity = function() {
-        $scope.repo.read( "gh-pages", $scope.city.name + ".json", function(err, data) { 
-            $scope.shops = JSON.parse( data );
-            $scope.$apply();
-        });
-    }
-
-    $scope.getCurrentLocation = function( cb ) {
-        if( undefined != Geo ) {
-            Geo.getCurrentPosition( cb, $scope.geolocationError );
-        } else {
-            console.error('not supported');
-        }
-        
-    };
-
-    $scope.detectCurrentCity = function() {
-        // Calculate the distance from our current position and use
-        // this to determine which city we are closest to and within
-        // 25 miles
-        for( var i = 0; i < $scope.cities.length; i++ ) {
-            var dist = $scope.calculateDistance( $scope.latitude, $scope.longitude, $scope.cities[i].latitude, $scope.cities[i].longitude );
-            if( dist < 25 ) {
-                $scope.city = $scope.cities[i];
-                break;
-            }
-        }
-    }
-
-    toRad = function(Value) {
-        return Value * Math.PI / 180;
-    };
-    
-    $scope.calculateDistance = function( latitude1, longitude1, latitude2, longitude2 ) {
-        R = 6371;
-        dLatitude = toRad(latitude2 - latitude1);
-        dLongitude = toRad(longitude2 - longitude1);
-        latitude1 = toRad(latitude1);
-        latitude2 = toRad(latitude2);
-        a = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) + Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) * Math.cos(latitude1) * Math.cos(latitude2);
-        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        d = R * c;
-        return d;
-    }
-
-    $scope.loadCity = function( city ) {
-        $scope.repo.read( "gh-pages", city + ".json", function(err, data) { 
-            $scope.shops = JSON.parse( data ); 
-            $scope.$apply();
-        });
-    }
-    
-    $scope.geolocationError = function( error ) {
-        console.log( "Inside failure" );
-    };
-    
-    $scope.annotate = function() {
-        user = Prompt( "Enter your github username" )
-        password = Prompt( "Enter your github password" )
-        data = Prompt( "Enter data to add" );
-    };
-    
-} ] );
-
-
+...
 -------
 
 <1> We extract the Github library into an AngularJS factory. This
@@ -686,6 +624,75 @@ reconstitute this data back into a JavaScript object using the
 data inside the cities array to determine our current city.
 <7> Since we are calling outside of AngularJS and returning inside a
 callback, we need to call `scope.$apply()` like we showed in prior examples.
+
+Now let's look at the code to do our Geocoding.
+
+[source,javascript]
+-------
+$scope.retrieveCity = function() {
+    $scope.repo.read( "gh-pages", $scope.city.name + ".json", function(err, data) { 
+        $scope.shops = JSON.parse( data );
+        $scope.$apply();
+    });
+}
+
+$scope.getCurrentLocation = function( cb ) {
+    if( undefined != Geo ) {
+        Geo.getCurrentPosition( cb, $scope.geolocationError );
+    } else {
+        console.error('not supported');
+    }
+    
+};
+
+$scope.detectCurrentCity = function() {
+    // Calculate the distance from our current position and use
+    // this to determine which city we are closest to and within
+    // 25 miles
+    for( var i = 0; i < $scope.cities.length; i++ ) {
+        var dist = $scope.calculateDistance( $scope.latitude, $scope.longitude, $scope.cities[i].latitude, $scope.cities[i].longitude );
+        if( dist < 25 ) {
+            $scope.city = $scope.cities[i];
+            break;
+        }
+    }
+}
+
+toRad = function(Value) {
+    return Value * Math.PI / 180;
+};
+
+$scope.calculateDistance = function( latitude1, longitude1, latitude2, longitude2 ) {
+    R = 6371;
+    dLatitude = toRad(latitude2 - latitude1);
+    dLongitude = toRad(longitude2 - longitude1);
+    latitude1 = toRad(latitude1);
+    latitude2 = toRad(latitude2);
+    a = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) + Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) * Math.cos(latitude1) * Math.cos(latitude2);
+    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    d = R * c;
+    return d;
+}
+
+$scope.loadCity = function( city ) {
+    $scope.repo.read( "gh-pages", city + ".json", function(err, data) { 
+        $scope.shops = JSON.parse( data ); 
+        $scope.$apply();
+    });
+}
+
+$scope.geolocationError = function( error ) {
+    console.log( "Inside failure" );
+};
+
+$scope.annotate = function() {
+    user = Prompt( "Enter your github username" )
+    password = Prompt( "Enter your github password" )
+    data = Prompt( "Enter data to add" );
+};
+
+...
+-------
 
 At first glance, the calculate distance function looks confusing, no?
 Unless you are a geocoding geek, how do we know this works as
@@ -797,9 +804,10 @@ the item from the tree which matches the name of the file we have
 requested. This is an important performance implication to consider;
 the GitHub API does not provide a way to directly request content by
 the path name. Instead, you pull a list of files and then request the
-file by the SHA hash.
+file by the SHA hash, a two step process that makes two (potentially
+lengthy) calls to the API.
 
-However, we get an error telling us `select` is undefined. Did we forget
+How do we fix the error telling us `select` is undefined? Did we forget
 to include underscore.js? Reviewing the documentation on Github.js, we
 see that it states underscore.js and base64.js are required. We forgot
 to include them. Oops! To include these, run these commands from the
@@ -811,45 +819,19 @@ $ wget http://underscorejs.org/underscore-min.js
 $ wget https://raw.github.com/dankogai/js-base64/master/base64.js
 -------
 
-Then, make your index.html look like this:
+Then, add the libraries to your index.html so that the JavaScript
+includes look like this:
 
 [source,html index.html]
 -----
-<html>
-<head>
-<title>CoffeeTe.ch</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
-</head>
-<body ng-app="coffeetech">
-
-<div class="container" ng-controller="GithubCtrl" ng-init="init()">
-
-<h1>CoffeeTe.ch</h1>
-
-<h3 ng-show="city">Current city: {{city.name}}</h3>
-
-<div class="row=">
-<div class="col-md-6"><h4>Shop Name</h4> </div>
-<div class="col-md-6"><h4>Lat/Lng</h4> </div>
-</div>
-<div class="row" ng-repeat="shop in shops"> <!--1-->
-<div class="col-md-6">   <!--2-->
-{{ shop.name }}  <!--3-->
-</div>
-<div class="col-md-6"> {{ shop.latitude }} / {{ shop.longitude }} </div>
-</div>
-</div>
+...
 
 <script src="angular.js"></script>
 <script src="underscore-min.js"></script>
 <script src="base64.min.js"></script>
 <script src="github.js"></script>
 <script src="coffeetech.js"></script>
-
-</body>
-</html>
-
+...
 -----
 
 Let's also add a link to Google Maps with these coordinates, to allow

@@ -8,12 +8,12 @@ onerous role. A special combination of branches within a
 repository and hosting code on GitHub allows you to instead completely
 remove reliance on a server and manage your application solely as a
 Git repository. This type of application must run on
-another host, the user's web browser, and the only language ubiquitous
-there is JavaScript. You might be surprised to know that there is a
-pure JavaScript GitHub API library, and you might be surprised again to know
-it works well for building real applications. Let's use the JS library to
-build a single page application (SPA) hosted entirely on GitHub, and
-save ourselves the headache of managing a server.
+another host, the user's web browser, and the only ubiquitous language
+inside a browser is JavaScript. You might be surprised to know that there is a
+pure JavaScript GitHub API library, and you might be even more
+surprised to know it works well for building real applications. Let's
+use the JS library to build a single page application (SPA) hosted
+entirely on GitHub, and save ourselves the headache of managing a server.
 
 Beyond saving us some money in server rental fees, there are other good
 reasons to know JavaScript. JavaScript is the lingua franca of the web, invented in
@@ -148,18 +148,31 @@ you prefer, edit the index.html file to look like this:
 <html>
 <head>
 <title>CoffeeTe.ch</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> // <1>
 <link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
 </head>
-<body ng-app>
+<body ng-app> // <2>
 <div class="container">
-{{'Welcome to Coffeete.ch'}}
+{{'Welcome to Coffeete.ch'}} // <3>
 </div>
 <script src="angular.js"></script>
 <script src="github.js"></script>
 </body>
 </html>
 -------
+
+I am assuming you have a firm grasp on most HTML concepts, but a few
+of the advanced topics here:
+
+<1> The `meta` tag makes our page work well with mobile browsers and
+  enables the resposive features of Bootstrap.
+<2> The `ng-app` attribute in the body tag tells AngularJS to initialize
+  and compile our page from the body tag downward. 
+<3> The `{{ }}` (double brackets) are an AngularJS two-way data binding
+  directive. This sanity checks whether AngularJS is working for us;
+  if we see "Welcome to Coffeete.ch" without the braces then we know
+  AngularJS is loading and working properly. If we see the braces,
+  then there is some error in our setup to resolve.
 
 Then, download the necessary files locally using these commands. We
 include AngularJS, Github.js and Bootstrap CSS
@@ -171,20 +184,9 @@ $ wget https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css
 $ wget https://github.com/michael/github/raw/master/github.js
 -------
 
-I am assuming you have a firm grasp on most HTML concepts, but a few
-of the advanced topics here:
+Now we are ready to use the GitHub library inside our SPA.
 
-* The `meta` tag makes our page work well with mobile browsers and
-  enables the resposive features of Bootstrap.
-* The `ng-app` attribute in the body tag tells AngularJS to initialize
-  and compile our page from the body tag downward. 
-* The `{{ }}` (double brackets) are an AngularJS two-way data binding
-  directive. This sanity checks whether AngularJS is working for us;
-  if we see "Welcome to Coffeete.ch" without the braces then we know
-  AngularJS is loading and working properly. If we see the braces,
-  then there is some error in our setup to resolve.
-
-===== Adding GitHub to our Single Page App
+===== Inserting GitHub Data using github.js
 
 Now that we have our page setup, let's add some GitHub data to it.
 
@@ -540,14 +542,16 @@ To be replaced
 snippet~~~~~
 -------
 
-Then add the `coffeetech.js` file:
+Then add the `coffeetech.js` file. We'll focus just on the setup code
+and the changes to the init function for now.
 
 [source,javascript]
 -------
-[filename=".", language="js", sha="021262697f6798e0912519a874161dad1cc3ed9a:support/js/coffeetech.js.7693187"]
+[filename=".", language="js", sha="021262697f6798e0912519a874161dad1cc3ed9a:support/js/coffeetech.js.7693187", lines="1..36"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
+...
 -------
 
 <1> We extract the Github library into an AngularJS factory. This
@@ -570,6 +574,17 @@ reconstitute this data back into a JavaScript object using the
 data inside the cities array to determine our current city.
 <7> Since we are calling outside of AngularJS and returning inside a
 callback, we need to call `scope.$apply()` like we showed in prior examples.
+
+Now let's look at the code to do our Geocoding.
+
+[source,javascript]
+-------
+[filename=".", language="js", sha="021262697f6798e0912519a874161dad1cc3ed9a:support/js/coffeetech.js.7693187", lines="38..-1"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-------
 
 At first glance, the calculate distance function looks confusing, no?
 Unless you are a geocoding geek, how do we know this works as
@@ -652,9 +667,10 @@ the item from the tree which matches the name of the file we have
 requested. This is an important performance implication to consider;
 the GitHub API does not provide a way to directly request content by
 the path name. Instead, you pull a list of files and then request the
-file by the SHA hash.
+file by the SHA hash, a two step process that makes two (potentially
+lengthy) calls to the API.
 
-However, we get an error telling us `select` is undefined. Did we forget
+How do we fix the error telling us `select` is undefined? Did we forget
 to include underscore.js? Reviewing the documentation on Github.js, we
 see that it states underscore.js and base64.js are required. We forgot
 to include them. Oops! To include these, run these commands from the
@@ -666,14 +682,17 @@ $ wget http://underscorejs.org/underscore-min.js
 $ wget https://raw.github.com/dankogai/js-base64/master/base64.js
 -------
 
-Then, make your index.html look like this:
+Then, add the libraries to your index.html so that the JavaScript
+includes look like this:
 
 [source,html index.html]
 -----
-[filename=".", language="js", sha="177c96ceb8dd4b21b8d66717abbac3c8a36cb4c7:support/js/index.html"]
+...
+[filename=".", language="js", sha="177c96ceb8dd4b21b8d66717abbac3c8a36cb4c7:support/js/index.html" lines="-8..-3"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
+...
 -----
 
 Let's also add a link to Google Maps with these coordinates, to allow
