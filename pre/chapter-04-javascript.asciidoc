@@ -575,7 +575,13 @@ data inside the cities array to determine our current city.
 <7> Since we are calling outside of AngularJS and returning inside a
 callback, we need to call `scope.$apply()` like we showed in prior examples.
 
-Now let's look at the code to do our Geocoding.
+Now let's look at the code to do our Geocoding. We'll build functions
+to retrieve the data for a city from the GitHub API, find the location
+of the user using their browser's Geolocation feature, use the user's
+current location to determine what cities they are close to, implement
+a distance calculation function, load the city once close proximity
+cities are determined, and finally, add a function to query the user
+for their GitHub credentials and annotation data.
 
 [source,javascript]
 -------
@@ -613,11 +619,12 @@ distance in kilometers, not miles. So, we need to multiply the result
 by 0.621371 to get the value in miles, which ends up being close
 enough to what Google reports the distance to be. 
 
-Now, let's expose the new data inside the `index.html` file like so:
+Now, let's expose the new data inside the `index.html` file like so
+(omitting the obvious from the HTML):
 
 [source,html]
 -----
-[filename=".", language="js", sha="0e872b1b67dbd0c29ff42c211083f31add9c0123:support/js/index.html"]
+[filename=".", language="js", sha="067c9f1:support/js/index.html", lines="7..-7"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

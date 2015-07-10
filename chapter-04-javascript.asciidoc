@@ -625,7 +625,13 @@ data inside the cities array to determine our current city.
 <7> Since we are calling outside of AngularJS and returning inside a
 callback, we need to call `scope.$apply()` like we showed in prior examples.
 
-Now let's look at the code to do our Geocoding.
+Now let's look at the code to do our Geocoding. We'll build functions
+to retrieve the data for a city from the GitHub API, find the location
+of the user using their browser's Geolocation feature, use the user's
+current location to determine what cities they are close to, implement
+a distance calculation function, load the city once close proximity
+cities are determined, and finally, add a function to query the user
+for their GitHub credentials and annotation data.
 
 [source,javascript]
 -------
@@ -721,16 +727,11 @@ distance in kilometers, not miles. So, we need to multiply the result
 by 0.621371 to get the value in miles, which ends up being close
 enough to what Google reports the distance to be. 
 
-Now, let's expose the new data inside the `index.html` file like so:
+Now, let's expose the new data inside the `index.html` file like so
+(omitting the obvious from the HTML):
 
 [source,html]
 -----
-<html>
-<head>
-<title>CoffeeTe.ch</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
-</head>
 <body ng-app="coffeetech">
 
 <div class="container" ng-controller="GithubCtrl" ng-init="init()">
@@ -739,7 +740,7 @@ Now, let's expose the new data inside the `index.html` file like so:
 
 <h3 ng-show="city">Current city: {{city.name}}</h3>
 
-<div class="row=">
+<div class="row">
 <div class="col-md-6"><h4>Shop Name</h4> </div>
 <div class="col-md-6"><h4>Lat/Lng</h4> </div>
 </div>
@@ -750,14 +751,6 @@ Now, let's expose the new data inside the `index.html` file like so:
 <div class="col-md-6"> {{ shop.latitude }} / {{ shop.longitude }} </div>
 </div>
 </div>
-
-<script src="angular.js"></script>
-<script src="github.js"></script>
-<script src="coffeetech.js"></script>
-
-</body>
-</html>
-
 -----
 
 <1> `ng-repeat` is an AngularJS directive which iterates over an array
