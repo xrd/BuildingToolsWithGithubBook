@@ -953,13 +953,13 @@ describe( "GithubCtrl", function() {
     var scope = undefined, gh = undefined, repo = undefined, prompter = undefined;
 
     function generateMockPrompt() {
-        prompter = { prompt: function() { return "ABC" } };
+        prompter = { prompt: function() { return "ABC" } }; // <1>
         spyOn( prompter, "prompt" ).andCallThrough();
 
     }
 
     var PR_ID = 12345;
-    function generateMockRepositorySupport() {
+    function generateMockRepositorySupport() { // <2>
         repo = { 
             fork: function( cb ) {
                 cb( false );
@@ -979,69 +979,82 @@ describe( "GithubCtrl", function() {
         spyOn( repo, "createPullRequest" ).andCallThrough();
         spyOn( repo, "read" ).andCallThrough();
 
-        gh = { getRepo: function() {} };
-        spyOn( gh, "getRepo" ).andCallFake( function() {
+        gh = { getRepo: function() {} }; // <3>
+        spyOn( gh, "getRepo" ).andCallFake( function() { 
             return repo;
         } );
         ghs = { create: function() { return gh; } };
     }
 
-    beforeEach( module( "coffeetech" ) );
-
-    var $timeout;
-    beforeEach( inject( function ($controller, $rootScope, $injector ) {
-        generateMockRepositorySupport();
-        generateMockPrompt();
-        $timeout = $injector.get( '$timeout' );
-        scope = $rootScope.$new();
-        mockFirebase = {};
-        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter, 'firebase': mockFirebase } );
-    } ) );
-
-
-    describe( "#annotate", function() {
-        it( "should annotate a shop", function() {
-            scope.city = PORTLAND
-            var shop = { name: "A coffeeshop" }
-            scope.annotate( shop );
-            expect( scope.shopToAnnotate ).toBeTruthy();
-            expect( prompter.prompt.calls.length ).toEqual( 3 );
-            expect( scope.username ).not.toBeFalsy();
-            expect( scope.annotation ).not.toBeFalsy();
-
-            expect( repo.fork ).toHaveBeenCalled();
-            expect( scope.waiting.state ).toEqual( "forking" );
-            $timeout.flush();
-
-            expect( scope.forkedRepo ).toBeTruthy();
-            expect( repo.read ).toHaveBeenCalled();
-            expect( repo.write ).toHaveBeenCalled();
-            expect( repo.createPullRequest ).toHaveBeenCalled();
-            expect( scope.waiting.state ).toEqual( "annotated" );
-            $timeout.flush();
-
-            expect( scope.waiting ).toBeFalsy();
-        });
-
-    });
-} );
-
 -----
 
 It looks similar to our previous tests where we mock out a bunch of
-items from the Github.js library.  We added three new methods to
-our mock Github object: `fork`, `write` and 
-`createPullRequest`. We test that these are called. According to the
-documentation for `fork` in the Github.js library, this method can
+items from the Github.js library.  
+
+<1> We added a mock prompt. We will be prompting the user for
+username, password and the annotating data, and we will use the native
+browser prompt mechanism to do this. If using prompt to gather
+information from the user sounds like an ugly way to do it, don't
+fret, we'll find a better way later. 
+<2> We added three new methods to our mock Github object: `fork`,
+`write` and `createPullRequest`. We test that these are called. 
+<3> When we call the `getRepo` function we want to spy on it so we can
+assure it is called, but we also want to return the fake repository we
+provide inside our test, and this syntax does that.
+
+Now let's implement the test itself.
+
+[source,javascript]
+-----
+
+var $timeout;
+beforeEach( inject( function ($controller, $rootScope, $injector ) { // <1>
+    generateMockRepositorySupport();
+    generateMockPrompt();
+    $timeout = $injector.get( '$timeout' );
+    scope = $rootScope.$new();
+    ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter } );
+} ) );
+
+
+describe( "#annotate", function() {  // <2>
+    it( "should annotate a shop", function() {
+        scope.city = PORTLAND
+        var shop = { name: "A coffeeshop" }
+        scope.annotate( shop ); // <3>
+        expect( scope.shopToAnnotate ).toBeTruthy();
+        expect( prompter.prompt.calls.length ).toEqual( 3 ); // <4>
+        expect( scope.username ).not.toBeFalsy();
+        expect( scope.annotation ).not.toBeFalsy();
+
+        expect( repo.fork ).toHaveBeenCalled(); // <5>
+        expect( scope.waiting.state ).toEqual( "forking" ); // <6>
+        $timeout.flush();
+
+        expect( scope.forkedRepo ).toBeTruthy(); // <6>
+        expect( repo.read ).toHaveBeenCalled(); // <7>
+        expect( repo.write ).toHaveBeenCalled(); // <8>
+        expect( repo.createPullRequest ).toHaveBeenCalled(); // <9>
+        expect( scope.waiting.state ).toEqual( "annotated" );
+        $timeout.flush();
+
+        expect( scope.waiting ).toBeFalsy(); // <10>
+    });
+
+});
+-----
+
+<3> According to the documentation for `fork` in the Github.js library, this method can
 take a little time to return (as long as it takes for GitHub to
 complete our fork request, which is nondeterministic), so we need to set a
-timeout in our app and query for the new repository. This explains the
+timeout in our app and query for the new repository. To get a handle
+on the programmatic timeout, we need to use these statements to
+retrieve the injector and then use the injector to get the `$timeout`
+dependency. 
+<2> This explains the
 `$timeout.flush()`, a mock of the timeout browser call which
-we can manually reconcile. We also added a mock prompt. We will be prompting the
-user for username, password and the annotating data, and we will use
-the native browser prompt mechanism to do this. If using prompt to
-gather information from the user sounds like an ugly way to do it,
-don't fret, we'll find a better way later.
+we can manually reconcile. 
+
 
 Now that we are more familiar with the capabilities and limitations of
 the GitHub API and the Github.js library, here are the steps we will
