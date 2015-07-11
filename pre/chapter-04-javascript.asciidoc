@@ -878,7 +878,7 @@ Add these lines to the bottom of the file, but before the last closing braces.
 [source,javascript]
 -----
 ...
-[filename=".", language="js", sha="ff084a5:support/js/coffeetech.js" lines="95..164"]
+[filename=".", language="js", sha="ba42181:support/js/coffeetech.js" lines="95..164"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -912,14 +912,14 @@ logged in to build the repository object. We then read the
 `cities.json` file from the repository; if we retrieve this file
 successfully (we don't see the `err` object evaluating to true) then
 we know we are ready to start editing data.
-<3> When we re-enter the timeout callback, we setup a repository
+<8> REWORK:When we re-enter the timeout callback, we setup a repository
 object for our new forked repository and try to request some content
 from it. If this succeeds, we know the fork completed.
-<4> We define a transformation function which we'll use in the next
+<9> REWORK: We define a transformation function which we'll use in the next
 step. AngularJS adds a tracking attribute (`$$hashKey`) to our objects
 when we use the `ng-repeat` directive and this function filters out
 that so that our pull request data is clean.
-<5> With the fork ready, we write back into the repository with our
+<10> REWORK: With the fork ready, we write back into the repository with our
 new addition. We just need to take the existing objects we have loaded
 and add an annotate to the shop, then use `JSON.stringify` to turn it
 back into a JSON string. `stringify` takes two extra parameters which
@@ -930,11 +930,22 @@ changes on GitHub easier. Diffs on GitHub work best when the changes
 are isolated to a single line, and without the third parameter our
 stringified JSON object would be all on a single line, making diffs
 difficult. 
-<6> To make a pull request, we create a repository object from the
+<11> To make a pull request, we create a repository object from the
 Github.js library based on the original repository, and we issue pull
 requests against that.
-<7> If the pull request succeeds, we update our status messages and
+<12> If the pull request succeeds, we update our status messages and
 are done.
+<13> REWORK
+<14> REWORK
+<15> Any time we are inside a callback in a third part library (like
+GitHub.js) we, as mentioned before, need to use `$apply()` to notify
+Angular that our scope object has changed. In this case our scope is
+being modified that we will notify our users of the pull request.
+<16> Here we implement a convenience function to properly create a way
+to notify users. We create a waiting object, and then update the state
+(which our app will use to hide or display messages) and then a
+message itself. If we provide an empty message, we will clear the
+object, effectively removing the message from the UI.
 
 Let's add the status message into our HTML.
 

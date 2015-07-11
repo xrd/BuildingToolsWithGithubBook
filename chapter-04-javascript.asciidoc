@@ -1123,32 +1123,43 @@ $scope.appendQuirkToShop = function() { // <6>
     $scope.shopToAnnotate.information.push( $scope.annotation );
 };
 
+function stripHashKey( key, value ) { // <7>
+    if( key == "$$hashKey" ) { 
+        return undefined; 
+    } 
+    return value; 
+} 
+
 $scope.annotateAfterForkCompletes = function() {
-    $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" ); // <7>
+    $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" ); // <8>
     $scope.forkedRepo.read( "gh-pages", "cities.json", function(err, data) { 
         if( err ) {
             $timeout( $scope.annotateAfterForkCompletes, 10000 );
         }
         else {
-            $scope.notifyWaiting( "annotating", "Annotating data on GitHub" ); // <8>
+            $scope.notifyWaiting( "annotating", "Annotating data on GitHub" ); // <9>
             // Write the new data into our repository
             $scope.appendQuirkToShop();
+
+            var newData = JSON.stringify( $scope.shops, stripHashKey, 2 ); //<10>
             $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', 
-                    JSON.stringify( $scope.shops ), 'Added my quirky information', function(err) { // <9>
+                                    newData, 
+                                    'Added my quirky information', 
+                                    function(err) {
                 if( !err ) {
                     // Annotate our data using a pull request
-                    var pull = { // <10>
+                    var pull = { // <11>
                         title: "Adding quirky information to " + $scope.shopToAnnotate.name,
                         body: "Created by :" + $scope.username,
                         base: "gh-pages",
                         head: $scope.username + ":" + "gh-pages"
                     };
-                    target = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <11>
-                    target.createPullRequest( pull, function( err, pullRequest ) { // <12>
+                    target = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <12>
+                    target.createPullRequest( pull, function( err, pullRequest ) { // <13>
                         if( !err ) {
                             $scope.notifyWaiting( "annotated", "Successfully sent annotation request" );
-                            $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 ); // <13>
-                            $scope.$apply();
+                            $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 ); // <14>
+                            $scope.$apply(); // <15>
                         }
                     } );
                 }
@@ -1158,17 +1169,6 @@ $scope.annotateAfterForkCompletes = function() {
         $scope.$apply();
     } );
     
-    $scope.notifyWaiting( "annotated" );
-};
-
-$scope.notifyWaiting = function( state, msg ) { // <14>
-    if( state ) {
-        $scope.waiting = {};
-        $scope.waiting.state = state;
-        $scope.waiting.msg = msg;
-    }
-    else {
-        $scope.waiting = undefined;
   ...
 -----
 
@@ -1199,14 +1199,14 @@ logged in to build the repository object. We then read the
 `cities.json` file from the repository; if we retrieve this file
 successfully (we don't see the `err` object evaluating to true) then
 we know we are ready to start editing data.
-<3> When we re-enter the timeout callback, we setup a repository
+<8> REWORK:When we re-enter the timeout callback, we setup a repository
 object for our new forked repository and try to request some content
 from it. If this succeeds, we know the fork completed.
-<4> We define a transformation function which we'll use in the next
+<9> REWORK: We define a transformation function which we'll use in the next
 step. AngularJS adds a tracking attribute (`$$hashKey`) to our objects
 when we use the `ng-repeat` directive and this function filters out
 that so that our pull request data is clean.
-<5> With the fork ready, we write back into the repository with our
+<10> REWORK: With the fork ready, we write back into the repository with our
 new addition. We just need to take the existing objects we have loaded
 and add an annotate to the shop, then use `JSON.stringify` to turn it
 back into a JSON string. `stringify` takes two extra parameters which
@@ -1217,11 +1217,22 @@ changes on GitHub easier. Diffs on GitHub work best when the changes
 are isolated to a single line, and without the third parameter our
 stringified JSON object would be all on a single line, making diffs
 difficult. 
-<6> To make a pull request, we create a repository object from the
+<11> To make a pull request, we create a repository object from the
 Github.js library based on the original repository, and we issue pull
 requests against that.
-<7> If the pull request succeeds, we update our status messages and
+<12> If the pull request succeeds, we update our status messages and
 are done.
+<13> REWORK
+<14> REWORK
+<15> Any time we are inside a callback in a third part library (like
+GitHub.js) we, as mentioned before, need to use `$apply()` to notify
+Angular that our scope object has changed. In this case our scope is
+being modified that we will notify our users of the pull request.
+<16> Here we implement a convenience function to properly create a way
+to notify users. We create a waiting object, and then update the state
+(which our app will use to hide or display messages) and then a
+message itself. If we provide an empty message, we will clear the
+object, effectively removing the message from the UI.
 
 Let's add the status message into our HTML.
 
