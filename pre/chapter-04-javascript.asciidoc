@@ -742,7 +742,7 @@ We'll use this to allow simple search. Add the search feature to our
 [source,html]
 -----
 ...
-[filename=".", language="js", sha="3c3540fe6cf5dd97e536e9a7d7cfabbdca70d4d9:support/js/index.html" lines="8..29"]
+[filename=".", language="js", sha="102b7e0:support/js/index.html" lines="8..35"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -754,6 +754,7 @@ snippet~~~~~
 data inside each item in our `shops` array.
 <3> If we are searching (the model variable `search` is defined) then
 we show the extra information.
+<4> We alter our lat/lng information to point to a Google Maps page.
 
 Now if we type in the word `gluten` in our search box, we filter out
 anything except shops which match that, and we see the information

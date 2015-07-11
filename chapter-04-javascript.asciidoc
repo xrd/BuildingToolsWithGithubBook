@@ -896,6 +896,12 @@ We'll use this to allow simple search. Add the search feature to our
 <span class="label label-default">city.data</span>
 </span>
 </div>
+
+</div>
+<div class="col-md-6"> 
+<a target="_map" <!-- 4 -->
+   href="http://maps.google.com/?q={{shop.latitude}},{{shop.longitude}}">
+   Open in map ({{shop.latitude}},{{shop.longitude}})
 ...
 -----
 
@@ -904,6 +910,7 @@ We'll use this to allow simple search. Add the search feature to our
 data inside each item in our `shops` array.
 <3> If we are searching (the model variable `search` is defined) then
 we show the extra information.
+<4> We alter our lat/lng information to point to a Google Maps page.
 
 Now if we type in the word `gluten` in our search box, we filter out
 anything except shops which match that, and we see the information
