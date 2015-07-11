@@ -1173,13 +1173,16 @@ $scope.annotateAfterForkCompletes = function() {
 -----
 
 <1> We start by creating our annotation function. As we specified in
-our tests, it takes a shop object to work on.
+our tests, this function takes a shop object, an object into which
+annotations about the shop are added.
 <2> We prompt the user three times: username and password on GitHub,
-and the text they want to annotate.
+and the text they want to annotate. If this seems like a really bad
+way to do things, don't worry, we'll fix it in a moment.
 <3> We create a new Github object with the username and password
 provided. We leave it as an exercise of the reader to contend with
 mistyped or incorrect credentials.
-<4> The GitHub.js library has you create a repository using the
+<4> The GitHub.js library allows you to create a repository object
+(meaning create a local reference to an existing repository) using the
 `getRepo` function. Once we have this, we can issue a `fork` to the
 repository. 
 <5> If we did not get an error, we still need to contend with the fact
@@ -1192,38 +1195,42 @@ we probably would need to redo this request if we see it fail as this
 could just mean it was still pending on GitHub.
 <6> We build a convenience method which will create an empty array and
 add the annotation to the list of annotations, or otherwise use the
-existing array.
-<7> Once we have verified the fork has completed, we need to get the
-new forked repository. We use the username they provided when they
-logged in to build the repository object. We then read the
+existing array. We don't want our code to crash if we try to add an
+annotation to an object for which there is an undefined array reference.
+<7> We define a transformation function which we'll use with the
+`JSON.stringify` function later. AngularJS adds a tracking attribute
+(`$$hashKey`) to our objects when we use the `ng-repeat` directive and
+this function filters out that so that our pull request data is clean.
+<8> Once we have verified the fork has completed, we need to get the
+new forked repository. We use the username provided to our code when
+the user logs in to build the repository object. We then read the
 `cities.json` file from the repository; if we retrieve this file
 successfully (we don't see the `err` object evaluating to true) then
 we know we are ready to start editing data.
-<8> REWORK:When we re-enter the timeout callback, we setup a repository
-object for our new forked repository and try to request some content
-from it. If this succeeds, we know the fork completed.
-<9> REWORK: We define a transformation function which we'll use in the next
-step. AngularJS adds a tracking attribute (`$$hashKey`) to our objects
-when we use the `ng-repeat` directive and this function filters out
-that so that our pull request data is clean.
-<10> REWORK: With the fork ready, we write back into the repository with our
-new addition. We just need to take the existing objects we have loaded
-and add an annotate to the shop, then use `JSON.stringify` to turn it
-back into a JSON string. `stringify` takes two extra parameters which
-might not be familiar; our second parameter is the transformation
-function we defined in the prior callout. The other parameter tells
-the JSON library to format our JSON file, which makes reading the
-changes on GitHub easier. Diffs on GitHub work best when the changes
-are isolated to a single line, and without the third parameter our
-stringified JSON object would be all on a single line, making diffs
-difficult. 
-<11> To make a pull request, we create a repository object from the
-Github.js library based on the original repository, and we issue pull
-requests against that.
-<12> If the pull request succeeds, we update our status messages and
-are done.
-<13> REWORK
-<14> REWORK
+<9> We notify the UI that we are annotating and tell the user they
+will need to wait while the annotation request is in progress.
+<10> `JSON.stringify` converts our annotated shop object into a JSON
+object. If you have used JSON.stringify before, you might not know
+about the other two parameters (beyond just the object you want to
+serialize) you can provide to this function. These 
+two extra parameters allow us to filter the object and specify certain
+elements to ignore when serializing and how and if to indent the
+resultant JSON. So, we provide the stripHashKey function to remove the
+`$$hashKey` Angular tracking data, and an indentation count. The
+indentation count makes it much easier to read a pull request, because
+the diff'ing algorithm can diff line by line rather than as a long
+JSON string, which is how `JSON.stringify` serializes by default.
+<11> To make a pull request, we create a pull request object which we
+need to provide to the pull request method inside of GitHub.js.
+<12> We then get a reference to the target of the pull request, the
+original repository.
+<13> We then issue the pull request against the target. This takes the pull request
+specification object we created earlier, and a callback function which
+has an error code if the request failed, and otherwise, a pull request
+object. 
+<14> Once the request has succeeded, we can notify the UI that the
+annotation process has completed, and then issue a timeout to remove
+that from the UI after 5000 milliseconds, or 5 seconds.
 <15> Any time we are inside a callback in a third part library (like
 GitHub.js) we, as mentioned before, need to use `$apply()` to notify
 Angular that our scope object has changed. In this case our scope is
@@ -1234,7 +1241,8 @@ to notify users. We create a waiting object, and then update the state
 message itself. If we provide an empty message, we will clear the
 object, effectively removing the message from the UI.
 
-Let's add the status message into our HTML.
+Now we need to expost the status message in our UI by modifying the
+HTML.
 
 [source,javascript]
 -----
@@ -1335,12 +1343,13 @@ Somehow we have to involve a server into our authentication process.
 The most obvious choice we have is to run a small authentication
 server, delegate authentication to it, and once authentication is
 completed, jump back in our application hosted on GitHub. We provide
-code to do this at the end of the chapter. But, creating even a simple
+code (written in NodeJS, JavaScript for the server side) to do
+this at the end of the xchapter. But, creating even a simple 
 authentication system has a baseline of complexity that seems like
-overkill, and this code is complex and lengthy. If we could instead
-delegate this authentication to a third party, we could reduce a
-massive amount of code and complexity from our system. Let's see what
-that looks like.
+overkill, and this code is complex and lengthy, and requires figuring
+out a hosting provider. If we could instead delegate this
+authentication to a third party, we could reduce a massive amount of
+code and complexity from our system. Let's see what that looks like.
 
 ===== Fixing Authentication with Firebase
 
