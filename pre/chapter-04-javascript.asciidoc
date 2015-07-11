@@ -877,8 +877,8 @@ Add these lines to the bottom of the file, but before the last closing braces.
 
 [source,javascript]
 -----
-  ...
-[filename=".", language="js", sha="33451d6fda5fa5cd6e4de182bbe63c88b398b862:support/js/coffeetech.js" lines="98..164"]
+...
+[filename=".", language="js", sha="17e7ea3382e93aa864f6c9da645cb928fbaf665c:support/js/coffeetech.js" lines="95..164"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
