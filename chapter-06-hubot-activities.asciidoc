@@ -3,6 +3,7 @@
 
 == Hubot and the GitHub Activities API
 
+
 Though the phrase has now been removed from their marketing materials,
 GitHub used to call itself a tool for "social coding." This idea is
 still central to the services GitHub provides, intimate access to the
@@ -1233,38 +1234,6 @@ and randomly choose a member and deliver the PR request to them.
 
 [source,coffeescript]
 --------
-_SECRET = undefined
-
-anyoneButProbot = (members) ->  # <1>
-        user = undefined
-        while not user
-                user = members[ parseInt( Math.random() * members.length ) ].name
-                user = undefined if "probot" == user
-        user
-
-sendPrRequest = ( robot, body, room, url ) -> # <2>
-        parsed = JSON.parse( body )
-        user = anyoneButProbot( parsed.members )
-        robot.messageRoom room, "#{user}: Hey, want a PR? #{url}"
-
-exports.prHandler = ( robot, req, res ) -> 
-        slack_users_url =   # <3>
-                "https://slack.com/api/users.list?token=" +
-                process.env.HUBOT_SLACK_TOKEN
-        secret = req.body?.secret # <4>
-        url = req.body?.url
-
-        if secret == _SECRET and url
-                room = "general"
-                robot.http( slack_users_url ) # <5>
-                        .get() (err, response, body) ->  
-                                sendPrRequest( robot, body, room, url ) unless err 
-        else
-                console.log "Invalid secret or no URL specified"
-        res.send "OK\n"
-
-exports.setSecret = (secret) ->
-        _SECRET = secret
 
 --------
 
