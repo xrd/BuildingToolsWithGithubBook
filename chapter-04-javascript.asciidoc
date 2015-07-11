@@ -1,3 +1,4 @@
+[[JavaScript]]
 == The GitHub API in Your Browser
 
 Most GitHub API applications constitute some kind of code, be it Python or
