@@ -1182,7 +1182,7 @@ and randomly choose a member and deliver the PR request to them.
 
 [source,coffeescript]
 --------
-[language="json", sha="595cdba:support/slacker-hubot/lib/handler.coffee"]
+[language="json", sha="ffc0f55:support/slacker-hubot/lib/handler.coffee.595cdba"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
