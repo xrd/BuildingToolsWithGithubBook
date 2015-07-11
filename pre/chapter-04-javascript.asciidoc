@@ -878,23 +878,40 @@ Add these lines to the bottom of the file, but before the last closing braces.
 [source,javascript]
 -----
 ...
-[filename=".", language="js", sha="17e7ea3382e93aa864f6c9da645cb928fbaf665c:support/js/coffeetech.js" lines="95..164"]
+[filename=".", language="js", sha="ff084a5:support/js/coffeetech.js" lines="95..164"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
   ...
 -----
 
-<1> We create a new Github object with the username and password
+<1> We start by creating our annotation function. As we specified in
+our tests, it takes a shop object to work on.
+<2> We prompt the user three times: username and password on GitHub,
+and the text they want to annotate.
+<3> We create a new Github object with the username and password
 provided. We leave it as an exercise of the reader to contend with
 mistyped or incorrect credentials.
-<2> Once we have forked the repository, we schedule a timeout in 10
-seconds which will check to make sure our request completed. As this
-operation is happening inside the browser, we have no way of
-registering for a notification, and as such, must poll GitHub to determine
-whether our fork has completed. In the real world, we probably would
-need to redo this request if we see it fail as this could just mean it
-was still pending on GitHub.
+<4> The GitHub.js library has you create a repository using the
+`getRepo` function. Once we have this, we can issue a `fork` to the
+repository. 
+<5> If we did not get an error, we still need to contend with the fact
+that forking takes a non-determinstic amount of time. So, we schedule
+a timeout in 10 seconds which will check to make sure our request
+completed. As this operation is happening inside the browser, we have
+no way of registering for a notification, and as such, must poll
+GitHub to determine whether our fork has completed. In the real world,
+we probably would need to redo this request if we see it fail as this
+could just mean it was still pending on GitHub.
+<6> We build a convenience method which will create an empty array and
+add the annotation to the list of annotations, or otherwise use the
+existing array.
+<7> Once we have verified the fork has completed, we need to get the
+new forked repository. We use the username they provided when they
+logged in to build the repository object. We then read the
+`cities.json` file from the repository; if we retrieve this file
+successfully (we don't see the `err` object evaluating to true) then
+we know we are ready to start editing data.
 <3> When we re-enter the timeout callback, we setup a repository
 object for our new forked repository and try to request some content
 from it. If this succeeds, we know the fork completed.
