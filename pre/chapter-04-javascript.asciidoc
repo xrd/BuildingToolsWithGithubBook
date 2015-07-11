@@ -742,7 +742,7 @@ We'll use this to allow simple search. Add the search feature to our
 [source,html]
 -----
 ...
-[filename=".", language="js", sha="102b7e0:support/js/index.html" lines="8..35"]
+[filename=".", language="js", sha="779a83a:support/js/index.html" lines="8..37"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -763,7 +763,7 @@ pieces formatted as labels underneath the shop name.
 image::images/javascript-search-box.png[]
 
 
-===== Adding data using pull-requests
+===== Adding Data Using Pull Requests
 
 Now that we have a functioning application, let's allow people to add
 information themselves and help build our database. Just beneath the
@@ -782,7 +782,7 @@ to our HTML.
 
 [source,html]
 -----
-[filename=".", language="js", sha="2bc7122:support/js/index.html", lines="37..41"]
+[filename=".", language="js", sha="2bc7122:support/js/index.html", lines="41..41"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -941,7 +941,7 @@ database like Postgresql or Mysql.
 image::images/javascript-pull-request-diff.png[]
 
 
-===== Safely implementing login
+===== A Safe Login Implementation
 
 If I saw this app in the wild and knew nothing about the authors, I
 would never use it to submit data. The app asks for my GitHub username
@@ -1001,11 +1001,18 @@ purely on the client side as of yet.
 Somehow we have to involve a server into our authentication process.
 The most obvious choice we have is to run a small authentication
 server, delegate authentication to it, and once authentication is
-completed, jump back in our application hosted on GitHub.
+completed, jump back in our application hosted on GitHub. We provide
+code to do this at the end of the chapter. But, creating even a simple
+authentication system has a baseline of complexity that seems like
+overkill, and this code is complex and lengthy. If we could instead
+delegate this authentication to a third party, we could reduce a
+massive amount of code and complexity from our system. Let's see what
+that looks like.
 
-===== Fixing our authentication system with Firebase
+===== Fixing Authentication with Firebase
 
-Instead, we will delegate authentication to Firebase. Firebase is a
+Instead of writing our own server to manage authentication and talk to
+the GitHub API, we will delegate that authentication to Firebase. Firebase is a
 real time communication toolset which integrates well with our choice
 of AngularJS. By far the simplest and safest option,
 Firebase offers AngularJS bindings (called "AngularFire") and an
@@ -1110,7 +1117,8 @@ snippet~~~~~
 -----
 
 Then, when we annotate, we need to provide the auth token returned
-from Firebase. But, surprisingly little else needs to change in our flow.
+from Firebase. But, it is gratifying to see that little else needs to
+change in our flow. 
 
 [source,javascript]
 -----
