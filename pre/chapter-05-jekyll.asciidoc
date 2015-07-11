@@ -1,14 +1,15 @@
 [[Jekyll]]
-== Jekyll: nouveau, yet antiquated, blogging on GitHub
+== Jekyll
 
 The GitHub Jekyll repository (https://github.com/jekyll/jekyll) calls
 itself a "blog-aware, static site generator in Ruby." What does this mean?
-Jekyll is a set of technologies for building entire web sites. There are
+Jekyll is a set of technologies for building web sites. There are
 probably as many tools for generating web sites as there are websites,
 though, so why does Jekyll deserve notice over others? 
-The core Jekyll tool provides just enough to build a beautiful site,
-and the authors stopped there. Many other web site tools layer more
-and more complicated processes and require complicated backends for
+The Jekyll tool provides just enough to build a beautiful site,
+but then, the authors stopped and kept the core Jekyll tool free of
+many possible but risky improvements. Many other web site tools layer
+more and more complicated processes and require complicated backends for
 hosting. Jekyll is an antidote to this way of thinking. You can layer
 many other pieces onto Jekyll and build ever more complex sites if you
 want to, but you don't have to. Often, thinking simple leads to a much
@@ -52,16 +53,16 @@ built by Jekyll, you are looking at a set of static files, backed by
 nothing more complex than the same web server technologies available
 before the dot com bust of 2000.
 
-=== The Toxic Brew that Spawned Jekyll
+=== The Harmless Brew that Spawned Jekyll
 
 Though you won't see it in the documentation, the popularity of Jekyll
 is due in large part to the desire of bloggers, especially very technical ones,
-wanting a blogging tool option other than Wordpress, the 800 lb.
-gorilla in the room. For many bloggers, Wordpress is a poor
-choice of blogging tools. Of course, there is always language snobbery
-when considering any tool, but Wordpress is built on a language, PHP, which
-is widely reviled by many developers. Because PHP is
-a more accessible language than other languages, the choice of PHP has
+wanting a blogging tool option other than Wordpress. For many
+bloggers, Wordpress is a poor choice of blogging tools. Of course,
+there is always language snobbery in any programming community, but
+Wordpress is built on a language, PHP, which is widely reviled by
+developers from various language communities. Because PHP is  more
+accessible language than other languages, the choice of PHP has 
 fostered a large community of plugin developers. Unfortunately, this
 community is fractured, and the plugins which arise from it are at
 best poorly documented and poorly integrated, and at worst, poorly
