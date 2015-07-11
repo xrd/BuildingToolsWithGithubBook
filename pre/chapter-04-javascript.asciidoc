@@ -713,8 +713,8 @@ snippet~~~~~
 ...
 -----
 
-Let's also add a link to Google Maps with these coordinates, to allow
-the user to generate driving directions and get to the coffee shop.
+Now we can build out some faked data and start envisioning the
+structure of our data that will eventually come from our users. 
 
 ===== Simulating User Reported Data
 
