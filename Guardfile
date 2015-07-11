@@ -2,8 +2,6 @@ require 'asciidoctor'
 require 'erb'
 require 'oreilly/snippets'
 
-require 'oreilly/snippets'
-
 init_script = '<script type="text/javascript" src="init.js"></script>';
 
 Oreilly::Snippets.config( flatten: true )
