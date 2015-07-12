@@ -402,7 +402,7 @@ module.exports = function(config) {
   config.set({
     basePath: '',
     frameworks: ['jasmine'],
-    files: [
+    files: [ // <1>
         'angular.js',
         'fixtures-*.js',
         'angular-mocks.js',
@@ -415,7 +415,7 @@ module.exports = function(config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['Chrome'], // <2>
     captureTimeout: 60000,
     singleRun: false
   });
@@ -423,11 +423,13 @@ module.exports = function(config) {
 
 -------
 
-This is more or less a default Karma configuration file, with the
-`files` section specifying the load order of our JavaScript
+This is more or less a default Karma configuration file.
+
+<1> The `files` section specifying the load order of our JavaScript
 implementations and the test scripts. You can see a few of the files we've
 added above specified directly and wildcards to cover the remaining
-files. Note also that we've specified Chrome as our test browser (so
+files. 
+<2> Note also that we've specified Chrome as our test browser (so
 you should have it installed), which is a safe bet because it works on
 just about any desktop platform you might be running. Know that
 you can always choose Safari or Firefox if you want Karma to test
@@ -447,60 +449,60 @@ To write the test, let's clarify what we want our code to do:
 We'll use a `ng-init` directive which is the mechanism to tell
 AngularJS we want to call the function specified when the controller
 has finished loading. We'll call this function `init` so let's test it
-below. 
+below.
 
 [source,javascript]
 -------
 describe( "GithubCtrl", function() {
-    var scope = undefined;
+    var scope = undefined; // <1>
     var ctrl = undefined;
     var gh  = undefined;
     var repo = undefined;
     var geo = undefined;
 
-    function generateMockGeolocationSupport( lat, lng ) {
-        response = ( lat && lng ) ? { coords: { lat: lat, lng: lng } } : { coords: CITIES[0] };
-        geo = { getCurrentPosition: function( success, failure ) {
-            success( response );
-        } };
-        spyOn( geo, "getCurrentPosition" ).andCallThrough();
-    }
-
-    function generateMockRepositorySupport() {
-        repo = { read: function( branch, filename, cb ) {
-            cb( undefined, JSON.stringify( filename == "cities.json" ? CITIES : PORTLAND ) );  
-        } };
-        spyOn( repo, "read" ).andCallThrough();
-
-        gh = new Github({});
-        spyOn( gh, "getRepo" ).andCallFake( function() {
-            return repo;
-        } );
-    }
-
-    beforeEach( module( "coffeetech" ) );
-
+    beforeEach( module( "coffeetech" ) ); // <2>
+  
     beforeEach( inject( function ($controller, $rootScope ) {
-            generateMockGeolocationSupport();
+            generateMockGeolocationSupport(); // <3>
             generateMockRepositorySupport();
-            scope = $rootScope.$new();
-            ctrl = $controller( "GithubCtrl", { $scope: scope, Github: gh, Geo: geo } );
+            scope = $rootScope.$new(); // <4>
+            ctrl = $controller( "GithubCtrl", 
+	       { $scope: scope, Github: gh, Geo: geo } ); // <5>
         } )
     );
 
-    describe( "#init", function() {
+    describe( "#init", function() { // <7>
         it( "should initialize, grabbing current city", function() {
-            scope.init();
-            expect( geo.getCurrentPosition ).toHaveBeenCalled();
-            expect( gh.getRepo ).toHaveBeenCalled();
+            scope.init(); // <8>
+            expect( geo.getCurrentPosition ).toHaveBeenCalled(); // <9>
+            expect( gh.getRepo ).toHaveBeenCalled(); // <10>
             expect( repo.read ).toHaveBeenCalled();
-            expect( scope.cities.length ).toEqual( 2 );
-            expect( scope.city.name ).toEqual( "portland" );
+            expect( scope.cities.length ).toEqual( 2 ); // <11>
+            expect( scope.city.name ).toEqual( "portland" ); 
             expect( scope.shops.length ).toEqual( 3 );
         });
     });
 });
 -------
+
+<1> First we declare our variables. If we did not do this, JavaScript
+would silently define them inside the functions the first time the
+variable is used and we would have some strange behavior.
+<2> We load our `coffeetech` module into our tests using the `module`
+method inside a `beforeEach` call, code which is executed before our
+tests run.
+<3> We will be creating two functions which generate the mock objects
+required for our tests. We'll discuss these two functions in a bit.
+<4> Our scope is the object where all our functionality is held, and
+by creating a new scope using the AngularJS utility function
+`$rootScope.$new()` function we can then use the scope later to test
+against the functionality we've implemented in our actual code.
+<5> We pass in the mocked objects (created by the mocked function
+calls) as well as the scope object and instantiate a controller
+object.
+<6> Now we can write our tests. We create a describe block to group
+them called `#init` as we are testing this function.
+<7> 
 
 This JS test file has the boilerplate code used in any AngularJS test.
 You setup the scope and instantiate the
@@ -529,6 +531,40 @@ Specifically, our test does these things:
   cities object inside our scope object.
 * Verify that we calculated the correct current city as Portland.
 * Verify that we have loaded the JSON data file for the current city
+
+Now we can implement the two mocking functions vital for the test. Put
+them in between the `beforeEach( module( "coffeetech" ) )` line and
+the `beforeEach( inject( ... ) )` functions to provide proper
+visibility to Karma.
+
+[source,javascript]
+-----
+...
+beforeEach( module( "coffeetech" ) );
+
+function generateMockGeolocationSupport( lat, lng ) {
+    response = ( lat && lng ) ? { coords: { lat: lat, lng: lng } } : { coords: CITIES[0] };
+    geo = { getCurrentPosition: function( success, failure ) {
+        success( response );
+    } };
+    spyOn( geo, "getCurrentPosition" ).andCallThrough();
+}
+
+function generateMockRepositorySupport() {
+    repo = { read: function( branch, filename, cb ) {
+        cb( undefined, JSON.stringify( filename == "cities.json" ? CITIES : PORTLAND ) );  
+    } };
+    spyOn( repo, "read" ).andCallThrough();
+
+    gh = new Github({});
+    spyOn( gh, "getRepo" ).andCallFake( function() {
+        return repo;
+    } );
+}
+
+beforeEach( inject( function ($controller, $rootScope ) {
+...
+-----
 
 Now that we have a set of tests, run the test suite from the command
 line and watch them fail.
