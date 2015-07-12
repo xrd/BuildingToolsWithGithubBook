@@ -1,5 +1,5 @@
 [[Jekyll]]
-== Jekyll
+== Ruby and Jekyll
 
 The GitHub Jekyll repository (https://github.com/jekyll/jekyll) calls
 itself a "blog-aware, static site generator in Ruby." What does this mean?
@@ -496,9 +496,21 @@ To create a github.io personal blog site, your Jekyll blog should be
 on the master branch of your Git repository. The repository should be
 named `username.github.io` on GitHub. If everything is setup correctly
 you can then publish your Jekyll blog by adding a remote for GitHub
-and pushing your files up. If you use the `hub` gem (a gem for interacting with git and GitHub),
-you can go from start to finish with a few simple commands. Make sure
-to change the first line to reflect your username. 
+and pushing your files up. If you use the `hub` tool (a command for
+interacting with git and GitHub), you can go from start to finish with
+a few simple commands. Make sure to change the first line to reflect
+your username.
+
+[NOTE]
+The hub tool was originally written in Ruby and as such could be
+easily installed using only `gem instal hub`, but hub was recently
+rewritten in Go. Go has a somewhat more complicated installation
+process, so we won't document it here. If you have the `brew` command
+installed for OSX, you can install hub with the `brew install hub`
+command. Other platforms vary, so check http://github.com/github/hub
+to determine the best way for your system.
+
+Use thse commands to install your github.io hosted Jekyll blog.
 
 [source]
 ------
@@ -507,7 +519,6 @@ $ jekyll new $USERNAME.github.io
 $ cd $USERNAME.github.io
 $ git init
 $ git commit -m "Initial checkin" -a
-$ gem install hub
 $ hub create  # You'll need to login here...
 $ sleep $((10*60)) && open $USERNAME.github.io
 ------
@@ -686,7 +697,7 @@ plausible option than running against a database.
 To export the XML file, visit the export page on your site
 (https://BLOGNAME.com/wp-admin/export.php).
 
-Like many free tools, there are definitvely limitation to using this
+Like many free tools, there are definitely limitations to using this
 method of export. If your Wordpress site is anything beyond the
 simplest of Wordpress sites then using this tool to import from
 Wordpress means you will lose much of the metadata stored inside your
@@ -714,18 +725,18 @@ $ ruby -rubygems -e 'require "jekyll-import";
     JekyllImport::Importers::Tumblr.run({
       "url"            => "http://myblog.tumblr.com",
       "format"         => "html", # <1>
-      "grab_images"    => false,  
-      "add_highlights" => false,  
-      "rewrite_urls"   => false   
+      "grab_images"    => false,  # <2>
+      "add_highlights" => false,  # <3>
+      "rewrite_urls"   => false   # <4>
     })'
 ------
 
-A few datil
+The Tumblr import plugin has a few interesting options.
 
-<1> Write out HTML with this specification, or use Markdown with `md`.
+<1> Write out HTML; if you prefer to use Markdown use `md`.
 <2> This importer will grab images if you provide a true value.
 <3> Wrap code blocks (indented 4 spaces) in a Liquid "highlight" tag
-if this is set to true
+if this is set to true.
 <4> Write pages that redirect from the old Tumblr paths to the new
 Jekyll paths using this configuration option.
 
@@ -766,18 +777,17 @@ they used to send) and that that information would then become an
 authentication source of information about good and bad travel
 experiences. 
 
-I used the most advanced technologies
-available at the time, specifically a web server called
-http://en.wikipedia.org/wiki/Roxen_(web_server)[Roxen] featuring
+I used an interesting programmable web server called
+http://en.wikipedia.org/wiki/Roxen_(web_server)[Roxen] featuring 
 a dynamic language called Pike back when the web was dominated by one
-dynamic language called Perl. The site had ambitions greater than the
-talents of its designer, but suprisingly, a modest number of people
-found the site and started 
-using it to track the experiences and simultaneously offer unbiased
-reviews of their traveling histories. It was exciting to see people
-creating content on their travels to China, Prague, and Cuba, and I
-vowed to visit Bhutan at least once in my lifetime after reading one
-particularly vivid account from an unknown contributor.
+dynamic language: Perl, the "duct tape of the Internet." The site had ambitions greater than the
+talents of its architect, but suprisingly, a modest number of people
+found the site and started using it to track the experiences and
+simultaneously offer unbiased reviews of their traveling histories. It
+was exciting to see people creating content on their travels to China,
+Prague, and Cuba, and I vowed to visit Bhutan at least once in my
+lifetime after reading one particularly vivid account from an unknown
+contributor. 
 
 One of the problems with build on top of a web server and language
 like Roxen and Pike that never achieved critical mass in any way is
@@ -790,7 +800,7 @@ Or, so I thought. One day I decided to look up ByTravelers on
 Archive.org, the Internet Archive. I found that almost all of the
 articles were listed there and available. Even though we have lost the
 source code and database, could we recover the site from just the
-Internet Archive? Let's retrieve the articles from the Internet
+Internet Archive? Let's scrape the articles from the Internet
 Archive and make them into a modern Jekyll site. 
 
 ==== Jekyll Scraping Tactics
@@ -853,8 +863,8 @@ rendered in a browser of this specific this HTML code.
 image::images/jekyll-chrome-inspector.png[Inspecting Page Structure]
 
 Moving over different places in the HTML code displays different areas of our
-page; finding our way to the `<tr>` tag above the large number of
-`<td>`'s gives us access to the "body" of the post. Once there, you
+page; finding our way to the `tr` tag above the large number of
+`td` tags gives us access to the `body` of the post. Once there, you
 can see at the very bottom of the frame a hierarchy like `html body
 table tbody tr td font table tbody tr` which tells us clues about the
 path we need to take inside the DOM to reach this particular piece of content. With these
@@ -863,15 +873,7 @@ text from pages scraped from the archive.
 
 ==== Writing our Parser
 
-Let's start by writing a parser class. You might raise an eyebrow and
-think that making our scraper script into an object oriented program
-is overkill. We'll prove this is a helpful approach because we
-can instantiate the parser class inside a runner script, but we
-can also then instantiate the same class inside a test harness. As we will
-find out, there are edge cases we will need to cover when scraping
-data and converting it to Markdown, and having a testable class structure will
-make it easy for us to add support for these edge cases without
-worry over breakage of our baseline functionality.
+Let's start by writing a parser class. 
 
 [source,ruby]
 -----
@@ -915,9 +917,9 @@ $ bundle
 With that we have the libraries we'll use to retrieve the content, so
 we can commence writing our wrapper script.
 
-===== A Testable Runner
+===== Parser Runner
 
-Our runner is simple (and this means our test cases should be too).
+Our runner is simple.
 
 [source,ruby]
 -----
