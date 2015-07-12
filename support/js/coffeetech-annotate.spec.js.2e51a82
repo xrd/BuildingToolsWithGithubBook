@@ -1,0 +1,76 @@
+describe( "GithubCtrl", function() {
+
+    var scope = undefined, gh = undefined, repo = undefined, prompter = undefined;
+
+    function generateMockPrompt() {
+        prompter = { prompt: function() { return "ABC" } }; // <1>
+        spyOn( prompter, "prompt" ).andCallThrough();
+
+    }
+
+    var PR_ID = 12345;
+    function generateMockRepositorySupport() { // <2>
+        repo = { 
+            fork: function( cb ) {
+                cb( false );
+            },
+            write: function( branch, filename, data, commit_msg, cb ) {
+                cb( false );
+            },
+            createPullRequest: function( pull, cb ) {
+                cb( false, PR_ID );
+            },
+            read: function( branch, filename, cb ) {
+                cb( undefined, JSON.stringify( filename == "cities.json" ? CITIES : PORTLAND ) );
+            } 
+        };
+        spyOn( repo, "fork" ).andCallThrough();
+        spyOn( repo, "write" ).andCallThrough();
+        spyOn( repo, "createPullRequest" ).andCallThrough();
+        spyOn( repo, "read" ).andCallThrough();
+
+        gh = { getRepo: function() {} }; // <3>
+        spyOn( gh, "getRepo" ).andCallFake( function() { 
+            return repo;
+        } );
+        ghs = { create: function() { return gh; } };
+    }
+
+    beforeEach( module( "coffeetech" ) );
+
+    var $timeout;
+    beforeEach( inject( function ($controller, $rootScope, $injector ) { // <1>
+        generateMockRepositorySupport();
+        generateMockPrompt();
+        $timeout = $injector.get( '$timeout' );
+        scope = $rootScope.$new();
+        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter } );
+    } ) );
+
+
+    describe( "#annotate", function() {  // <2>
+        it( "should annotate a shop", function() {
+            scope.city = PORTLAND
+            var shop = { name: "A coffeeshop" }
+            scope.annotate( shop ); // <3>
+            expect( scope.shopToAnnotate ).toBeTruthy();
+            expect( prompter.prompt.calls.length ).toEqual( 3 ); // <4>
+            expect( scope.username ).not.toBeFalsy();
+            expect( scope.annotation ).not.toBeFalsy();
+
+            expect( repo.fork ).toHaveBeenCalled(); // <5>
+            expect( scope.waiting.state ).toEqual( "forking" ); // <6>
+            $timeout.flush();
+
+            expect( scope.forkedRepo ).toBeTruthy(); // <6>
+            expect( repo.read ).toHaveBeenCalled(); // <7>
+            expect( repo.write ).toHaveBeenCalled(); // <8>
+            expect( repo.createPullRequest ).toHaveBeenCalled(); // <9>
+            expect( scope.waiting.state ).toEqual( "annotated" );
+            $timeout.flush();
+
+            expect( scope.waiting ).toBeFalsy(); // <10>
+        });
+
+    });
+} );
