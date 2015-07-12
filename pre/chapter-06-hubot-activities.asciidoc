@@ -1,7 +1,7 @@
 [[Hubot Chapter]]
 .Hubot Chapter
 
-== Hubot and the GitHub Activities API
+== Hubot and the Activities API
 
 Though the phrase has now been removed from their marketing materials,
 GitHub used to call itself a tool for "social coding." This idea is
@@ -1181,7 +1181,7 @@ and randomly choose a member and deliver the PR request to them.
 
 [source,coffeescript]
 --------
-[language="json", sha="595cdba:support/slacker-hubot/lib/handler.coffee"]
+[language="json", sha="b26a749:support/slacker-hubot/lib/handler.coffee.595cdba"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

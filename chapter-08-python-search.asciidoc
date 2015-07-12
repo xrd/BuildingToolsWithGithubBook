@@ -1,4 +1,4 @@
-== Search
+== Python and the Search API
 
 Once you have enough data, no amount of organization will make everything easy to find.
 As Google has taught us, the only system that works at this scale is a search box.

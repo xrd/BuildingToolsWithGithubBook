@@ -1,23 +1,16 @@
 [[JavaScript]]
-== The GitHub API in Your Browser
+== JavaScript and the Git Data API
 
-Most GitHub API applications constitute some kind of code, be it Python or
-Ruby or Go, running on a server. Usually you, as the author of said
-code, will eventually need to set up and maintain this server when you
-publish your code for the world to see, and this can be an
-onerous role. A special combination of branches within a
-repository and hosting code on GitHub allows you to instead completely
-remove reliance on a server and manage your application solely as a
-Git repository. This type of application must run on
-another host, the user's web browser, and the only ubiquitous language
-inside a browser is JavaScript. You might be surprised to know that there is a
-pure JavaScript GitHub API library, and you might be even more
-surprised to know it works well for building real applications. Let's
-use the JS library to build a single page application (SPA) hosted
-entirely on GitHub, and save ourselves the headache of managing a server.
+GitHub offers libraries which work within other programming languages
+and frameworks, and more often than not, these tools run on a server. 
+Runnig a server means finding and managing a server, often an onerous
+and expensive task. The GitHub API is accessible purely on the client
+side, however, if you use the JavaScript client library. To demonstrate 
+this library, we will build a single page app, hosting everything on
+GitHub and using the GitHub API through a pure JavaScript client-side
+library.
 
-Beyond saving us some money in server rental fees, there are other good
-reasons to know JavaScript. JavaScript is the lingua franca of the web, invented in
+JavaScript is the lingua franca of the web, invented in
 1995 as a scripting language embedded inside the first web browsers.
 JavaScript has recently found its way to the server side as well with
 NodeJS, an innovative toolkit for building high performance network

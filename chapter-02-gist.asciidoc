@@ -1,4 +1,4 @@
-== Gists
+== Gists and the Gist API
 
 GitHub revolutionized software development by responding to a deep
 desire to share information. But calling it just "sharing" does a disservice to
