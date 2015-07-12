@@ -29,4 +29,4 @@ exports.prHandler = ( robot, req, res ) ->
         res.send "OK\n"
 
 exports.setSecret = (secret) ->
-        _SECRET = secret<
+        _SECRET = secret
