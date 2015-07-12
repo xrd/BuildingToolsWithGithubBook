@@ -777,7 +777,7 @@ We'll use this to allow simple search. Add the search feature to our
 [source,html]
 -----
 ...
-[filename=".", language="js", sha="779a83a:support/js/index.html" lines="8..37"]
+[filename=".", language="js", sha="8979c42:support/js/index.html.779a83a" lines="8..37"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1239,7 +1239,7 @@ we could check for previous logins before calling `$login()` again but
 we don't do that here, meaning the login dialog is momentarily popped up
 each time we click the button.
 
-==== Summary
+=== Summary
 
 Obviously there are some pieces of this app that leave things to be
 desired. We don't handle incorrect username and password issues. We
@@ -1256,9 +1256,13 @@ all the administrative features of a data entry system, delegating all
 these to GitHub. Our single page app allows us a single point of
 focus: making a cool and useful application.
 
-In the next chapter we will look at Jekyll, the GitHub blogging tool. 
+=== Next
 
-=== Addedum: a NodeJS GitHub Authentication Service
+In our final chapter we will use CoffeeScript to create our own chat
+robot that requests pull request reviews from chat room members
+using the Activities API.
+
+=== Addendum: a NodeJS GitHub Authentication Service
 
 If you feel more comfortable using your own authentication server and
 not using the Firebase option presented above, this addendum to the

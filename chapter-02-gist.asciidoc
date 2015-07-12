@@ -526,6 +526,9 @@ first higher level language client library (the Octokit library for
 Ruby). We also went deeper into how Hypermedia works and how a client
 library implements using Hypermedia metadata.
 
+=== Next
+
 In the next chapter we will look at Gollum, the GitHub wiki. This
 chapter provides an introduction to the Rugged Ruby library for accessing Git
 repositories and the Ruby library for accessing GitHub. 
+
