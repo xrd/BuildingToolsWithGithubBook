@@ -953,8 +953,7 @@ Now if we type in the word `gluten` in our search box, we filter out
 anything except shops which match that, and we see the information
 pieces formatted as labels underneath the shop name.
 
-image::images/javascript-search-box.png[]
-
+image::images/javascript-search-box.png[Filtering coffeeshops using the term "gluten"]
 
 ===== Adding Data Using Pull Requests
 
@@ -1316,8 +1315,16 @@ not be the most obvious way to manage a database of information, but
 there are compelling reasons to consider it against a traditional
 database like Postgresql or Mysql.
 
-image::images/javascript-pull-request-diff.png[]
+image::images/javascript-pull-request-diff.png[Reviewing annotation pull request diff's from within GitHub]
 
+As you can see, we can see a clear diff of the changes our contributor
+made: they added an annotation that tells us "no turtles allowed". We
+might want to consider a different location the next time we have a
+date with Morla. The diff is clear in that the green information is
+easy to read, which is a benefit we get when we use the
+`JSON.stringify` function with the third parameter set to something
+other than undefined. Unortunately, the first line is only different
+because we added a comma to it, but this is still a very readable diff.
 
 ===== A Safe Login Implementation
 
@@ -1402,7 +1409,17 @@ Firebase: we just modify our existing GitHub application, provide the credential
 and GitHub oAuth scope to Firebase, and then our application offloads
 user management to Firebase.  
 
-To start, create an account on Firebase. Once you have done this, create
+First, we need to create a new GitHub application. In the top right
+corner on GitHub.com, click on the "Account settings" link, and then
+navigate to the "Applications" link towards the bottom. Click on the
+"Developer Applications" tab in the right center column and then click on the
+"Register new application" button. Make sure "Authorization callback URL" is set to
+`https://auth.firebase.com/auth/github/callback`. Then save the
+application.
+
+image::images/javascript-new-application.png[A new GitHub application for oAuth]
+
+Next, create an account on Firebase. Once you have done this, create
 a new app called "CoffeeTech". The APP URL needs be unique, so use
 "coffeetech-<USERNAME>", replacing USERNAME with your GitHub username.
 Once you have created the app, click on "View Firebase" button. You'll
@@ -1410,11 +1427,6 @@ then see a settings screen, and click on "Simple Login" and then
 "GitHub."
 
 image::images/javascript-view-firebase.png[Creating the Firebase Hosted Login]
-
-Next, in our GitHub oAuth application settings, change the
-"Authorization callback URL" to
-`https://auth.firebase.com/auth/github/callback`. Then save the
-application.
 
 Then, copy your client ID and secret to the sections inside the
 Firebase Simple Login settings for the GitHub provider. Make sure the
@@ -1581,7 +1593,7 @@ After we make these changes, we can click the "Add factoid" button and
 we'll get a dialog like this one indicating we are logging into GitHub
 (via the Firebase SimpleLogin).
 
-image::images/javascript-firebase-simplelogin.png[]
+image::images/javascript-firebase-simplelogin.png[The final step in the permission flow for GitHub access using Firebase]
 
 After you authorize the application, the flow is identical to the
 manually username and password authentication flow. As an optimization
@@ -1816,16 +1828,10 @@ function ensureAuthenticated(req, res, next) {
 
 ----
 
-Now, we need to create a new GitHub application. In the top right
-corner on GitHub.com, click on the "Account settings" link, and then
-navigate to the "Applications" link towards the bottom. Click on the
-"Register new application" button.
-
-image::images/javascript-new-application.png[]
-
-The only item which must match exactly here is the "Authorization
-callback URL" which should be set to
-`http://localhost:3000/auth/github/callback`. This is the URL which
+We do need to alter the GitHub application settings to use this, but
+fortunately it is only in one place. The "Authorization
+callback URL" should be set to
+`http://localhost:3000/auth/github/callback`. This is the URL which 
 our application will tell the GitHub API to redirect us back to after
 authentication has successfully completed (the passport library
 automatically provides this when connecting to GitHub).

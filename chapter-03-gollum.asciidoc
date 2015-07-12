@@ -449,7 +449,7 @@ We've just created a wiki compatible with gollum. Let's see what it
 looks like inside gollum. run the `gollum` command then open
 `http://localhost:4567/` in your browser.
 
-image::images/gollum-first-view.png[]
+image::images/gollum-first-view.png[Gollum running locally]
 
 As you can see, this tiny set of commands was enough to create the
 basics of the gollum wiki structure.
@@ -881,7 +881,7 @@ repository, you'll then be able to push up the changes we've made
 using our `image.rb` script. Once you have created a new wiki, look
 for a box on the right which says "Clone this wiki locally". 
 
-image::images/gollum-local-clone-url.png[]
+image::images/gollum-local-clone-url.png[Gollum git clone URL]
 
 Copy that link, and then enter a terminal window where we can then add a remote
 URL to our local repository which allows us to synchronize our
@@ -908,7 +908,7 @@ changes. If we then visit the wiki, we'll see an additional file
 listed under the pages sidebar to the right. Clicking on the review
 page, we can see the images we've added most recently.
 
-image::images/gollum-android-project1-review.png[]
+image::images/gollum-android-project1-review.png[Images displayed within a Gollum wiki]
 
 Not sure why our designer is providing us with an image of a couch,
 but I am sure he has his reasons.
@@ -920,7 +920,7 @@ can review the revisions of this file by clicking on the "3 Commits"
 link right underneath the page title. Jumping onto that page shows us
 the full history of this file.
 
-image::images/gollum-android-project1-revisions.png[]
+image::images/gollum-android-project1-revisions.png[A view on the revisions from within GitHub]
 
 Clicking on any of the SHA hashes will display the page at that
 revision in our history and show us the state of the document at any given
