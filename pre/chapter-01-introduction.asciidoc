@@ -204,7 +204,9 @@ their endpoints without recoding the client code. In other words, the
 API should be able to adjust its map, and then clients will adjust
 themselves, but you as the application developer using the client
 libraries will not need to understand or even be aware of the
-changes. If this sounds worriesome, don't fret too much: GitHub is
+changes. If the thought of GitHub changing an API because clients
+*should* be written to handle new endpoints automatically sounds
+worriesome, don't fret too much: GitHub is 
 very dilligent about maintaining and supporting their API in a way
 that most companies would do well to emulate. But, you should know
 that you can rely on having a API reference inside the API itself,
