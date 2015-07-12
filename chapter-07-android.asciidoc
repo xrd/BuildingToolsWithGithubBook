@@ -77,8 +77,8 @@ the 1.6 or 1.7 versions of Java.
 ==== Creating AVDs for Development
 
 Once you have installed the SDK, you can create a virtual device
-called an AVD. AVDs are very useful because you can see any screen
-resolution, any SDK version, and can quickly delete and reset the
+called an AVD (Android Virtual Device). AVDs are very useful because
+you can see any screen resolution, any SDK version, and can quickly delete and reset the
 devices. In addition, AVDs are created "rooted" by default, which
 allows you to view the contents of all files, a capability which is
 not available on non-rooted devices. This makes debugging AVDs much
@@ -92,12 +92,12 @@ You'll see the AVD manager, and can create new devices and manage
 existing ones. Mine has multiple AVDs already created; yours will be
 empty the first time.
 
-image::images/android-avd.png[]
+image::images/android-avd.png[The Android Virtual Device (AVD) Manager]
 
 To create a new AVD, click on the "New.." button and follow the
 prompts.
 
-image::images/android-new-avd.png[]
+image::images/android-new-avd.png[Creating a new Android Virtual Device]
 
 You are generally free to choose whatever settings you like. Google
 produces a real device called the Nexus 5. This is the Android
@@ -442,7 +442,7 @@ we have not yet implemented the step definitions for our feature
 tests. So, we see calabash provide us with boilerplate code which we
 will copy into our step definition files to complete the test suite.
 
-image::images/android-calabash-failures.png[]
+image::images/android-calabash-failures.png[Calabash reports not-yet-implemented steps]
 
 [WARNING]
 You can run calabash using just the abbreviated `calabash-android` command instead of `bundle
@@ -534,7 +534,7 @@ build/apk/ghru-release-unsigned.apk`. Our tests will still fail to pass,
 but now we are establishing a baseline success story for the
 real functionality of our future app.
 
-image::images/android-calabash-failures2.png[]
+image::images/android-calabash-failures2.png[Calabash failures show us what features we need to complete]
 
 ==== Implementing the Login Screen
 
@@ -720,7 +720,7 @@ compile. This is a good time to play with this application and verify
 the UI looks appropriate. Were we to click the
 login button, we would see that our blog post form looks like this.
 
-image::images/android-calabash-logged-in.png[]
+image::images/android-calabash-logged-in.png[A simple UI for making blog post entries]
 
 Our tests will pass completely right now except for the final
 test which checks GitHub to verify a file was correctly posted. We can
@@ -1325,7 +1325,7 @@ $ GH_REPO=mytestblog GH_USERNAME=myusername GH_PASSWORD=mypassword bundle exec c
 
 You'll see them pass with flying colors this time:
 
-image::images/android-calabash-success.png[]
+image::images/android-calabash-success.png[A successful end-to-end test of our Android application]
 
 ==== A real world example
 

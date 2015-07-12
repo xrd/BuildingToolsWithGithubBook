@@ -208,7 +208,7 @@ image::images/hubot-add-service-integration.png[Adding service integrations to S
 Slack supports many different service integrations, and one of them is
 Hubot.  
 
-image::images/hubot-choose-hubot-integration.png[]
+image::images/hubot-choose-hubot-integration.png[Choosing Hubot from the man Slack integration options]
 
 Choosing Hubot takes you to a settings screen for your Hubot integration.
 
@@ -272,7 +272,7 @@ short story in 1942).
 
 Hubot out of the box supports many commands. To get a list, type "help".
 
-image::images/hubot-help.png[]
+image::images/hubot-help.png[The built-in Hubot commands]
 
 The `pug me` command is a favorite. Many people new to Hubot
 quickly get sucked into spending hours looking at cute pictures of
@@ -1009,7 +1009,7 @@ settings for our repository, follow the link to "Webhooks and
 Services" on the left navigation bar, and we will then find at the
 very bottom of the page a list of recent deliveries to our webhook.
 
-image::images/hubot-recent-deliveries.png[]
+image::images/hubot-recent-deliveries.png[A list of failed webhook deliveries]
 
 These requests all failed; our Probot is not correctly configured
 to handle real HTTP requests from GitHub. This does show that GitHub is
