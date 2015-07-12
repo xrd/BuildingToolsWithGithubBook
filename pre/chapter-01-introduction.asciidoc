@@ -54,11 +54,11 @@ of more than one section.
   document some details of the Git storage format and how it applies
   to storing large files inside of a Git repository, and show how to
   use the git command line tools to play with this information.
-* The "JavaScript" chapter: did you know you can host an entire
-  "single page application" on GitHub? We show how you can build an
-  application backed by a database called GitHub using the JavaScript
-  language. Importanly, we show how you can write a testable
-  JavaScript application that mocks out the GitHub API when needed.
+* The "Search" chapter: we build a GUI search app using Python. 
+* The "Commit Status" chapter: our final chapter documents a
+  relatively new part of the API which documents the interactions
+  between third party tools and your code. This chapter builds an
+  application using C# and the Nancy .NET GitHub API libraries.
 * The "Jekyll" chapter: if you push a specifically organized
   repository into GitHub, GitHub will host a fully featured blog,
   equivalent in most ways to a Wordpress site (well, except for the
@@ -69,6 +69,17 @@ of more than one section.
   from the Internet Archive into the Jekyll format using Ruby. We show
   how to respectfully spider a site using caching, a valuable
   technique when using APIs or third party public information.
+* The "Android" chapter: in this chapter we create a mobile
+  application targeting the Android OS. Our application reads and
+  writes information into a Jekyll repository from the Git Data
+  section of the API. We show how to create user interface tests for
+  Android which verify GitHub API responses using the Calabash UI
+  testing tool.
+* The "JavaScript" chapter: did you know you can host an entire
+  "single page application" on GitHub? We show how you can build an
+  application backed by a database called GitHub using the JavaScript
+  language. Importanly, we show how you can write a testable
+  JavaScript application that mocks out the GitHub API when needed.
 * The "Hubot" chapter: Hubot is a JavaScript (NodeJS) chat robot
   enabling technologists to go beyond developer operations ("DevOps")
   to a new frontier called "ChatOps." The Hubot chapter illustrates
@@ -76,22 +87,11 @@ of more than one section.
   of the API. In addition we show how you can simulate GitHub
   notifications and how to write testable Hubot extensions (which is
   often a challenge when writing JavaScript code).
-* The "Android" chapter: in this chapter we create a mobile
-  application targeting the Android OS. Our application reads and
-  writes information into a Jekyll repository from the Git Data
-  section of the API. We show how to create user interface tests for
-  Android which verify GitHub API responses using the Calabash UI
-  testing tool.
-* The "Search" chapter: we build a GUI search app using Python. 
-* The "Commit Status" chapter: our final chapter documents a
-  relatively new part of the API which documents the interactions
-  between third party tools and your code. This chapter builds an
-  application using C# and the Nancy .NET GitHub API libraries.
 
 We don't cover the organization API: this is a small facet of the API
 with only the ability to list organizations and modify metadata about
-your organization; once you have used other parts of the API this API
-section will be very intuitive.
+your organization; once you have used other parts of the API this nook
+of the API will be very intuitive.
 
 We also don't cover the users section of the API. While you might
 expect it to be an important part of the API, the users API is really
@@ -204,7 +204,9 @@ their endpoints without recoding the client code. In other words, the
 API should be able to adjust its map, and then clients will adjust
 themselves, but you as the application developer using the client
 libraries will not need to understand or even be aware of the
-changes. If this sounds worriesome, don't fret too much: GitHub is
+changes. If the thought of GitHub changing an API because clients
+*should* be written to handle new endpoints automatically sounds
+worriesome, don't fret too much: GitHub is 
 very dilligent about maintaining and supporting their API in a way
 that most companies would do well to emulate. But, you should know
 that you can rely on having a API reference inside the API itself,

@@ -828,7 +828,7 @@ Let's add some tests. Add another file called
 
 [source,javascript]
 -----
-[filename=".", language="js", sha="2e51a82:support/js/coffeetech-annotate.spec.js", lines="1..38"]
+[filename=".", language="js", sha="97e2572:support/js/coffeetech-annotate.spec.js.2e51a82", lines="1..38"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -854,7 +854,7 @@ Now let's implement the test itself.
 [source,javascript]
 -----
 ...
-[filename=".", language="js", sha="987cdaf:support/js/coffeetech-annotate.spec.js", lines="40..-1"]
+[filename=".", language="js", sha="4dc8cc2:support/js/coffeetech-annotate.spec.js.987cdaf", lines="40..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -908,12 +908,14 @@ annotate a shop FAILED
 -----
 
 Now, let's implement this functionality in our `coffeetech.js` file.
-Add these lines to the bottom of the file, but before the last closing braces.
+Add these lines to the bottom of the file, but before the last closing
+braces.
+
 
 [source,javascript]
 -----
 ...
-[filename=".", language="js", sha="ba42181:support/js/coffeetech.js" lines="95..164"]
+[filename=".", language="js", sha="fd7afcd:support/js/coffeetech.js.ba42181" lines="95..164"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
