@@ -1320,25 +1320,30 @@ our tests.
 
 [source,bash]
 ----
-$ GH_REPO=mytestblog GH_USERNAME=myusername GH_PASSWORD=mypassword bundle exec calabash-android run build/apk/ghru-release-unsigned.apk
+$ GH_REPO=mytestblog \
+GH_USERNAME=myusername \
+GH_PASSWORD=mypassword \
+bundle exec \
+calabash-android run build/apk/ghru-release-unsigned.apk
 ----
 
 You'll see them pass with flying colors this time:
 
 image::images/android-calabash-success.png[A successful end-to-end test of our Android application]
 
-==== A real world example
+=== 
 
 If you want to see a more complicated version of the GitHub API on
-Android, take a look at https://github.com/xrd/TeddyHyde.git:[Teddy Hyde]. Teddy Hyde is the
-"the extensible, one handed GitHub editor for Android." I wrote this
-when my son was born because there was not a way for me to publish
-Jekyll blogs hosted on GitHub as my son slept on my chest. You
-can't type on a computer while acting as a sleeping pad for a new
-baby, but you can use your cell phone with one hand. This app allowed
-me to stay creative even within the radical life changes that come
-with a new baby. And, the GitHub API work surprisingly well from
-within an Android app using the Merlyn git libraries.
+Android, take a look at https://github.com/xrd/TeddyHyde.git:[Teddy
+Hyde] on the Google Play App Store. Teddy Hyde is the "the extensible,
+one handed GitHub editor for Android." I wrote this right after the
+birth of my son. I was searching for a way to publish Jekyll blogs hosted on GitHub, and
+writing on a desktop computer with my son sleeping on my chest proved
+difficult, so I wrote an Android application to allow me to do it
+using one hand from my cell phone. This app allowed me to stay creative even
+within the substantial life changes that come with a new baby. And,
+the GitHub API work surprisingly well from within an Android app using
+the Merlyn git libraries.
 
 === Summary
 
