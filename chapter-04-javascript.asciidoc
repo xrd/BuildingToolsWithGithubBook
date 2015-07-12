@@ -953,7 +953,7 @@ Now if we type in the word `gluten` in our search box, we filter out
 anything except shops which match that, and we see the information
 pieces formatted as labels underneath the shop name.
 
-image::images/javascript-search-box.png[Filtering coffeeshops using the term "gluten"]
+image::images/javascript-search-box.png[Filtering coffeeshops using the term gluten]
 
 ===== Adding Data Using Pull Requests
 
