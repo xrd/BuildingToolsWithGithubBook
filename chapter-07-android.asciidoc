@@ -1,4 +1,4 @@
-== GitHub API on Android
+== Android and the Git Data API
 
 Android is currently the most popular operating system for mobile
 devices, overtaking Symbian OS in 2010, experiencing incredible growth

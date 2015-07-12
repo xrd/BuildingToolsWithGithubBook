@@ -1,5 +1,5 @@
 [[JavaScript]]
-== A Single Page App using the GitHub API with JavaScript
+== JavaScript and the Git Data API
 
 GitHub offers libraries which work within other programming languages
 and frameworks, and more often than not, these tools run on a server. 
@@ -10,15 +10,20 @@ this library, we will build a single page app, hosting everything on
 GitHub and using the GitHub API through a pure JavaScript client-side
 library.
 
-=== Using the GitHub API with JavaScript
-
 JavaScript is the lingua franca of the web, invented in
 1995 as a scripting language embedded inside the first web browsers.
 JavaScript has recently found its way to the server side as well with
 NodeJS, an innovative toolkit for building high performance network
 servers. JavaScript is a useful language to know, whether on the
-server side or strictly client side web development. 
+server side or strictly client side web development. There is a
+separate GitHub API client for NodeJS which supports a different
+interface and has different considerations because of browser sandbox
+security issues. The client side JavaScript library is, in my humble
+opinion, a bit more ambitious because it is effective on the browser,
+and it opens up some fun integrations with Firebase as we will discuss
+later in the chapter.
 
+[NOTE]
 The main weakness of JavaScript has always been testability. Mainly
 due to the asynchronous nature of JavaScript, writing tests has never
 been easy; polling for changes when a callback returns was until
@@ -29,7 +34,11 @@ third party services makes testing even more important than it already
 was, and we'll make sure to add testing to our application to verify
 the functionality works as we expect.
 
-==== Building our coffee shop database
+A single page application should fulfill a single simple purpose. It
+has to be important and direct. It should help us do something
+important. Logically, this application should help us find good coffee.
+
+=== Building a Coffee Shop Database on GitHub
 
 In many of the software development shops where I have worked in Portland, there is
 an almost disturbing obsession with coffee. I suffer from
@@ -66,7 +75,7 @@ More specifically, we'll use these technologies:
 
 You don't need to know these technologies in advance of working on this chapter.
 
-===== Setting up our single page app
+==== Setting up our single page app
 
 To create our app, let's first create our main web page and push it into our repository.
 
@@ -89,15 +98,12 @@ instead of the longer `git push origin gh-pages`.
 
 ===== Mapping our site to a live hostname
 
-As we discussed in the Jekyll chapter, once we publish these files
-into GitHub inside a repository we can connect the repository to a
+Once we publish these files into GitHub inside a repository we can connect the repository to a
 real hostname. There are two steps to take to do this:
 
 * Add a CNAME file which tells GitHub under which server name this service should resolve. 
 * Setup DNS records so that the hostname maps to the correct IP
-  address at GitHub. [TODO: add specific information on IP address
-  according to this link:
-  https://help.github.com/articles/setting-up-a-custom-domain-with-pages ]
+  address at GitHub.
 
 Imagine you have the hostname myspecialhostname.com. If you map this
 repository to a subdomain called coffeetech, then you would do
@@ -123,29 +129,44 @@ settings out into the wild, so make sure you choose and setup a
 hostname far in advance if your site has to be live by a certain point.
 =====
 
+Now we can install the libraries needed for this application.
+
 ===== Adding the support libraries
 
 As we mentioned, we will use the GitHub.js library, AngularJS, and
 Bootstrap. Let's add those to our project now. Using whatever editor
 you prefer, edit the index.html file to look like this:
 
-[source,html index.html]
+[source,html]
 -------
 <html>
 <head>
 <title>CoffeeTe.ch</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> // <1>
 <link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
 </head>
-<body ng-app>
+<body ng-app> // <2>
 <div class="container">
-{{'Welcome to Coffeete.ch'}}
+{{'Welcome to Coffeete.ch'}} // <3>
 </div>
 <script src="angular.js"></script>
 <script src="github.js"></script>
 </body>
 </html>
 -------
+
+I am assuming you have a firm grasp on most HTML concepts, but a few
+of the advanced topics here:
+
+<1> The `meta` tag makes our page work well with mobile browsers and
+  enables the resposive features of Bootstrap.
+<2> The `ng-app` attribute in the body tag tells AngularJS to initialize
+  and compile our page from the body tag downward. 
+<3> The `{{ }}` (double brackets) are an AngularJS two-way data binding
+  directive. This sanity checks whether AngularJS is working for us;
+  if we see "Welcome to Coffeete.ch" without the braces then we know
+  AngularJS is loading and working properly. If we see the braces,
+  then there is some error in our setup to resolve.
 
 Then, download the necessary files locally using these commands. We
 include AngularJS, Github.js and Bootstrap CSS
@@ -157,20 +178,9 @@ $ wget https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css
 $ wget https://github.com/michael/github/raw/master/github.js
 -------
 
-I am assuming you have a firm grasp on most HTML concepts, but a few
-of the advanced topics here:
+Now we are ready to use the GitHub library inside our SPA.
 
-* The `meta` tag makes our page work well with mobile browsers and
-  enables the resposive features of Bootstrap.
-* The `ng-app` attribute in the body tag tells AngularJS to initialize
-  and compile our page from the body tag downward. 
-* The `{{ }}` (double brackets) are an AngularJS two-way data binding
-  directive. This sanity checks whether AngularJS is working for us;
-  if we see "Welcome to Coffeete.ch" without the braces then we know
-  AngularJS is loading and working properly. If we see the braces,
-  then there is some error in our setup to resolve.
-
-===== Adding GitHub to our Single Page App
+===== Inserting GitHub Data using github.js
 
 Now that we have our page setup, let's add some GitHub data to it.
 
@@ -191,7 +201,7 @@ mod.controller( 'GithubCtrl', function( $scope ) {
 
 Modify our `index.html` to utilize this new code:
 
-[source,html index.html]
+[source,html]
 -------
 <html>
 <head>
@@ -284,12 +294,13 @@ AngularJS handles putting the results into our web page.
 
 If you load this up in your browser, you will see something like this:
 
-image::images/javascript-gollum.png[]
+image::images/javascript-gollum.png[The Whole Messy JSON]
 
 Yikes, that is a lot of data. AngularJS's JSON filter pretty printed
 it for us, but this is a bit too much. 
 
-Modify the HTML to show just a few vital pieces of information.
+Modify the HTML to show just a few vital pieces of information:
+retreive the `subscriber_count` and the `network_count` from the repo JSON.
 
 [source,html index.html]
 -------
@@ -314,7 +325,7 @@ src="angular.js"></script>
 
 Now we see something more palatable.
 
-image::images/javascript-gollum-precise.png[]
+image::images/javascript-gollum-precise.png[Pulling Out What We Want]
 
 We've just extracted the subscriber and network count from the gollum
 repository hosted on GitHub using the GitHub API and placed it into
@@ -322,9 +333,10 @@ our single page app.
 
 ===== Visualize Application Data Structure
 
-Let's build our application. First, consider how we
-will structure our data. We are going to use GitHub as our data store.
-GitHub is built on top of Git, a technology that could not be better suited for
+To really build this application we will need to take a step back and
+consider how we want to structure our data. Since we won't be using a
+server at all, we are going to use GitHub as our data store. GitHub is
+built on top of Git, a technology that could not be better suited for 
 storing content. However, there is a major difference between
 accessing data stored inside a Git repository and a traditional database:
 searchability. Git repositories are great for storing data, and
@@ -349,18 +361,21 @@ this from that repository. It looks like the calls we need to use are
 `github.getRepo( username, reponame )` and once we have retrieved the
 repository, `repo.contents( branch, path, callback )`. 
 
-==== Writing tests
+Now that we have a bare bones application let's pause and make sure we
+are building something that is future proofed. This means adding tests
+to our project.
 
-Before we get deep into writing the code to pull this data, let's add
-some tests. Testing not only builds better code by making us think
+==== Making our App Testable
+
+Testing not only builds better code by making us think
 clearly about how our code will be used from the outside, but makes it
 easier for an outsider (meaning other team members) to use our code.
 Testing facilitates "social coding."
 
 We'll use a tool called `karma`. Karma simplifies writing JavaScript
 unit tests. We need to first install the tool, then write a test or two.
-Karma can easily be installed using NPM, which we document in the
-first chapter.
+Karma can easily be installed using NPM (installation of which is
+documented in the <<appendix>>).
 
 [source,bash]
 -------
@@ -398,6 +413,17 @@ module.exports = function(config) {
 
 -------
 
+This is more or less a default Karma configuration file, with the
+`files` section specifying the load order of our JavaScript
+implementations and the test scripts. You can see a few of the files we've
+added above specified directly and wildcards to cover the remaining
+files. Note also that we've specified Chrome as our test browser (so
+you should have it installed), which is a safe bet because it works on
+just about any desktop platform you might be running. Know that
+you can always choose Safari or Firefox if you want Karma to test
+inside those as well. Karma will start a new instance of each browser
+specified and run your tests inside a test harness in those browsers.
+
 To write the test, let's clarify what we want our code to do:
 
 * When a user first visits the application, we should use the
@@ -408,9 +434,10 @@ To write the test, let's clarify what we want our code to do:
   any of the cities. If so, set the current city to the first match.
 * If we found a city, load the JSON data file from GitHub
 
-We'll use a `ng-init` directive which simply tells AngularJS to call the
-function specified when the controller has finished loading. We'll
-call this function `init` so let's test it below.
+We'll use a `ng-init` directive which is the mechanism to tell
+AngularJS we want to call the function specified when the controller
+has finished loading. We'll call this function `init` so let's test it
+below. 
 
 [source,javascript]
 -------
@@ -527,7 +554,8 @@ var PORTLAND = [ { "name" : "Very Good Coffee Shop", "latitude" : 45.52292,  "lo
 
 -------
 
-Then add the `coffeetech.js` file:
+Then add the `coffeetech.js` file. We'll focus just on the setup code
+and the changes to the init function for now.
 
 [source,javascript]
 -------
@@ -567,72 +595,7 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', 'Prompt', function( $
             });
         });
     };
-
-    $scope.retrieveCity = function() {
-        $scope.repo.read( "gh-pages", $scope.city.name + ".json", function(err, data) { 
-            $scope.shops = JSON.parse( data );
-            $scope.$apply();
-        });
-    }
-
-    $scope.getCurrentLocation = function( cb ) {
-        if( undefined != Geo ) {
-            Geo.getCurrentPosition( cb, $scope.geolocationError );
-        } else {
-            console.error('not supported');
-        }
-        
-    };
-
-    $scope.detectCurrentCity = function() {
-        // Calculate the distance from our current position and use
-        // this to determine which city we are closest to and within
-        // 25 miles
-        for( var i = 0; i < $scope.cities.length; i++ ) {
-            var dist = $scope.calculateDistance( $scope.latitude, $scope.longitude, $scope.cities[i].latitude, $scope.cities[i].longitude );
-            if( dist < 25 ) {
-                $scope.city = $scope.cities[i];
-                break;
-            }
-        }
-    }
-
-    toRad = function(Value) {
-        return Value * Math.PI / 180;
-    };
-    
-    $scope.calculateDistance = function( latitude1, longitude1, latitude2, longitude2 ) {
-        R = 6371;
-        dLatitude = toRad(latitude2 - latitude1);
-        dLongitude = toRad(longitude2 - longitude1);
-        latitude1 = toRad(latitude1);
-        latitude2 = toRad(latitude2);
-        a = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) + Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) * Math.cos(latitude1) * Math.cos(latitude2);
-        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        d = R * c;
-        return d;
-    }
-
-    $scope.loadCity = function( city ) {
-        $scope.repo.read( "gh-pages", city + ".json", function(err, data) { 
-            $scope.shops = JSON.parse( data ); 
-            $scope.$apply();
-        });
-    }
-    
-    $scope.geolocationError = function( error ) {
-        console.log( "Inside failure" );
-    };
-    
-    $scope.annotate = function() {
-        user = Prompt( "Enter your github username" )
-        password = Prompt( "Enter your github password" )
-        data = Prompt( "Enter data to add" );
-    };
-    
-} ] );
-
-
+...
 -------
 
 <1> We extract the Github library into an AngularJS factory. This
@@ -656,11 +619,104 @@ data inside the cities array to determine our current city.
 <7> Since we are calling outside of AngularJS and returning inside a
 callback, we need to call `scope.$apply()` like we showed in prior examples.
 
+Now let's look at the code to do our Geocoding. We'll build functions
+to retrieve the data for a city from the GitHub API, find the location
+of the user using their browser's Geolocation feature, use the user's
+current location to determine what cities they are close to, implement
+a distance calculation function, load the city once close proximity
+cities are determined, and finally, add a function to query the user
+for their GitHub credentials and annotation data.
+
+[source,javascript]
+-------
+$scope.retrieveCity = function() { // <1>
+    $scope.repo.read( "gh-pages", $scope.city.name + ".json", function(err, data) {  
+        $scope.shops = JSON.parse( data );
+        $scope.$apply();
+    });
+}
+
+$scope.loadCity = function( city ) { // <2>
+    $scope.repo.read( "gh-pages", city + ".json", function(err, data) { 
+        $scope.shops = JSON.parse( data ); 
+        $scope.$apply();
+    });
+}
+
+$scope.getCurrentLocation = function( cb ) { // <3>
+    if( undefined != Geo ) {
+        Geo.getCurrentPosition( cb, $scope.geolocationError );
+    } else {
+        console.error('not supported');
+    }
+};
+
+$scope.geolocationError = function( error ) {
+    console.log( "Inside failure" );
+};
+
+$scope.detectCurrentCity = function() {  // <4>
+    // Calculate the distance from our current position and use
+    // this to determine which city we are closest to and within
+    // 25 miles
+    for( var i = 0; i < $scope.cities.length; i++ ) {
+        var dist = $scope.calculateDistance( $scope.latitude, 
+                                             $scope.longitude, 
+                                             $scope.cities[i].latitude, 
+                                             $scope.cities[i].longitude );
+        if( dist < 25 ) {
+            $scope.city = $scope.cities[i];
+            break;
+        }
+    }
+}
+
+toRad = function(Value) {
+    return Value * Math.PI / 180;
+};
+
+$scope.calculateDistance = function( latitude1,   // <5>
+                                     longitude1, 
+                                     latitude2, 
+                                     longitude2 ) {
+    R = 6371;
+    dLatitude = toRad(latitude2 - latitude1);
+    dLongitude = toRad(longitude2 - longitude1);
+    latitude1 = toRad(latitude1);
+    latitude2 = toRad(latitude2);
+    a = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) + 
+        Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) * 
+        Math.cos(latitude1) * Math.cos(latitude2);
+    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    d = R * c;
+    return d;
+}
+
+$scope.annotate = function() { // <6>
+    user = Prompt( "Enter your github username" )
+    password = Prompt( "Enter your github password" )
+    data = Prompt( "Enter data to add" );
+};
+
+...
+-------
+
+<1> `retrieveCity` retrieves a list of shops in the same way that we
+retrieved the list of cities.
+<2> `loadCity` 
+<3>
+<4>
+<5>
+<6>
+<7>
+
 At first glance, the calculate distance function looks confusing, no?
-Unless you are a geocoding geek, how do we know this works as
-advertised? Well, let's write some tests to prove it. Add these lines
-to the bottom of your coffeetech.spec.js, just within the last `});`
-closing braces
+This was code I developed after reading a post on Geocoding using a
+stored procedure within the PostgreSQL database, and I converted the
+code to JavaScript. Unless you are a geocoding geek, how do we know
+this works as advertised? Well, let's write some tests to prove it.
+Add these lines to the bottom of your coffeetech.spec.js, just within
+the last `});` closing braces
 
 [source,javascript]
 -----
@@ -683,16 +739,11 @@ distance in kilometers, not miles. So, we need to multiply the result
 by 0.621371 to get the value in miles, which ends up being close
 enough to what Google reports the distance to be. 
 
-Now, let's expose the new data inside the `index.html` file like so:
+Now, let's expose the new data inside the `index.html` file like so
+(omitting the obvious from the HTML):
 
 [source,html]
 -----
-<html>
-<head>
-<title>CoffeeTe.ch</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
-</head>
 <body ng-app="coffeetech">
 
 <div class="container" ng-controller="GithubCtrl" ng-init="init()">
@@ -701,7 +752,7 @@ Now, let's expose the new data inside the `index.html` file like so:
 
 <h3 ng-show="city">Current city: {{city.name}}</h3>
 
-<div class="row=">
+<div class="row">
 <div class="col-md-6"><h4>Shop Name</h4> </div>
 <div class="col-md-6"><h4>Lat/Lng</h4> </div>
 </div>
@@ -712,14 +763,6 @@ Now, let's expose the new data inside the `index.html` file like so:
 <div class="col-md-6"> {{ shop.latitude }} / {{ shop.longitude }} </div>
 </div>
 </div>
-
-<script src="angular.js"></script>
-<script src="github.js"></script>
-<script src="coffeetech.js"></script>
-
-</body>
-</html>
-
 -----
 
 <1> `ng-repeat` is an AngularJS directive which iterates over an array
@@ -753,7 +796,7 @@ Uncaught TypeError: Cannot call method 'select' of undefined
 
 If you click on the link to the right for github.js, you'll see this.
 
-image::images/javascript-underscore-missing.png[]
+image::images/javascript-underscore-missing.png[An Unexpected Error]
 
 You see at the point of error that we are calling `select` on the tree.
 Select appears to be a method defined on an underscore character. If
@@ -766,9 +809,10 @@ the item from the tree which matches the name of the file we have
 requested. This is an important performance implication to consider;
 the GitHub API does not provide a way to directly request content by
 the path name. Instead, you pull a list of files and then request the
-file by the SHA hash.
+file by the SHA hash, a two step process that makes two (potentially
+lengthy) calls to the API.
 
-However, we get an error telling us `select` is undefined. Did we forget
+How do we fix the error telling us `select` is undefined? Did we forget
 to include underscore.js? Reviewing the documentation on Github.js, we
 see that it states underscore.js and base64.js are required. We forgot
 to include them. Oops! To include these, run these commands from the
@@ -780,51 +824,25 @@ $ wget http://underscorejs.org/underscore-min.js
 $ wget https://raw.github.com/dankogai/js-base64/master/base64.js
 -------
 
-Then, make your index.html look like this:
+Then, add the libraries to your index.html so that the JavaScript
+includes look like this:
 
 [source,html index.html]
 -----
-<html>
-<head>
-<title>CoffeeTe.ch</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
-</head>
-<body ng-app="coffeetech">
-
-<div class="container" ng-controller="GithubCtrl" ng-init="init()">
-
-<h1>CoffeeTe.ch</h1>
-
-<h3 ng-show="city">Current city: {{city.name}}</h3>
-
-<div class="row=">
-<div class="col-md-6"><h4>Shop Name</h4> </div>
-<div class="col-md-6"><h4>Lat/Lng</h4> </div>
-</div>
-<div class="row" ng-repeat="shop in shops"> <!--1-->
-<div class="col-md-6">   <!--2-->
-{{ shop.name }}  <!--3-->
-</div>
-<div class="col-md-6"> {{ shop.latitude }} / {{ shop.longitude }} </div>
-</div>
-</div>
+...
 
 <script src="angular.js"></script>
 <script src="underscore-min.js"></script>
 <script src="base64.min.js"></script>
 <script src="github.js"></script>
 <script src="coffeetech.js"></script>
-
-</body>
-</html>
-
+...
 -----
 
-Let's also add a link to Google Maps with these coordinates, to allow
-the user to generate driving directions and get to the coffee shop.
+Now we can build out some faked data and start envisioning the
+structure of our data that will eventually come from our users. 
 
-===== Simulating user reported data
+===== Simulating User Reported Data
 
 So far we have built a database of cities and coffee shops in those
 cities. This does not provide any utility beyond any map service out there.
@@ -872,6 +890,14 @@ We'll use this to allow simple search. Add the search feature to our
 <span class="label label-default">city.data</span>
 </span>
 </div>
+
+</div>
+<div class="col-md-6"> 
+<a target="_map" <!--4-->
+   href="http://maps.google.com/?q={{shop.latitude}},{{shop.longitude}}">
+   Open in map ({{shop.latitude}},{{shop.longitude}})
+</a>
+</div>
 ...
 -----
 
@@ -880,6 +906,7 @@ We'll use this to allow simple search. Add the search feature to our
 data inside each item in our `shops` array.
 <3> If we are searching (the model variable `search` is defined) then
 we show the extra information.
+<4> We alter our lat/lng information to point to a Google Maps page.
 
 Now if we type in the word `gluten` in our search box, we filter out
 anything except shops which match that, and we see the information
@@ -888,7 +915,7 @@ pieces formatted as labels underneath the shop name.
 image::images/javascript-search-box.png[]
 
 
-===== Adding data using pull-requests
+===== Adding Data Using Pull Requests
 
 Now that we have a functioning application, let's allow people to add
 information themselves and help build our database. Just beneath the
@@ -907,10 +934,6 @@ to our HTML.
 
 [source,html]
 -----
-
-</div>
-<div class="col-md-6">
-<a target="_map" href="http://maps.google.com/?q={{shop.latitude}},{{shop.longitude}}">Open in map ({{shop.latitude}},{{shop.longitude}})</a>
 <button ng-click="annotate(shop)">Add factoid</button>
 -----
 
@@ -924,13 +947,13 @@ describe( "GithubCtrl", function() {
     var scope = undefined, gh = undefined, repo = undefined, prompter = undefined;
 
     function generateMockPrompt() {
-        prompter = { prompt: function() { return "ABC" } };
+        prompter = { prompt: function() { return "ABC" } }; // <1>
         spyOn( prompter, "prompt" ).andCallThrough();
 
     }
 
     var PR_ID = 12345;
-    function generateMockRepositorySupport() {
+    function generateMockRepositorySupport() { // <2>
         repo = { 
             fork: function( cb ) {
                 cb( false );
@@ -950,101 +973,108 @@ describe( "GithubCtrl", function() {
         spyOn( repo, "createPullRequest" ).andCallThrough();
         spyOn( repo, "read" ).andCallThrough();
 
-        gh = { getRepo: function() {} };
-        spyOn( gh, "getRepo" ).andCallFake( function() {
+        gh = { getRepo: function() {} }; // <3>
+        spyOn( gh, "getRepo" ).andCallFake( function() { 
             return repo;
         } );
         ghs = { create: function() { return gh; } };
     }
 
-    beforeEach( module( "coffeetech" ) );
-
-    var $timeout;
-    beforeEach( inject( function ($controller, $rootScope, $injector ) {
-        generateMockRepositorySupport();
-        generateMockPrompt();
-        $timeout = $injector.get( '$timeout' );
-        scope = $rootScope.$new();
-        mockFirebase = {};
-        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter, 'firebase': mockFirebase } );
-    } ) );
-
-
-    describe( "#annotate", function() {
-        it( "should annotate a shop", function() {
-            scope.city = PORTLAND
-            var shop = { name: "A coffeeshop" }
-            scope.annotate( shop );
-            expect( scope.shopToAnnotate ).toBeTruthy();
-            expect( prompter.prompt.calls.length ).toEqual( 3 );
-            expect( scope.username ).not.toBeFalsy();
-            expect( scope.annotation ).not.toBeFalsy();
-
-            expect( repo.fork ).toHaveBeenCalled();
-            expect( scope.waiting.state ).toEqual( "forking" );
-            $timeout.flush();
-
-            expect( scope.forkedRepo ).toBeTruthy();
-            expect( repo.read ).toHaveBeenCalled();
-            expect( repo.write ).toHaveBeenCalled();
-            expect( repo.createPullRequest ).toHaveBeenCalled();
-            expect( scope.waiting.state ).toEqual( "annotated" );
-            $timeout.flush();
-
-            expect( scope.waiting ).toBeFalsy();
-        });
-
-    });
-} );
-
+...
 -----
 
 It looks similar to our previous tests where we mock out a bunch of
-items from the Github.js library.  We added three new methods to
-our mock Github object: `fork`, `write` and 
-`createPullRequest`. We test that these are called. According to the
-documentation for `fork` in the Github.js library, this method can
-take a little time to return (as long as it takes for GitHub to
-complete our fork request, which is nondeterministic), so we need to set a
-timeout in our app and query for the new repository. This explains the
-`$timeout.flush()`, a mock of the timeout browser call which
-we can manually reconcile. We also added a mock prompt. We will be prompting the
-user for username, password and the annotating data, and we will use
-the native browser prompt mechanism to do this. If using prompt to
-gather information from the user sounds like an ugly way to do it,
-don't fret, we'll find a better way later.
+items from the Github.js library.  
 
-Now that we are more familiar with the capabilities and limitations of
-the GitHub API and the Github.js library, here are the steps we will
-take to add data to our database. It will all be built on the
-ubiquitous pull-request, of course!
+<1> We added a mock prompt. We will be prompting the user for
+username, password and the annotating data, and we will use the native
+browser prompt mechanism to do this. If using prompt to gather
+information from the user sounds like an ugly way to do it, don't
+fret, we'll find a better way later. 
+<2> We added three new methods to our mock Github object: `fork`,
+`write` and `createPullRequest`. We test that these are called. 
+<3> When we call the `getRepo` function we want to spy on it so we can
+assure it is called, but we also want to return the fake repository we
+provide inside our test, and this syntax does that.
 
-* Call our `annotate` method once we click the annotate button next to
-  a shop.
-* The user will be prompted for a username, password and the data
-  which they want to add to the shop. We'll use these credentials to
-  create a new Github object within the Github.js library.
-* We store the username and annotation data in the scope
-  to make sure we have them when we return from asynchronous calls.
-* We then call `fork` on the repository.
-* We set a repeating timeout to make sure that the repository has been
-  created. In our test we flush the timeout mock to simulate the
-  completion of the timeout synchronously.
-* We keep track of the status of our requests while waiting. When we are
-  waiting for the fork we will indicate the state is `forking`. When
-  done with forking we will annotate the data, so we will indicate
-  `annotating` and `annotated` as the stages before and after this
-  annotation. We can keep the user notified with these variables
-  inside our HTML.
-* Once we have forked and verified the fork, we will write to our
-  fork inside the city JSON file (and so inside our spec we initialize the city to the
-  value of our `PORTLAND` variable found inside our fixtures file).
-* After we have written to our fork with the new data, we create a pull
-  request to request this data gets added to the original repository.
-* After waiting for a bit to notify the user that our annotation
-  request has completed, we clear the status.
+Now let's implement the test itself.
 
-All these expectations are encapsulated in our tests.
+[source,javascript]
+-----
+...
+
+var $timeout; // <1>
+beforeEach( inject( function ($controller, $rootScope, $injector ) { 
+    generateMockRepositorySupport(); // <2>
+    generateMockPrompt();
+    $timeout = $injector.get( '$timeout' ); // <3>
+    scope = $rootScope.$new();
+    ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter } );
+} ) );
+
+
+describe( "#annotate", function() {  // <4>
+    it( "should annotate a shop", function() {
+        scope.city = PORTLAND
+        var shop = { name: "A coffeeshop" }
+        scope.annotate( shop ); // <5>
+        expect( scope.shopToAnnotate ).toBeTruthy();
+        expect( prompter.prompt.calls.length ).toEqual( 3 ); // <6>
+        expect( scope.username ).not.toBeFalsy();
+        expect( scope.annotation ).not.toBeFalsy();
+
+        expect( repo.fork ).toHaveBeenCalled(); // <7>
+        expect( scope.waiting.state ).toEqual( "forking" ); // <8>
+        $timeout.flush();
+
+        expect( scope.forkedRepo ).toBeTruthy(); // <9>
+        expect( repo.read ).toHaveBeenCalled(); 
+        expect( repo.write ).toHaveBeenCalled();
+        expect( repo.createPullRequest ).toHaveBeenCalled();
+        expect( scope.waiting.state ).toEqual( "annotated" );
+        $timeout.flush();
+
+        expect( scope.waiting ).toBeFalsy(); // <10>
+    });
+
+});
+-----
+
+<1> According to the documentation for `fork` in the Github.js
+library, this method can take a little time to return (as long as it
+takes for GitHub to complete our fork request, which is
+nondeterministic), so we need to set a timeout in our app and query
+for the new repository. If we are using AngularJS, we can ask it for a
+mocked and programmatic timeout interface which we can control inside
+our tests. 
+<2> We generate our mocked GitHub method calls and spies, and we 
+follow that by mocking our prompt calls.
+<3> As mentioned above, we need to get `$timeout` we can use the
+injector to retrieve that in this way.
+<4> We create a new describe block to organize our tests, calling it
+`#annotate`. We then implement one `it` function which is the single
+test we are creating: "annotate a shop."
+<5> After setting up the preconditions that our scope object should
+have a city selected, and creating a shop to annotate, We then call
+our `annotate` method.
+<6> Once we have called `annotate`, our code should request our
+our credentials for the GitHub API, and then ask us for the information
+to use in annotating the shop. If this were happening in the browser,
+we would get three prompts. Our test mocks out prompt, and we should
+therefore see three calls made to our mocked prompt object. We also
+validate some state we should see on the scope object like holding a
+username and annotation for usage later.
+<7> We should then see the first of our GitHub API calls being made:
+we should see GitHub.js issue a requet to `fork` the repository.
+<8> We should then enter in our waiting state; we will tell the user
+we are waiting and our UI will use the scope `waiting.state` to notify
+them of that.
+<9> Once we have flushed the timeout to simulate completion of the
+fork, we will then see our code storing the result of the forked repo
+into the scope. We'll also see our other GitHub API calls to actually
+do the annotation.
+<10> Finally, after everything is done, we should no longer be telling
+the user they are in a waiting state.
 
 If you are still running karma in the background, you'll see the tests
 fail with:
@@ -1062,68 +1092,68 @@ Add these lines to the bottom of the file, but before the last closing braces.
 
 [source,javascript]
 -----
-  ...
-}
-
-$scope.geolocationError = function( error ) {
-    console.log( "Inside failure" );
-};
-
-$scope.annotate = function( shop ) {
+...
+$scope.annotate = function( shop ) { // <1>
     $scope.shopToAnnotate = shop;
-
-    $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
-
-        $scope.me = user;
-        $scope.username = user.username;
-
-        $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
-
-        if( $scope.annotation ) {
-            gh = ghs.create( $scope.me.accessToken ); // <3>
-            toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
-            toFork.fork( function( err ) {
-                if( !err ) {
-                    $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
-                    $timeout( $scope.annotateAfterForkCompletes, 10000 ); 
-                    $scope.$apply();
-                }
-            } );
+    $scope.username = $window.prompt( "Enter your github username (not email!)" )
+    pass = $window.prompt( "Enter your github password" ) 
+    $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
+    gh = ghs.create( $scope.username, pass ); // <3> 
+    toFork = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <4>
+    toFork.fork( function( err ) {
+        if( !err ) { // <5>
+            $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
+            $timeout( $scope.annotateAfterForkCompletes, 10000 );
+            $scope.$apply();
         }
-        
     } );
 
 };
 
+$scope.appendQuirkToShop = function() { // <6>
+    if( undefined == $scope.shopToAnnotate.information ) {
+        $scope.shopToAnnotate.information = [];
+    }
+    $scope.shopToAnnotate.information.push( $scope.annotation );
+};
+
+function stripHashKey( key, value ) { // <7>
+    if( key == "$$hashKey" ) { 
+        return undefined; 
+    } 
+    return value; 
+} 
 
 $scope.annotateAfterForkCompletes = function() {
-    $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" ); 
+    $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" ); // <8>
     $scope.forkedRepo.read( "gh-pages", "cities.json", function(err, data) { 
         if( err ) {
             $timeout( $scope.annotateAfterForkCompletes, 10000 );
         }
         else {
-            $scope.notifyWaiting( "annotating", "Annotating data on GitHub" );
+            $scope.notifyWaiting( "annotating", "Annotating data on GitHub" ); // <9>
             // Write the new data into our repository
             $scope.appendQuirkToShop();
 
-            function stripHashKey( key, value ) { if( key == "$$hashKey" ) { return undefined; } return value; } // <4>
-            var newData = JSON.stringify( $scope.shops, stripHashKey, 2 );
-            $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', newData, 'Added my quirky information', function(err) { // <5>
+            var newData = JSON.stringify( $scope.shops, stripHashKey, 2 ); //<10>
+            $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', 
+                                    newData, 
+                                    'Added my quirky information', 
+                                    function(err) {
                 if( !err ) {
                     // Annotate our data using a pull request
-                    var pull = {
+                    var pull = { // <11>
                         title: "Adding quirky information to " + $scope.shopToAnnotate.name,
                         body: "Created by :" + $scope.username,
                         base: "gh-pages",
                         head: $scope.username + ":" + "gh-pages"
                     };
-                    target = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <6>
-                    target.createPullRequest( pull, function( err, pullRequest ) {
-                        if( !err ) { // <7>
+                    target = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <12>
+                    target.createPullRequest( pull, function( err, pullRequest ) { // <13>
+                        if( !err ) {
                             $scope.notifyWaiting( "annotated", "Successfully sent annotation request" );
-                            $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 );
-                            $scope.$apply();
+                            $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 ); // <14>
+                            $scope.$apply(); // <15>
                         }
                     } );
                 }
@@ -1133,47 +1163,80 @@ $scope.annotateAfterForkCompletes = function() {
         $scope.$apply();
     } );
     
-    $scope.notifyWaiting( "annotated" );
-};    
-
   ...
 -----
 
-<1> We create a new Github object with the username and password
+<1> We start by creating our annotation function. As we specified in
+our tests, this function takes a shop object, an object into which
+annotations about the shop are added.
+<2> We prompt the user three times: username and password on GitHub,
+and the text they want to annotate. If this seems like a really bad
+way to do things, don't worry, we'll fix it in a moment.
+<3> We create a new Github object with the username and password
 provided. We leave it as an exercise of the reader to contend with
 mistyped or incorrect credentials.
-<2> Once we have forked the repository, we schedule a timeout in 10
-seconds which will check to make sure our request completed. As this
-operation is happening inside the browser, we have no way of
-registering for a notification, and as such, must poll GitHub to determine
-whether our fork has completed. In the real world, we probably would
-need to redo this request if we see it fail as this could just mean it
-was still pending on GitHub.
-<3> When we re-enter the timeout callback, we setup a repository
-object for our new forked repository and try to request some content
-from it. If this succeeds, we know the fork completed.
-<4> We define a transformation function which we'll use in the next
-step. AngularJS adds a tracking attribute (`$$hashKey`) to our objects
-when we use the `ng-repeat` directive and this function filters out
-that so that our pull request data is clean.
-<5> With the fork ready, we write back into the repository with our
-new addition. We just need to take the existing objects we have loaded
-and add an annotate to the shop, then use `JSON.stringify` to turn it
-back into a JSON string. `stringify` takes two extra parameters which
-might not be familiar; our second parameter is the transformation
-function we defined in the prior callout. The other parameter tells
-the JSON library to format our JSON file, which makes reading the
-changes on GitHub easier. Diffs on GitHub work best when the changes
-are isolated to a single line, and without the third parameter our
-stringified JSON object would be all on a single line, making diffs
-difficult. 
-<6> To make a pull request, we create a repository object from the
-Github.js library based on the original repository, and we issue pull
-requests against that.
-<7> If the pull request succeeds, we update our status messages and
-are done.
+<4> The GitHub.js library allows you to create a repository object
+(meaning create a local reference to an existing repository) using the
+`getRepo` function. Once we have this, we can issue a `fork` to the
+repository. 
+<5> If we did not get an error, we still need to contend with the fact
+that forking takes a non-determinstic amount of time. So, we schedule
+a timeout in 10 seconds which will check to make sure our request
+completed. As this operation is happening inside the browser, we have
+no way of registering for a notification, and as such, must poll
+GitHub to determine whether our fork has completed. In the real world,
+we probably would need to redo this request if we see it fail as this
+could just mean it was still pending on GitHub.
+<6> We build a convenience method which will create an empty array and
+add the annotation to the list of annotations, or otherwise use the
+existing array. We don't want our code to crash if we try to add an
+annotation to an object for which there is an undefined array reference.
+<7> We define a transformation function which we'll use with the
+`JSON.stringify` function later. AngularJS adds a tracking attribute
+(`$$hashKey`) to our objects when we use the `ng-repeat` directive and
+this function filters out that so that our pull request data is clean.
+<8> Once we have verified the fork has completed, we need to get the
+new forked repository. We use the username provided to our code when
+the user logs in to build the repository object. We then read the
+`cities.json` file from the repository; if we retrieve this file
+successfully (we don't see the `err` object evaluating to true) then
+we know we are ready to start editing data.
+<9> We notify the UI that we are annotating and tell the user they
+will need to wait while the annotation request is in progress.
+<10> `JSON.stringify` converts our annotated shop object into a JSON
+object. If you have used JSON.stringify before, you might not know
+about the other two parameters (beyond just the object you want to
+serialize) you can provide to this function. These 
+two extra parameters allow us to filter the object and specify certain
+elements to ignore when serializing and how and if to indent the
+resultant JSON. So, we provide the stripHashKey function to remove the
+`$$hashKey` Angular tracking data, and an indentation count. The
+indentation count makes it much easier to read a pull request, because
+the diff'ing algorithm can diff line by line rather than as a long
+JSON string, which is how `JSON.stringify` serializes by default.
+<11> To make a pull request, we create a pull request object which we
+need to provide to the pull request method inside of GitHub.js.
+<12> We then get a reference to the target of the pull request, the
+original repository.
+<13> We then issue the pull request against the target. This takes the pull request
+specification object we created earlier, and a callback function which
+has an error code if the request failed, and otherwise, a pull request
+object. 
+<14> Once the request has succeeded, we can notify the UI that the
+annotation process has completed, and then issue a timeout to remove
+that from the UI after 5000 milliseconds, or 5 seconds.
+<15> Any time we are inside a callback in a third part library (like
+GitHub.js) we, as mentioned before, need to use `$apply()` to notify
+Angular that our scope object has changed. In this case our scope is
+being modified that we will notify our users of the pull request.
+<16> Here we implement a convenience function to properly create a way
+to notify users. We create a waiting object, and then update the state
+(which our app will use to hide or display messages) and then a
+message itself. If we provide an empty message, we will clear the
+object, effectively removing the message from the UI.
 
-Let's add the status message into our HTML.
+Now we need to expost the status message in our UI by modifying the
+HTML.
 
 [source,javascript]
 -----
@@ -1193,7 +1256,7 @@ Let's add the status message into our HTML.
 When someone makes an annotation to a shop, the owner of the original repository
 gets a pull request notification on GitHub.
 
-image::images/javascript-pull-request.png[]
+image::images/javascript-pull-request.png[Adding information through a pull request]
 
 As the owner of this repository and manager of this data, I like
 managing contributions using pull requests inside GitHub.
@@ -1205,23 +1268,21 @@ making many contributions per day, that all of a sudden you would need
 a complex system for managing, reviewing and accepting changes to your
 data set. GitHub gives you all these tools: diff'ing files, user
 management in case you wanted to delegate review to other people in
-your organization, among many other features GitHub provides for its
-users. This may not be the most obvious way to manage a database of
-information, but there are compelling reasons to consider it against a
-traditional database like Postgresql or Mysql.
+your organization, among many other features GitHub provides. This may
+not be the most obvious way to manage a database of information, but
+there are compelling reasons to consider it against a traditional
+database like Postgresql or Mysql.
 
 image::images/javascript-pull-request-diff.png[]
 
 
-===== Safely implementing login
+===== A Safe Login Implementation
 
 If I saw this app in the wild and knew nothing about the authors, I
 would never use it to submit data. The app asks for my GitHub username
-and password. Given that I usually assign a random password which I
-have no hope of remembering, it is almost impossible that I could
-authenticate at all. Additionally, and more importantly, asking for my
-username and password implicitly asks me to trust the authors of this
-application. Trust in this case means that I trust them to not
+and password. Asking for my username and password implicitly asks me
+to trust the authors of this application. Trust in this case means
+that I trust them to not 
 maliciously use my credentials for nefarious purposes, and also asks
 me to trust that they are not doing something stupid which would allow
 an attacker to insert themselves into the middle of the
@@ -1230,7 +1291,7 @@ day we hear of a break-in at a major internet service; I want to
 believe that most people are out to do good in the world, so I am less
 worried about the provider of such a service maliciously stealing my
 crendentials, but I am worried about a script kiddie attacking the
-service for fun and stealing my crendentials. At any rate, I would
+service for fun and stealing my credentials. At any rate, I would
 never use a service which requires me to give up my username and
 password to another service, especially one which is as important as
 GitHub is to me. 
@@ -1260,7 +1321,7 @@ their settings as well. With oAuth we can revoke a single token at any
 time (and GitHub makes it easy to do this) without affecting access to
 other services.  
 
-==== Everything on GitHub, except for one piece
+==== Authentication Requires a Server
 
 We would like to host everything on GitHub, but sadly there is one
 piece which we cannot host there: the authentication component.
@@ -1270,28 +1331,258 @@ client side (using only static HTML and JavaScript running in the
 browser). Other authentication providers like Facebook do provide pure
 JavaScript login functionality in their SDKs, but GitHub, citing
 security concerns, has not release anything that does authentication
-purely on the client set as of yet.
+purely on the client side as of yet.
 
 Somehow we have to involve a server into our authentication process.
 The most obvious choice we have is to run a small authentication
-server and delegate authentication to it, and once authentication is
-completed, jump back in our application hosted on GitHub.
+server, delegate authentication to it, and once authentication is
+completed, jump back in our application hosted on GitHub. We provide
+code (written in NodeJS, JavaScript for the server side) to do
+this at the end of the xchapter. But, creating even a simple 
+authentication system has a baseline of complexity that seems like
+overkill, and this code is complex and lengthy, and requires figuring
+out a hosting provider. If we could instead delegate this
+authentication to a third party, we could reduce a massive amount of
+code and complexity from our system. Let's see what that looks like.
 
-===== A NodeJS GitHub Authentication Service
+===== Fixing Authentication with Firebase
 
-Continuing our love affair with JavaScript, let's build a simple
-authentication service with NodeJS. There are several libraries which
-offer support for oAuth authentication on GitHub, but the consistency
-of NodeJS modules often leaves something to be desired. As I was
-building this chapter I experimented with several authentication modules and quickly
-discovered even though that module might have been the sanctioned and approved
-module last year, that it has already been abandoned this year. There is a
-tendency to build software using the latest libraries as you might
-assume the newest library would have the fewest bugs. In my
-experience, NodeJS libraries come with less test coverage than other
-language libraries, and for this reason, often have more breaking
-changes than the authors would care to admit. Another reason to build
-testable code. 
+Instead of writing our own server to manage authentication and talk to
+the GitHub API, we will delegate that authentication to Firebase. Firebase is a
+real time communication toolset which integrates well with our choice
+of AngularJS. By far the simplest and safest option,
+Firebase offers AngularJS bindings (called "AngularFire") and an
+integrated GitHub authentication component (called "Simple Login").
+Together they resolve the authentication issue for us, and keep all
+our code hosted on GitHub. Delegation of our authentication component is easy with
+Firebase: we just modify our existing GitHub application, provide the credentials
+and GitHub oAuth scope to Firebase, and then our application offloads
+user management to Firebase.  
+
+To start, create an account on Firebase. Once you have done this, create
+a new app called "CoffeeTech". The APP URL needs be unique, so use
+"coffeetech-<USERNAME>", replacing USERNAME with your GitHub username.
+Once you have created the app, click on "View Firebase" button. You'll
+then see a settings screen, and click on "Simple Login" and then
+"GitHub."
+
+image::images/javascript-view-firebase.png[Creating the Firebase Hosted Login]
+
+Next, in our GitHub oAuth application settings, change the
+"Authorization callback URL" to
+`https://auth.firebase.com/auth/github/callback`. Then save the
+application.
+
+Then, copy your client ID and secret to the sections inside the
+Firebase Simple Login settings for the GitHub provider. Make sure the
+"enabled" checkbox is checked to enable the provider.
+
+===== Writing tests against Firebase
+
+Since we load firebase from their CDN, we first need to mock out the
+`Firebase` constructor using a simple shim. Put the following into a
+file called `firebase-mock.js`: 
+
+[source,javascript]
+-----
+var Firebase = function (url) {
+}
+
+angular.module( 'firebase', [] );
+
+-----
+
+To test our code, we make the following changes to our
+`coffeetech-annotate.spec.js`:
+
+[source,javascript]
+-----
+beforeEach( module( "coffeetech" ) );
+
+var mockFirebase = mockSimpleLogin = undefined;
+function generateMockFirebaseSupport() { // <1>
+    mockFirebase = function() {};
+    mockSimpleLogin = function() {
+        return { 
+            '$login': function() {
+                return { then: function( cb ) {
+                    cb( { name: "someUser",
+                          accessToken: "abcdefghi" } );
+                } };
+            }
+        }
+    };
+}
+
+var $timeout;
+beforeEach( inject( function ($controller, $rootScope, $injector ) {
+    generateMockRepositorySupport();
+    generateMockPrompt();
+    generateMockFirebaseSupport(); // <2>
+    $timeout = $injector.get( '$timeout' );
+    scope = $rootScope.$new();
+    ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter, '$firebase': mockFirebase, '$firebaseSimpleLogin': mockSimpleLogin } ); // <3>
+} ) );
+
+
+describe( "#annotate", function() {
+    it( "should annotate a shop", function() {
+        scope.auth = mockSimpleLogin( mockFirebase() ); // <4>
+        scope.city = PORTLAND
+        var shop = { name: "A coffeeshop" }
+        scope.annotate( shop );
+        expect( prompter.prompt.calls.length ).toEqual( 1 ); // <5>
+        expect( scope.shopToAnnotate ).toBeTruthy();
+        expect( scope.username ).not.toBeFalsy();
+        expect( scope.annotation ).not.toBeFalsy();
+
+-----
+
+<1> We add a `generateMockFirebaseSupport()` function which creates the mock
+firebase and simple login objects. 
+<2> We call this method to initialize the mocks.
+<3> In our test we use the `$controller` method
+instantiator to inject these mock objects instead of letting AngularJS
+inject the real ones. We should modify our other spec file as well now that
+we are changing the required injections for any controller.
+<4> we change our `#annotate` test and create the auth object
+(normally created inside the initialization).
+<5> We prompt only once (we don't need to prompt for username and
+password any longer). 
+
+===== Implementing Firebase Login
+
+Now, add Firebase support to our AngularJS application. Add the
+references to the Firebase support libraries right after AngularJS is loaded:
+
+[source,html]
+-----
+<script src="angular.js"></script>
+<script src='https://cdn.firebase.com/v0/firebase.js'></script>
+<script src='https://cdn.firebase.com/libs/angularfire/0.6.0/angularfire.min.js'></script>
+<script src='https://cdn.firebase.com/js/simple-login/1.2.5/firebase-simple-login.js'></script>
+-----
+
+We need to adjust our `coffeetech.js` file in a few ways. First,
+import the firebase into our AngularJS module. Also, our original
+Github service expected username and password as parameters, but we now
+are using a slightly different signature for oauth tokens.
+
+[source,javascript]
+-----
+var mod = angular.module( 'coffeetech', [ 'firebase' ] );
+
+mod.factory( 'Github', function() { 
+    return { 
+        create: function(token) { 
+            return new Github( { token: token, auth: 'oauth' } );
+        }
+    };
+});
+
+-----
+
+When we instatiate our controller, we need
+to inject Firebase and FirebaseSimpleLogin and initialize them inside
+our `init` method.
+
+[source,javascript]
+-----
+mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout', '$firebase', '$firebaseSimpleLogin', function( $scope, ghs, Geo, $window, $timeout, $firebase, $firebaseSimpleLogin ) {
+
+    $scope.init = function() {
+        
+        var ref = new Firebase( 'https://coffeetech.firebaseio.com' );
+        $scope.auth = $firebaseSimpleLogin( ref );
+        
+        $scope.getCurrentLocation( function( position ) {
+            $scope.latitude = position.coords.latitude;
+-----
+
+Then, when we annotate, we need to provide the auth token returned
+from Firebase. But, it is gratifying to see that little else needs to
+change in our flow. 
+
+[source,javascript]
+-----
+
+$scope.annotate = function( shop ) {
+    $scope.shopToAnnotate = shop;
+
+    $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
+
+        $scope.me = user;
+        $scope.username = user.name;
+
+        $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
+
+        if( $scope.annotation ) {
+            gh = ghs.create( $scope.me.accessToken ); // <3>
+            toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
+            toFork.fork( function( err ) {
+-----
+
+<1> We call the `$login` method on our auth object created using the
+Firebase SimpleLogin service. It returns a "promise" which is an
+interface that has a `then()` method, which will be called if the
+`$login()` succeeds. `then()` calls our callback function, giving us a
+user object.
+<2> We still need to prompt the user for one piece of information, the
+data to annotate. You can imagine other ways to get this information,
+using modal HTML5 dialogs, but this will work for us for right now. At
+least we are only prompting once instead of three times! 
+<3> Once we are ready to fork we need to create our user object using
+the token.
+
+After we make these changes, we can click the "Add factoid" button and
+we'll get a dialog like this one indicating we are logging into GitHub
+(via the Firebase SimpleLogin).
+
+image::images/javascript-firebase-simplelogin.png[]
+
+After you authorize the application, the flow is identical to the
+manually username and password authentication flow. As an optimization
+we could check for previous logins before calling `$login()` again but
+we don't do that here, meaning the login dialog is momentarily popped up
+each time we click the button.
+
+==== Summary
+
+Obviously there are some pieces of this app that leave things to be
+desired. We don't handle incorrect username and password issues. We
+don't deal with the case when someone has already forked the repository and
+wants to contribute a second time. There are UI improvements we could
+make around how users contribute data (browser dialogs are very
+generic). We could do some cleanup on the submitted data. These
+changes are left as an exercise to the reader.
+
+But, hopefully you see how powerful and flexible GitHub can be for
+storing databases, making it client side searchable, most importantly,
+allowing safe user contributions. We were able to completely ignore
+all the administrative features of a data entry system, delegating all
+these to GitHub. Our single page app allows us a single point of
+focus: making a cool and useful application.
+
+In the next chapter we will look at Jekyll, the GitHub blogging tool. 
+
+=== Addedum: a NodeJS GitHub Authentication Service
+
+If you feel more comfortable using your own authentication server and
+not using the Firebase option presented above, this addendum to the
+chapter shows you how to do this. 
+
+There are several libraries which offer support for oAuth
+authentication on GitHub, but the consistency of NodeJS modules often
+leaves something to be desired. As I was building this chapter I
+experimented with several authentication modules and quickly
+discovered even though that module might have been the sanctioned and
+approved module last year, that it has already been abandoned this
+year. There is a tendency to build software using the latest libraries
+as you might assume the newest library would have the fewest bugs. In
+my experience, NodeJS libraries come with less test coverage than
+other language libraries, and for this reason, often have more
+breaking changes than the authors would care to admit. Another reason
+to build testable code. 
 
 The library I finally settled upon is called Passport, written by
 Stuart P. Benchley, which supports a strategy called `passport-github`
@@ -1300,7 +1591,7 @@ on GitHub. We'll write a simple NodeJS server which allows login via
 GitHub, and then provides our single page application with a token to
 use when talking to the GitHub API using Github.js.
 
-===== Our own NodeJS Application
+==== Our own NodeJS Application
 
 Let's build our app inside a directory called `node`. Doing this will keep
 our code separate from our client side code and prevent our karma
@@ -1481,7 +1772,7 @@ function ensureAuthenticated(req, res, next) {
 Now, we need to create a new GitHub application. In the top right
 corner on GitHub.com, click on the "Account settings" link, and then
 navigate to the "Applications" link towards the bottom. Click on the
-"Register new application" button, and you'll see the following.
+"Register new application" button.
 
 image::images/javascript-new-application.png[]
 
@@ -1499,256 +1790,35 @@ of course.
 
 [source,bash]
 -----
-GITHUB_CLIENT_ID=1234567890abcdefghijk GITHUB_CLIENT_SECRET=0987654321kmnopqrstuv node node/github-local-login.js
+$ GITHUB_CLIENT_ID=1234567890abcdefghijk \
+GITHUB_CLIENT_SECRET=0987654321kmnopqrstuv \
+node node/github-local-login.js
 -----
 
-To be brutally honest, this code is not entirely intuitive, is it?
-And, aren't we supposed to start by writing tests? Well, if we really
-want to host our own authentication component and we want to do it
-using JavaScript, this might be the best starting place we can find.
-There are significant problems with this approach:
+Though we have something working, there are some significant problems
+with this approach:
 
 * We can run this locally as we are developing and testing, but
   eventually we will require a hosting provider, like Heroku or
-  Nodejitsu, to host our application, or we will need to setup a full stack
-  virtual server ourselves. Do we really want to manage a server?
-* If you did spend time reviewing this code, you'll see a get request
-  at the `/token.js` mount point. Our intention here is to have
-  someone login using this service, and then provide a script tag
-  access point to the single page app. When our app requests the
-  JavaScript, it will load up a script with an authentication token
-  which we can then use inside our `new GitHub()` call. Of course,
-  this approach is fraught with risk as it would be very easy to
-  hijack the token by simply sticking a `<script>` tag with the same
-  src tag inside their page. 
-* We could migrate our entire app into this NodeJS application, using EJS
-  templates, but then we are losing the fact that our application is
-  simply our repository, a key benefit when hosting entirely on GitHub.
-* Finally, this app is not very testable. One of the reasons AngularJS
+  Nodejitsu, to host our application, or we will need to setup a full
+  stack server, virtual or otherwise, ourselves.
+* If you did spend time reviewing this code, you'll see a GET request
+  at the `/token.js` mount point. Once login has completed inside our
+  service, we return to our JS application, and the web page in which
+  it is hosted adds another script tag which loads the auth token
+  using this access point. This is a consequence of browser security:
+  since the application is hosted on the GitHub.io domain we cannot
+  make requests using a more secure method like POST to another domain
+  (the domain where our authentication service will be hosted). 
+  Unfortunately, this means that we have opened a security hole, since
+  any other application running inside our browser could do the
+  make the same GET request, hijacking the auth token.
+* We could migrate our entire app into this NodeJS application, using
+  something like EJS templates, but then we are losing the fact that
+  our application is simply our repository, and the point of this
+  chapter becomes sadly moot.
+* This app is not very testable. One of the reasons AngularJS
   is such a popular framework is that it makes you write JavaScript
   code which is testable. Most NodeJS frameworks don't make that easy,
   and I found it very difficult to wrap this code inside of any of the
   current test frameworks.
-
-For all these reasons, let's abandon this approach. We'll leave the
-NodeJS server code here here for posterity, so that you have an
-example of how you could approach building a GitHub server side
-application in server side JavaScript, but we'll find a different way to
-authenticate while preserving our single page app architecture.
-
-===== Fixing our authentication system with Firebase
-
-Instead, we will delegate authentication to Firebase. Firebase is a
-real time communication toolset which integrates well with our choice
-of AngularJS. By far the simplest and safest option,
-Firebase offers AngularJS bindings (called "AngularFire") and an
-integrated GitHub authentication component (called "Simple Login").
-Together they resolve the authentication issue for us, and keep all
-our code hosted on GitHub. Delegation of our authentication component is easy with
-Firebase: we just modify our existing GitHub application, provide the credentials
-and GitHub oAuth scope to Firebase, and then our application offloads
-user management to Firebase.  
-
-To start, create an account on Firebase. Once you have done this, create
-a new app called "CoffeeTech". The APP URL needs be unique, so use
-"coffeetech-<USERNAME>", replacing USERNAME with your GitHub username.
-Once you have created the app, click on "View Firebase" button. You'll
-then see a settings screen, and click on "Simple Login" and then
-"GitHub."
-
-image::images/javascript-view-firebase.png[]
-
-Next, in our GitHub oAuth application settings, change the
-"Authorization callback URL" to
-`https://auth.firebase.com/auth/github/callback`. Then save the
-application.
-
-Then, copy your client ID and secret to the sections inside the
-Firebase Simple Login settings for the GitHub provider. Make sure the
-"enabled" checkbox is checked to enable the provider.
-
-===== Writing tests against Firebase
-
-Since we load firebase from their CDN, we first need to mock out the
-`Firebase` constructor using a simple shim. Put the following into a
-file called `firebase-mock.js`: 
-
-[source,javascript]
------
-var Firebase = function (url) {
-}
-
-angular.module( 'firebase', [] );
-
------
-
-To test our code, we make the following changes to our
-`coffeetech-annotate.spec.js`:
-
-[source,javascript]
------
-beforeEach( module( "coffeetech" ) );
-
-var mockFirebase = mockSimpleLogin = undefined;
-function generateMockFirebaseSupport() { // <1>
-    mockFirebase = function() {};
-    mockSimpleLogin = function() {
-        return { 
-            '$login': function() {
-                return { then: function( cb ) {
-                    cb( { name: "someUser",
-                          accessToken: "abcdefghi" } );
-                } };
-            }
-        }
-    };
-}
-
-var $timeout;
-beforeEach( inject( function ($controller, $rootScope, $injector ) {
-    generateMockRepositorySupport();
-    generateMockPrompt();
-    generateMockFirebaseSupport(); // <2>
-    $timeout = $injector.get( '$timeout' );
-    scope = $rootScope.$new();
-    ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter, '$firebase': mockFirebase, '$firebaseSimpleLogin': mockSimpleLogin } ); // <3>
-} ) );
-
-
-describe( "#annotate", function() {
-    it( "should annotate a shop", function() {
-        scope.auth = mockSimpleLogin( mockFirebase() ); // <4>
-        scope.city = PORTLAND
-        var shop = { name: "A coffeeshop" }
-        scope.annotate( shop );
-        expect( prompter.prompt.calls.length ).toEqual( 1 ); // <5>
-        expect( scope.shopToAnnotate ).toBeTruthy();
-        expect( scope.username ).not.toBeFalsy();
-        expect( scope.annotation ).not.toBeFalsy();
-
------
-
-<1> We add a `generateMockFirebaseSupport()` function which creates the mock
-firebase and simple login objects. 
-<2> We call this method to initialize the mocks.
-<3> In our test we use the `$controller` method
-instantiator to inject these mock objects instead of letting AngularJS
-inject the real ones. We should modify our other spec file as well now that
-we are changing the required injections for any controller.
-<4> we change our `#annotate` test and create the auth object
-(normally created inside the initialization).
-<5> We prompt only once (we don't need to prompt for username and
-password any longer). 
-
-===== Implementing Firebase Login
-
-Now, add Firebase support to our AngularJS application. Add the
-references to the Firebase support libraries right after AngularJS is loaded:
-
-[source,html]
------
-<script src="angular.js"></script>
-<script src='https://cdn.firebase.com/v0/firebase.js'></script>
-<script src='https://cdn.firebase.com/libs/angularfire/0.6.0/angularfire.min.js'></script>
-<script src='https://cdn.firebase.com/js/simple-login/1.2.5/firebase-simple-login.js'></script>
------
-
-We need to adjust our `coffeetech.js` file in a few ways. First,
-import the firebase into our AngularJS module. Also, our original
-Github service expected username and password as parameters, but we now
-are using a slightly different signature for oauth tokens.
-
-[source,javascript]
------
-var mod = angular.module( 'coffeetech', [ 'firebase' ] );
-
-mod.factory( 'Github', function() { 
-    return { 
-        create: function(token) { 
-            return new Github( { token: token, auth: 'oauth' } );
-        }
-    };
-});
-
------
-
-When we instatiate our controller, we need
-to inject Firebase and FirebaseSimpleLogin and initialize them inside
-our `init` method.
-
-[source,javascript]
------
-mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout', '$firebase', '$firebaseSimpleLogin', function( $scope, ghs, Geo, $window, $timeout, $firebase, $firebaseSimpleLogin ) {
-
-    $scope.init = function() {
-        
-        var ref = new Firebase( 'https://coffeetech.firebaseio.com' );
-        $scope.auth = $firebaseSimpleLogin( ref );
-        
-        $scope.getCurrentLocation( function( position ) {
-            $scope.latitude = position.coords.latitude;
------
-
-Then, when we annotate, we need to provide the auth token returned
-from Firebase. But, surprisingly little else needs to change in our flow.
-
-[source,javascript]
------
-
-$scope.annotate = function( shop ) {
-    $scope.shopToAnnotate = shop;
-
-    $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
-
-        $scope.me = user;
-        $scope.username = user.name;
-
-        $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
-
-        if( $scope.annotation ) {
-            gh = ghs.create( $scope.me.accessToken ); // <3>
-            toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
-            toFork.fork( function( err ) {
------
-
-<1> We call the `$login` method on our auth object created using the
-Firebase SimpleLogin service. It returns a "promise" which is an
-interface that has a `then()` method, which will be called if the
-`$login()` succeeds. `then()` calls our callback function, giving us a
-user object.
-<2> We still need to prompt the user for one piece of information, the
-data to annotate. You can imagine other ways to get this information,
-using modal HTML5 dialogs, but this will work for us for right now. At
-least we are only prompting once instead of three times! 
-<3> Once we are ready to fork we need to create our user object using
-the token.
-
-After we make these changes, we can click the "Add factoid" button and
-we'll get a dialog like this one indicating we are logging into GitHub
-(via the Firebase SimpleLogin).
-
-image::images/javascript-firebase-simplelogin.png[]
-
-After you authorize the application, the flow is identical to the
-manually username and password authentication flow. As an optimization
-we could check for previous logins before calling `$login()` again but
-we don't do that here, meaning the login dialog is momentarily popped up
-each time we click the button.
-
-==== Summary
-
-Obviously there are some pieces of this app that leave things to be
-desired. We don't handle incorrect username and password issues. We
-don't deal with the case when someone has already forked the repository and
-wants to contribute a second time. There are UI improvements we could
-make around how users contribute data (browser dialogs are very
-generic). We could do some cleanup on the submitted data. These
-changes are left as an exercise to the reader.
-
-But, hopefully you see how powerful and flexible GitHub can be for
-storing databases, making it client side searchable, most importantly,
-allowing safe user contributions. We were able to completely ignore
-all the administrative features of a data entry system, delegating all
-these to GitHub. Our single page app allows us a single point of
-focus: making a cool and useful application.
-

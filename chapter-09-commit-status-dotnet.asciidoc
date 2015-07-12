@@ -1,4 +1,4 @@
-== Commit Status
+== DotNet and the Commit Status API
 
 At the risk of oversimplifying things too much, one way to look at a Git repository is as just a long series of commits.
 Each commit contains quite a bit of information: the contents of the source files, who created the commit and when, the author's comments on what changes the commit introduces, and so on.
