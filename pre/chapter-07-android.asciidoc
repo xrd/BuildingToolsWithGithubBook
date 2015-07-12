@@ -862,14 +862,9 @@ This application will allow you to write into a real Jekyll blog,
 adding posts, upon which GitHub will regenerate your site. This little
 application manages quite a few things: formatting the filename
 correctly, encoding the data for submission to GitHub, and all backed
-by a simple test to verify functionality. If we had a live Jekyll blog
-established, we might consider modifying our test to pull the
-generated HTML from our Jekyll site rather than simply looking at a
-file stored in the repository. Were we to do this, we would have a
-test which verifies the complete end-to-end functionality of our
-application. We omitted this extra step here because there is a
-waiting process in establishing CNAME records with DNS. Review the
-Jekyll chapter for more information.
+by a simple test to verify functionality. We even demonstrate how to write
+user interface tests which verify that the result of a GitHub API call
+is proper handled on the server side.
 
 === Next 
 
