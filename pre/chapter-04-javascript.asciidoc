@@ -1125,11 +1125,11 @@ navigate to the "Applications" link towards the bottom. Click on the
 "Developer Applications" tab in the right center column and then click on the
 "Register new application" button. Make sure "Authorization callback URL" is set to
 `https://auth.firebase.com/auth/github/callback`. Then save the
-application.
+application by clicking on the "Register application" button.
 
 image::images/javascript-new-application.png[A new GitHub application for oAuth]
 
-Next, create an account on Firebase. Once you have done this, create
+Now, create an account on Firebase. Once you have done this, create
 a new app called "CoffeeTech". The APP URL needs be unique, so use
 "coffeetech-<USERNAME>", replacing USERNAME with your GitHub username.
 Once you have created the app, click on "View Firebase" button. You'll
@@ -1138,9 +1138,15 @@ then see a settings screen, and click on "Simple Login" and then
 
 image::images/javascript-view-firebase.png[Creating the Firebase Hosted Login]
 
-Then, copy your client ID and secret to the sections inside the
+Then, copy your GitHub client ID and secret to the sections inside the
 Firebase Simple Login settings for the GitHub provider. Make sure the
 "enabled" checkbox is checked to enable the provider.
+
+We've now established a login application on GitHub and configured it
+to use the Firebase service, and have properly configured Firebase to
+use that GitHub application. We want all
+functionality, especially external services, to be covered by tests,
+so we'll write that test coverage next.
 
 ===== Writing tests against Firebase
 
@@ -1205,7 +1211,7 @@ To be replaced
 snippet~~~~~
 -----
 
-When we instatiate our controller, we need
+When we instantiate our controller, we need
 to inject Firebase and FirebaseSimpleLogin and initialize them inside
 our `init` method.
 
@@ -1253,22 +1259,21 @@ we could check for previous logins before calling `$login()` again but
 we don't do that here, meaning the login dialog is momentarily popped up
 each time we click the button.
 
+Once users have logged in, they will be redirected to the application,
+and we'll notify them they have submitted a pull request with their
+contribution. Since their contribution is associated with their GitHub
+account, they will receive standard pull request notifications when
+their contribution is accepted, so we don't need to implement that
+ourselves. 
+
 === Summary
 
-Obviously there are some pieces of this app that leave things to be
-desired. We don't handle incorrect username and password issues. We
-don't deal with the case when someone has already forked the repository and
-wants to contribute a second time. There are UI improvements we could
-make around how users contribute data (browser dialogs are very
-generic). We could do some cleanup on the submitted data. These
-changes are left as an exercise to the reader.
-
-But, hopefully you see how powerful and flexible GitHub can be for
-storing databases, making it client side searchable, most importantly,
-allowing safe user contributions. We were able to completely ignore
-all the administrative features of a data entry system, delegating all
-these to GitHub. Our single page app allows us a single point of
-focus: making a cool and useful application.
+We've built an application in JavaScript that requires no server and provides users
+with a searchable coffeeshop database that accepts contributions in a
+very safe and secure way using the Pull Request API. We were able to completely ignore all the
+administrative features of a data entry system, delegating all these
+to GitHub. Our single page app permits us to focus on one thing:
+making a powerful and useful application. 
 
 === Next
 
