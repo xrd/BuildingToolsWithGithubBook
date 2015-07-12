@@ -1,0 +1,48 @@
+<html>
+<head>
+<title>CoffeeTe.ch</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
+</head>
+<body ng-app="coffeetech">
+
+<div class="container" ng-controller="GithubCtrl" ng-init="init()">
+
+<h1>CoffeeTe.ch</h1>
+
+<input style="width: 20em;" ng-model="search" placeholder="Enter search parameters..."/> <!--1-->
+
+<h3 ng-show="city">Current city: {{city.name}}</h3>
+
+<div class="row=">
+<div class="col-md-6"><h4>Shop Name</h4> </div>
+<div class="col-md-6"><h4>Lat/Lng</h4> </div>
+</div>
+<div class="row" ng-repeat="shop in shops | filter:search"> <!--2-->
+<div class="col-md-6">  
+{{ shop.name }}  
+
+<div ng-show="search"> <!--3-->
+<span ng-repeat="info in city.information">
+<span class="label label-default">city.data</span>
+</span>
+</div>
+
+</div>
+<div class="col-md-6"> 
+<a target="_map" <!--4-->
+   href="http://maps.google.com/?q={{shop.latitude}},{{shop.longitude}}">
+   Open in map ({{shop.latitude}},{{shop.longitude}})
+</a>
+</div>
+</div>
+</div>
+
+<script src="angular.js"></script>
+<script src="underscore-min.js"></script>
+<script src="base64.min.js"></script>
+<script src="github.js"></script>
+<script src="coffeetech.js"></script>
+
+</body>
+</html>
