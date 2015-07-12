@@ -3,6 +3,7 @@
 
 == Hubot and the GitHub Activities API
 
+
 Though the phrase has now been removed from their marketing materials,
 GitHub used to call itself a tool for "social coding." This idea is
 still central to the services GitHub provides, intimate access to the
@@ -1181,7 +1182,7 @@ and randomly choose a member and deliver the PR request to them.
 
 [source,coffeescript]
 --------
-[language="json", sha="595cdba:support/slacker-hubot/lib/handler.coffee"]
+[language="json", sha="b26a749:support/slacker-hubot/lib/handler.coffee.595cdba"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1206,7 +1207,8 @@ Slack API. Unless we receive an error in the response callback, we
 use the data provided by the Slack API to initiate the PR review
 request.
 
-To test this using our cURL command, we can modify it slightly:
+To test this using our cURL command, we need to modify the invocation
+slightly.
 
 [source,bash]
 ------
@@ -1228,7 +1230,9 @@ together to build up an HTTP client request and end up with a function
 returned into which you pass a callback where you handle the response 
 body. This module makes you write code that is not particularly
 testable (said another way, it was challenging for me to understand
-what the faked test implementation should look like). We simulate the
+what the faked test implementation should look like) but the setup
+code does work and the tests itself document an interface to our robot
+which is easily understandable. We simulate the
 same chain, defining a `http` attribute on the mocked robot object, an
 attribute which resolves to a function call itself. Calling that function
 returns an object which has a `get` method, and calling that function
