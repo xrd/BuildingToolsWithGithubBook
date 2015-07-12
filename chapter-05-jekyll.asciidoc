@@ -1894,7 +1894,7 @@ $ sleep $((10*60)) && open $BLOG_NAME
 And, don't forget to setup DNS records and give yourself appropriate
 time to let those records propagate out.
 
-==== Summary
+=== Summary
 
 We've shown that we can quickly setup a blog on GitHub that has
 version control built in. We've shown how to import blogs like
@@ -1907,5 +1907,8 @@ interact and build on top of Jekyll. Once our site is a repository on
 GitHub, making changes yourself, or accepting them from other
 contributors is as easy as clicking "Merge" on a pull request. 
 
+=== Next
 
-
+In the next chapter we will continue looking at Jekyll by building an
+Android application that uses the Java GitHub API bindings and allows
+you to create Jekyll blog posts with the Git Data API.
