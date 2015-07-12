@@ -1,8 +1,7 @@
 [[Hubot Chapter]]
 .Hubot Chapter
 
-== Hubot and the Activities API
-
+== CoffeScript, Hubot and the Activities API
 
 Though the phrase has now been removed from their marketing materials,
 GitHub used to call itself a tool for "social coding." This idea is
