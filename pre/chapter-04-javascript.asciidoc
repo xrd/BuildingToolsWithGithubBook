@@ -96,7 +96,7 @@ git config command, we specified that we want the default push branch
 to be gh-pages. This allows us to use `git push` to push our branch up
 instead of the longer `git push origin gh-pages`. 
 
-===== Mapping our site to a live hostname
+===== Mapping Hostnames
 
 Once we publish these files into GitHub inside a repository we can connect the repository to a
 real hostname. There are two steps to take to do this:
@@ -182,24 +182,8 @@ Now we are ready to use the GitHub library inside our SPA.
 
 ===== Inserting GitHub Data using github.js
 
-Now that we have our page setup, let's add some GitHub data to it.
-
-Create a new file called `coffeetech.js` in the root of your repository
-
-[source,javascript]
------
-var mod = angular.module( 'coffeetech', [] )
-mod.controller( 'GithubCtrl', function( $scope ) {
-  var github = new Github({} );
-  var repo = github.getRepo( "gollum", "gollum" );
-  repo.show( function(err, repo) {
-    $scope.repo = repo;
-    $scope.$apply();
-  }); 
-})
------
-
-Modify our `index.html` to utilize this new code:
+Let's add some GitHub data to our HTML file. Change the `index.html`
+file as follows.
 
 [source,html]
 -------
@@ -209,25 +193,26 @@ Modify our `index.html` to utilize this new code:
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
 </head>
-<body ng-app="coffeetech">
+<body ng-app="coffeetech"> <3>
 <div class="container" ng-controller="GithubCtrl">
-{{ repo | json }}
+{{ repo | json }} <2>
 </div>
-<script src="angular.js"></script>
-<script src="github.js"></script>
-<script src="coffeetech.js"></script>
+<script src="angular.js"></script> 
+<script src="github.js"></script> 
+<script src="coffeetech.js"></script> <1>
 </body>
 </html>
 -------
 
-Let's talk about these changes, starting with the HTML file first.
+We added or changed just three lines.  
 
-We added or changed just three lines. In reverse geographic order, we
-added a reference to our `coffeetech.js` file beneath our other JS
-references. And, then we removed our databinding to the `Welcome to
-CoffeeTech` string and replaced it with a binding to the variable
-`repo` filtered by the JSON filter. Finally, we changed the `ng-app`
-reference to use the module we defined in our `coffeetech.js` file.
+<1> We added a reference to our `coffeetech.js` file beneath our other JS
+references. 
+<2> We removed our databinding to the `Welcome to CoffeeTech` string
+and replaced it with a binding to the variable 
+`repo` filtered by the JSON filter. 
+<3> Finally, we changed the `ng-app` reference to use the module we
+defined in our `coffeetech.js` file. 
 
 If you have never used AngularJS before, you are probably thoroughly
 confused about the `coffeetech.js` file. Before we dive into the
@@ -264,30 +249,47 @@ you'll understand the significant problems solved by those same features:
   way and only processes and changes the DOM when changes are noticed
   inside a digest cycle. If you put all your code properly into your
   scope, AngularJS will handle tracking changes for you. As we
-  mentioned briefly above, if you use a
-  third party library which uses callbacks, like the Github.js library
-  does, then you need to notify AngularJS that there has been a change
-  by manually calling the `$apply` function on the `$scope` object once
-  you have completed adding data to the scope inside the callback.
+  mentioned briefly above, using a third party library that works with
+  callbacks (like the Github.js library) means you need to notify
+  AngularJS that there has been a change by manually calling the
+  `$apply` function on the `$scope` object once
+  you have completed adding data to the scope inside the
+  callback. Without this, your application would not respond to the
+  change until a digest was triggered by some other incidental change
+  in the scope.
 * AngularJS allows you to break application functionality into
   isolated components which makes your application more testable. When
   we call `angular.controller` we are creating a controller which
   allows us to isolate and encapsulate functionality.
 
-Now that we understand the benefits of using AngularJS, a few more
-specifics about the implementation details of our `coffeetech.js`
-file. 
+Now let's implement the `coffeetech.js` file. Create a new file called
+`coffeetech.js` in the root of your repository.
 
-* We create a new Github() object using the constructor. This
+[source,javascript]
+-----
+var mod = angular.module( 'coffeetech', [] )
+mod.controller( 'GithubCtrl', function( $scope ) {
+  var github = new Github({} ); // <1>
+  var repo = github.getRepo( "gollum", "gollum" ); // <2>
+  repo.show( function(err, repo) { // <3>
+    $scope.repo = repo;
+    $scope.$apply(); // <4>
+  }); 
+})
+-----
+
+<1> We create a new Github() object using the constructor. This
   constructor can take user credentials, but for now, we can just
-  create it without those since we are accessing a public repository.
-* Once we have our `github` object, we call the method `getRepo()` with
-  a owner and a name. This returns our repository object. To actually
-  load the data for this repository object, we call the show method
-  and pass it a callback which uses the two parameters `err` and
-  `repo` to handle errors or otherwise provide us with details of the
-  repository specified. In this case we are using the Gollum wiki
-  public repository to display some sample data.
+  create it without those since we are accessing a public repository. 
+<2> Once we have our `github` object, we call the method `getRepo()`
+  with a owner and a name. This returns our repository object. 
+<3> To actually load the data for this repository object, we call the show
+  method and pass it a callback which uses the two parameters `err`
+  and `repo` to handle errors or otherwise provide us with details of
+  the repository specified. In this case we are using the Gollum wiki
+  public repository to display some sample data. 
+<4> Once we have loaded the repository data, we need to call `$apply`
+  to tell Angular a change has occurred to the scope variable.
 
 So, Github.js handles making the proper request to Github for us, and
 AngularJS handles putting the results into our web page.
@@ -297,12 +299,9 @@ If you load this up in your browser, you will see something like this:
 image::images/javascript-gollum.png[The Whole Messy JSON]
 
 Yikes, that is a lot of data. AngularJS's JSON filter pretty printed
-it for us, but this is a bit too much. 
+it for us, but this is a bit too much. Change the HTML to be like this:
 
-Modify the HTML to show just a few vital pieces of information:
-retreive the `subscriber_count` and the `network_count` from the repo JSON.
-
-[source,html index.html]
+[source,html]
 -------
 <html>
 <head>
@@ -312,8 +311,8 @@ retreive the `subscriber_count` and the `network_count` from the repo JSON.
 </head>
 <body ng-app="coffeetech">
 <div class="container" ng-controller="GithubCtrl">
-<div>Subscriber count: {{ repo.subscribers_count }}</div>
-<div>Network count: {{ repo.network_count }}</div>
+<div>Subscriber count: {{ repo.subscribers_count }}</div> <1>
+<div>Network count: {{ repo.network_count }}</div> <2>
 </div>
 <script
 src="angular.js"></script>
@@ -322,6 +321,12 @@ src="angular.js"></script>
 </body>
 </html>
 -------
+
+We can filter this information by modifying the HTML to show just a
+few vital pieces of information from the repository JSON.
+
+<1> Use the `subscriber_count`
+<2> Use the `network_count`
 
 Now we see something more palatable.
 
@@ -388,17 +393,19 @@ Then, create a file called `karma.config.js` and enter the following contents:
 
 [source,javascript]
 -------
-[filename=".", language="js", sha="4a46f27:support/js/karma.config.js"]
+[filename=".", language="js", sha="4d01dce:support/js/karma.config.js"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -------
 
-This is more or less a default Karma configuration file, with the
-`files` section specifying the load order of our JavaScript
+This is more or less a default Karma configuration file.
+
+<1> The `files` section specifying the load order of our JavaScript
 implementations and the test scripts. You can see a few of the files we've
 added above specified directly and wildcards to cover the remaining
-files. Note also that we've specified Chrome as our test browser (so
+files. 
+<2> Note also that we've specified Chrome as our test browser (so
 you should have it installed), which is a safe bet because it works on
 just about any desktop platform you might be running. Know that
 you can always choose Safari or Firefox if you want Karma to test
@@ -418,60 +425,60 @@ To write the test, let's clarify what we want our code to do:
 We'll use a `ng-init` directive which is the mechanism to tell
 AngularJS we want to call the function specified when the controller
 has finished loading. We'll call this function `init` so let's test it
-below. 
+below.
 
 [source,javascript]
 -------
 describe( "GithubCtrl", function() {
-    var scope = undefined;
+    var scope = undefined; // <1>
     var ctrl = undefined;
     var gh  = undefined;
     var repo = undefined;
     var geo = undefined;
 
-    function generateMockGeolocationSupport( lat, lng ) {
-        response = ( lat && lng ) ? { coords: { lat: lat, lng: lng } } : { coords: CITIES[0] };
-        geo = { getCurrentPosition: function( success, failure ) {
-            success( response );
-        } };
-        spyOn( geo, "getCurrentPosition" ).andCallThrough();
-    }
-
-    function generateMockRepositorySupport() {
-        repo = { read: function( branch, filename, cb ) {
-            cb( undefined, JSON.stringify( filename == "cities.json" ? CITIES : PORTLAND ) );  
-        } };
-        spyOn( repo, "read" ).andCallThrough();
-
-        gh = new Github({});
-        spyOn( gh, "getRepo" ).andCallFake( function() {
-            return repo;
-        } );
-    }
-
-    beforeEach( module( "coffeetech" ) );
-
+    beforeEach( module( "coffeetech" ) ); // <2>
+  
     beforeEach( inject( function ($controller, $rootScope ) {
-            generateMockGeolocationSupport();
+            generateMockGeolocationSupport(); // <3>
             generateMockRepositorySupport();
-            scope = $rootScope.$new();
-            ctrl = $controller( "GithubCtrl", { $scope: scope, Github: gh, Geo: geo } );
+            scope = $rootScope.$new(); // <4>
+            ctrl = $controller( "GithubCtrl", 
+	       { $scope: scope, Github: gh, Geo: geo } ); // <5>
         } )
     );
 
-    describe( "#init", function() {
+    describe( "#init", function() { // <7>
         it( "should initialize, grabbing current city", function() {
-            scope.init();
-            expect( geo.getCurrentPosition ).toHaveBeenCalled();
-            expect( gh.getRepo ).toHaveBeenCalled();
+            scope.init(); // <8>
+            expect( geo.getCurrentPosition ).toHaveBeenCalled(); // <9>
+            expect( gh.getRepo ).toHaveBeenCalled(); // <10>
             expect( repo.read ).toHaveBeenCalled();
-            expect( scope.cities.length ).toEqual( 2 );
-            expect( scope.city.name ).toEqual( "portland" );
+            expect( scope.cities.length ).toEqual( 2 ); // <11>
+            expect( scope.city.name ).toEqual( "portland" ); 
             expect( scope.shops.length ).toEqual( 3 );
         });
     });
 });
 -------
+
+<1> First we declare our variables. If we did not do this, JavaScript
+would silently define them inside the functions the first time the
+variable is used and we would have some strange behavior.
+<2> We load our `coffeetech` module into our tests using the `module`
+method inside a `beforeEach` call, code which is executed before our
+tests run.
+<3> We will be creating two functions which generate the mock objects
+required for our tests. We'll discuss these two functions in a bit.
+<4> Our scope is the object where all our functionality is held, and
+by creating a new scope using the AngularJS utility function
+`$rootScope.$new()` function we can then use the scope later to test
+against the functionality we've implemented in our actual code.
+<5> We pass in the mocked objects (created by the mocked function
+calls) as well as the scope object and instantiate a controller
+object.
+<6> Now we can write our tests. We create a describe block to group
+them called `#init` as we are testing this function.
+<7> 
 
 This JS test file has the boilerplate code used in any AngularJS test.
 You setup the scope and instantiate the
@@ -500,6 +507,40 @@ Specifically, our test does these things:
   cities object inside our scope object.
 * Verify that we calculated the correct current city as Portland.
 * Verify that we have loaded the JSON data file for the current city
+
+Now we can implement the two mocking functions vital for the test. Put
+them in between the `beforeEach( module( "coffeetech" ) )` line and
+the `beforeEach( inject( ... ) )` functions to provide proper
+visibility to Karma.
+
+[source,javascript]
+-----
+...
+beforeEach( module( "coffeetech" ) );
+
+function generateMockGeolocationSupport( lat, lng ) {
+    response = ( lat && lng ) ? { coords: { lat: lat, lng: lng } } : { coords: CITIES[0] };
+    geo = { getCurrentPosition: function( success, failure ) {
+        success( response );
+    } };
+    spyOn( geo, "getCurrentPosition" ).andCallThrough();
+}
+
+function generateMockRepositorySupport() {
+    repo = { read: function( branch, filename, cb ) {
+        cb( undefined, JSON.stringify( filename == "cities.json" ? CITIES : PORTLAND ) );  
+    } };
+    spyOn( repo, "read" ).andCallThrough();
+
+    gh = new Github({});
+    spyOn( gh, "getRepo" ).andCallFake( function() {
+        return repo;
+    } );
+}
+
+beforeEach( inject( function ($controller, $rootScope ) {
+...
+-----
 
 Now that we have a set of tests, run the test suite from the command
 line and watch them fail.
