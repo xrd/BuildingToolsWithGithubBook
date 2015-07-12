@@ -393,6 +393,28 @@ Then, create a file called `karma.config.js` and enter the following contents:
 
 [source,javascript]
 -------
+module.exports = function(config) {
+  config.set({
+    basePath: '',
+    frameworks: ['jasmine'],
+    files: [ // <1>
+        'angular.js',
+        'fixtures-*.js',
+        'angular-mocks.js',
+        'firebase-mock.js',
+        'github.js',
+        '*.js'
+    ],
+    reporters: ['progress'],
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
+    browsers: ['Chrome'], // <2>
+    captureTimeout: 60000,
+    singleRun: false
+  });
+};
 
 -------
 
@@ -1107,7 +1129,9 @@ annotate a shop FAILED
 -----
 
 Now, let's implement this functionality in our `coffeetech.js` file.
-Add these lines to the bottom of the file, but before the last closing braces.
+Add these lines to the bottom of the file, but before the last closing
+braces.
+
 
 [source,javascript]
 -----
