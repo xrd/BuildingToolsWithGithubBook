@@ -1275,8 +1275,6 @@ administrative features of a data entry system, delegating all these
 to GitHub. Our single page app permits us to focus on one thing:
 making a powerful and useful application. 
 
-=== Next
-
 In our final chapter we will use CoffeeScript to create our own chat
 robot that requests pull request reviews from chat room members
 using the Activities API.

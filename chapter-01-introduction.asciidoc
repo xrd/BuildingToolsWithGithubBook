@@ -1261,8 +1261,6 @@ provides. We learned about the different authentication schemes
 supported by GitHub, and also learned about the possibilities and
 tradeoffs when accessing the GitHub API from within a browser context. 
 
-=== Next
-
 In the next chapter we will look at Gists and the Gist API. We'll use
 Ruby to build a Gist display program, and host all source files for
 the application as a Gist itself.

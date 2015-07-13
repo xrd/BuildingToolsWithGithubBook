@@ -2361,18 +2361,19 @@ $ PROBOT_SECRET=XYZABC PROBOT_API_TOKEN=926a701550d4dfae93250dbdc068cce887531 no
 legator.spec.coffee 
 -------------
 
-===== Final Notes
+=== Summary 
 
-Our Probot is alive. We went through building a robot which can
+Our Probot is alive! We went through building a robot which can
 interact with us inside a chat room, then refactored the robot so that its
 functionality is contained into a highly testable module. Along
-the way, we learned lots about the Hubot API, and even discussed how to
+the way, we got intimate with the Hubot API, and even discussed how to
 modify (and the drawbacks surrounding) modifying the source code to
-Hubot itself. There is a natural fit to Hubot and the GitHub API, and
-this chapter hopefully demonstrates how easy and fun it can be, and
-how you can powerfully amplify and streamline developer workflow
-within a dialog happening between your vibrant developers and a helpful robot. 
-
+Hubot itself. Finally we demonstrated how to use the Activities API
+receiving (and faking data) coming a GitHub webhook. There is a
+natural fit to Hubot and the GitHub API, and this chapter shows how
+easy and fun it can be. Using Hubot you can amplify and
+streamline developer workflow within the dialog happening between your
+vibrant developers and this helpful robot.  
 
 
 
