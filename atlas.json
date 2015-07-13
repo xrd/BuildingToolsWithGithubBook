@@ -1,8 +1,8 @@
 {
   "branch": "master",
   "files": [
-    "preface.asciidoc",
     "toc.asciidoc",
+    "preface.asciidoc",
     "chapter-01-introduction.asciidoc",
     "chapter-02-gist.asciidoc",
     "chapter-03-gollum.asciidoc",

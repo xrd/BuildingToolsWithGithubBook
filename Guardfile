@@ -18,7 +18,7 @@ guard 'shell' do
 end
 
 guard 'shell' do 
-  watch( /^[^\/]*\.asciidoc$/ ) { |m|
+  watch( /^[^\/\#]*\.asciidoc$/ ) { |m|
     asciidoc = File.read( m[0] )
     out = Asciidoctor.render( asciidoc,
                               :header_footer => true,

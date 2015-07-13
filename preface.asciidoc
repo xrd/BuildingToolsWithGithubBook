@@ -1,4 +1,5 @@
 [[preface]]
+== Preface
 
 In the 1930s, The Eagle and Child, a pub in Oxford simmered
 with creativity as JRR Tolkien and CS Lewis philosophized and created
