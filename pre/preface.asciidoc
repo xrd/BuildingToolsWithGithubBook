@@ -216,11 +216,13 @@ Watch us on YouTube: link:$$http://www.youtube.com/oreillymedia$$[]
 Chris wants to thank his lovely wife, Nicole. I hope that I have added
 to this book even a tiny bit of the wit and wisdom you provide to me
 and our family every day. My son Roosevelt's energy continues to
-inspire me and keep me going even when I am at my limits, even when
-you take me to the limit. To my daughter Charlotte, you are my
-little smiling Buddha. To my mother, who showed me how and why to
-write. To Tim O'Brien who invited me into this project, I hope we can
+inspire me and keep me going even when I am at my limits. To my
+daughter Charlotte, you are my little smiling Buddha. To my mother,
+who showed me how to write and, most importantly, why to write, which
+is something we need more of in the technology world. To Tim O'Brien
+who invited me into this project, thank you, and I hope we can
 collaborate again.
 
-Ben would like to thank his wife, Becky, for her ongoing support and (when needed) push from behind.
-None of this would have happened without you.
+Ben would like to thank his wife, Becky, for her ongoing support and
+(when needed) push from behind. None of this would have happened
+without you. 
