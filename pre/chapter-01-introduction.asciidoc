@@ -814,7 +814,7 @@ which indicates the JSON was valid, but the fields were incorrect. We
 also get a response which indicates why: we are missing the `files`
 key inside the request payload.
 
-==== 201 Successful Creation
+==== Successful Creation (201)
 
 Now, let's use valid JSON and see what happens:
 

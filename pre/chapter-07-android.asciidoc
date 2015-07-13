@@ -866,8 +866,6 @@ by a simple test to verify functionality. We even demonstrate how to write
 user interface tests which verify that the result of a GitHub API call
 is proper handled on the server side.
 
-=== Next 
-
 In the next chapter we will look at building a single page application
 that edits information inside a GitHub repository using JavaScript and
 the GitHub.js library talking to the Pull Request API.
