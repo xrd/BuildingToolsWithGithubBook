@@ -1,5 +1,5 @@
 [appendix]
-=== Ruby and NodeJS at GitHub
+== Ruby and NodeJS at GitHub
 
 The founders of GitHub all had deep ties and contributions to the Ruby
 programming language, so we cover it more than other languages in this
