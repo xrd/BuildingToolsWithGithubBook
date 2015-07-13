@@ -1,5 +1,16 @@
 [appendix]
-== GitHub started with Ruby
+=== Ruby and NodeJS at GitHub
+
+The founders of GitHub all had deep ties and contributions to the Ruby
+programming language, so we cover it more than other languages in this
+book. In recent years, NodeJS (JavaScript for the server side) has
+grown in popularity, and JavaScript has always been an interesting
+language because it works on both the client side and server
+side. GitHub has offered several popular open source projects written
+in NodeJS. For these reasons, this appendix gives a little more detail
+on using these two languages
+
+=== GitHub and Ruby
 
 GitHub is a company with its foundations sitting on top of the Ruby
 language. Tom Preston Warner (one of three founders of GitHub) built
@@ -18,7 +29,7 @@ be able to understand the tools we are using. Ruby is not a perfect
 language, but is a useful addition to a developer's toolkit because of
 its focus on developer productivity. 
 
-=== Installing Ruby
+==== Installing Ruby
 
 There are many ways to get Ruby but not all of them are created equal. 
 As a long time user I have experienced the pain of using a pre-installed Ruby 
@@ -74,7 +85,7 @@ yourself considerable time by just using a completely free (as in
 beer) option like VirtualBox and a Linux virtual machine running on
 Windows instead of fighting with running everything directly on Windows. 
 
-=== Important Ruby and RVM Concepts
+==== Important Ruby and RVM Concepts
 
 Here are a few tips when using Ruby and RVM.
 
@@ -104,7 +115,7 @@ Here are a few tips when using Ruby and RVM.
   can be minimal servers used just on a single laptop; Rack makes it
   easy to setup a server. 
 
-=== Potential problems installing Ruby.
+==== Potential problems installing Ruby.
 
 * Missing system tools: If you are running Mac OSX, you need to
   install Xcode and the command line tools. If you are a software
@@ -123,7 +134,7 @@ Here are a few tips when using Ruby and RVM.
   sure to read the output printed to the screen as you install Ruby
   using RVM for special instructions specific to your platform.
 
-== GitHub is excited about NodeJS
+=== GitHub is excited about NodeJS
 
 NodeJS is the server side version of JavaScript. JavaScript is the
 only ubiquitious client side programming language for the web. Between
@@ -132,12 +143,12 @@ need. Tools like Hubot show the benefits of using a language like
 JavaScript running on the NodeJS platform, which facilitates building
 "fast, scalable networked applications." 
 
-=== NodeJS Installation
+==== NodeJS Installation
 
 The nodejs.org web page offers various binary installers. These are
 generally the best way to install the most recent version of NodeJS. 
 
-=== Node Version Manager
+==== Node Version Manager
 
 NVM stands for "Node Version Manager" and is a direct correlate
 to RVM. Like RVM, NVM allows you to install multiple versions of
