@@ -498,6 +498,4 @@ If you've never been exposed to the Sinatra view of the world, this probably mak
 And you've had an introduction to Octokit, a type-safe implementation of a REST API, with built-in asynchrony and OAuth helpers.
 This toolkit really does make working with the GitHub API as simple and straightforward as using any .NET library, including the ability to explore it using Intellisense.
 
-=== Next
-
 In the next chapter we will look at using Ruby to create and build Jekyll blogs.

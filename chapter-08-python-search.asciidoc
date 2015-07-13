@@ -932,6 +932,4 @@ You've learned about its general behavior, the different categories of search, h
 Using this knowledge you should be able to find anything you're looking for on GitHub or GitHub Enterprise.
 You also know that the search UI on GitHub is just a thin layer over the search API, so the same tricks and techniques will serve you whether you're writing code or using a browser.
 
-=== Next
-
 In the next chapter we will look at using DotNET with the Commit Status API.
