@@ -7,18 +7,13 @@
     "chapter-01-introduction.asciidoc",
     "chapter-02-gist.asciidoc",
     "chapter-03-gollum.asciidoc",
-    "chapter-08-python-search.asciidoc",
-    "chapter-09-commit-status-dotnet.asciidoc",
-    "chapter-05-jekyll.asciidoc",
-    "chapter-07-android.asciidoc",
     "chapter-04-javascript.asciidoc",
-    "chapter-06-hubot-activities.asciidoc",
-    "appendix-ruby-and-nodejs.asciidoc",
-    "appendix-enterprise.asciidoc"
+    "chapter-05-jekyll.asciidoc",
+    "chapter-06-hubot-activities.asciidoc"
   ],
   "formats": {
     "pdf": {
-      "version": "print",
+      "version": "web",
       "index": true,
       "toc": true,
       "syntaxhighlighting": true,
