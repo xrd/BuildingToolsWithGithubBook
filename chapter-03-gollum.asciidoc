@@ -15,7 +15,7 @@ git repositories with ease, linking documentation with live code.
 
 In this chapter we'll explore the basics of using Gollum, creating a
 wiki on GitHub and then understanding how to edit it on GitHub, and as
-a repostory on our local machine. We will then create a Gollum wiki by
+a repository on our local machine. We will then create a Gollum wiki by
 hand from the command line, and show the bare minimum set of files to
 call something a Gollum repository. Finally, we will build a simple
 image organization tool which allows us to edit a Gollum wiki in an
