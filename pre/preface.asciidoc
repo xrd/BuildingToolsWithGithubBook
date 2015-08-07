@@ -1,20 +1,68 @@
 [[preface]]
 == Preface
 
-In the 1930s, The Eagle and Child, a pub in Oxford simmered
-with creativity as JRR Tolkien and CS Lewis philosophized and created
-their fantasy worlds. Heian court life in 11th century Kyoto cradled
-Murasaki Shibu and produced The Tale of Genji, Japan's greatest novel.
-In the 7th century during the Umayyad Caliphate of modern day
-Damascus, glittering Arabic palaces provided fertile ground for
-the creation of a new form of poetry, the ghazal ("love poems") the
-influence of which still courses through modern Arabic poetry.
+This is a storybook: a book containing stories about building software
+applications. More specifically, software applications dependent on
+a remote service API ("Application Programming Interface").
 
-Each era of major creative innovation has been backdropped by a unique
-and plumb space where collaboration and creativity flourished. Today,
-the collaborative gathering space for some of the world's greatest artists
-(artists who work as software developers) is a virtual town square, a
-site called GitHub.
+Using an API to back an application is a common practice today. APIs
+provide a great pattern for making data accessible to the multi-screen
+world. If your application is backed by a remote service API, the
+first application could be a mobile app running on Apple's iOS
+operating system. Critically, if that business model does not turn out
+to be correct, you can respond quickly to changing requirements and
+iterate to build another application for an Android wearable. Or,
+perhaps you'll build an integrated car application, or any other
+screen (or even non-screen) application. As long as your applications
+can send and receive data using calls to a remote API you are free to
+build whatever user interface you want on whatever platform you want.
+
+As an author, you could write and host your own API. Many frameworks
+for popular languages like Ruby, Go or Java, support building APIs
+using standard architectural styles like REST. Or, you could use a
+third party API. In this book we'll focus on a third party API: the
+GitHub API. 
+
+Why the GitHub API? At this moment, there is no service that has
+captured the hearts and minds of developers more than GitHub. Through
+a unique combination of culture and engineering prowess, GitHub has
+exploded in popularity and utility. The GitHub API is exceedingly
+relevant if you are building software because you are probably using
+GitHub to manage your software code. For those that aren't, you
+might be using Git without GitHub, and the GitHub API is useful to
+know there as well, as it layers the functionality of Git into a
+networked programming interface.
+
+The GitHub API is perhaps the best designed API I've ever used. It is
+a hypermedia API, which means it is future proofed. It is well
+versioned. It is comprehensive, mapping closely to most features of
+Git. It is consistent across sections and well organized. The GitHub
+API is a great API on which to build applications, serving as a
+case study for a well designed API.
+
+And, there is a hidden, bonus benefit of learning the GitHub API which
+is illustrated best by one of the tenets that made GitHub so
+successful. This powerful idea can't be understated: build
+your own tools whenever and where ever you can. GitHub was special
+because it was started by engineers and the deep engineering roots
+fostered a culture prioritizing automation over getting things done
+manually. GitHub engineers were empowered to write code to automate
+anything they did on the job. Having code perform tasks made it easy
+to share those tasks: running a program is much easier and
+error-resistant than documenting a process and training someone on
+that process and documentation. Thus, on-boarding new engineers, for
+example, was well documented and transparent. Sadly, at many places I
+have worked, it often seems like many people are there solely to
+create justifications for their employment (which means they pride
+themselves on excessive grunt manual work) rather than focusing on
+building tools that enable and empower their team. Learning the
+GitHub API provides you with the incredible power to build your own
+tools when you are managing software development processes. This is a
+transformational technique for you and your teams. 
+
+Each chapter in this book explores building tools using the
+technologies found in the GitHub API or complementary related
+technologies developed and used by GitHub.
 
 === Who You Are
 
@@ -38,28 +86,28 @@ Familiariy with web APIs is helpful, although this book simultaneously
 aspires to provide a guide showing how a well thought out,
 well designed, and well tested web API creates a foundation for building
 fun and powerful tools. If you have not used web APIs extensively, but
-have experience using other types of APIs, this is good company.
+have experience using other types of APIs, you will be in good company.
 
 === What You Will Learn
 
 Much of the book focuses on the technical capabilities exposed by
 GitHub and the powerful GitHub API. Perhaps you feel constrained by
 using Git only from within a certain toolset; for example, if you are
-an Android developer accidentally using Git to manage your app
-source code and want to unlock Git in other places in your life as a
-developer, this book provides a wider vista to learn about the power
-of Git and GitHub. If you have fallen into using Git for your own
-projects and are now interested in using Git within a larger
-community, this book can teach you all about the "social coding" style
+an Android developer using Git to manage your app source code and want
+to unlock Git in other places in your life as a developer, this book
+provides a wider vista to learn about the power of Git and GitHub. If
+you have fallen into using Git for your own projects and are now
+interested in using Git within a larger community, this book can teach
+you all about the "social coding" style 
 pioneered and dogfooded by the GitHub team. This book provides a
 stepping stone for software developers who have used other distributed
 version control systems and are looking for a bridge to using their
 skills with Git and within a web service like GitHub.
 
 Like any seasoned developer, automation of your tools is important to
-you, and this book provides examples of mundane tasks that we then
-convert them into automated and repeatable processes, and we show how
-to do this using a variety of languages talking to the GitHub API.
+you. This book provides examples of mundane tasks converted into
+automated and repeatable processes, and we show how to do this using a
+variety of languages talking to the GitHub API. 
 
 If you are unfamiliar with the "command line" this book will give you
 a firm understanding of how to use it, and we bet you will find great

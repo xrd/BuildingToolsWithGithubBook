@@ -104,13 +104,15 @@ foobar|http://foobar.com]]`, so caveat emptor.
 ===== Inserting Images
 
 Images are inserting into your document using the same tag format
-`[[ceo.png]]`. Overloading this syntax makes it simple to remember the
-basics of adding relationships inside your wiki, whether they be
-images or page links. There are many options you can provide when
-generating image tags. For example, to add a frame and an alt tag, you
-could use syntax like `[[ceo.png|frame|alt=Our CEO relaxing on the
-beach]]`. Review the documentation on the Gollum repository for more
-details about the breadth of the image options.
+`[[ceo.png]]`: this adds the correct HTML tags to include an image
+named ceo.png inside your page. This basic syntax is often extended
+for additional funtionality. For example, to add a frame
+and an alt tag, you could use syntax like `[[ceo.png|frame|alt=Our CEO
+relaxing on the beach]]`. This creates the proper HTML tags for the
+same image, but this time adds a frame and alt text (helpful for
+better context and screenreaders). Review the documentation on the
+Gollum repository for more details about the breadth of the image
+options. 
 
 ===== Code Snippets
 

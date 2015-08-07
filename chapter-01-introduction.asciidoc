@@ -28,7 +28,7 @@ covered in the API documentation:
 * Gollum: wikis tied to a repository
 * Hubot: a programmable chat robot used extensively at GitHub
 
-With just one or two exceptions, Each of these sections of the GitHub
+With just one or two exceptions, each of these sections of the GitHub
 technology stack are covered in various chapters. The GitHub API
 documentation is a stellar reference which you will use constantly
 when writing any application that talks 
