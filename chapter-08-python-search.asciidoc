@@ -7,7 +7,7 @@ For the rest, the uncountable millions of public repositories that belong to oth
 
 Helpfully, GitHub also exposes this capability as an API you can consume from your own applications.
 GitHub's search API gives you access to the full power of the built-in search function.
-This includes  the use of logical and scoping operators, like `or` and `user`.
+This includes  the use of logical and scoping operators, like `"or"` and `"user"`.
 By integrating this feature with your application, you can provide your users a very powerful way of finding what they're looking for.
 
 In this chapter we'll take a close look at this API, and try building something with it.
@@ -69,7 +69,7 @@ For most queries this won't be a problem, and the `total_count` will represent a
 
 Search results are returned in the `items` array, and each item always has a `score` field.
 This field is numeric, but it's only a relative measure of how well a result matches the query, and is used for the default sort order – highest score first.
-If you do pay attention to it, remember it only has meaning when compared to other results from the same query.
+If you do pay attention to it, remember it only has meaning when compared to other results from the same query; a result with a score of 50 isn't necessarily ten times "better" than a result scored 5.
 
 ===== Search Operators and Qualifiers
 
@@ -91,6 +91,8 @@ Numerical values and dates can have ranges:
 - `2015-02-01` will match only the given date
 - `<2015-02-01` will match any date previous to the one given
 - `2015-02-01..2015-03-01` will match dates within the given range, including the end points
+
+For example, to find Python code written by the user tpope during July of 2012, you would write `"user:tpope language:python created:2012-07-01..2015-07-31"`.
 
 There are many other options besides.
 Check out https://github.com/search/advanced[] for a UI that can help you construct a query.
@@ -310,6 +312,7 @@ Imagine your development team uses GitHub to store their Git repositories, and t
 This kind of situation ends up being fairly difficult to work with for your non-technical colleagues; if they want to report an issue, they don't know where to go, and they don't know how to find issues that already exist.
 
 Search can make this possible, but doing a search across an entire organization's repositories involves using the `user:<organization>` operator, which is obtusely named, and kind of scary for non-programmers.
+Plus, the user would have to remember to add that option every single time they wanted to search for issues.
 
 The Search API can make this a bit easier.
 Let's make a GUI application with just a single search box, which makes it dead simple for a non-technical user to search all the issues in all the repositories in a single organization.
@@ -356,7 +359,7 @@ If you want this capability elsewhere, you usually have to use a high-complexity
 Thirdly, this will help make it easy to distribute.
 Python has a package available which
 There exists a Python package which bundles an entire Python program and all of its dependencies into a single file (or `.app` bundle on OS X).
-So giving this program to a colleague is as easy as emailing her a ZIP file.
+So giving this program to a colleague is as easy as emailing her a ZIP file, which will help with our use case: a non-technical user might not be totally comfortable clicking through an installer (or even have permissions to do so on their machine).
 
 Let's take a quick look at the libraries we'll be using in our application's code.
 We'll see them in action later on, but a quick overview will help you understand what each one is trying to do.
@@ -380,9 +383,10 @@ The next version of WxPython (code-named "Phoenix"), will be installable via PIP
 
 [NOTE]
 ====
-WxPython is the reason we use Python 2.7 for this example.
-Support for Python 3 is planned for the upcoming Phoenix release, but as of this writing, the stable versions are Python 2 only.
-Most of the code below is written in a "polyglot" fashion, so you shouldn't run into any trouble running it under Python 3 if Phoenix has arrived by the time you read this.
+A bit of background on Python: it's undergoing a transition.
+Currently there are two actively used versions: Python 2.7, and Python 3 (3.4 as of this writing).
+Most of the details are unimportant, but in order to follow along with this example, you'll have to be running Python 2.7, because WxPython doesn't currently support Python 3.
+Support for Python 3 is planned for the upcoming Phoenix release, so most of the code below is written in a "polyglot" fashion, so you shouldn't run into any trouble running it under Python 3 if Phoenix has arrived by the time you read this.
 ====
 
 ==== PyInstaller
@@ -544,11 +548,11 @@ Let's walk through the code for getting and checking credentials.
         if any(k not in self.credentials for k in ['username', 'password']):
             return False
         g = Github(self.credentials['username'], self.credentials['password'])
-        status,data = g.user.orgs.get()
+        status,data = g.user.orgs.get() # <1>
         if status != 200:
             print('bad credentials in store')
             return False
-        self.orgs = [o['login'] for o in data]
+        self.orgs = [o['login'] for o in data] # <2>
         return True
 
     def switch_to_search_panel(self):
@@ -560,6 +564,11 @@ Let's walk through the code for getting and checking credentials.
         self.sizer.Layout()
 ----
 
+<1> The `agithub` library always returns two values from every function call.
+    Python lets us bind these directly to variables with this `a,b = <expr>` syntax.
+<2> `agithub` decodes the JSON from the API call into a Python dictionary.
+    Just here we're only really interested in the names of the organization, so we use a _list comprehension_, where we tell Python to only keep the value of the `"login"` field from each dictionary in the `data` list.
+    
 Each of these three methods comes in at a different point during our program's execution.
 If our credentials are coming from Git, we proceed straight to `test_credentials`; if they're coming from the login panel (see below), they go through the `login_accepted` callback first, which then calls `test_credentials`.
 
@@ -573,7 +582,9 @@ If it succeeds, we call `switch_to_search_panel`.
 ====
 We're doing a synchronous network call on the UI thread.
 This is usually a bad idea, because the UI will become unresponsive until the network call completes.
-Ideally we'd move this out onto another thread, and get the return value with a message, but for this simple example (and use case), it'll do.
+Ideally we'd move this out onto another thread, and get the return value with a message.
+However, this would add length and complexity to a chapter already rife with both, so we've decided not to include this advanced topic here.
+We hope you'll forgive us this small simplification; for this use case, the synchronous code will be just fine.
 ====
 
 The last method handles the UI switch.
@@ -628,7 +639,7 @@ The `LoginPanel` class is similar in structure to the `SearchFrame` class, with 
 [source, python]
 ----
 class LoginPanel(wx.Panel):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs): # <1>
         self.callback = kwargs.pop('onlogin', None)
         wx.Panel.__init__(self, *args, **kwargs)
 
@@ -684,6 +695,10 @@ class LoginPanel(wx.Panel):
             self.callback(u, p)
 ----
 
+<1> There's a bit of syntax here that might be confusing.
+    The `*args` and `**kwargs` entries here are ways of capturing multiple arguments into one parameter.
+    For now, just know that we're only capturing them here so we can pass them to the parent class constructor two lines down.
+
 There's some structure that's similar to above.
 We'll start with the constructor.
 
@@ -726,7 +741,7 @@ Once the user has successfully logged in, we destroy the `LoginPanel` instance a
 class SearchPanel(wx.Panel):
     def __init__(self, *args, **kwargs):
         self.orgs = kwargs.pop('orgs', [])
-        self.credentials = kwargs.pop('credentials', {}) <1>
+        self.credentials = kwargs.pop('credentials', {}) # <1>
         wx.Panel.__init__(self, *args, **kwargs)
 
         self.create_controls()
@@ -739,7 +754,7 @@ class SearchPanel(wx.Panel):
         self.searchTerm.SetFocus()
         self.searchButton = wx.Button(self, label="Search")
 
-        # Bind events
+        # Bind events # <2>
         self.searchButton.Bind(wx.EVT_BUTTON, self.do_search)
         self.searchTerm.Bind(wx.EVT_TEXT_ENTER, self.do_search)
 
@@ -752,27 +767,27 @@ class SearchPanel(wx.Panel):
 
         # Dock everything to the top, leaving room for the results
         self.vbox = wx.BoxSizer(wx.VERTICAL)
-        self.vbox.Add(hbox, 0, wx.EXPAND) <2>
+        self.vbox.Add(hbox, 0, wx.EXPAND) # <3>
         self.SetSizer(self.vbox)
 
     def do_search(self, event):
         term = self.searchTerm.GetValue()
         org = self.orgChoice.GetString(self.orgChoice.GetCurrentSelection())
         g = Github(self.credentials['username'], self.credentials['password'])
-        code,data = g.search.issues.get(q="user:{} {}".format(org, term)) <3>
+        code,data = g.search.issues.get(q="user:{} {}".format(org, term)) # <4>
         if code != 200:
             self.display_error(code, data)
         else:
             self.display_results(data['items'])
 
-    def display_results(self, results): <4>
+    def display_results(self, results): # <5>
         if self.results_panel:
             self.results_panel.Destroy()
         self.results_panel = SearchResultsPanel(self, -1, results=results)
         self.vbox.Add(self.results_panel, 1, wx.EXPAND | wx.TOP, 5)
         self.vbox.Layout()
 
-    def display_error(self, code, data): <5>
+    def display_error(self, code, data): # <6>
         if self.results_panel:
             self.results_panel.Destroy()
         if 'errors' in data:
@@ -790,12 +805,16 @@ class SearchPanel(wx.Panel):
 There's quite a bit here, but some of it is familiar.
 We'll skip the usual walkthrough, to point out a couple of interesting features.
 
-<1> When creating the panel, we pass in the user's credentials and list of organizations.
-<2> When we add the search bar to the sizer, we use `0` as a scale factor.
+<1> When creating the panel, we pass in the user's credentials and list of organizations as keyword arguments, so they show up in the `kwargs` dictionary.
+    Here we use `pop` to make sure the parent class's constructor doesn't get confused by them.
+<2> Here we capture both the search button's "click" event, as well as the text box's "enter key" event.
+    Both should case the search to be performed.
+<3> When we add the search bar to the sizer, we use `0` as a scale factor.
     This means that it shouldn't exand to fit the available size, but keep its own size instead, to leave room to add a results panel later on.
-<3> Here's where the actual search is being done.
-<4> We pass the search results into another class, then add it to the main sizer with parameters to fill the remaining available space.
-<5> If an error is returned from the search call instead, we display it here.
+<4> Here's where the actual search is being done.
+    We get the search term and organization, and send them to the `agithub` instance, which returns our results and an HTTP result code.
+<5> We pass the search results into another class, then add it to the main sizer with parameters to fill the remaining available space.
+<6> If an error is returned from the search call instead, we display it here.
     There's some code to adjust the wrap width of the text, based on the laid-out width of the control.
     This isn't a great approach; doing it better is left as an exercise for the reader.
 
@@ -880,12 +899,14 @@ class SearchResult(wx.Panel):
 <3> We're binding the click handler for this entire panel, but also the mouse-enter and mouse-leave events, so we can make it behavior more like a link in a browser.
 <4> Here's how you open the default browser to a URL in Python.
 
-Overall, WxPython isn't so bad, once you get used to it.
-It lacks some facilities of newer frameworks, but there's nothing better for getting a basic cross-platform UI out the door quickly.
+So now you've seen the code for a simple WxPython application.
+Using this library tends to produce code of a certain style, which is kind of verbose.
+The positive side of this is that nothing is hidden; all the layout for your app is done right in the code, with no "magic," and the fact that it can run without modification on just about anybody's computer is a huge plus.
+WxPython may lack some facilities of newer frameworks, but there's nothing better for getting a basic cross-platform UI out the door quickly.
 
 That's all of the code!
-If you've been following along, you can run this code file and do issue searches.
-However, our use case has a non-technical user runnnig this; let's see what can be done to make it easy for them.
+If you've been following along and typing all this code into a file, you can run that file and do issue searches.
+However, our use case has a non-technical user runnnig this; let's see what can be done to make it easier for them to get started.
 
 === Packaging
 
@@ -932,4 +953,6 @@ You've learned about its general behavior, the different categories of search, h
 Using this knowledge you should be able to find anything you're looking for on GitHub or GitHub Enterprise.
 You also know that the search UI on GitHub is just a thin layer over the search API, so the same tricks and techniques will serve you whether you're writing code or using a browser.
 
-In the next chapter we will look at using DotNET with the Commit Status API.
+Time to switch gears a bit.
+The next chapter introduces the Commit Status API, which is a way of annotating individual commits in a Git repository with a "good" or "bad" flag.
+We'll be using what only a few years ago would have been a polarizing choice: the CLR.
