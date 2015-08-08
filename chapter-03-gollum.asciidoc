@@ -1044,7 +1044,5 @@ line tool and learned why this is a nice option when we want to run
 our own Gollum server. Finally, we built a customized Gollum
 image-centric editor using the Rugged library for Ruby.
 
-Our next chapter explores the GitHub API from what might be an
-unexpected vantage point: JavaScript. In this chapter we will show you
-how to host an entire application on GitHub, no server required, that
-still allows modification of data inside of GitHub by its users.
+In the next chapter we'll switch gears completely, and build a GUI
+application for searching GitHub issues. And we'll do it in Python.

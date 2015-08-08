@@ -955,4 +955,4 @@ You also know that the search UI on GitHub is just a thin layer over the search 
 
 Time to switch gears a bit.
 The next chapter introduces the Commit Status API, which is a way of annotating individual commits in a Git repository with a "good" or "bad" flag.
-We'll be using what only a few years ago would have been a polarizing choice: the CLR.
+We'll be using what only a few years ago would have been a polarizing choice: C# and the CLR.
