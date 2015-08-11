@@ -160,18 +160,18 @@ of more than one section.
   to storing large files inside of a Git repository, and show how to
   use the git command line tools to play with this information.
 * The "Search" chapter: we build a GUI search app using Python. 
-* The "Commit Status" chapter: our final chapter documents a
-  relatively new part of the API which documents the interactions
-  between third party tools and your code. This chapter builds an
-  application using C# and the Nancy .NET GitHub API libraries.
+* The "Commit Status" chapter: documents a relatively new part of
+  the API which documents the interactions between third party tools
+  and your code. This chapter builds an application using C# and the
+  Nancy .NET GitHub API libraries. 
 * The "Jekyll" chapter: if you push a specifically organized
   repository into GitHub, GitHub will host a fully featured blog,
   equivalent in most ways to a Wordpress site (well, except for the
   complexity part). This chapter documents how to format your
   repository, how to use Markdown within Jekyll, how to use
-  programmatic looping constructs provided 
-  by Liquid Templates, and then shows how to import an entire web site
-  from the Internet Archive into the Jekyll format using Ruby. We show
+  programmatic looping constructs provided by Liquid Templates, and
+  then shows how to import an entire web site from the Internet
+  Archive into the Jekyll format using Ruby. We show 
   how to respectfully spider a site using caching, a valuable
   technique when using APIs or third party public information.
 * The "Android" chapter: in this chapter we create a mobile
@@ -182,9 +182,10 @@ of more than one section.
   testing tool.
 * The "JavaScript" chapter: did you know you can host an entire
   "single page application" on GitHub? We show how you can build an
-  application backed by a database called GitHub using the JavaScript
-  language. Importanly, we show how you can write a testable
-  JavaScript application that mocks out the GitHub API when needed.
+  application backed by a flat file database hosted on GitHub written
+  in the JavaScript   language. Importanly, we show how you can write
+  a testable JavaScript application that mocks out the GitHub API
+  when needed. 
 * The "Hubot" chapter: Hubot is a JavaScript (NodeJS) chat robot
   enabling technologists to go beyond developer operations ("DevOps")
   to a new frontier called "ChatOps." The Hubot chapter illustrates
@@ -204,8 +205,8 @@ nothing more than an endpoint to list information about users, add or
 remove SSH keys, adjust email addresses and modify your list of
 followers. 
 
-There is not a specific chapter on issues. Historically GitHub used to
-group issues and pull requests into the same API section, but with the
+There is not a specific chapter on issues. GitHub originally
+grouped issues and pull requests into the same API section, but with the
 growing importance of pull requests they have separated them in the
 API documentation. In fact, they are still internally stored in the
 same database and pull requests are, at least for now, just another
@@ -217,21 +218,9 @@ site API. We don't have a chapter telling a story about the enterprise
 API, but we do provide an appendix which provides a few notes about
 how to use it with a few API client libraries.
 
-With these chapters we cover the entire API and hope to give you an
-inside look into the inner workings of the brain of a developer
-building on top of the GitHub API. 
-
-As you might have noticed, this book will take you on an exploration
-of several different language clients for the GitHub API. 
-Along the way, we'll point out the different idioms and methodologies
-inherent to those client libraries and shed light on the darker corners
-of the GitHub API. Don't be alarmed if you thumb through the chapters
-and see a language which you don't know at all: each chapter is
-designed so that you can follow along without intimacy to the
-language or toolkit. You will get the most value if you install the
-language and associated tools, but the story behind the projects we
-will build will be interesting even if you don't actually 
-type a line of code from the chapter.
+Through these stories about the technologies behind GitHub we hope to
+give you an inside look into the inner workings of the brain of a
+developer building on top of the GitHub API. 
 
 === Who You Are
 
