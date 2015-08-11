@@ -1,5 +1,4 @@
-[[Hubot Chapter]]
-.Hubot Chapter
+[[Hubot]]
 
 == CoffeScript, Hubot and the Activities API
 
