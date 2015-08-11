@@ -129,7 +129,7 @@ In addition, though not a part of the API, there are other important
 technologies you should know about when using GitHub which are not
 covered in the API documentation:
 
-* Jekyll: hosting blogs and static documentation
+* Jekyll and "gh-pages": hosting blogs and static documentation
 * Gollum: wikis tied to a repository
 * Hubot: a programmable chat robot used extensively at GitHub
 
@@ -275,16 +275,17 @@ skills with Git and within a web service like GitHub.
 
 Like any seasoned developer, automation of your tools is important to
 you. This book provides examples of mundane tasks converted into
-automated and repeatable processes, and we show how to do this using a
+automated and repeatable processes. We show how to do this using a
 variety of languages talking to the GitHub API. 
 
-If you are unfamiliar with the "command line" this book will give you
-a firm understanding of how to use it, and we bet you will find great
-power there. To make this book accessible to everyone, regardless of
+To make this book accessible to everyone, regardless of
 their editor or operating system, many of the programming samples work
-within the command line. If you have hated the command line since your
-father forced you to use it when you were five, this is the perfect
-book to rekindle a loving relationship with the bash shell.
+within the command line. If you are unfamiliar with the "command line"
+this book will give you a firm understanding of how to use it, and we
+bet you will find great power there. If you have hated the command
+line since your father forced you to use it when you were five, this
+is the perfect book to rekindle a loving relationship with the bash
+shell.
 
 If you absorb not only the technical facets of using GitHub but also
 pay attention to the cultural and ideological changes offered behind
@@ -305,19 +306,31 @@ thinking than is found in strict unit testing. To help you get past
 this roadblock, whenever possible, this book shows you how to write
 code which interacts with the GitHub API and is testable.
 
-=== First Class Languages You Need to Know
+=== GitHub "First Class" Languages
 
 There are two languages which are so fundamentally linked to GitHub
 that you do need to install and use them in order to get the most out
 of this book.
 
-* Ruby: a simple, readable programming language used heavily by the
-  founders of GitHub.
+* Ruby: a simple, readable programming language which the founders of
+  GitHub used extensively early in the life of the company.
 * JavaScript: the only ubiquitous browser side programming language, its
   importance has grown to new heights with the introduction of
   NodeJS, rivaling even the popularity of Ruby on Rails as a server
   side toolkit for web applications, especially for independent
   developers.
+
+Undoubtedly, many of you picking up this book already have familiarity
+with Ruby or JavaScript/NodeJS. So, the basics and installation of them are in
+appendices in the back of the book. The appendices don't cover syntax
+of these languages; we expect you have experience with other languages
+as a prerequisite and can read code from any imperative language
+regardless of the syntax. Later chapters discuss facets of the API and
+go into language details at times, but the code is readable regardless
+of your familiarity with that particular language. These 
+explanatory appendices discuss the history of these tools within the
+GitHub story as well as important usage notes like special files and
+installation options.
 
 Your time will not be wasted if you install and play with these two
 tools. Between them you will have a solid toolset to begin
@@ -325,25 +338,13 @@ exploration of the GitHub API. Several chapters in this book use Ruby
 or JavaScript, so putting in some time to learn at least a little bit will
 make the journey through this book richer for you.
 
-Undoubtedly, many of you picking up this book already have familiarity
-with Ruby or JavaScript/NodeJS. So, the basics and installation of them are in
-appendices in the back of the book. The appendices don't cover syntax
-of these languages; we expect you have experience with other languages
-as a prerequisite and can read code from any imperative language
-regardless of the syntax. Later chapters which do discuss a facet of
-the API go into language details at times, and the code is readable
-regardless of your familiarity with that particular language. These
-explanatory appendices discuss the history of these tools within the
-GitHub story as well as important usage notes like special files and
-installation options.
-
 === Who This Book is Not For
 
 If you are looking for a discussion of the GitHub API that focuses on
-a single language, you will be disappointed to find that we look at
-the API through many different languages. We do this to describe the
-API from not only the way the GitHub team designed it to work, but the
-aspirational way that client library authors made it work within
+a single language, you should know that we look at the API through
+many different languages. We do this to describe the API from not only
+the way the GitHub team designed it to work, but the aspirational way
+that client library authors made it work within 
 diverse programming languages and communities. We think there is a lot
 to learn from this approach, but if you are interested in only a
 specific language and how it works with the GitHub API, this is not
