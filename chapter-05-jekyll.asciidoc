@@ -2,23 +2,17 @@
 == Ruby and Jekyll
 
 The GitHub Jekyll repository (https://github.com/jekyll/jekyll) calls
-itself a "blog-aware, static site generator in Ruby." What does this mean?
-Jekyll is a set of technologies for building web sites. There are
-probably as many tools for generating web sites as there are websites,
-though, so why does Jekyll deserve notice over others? 
-The Jekyll tool provides just enough to build a beautiful site,
-but then, the authors stopped and kept the core Jekyll tool free of
-many possible but risky improvements. Many other web site tools layer
-more and more complicated processes and require complicated backends for
-hosting. Jekyll is an antidote to this way of thinking. You can layer
-many other pieces onto Jekyll and build ever more complex sites if you
-want to, but you don't have to. Often, thinking simple leads to a much
-more elegant way to do things.
+itself a "blog-aware, static site generator in Ruby." 
+At its core, Jekyll is a very simple set of technologies for building
+web sites. Simplicity is what gives Jekyll its power: using Jekyll you
+will never have to learn about database backends, complicated server
+installations or any of the myriad processes involved with most
+monolithic web site technologies.
 
-More concretely, Jekyll specifies a format that will take a set of
-files and compile them into HTML. Jekyll builds on top of two proven
-tools: Markdown, a markup language which is surprisingly readable and
-expressive, and Liquid Templates, a simple programming language which
+Jekyll specifies a file structure format: conform to this format and
+Jekyll will compile your files into HTML. Jekyll builds on top of two
+proven tools: Markdown, a markup language which is surprisingly
+readable and expressive, and Liquid Templates, a simple programming language which
 gives you just enough components to build modern web 
 pages requiring conditionals and loops, but safe enough that you can
 run untrusted pages on public servers. With these two technologies and
@@ -36,66 +30,6 @@ operate upon. This means you can build your own tools to interact with
 a Jekyll blog. Combining an open source tool like Jekyll with a well
 written API like the GitHub API makes for some powerful publishing
 tools.
-
-Oddly enough, Jekyll takes us back to the advent of
-the web when all pages were static, and often created by hand. 
-Nowadays most modern sites are dynamically generated using a
-database backend. Jekyll provides us with a tool that recognizes we
-only need to be dynamic when new content is created and not when a new
-visitor requests the same page as the previous visitor. This is 
-unfortunately how many sites work right now, resulting in the same
-page being regenerated over and over, and has led to overwrought
-solutions like page caching which has layered more lipstick on the
-pig. By acknowledging these facts, there is a massive reduction in
-complexity of Jekyll sites and with it, immense freedom. It may feel
-like you have traveled back in time, because when you look at a site
-built by Jekyll, you are looking at a set of static files, backed by
-nothing more complex than the same web server technologies available
-before the dot com bust of 2000.
-
-=== The Harmless Brew that Spawned Jekyll
-
-Though you won't see it in the documentation, the popularity of Jekyll
-is due in large part to the desire of bloggers, especially very technical ones,
-wanting a blogging tool option other than Wordpress. For many
-bloggers, Wordpress is a poor choice of blogging tools. Of course,
-there is always language snobbery in any programming community, but
-Wordpress is built on a language, PHP, which is widely reviled by
-developers from various language communities. Because PHP is  more
-accessible language than other languages, the choice of PHP has 
-fostered a large community of plugin developers. Unfortunately, this
-community is fractured, and the plugins which arise from it are at
-best poorly documented and poorly integrated, and at worst, poorly
-designed and buggy. While Wordpress does often have a plugin for
-anything you need, the problem it solves often creates more problems
-in the long term when scalability or database optimization or security, for
-example, become concerns.
-
-Jekyll is interesting because of the components which are not present
-when compared against Wordpress. Jekyll does not require a database.
-Jekyll does not require you know how to write in HTML. While Wordpress
-ostensibly advertises itself as a tool which can be used without
-knowledge of these technologies, talk to those of us who have struggled with
-recovery of a mangled database after installation of a new Wordpress plugin,
-or resolving scalability issues on a large Wordpress site, or
-analyzing and fixing broken HTML produced by the Wordpress editor.
-We'll tell you that, when using Wordpress, you don't need to know about MySQL or
-HTML at all, because it is already too late by then to fix whatever
-problem you are facing.
-
-Jekyll responds to these concerns in a really elegant way. Instead of
-authoring in HTML, you author in a simple and readable language called
-Markdown, which the Jekyll engine converts automatically to HTML
-for you. Instead of storing posts and other data inside a MySQL
-database, you use the filesystem to store posts and layouts and then
-regenerate the entire site when infrequent changes are made. And, to
-faciliate interaction, you use client side JavaScript plugins instead
-of pushing that interaction into your database. Jekyll has found a
-sweet spot with a simple technology set that makes your life easier
-and makes beautiful blogs and simple web sites. And, the biggest
-benefit of doing things the "Jekyll" way is that all dependencies can
-sit within a repository, and this means your entire site can be hosted
-on GitHub. 
 
 ==== (Less Than) Evil Scientist Parents
 
@@ -786,44 +720,14 @@ programmers in the true sense of the word we embrace and accept our
 laziness and choose the second route. Let's write some code to scrape
 and generate a Jekyll site.
 
-Almost fifteen years ago while traveling in Brazil I grew increasingly
-frustrated with the guide books I used. It seemed like every time I
-went to a restaurant recommended by a guidebook I left the restaurant
-thinking "well, either they paid for that review or the review was
-written several years ago when this restaurant had a different owner."
-To address this discrepancy between reviews and realities, I built a
-site called ByTravelers.com. The idea was that travelers could use
-ByTravelers to record their experiences and easily share their
-experiences with their friends and families (replacing the long emails
-they used to send) and that that information would then become an
-authentication source of information about good and bad travel
-experiences. 
-
-I used an interesting programmable web server called
-http://en.wikipedia.org/wiki/Roxen_(web_server)[Roxen] featuring 
-a dynamic language called Pike back when the web was dominated by one
-dynamic language: Perl, the "duct tape of the Internet." The site had ambitions greater than the
-talents of its architect, but suprisingly, a modest number of people
-found the site and started using it to track the experiences and
-simultaneously offer unbiased reviews of their traveling histories. It
-was exciting to see people creating content on their travels to China,
-Prague, and Cuba, and I vowed to visit Bhutan at least once in my
-lifetime after reading one particularly vivid account from an unknown
-contributor. 
-
-One of the problems with build on top of a web server and language
-like Roxen and Pike that never achieved critical mass in any way is
-that maintenance was a challenge. After moving back to the US and
-moving my hosting servers several times, I lost access to the source
-code (this was long before GitHub or even Git) and I lost access to
-the database and ByTravelers.com settled into oblivion.
-
-Or, so I thought. One day I decided to look up ByTravelers on
-Archive.org, the Internet Archive. I found that almost all of the
-articles were listed there and available. Even though we have lost the
-source code and database, could we recover the site from just the
-Internet Archive? Let's scrape the articles from the Internet
-Archive and make them into a modern Jekyll site. 
+While living in Brazil in 2000 I built a site called ByTravelers.com,
+an early travel blog. At some point, I sadly lost the database and
+thought the site contents were completely gone. Almost by accident, I
+happened upon ByTravelers on Archive.org, the Internet Archive. I
+found that almost all of the articles were listed there and
+available. Though the actual database is long gone, could we recover
+the site using Archive.org? Let's scrape the articles and convert them
+into a modern Jekyll site. 
 
 ==== Jekyll Scraping Tactics
 
@@ -1598,6 +1502,12 @@ republish them into our new Jekyll blog. Taking a look at the archived
 site, note that each title has an image to the left of it. If we
 customize our `process_title` method we can retrieve these images and
 then publish them into our blog.
+
+[WARNING]
+I paid an artist for the images used on the original
+ByTravelers.com. If you are using this technique to scrape images or
+text content from another site, make sure you are abiding by all local
+and international copyright laws. 
 
 Finding the image is easy: `img = ( title/ "img" )` will retrieve an
 "img" tag from the title as passed to us. Printing out the element
