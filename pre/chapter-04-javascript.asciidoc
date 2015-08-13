@@ -178,26 +178,25 @@ file as follows.
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
 </head>
-<body ng-app="coffeetech"> <3>
+<body ng-app="coffeetech"> <1>
 <div class="container" ng-controller="GithubCtrl">
 {{ repo | json }} <2>
 </div>
 <script src="angular.js"></script> 
 <script src="github.js"></script> 
-<script src="coffeetech.js"></script> <1>
+<script src="coffeetech.js"></script> <3>
 </body>
 </html>
 -------
 
 We added or changed just three lines.  
 
-<1> We added a reference to our `coffeetech.js` file beneath our other JS
-references. 
-<2> We removed our databinding to the `Welcome to CoffeeTech` string
-and replaced it with a binding to the variable 
-`repo` filtered by the JSON filter. 
-<3> Finally, we changed the `ng-app` reference to use the module we
+<1> Change the `ng-app` reference to use the module we
 defined in our `coffeetech.js` file. 
+<2> Remove our databinding to the `Welcome to CoffeeTech` string
+and replace it with a binding to the variable `repo` filtered by the JSON filter. 
+<3> Add a reference to our `coffeetech.js` file beneath our other JS
+references. 
 
 If you have never used AngularJS before, you are probably thoroughly
 confused about the `coffeetech.js` file. Before we dive into the
@@ -370,9 +369,11 @@ documented in the <<appendix>>).
 [source,bash]
 -------
 $ npm install karma -g
-$ karma init karma.config.js
 $ wget https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-mocks.js
 -------
+
+The `angular-mocks.js` file makes it easy to mock out Angular
+dependencies in our tests. 
 
 Then, create a file called `karma.config.js` and enter the following contents:
 
