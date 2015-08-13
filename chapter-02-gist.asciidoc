@@ -10,20 +10,23 @@ workforce. Gists service part of this need: they permit intimate code
 sharing and reuse, refactoring and play in a way not served by
 heavyweight tools predating it.
 
-Gists are easy to create and the interface is stripped down to the
-barest level. You add a snippet of code and then share the URL. Gists
-autodetect the language in most cases and format it correctly. Gists
-can be used in more powerful ways than might appear at first glance
-and this chapter will explore other ways to share code and amplify
-your team.
+=== Easy Code Sharing
 
-To create a gist, go to
-gist.github.com and enter in any textual data. You then choose public or
-secret access and create the gist. After creating the gist, you receive a
+Gists are easy to create and the interface minimal. You add a snippet
+of code and then share the URL. Gists autodetect the language in most
+cases and format it correctly. Gists can be used in more powerful ways
+than might appear at first glance and this chapter will explore other
+ways to share code and amplify your team.
+
+To create a gist, go to gist.github.com and enter in any textual
+data. You then create a public or secret gist by selecting the
+appropriate button. After creating the gist, you receive a 
 shareable URL with the code. If the type of textual data is specified,
 usually the coding language type, then the code will be formatted in a
 pretty way for better readability. If you need to share a small bit of code,
 or write something and discuss it, gists are a great tool. 
+
+image::images/gists-easy-sharing.png[Creating a Gist on GitHub]
 
 There are other services that do this: pastebin was the first, and
 there are many others that offer variances on code sharing. But gists
@@ -57,11 +60,12 @@ regular repository. Or, you can make a gist public, and
 share that URL to mailing lists or anywhere you need public feedback.
 
 [NOTE]
-As there are two types of gists (public and secret), it is important the understand the
-differences between them. Public gists are searchable. Secret gists
-are not searchable, but they are accessible to anyone who knows
-the URL. Don't post any code to gist which you need to keep secret as
-once you put it there, it is only as safe as the URL is secret.  
+As there are two types of gists (public and secret), it is important
+to understand the differences between them. Public gists are
+searchable. Secret gists are not searchable, but they are accessible
+to anyone who knows the URL. Don't post any code to gist which you
+need to keep secret as once you put it there, it is only as safe as
+the URL is secret. 
 
 Most people share gists through the URL. But, you can embed gists
 inside of other contexts (like blogs) and get a simple and pretty
@@ -172,9 +176,10 @@ fully working and packaged applications inside a Git repository.
 
 === Gists as fully functioning apps
 
-To demonstrate this ability, let's build a simple Sinatra
-application. Sinatra is a ruby library for creating dead-simple web
-servers. A Sinatra program looks as simple as this:
+Let's build a simple Sinatra application to showcase how code hosted
+as a gist can also be a living application. Sinatra is a ruby library
+for creating dead-simple web servers. A Sinatra program can be as
+simple as this:
 
 [source,ruby]
 -----
@@ -190,29 +195,54 @@ Create a gist for this by visiting gist.github.com. Enter in the text exactly as
 public gist.
 
 You now have a shareable gist of code, which anyone can use to review.
-More importantly, this is an executable piece of code. To use it,
-click into the "Clone this gist" box to the left of the body of
-content. You'll get a URL which looks something like this: 
+More importantly, this is a repository with executable code. To clone
+it, look for the Clone URL to the right of the Gist itself. You should
+see a link like:
 
 https://gist.github.com/8138797.git
 
-Copy this and then enter a terminal program and enter this command:
+This is a HTTPS clone URL. Though you use this URL, updating Gists
+from this URL is more troublesome. For example, if you are using two
+factor authentication with your account, HTTP Basic authentication will fail. 
 
 [source,bash]
-$ git clone https://gist.github.com/8138797.git
-$ cd 8138797
+-----
+$ # Make some changes 
+$ git commit -m "Made some changes" -a
+$ git push
+Username for 'https://gist.github.com': xrd
+Password for 'https://xrd@gist.github.com': 
+remote: Invalid username or password.
+fatal: Authentication failed for 'https://gist.github.com/8138797.git/'
+-----
 
-Now, you are inside the gist repository. If you look inside the
-repository you'll see a list of files, a list which right now numbers
-only one file.
+If you don't use two factor authentication, it is still bothersome to
+re-enter your username and password each time you push to the
+repository. Though there are ways you can mitigate re-entering in 
+your username and password each time you push (using `git config
+credential.helper store`), there is a simpler way to allow updates:
+use the SSH URL.
+
+[source,bash]
+-----------
+$ git clone git@gist.github.com:8138797.git
+-----------
+
+Notice that you use a different protocol (git) with an `@` symbol
+between the hostname, and then a colon as the delimiter between the
+hostname and the path to the repository.
+
+Once you have cloned the repository, go inside it. You'll see a list
+of files, a list which right now numbers only one file.
 
 [source,bash]
 ----
+$ cd 8138797
 $ ls
 hi.rb
 ----
 
-To run this code, enter `ruby hi.rb`
+This code is exectuable: to run it enter `ruby hi.rb`
 
 If you had not used Sinatra with ruby before, this will cause an
 error. This program requires a library called "sinatra" and 
@@ -248,44 +278,6 @@ our repository locally, and then publish into our gist for sharing on
 the web. Our repository now not only has the code, but a well know
 manifest file which explains the necessary components when running the
 code. 
-
-To publish our changes back into our gist from the command line, we
-need to update the "remote" repository reference. When we 
-first cloned the repository we used the https link. If we are using
-SSH keys (and you should be; read the section "When should I use SSH
-vs HTTPS?") then we need to switch to use the SSH URL format (git
-protocol). Run this command:
-
-[source,bash]
------
-$ git remote -v
-origin       https://gist.github.com/8138797.git (fetch)
-origin       https://gist.github.com/8138797.git (push)
------
-
-Your results will be slightly different, but this output displays our
-remote repository; in other words, where we pull and push our code
-changes. If you are familiar with the way 
-that remotes work on GitHub you can see that this is a read-only URL.
-We need to adjust these URLs in our remote so that it points to the
-read-write remote URL. To do that, remove the `https://` part and add
-a `git@`. Then, change the first `/` character after the
-`gist.github.com` URL to a `:` character. If your remote was the same
-as above you would have this `git@gist.github.com:8138797.git`. Then,
-in a terminal window run these commands:
-
-[source,bash]
-----
-$ git remote rm origin
-$ git remote add origin git@gist.github.com:8138797.git
-----
-
-Now you can push new content in via the command line as well as edit
-files inside of GitHub.com. As you develop your app you have
-flexibility in whichever way fits you best.
-
-Now let's take it further: what if we modified our application to use
-the GitHub API, specifically to access information about gists for a user?
 
 === Gists that render Gists
 
@@ -412,7 +404,9 @@ client code should not need to.
 This is explained in great detail in the book http://www.amazon.com/o/ASIN/1449306578?tag=adapas02-20:[Building
 Hypermedia APIs with HTML5 and Node].
 
-In the case of Octokit, navigating hypermedia looks like this:
+==== Using Hypermedia Data from Octokit
+
+Now that you know a little about hypermedia, let's navigate it using Octokit.
 
 * Start at a resource, with code like `user = Octokit.user "xrd"`. This
   begins the initialization of the client.
@@ -421,17 +415,14 @@ In the case of Octokit, navigating hypermedia looks like this:
   meager follower count.
 * `user` also has hypermedia references. You can see these by calling
   `user.rels`. This retrieves the relationships described in the
-  hypermedia links. In this case, calling `.rels` shows a map of
-  relationships, displayed in ruby code like: `#<Sawyer::Relation::Map: [:avatar, :self, :html,
-  :followers, :following, :gists, :starred, :subscriptions,
-  :organizations, :repos, :events, :received_events]>`
-* Using one of these relationships starts by keying into the
-  relationship hash and then using the get and data methods to request
-  that information from the GitHub API:
-  `followers = user.rels[:followers].get.data`. 
-* Once you call `.get.data` you will have a new followers object
-  populated with an array of the followers (paged if it exceeds 100
-  items). 
+  hypermedia links. 
+* Relationships (found by calling `user.rels`) include avatar, self,
+  followers, etc.
+* Use a relationship by calling the `get.data` method to retrieve and
+  access the data from the GitHub API (`followers =
+  user.rels[:followers].get.data`.)
+* Calling `.get.data` populates an array of the followers (paged if it
+  exceeds 100 items). 
 
 Let's extend our Sinatra app to retrieve actual data about the user's
 gists by using hypermedia references.
@@ -461,8 +452,7 @@ the content. You can see that our response object is an array of
 gists, each which has an attribute called `fields`. This fields attribute
 specifies the filenames available in each gist. If you reference that
 filename against the files, the response includes a hypermedia `ref`
-attribute. You can use this retreive the `raw` content using the
-Octokit method `.get.data`.
+attribute. Retrieve the `raw` content using the Octokit method `.get.data`.
 
 [source,html]
 -----
