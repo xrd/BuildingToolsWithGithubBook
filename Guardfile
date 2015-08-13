@@ -4,7 +4,7 @@ require 'oreilly/snippets'
 
 init_script = '<script type="text/javascript" src="init.js"></script>';
 
-# Oreilly::Snippets.config() #  flatten: true )
+Oreilly::Snippets.config( flatten: true )
 
 guard 'shell' do
   watch( /^pre\/[^\.][^\/]*\.asciidoc$/) {|m|
