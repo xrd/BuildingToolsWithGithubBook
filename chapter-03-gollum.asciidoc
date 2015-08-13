@@ -109,7 +109,7 @@ named ceo.png inside your page. This basic syntax is often extended
 for additional funtionality. For example, to add a frame
 and an alt tag, you could use syntax like `[[ceo.png|frame|alt=Our CEO
 relaxing on the beach]]`. This creates the proper HTML tags for the
-same image, but this time adds a frame and alt text (helpful for
+same image, and alsox adds a frame and alt text (helpful for
 better context and screenreaders). Review the documentation on the
 Gollum repository for more details about the breadth of the image
 options. 
@@ -152,7 +152,8 @@ source 'https://rubygems.org'
 
 gem "nokogiri"
 gem "rspec"
-gem 'calabash-android', :git => 'git://github.com/calabash/calabash-android.git'
+gem 'calabash-android', 
+  :git => 'git://github.com/calabash/calabash-android.git'
 ```
 -------
 
@@ -288,10 +289,10 @@ authentication mechanism.
 
 ==== Adding Authentication 
 
-As Gollum is built on top of Sinatra (a ruby library which we will
-discuss in more detail shortly) you can utilize authentication gems
-like `omnigollum` or write your own authentication handler and run
-gollum inside that.
+Gollum is built on top of Sinatra (a Ruby library for building HTTP
+servers, discussed in the Gist chapter) and there are utilize authentication gems
+like `omnigollum` that provide many authentciation options. You could
+also write your own authentication handler and run gollum inside that.
 http://stackoverflow.com/questions/9634703/strong-access-control-for-gollum/13357591#13357591:[This 
 thread on StackOverflow] explains how to install your own handler:
  
@@ -317,12 +318,8 @@ gollum --config authentication.rb
 You'll then be prompted for the username and password, and can use
 "admin" and "admin". 
 
-Why "Precious" as the module name? If you peek into the Gollum code
-itself, you'll see that the Gollum libraries use a namespace called
-"Precious" (the word used to refer to the ring by the character Gollum in the
-Lord of the Rings books) as the base class for the Gollum wrapper
-around Sinatra. This code extends the instance of Sinatra running your
-Gollum wiki and adds an authentication layer. 
+This code extends the instance of Sinatra running as Gollum (cheekily
+designated in the "Precious" namespace) and adds an authentication layer.
 
 [WARNING]
 A word of caution when using the gollum command in server mode to edit
@@ -346,82 +343,18 @@ change log.
 We've played a bit with the gollum command line tools. Let's put these
 skills to use and make our own special gollum tool.
 
-=== Building a Gollum Editor
+=== Hacking Gollum
 
-Once you understand Git repositories, you can see the power of Gollum
-as a wiki format: as everything is built on Git, you can manage your
-wiki using all the great tools that come with Git. We've explored
-how easy it is to edit Gollum wikis: from within the command line,
-from the web browser, or from within GitHub. However, there might be
-times when you need to provide an entirely customized editing modality. As long
-as you write files into the repository in the way the gollum libraries
-understand, you can write your own editing interface to suit your own
-needs. Let's experiment with this idea and build a new editing
-interface for Gollum wikis.
-
-[WARNING]
-Gollum is a tool that provides flexibility by allowing local usage:
-this can be very handy when you are on a plane and don't want to pay
-for Wi-Fi. However, at the time of this writing there is a bug
-where images are not displayed, so although you can fully edit files
-using the local `gollum` command, you will not be be able to view them
-when viewing your wiki on you local machine. To view image files
-correctly, publish them into GitHub. 
-
-==== Hacking Gollum
-
-Team software development often revolves around this idealized
-scenario: a business person develops the structure of the application
-with higher-up stakeholders, these ideas are passed down to a UI/UX
-designer who then creates wireframes and mockups of the interactions,
-and then a software developer takes these wireframes and builds the
-software. Put another way, program managers figure out what features provide
-the most value to users, which then trickles down into the wireframes
-as real interactions. Many hidden blocking paths are fleshed out here,
-places where the application would confuse the user, and time is saved
-because the software developer does not have to waste time building
-something that would not work anyway. By the time it reaches the
-developer, the UI interaction is streamlined and the costly and
-inflexible stage of building software has all the inefficiencies
-optimized away. The developer can simply work on a piece of software
-and know there are no changes, changes which would be extremely costly
-to implement.  
-
-In practice, this process is almost never so smooth. What typically happens
-is the business people don't completely understand all the
-requirements when they document the structure they want, so after they
-have committed to a structure they later ask for changes, which
-trickle down into the designs. The "final and approved" mockups have
-to be changed and this then needs to be communicated to the developer,
-who has already started building something that was "set in stone."
-Or, the developer, as she is building the software, realizes there are 
-missing steps to get to places inside the application, and needs
-to communicate this back to the designer. If you have multiple people
-doing software development on a project, this information then needs
-to fan out to them if their areas are affected by these changes. This
-information must traverse many different people, with many different
-methods of communication.  
-
-Wikis are a great way to store this kind of information. Information
-which changes. Information which must be retrieved by many people and
-edited by many people. What better than to manage these informational
-transitions than a change tracking system like Git, and what better
-way to absorb this information than a Wiki built on top of Git, hosted
-on GitHub. 
-
-==== Wireframe Review Tool
-
-Let's build a simple tool which stores these types of changes. We'll
-build an image editor that hosts changes  to UI mockups. This will
-give our executives a place where they can see changes and
-updates. This will allow our UI designer a place to store their images
-and annotate them with vital information. And, we'll have a place
-where developers can retrieve information without reviewing their
-email and wondering "Do I have the most up-to-date mockups?" We'll
-buid a special interface which allows quickly editing and reviewing
-these files locally.  And all of it can be published into GitHub for
-review (though we won't allow editing of the information there, since
-GitHub has its own editing modality.) 
+On many softwre teams there is a tension between the design
+team and the software team stemming from the fact that designers
+generally don't like using source code tools to manage images. This
+causes issues when software developers rely on designs that are
+rapidly changing: coders quickly get out of sync with the latest
+designs. As a wiki, Gollum is the perfect tool to bridge this gap
+between designers and coders: wikis are easy to read and modify by
+non-technical users. Since Gollum is a hackable Wiki, we can build our
+own workflow tool that allows designers to manage images and coders to
+easily see those changes in a source code repository. 
 
 Gollum is built on Ruby and uses the Grit library underneath. Using
 Ruby makes sense because we can leverage the existing Grit and Gollum
@@ -468,14 +401,15 @@ get '/pages' do
 end
 
 [source,bash]
-$ printf "source 'https://rubygems.org'\n\ngem 'sinatra'\ngem 'gollum-lib'" >> Gemfile
+$ echo "source 'https://rubygems.org'
+gem 'sinatra'
+gem 'gollum-lib'" >> Gemfile
 $ bundle install
 $ ruby image.rb
-$ open http://localhost:4567 # or whatever URL is reported from Sinatra
+$ open http://localhost:4567
 
-Once you open this in your browser, you'll see a report of the files
-that exist in our Gollum wiki right now. We've only added one file,
-the `Home.md` file.
+You'll see a report of the files that exist in our Gollum wiki right
+now. We've only added one file, the `Home.md` file.
 
 ==== Programmatically Handling Images
 
@@ -538,8 +472,7 @@ Choose a zip file:
 
 -----
 
-This server
-script receives a POST request at the `/unpack` mount point and
+This server script receives a POST request at the `/unpack` mount point and
 retrieves a ZIP file from the parameters passed into the script. It
 then opens the ZIP file (stored as a temp file on the server side),
 iterates over each file in the ZIP, strips the full path from the
@@ -724,20 +657,16 @@ uploaded.
 
 ==== Optimizing for Image Storage
 
-Often while a designer is receiving feedback from stakeholders, they
-will incorporate that feedback into the UI comps, and then resend the
-set of comps, with only a tiny change in one file, where the remaining
-dozens or even hundreds of files have been left unchanged. We might
+If a designer uploads the same image twice, what happens? We might
 assume that our code, as it writes these files to a different path on
 disk inside the repository (the path is the parent SHA hash to make it
 unique) and we could therefore be adding the same 
-file multiple times, and creating a big wasteful repository. However,
-the nature of git permits us to add the same file multiple times
-without incurring any additional storage cost beyond the first
-addition. When a file is added to git repository, a SHA hash is
-generated from the file contents. For example, generating the SHA hash
-from an empty file will always return the same SHA
-hash.footnote:[This is explained
+file multiple times, and creating a repository with wasted
+space. However, the nature of git permits us to add the same file
+multiple times without incurring any additional storage cost beyond
+the first addition. When a file is added to git repository, a SHA hash
+is generated from the file contents. For example, generating the SHA hash
+from an empty file will always return the same SHA hash.footnote:[This is explained
 beautifully in the blog
 http://alblue.bandlem.com/2011/08/git-tip-of-week-objects.html.]
 
