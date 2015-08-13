@@ -136,8 +136,8 @@ covered in the API documentation:
 With just one or two exceptions, each of these sections of the GitHub
 technology stack are covered in various chapters. The GitHub API
 documentation is a stellar reference which you will use constantly
-when writing any application that talks 
-to the API, but the chapters in this book serve a different purpose:
+when writing any application that talks to the API, but the chapters
+in this book serve a different purpose: 
 these chapters are stories about building applications on top of
 the technologies provided by GitHub. Within these stories you will learn
 the tradeoffs and considerations you will face when you use the GitHub
@@ -150,16 +150,24 @@ of more than one section.
 * The "cURL" chapter: the chapter you are reading now covers a
   first look at the API through the command line HTTP client called
   cURL. We talk a bit about the response format and how to parse it
-  within the command line, and also document authentication.
+  within the command line, and also document authentication. This is
+  the only chapter which does not build an application from the
+  technologies presented.
 * The "Gist" chapter: covers the Gist API, as well as command line
-  tools and the Ruby language "Octokit" API client.
+  tools and the Ruby language "Octokit" API client. We then take this
+  API and build a simple ruby server that is stored as a gist and
+  displays gists.
 * The "Gollum" chapter: explains usage of the Gollum command line tool
   and associated Ruby library (gem) which is backed by Grit, the
   C-language bindings for accessing Git repositories. We also
   document some details of the Git storage format and how it applies
   to storing large files inside of a Git repository, and show how to
-  use the git command line tools to play with this information.
-* The "Search" chapter: we build a GUI search app using Python. 
+  use the git command line tools to play with this information. We use
+  Gollum and the Grit libraries to build an image management tool
+  which also functions as a regular Gollum wiki which can be published
+  to GitHub.
+* The "Search" chapter: we explore the Search API and build a GUI
+  tool to search repositories on GitHub using Python.
 * The "Commit Status" chapter: documents a relatively new part of
   the API which documents the interactions between third party tools
   and your code. This chapter builds an application using C# and the
@@ -182,17 +190,19 @@ of more than one section.
   testing tool.
 * The "JavaScript" chapter: did you know you can host an entire
   "single page application" on GitHub? We show how you can build an
-  application backed by a flat file database hosted on GitHub written
-  in the JavaScript   language. Importanly, we show how you can write
-  a testable JavaScript application that mocks out the GitHub API
-  when needed. 
+  coffee shop information app backed by a flat file database hosted on
+  GitHub written in the JavaScript language. Importantly, we show how
+  you can write a testable JavaScript application that mocks out the
+  GitHub API when needed. 
 * The "Hubot" chapter: Hubot is a JavaScript (NodeJS) chat robot
   enabling technologists to go beyond developer operations ("DevOps")
   to a new frontier called "ChatOps." The Hubot chapter illustrates
   using the Activities and Pull Requests section 
   of the API. In addition we show how you can simulate GitHub
   notifications and how to write testable Hubot extensions (which is
-  often a challenge when writing JavaScript code).
+  often a challenge when writing JavaScript code). We string all these
+  pieces together and build a robot which automates assigning pull
+  request review requests.
 
 We don't cover the organization API: this is a small facet of the API
 with only the ability to list organizations and modify metadata about

@@ -11,26 +11,17 @@ the perfect fit. cURL, like the best unix tools, is a small program
 with a very specific and purposefully limited set of features for
 accessing HTTP servers. 
 
-cURL gives you the most naked vantage point you will find for the GitHub
-API (barring using a network traffic analysis tool). cURL, like the
-HTTP protocol which it speaks intimately, is stateless, meaning it is
-challenging to use cURL to hit a service and then use the results with
-a secondary request. We will use cURL in a later chapter within a
-shell script that explores solutions to this problem, but note that
-cURL works best with one-off requests.
+cURL, like the HTTP protocol which it speaks intimately, is stateless:
+we will explore solutions to this limitation in a later chapter, but
+note that cURL works best with one-off requests. 
 
-.Installing cURL
+
 [NOTE]
-If you are running these examples on a Linux box, you should be able
-use your native package management tool to install cURL - either a
-"sudo yum install curl*" on a RedHat variant or "sudo apt-get
-install curl" on an Ubuntu (or Debian) system.  If you are on any
-recent version of OSX, you already 
-have cURL installed, but it you can't find it, take a look at the
-HomeBrew project (http://brew.sh/) or MacPorts project
-(http://www.macports.org/).  If you are running on Windows or another
-operating system, you best bet is to download cURL from the cURL web
-site here: http://curl.haxx.se/download.html 
+.Installing cURL
+cURL is usually installed on most OSX machines, and can easily be installed
+using Linux package managers (probably one of "apt-get install curl" or "yum install
+curl"). If you are using Windows or want to manually install it, go to
+http://curl.haxx.se/download.html. 
 
 Let's make a request. We'll start with the most basic GitHub API
 endpoint found at https://api.github.com. 
