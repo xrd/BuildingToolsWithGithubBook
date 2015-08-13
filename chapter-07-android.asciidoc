@@ -928,9 +928,12 @@ implement a method called SaveFile which takes the repository name and
 the post contents. From here, we work to build the proper structure
 for creating a new Jekyll post. 
 
+Let's implement each of the functions specified in the
+GitHubHelper class.
+
 === Writing the blog content
 
-The following code snippet shows functions defined to generate the
+First, we implement `generateContent()`. The following code snippet shows functions defined to generate the
 content which we will place into our remote git repository stored on
 GitHub.
 
@@ -938,33 +941,37 @@ GitHub.
 -----
 ...
 
-String blobSha;
-Tree newTree;
-String commitMessage;
-String postContentsWithYfm;
-String contentsBase64;
-String filename;
-String post;
-String repoName;
+    String blobSha;  // <1>
+    Tree newTree;
+    String commitMessage;
+    String postContentsWithYfm;
+    String contentsBase64;
+    String filename;
+    String post;
+    String repoName;
 
-private void generateContent() {
-    commitMessage = "GitHubRu Update";
-    postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post; 
-    contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) ); 
-    getFilename( post );
-}
+    private void generateContent() {
+        commitMessage = "GitHubRu Update"; // <2>
+        postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post;  // <3>
+        contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) );  // <4>
+        getFilename( post ); // 4>
+    }
 
-private void getFilename( String post ) { 
-    String title = post.substring( 0, post.length() > 30 ? 30 : post.length() );
-    String jekyllfied = title.toLowerCase().replaceAll( "\W+", "-").replaceAll( "\W+$", "" );
-    SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" );
-    String prefix = sdf.format( new Date() );
-    filename = "_posts/" + prefix + jekyllfied + ".md";
-}
+    private void getFilename( String post ) {  
+        String title = post.substring( 0, post.length() > 30 ? 30 : post.length() ); // <5>
+        String jekyllfied = title.toLowerCase().replaceAll( "\W+", "-").replaceAll( "\W+$", "" ); // <6>
+        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" ); // <7>
+        String prefix = sdf.format( new Date() );
+        filename = "_posts/" + prefix + jekyllfied + ".md"; // <8>
+    }
 ...
 -----
 
-We define several instance variables which store data we will use
+You will notice many similarities between this Java code and the
+Ruby code we used in the Jekyll chapter when generating filenames
+and escaping whitespace.
+
+<1> We define several instance variables which store data we will use
 later in method calls; data like the SHA hash for our blob, the tree
 into which we will place our commit, and strings which are used when
 creating the commit. Though not typical of most Java class definitions
@@ -972,61 +979,65 @@ which place all member variables at the top of the class,
 placing them right above the methods which load data into them makes
 it easier to explain their relevance, so we do that for all variables
 used in the following methods.
-
-Our method generateContent sets a commit message and then creates the YAML
-Front Matter (see the Jekyll chapter for more details on YFM if you
-need a refresher). We then base64 encode the contents of the blog post
-itself using a utility class found inside the Apache Commons library.
-Contents inside a git repository are stored either as UTF-8 content or
-base64; we could have used UTF-8 since this is text content but base64
-works losslessly and you can always safely use base64 without
-concerning yourself about the content.
-
-Filename generation is a bit more complex because Jekyll
-repositories require a specific format: the date as yyyy-MM-dd, with
-the title of the post, replacing all whitespace with hyphens.
+<2> Our method generateContent sets a commit message.
+<3> Creates the YAML Front Matter (see the <<Jekyll>> chapter for more
+details on YFM). This YAML specifies the "post" layout and sets
+publishing to "true". We need to terminate the YAML with two newlines.
+<4> base64 encode the contents of the blog post
+itself using a utility class found inside the Apache Commons
+library. Contents inside a git repository are stored either as UTF-8
+content or base64; we could have used UTF-8 since this is text content
+but base64 works losslessly and you can always safely use base64
+without concerning yourself about the content.
+<5> Next, define the getFilename() method; use the first 30 characters
+of the post to generate the title.
+<6> Convert the title to lowercase, and replace whitespace with
+hyphens to get the Jekyll post title format.
+<7> Format a date as Jekyll expects.
+<8> Create the full filename.
 
 === Services 
 
-There are several services (wrappers around git protocols) which we
-need to instantiate. We don't use them all immediately, but we will
-need them at various steps during the file save process. The
-`createServices` call manages these for us. Once we have created the
-three services (repositories, commit, and data)
+Next, we implement `createServices()`. There are several services
+(wrappers around git protocols) which we need to instantiate. We don't
+use them all immediately, but we will need them at various steps
+during the file save process. The `createServices` call manages these
+for us. Once we have created the three services (repositories, commit,
+and data) 
 
 [source,java]
 -----
 ...
 
-RepositoryService repositoryService;
-CommitService commitService;
-DataService dataService;
+    RepositoryService repositoryService;
+    CommitService commitService;
+    DataService dataService;
 
-private void createServices() throws IOException {
-    repositoryService = new RepositoryService();
-    repositoryService.getClient().setCredentials( login, password );
-    commitService = new CommitService();
-    commitService.getClient().setCredentials( login, password );
-    dataService = new DataService();
-    dataService.getClient().setCredentials( login, password );
-}
+    private void createServices() throws IOException {
+        repositoryService = new RepositoryService();
+        repositoryService.getClient().setCredentials( login, password );
+        commitService = new CommitService();
+        commitService.getClient().setCredentials( login, password );
+        dataService = new DataService();
+        dataService.getClient().setCredentials( login, password );
+    }
 
-Repository repository;
-RepositoryBranch theBranch;
-String baseCommitSha;
-private String retrieveBaseSha() throws IOException {
-    // get some sha's from current state in git
-    repository =  repositoryService.getRepository(login, repoName);
-    theBranch = getBranch(); 
-    return theBranch.getCommit().getSha();
-}
+    Repository repository;
+    RepositoryBranch theBranch;
+    String baseCommitSha;
+    private String retrieveBaseSha() throws IOException {
+        // get some sha's from current state in git
+        repository =  repositoryService.getRepository(login, repoName);
+        theBranch = getBranch(); 
+        return theBranch.getCommit().getSha();
+    }
 
 ...
 -----
 
 === The Base SHA from the Repository and Branch
 
-A git repository is a directed acrylic graph (DAG) and as such, each
+Now we implement `retrieveBaseSha()`. A git repository is a directed acrylic graph (DAG) and as such, each
 node in the graph must have a starting point. When we append content
 to our graph, we need to determine the starting point on that
 graph. `retrieveBaseSha` does this: it finds the SHA hash for our
@@ -1035,7 +1046,6 @@ tree. To determine this address, our applications needs to have a reference to t
 repository, and we use the repository service we instantiated
 earlier to get this reference. Once we have the repository, we need to look inside the
 correct branch: `getBranch` does this for us. 
-
 
 [source,java]
 -----
@@ -1052,22 +1062,22 @@ correct branch: `getBranch` does this for us.
     }
 
     public RepositoryBranch getBranch() throws IOException {
-List<RepositoryBranch> branches = repositoryService.getBranches(repository);
-RepositoryBranch master = null;
-// Iterate over the branches and find gh-pages or master
-for( RepositoryBranch i : branches ) {
-    String theName = i.getName().toString();
-    if( theName.equalsIgnoreCase("gh-pages") ) {
-	theBranch = i;
-    }
-    else if( theName.equalsIgnoreCase("master") ) {
-	master = i;
-    }
-}
-if( null == theBranch ) {
-    theBranch = master;
-}
-return theBranch;
+	List<RepositoryBranch> branches = repositoryService.getBranches(repository);
+	RepositoryBranch master = null;
+	// Iterate over the branches and find gh-pages or master
+	for( RepositoryBranch i : branches ) {
+	    String theName = i.getName().toString();
+	    if( theName.equalsIgnoreCase("gh-pages") ) {
+		theBranch = i;
+	    }
+	    else if( theName.equalsIgnoreCase("master") ) {
+		master = i;
+	    }
+	}
+	if( null == theBranch ) {
+	    theBranch = master;
+	}
+	return theBranch;
     }
 
 ...
@@ -1090,11 +1100,11 @@ tree and commit object, which we do next.
     Blob blob;
     Tree baseTree;
     private void createBlob() throws IOException {
-Random random = new Random();
-blob = new Blob();
-blob.setContent(contentsBase64);
-blob.setEncoding(Blob.ENCODING_BASE64);
-dataService.createBlob(repository, blob);
+	Random random = new Random();
+	blob = new Blob();
+	blob.setContent(contentsBase64);
+	blob.setEncoding(Blob.ENCODING_BASE64);
+	dataService.createBlob(repository, blob);
     }
     
 ...
@@ -1102,9 +1112,9 @@ dataService.createBlob(repository, blob);
 
 === Generating a Tree
 
-Next, we generate a tree. A tree wraps a blob object and provides
-basically a path to our object: if you know UNIX file system concepts,
-you can think of a tree as the filename path and the blob as an inode
+Next, we generate a tree by implementing `generateTree()`. A tree
+wraps a blob object and provides basically a path to our object:
+you can think of a tree as the filename path and the blob as an inode 
 object. Our data service manager uses a repository name and a base SHA
 address, one that we retrieved earlier, to validate that this is a
 valid starting point inside our repository. Once we have a tree, we
@@ -1119,15 +1129,15 @@ account using the data service object.
     Tree baseTree;
     private void generateTree() throws IOException {
         baseTree = dataService.getTree(repository, baseCommitSha);
-TreeEntry treeEntry = new TreeEntry();
-treeEntry.setPath( filename );
-treeEntry.setMode( TreeEntry.MODE_BLOB );
-treeEntry.setType( TreeEntry.TYPE_BLOB );
-treeEntry.setSha(blobSha);
-treeEntry.setSize(blob.getContent().length());
-Collection<TreeEntry> entries = new ArrayList<TreeEntry>();
-entries.add(treeEntry);
-newTree = dataService.createTree( repository, entries, baseTree.getSha() );
+	TreeEntry treeEntry = new TreeEntry();
+	treeEntry.setPath( filename );
+	treeEntry.setMode( TreeEntry.MODE_BLOB );
+	treeEntry.setType( TreeEntry.TYPE_BLOB );
+	treeEntry.setSha(blobSha);
+	treeEntry.setSize(blob.getContent().length());
+	Collection<TreeEntry> entries = new ArrayList<TreeEntry>();
+	entries.add(treeEntry);
+	newTree = dataService.createTree( repository, entries, baseTree.getSha() );
     }
 
 ...
@@ -1135,7 +1145,8 @@ newTree = dataService.createTree( repository, entries, baseTree.getSha() );
 
 === Creating the Commit
 
-We are getting close to actually finalizing our save. We have created
+We are getting close to actually finalizing the creation of content:
+next, implement `createCommit()`. We have created
 a blob which stores the actual content, and created a tree which
 stores the path to the content (more or less), but since git is a
 version control system, we also need to store information about who
@@ -1150,26 +1161,26 @@ inside our repository in GitHub at the correct SHA address.
 [source,java]
 -----
 ...
-Commit newCommit;
-private void createCommit() throws IOException {
-    // create commit
-    Commit commit = new Commit();
-    commit.setMessage( commitMessage );
-    commit.setTree( newTree );
-    List<Commit> listOfCommits = new ArrayList<Commit>();
-    listOfCommits.add(new Commit().setSha(baseCommitSha));
-    commit.setParents(listOfCommits);
-    newCommit = dataService.createCommit(repository, commit);
-}
+    Commit newCommit;
+    private void createCommit() throws IOException {
+        // create commit
+        Commit commit = new Commit();
+        commit.setMessage( commitMessage );
+        commit.setTree( newTree );
+        List<Commit> listOfCommits = new ArrayList<Commit>();
+        listOfCommits.add(new Commit().setSha(baseCommitSha));
+        commit.setParents(listOfCommits);
+        newCommit = dataService.createCommit(repository, commit);
+    }
 
 ...
 -----
 
 === Creating the Resource and Updating the Master
 
-Finally, we need to adjust "master" or "gh-pages", the branch from
-which GitHub will generate your Jekyll blog. Previously, we
-determined the correct branch against which to apply our additions. GitHub
+Finally, we create `updateMasterResource()`. We need to adjust
+"master" or "gh-pages", the branch from which GitHub will generate
+your Jekyll blog. Previously, we determined the correct branch against which to apply our additions. GitHub
 follows this convention when generating your Jekyll blog, using either
 master or gh-pages as the checkout point for retrieving your content
 and then doing a site rebuild from a working copy there. In our code,
@@ -1206,44 +1217,41 @@ Finally, we can now implement the `doPost()` method inside our
 [source,java]
 -----
 ...
+    private void doPost() {
+        new PostTask().execute( username, password ); 
     }
-}
 
-private void doPost() {
-    new PostTask().execute( username, password ); 
-}
+    class PostTask extends AsyncTask<String, Void, Boolean> {  
 
-class PostTask extends AsyncTask<String, Void, Boolean> {  
+        @Override 
+            protected Boolean doInBackground(String... credentials) {
+            String login = credentials[0]; 
+            String password = credentials[1];
 
-    @Override 
-        protected Boolean doInBackground(String... credentials) {
-        String login = credentials[0]; 
-        String password = credentials[1];
+            EditText post = (EditText)findViewById( R.id.post );
+            String postContents = post.getText().toString();
 
-        EditText post = (EditText)findViewById( R.id.post );
-        String postContents = post.getText().toString();
+            EditText repo = (EditText)findViewById( R.id.repository ); 
+            String repoName = repo.getText().toString();
 
-        EditText repo = (EditText)findViewById( R.id.repository ); 
-        String repoName = repo.getText().toString();
-
-        GitHubHelper ghh = new GitHubHelper( login, password );
-        return ghh.SaveFile( repoName, postContents );
+            GitHubHelper ghh = new GitHubHelper( login, password );
+            return ghh.SaveFile( repoName, postContents );
+        }
+        
+        @Override
+            protected void onPostExecute(Boolean result) {
+            TextView status = (TextView)findViewById( R.id.post_status );
+            if( result ) {
+                status.setText( "Successful jekyll post" );
+            }
+            else {
+                status.setText( "Post failed." ); 
+            }
+        }
     }
+
+
     
-    @Override
-        protected void onPostExecute(Boolean result) {
-        TextView status = (TextView)findViewById( R.id.post_status );
-        if( result ) {
-            status.setText( "Successful jekyll post" );
-        }
-        else {
-            status.setText( "Post failed." ); 
-        }
-    }
-}
-
-
-
 -----
 
 Our `doPost()` command now does one thing: instantiates a new

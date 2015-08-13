@@ -599,23 +599,30 @@ implement a method called SaveFile which takes the repository name and
 the post contents. From here, we work to build the proper structure
 for creating a new Jekyll post. 
 
+Let's implement each of the functions specified in the
+GitHubHelper class.
+
 === Writing the blog content
 
-The following code snippet shows functions defined to generate the
+First, we implement `generateContent()`. The following code snippet shows functions defined to generate the
 content which we will place into our remote git repository stored on
 GitHub.
 
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="48..71"]
+[filename=".", language="js", sha="d41083e:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="48..71"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 ...
 -----
 
-We define several instance variables which store data we will use
+You will notice many similarities between this Java code and the
+Ruby code we used in the Jekyll chapter when generating filenames
+and escaping whitespace.
+
+<1> We define several instance variables which store data we will use
 later in method calls; data like the SHA hash for our blob, the tree
 into which we will place our commit, and strings which are used when
 creating the commit. Though not typical of most Java class definitions
@@ -623,27 +630,31 @@ which place all member variables at the top of the class,
 placing them right above the methods which load data into them makes
 it easier to explain their relevance, so we do that for all variables
 used in the following methods.
-
-Our method generateContent sets a commit message and then creates the YAML
-Front Matter (see the Jekyll chapter for more details on YFM if you
-need a refresher). We then base64 encode the contents of the blog post
-itself using a utility class found inside the Apache Commons library.
-Contents inside a git repository are stored either as UTF-8 content or
-base64; we could have used UTF-8 since this is text content but base64
-works losslessly and you can always safely use base64 without
-concerning yourself about the content.
-
-Filename generation is a bit more complex because Jekyll
-repositories require a specific format: the date as yyyy-MM-dd, with
-the title of the post, replacing all whitespace with hyphens.
+<2> Our method generateContent sets a commit message.
+<3> Creates the YAML Front Matter (see the <<Jekyll>> chapter for more
+details on YFM). This YAML specifies the "post" layout and sets
+publishing to "true". We need to terminate the YAML with two newlines.
+<4> base64 encode the contents of the blog post
+itself using a utility class found inside the Apache Commons
+library. Contents inside a git repository are stored either as UTF-8
+content or base64; we could have used UTF-8 since this is text content
+but base64 works losslessly and you can always safely use base64
+without concerning yourself about the content.
+<5> Next, define the getFilename() method; use the first 30 characters
+of the post to generate the title.
+<6> Convert the title to lowercase, and replace whitespace with
+hyphens to get the Jekyll post title format.
+<7> Format a date as Jekyll expects.
+<8> Create the full filename.
 
 === Services 
 
-There are several services (wrappers around git protocols) which we
-need to instantiate. We don't use them all immediately, but we will
-need them at various steps during the file save process. The
-`createServices` call manages these for us. Once we have created the
-three services (repositories, commit, and data)
+Next, we implement `createServices()`. There are several services
+(wrappers around git protocols) which we need to instantiate. We don't
+use them all immediately, but we will need them at various steps
+during the file save process. The `createServices` call manages these
+for us. Once we have created the three services (repositories, commit,
+and data) 
 
 [source,java]
 -----
@@ -657,7 +668,7 @@ snippet~~~~~
 
 === The Base SHA from the Repository and Branch
 
-A git repository is a directed acrylic graph (DAG) and as such, each
+Now we implement `retrieveBaseSha()`. A git repository is a directed acrylic graph (DAG) and as such, each
 node in the graph must have a starting point. When we append content
 to our graph, we need to determine the starting point on that
 graph. `retrieveBaseSha` does this: it finds the SHA hash for our
@@ -666,7 +677,6 @@ tree. To determine this address, our applications needs to have a reference to t
 repository, and we use the repository service we instantiated
 earlier to get this reference. Once we have the repository, we need to look inside the
 correct branch: `getBranch` does this for us. 
-
 
 [source,java]
 -----
@@ -700,9 +710,9 @@ snippet~~~~~
 
 === Generating a Tree
 
-Next, we generate a tree. A tree wraps a blob object and provides
-basically a path to our object: if you know UNIX file system concepts,
-you can think of a tree as the filename path and the blob as an inode
+Next, we generate a tree by implementing `generateTree()`. A tree
+wraps a blob object and provides basically a path to our object:
+you can think of a tree as the filename path and the blob as an inode 
 object. Our data service manager uses a repository name and a base SHA
 address, one that we retrieved earlier, to validate that this is a
 valid starting point inside our repository. Once we have a tree, we
@@ -723,7 +733,8 @@ snippet~~~~~
 
 === Creating the Commit
 
-We are getting close to actually finalizing our save. We have created
+We are getting close to actually finalizing the creation of content:
+next, implement `createCommit()`. We have created
 a blob which stores the actual content, and created a tree which
 stores the path to the content (more or less), but since git is a
 version control system, we also need to store information about who
@@ -747,9 +758,9 @@ snippet~~~~~
 
 === Creating the Resource and Updating the Master
 
-Finally, we need to adjust "master" or "gh-pages", the branch from
-which GitHub will generate your Jekyll blog. Previously, we
-determined the correct branch against which to apply our additions. GitHub
+Finally, we create `updateMasterResource()`. We need to adjust
+"master" or "gh-pages", the branch from which GitHub will generate
+your Jekyll blog. Previously, we determined the correct branch against which to apply our additions. GitHub
 follows this convention when generating your Jekyll blog, using either
 master or gh-pages as the checkout point for retrieving your content
 and then doing a site rebuild from a working copy there. In our code,
@@ -760,7 +771,7 @@ to update the reference inside the repository inside GitHub.
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="b7a3874:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="150..164"]
+[filename=".", language="js", sha="b7a3874:support/android/ghru/src/com/githubru/GitHubHelper.java", lines="150..164", flatten="0"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -775,7 +786,7 @@ Finally, we can now implement the `doPost()` method inside our
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="2f0d210d1e74c1eae326c89047c6cded276640a2:support/android/ghru/src/com/githubru/MainActivity.java" lines="75..-1"]
+[filename=".", language="js", sha="2f0d210d1e74c1eae326c89047c6cded276640a2:support/android/ghru/src/com/githubru/MainActivity.java" lines="78..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
