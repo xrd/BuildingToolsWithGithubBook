@@ -145,15 +145,11 @@ the application by double clicking on the application titled
 
 ===== Adding Gradle support
 
-Gradle is a new build system for Java and has become the offical build
-system for the Android platform.
-Using a simple `build.gradle` file we can build an entire Android
-application from the command line. Gradle is well supported with more
+Gradle is a build system for Java and has become the offical build
+system for the Android platform. Using a simple `build.gradle` file we
+can build an entire Android application from the command line. Gradle is well supported with more
 advanced editors, so you can always import an Android project using
-Gradle and use it with editors like Eclipse or Android Studio. Ant
-used to be the default and preferred method of building Java projects
-from the command line, but gradle syntax is so simple and powerful and
-lightweight that it is now the preferred build system by the Android team.
+Gradle and use it with editors like Eclipse or Android Studio.
 
 [source,groovy]
 -----
@@ -174,22 +170,8 @@ from within Java, using this simple declaration. Gradle will download
 the proper JAR files from the Maven repository and build them into our
 application using this dependency declaration.
 
-
-===== Installing Gradle
-
-To use gradle, you need to install it manually. Gradle does not come
-packaged with the Java SDK nor with the Android SDK. There are various
-ways to install gradle: either using a built in package manager, or
-downloading from the website gradle.org. Gradle is in constant flux as
-new versions are released, and I found the easiest way for me to
-install it was to download into a directory called "bin" and unzip the
-files there. Then, I could specify exactly the version needed, and try
-to complete a build. For example, for this project, I found gradle 1.8
-worked best and my command was `~/bin/gradle-1.8/bin/gradle
-assembleRelease`. If you don't want to type in the full path, you
-could set your path using a command like `export
-PATH=~/bin/gradle-1.8/bin:$PATH` which would make the 1.8 version of
-gradle available using just the `gradle` command.
+Recently versions of Android Studio do package gradle, but for this
+application you will need to manually install it from gradle.org. 
 
 ===== Default Android Main
 
@@ -284,7 +266,9 @@ Calabash runs using ruby. You already have ruby installed, so to
 install calabash, run these commands:
 
 [source,bash]
-$ printf "source 'https://rubygems.org'\n\ngem 'calabash-android', '0.4.20'\ngem 'httparty'" >> Gemfile
+$ echo "source 'https://rubygems.org'
+gem 'calabash-android', '0.4.20'
+gem 'httparty'" >> Gemfile
 $ bundle install
 $ calabash-android gen
 
