@@ -712,8 +712,8 @@ public class MainActivity extends Activity
                 public void onClick(View v) {
                     EditText utv = (EditText)findViewById( R.id.username ); // <1>
                     EditText ptv = (EditText)findViewById( R.id.password );
-                    String username = (String)utv.getText().toString();
-                    String password = (String)ptv.getText().toString();
+                    String username = utv.getText().toString();
+                    String password = ptv.getText().toString();
                     TextView status = (TextView)findViewById( R.id.login_status ); // <2>
                     status.setText( "Logging in, please wait..." );
                     new LoginTask().execute( username, password ); // <3>

@@ -479,7 +479,7 @@ which runs our background thread code (called `doInBackground()`).
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="8c7e96c:support/android/ghru/src/com/githubru/MainActivity.java", lines="15..-1"]
+[filename=".", language="js", sha="d4f646f:support/android/ghru/src/com/githubru/MainActivity.java", lines="15..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
