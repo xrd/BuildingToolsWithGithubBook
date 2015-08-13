@@ -1,0 +1,30 @@
+exports.prHandler = ( robot, req, res ) ->
+
+        rawBody = req.rawBody
+        body = rawBody.split( '=' ) if rawBody
+        payloadData = body[1] if body and body.length == 2
+        if payloadData
+                decodedJson = decodeURIComponent payloadData
+                pr = JSON.parse decodedJson
+
+                if pr and pr.pull_request
+                        url = pr.pull_request.html_url
+                        secureHash = getSecureHash( rawBody )
+                        signatureKey = "x-hub-signature"
+                        if req?.headers
+                                webhookProvidedHash =
+                                        req.headers[ signatureKey ]
+                        secureCompare = require 'secure-compare'
+                        if url and secureCompare( "sha1=#{secureHash}",
+                                        webhookProvidedHash )
+                                room = "general"
+                                users = robot.brain.users()
+                                sendPrRequest( robot, users, room, url )
+                        else
+                                console.log "Invalid secret or no URL specified"
+                else
+                        console.log "No pull request in here"
+
+        res.send "OK\n"
+
+_GITHUB = undefined
