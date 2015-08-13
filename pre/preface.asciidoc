@@ -129,15 +129,15 @@ In addition, though not a part of the API, there are other important
 technologies you should know about when using GitHub which are not
 covered in the API documentation:
 
-* Jekyll: hosting blogs and static documentation
+* Jekyll and "gh-pages": hosting blogs and static documentation
 * Gollum: wikis tied to a repository
 * Hubot: a programmable chat robot used extensively at GitHub
 
 With just one or two exceptions, each of these sections of the GitHub
 technology stack are covered in various chapters. The GitHub API
 documentation is a stellar reference which you will use constantly
-when writing any application that talks 
-to the API, but the chapters in this book serve a different purpose:
+when writing any application that talks to the API, but the chapters
+in this book serve a different purpose: 
 these chapters are stories about building applications on top of
 the technologies provided by GitHub. Within these stories you will learn
 the tradeoffs and considerations you will face when you use the GitHub
@@ -150,28 +150,36 @@ of more than one section.
 * The "cURL" chapter: the chapter you are reading now covers a
   first look at the API through the command line HTTP client called
   cURL. We talk a bit about the response format and how to parse it
-  within the command line, and also document authentication.
+  within the command line, and also document authentication. This is
+  the only chapter which does not build an application from the
+  technologies presented.
 * The "Gist" chapter: covers the Gist API, as well as command line
-  tools and the Ruby language "Octokit" API client.
+  tools and the Ruby language "Octokit" API client. We then take this
+  API and build a simple ruby server that is stored as a gist and
+  displays gists.
 * The "Gollum" chapter: explains usage of the Gollum command line tool
   and associated Ruby library (gem) which is backed by Grit, the
   C-language bindings for accessing Git repositories. We also
   document some details of the Git storage format and how it applies
   to storing large files inside of a Git repository, and show how to
-  use the git command line tools to play with this information.
-* The "Search" chapter: we build a GUI search app using Python. 
-* The "Commit Status" chapter: our final chapter documents a
-  relatively new part of the API which documents the interactions
-  between third party tools and your code. This chapter builds an
-  application using C# and the Nancy .NET GitHub API libraries.
+  use the git command line tools to play with this information. We use
+  Gollum and the Grit libraries to build an image management tool
+  which also functions as a regular Gollum wiki which can be published
+  to GitHub.
+* The "Search" chapter: we explore the Search API and build a GUI
+  tool to search repositories on GitHub using Python.
+* The "Commit Status" chapter: documents a relatively new part of
+  the API which documents the interactions between third party tools
+  and your code. This chapter builds an application using C# and the
+  Nancy .NET GitHub API libraries. 
 * The "Jekyll" chapter: if you push a specifically organized
   repository into GitHub, GitHub will host a fully featured blog,
   equivalent in most ways to a Wordpress site (well, except for the
   complexity part). This chapter documents how to format your
   repository, how to use Markdown within Jekyll, how to use
-  programmatic looping constructs provided 
-  by Liquid Templates, and then shows how to import an entire web site
-  from the Internet Archive into the Jekyll format using Ruby. We show
+  programmatic looping constructs provided by Liquid Templates, and
+  then shows how to import an entire web site from the Internet
+  Archive into the Jekyll format using Ruby. We show 
   how to respectfully spider a site using caching, a valuable
   technique when using APIs or third party public information.
 * The "Android" chapter: in this chapter we create a mobile
@@ -182,16 +190,19 @@ of more than one section.
   testing tool.
 * The "JavaScript" chapter: did you know you can host an entire
   "single page application" on GitHub? We show how you can build an
-  application backed by a database called GitHub using the JavaScript
-  language. Importanly, we show how you can write a testable
-  JavaScript application that mocks out the GitHub API when needed.
+  coffee shop information app backed by a flat file database hosted on
+  GitHub written in the JavaScript language. Importantly, we show how
+  you can write a testable JavaScript application that mocks out the
+  GitHub API when needed. 
 * The "Hubot" chapter: Hubot is a JavaScript (NodeJS) chat robot
   enabling technologists to go beyond developer operations ("DevOps")
   to a new frontier called "ChatOps." The Hubot chapter illustrates
   using the Activities and Pull Requests section 
   of the API. In addition we show how you can simulate GitHub
   notifications and how to write testable Hubot extensions (which is
-  often a challenge when writing JavaScript code).
+  often a challenge when writing JavaScript code). We string all these
+  pieces together and build a robot which automates assigning pull
+  request review requests.
 
 We don't cover the organization API: this is a small facet of the API
 with only the ability to list organizations and modify metadata about
@@ -204,8 +215,8 @@ nothing more than an endpoint to list information about users, add or
 remove SSH keys, adjust email addresses and modify your list of
 followers. 
 
-There is not a specific chapter on issues. Historically GitHub used to
-group issues and pull requests into the same API section, but with the
+There is not a specific chapter on issues. GitHub originally
+grouped issues and pull requests into the same API section, but with the
 growing importance of pull requests they have separated them in the
 API documentation. In fact, they are still internally stored in the
 same database and pull requests are, at least for now, just another
@@ -217,21 +228,9 @@ site API. We don't have a chapter telling a story about the enterprise
 API, but we do provide an appendix which provides a few notes about
 how to use it with a few API client libraries.
 
-With these chapters we cover the entire API and hope to give you an
-inside look into the inner workings of the brain of a developer
-building on top of the GitHub API. 
-
-As you might have noticed, this book will take you on an exploration
-of several different language clients for the GitHub API. 
-Along the way, we'll point out the different idioms and methodologies
-inherent to those client libraries and shed light on the darker corners
-of the GitHub API. Don't be alarmed if you thumb through the chapters
-and see a language which you don't know at all: each chapter is
-designed so that you can follow along without intimacy to the
-language or toolkit. You will get the most value if you install the
-language and associated tools, but the story behind the projects we
-will build will be interesting even if you don't actually 
-type a line of code from the chapter.
+Through these stories about the technologies behind GitHub we hope to
+give you an inside look into the inner workings of the brain of a
+developer building on top of the GitHub API. 
 
 === Who You Are
 
@@ -275,16 +274,17 @@ skills with Git and within a web service like GitHub.
 
 Like any seasoned developer, automation of your tools is important to
 you. This book provides examples of mundane tasks converted into
-automated and repeatable processes, and we show how to do this using a
+automated and repeatable processes. We show how to do this using a
 variety of languages talking to the GitHub API. 
 
-If you are unfamiliar with the "command line" this book will give you
-a firm understanding of how to use it, and we bet you will find great
-power there. To make this book accessible to everyone, regardless of
+To make this book accessible to everyone, regardless of
 their editor or operating system, many of the programming samples work
-within the command line. If you have hated the command line since your
-father forced you to use it when you were five, this is the perfect
-book to rekindle a loving relationship with the bash shell.
+within the command line. If you are unfamiliar with the "command line"
+this book will give you a firm understanding of how to use it, and we
+bet you will find great power there. If you have hated the command
+line since your father forced you to use it when you were five, this
+is the perfect book to rekindle a loving relationship with the bash
+shell.
 
 If you absorb not only the technical facets of using GitHub but also
 pay attention to the cultural and ideological changes offered behind
@@ -305,19 +305,31 @@ thinking than is found in strict unit testing. To help you get past
 this roadblock, whenever possible, this book shows you how to write
 code which interacts with the GitHub API and is testable.
 
-=== First Class Languages You Need to Know
+=== GitHub "First Class" Languages
 
 There are two languages which are so fundamentally linked to GitHub
 that you do need to install and use them in order to get the most out
 of this book.
 
-* Ruby: a simple, readable programming language used heavily by the
-  founders of GitHub.
+* Ruby: a simple, readable programming language which the founders of
+  GitHub used extensively early in the life of the company.
 * JavaScript: the only ubiquitous browser side programming language, its
   importance has grown to new heights with the introduction of
   NodeJS, rivaling even the popularity of Ruby on Rails as a server
   side toolkit for web applications, especially for independent
   developers.
+
+Undoubtedly, many of you picking up this book already have familiarity
+with Ruby or JavaScript/NodeJS. So, the basics and installation of them are in
+appendices in the back of the book. The appendices don't cover syntax
+of these languages; we expect you have experience with other languages
+as a prerequisite and can read code from any imperative language
+regardless of the syntax. Later chapters discuss facets of the API and
+go into language details at times, but the code is readable regardless
+of your familiarity with that particular language. These 
+explanatory appendices discuss the history of these tools within the
+GitHub story as well as important usage notes like special files and
+installation options.
 
 Your time will not be wasted if you install and play with these two
 tools. Between them you will have a solid toolset to begin
@@ -325,25 +337,13 @@ exploration of the GitHub API. Several chapters in this book use Ruby
 or JavaScript, so putting in some time to learn at least a little bit will
 make the journey through this book richer for you.
 
-Undoubtedly, many of you picking up this book already have familiarity
-with Ruby or JavaScript/NodeJS. So, the basics and installation of them are in
-appendices in the back of the book. The appendices don't cover syntax
-of these languages; we expect you have experience with other languages
-as a prerequisite and can read code from any imperative language
-regardless of the syntax. Later chapters which do discuss a facet of
-the API go into language details at times, and the code is readable
-regardless of your familiarity with that particular language. These
-explanatory appendices discuss the history of these tools within the
-GitHub story as well as important usage notes like special files and
-installation options.
-
 === Who This Book is Not For
 
 If you are looking for a discussion of the GitHub API that focuses on
-a single language, you will be disappointed to find that we look at
-the API through many different languages. We do this to describe the
-API from not only the way the GitHub team designed it to work, but the
-aspirational way that client library authors made it work within
+a single language, you should know that we look at the API through
+many different languages. We do this to describe the API from not only
+the way the GitHub team designed it to work, but the aspirational way
+that client library authors made it work within 
 diverse programming languages and communities. We think there is a lot
 to learn from this approach, but if you are interested in only a
 specific language and how it works with the GitHub API, this is not
