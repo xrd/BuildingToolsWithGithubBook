@@ -349,6 +349,20 @@ to learn from this approach, but if you are interested in only a
 specific language and how it works with the GitHub API, this is not
 the book for you.
 
+This book strives to prove that API driven code is testable and that
+there is a benefit to doing so. This book does not intend to provide a
+manual on how to write perfectly tested code. We cover too many
+languages to end the healthy debates happening within each community
+about the right test frameworks. Instread, given our contention that most
+software projects have zero test coverage, this book tries to help
+you get past this significant roadblock. There is something
+transformational about writing tests if you have never done so
+before. Having these examples in hand, we hope, will allow you to
+transition to writing testable code for APIs, especially if you have
+not done so before. Some of the associated repositories have much
+greater test suites than are documented in this book, but we don't
+cover all the entire set of edge cases in every situation. 
+
 === Conventions Used in This Book
 
 The following typographical conventions are used in this book:
