@@ -656,75 +656,75 @@ for their GitHub credentials and annotation data.
 
 [source,javascript]
 -------
-$scope.retrieveCity = function() { // <1>
-    $scope.repo.read( "gh-pages", $scope.city.name + ".json", function(err, data) {  
-        $scope.shops = JSON.parse( data );
-        $scope.$apply();
-    });
-}
-
-$scope.loadCity = function( city ) { // <2>
-    $scope.repo.read( "gh-pages", city + ".json", function(err, data) { 
-        $scope.shops = JSON.parse( data ); 
-        $scope.$apply();
-    });
-}
-
-$scope.getCurrentLocation = function( cb ) { // <3>
-    if( undefined != Geo ) {
-        Geo.getCurrentPosition( cb, $scope.geolocationError );
-    } else {
-        console.error('not supported');
+    $scope.retrieveCity = function() { // <1>
+        $scope.repo.read( "gh-pages", $scope.city.name + ".json", function(err, data) {  
+            $scope.shops = JSON.parse( data );
+            $scope.$apply();
+        });
     }
-};
 
-$scope.geolocationError = function( error ) {
-    console.log( "Inside failure" );
-};
+    $scope.loadCity = function( city ) { // <2>
+        $scope.repo.read( "gh-pages", city + ".json", function(err, data) { 
+            $scope.shops = JSON.parse( data ); 
+            $scope.$apply();
+        });
+    }
 
-$scope.detectCurrentCity = function() {  // <4>
-    // Calculate the distance from our current position and use
-    // this to determine which city we are closest to and within
-    // 25 miles
-    for( var i = 0; i < $scope.cities.length; i++ ) {
-        var dist = $scope.calculateDistance( $scope.latitude, 
-                                             $scope.longitude, 
-                                             $scope.cities[i].latitude, 
-                                             $scope.cities[i].longitude );
-        if( dist < 25 ) {
-            $scope.city = $scope.cities[i];
-            break;
+    $scope.getCurrentLocation = function( cb ) { // <3>
+        if( undefined != Geo ) {
+            Geo.getCurrentPosition( cb, $scope.geolocationError );
+        } else {
+            console.error('not supported');
+        }
+    };
+
+    $scope.geolocationError = function( error ) {
+        console.log( "Inside failure" );
+    };
+
+    $scope.detectCurrentCity = function() {  // <4>
+        // Calculate the distance from our current position and use
+        // this to determine which city we are closest to and within
+        // 25 miles
+        for( var i = 0; i < $scope.cities.length; i++ ) {
+            var dist = $scope.calculateDistance( $scope.latitude, 
+                                                 $scope.longitude, 
+                                                 $scope.cities[i].latitude, 
+                                                 $scope.cities[i].longitude );
+            if( dist < 25 ) {
+                $scope.city = $scope.cities[i];
+                break;
+            }
         }
     }
-}
 
-toRad = function(Value) {
-    return Value * Math.PI / 180;
-};
+    toRad = function(Value) {
+        return Value * Math.PI / 180;
+    };
+    
+    $scope.calculateDistance = function( latitude1,   // <5>
+                                         longitude1, 
+                                         latitude2, 
+                                         longitude2 ) {
+        R = 6371;
+        dLatitude = toRad(latitude2 - latitude1);
+        dLongitude = toRad(longitude2 - longitude1);
+        latitude1 = toRad(latitude1);
+        latitude2 = toRad(latitude2);
+        a = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) + 
+            Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) * 
+            Math.cos(latitude1) * Math.cos(latitude2);
+        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        d = R * c;
+        return d;
+    }
 
-$scope.calculateDistance = function( latitude1,   // <5>
-                                     longitude1, 
-                                     latitude2, 
-                                     longitude2 ) {
-    R = 6371;
-    dLatitude = toRad(latitude2 - latitude1);
-    dLongitude = toRad(longitude2 - longitude1);
-    latitude1 = toRad(latitude1);
-    latitude2 = toRad(latitude2);
-    a = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) + 
-        Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) * 
-        Math.cos(latitude1) * Math.cos(latitude2);
-    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    d = R * c;
-    return d;
-}
-
-$scope.annotate = function() { // <6>
-    user = Prompt( "Enter your github username" )
-    password = Prompt( "Enter your github password" )
-    data = Prompt( "Enter data to add" );
-};
-
+    $scope.annotate = function() { // <6>
+        user = Prompt( "Enter your github username" )
+        password = Prompt( "Enter your github password" )
+        data = Prompt( "Enter data to add" );
+    };
+    
 ...
 -------
 
@@ -1029,41 +1029,41 @@ Now let's implement the test itself.
 -----
 ...
 
-var $timeout; // <1>
-beforeEach( inject( function ($controller, $rootScope, $injector ) { 
-    generateMockRepositorySupport(); // <2>
-    generateMockPrompt();
-    $timeout = $injector.get( '$timeout' ); // <3>
-    scope = $rootScope.$new();
-    ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter } );
-} ) );
+    var $timeout; // <1>
+    beforeEach( inject( function ($controller, $rootScope, $injector ) { 
+        generateMockRepositorySupport(); // <2>
+        generateMockPrompt();
+        $timeout = $injector.get( '$timeout' ); // <3>
+        scope = $rootScope.$new();
+        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter } );
+    } ) );
 
 
-describe( "#annotate", function() {  // <4>
-    it( "should annotate a shop", function() {
-        scope.city = PORTLAND
-        var shop = { name: "A coffeeshop" }
-        scope.annotate( shop ); // <5>
-        expect( scope.shopToAnnotate ).toBeTruthy();
-        expect( prompter.prompt.calls.length ).toEqual( 3 ); // <6>
-        expect( scope.username ).not.toBeFalsy();
-        expect( scope.annotation ).not.toBeFalsy();
+    describe( "#annotate", function() {  // <4>
+        it( "should annotate a shop", function() {
+            scope.city = PORTLAND
+            var shop = { name: "A coffeeshop" }
+            scope.annotate( shop ); // <5>
+            expect( scope.shopToAnnotate ).toBeTruthy();
+            expect( prompter.prompt.calls.length ).toEqual( 3 ); // <6>
+            expect( scope.username ).not.toBeFalsy();
+            expect( scope.annotation ).not.toBeFalsy();
 
-        expect( repo.fork ).toHaveBeenCalled(); // <7>
-        expect( scope.waiting.state ).toEqual( "forking" ); // <8>
-        $timeout.flush();
+            expect( repo.fork ).toHaveBeenCalled(); // <7>
+            expect( scope.waiting.state ).toEqual( "forking" ); // <8>
+            $timeout.flush();
 
-        expect( scope.forkedRepo ).toBeTruthy(); // <9>
-        expect( repo.read ).toHaveBeenCalled(); 
-        expect( repo.write ).toHaveBeenCalled();
-        expect( repo.createPullRequest ).toHaveBeenCalled();
-        expect( scope.waiting.state ).toEqual( "annotated" );
-        $timeout.flush();
+            expect( scope.forkedRepo ).toBeTruthy(); // <9>
+            expect( repo.read ).toHaveBeenCalled(); 
+            expect( repo.write ).toHaveBeenCalled();
+            expect( repo.createPullRequest ).toHaveBeenCalled();
+            expect( scope.waiting.state ).toEqual( "annotated" );
+            $timeout.flush();
 
-        expect( scope.waiting ).toBeFalsy(); // <10>
+            expect( scope.waiting ).toBeFalsy(); // <10>
+        });
+
     });
-
-});
 -----
 
 <1> According to the documentation for `fork` in the Github.js
@@ -1121,76 +1121,76 @@ braces.
 [source,javascript]
 -----
 ...
-$scope.annotate = function( shop ) { // <1>
-    $scope.shopToAnnotate = shop;
-    $scope.username = $window.prompt( "Enter your github username (not email!)" )
-    pass = $window.prompt( "Enter your github password" ) 
-    $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
-    gh = ghs.create( $scope.username, pass ); // <3> 
-    toFork = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <4>
-    toFork.fork( function( err ) {
-        if( !err ) { // <5>
-            $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
-            $timeout( $scope.annotateAfterForkCompletes, 10000 );
-            $scope.$apply();
-        }
-    } );
-
-};
-
-$scope.appendQuirkToShop = function() { // <6>
-    if( undefined == $scope.shopToAnnotate.information ) {
-        $scope.shopToAnnotate.information = [];
-    }
-    $scope.shopToAnnotate.information.push( $scope.annotation );
-};
-
-function stripHashKey( key, value ) { // <7>
-    if( key == "$$hashKey" ) { 
-        return undefined; 
-    } 
-    return value; 
-} 
-
-$scope.annotateAfterForkCompletes = function() {
-    $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" ); // <8>
-    $scope.forkedRepo.read( "gh-pages", "cities.json", function(err, data) { 
-        if( err ) {
-            $timeout( $scope.annotateAfterForkCompletes, 10000 );
-        }
-        else {
-            $scope.notifyWaiting( "annotating", "Annotating data on GitHub" ); // <9>
-            // Write the new data into our repository
-            $scope.appendQuirkToShop();
-
-            var newData = JSON.stringify( $scope.shops, stripHashKey, 2 ); //<10>
-            $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', 
-                                    newData, 
-                                    'Added my quirky information', 
-                                    function(err) {
-                if( !err ) {
-                    // Annotate our data using a pull request
-                    var pull = { // <11>
-                        title: "Adding quirky information to " + $scope.shopToAnnotate.name,
-                        body: "Created by :" + $scope.username,
-                        base: "gh-pages",
-                        head: $scope.username + ":" + "gh-pages"
-                    };
-                    target = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <12>
-                    target.createPullRequest( pull, function( err, pullRequest ) { // <13>
-                        if( !err ) {
-                            $scope.notifyWaiting( "annotated", "Successfully sent annotation request" );
-                            $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 ); // <14>
-                            $scope.$apply(); // <15>
-                        }
-                    } );
-                }
+    $scope.annotate = function( shop ) { // <1>
+        $scope.shopToAnnotate = shop;
+        $scope.username = $window.prompt( "Enter your github username (not email!)" )
+        pass = $window.prompt( "Enter your github password" ) 
+        $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
+        gh = ghs.create( $scope.username, pass ); // <3> 
+        toFork = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <4>
+        toFork.fork( function( err ) {
+            if( !err ) { // <5>
+                $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
+                $timeout( $scope.annotateAfterForkCompletes, 10000 );
                 $scope.$apply();
-            });
+            }
+        } );
+
+    };
+
+    $scope.appendQuirkToShop = function() { // <6>
+        if( undefined == $scope.shopToAnnotate.information ) {
+            $scope.shopToAnnotate.information = [];
         }
-        $scope.$apply();
-    } );
+        $scope.shopToAnnotate.information.push( $scope.annotation );
+    };
+
+    function stripHashKey( key, value ) { // <7>
+        if( key == "$$hashKey" ) { 
+            return undefined; 
+        } 
+        return value; 
+    } 
     
+    $scope.annotateAfterForkCompletes = function() {
+        $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" ); // <8>
+        $scope.forkedRepo.read( "gh-pages", "cities.json", function(err, data) { 
+            if( err ) {
+                $timeout( $scope.annotateAfterForkCompletes, 10000 );
+            }
+            else {
+                $scope.notifyWaiting( "annotating", "Annotating data on GitHub" ); // <9>
+                // Write the new data into our repository
+                $scope.appendQuirkToShop();
+
+                var newData = JSON.stringify( $scope.shops, stripHashKey, 2 ); //<10>
+                $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', 
+                                        newData, 
+                                        'Added my quirky information', 
+                                        function(err) {
+                    if( !err ) {
+                        // Annotate our data using a pull request
+                        var pull = { // <11>
+                            title: "Adding quirky information to " + $scope.shopToAnnotate.name,
+                            body: "Created by :" + $scope.username,
+                            base: "gh-pages",
+                            head: $scope.username + ":" + "gh-pages"
+                        };
+                        target = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <12>
+                        target.createPullRequest( pull, function( err, pullRequest ) { // <13>
+                            if( !err ) {
+                                $scope.notifyWaiting( "annotated", "Successfully sent annotation request" );
+                                $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 ); // <14>
+                                $scope.$apply(); // <15>
+                            }
+                        } );
+                    }
+                    $scope.$apply();
+                });
+            }
+            $scope.$apply();
+        } );
+        
   ...
 -----
 
@@ -1431,44 +1431,44 @@ To test our code, we make the following changes to our
 
 [source,javascript]
 -----
-beforeEach( module( "coffeetech" ) );
+    beforeEach( module( "coffeetech" ) );
 
-var mockFirebase = mockSimpleLogin = undefined;
-function generateMockFirebaseSupport() { // <1>
-    mockFirebase = function() {};
-    mockSimpleLogin = function() {
-        return { 
-            '$login': function() {
-                return { then: function( cb ) {
-                    cb( { name: "someUser",
-                          accessToken: "abcdefghi" } );
-                } };
+    var mockFirebase = mockSimpleLogin = undefined;
+    function generateMockFirebaseSupport() { // <1>
+        mockFirebase = function() {};
+        mockSimpleLogin = function() {
+            return { 
+                '$login': function() {
+                    return { then: function( cb ) {
+                        cb( { name: "someUser",
+                              accessToken: "abcdefghi" } );
+                    } };
+                }
             }
-        }
-    };
-}
+        };
+    }
 
-var $timeout;
-beforeEach( inject( function ($controller, $rootScope, $injector ) {
-    generateMockRepositorySupport();
-    generateMockPrompt();
-    generateMockFirebaseSupport(); // <2>
-    $timeout = $injector.get( '$timeout' );
-    scope = $rootScope.$new();
-    ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter, '$firebase': mockFirebase, '$firebaseSimpleLogin': mockSimpleLogin } ); // <3>
-} ) );
+    var $timeout;
+    beforeEach( inject( function ($controller, $rootScope, $injector ) {
+        generateMockRepositorySupport();
+        generateMockPrompt();
+        generateMockFirebaseSupport(); // <2>
+        $timeout = $injector.get( '$timeout' );
+        scope = $rootScope.$new();
+        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter, '$firebase': mockFirebase, '$firebaseSimpleLogin': mockSimpleLogin } ); // <3>
+    } ) );
 
 
-describe( "#annotate", function() {
-    it( "should annotate a shop", function() {
-        scope.auth = mockSimpleLogin( mockFirebase() ); // <4>
-        scope.city = PORTLAND
-        var shop = { name: "A coffeeshop" }
-        scope.annotate( shop );
-        expect( prompter.prompt.calls.length ).toEqual( 1 ); // <5>
-        expect( scope.shopToAnnotate ).toBeTruthy();
-        expect( scope.username ).not.toBeFalsy();
-        expect( scope.annotation ).not.toBeFalsy();
+    describe( "#annotate", function() {
+        it( "should annotate a shop", function() {
+            scope.auth = mockSimpleLogin( mockFirebase() ); // <4>
+            scope.city = PORTLAND
+            var shop = { name: "A coffeeshop" }
+            scope.annotate( shop );
+            expect( prompter.prompt.calls.length ).toEqual( 1 ); // <5>
+            expect( scope.shopToAnnotate ).toBeTruthy();
+            expect( scope.username ).not.toBeFalsy();
+            expect( scope.annotation ).not.toBeFalsy();
 
 -----
 
@@ -1540,20 +1540,20 @@ change in our flow.
 [source,javascript]
 -----
 
-$scope.annotate = function( shop ) {
-    $scope.shopToAnnotate = shop;
+    $scope.annotate = function( shop ) {
+        $scope.shopToAnnotate = shop;
 
-    $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
+        $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
 
-        $scope.me = user;
-        $scope.username = user.name;
+            $scope.me = user;
+            $scope.username = user.name;
 
-        $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
+            $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
 
-        if( $scope.annotation ) {
-            gh = ghs.create( $scope.me.accessToken ); // <3>
-            toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
-            toFork.fork( function( err ) {
+            if( $scope.annotation ) {
+                gh = ghs.create( $scope.me.accessToken ); // <3>
+                toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
+                toFork.fork( function( err ) {
 -----
 
 <1> We call the `$login` method on our auth object created using the

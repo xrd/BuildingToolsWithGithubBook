@@ -695,6 +695,7 @@ managing background thread code called `AsyncTask`. We implement a
 class which supports this interface by overriding at least one method
 which runs our background thread code (called `doInBackground()`). 
 
+
 [source,java]
 -----
 ...
@@ -1191,20 +1192,20 @@ to update the reference inside the repository inside GitHub.
 [source,java]
 -----
 ...
-TypedResource commitResource;
-private void createResource() {
-    commitResource = new TypedResource();            
-    commitResource.setSha(newCommit.getSha());
-    commitResource.setType(TypedResource.TYPE_COMMIT);
-    commitResource.setUrl(newCommit.getUrl());
-}
+    TypedResource commitResource;
+    private void createResource() {
+        commitResource = new TypedResource();            
+        commitResource.setSha(newCommit.getSha());
+        commitResource.setType(TypedResource.TYPE_COMMIT);
+        commitResource.setUrl(newCommit.getUrl());
+    }
 
-private void updateMasterResource() throws IOException {
-    // get master reference and update it
-    Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
-    reference.setObject(commitResource);
-    Reference response = dataService.editReference(repository, reference, true) ;
-}
+    private void updateMasterResource() throws IOException {
+        // get master reference and update it
+        Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
+        reference.setObject(commitResource);
+        Reference response = dataService.editReference(repository, reference, true) ;
+    }
 
 ...
 -----

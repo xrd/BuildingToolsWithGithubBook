@@ -476,6 +476,7 @@ managing background thread code called `AsyncTask`. We implement a
 class which supports this interface by overriding at least one method
 which runs our background thread code (called `doInBackground()`). 
 
+
 [source,java]
 -----
 ...

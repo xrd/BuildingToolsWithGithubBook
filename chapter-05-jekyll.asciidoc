@@ -912,26 +912,26 @@ and the title by implementing the `get_ith_page` method.
 
 [source,ruby]
 -----
-def get_ith_page( i )
-  root = "https://web.archive.org/web/20030502080831/" +
-    "http://www.bytravelers.com/journal/entry/#{i}"
-  begin
-    VCR.use_cassette("bt_#{i}") do # <1>
-      @mechanize.get( root ) do |page|
-        rows = ( page / "table[valign=top] tr" ) # <2>
-        if rows and rows.length > 3
-          self.process_body( i, rows[4] ) # <3>
+  def get_ith_page( i )
+    root = "https://web.archive.org/web/20030502080831/" +
+      "http://www.bytravelers.com/journal/entry/#{i}"
+    begin
+      VCR.use_cassette("bt_#{i}") do # <1>
+        @mechanize.get( root ) do |page|
+          rows = ( page / "table[valign=top] tr" ) # <2>
+          if rows and rows.length > 3
+            self.process_body( i, rows[4] ) # <3>
+          end
         end
       end
+    rescue Exception => e
     end
-  rescue Exception => e
   end
-end
 
-def process_body( i, row )
-  puts "#{i}: #{row.text().strip()[0...50]}" # <4>
-end
-
+  def process_body( i, row )
+    puts "#{i}: #{row.text().strip()[0...50]}" # <4>
+  end
+  
 -----
 
 <1> First, we load up a VCR cassette; this code says "store any HTTP requests
@@ -1530,28 +1530,28 @@ Ruby for a moment and download the file manually.
 [source,ruby]
 -----
 ...
-def process_title( i, title )
-  img = ( title / "img" ) # <1>
-  src = img.attr('src').text()
-  filename = src.split( "/" ).pop
-  
-  output = "assets/images/"
-  full = File.join( output, filename ) # <2>
-  
-  unless File.exists? full
-    root = "https://web.archive.org"
-    remote = root + src
-    contents = `wget --quiet -O #{full} #{remote}`  # <3>
+  def process_title( i, title )
+    img = ( title / "img" ) # <1>
+    src = img.attr('src').text()
+    filename = src.split( "/" ).pop
+    
+    output = "assets/images/"
+    full = File.join( output, filename ) # <2>
+    
+    unless File.exists? full
+      root = "https://web.archive.org"
+      remote = root + src
+      contents = `wget --quiet -O #{full} #{remote}`  # <3>
+    end
+    
+    title = title.text()
+    if title
+      title.gsub!( /Title:/, "" )
+      title.strip!
+    end
+    [ title, filename ]  # <4>
+    
   end
-  
-  title = title.text()
-  if title
-    title.gsub!( /Title:/, "" )
-    title.strip!
-  end
-  [ title, filename ]  # <4>
-  
-end
 ...
 -----
 
@@ -1685,13 +1685,13 @@ the `process_creation_date` method inside the `get_ith_page` method.
 [source,ruby]
 -----
 ...
-def process_location( i, row )
-  location, creation_date = row.text().split /last updated on:/  # <1>
+  def process_location( i, row )
+    location, creation_date = row.text().split /last updated on:/  # <1>
 
-  location.gsub!( /Concerning: /, "" ) # <2>
-  location.strip!
-  return location # <3>
-end  
+    location.gsub!( /Concerning: /, "" ) # <2>
+    location.strip!
+    return location # <3>
+  end  
 ...
 -----
 
