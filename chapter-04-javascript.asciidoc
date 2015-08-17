@@ -1,27 +1,12 @@
 [[JavaScript]]
 == JavaScript and the Git Data API
 
-GitHub offers libraries which work within other programming languages
-and frameworks, and more often than not, these tools run on a server. 
-Runnig a server means finding and managing a server, often an onerous
-and expensive task. The GitHub API is accessible purely on the client
-side, however, if you use the JavaScript client library. To demonstrate 
-this library, we will build a single page app, hosting everything on
-GitHub and using the GitHub API through a pure JavaScript client-side
-library.
-
-JavaScript is the lingua franca of the web, invented in
-1995 as a scripting language embedded inside the first web browsers.
-JavaScript has recently found its way to the server side as well with
-NodeJS, an innovative toolkit for building high performance network
-servers. JavaScript is a useful language to know, whether on the
-server side or strictly client side web development. There is a
-separate GitHub API client for NodeJS which supports a different
-interface and has different considerations because of browser sandbox
-security issues. The client side JavaScript library is, in my humble
-opinion, a bit more ambitious because it is effective on the browser,
-and it opens up some fun integrations with Firebase as we will discuss
-later in the chapter.
+Most of the tools presented in this book run on a desktop or
+server. However, exposing GitHub data can be extremely useful inside
+web pages, and it is possible to utilize the GitHub API from within a web
+browser context as well. In this chapter we discuss how to use the unofficial
+JavaScript client library to access the GitHub API and build a single
+page application (SPA) which we host entirely on GitHub. 
 
 [NOTE]
 The main weakness of JavaScript has always been testability. Mainly
@@ -50,11 +35,11 @@ free desserts.
 Google Maps is a great help on these quests, in that it will find me a
 coffee shop and reviews, but the granularity of information about that
 coffee shop is often poor and limited in scope. Do they offer rice
-milk as a dairy free alternative?  What special details should I know when considering a place?
-Many guidance and mapping applications exist, but if they don't fit my
-own personalized informational niche, I might miss a unique
-experience. With such a pressing and dire problem in front of us, let's use
-the GitHub API to solve it.
+milk as a dairy free alternative?  What special details should I know
+when considering a place? Many guidance and mapping applications
+exist, but if they don't fit my own personalized informational niche,
+I might miss a unique experience. With such a pressing and dire
+problem in front of us, let's use the GitHub API to solve it.
 
 We'll build a coffee shop single page web app which allows anyone to add
 information on coffee shops, information which is flexible and
@@ -193,26 +178,25 @@ file as follows.
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
 </head>
-<body ng-app="coffeetech"> <3>
+<body ng-app="coffeetech"> <1>
 <div class="container" ng-controller="GithubCtrl">
 {{ repo | json }} <2>
 </div>
 <script src="angular.js"></script> 
 <script src="github.js"></script> 
-<script src="coffeetech.js"></script> <1>
+<script src="coffeetech.js"></script> <3>
 </body>
 </html>
 -------
 
 We added or changed just three lines.  
 
-<1> We added a reference to our `coffeetech.js` file beneath our other JS
-references. 
-<2> We removed our databinding to the `Welcome to CoffeeTech` string
-and replaced it with a binding to the variable 
-`repo` filtered by the JSON filter. 
-<3> Finally, we changed the `ng-app` reference to use the module we
+<1> Change the `ng-app` reference to use the module we
 defined in our `coffeetech.js` file. 
+<2> Remove our databinding to the `Welcome to CoffeeTech` string
+and replace it with a binding to the variable `repo` filtered by the JSON filter. 
+<3> Add a reference to our `coffeetech.js` file beneath our other JS
+references. 
 
 If you have never used AngularJS before, you are probably thoroughly
 confused about the `coffeetech.js` file. Before we dive into the
@@ -385,9 +369,11 @@ documented in the <<appendix>>).
 [source,bash]
 -------
 $ npm install karma -g
-$ karma init karma.config.js
 $ wget https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-mocks.js
 -------
+
+The `angular-mocks.js` file makes it easy to mock out Angular
+dependencies in our tests. 
 
 Then, create a file called `karma.config.js` and enter the following contents:
 
@@ -1300,20 +1286,7 @@ gets a pull request notification on GitHub.
 
 image::images/javascript-pull-request.png[Adding information through a pull request]
 
-As the owner of this repository and manager of this data, I like
-managing contributions using pull requests inside GitHub.
-In my humble opinion, there are no better tools for managing and
-reviewing changes of information than those found on GitHub. This is a
-simple case of adding data and might look like overkill at this scale.
-You could imagine, however, that were you to have thousands of users,
-making many contributions per day, that all of a sudden you would need
-a complex system for managing, reviewing and accepting changes to your
-data set. GitHub gives you all these tools: diff'ing files, user
-management in case you wanted to delegate review to other people in
-your organization, among many other features GitHub provides. This may
-not be the most obvious way to manage a database of information, but
-there are compelling reasons to consider it against a traditional
-database like Postgresql or Mysql.
+Now we can review changes through GitHub's integrated online diff tool.
 
 image::images/javascript-pull-request-diff.png[Reviewing annotation pull request diff's from within GitHub]
 
@@ -1323,8 +1296,8 @@ might want to consider a different location the next time we have a
 date with Morla. The diff is clear in that the green information is
 easy to read, which is a benefit we get when we use the
 `JSON.stringify` function with the third parameter set to something
-other than undefined. Unortunately, the first line is only different
-because we added a comma to it, but this is still a very readable diff.
+other than undefined. Unortunately, the first line differs only by the
+extra comma but this is still a very readable diff.
 
 ===== A Safe Login Implementation
 
