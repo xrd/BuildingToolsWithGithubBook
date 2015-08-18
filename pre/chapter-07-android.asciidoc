@@ -495,7 +495,7 @@ background task, so we grab the status text element and update the text in it.
 <2> We then start the background thread process to do our login. This
 syntax creates a new thread for us with the username and password as
 parameters. Android will manage the lifecycle of this thread for us,
-meaning starting a new thread, separate from the main UI thread.
+including starting the new thread separate from the main UI thread.
 <2> Here we define the derived AsyncTask class. The three types in the
 generics signature provide a way to parameterize our instantiated task;
 we need to provide a username and password to the background task, and

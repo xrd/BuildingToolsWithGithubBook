@@ -900,9 +900,9 @@ it to the parameter we are now passing in for "commit".
 [source,ruby]
 -----
   ...
-  options[:committer] = { :email => @email, :name => @name, :time => Time.now }
-  options[:message] = params[:message]
-  options[:parents] = @repo.empty? ? [] : [ @repo.head.target ].compact
+options[:committer] = { :email => @email, :name => @name, :time => Time.now }
+options[:message] = params[:message]
+options[:parents] = @repo.empty? ? [] : [ @repo.head.target ].compact
   ...
 -----
 
@@ -928,13 +928,13 @@ revisions in our history.
 [source,ruby]
 -----
   ...
-  files.each do |f|
-    contents += "### #{f} \n[[#{dir}/#{f}]]\n\n"
-  end
-  contents += "[Prior revision (only when viewing history)](#{@repo.head.target})\n\n"
+files.each do |f|
+  contents += "### #{f} \n[[#{dir}/#{f}]]\n\n"
+end
+contents += "[Prior revision (only when viewing history)](#{@repo.head.target})\n\n"
 
-  File.write review_filename, contents
-  oid = @repo.write( contents, :blob )
+File.write review_filename, contents
+oid = @repo.write( contents, :blob )
   ...
 -----
 
