@@ -30,14 +30,10 @@ basic form, a Gollum wiki is a git repository with a single file,
 `Home.ext` (`ext` would be any of the supported wiki markup formats,
 which we will talk about later). 
 
-First, let's learn how to create a gollum wiki from the GitHub
-interface, and then later we'll move into creating one from scratch as
-a git repository.
-
 ==== Repository Linked Wikis
 
-Any repository, public or private, can have an associated Gollum wiki.
-To create a wiki linked to a GitHub repository, visit the repository
+Any repository on GitHub, public or private, can have an associated Gollum wiki.
+To create a wiki linked to your repository, visit the repository
 page and then look in the rightmost colum. You'll see an icon which
 looks like a book, next to which will be the word "Wiki." 
 
@@ -100,19 +96,6 @@ As we mentioned, there are differences between Gollum wiki tags and other wikis 
 having similar syntax. One such example is MediaWiki, where links with
 titles use the opposite ordering `[[A link to
 foobar|http://foobar.com]]`, so caveat emptor.
-
-===== Inserting Images
-
-Images are inserting into your document using the same tag format
-`[[ceo.png]]`: this adds the correct HTML tags to include an image
-named ceo.png inside your page. This basic syntax is often extended
-for additional funtionality. For example, to add a frame
-and an alt tag, you could use syntax like `[[ceo.png|frame|alt=Our CEO
-relaxing on the beach]]`. This creates the proper HTML tags for the
-same image, and alsox adds a frame and alt text (helpful for
-better context and screenreaders). Review the documentation on the
-Gollum repository for more details about the breadth of the image
-options. 
 
 ===== Code Snippets
 
@@ -203,149 +186,35 @@ Wiki when your Gollum wiki is hosted on GitHub.
 Now that we have investigated the structure and format of using Gollum
 wikis, we can dig into the power tools that come with Gollum.
 
-=== Moving Gollum to Your Laptop
+===== Inserting Images
 
-Though many people edit Gollum wikis exclusively from within the
-GitHub online editor, there is a real flexibility and power when
-hosting your wiki locally and editing it from your laptop. To do this
-you need to install the command line tools for Gollum.
+Images are inserting into your document using the same tag format
+`[[ceo.png]]`: this adds the correct HTML tags to include an image
+named ceo.png inside your page. This basic syntax is often extended
+for additional funtionality. For example, to add a frame
+and an alt tag, you could use syntax like `[[ceo.png|frame|alt=Our CEO
+relaxing on the beach]]`. This creates the proper HTML tags for the
+same image, and alsox adds a frame and alt text (helpful for
+better context and screenreaders). Review the documentation on the
+Gollum repository for more details about the breadth of the image
+options. 
 
-[source,bash]
--------
-$ gem install gollum
--------
+You can also add images using the editor on GitHub. But, you'll notice
+that either way you are adding a link to an image and that there is no
+way to upload images into GitHub from the editor. 
 
-You will then see the `gollum` command in your path.
+image::images/gollum-image-url.png[No image upload, only image URLs]
 
-[NOTE]
-There is a difference between the `gollum` command (what you run from
-the command line) and the suite of technologies that make up Gollum as
-a project. To differentiate between them, remember that we are talking
-about the suite when the word is capitalized ("Gollum"), and the command line
-tool when the word is lowercased and fixed width font (`gollum`).
-
-What additional options are opened up when running locally? Let's take
-a deeper look.
-
-==== Alternative Editing Options
-
-When you run your Gollum wiki from your laptop instead of viewing and
-editing on GitHub exclusively, you then get a few additional options
-for editing.
-
-* Gollum wikis are editable locally
-  within a web browser: run the `gollum` command locally on your laptop
-  (which spawns a mini web server hosting your wiki) and then browse to
-  http://localhost:4567. 
-* Gollum wikis can be edited at
-  the file system level using your favorite editor, allowing you the
-  flexibility of staying within the same workflow you use to edit any
-  other file within a local repository. 
-
-You might use a hybrid approach to editing your Gollum wiki, switching
-back and forth  between editing within the web browser interface and
-jumping into the command line and using your editor to create or
-modify files when you need to use "power commands." And, it is nice to
-know you can use any simple text processing language to make
-programmatic changes to your wiki once you have it locally on your
-laptop as a Git repository.
-
-==== Editing with the Command Line
-
-Gollum wiki content reflects only the files inside the repository; another way
-to say this is that files in your working directory but not yet
-committed are not used by Gollum. To illustrate this, let's go through the steps
-to add a sidebar to our wiki. Adding a sidebar means you need to create a file 
-called _Sidebar.md. This is a special file which Gollum recognizes and
-generates a sidebar for you; the first part of the name is fixed, but
-you can change the extension to whatever extension you prefer for your
-wiki files. If we use the "open" command (available on Mac or Linux)
-to open the Wiki in our default browser, you will see that only once
-we have committed the change to our repository do we actually see the
-sidebar. 
-
-[source,bash]
------
-$ gollum & # Start gollum, will run on port 4567.
-$ printf "## Warning\nPlease note this is subject to change" > _Sidebar.md
-$ open http://localhost:4567/ # We won't see our sidebar yet...
-$ git add _Sidebar.md 
-$ open http://localhost:4567/ # We still don't see our sidebar...
-$ git commit -m "Add sidebar"
-$ open http://localhost:4567/ # Eureka, now we will see our sidebar!
------
-
-If you edit within the web browser interface, the underlying Grit
-libraries do all the work to commit new files into the repository. If
-you use the command line, you'll need to remember to commit files
-manually to see them inside your wiki.
-
-We now can display and allow editing from our locally running Gollum
-server. This Gollum server actually can be made to be accessible to
-anyone who can access your laptop's IP address. So, we could permit
-editing by others in our office. But, what if we want to disallow
-editing unless the user has permission to do so? We need an
-authentication mechanism. 
-
-==== Adding Authentication 
-
-Gollum is built on top of Sinatra (a Ruby library for building HTTP
-servers, discussed in the Gist chapter) and there are utilize authentication gems
-like `omnigollum` that provide many authentciation options. You could
-also write your own authentication handler and run gollum inside that.
-http://stackoverflow.com/questions/9634703/strong-access-control-for-gollum/13357591#13357591:[This 
-thread on StackOverflow] explains how to install your own handler:
- 
-[source,ruby]
--------
-# authentication.rb
-module Precious
-  class App < Sinatra::Base
-    use Rack::Auth::Basic, "Restricted Area" do |username, password|
-      [username, password] == ['admin', 'admin']
-    end
-  end
-end
--------
-
-And, then run it using this command:
-
-[source,bash]
------
-gollum --config authentication.rb
------
-
-You'll then be prompted for the username and password, and can use
-"admin" and "admin". 
-
-This code extends the instance of Sinatra running as Gollum (cheekily
-designated in the "Precious" namespace) and adds an authentication layer.
-
-[WARNING]
-A word of caution when using the gollum command in server mode to edit
-files locally inside a web browser. If you start the gollum server
-from the command line you do have the capability to edit the files
-from any computer within the same network. In other words, you could
-find your IP address and use that address from your Chromebook or your
-tablet to view and edit your wiki. However, remember that the gollum
-server command does not have an authentication system built into it,
-which means that gollum thinks anyone accessing the wiki is the same
-user that started the gollum command. This is fine if you are in the
-other room editing on your tablet while gollum runs on your work
-laptop. However, the gollum server is not a good solution for offering
-a wiki up to many people within a subnet. If multiple people edit
-files, there is no way that gollum can track the different user
-contributions in the change log. This is not a problem when editing
-your Gollum wiki inside GitHub.com: the GitHub site knows who you are
-and properly assigns your changes to your username inside the
-change log.  
-
-We've played a bit with the gollum command line tools. Let's put these
-skills to use and make our own special gollum tool.
+For non-technical users, this makes Gollum Wikis on GitHub almost
+unusable if they need to add images. Let's address this problem by
+building our own customized image-centric Gollum editor that still
+interoperates with regular Gollum Wikis. We can put this editor in
+front of non-technical users allowing them to add images, and then
+publish the wiki into GitHub as-is.
 
 === Hacking Gollum
 
-On many softwre teams there is a tension between the design
+On many software teams there is a tension between the design
 team and the software team stemming from the fact that designers
 generally don't like using source code tools to manage images. This
 causes issues when software developers rely on designs that are
@@ -370,9 +239,10 @@ enter data in a more powerful way than gollum permits from its default
 interface. The data will still be compatible with gollum and will be
 hosted on GitHub.
 
-To begin, initialize our repository.
+To begin, install the Gollum ruby gem and then initialize our repository.
 
 [source,bash]
+$ gem install gollum
 $ mkdir images
 $ cd images
 $ git init .
@@ -388,6 +258,17 @@ image::images/gollum-first-view.png[Gollum running locally]
 
 As you can see, this tiny set of commands was enough to create the
 basics of the gollum wiki structure.
+
+[WARNING]
+If you edit a Gollum wiki from the command line, be aware that Gollum
+only looks inside the repository data for files. If you have added
+something to the working directory or have not yet commited files in
+your index, they will not be visible to Gollum. 
+
+Now let's begin creating the web app that will help us store images
+inside a Gollum wiki.
+
+==== Our Gollum Editor Starting Point
 
 Create our sinatra script called `image.rb`, and then we can install
 the necessary gems and run our server application.
@@ -513,10 +394,10 @@ simple interface to creating a blob inside your Git repository
 then has a simple and clean interface to build the tree object
 (`write_tree`) and then build the commit (`Rugged::Commit.create`). 
 
-The astute observers among you will notice a method called
-`get_credentials` which loads up your credentials from a file located
-in your home directory called `.gitconfig`. You probably have this if
-you have used Git for anything at all on your machine, but if this
+To ease the burden of hard coding our commit credentials, we implement
+a method called `get_credentials` that loads up your credentials from
+a file located in your home directory called `.gitconfig`. You
+probably have this if you have used Git for anything at all on your machine, but if this
 file is missing, this method will fail. On my machine this file looks
 like the following code snippet. The `get_credentials` method simply loads up this
 file and parses it for the name and email address. If you wanted to
@@ -627,7 +508,7 @@ size-pack: 2029
 prune-packable: 0
 garbage: 0
 size-garbage: 0
--------
+	      -------
 
 Inspecting the first ZIP file, I see these statistics about it.
 

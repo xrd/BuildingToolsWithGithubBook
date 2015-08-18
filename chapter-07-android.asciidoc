@@ -942,29 +942,29 @@ GitHub.
 -----
 ...
 
-String blobSha;  // <1>
-Tree newTree;
-String commitMessage;
-String postContentsWithYfm;
-String contentsBase64;
-String filename;
-String post;
-String repoName;
+    String blobSha;  // <1>
+    Tree newTree;
+    String commitMessage;
+    String postContentsWithYfm;
+    String contentsBase64;
+    String filename;
+    String post;
+    String repoName;
 
-private void generateContent() {
-    commitMessage = "GitHubRu Update"; // <2>
-    postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post;  // <3>
-    contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) );  // <4>
-    getFilename( post ); // 4>
-}
+    private void generateContent() {
+        commitMessage = "GitHubRu Update"; // <2>
+        postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post;  // <3>
+        contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) );  // <4>
+        getFilename( post ); // 4>
+    }
 
-private void getFilename( String post ) {  
-    String title = post.substring( 0, post.length() > 30 ? 30 : post.length() ); // <5>
-    String jekyllfied = title.toLowerCase().replaceAll( "\W+", "-").replaceAll( "\W+$", "" ); // <6>
-    SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" ); // <7>
-    String prefix = sdf.format( new Date() );
-    filename = "_posts/" + prefix + jekyllfied + ".md"; // <8>
-}
+    private void getFilename( String post ) {  
+        String title = post.substring( 0, post.length() > 30 ? 30 : post.length() ); // <5>
+        String jekyllfied = title.toLowerCase().replaceAll( "\W+", "-").replaceAll( "\W+$", "" ); // <6>
+        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" ); // <7>
+        String prefix = sdf.format( new Date() );
+        filename = "_posts/" + prefix + jekyllfied + ".md"; // <8>
+    }
 ...
 -----
 
@@ -1010,28 +1010,28 @@ and data)
 -----
 ...
 
-RepositoryService repositoryService;
-CommitService commitService;
-DataService dataService;
+    RepositoryService repositoryService;
+    CommitService commitService;
+    DataService dataService;
 
-private void createServices() throws IOException {
-    repositoryService = new RepositoryService();
-    repositoryService.getClient().setCredentials( login, password );
-    commitService = new CommitService();
-    commitService.getClient().setCredentials( login, password );
-    dataService = new DataService();
-    dataService.getClient().setCredentials( login, password );
-}
+    private void createServices() throws IOException {
+        repositoryService = new RepositoryService();
+        repositoryService.getClient().setCredentials( login, password );
+        commitService = new CommitService();
+        commitService.getClient().setCredentials( login, password );
+        dataService = new DataService();
+        dataService.getClient().setCredentials( login, password );
+    }
 
-Repository repository;
-RepositoryBranch theBranch;
-String baseCommitSha;
-private String retrieveBaseSha() throws IOException {
-    // get some sha's from current state in git
-    repository =  repositoryService.getRepository(login, repoName);
-    theBranch = getBranch(); 
-    return theBranch.getCommit().getSha();
-}
+    Repository repository;
+    RepositoryBranch theBranch;
+    String baseCommitSha;
+    private String retrieveBaseSha() throws IOException {
+        // get some sha's from current state in git
+        repository =  repositoryService.getRepository(login, repoName);
+        theBranch = getBranch(); 
+        return theBranch.getCommit().getSha();
+    }
 
 ...
 -----
@@ -1063,22 +1063,22 @@ correct branch: `getBranch` does this for us.
     }
 
     public RepositoryBranch getBranch() throws IOException {
-List<RepositoryBranch> branches = repositoryService.getBranches(repository);
-RepositoryBranch master = null;
-// Iterate over the branches and find gh-pages or master
-for( RepositoryBranch i : branches ) {
-    String theName = i.getName().toString();
-    if( theName.equalsIgnoreCase("gh-pages") ) {
-	theBranch = i;
-    }
-    else if( theName.equalsIgnoreCase("master") ) {
-	master = i;
-    }
-}
-if( null == theBranch ) {
-    theBranch = master;
-}
-return theBranch;
+	List<RepositoryBranch> branches = repositoryService.getBranches(repository);
+	RepositoryBranch master = null;
+	// Iterate over the branches and find gh-pages or master
+	for( RepositoryBranch i : branches ) {
+	    String theName = i.getName().toString();
+	    if( theName.equalsIgnoreCase("gh-pages") ) {
+		theBranch = i;
+	    }
+	    else if( theName.equalsIgnoreCase("master") ) {
+		master = i;
+	    }
+	}
+	if( null == theBranch ) {
+	    theBranch = master;
+	}
+	return theBranch;
     }
 
 ...
@@ -1101,11 +1101,11 @@ tree and commit object, which we do next.
     Blob blob;
     Tree baseTree;
     private void createBlob() throws IOException {
-Random random = new Random();
-blob = new Blob();
-blob.setContent(contentsBase64);
-blob.setEncoding(Blob.ENCODING_BASE64);
-dataService.createBlob(repository, blob);
+	Random random = new Random();
+	blob = new Blob();
+	blob.setContent(contentsBase64);
+	blob.setEncoding(Blob.ENCODING_BASE64);
+	dataService.createBlob(repository, blob);
     }
     
 ...
@@ -1130,15 +1130,15 @@ account using the data service object.
     Tree baseTree;
     private void generateTree() throws IOException {
         baseTree = dataService.getTree(repository, baseCommitSha);
-TreeEntry treeEntry = new TreeEntry();
-treeEntry.setPath( filename );
-treeEntry.setMode( TreeEntry.MODE_BLOB );
-treeEntry.setType( TreeEntry.TYPE_BLOB );
-treeEntry.setSha(blobSha);
-treeEntry.setSize(blob.getContent().length());
-Collection<TreeEntry> entries = new ArrayList<TreeEntry>();
-entries.add(treeEntry);
-newTree = dataService.createTree( repository, entries, baseTree.getSha() );
+	TreeEntry treeEntry = new TreeEntry();
+	treeEntry.setPath( filename );
+	treeEntry.setMode( TreeEntry.MODE_BLOB );
+	treeEntry.setType( TreeEntry.TYPE_BLOB );
+	treeEntry.setSha(blobSha);
+	treeEntry.setSize(blob.getContent().length());
+	Collection<TreeEntry> entries = new ArrayList<TreeEntry>();
+	entries.add(treeEntry);
+	newTree = dataService.createTree( repository, entries, baseTree.getSha() );
     }
 
 ...
@@ -1162,17 +1162,17 @@ inside our repository in GitHub at the correct SHA address.
 [source,java]
 -----
 ...
-Commit newCommit;
-private void createCommit() throws IOException {
-    // create commit
-    Commit commit = new Commit();
-    commit.setMessage( commitMessage );
-    commit.setTree( newTree );
-    List<Commit> listOfCommits = new ArrayList<Commit>();
-    listOfCommits.add(new Commit().setSha(baseCommitSha));
-    commit.setParents(listOfCommits);
-    newCommit = dataService.createCommit(repository, commit);
-}
+    Commit newCommit;
+    private void createCommit() throws IOException {
+        // create commit
+        Commit commit = new Commit();
+        commit.setMessage( commitMessage );
+        commit.setTree( newTree );
+        List<Commit> listOfCommits = new ArrayList<Commit>();
+        listOfCommits.add(new Commit().setSha(baseCommitSha));
+        commit.setParents(listOfCommits);
+        newCommit = dataService.createCommit(repository, commit);
+    }
 
 ...
 -----
@@ -1192,20 +1192,20 @@ to update the reference inside the repository inside GitHub.
 [source,java]
 -----
 ...
-TypedResource commitResource;
-private void createResource() {
-    commitResource = new TypedResource();            
-    commitResource.setSha(newCommit.getSha());
-    commitResource.setType(TypedResource.TYPE_COMMIT);
-    commitResource.setUrl(newCommit.getUrl());
-}
+    TypedResource commitResource;
+    private void createResource() {
+        commitResource = new TypedResource();            
+        commitResource.setSha(newCommit.getSha());
+        commitResource.setType(TypedResource.TYPE_COMMIT);
+        commitResource.setUrl(newCommit.getUrl());
+    }
 
-private void updateMasterResource() throws IOException {
-    // get master reference and update it
-    Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
-    reference.setObject(commitResource);
-    Reference response = dataService.editReference(repository, reference, true) ;
-}
+    private void updateMasterResource() throws IOException {
+        // get master reference and update it
+        Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
+        reference.setObject(commitResource);
+        Reference response = dataService.editReference(repository, reference, true) ;
+    }
 
 ...
 -----
@@ -1218,41 +1218,41 @@ Finally, we can now implement the `doPost()` method inside our
 [source,java]
 -----
 ...
-private void doPost() {
-    new PostTask().execute( username, password ); 
-}
-
-class PostTask extends AsyncTask<String, Void, Boolean> {  
-
-    @Override 
-        protected Boolean doInBackground(String... credentials) {
-        String login = credentials[0]; 
-        String password = credentials[1];
-
-        EditText post = (EditText)findViewById( R.id.post );
-        String postContents = post.getText().toString();
-
-        EditText repo = (EditText)findViewById( R.id.repository ); 
-        String repoName = repo.getText().toString();
-
-        GitHubHelper ghh = new GitHubHelper( login, password );
-        return ghh.SaveFile( repoName, postContents );
+    private void doPost() {
+        new PostTask().execute( username, password ); 
     }
+
+    class PostTask extends AsyncTask<String, Void, Boolean> {  
+
+        @Override 
+            protected Boolean doInBackground(String... credentials) {
+            String login = credentials[0]; 
+            String password = credentials[1];
+
+            EditText post = (EditText)findViewById( R.id.post );
+            String postContents = post.getText().toString();
+
+            EditText repo = (EditText)findViewById( R.id.repository ); 
+            String repoName = repo.getText().toString();
+
+            GitHubHelper ghh = new GitHubHelper( login, password );
+            return ghh.SaveFile( repoName, postContents );
+        }
+        
+        @Override
+            protected void onPostExecute(Boolean result) {
+            TextView status = (TextView)findViewById( R.id.post_status );
+            if( result ) {
+                status.setText( "Successful jekyll post" );
+            }
+            else {
+                status.setText( "Post failed." ); 
+            }
+        }
+    }
+
+
     
-    @Override
-        protected void onPostExecute(Boolean result) {
-        TextView status = (TextView)findViewById( R.id.post_status );
-        if( result ) {
-            status.setText( "Successful jekyll post" );
-        }
-        else {
-            status.setText( "Post failed." ); 
-        }
-    }
-}
-
-
-
 -----
 
 Our `doPost()` command now does one thing: instantiates a new
@@ -1281,8 +1281,6 @@ calabash-android run build/apk/ghru-release-unsigned.apk
 You'll see them pass with flying colors this time:
 
 image::images/android-calabash-success.png[A successful end-to-end test of our Android application]
-
-=== 
 
 If you want to see a more complicated version of the GitHub API on
 Android, take a look at https://github.com/xrd/TeddyHyde.git:[Teddy
