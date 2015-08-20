@@ -1,0 +1,67 @@
+CHAPTER 9: JavaScript and the Git Data API
+
+
+
+                           We pass in the mocked objects (created by the mocked function calls) as
+                           well as the scope object and instantiate a controller object.
+
+
+                           Now we can write our tests. We create a describe block to group them called
+
+                           #init  as we are testing this function. <7>
+
+                           This JS test file has the boilerplate code used in any AngularJS test. You set-
+                        up the scope and instantiate the controller with that scope, and then can man-
+                        ually call the methods on the scope to simulate interaction with our app. As we
+
+                        are calling into a JavaScript function inside of the Github JS object which uses
+                        an asynchronous callback, we will likely have to wait for an AJAX call to return.
+
+                        Simulating this is difficult in a test, so instead we will create a mock object for
+                        Github and then inject it into ourGithubCtrl   controller. Instead of having our
+
+                        controller make real calls to Github, we can call into our mock object and verify
+                        the correct calls are made. The real meat of of our test is inside thdescribe
+
+                        and it  blocks: we initialize the scope, and then expect that the functions on
+                        our mocked objects will be executed. And, we verify the data is correctly set on
+                        our scope.
+
+                           Specifically, our test does these things:
+
+                            • Calls theinit  function defined in our controller (which will be handled
+
+                              using our ng-init  directive in the HTML).
+                            • Verify that the geolocation service was called.
+
+                            • Verify that we calledgetRepo  on our mocked Github object.
+
+                            • Verify that we called read  on the repo we returned from the     getRepo
+                              call.
+
+                            • Verify that we used the data returned from the read to fill our cities object
+
+                              inside our scope object.
+                            • Verify that we calculated the correct current city as Portland.
+
+                            • Verify that we have loaded the JSON data file for the current city
+
+                           Now we can implement the two mocking functions vital for the test. Put
+
+                        them in between the   beforeEach( module( "coffeetech" ) )             line and
+                        the beforeEach( inject( ... ) )         functions to provide proper visibility to
+
+                        Karma.
+
+                           ...
+                           beforeEach( module( "coffeetech" ) );
+
+
+                           function generateMockGeolocationSupport( lat, lng ) {
+                               response = ( lat && lng ) ? { coords: { lat: lat, lng: lng } } : { coords: CITIES[0] };
+                               geo = { getCurrentPosition: function( success, failure ) {
+
+
+
+
+        202

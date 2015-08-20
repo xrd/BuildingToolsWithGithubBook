@@ -1,0 +1,66 @@
+CHAPTER 1: Preface
+
+
+                       Conventions Used in This Book
+
+
+                       The following typographical conventions are used in this book:
+
+                       Italic
+
+                          Indicates new terms, URLs, email addresses, filenames, and file extensions.
+
+                       Constant width
+                          Used for program listings, as well as within paragraphs to refer to program
+
+                          elements such as variable or function names, databases, data types, envi-
+                          ronment variables, statements, and keywords.
+
+
+                       Constant width bold
+                          Shows commands or other text that should be typed literally by the user.
+
+                       Constant width italic
+
+                          Shows text that should be replaced with user-supplied values or by values
+                          determined by context.
+
+
+                            This icon signifies a tip, suggestion, or general note.
+
+
+
+                            This icon indicates a warning or caution.
+
+
+
+                       Using Code Examples
+
+
+                       PROD: Please reach out to author to find out if they will be uploading code
+                       examples to oreilly.com or their own site (e.g., GitHub). If there is no code
+                       download, delete this whole section. If there is, when you email digidist with
+
+                       the link, let them know what you filled in for title_title (should be as close to
+                       book title as possible, i.e., learning_python_2e). This info will determine
+                       where digidist loads the files.
+                          Supplemental material (code examples, exercises, etc.) is available for
+
+                       download at https://github.com/oreillymedia/title_title.
+                          This book is here to help you get your job done. In general, if example code is
+                       offered with this book, you may use it in your programs and documentation.
+
+                       You do not need to contact us for permission unless you’re reproducing a signif-
+                       icant portion of the code. For example, writing a program that uses several
+
+                       chunks of code from this book does not require permission. Selling or distribut-
+                       ing a CD-ROM of examples from O’Reilly books does require permission. An-
+                       swering a question by citing this book and quoting example code does not re-
+
+                       quire permission. Incorporating a significant amount of example code from this
+                       book into your product’s documentation does require permission.
+
+
+
+
+        12

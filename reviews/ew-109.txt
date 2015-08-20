@@ -1,0 +1,67 @@
+                                                                                  Let’s write an app
+
+
+First steps
+
+
+Alright, now that we have a project ready for some code, let’s get our Nancy ap-
+plication up and running. Here’s what it looks like to do perform a simple re-
+
+quest using Nancy and Octokit.
+
+
+   using Nancy;
+   using Octokit;
+   using System;
+   using System.Collections.Generic;
+   using System.Linq;
+
+
+   namespace NancyApp
+   {
+       public class Handler : NancyModule
+       {
+           private readonly GitHubClient client =
+
+                new GitHubClient(new ProductHeaderValue("MyHello"));
+
+           public Handler()
+           {
+
+                Get["/{user}", true] = async (parms, ct) =>
+                    {
+                        var user = await client.User.Get(parms.user.ToString());
+                        return String.Format("{0} people love {1}!",
+                                              user.Followers, user.Name);
+
+                    };
+           }
+       }
+   }
+
+
+   Here we derive a class from NancyModule  , which is all you have to do to
+
+   start receiving and processing HTTP requests in Nancy.
+
+
+   The GitHubClient   class is the entry point for Octokit. Here we create an in-
+   stance which we’ll use later on, using a placeholder product name – this
+   name will not be used for the APIs we’ll be accessing.
+
+
+   The module’s constructor needs to set up route mappings. We map/{user}
+
+   to a lambda function using theGet dictionary that comes withNancyMod-
+   ule. The second parameter to the index operator says that the handler will
+
+   be asynchronous.
+
+   Here we see how to get the {user}  part of the request URL (it comes as a
+
+   property on the parms parameter), and how to query the GitHub User API
+
+
+
+
+                                                                                      109

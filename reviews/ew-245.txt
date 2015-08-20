@@ -1,0 +1,70 @@
+                                                                                       Activities API Overview
+
+
+tant activities are distributed to the right people involved makes sense, and Git-
+
+Hub has a good set of rules for making sure the correct notifications get to the
+right parties.
+
+   Email does falter as a to-do list, however, and at times the ease in which
+email can be delivered breeds a secondary problem: overwhelm. It can be very
+easy to lose focus (vital to building software) when you are constantly context
+
+switching by checking email, and notifications can often fly by. In addition,
+email is privately directed and prevents easily collaboration; generally people
+
+don’t share email inboxes. Let’s extend our Hubot to help us resolve these prob-
+lems by taking our GitHub notifications into a shared and “opt-in when you are
+
+logged-in” communication channel.
+
+
+Writing a Hubot Extension
+
+
+Hubot extensions are written in either JavaScript or CoffeeScript. CoffeeScript
+
+is a intermediate language which compiles directly to JavaScript. Many people
+prefer writing in CoffeeScript because it has a cleaner syntax and writes “safer”
+
+JavaScript (the syntax helps you avoid common tricky pitfalls in the JavaScript
+language, like what “this” refers to). CoffeeScript is a indentation based lan-
+
+guage (much like Python) and after the initial learning curve, can feel easier to
+read than JavaScript, especially when you have many nested function callbacks
+
+(common in JavaScript programming); it is easier to see where a function be-
+gins and ends given the indentation levels. Hubot is itself written in Coffee-
+Script and we’ll write our extension in CoffeeScript as well.
+
+
+
+     CoffeeScript is a language where indentation is important. For readabili-
+     ty purposes, when we display a snippet of code from a longer file, there
+     are times where we have changed the indentation of that snippet and re-
+     moved the initial indentation. If you were to copy the code without re-
+
+     alignment, the snippet would not work until you re-indented it to fit the
+     context into which it sits.
+
+
+   The Hubot extension module format is exceedingly simple. You write Java-
+
+Script modules (using the   export  syntax) and Hubot passes you in a robot ob-
+ject which you program using several API methods.
+
+   There are a few concepts useful to programming Hubot. You can find an ex-
+ample of each of these methods inside the example.coffee file inside the scripts
+
+directory.
+
+    • Hubots have a “brain”. This is an internal state object, which means these
+      values persist across chat messages. This state is not persisted into a da-
+
+      tabase by default, so this state is not restored if you restart Hubot. How-
+      ever, a persistence mechanism is exposed via redis, though this is option-
+
+
+
+
+                                                                                                245

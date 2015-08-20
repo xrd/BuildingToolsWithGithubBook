@@ -1,0 +1,68 @@
+CHAPTER 9: JavaScript and the Git Data API
+
+
+                          mod.factory( 'Github', function() { //
+                              return new Github({});
+                          });
+
+
+                          mod.factory( 'Geo', [ '$window', function( $window ) { //
+                              return $window.navigator.geolocation;
+                          } ] );
+
+
+                          mod.factory( 'Prompt', [ '$window', function( $window ) {
+                              return $window.prompt;
+                          } ] );
+
+                          mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', 'Prompt', function( $scope, ghs, Geo, Prompt ) {
+
+                              $scope.messages = []
+
+                              $scope.init = function() {
+                                  $scope.getCurrentLocation( function( position ) {
+
+                                       $scope.latitude = position.coords.latitude;
+                                       $scope.longitude = position.coords.longitude;
+                                       $scope.repo = ghs.getRepo( "xrd", "spa.coffeete.ch" ); //
+                                       $scope.repo.read( "gh-pages", "cities.json", function(err, data) { //
+
+                                           $scope.cities = JSON.parse( data ); //
+                                           // Determine our current city
+                                           $scope.detectCurrentCity(); //
+
+                                           // If we have a city, get it
+
+                                           if( $scope.city ) {
+                                               $scope.retrieveCity();
+                                           }
+
+
+                                           $scope.$apply(); //
+                                       });
+                                  });
+                              };
+
+                          ...
+
+
+                          We extract the Github library into an AngularJS factory. This allows us to in-
+                          ject our mocked GitHub object inside our tests; if we had placed the GitHub
+
+                          instance creation code inside our controller, we would not have been able to
+                          easily mock it out in our tests.
+
+
+                          We extract the geolocation support into an AngularJS factory. As we did with
+                          the GitHub library mock, we can now inject a fake one into our tests.
+
+
+                          Set the username and repository. If you are putting this into your own repos-
+                          itory, modify this appropriately, but you can use these arguments until you
+
+                          do post this into your own repository.
+
+
+
+
+       204

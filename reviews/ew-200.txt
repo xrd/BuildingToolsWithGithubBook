@@ -1,0 +1,67 @@
+CHAPTER 9: JavaScript and the Git Data API
+
+
+                                    'angular.js',
+                                    'fixtures-*.js',
+                                    'angular-mocks.js',
+                                    'firebase-mock.js',
+                                    'github.js',
+
+                                    '*.js'
+                               ],
+                               reporters: ['progress'],
+                               port: 9876,
+                               colors: true,
+
+                               logLevel: config.LOG_INFO,
+                               autoWatch: true,
+                               browsers: ['Chrome'],
+                               captureTimeout: 60000,
+                               singleRun: false
+
+                             });
+                           };
+
+                           This is more or less a default Karma configuration file.
+
+
+                           The files  section specifying the load order of our JavaScript implementa-
+
+                           tions and the test scripts. You can see a few of the files we’ve added above
+                           specified directly and wildcards to cover the remaining files.
+
+
+                           Note also that we’ve specified Chrome as our test browser (so you should
+                           have it installed), which is a safe bet because it works on just about any
+
+                           desktop platform you might be running. Know that you can always choose
+                           Safari or Firefox if you want Karma to test inside those as well. Karma will
+                           start a new instance of each browser specified and run your tests inside a
+
+                           test harness in those browsers.
+
+                           To write the test, let’s clarify what we want our code to do:
+
+                            • When a user first visits the application, we should use the geolocation
+
+                              features of their browser to determine their location.
+                            • Pull a file from our repository which contains general latitude and longi-
+
+                              tude locations of different cities.
+
+                            • Iterate over the list of cities and see if we are within 25 miles of any of the
+                              cities. If so, set the current city to the first match.
+
+                            • If we found a city, load the JSON data file from GitHub
+
+                           We’ll use a ng-init  directive which is the mechanism to tell AngularJS we
+                        want to call the function specified when the controller has finished loading.
+
+                        We’ll call this functiinit  so let’s test it below.
+
+
+
+
+
+
+        200

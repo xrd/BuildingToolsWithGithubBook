@@ -1,0 +1,67 @@
+                                                                  Building a Coffee Shop Database on GitHub
+
+
+major difference between accessing data stored inside a Git repository and a
+traditional database: searchability. Git repositories are great for storing data,
+and GitHub exposes storing data through their API. The GitHub API does sup-
+
+port searching of code, but the GitHub.js library does not expose access to this
+part of the API. So, let’s make sure to design and store the data in a structured
+
+way so that we can search it on the client side.
+   This application allows us to search coffee shops. These coffee shops will be,
+
+for the most part, in larger cities. If we keep all the data stored as JSON files
+named after the city, we can keep data located in a file named after the city,
+and then either use geolocation on the client side to retrieve a set of the data,
+
+or ask the user to choose their city manually.
+   If we look at the Github.js javascript documentation on Github (https://
+
+github.com/michael/github:) we can see that there are some options for us to
+pull content from a repository. We’ll store a data file in JSON named after the
+city inside our repository and retrieve this from that repository. It looks like the
+
+calls we need to use are   github.getRepo( username, reponame )           and
+
+once we have retrieved the repository,    repo.contents( branch, path,
+callback )   .
+   Now that we have a bare bones application let’s pause and make sure we are
+
+building something that is future proofed. This means adding tests to our
+project.
+
+
+
+Making our App Testable
+
+Testing not only builds better code by making us think clearly about how our
+
+code will be used from the outside, but makes it easier for an outsider (meaning
+other team members) to use our code. Testing facilitates “social coding.”
+
+   We’ll use a tool callekarma  . Karma simplifies writing JavaScript unit tests.
+We need to first install the tool, then write a test or two. Karma can easily be
+
+installed using NPM (installation of which is documented in the ???).
+
+   $ npm install karma -g
+
+   $ karma init karma.config.js
+   $ wget https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-mocks.js
+
+   Then, create a file calledkarma.config.js     and enter the following con-
+
+tents:
+
+
+   module.exports = function(config) {
+     config.set({
+       basePath: '',
+       frameworks: ['jasmine'],
+       files: [
+
+
+
+
+                                                                                           199

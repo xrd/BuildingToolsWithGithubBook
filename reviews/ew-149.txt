@@ -1,0 +1,69 @@
+                                                                               Scraping Sites into Jekyll
+
+
+
+                                                                                FIGURE 7-9
+
+                                                                                Not the best
+                                                                                formatting
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   Not very pretty at all. We can beautiful this by adding some styling to the
+page. We’ll use Bootstrap, the most popular CSS framework on GitHub. To start,
+
+edit the layout to include Bootstrap from the Bootstrap CDN. And, add acon-
+tainer  class around the content.
+
+
+   <html>
+   <head>
+
+   <title>ByTravelers.com</title>
+
+   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+   </head>
+
+
+   <body>
+
+   {{ content }}
+
+
+   </body>
+   </html>
+
+
+   Notice that our files are regenerated in the terminal window with jekyll
+serve -w  . Refreshing the page shows some improvement, but we can do bet-
+
+ter. Let’s make a front page which shows just the ten most recent post, and an
+archive page which shows all the posts in reverse chronological order.
+
+
+
+
+                                                                                        149

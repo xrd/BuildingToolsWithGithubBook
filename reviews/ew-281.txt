@@ -1,0 +1,68 @@
+                                                                                Activities API Overview
+
+
+   Our new test reflects usage of trepos.getCollaborator     call. In our test
+setup block we mocking out the call togetCollaborator    and using Jasmine
+
+to “spy on” it so we can assure it was called later in our actual test. Our setup is
+more beefy than before, but we are following the same patterns of generating
+
+spies to watch methods, and implementing our fake callbacks when necessary.
+We also can move our message inside the response object into the one created
+
+in our setup block so that we can use it inside all of our sub-tests, rather than
+creating a new object for each test inside the test body.
+
+
+   ...
+   send: jasmine.createSpy( 'send' ),
+   message: { user: { name: "Chris Dawson" } } }
+   getCollaborator = jasmine.createSpy( 'getCollaborator' ).and.
+
+            callFake( ( msg, cb ) -> cb( false, true ) )
+   repos = { getCollaborator: getCollaborator }
+
+   ...
+
+
+   it "should tag the PR on GitHub if the user accepts", (done) ->
+            Handler.accept( robot, responder )
+            expect( authenticate ).toHaveBeenCalled()
+            expect( createComment ).toHaveBeenCalled()
+
+            expect( responder.reply ).toHaveBeenCalled()
+            expect( repos.getCollaborator ).toHaveBeenCalled()
+            done()
+
+
+   Our handler then can implement the accept and decline methods in full.
+
+   ...
+
+   exports.accept = ( robot, res ) ->
+
+            prNumber = res.match[1]
+            url = robot.brain.get( prNumber )
+
+
+            msg = exports.decodePullRequest( url )
+            username = exports.getUsernameFromResponse( res )
+            msg.collabuser = username
+
+
+            _GITHUB.repos.getCollaborator msg, ( err, collaborator ) ->
+                    msg.body = "@#{username} will review this (via Probot)."
+
+                    _GITHUB.issues.createComment msg, ( err, data ) ->
+                             unless err
+
+                                     res.reply "Thanks, I've noted that in a PR comment. Review the PR here: "
+                             else
+                                     res.reply "Something went wrong, I could not tag you on the PR comment: #{require('util').insp▯ect( err )}"
+
+   exports.decline = ( res ) ->
+
+
+
+
+                                                                                       281

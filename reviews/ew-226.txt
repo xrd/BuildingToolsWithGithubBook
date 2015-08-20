@@ -1,0 +1,67 @@
+CHAPTER 9: JavaScript and the Git Data API
+
+
+                          mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout', '$firebase', '$firebaseSimpleLogin', function▯( $scope, ghs, Geo, $window, $timeout, $firebase, $firebaseSimpleLogin ) {
+
+                              $scope.init = function() {
+
+                                  var ref = new Firebase( 'https://coffeetech.firebaseio.com' );
+
+                                  $scope.auth = $firebaseSimpleLogin( ref );
+
+                                  $scope.getCurrentLocation( function( position ) {
+                                       $scope.latitude = position.coords.latitude;
+
+
+                          Then, when we annotate, we need to provide the auth token returned from
+                       Firebase. But, it is gratifying to see that little else needs to change in our flow.
+
+
+                          $scope.annotate = function( shop ) {
+                              $scope.shopToAnnotate = shop;
+
+                              $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) {
+
+
+                                  $scope.me = user;
+                                  $scope.username = user.name;
+
+
+                                  $scope.annotation = $window.prompt( "Enter data to add" );
+
+                                  if( $scope.annotation ) {
+                                       gh = ghs.create( $scope.me.accessToken );
+                                       toFork = gh.getRepo( "xrd", "spa.coffeete.ch" );
+
+                                       toFork.fork( function( err ) {
+
+
+                          We call the$login  method on our auth object created using the Firebase
+                          SimpleLogin service. It returns a “promise” which is an interface that has a
+
+                          then() method, which will be called if th$login()  succeeds. then() calls
+                          our callback function, giving us a user object.
+
+
+                          We still need to prompt the user for one piece of information, the data to an-
+                          notate. You can imagine other ways to get this information, using modal
+
+                          HTML5 dialogs, but this will work for us for right now. At least we are only
+                          prompting once instead of three times!
+
+
+                          Once we are ready to fork we need to create our user object using the token.
+
+                          After we make these changes, we can click the “Add factoid” button and
+
+                       we’ll get a dialog like this one indicating we are logging into GitHub (via the
+                       Firebase SimpleLogin).
+
+
+
+
+
+
+
+
+       226

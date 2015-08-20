@@ -1,0 +1,67 @@
+                                                                              Activities API Overview
+
+
+Using the oAuth token to register for events
+
+Once this is completed we now have our token which we can use to create a
+
+webhook. Make sure to use the correct repository name and access token be-
+fore running the cURL command. We will also need the endpoint that we cre-
+
+ated when we published into Heroku (in our case          https://inqry-
+chatbot.herokuapp.com    )
+
+
+   $ REPOSITORY=testing_repostory
+   $ TOKEN=ad5a36c3b7322c4ae8bb9069d4f20fdf2e454266
+   $ WEBHOOK_URL=https://inqry-chatbot.herokuapp.com/pr
+   $ CONFIG=$(echo '{
+
+     "name": "web",
+     "active": true,
+     "events": [
+       "push",
+       "pull_request"
+
+     ],
+     "config": {
+       "url": "'$WEBHOOK_URL'",
+       "content_type": "form",
+
+       "secret" : "XYZABC"
+     }
+   }')
+   $ curl -H "Authorization: token $TOKEN" \
+   -H "Content-Type: application/json" -X POST \
+
+   -d "$CONFIG" https://api.github.com/repos/$USERNAME/$REPOSITORY/hooks
+   {
+     "url": "https://api.github.com/repos/xrd/testing_repostory/hooks/3846063",
+     "test_url":
+     "https://api.github.com/repos/xrd/testing_repostory/hooks/3846063/test",
+
+     "ping_url":
+     "https://api.github.com/repos/xrd/testing_repostory/hooks/3846063/pings",
+     "id": 3846063,
+     "name": "web",
+     "active": true,
+
+     "events": [
+       "push",
+       "pull_request"
+     ],
+     "config": {
+
+       "url": "https://inqry-chatbot.herokuapp.com/pr",
+       "content_type": "json"
+     },
+     "last_response": {
+       "code": null,
+
+       "status": "unused",
+       "message": null
+
+
+
+
+                                                                                      253

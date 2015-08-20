@@ -1,0 +1,68 @@
+CHAPTER 5: Python and the Search API
+
+
+
+ FIGURE 5-2
+
+ Login UI
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                           Once the user logs in, they’ll be shown a search box. Typing in a search query
+                        and hitting enter will result in a scrollable list of search results, with titles and
+
+                        the first line of the description. Clicking on a search result opens the issue in the
+                        user’s browser.
+
+                           That’s about it. This application only has two main screens from the user’s
+                        point of view. It’s a simple, focused tool to solve a very tightly-defined problem,
+                        so the code shouldn’t be too hard.
+
+
+
+                        Python
+
+
+                        Now that we know how the program should act, let’s decide how it should
+
+                        work.
+                           We’ll use Python for our implementation language, for several reasons. First,
+
+                        because we haven’t yet seen it in this book, and we like to expose you to a wide
+                        variety of languages. One of our goals is to help the reader explore technologies
+                        they might not have seen before.
+
+                           Secondly, there’s a library for building GUI applications that run without
+                        modification on Mac OS X, Linux, and Windows. Surprisingly, this is fairly
+
+                        unique feature among modern high-level programming languages. If you want
+                        this capability elsewhere, you usually have to use a high-complexity frame-
+
+                        work, a lower-level language like C++, or both.
+                           Thirdly, this will help make it easy to distribute. Python has a package avail-
+                        able which There exists a Python package which bundles an entire Python pro-
+
+                        gram and all of its dependencies into a single file (.app  bundle on OS X). So
+                        giving this program to a colleague is as easy as emailing her a ZIP file.
+
+                           Let’s take a quick look at the libraries we’ll be using in our application’s
+                        code. We’ll see them in action later on, but a quick overview will help you un-
+
+
+
+
+
+        84

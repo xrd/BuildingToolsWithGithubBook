@@ -1,0 +1,68 @@
+CHAPTER 10: CoffeScript, Hubot and the Activities API
+
+
+                               al and requires configuration. The brain is they way you set and get values
+                               which are saved across discrete messages.
+
+                             • Hubots have different respose mechanisms. They can choose to respond
+                               only when they hear exact phrases or when keywords are found in any
+
+                               message, and you don’t need to do the grunt work inside your code to
+                               determine the differences between these communication types.
+
+                             • Hubots include an HTTP server. You might need your Hubot to accept re-
+                               quests from additional services beyond the chat service, and Hubot
+
+                               makes it easy to accept these kinds of requests.
+
+                             • Hubot has a built in HTTP client. You can easily access HTTP resources
+                               within Hubot; many popular extensions to Hubot access a web service
+
+                               when Hubot receives a request.
+                             • Hubot commands can include parameters. You can tell a Hubot to do
+
+                               something multiple times and write a generic function which accepts op-
+                               tions.
+
+                             • Hubots can handle events. Each chat service has a generalized set of
+                               events that are normalized to a common API. Hubots can be programmed
+
+                               to interact with these events. For example, Hubots can perform actions
+                               when a room topic changes or when users leave rooms.
+
+                             • Hubots can handle generic errors at the top level. Hubot can be program-
+
+                               med with a catch-all error handler so that no matter where you code
+                               failed, you can catch it without crashing your bot.
+
+                            Probot will use the first five of these features:
+
+                             • We will use the Hubot brain to store a PR review request. If Probot asks a
+
+                               user to review a PR, it needs to keep track of this so that when the user
+                               responds it has some context of the request.
+
+                             • We will use the respond method to program our Hubot to handle a re-
+                               quest when a user accepts or declines the review request.
+
+                             • We will use the HTTP server to accept PR notifications from GitHub web-
+
+                               hooks.
+                             • We will use the HTTP client to get a list of users from Slack.
+
+                             • We will use the parameterization of requests to Hubot to retrieve the spe-
+
+                               cific pull request ID from a chat user message.
+
+                            There are examples of the other two features (events and generic errors) in-
+                         side the examples script that ship with the Hubot source code but we won’t use
+
+                         those APIs in our Probot.
+
+
+
+
+
+
+
+        246

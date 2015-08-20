@@ -1,0 +1,69 @@
+                                                                  Building a Coffee Shop Database on GitHub
+
+
+   $ printf "<html>\n<body>Hello from CoffeeTe.ch</body>\n</html>\n" > index.html
+   $ git commit -m "Add starting point index.html" -a
+   $ git config push.default gh-pages
+
+
+   Notice that we created a new repository, and then created and entered the
+gh-pages branch. We’ll do all our work there. And, by using the git config com-
+
+mand, we specified that we want the default push branch to be gh-pages. This
+allows us to use git push    to push our branch up instead of the longer   git
+
+push origin gh-pages     .
+
+
+MAPPING HOSTNAMES
+
+
+Once we publish these files into GitHub inside a repository we can connect the
+repository to a real hostname. There are two steps to take to do this:
+
+    • Add a CNAME file which tells GitHub under which server name this service
+
+      should resolve.
+
+    • Setup DNS records so that the hostname maps to the correct IP address
+      at GitHub.
+
+   Imagine you have the hostname myspecialhostname.com. If you map this
+
+repository to a subdomain called coffeetech, then you would do something like
+this.
+
+
+   $ echo 'coffeetech.myspecialhostname.com' > CNAME
+   $ git commit -m "Added CNAME mapping" -a
+
+   $ git push
+
+   Remember that you need to wait about ten minutes before GitHub regener-
+
+ates their database to establish the connection between your gh-pages site and
+the mapping on their front end servers. This is only the first time you connect a
+
+repository to a hostname; you will see subsequent changes almost instantane-
+ously.
+
+
+     Generally it takes several hours to even a few days to propagate DNS set-
+     tings out into the wild, so make sure you choose and setup a hostname
+
+     far in advance if your site has to be live by a certain point.
+
+
+   Now we can install the libraries needed for this application.
+
+
+
+
+
+
+
+
+
+
+
+                                                                                           193

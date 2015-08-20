@@ -1,0 +1,68 @@
+CHAPTER 10: CoffeScript, Hubot and the Activities API
+
+
+                      cure hash GitHub provides inside the request headers. Then, we will need to
+                      calculate the hash ourselves using the secret we maintain internally. If these
+
+                      hashes match, then we know the incoming request and JSON is truly from Git-
+                      Hub and not an attacker.
+
+
+                         ...
+                         getSecureHash = (body, secret) ->
+                                  hash = crypto.
+                                           createHmac( 'sha1', secret ).
+
+                                           update( "sha1=" + body ).
+                                           digest('hex')
+                                  console.log "Hash: #{hash}"
+                                  hash
+
+
+                         exports.prHandler = ( robot, req, res ) ->
+                                  slack_users_url =
+                                           "https://slack.com/api/users.list?token=" +
+                                           process.env.HUBOT_SLACK_TOKEN
+
+                                  body = req.body
+                                  pr = JSON.parse body if body
+                                  url = pr.pull_request.html_url if pr
+                                  secureHash = getSecureHash( body, _SECRET ) if body
+                                  webhookProvidedHash = req.headers['HTTP_X_HUB_SIGNATURE' ] if req?.headers
+
+                                  secureCompare = require 'secure-compare'
+
+                                  if secureCompare( secureHash, webhookProvidedHash ) and url
+                                           room = "general"
+
+                                           robot.http( slack_users_url ) ->
+                                                   .get() (err, response, body) ->
+                                                            sendPrRequest( robot, body, room, url ) unless err
+                                  else
+                         ...
+
+
+                         HMAC cryptography is vulnerable to timing attacks. When you use this en-
+                      cryption technique, the time it takes to complete a comparison of the compu-
+
+                      ted hash and the sent hash can be the starting point for an attacker to gain
+                      forced access to a server. More specifically to JavaScript, when using naive
+
+                      comparison operators like ==  you can accidentally provide attackers with val-
+                      uable information. To eliminate this risk, we use a module called secure-
+
+                      compare that obscures this timing information when making a comparison. To
+                      load this module, we need to add it to our package.json manifest file with the
+
+                      command    npm install secure-compare --save       .
+                         Now we can adjust our tests to fit the new reality of our handler.
+
+
+                         ...
+                         it "should disallow calls without the secret and url", (done) ->
+                                  req = {}
+
+
+
+
+       268

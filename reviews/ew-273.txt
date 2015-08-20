@@ -1,0 +1,67 @@
+                                                                                 Activities API Overview
+
+
+around it. If the PR the attacker used was fake, it might confuse our Probot, but
+no real harm would be done. If they used an existing real PR, an attacker could
+trick our Probot into adding data to the PR, adding confusion in the comments
+
+about who accepted the review request. We won’t solve that potential problem
+with this code, but you can imagine adding code to our Probot that handles a
+
+case like this (for example, by checking first to see if someone was already tag-
+ged on the PR, and ignoring successive incoming webhooks associated with
+
+that PR).
+
+
+RESPONDING TO THE PR REQUEST
+
+Our Probot is now programmed to generate a pull request review message and
+send it to a random user. What happens when they respond? They can respond
+
+in two ways obviously: accepting the request or declining the request. We put
+placeholders in our Probot extension to notify us with a debugging message
+
+when the user responds and send a message back to whoever sent us a mes-
+sage, but now we can actually wire up handling the response and adding to the
+
+pull request on GitHub based on the user who we are interacting with (provided
+they accepted).
+   There are multiple ways in which a Hubot can interact with chat room mes-
+
+sages. We chose the respond  method, but there is another method hear  which
+
+we could have used.  respond  is used when the message is preceeded by the
+Hubot name, so only messages that look like    probot: accept    or @probot
+
+decline  or / accept  (if the Hubot name alias is enabled) will be processed by
+our Probot. We could have used  hear but in our case we are processing a sim-
+
+ple response, and without a clear direction for the message, it would be difficult
+to always make sure we were interpreting the message in the correct context.
+respond  makes more sense here.
+
+   If they decline the request, there are a few options for what we could do. We
+could publicly shame the user inside the channel. This seems counter to a cul-
+
+ture which supports creative individuals like software engineers, so let’s not do
+that. We could ask another user in the slack channel to help. This is a better
+
+option. It will require modification to our code, but these modifications don’t
+involve anything new inside the Hubot API and are a little tedious to explain. If
+you review the source code for the Probot repository that accompanies this
+
+chapter hosted on GitHub, you’ll see a working version of decline that performs
+this second option. For purposes of this chapter, let’s just graciously note that
+
+the offer was declined.
+
+   ...
+
+   exports.decline = ( res ) ->
+            res.reply "No problem, we'll go through this PR in a bug scrub"
+
+
+
+
+                                                                                         273

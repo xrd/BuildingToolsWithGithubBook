@@ -1,0 +1,67 @@
+CHAPTER 6: DotNet and the Commit Status API
+
+
+                          Next, we have to include our application’s ID and secret in some of the re-
+                       quests, so we embed them in the code by adding these fields to the   Handler
+
+                       class. If you don’t have an application, visit https://github.com/settings/devel-
+                       opers to create one and use  http://localhost:8080/authorize         (depend-
+                       ing in your environment, the port number might be slightly different) for the
+
+                       callback URL – we’ll see why in a bit.
+
+
+                                   private const string clientId = "<clientId>";
+                                   private const string clientSecret = "<clientSecret>";
+
+                          Obviously, you should use values from your own API application if you’re fol-
+
+                       lowing along.
+                          After that, we’ll need a helper method that kicks off the OAuth process:
+
+
+                          private Response RedirectToOAuth()
+                          {
+                               var csrf = Guid.NewGuid().ToString();
+
+                               Session["CSRF:State"] = csrf;
+                               Session["OrigUrl"] = this.Request.Path;
+
+                               var request = new OauthLoginRequest(clientId)
+                                   {
+
+                                       Scopes = { "repo:status" },
+                                       State = csrf,
+                                   };
+                               var oauthLoginUrl = client.Oauth.GetGitHubLoginUrl(request);
+
+                               return Response.AsRedirect(oauthLoginUrl.ToString());
+                          }
+
+
+                          CSRF stands for “cross-site request forgery.” This is a mechanism by which
+                          we can be sure the OAuth request process really did originate from our site.
+
+                          The GitHub OAuth API will pass this value back to us when the user author-
+                          izes access, so we store it in the cookie for later reference.
+
+
+                          Storing the original URL in the session cookie is a UX feature; once the OAuth
+                          process has completed, we want to send the user back to what they were
+
+                          trying to do in the first place.
+
+
+                          repo:status   is the permission set we’re asking for. Note that we’re also in-
+                          cluding our CSRF token in this object; this is so GitHub can give it back to us
+                          later for verification.
+
+
+                          Here we use Octokit to generate the redirect URL, and send the user’s brows-
+
+                          er there.
+
+
+
+
+        112

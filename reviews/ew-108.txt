@@ -1,0 +1,71 @@
+CHAPTER 6: DotNet and the Commit Status API
+
+
+                        this is a newer version of MonoDevelop with more capabilities, and will work
+
+                        just as well for these examples.
+                           There are no Nancy-specific project templates for these IDEs, so you’ll just
+
+                        start with an empty web project. Go to “File>New>Solution…”, and choose
+                        “ASP.NET>Empty ASP.NET Project” from the template chooser, as shown in
+
+                        Figure 6-3.
+
+
+
+ FIGURE 6-3
+
+ Creating an empty
+
+ ASP.NET application
+ in Xamarin Studio
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                           The rest of the wizard steps are about the project name and location; feel
+                        free to name and locate this project however you like.
+
+                           Next, update the target framework setting. Control- or right-click on the
+                        node in the solution explorer that corresponds with your project (not your solu-
+
+                        tion), and select “Options” from the menu. Under “Build>General,” set the Tar-
+                        get Framework to “Mono / .NET 4.5” (or later) and click OK.
+
+                           Lastly, install the Nancy and Octokit NuGet packages. Go to “Project>Add
+                        NuGet Packages…” in the menu to open the package manager. Search for Nan-
+
+                        cy, check the box next to it, search for Octokit, check its box, and click “Add
+                        Packages” at the bottom right. Once the process is complete, your project is
+
+                        ready for our example code. To run it under the debugger, go to “Run>Start De-
+                        bugging…,” or type ⌘-Enter. Xamarin will start the server and open a browser
+
+                        window to http://127.0.0.1:80080 (possibly with a different port), which at this
+                        point will just show the default “404 Not Found” page.
+
+
+
+
+        108

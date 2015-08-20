@@ -1,0 +1,69 @@
+                                                                                A Jekyll Blog in 15 Minutes
+
+
+     The jekyll new command does not create or initialize a new git repository
+
+     for you with your files. If you want to do this, you will need togite the
+     init command. The jekyll initialization command does create the proper
+     structure for you to easily add all files to a git repositorygitust use
+
+     add .; git commit and your gitignore file will be added and configure
+     your repository to ignore unnecessary files like_sitedirectory.
+
+
+   All your blog posts are stored in th_posts  directory. Jekyll sites are not re-
+
+quired to have a  _posts  directory (you can use jekyll with any kind of static
+site) but if you do include files in this directory jekyll handles them in a special
+
+way. If you look in the_posts  directory now, you see that the jekyll initializa-
+tion command has created your first post for you, something like      _posts/
+
+2014-03-03-welcome-to-jekyll.Markdown          . These posts have a special
+naming format: the title of the post (with any whitespace replaced with hy-
+
+phens) trailed by the date and then an extension (either .Markdown   or .md for
+Markdown files, or .textile  for Textile)
+
+   Your new jekyll blog also comes with a few HTML files: an  index.html    file
+which is the starting point for your blog, and several layout files which are used
+
+as wrappers when generating your content. If you look in the_layouts   directo-
+
+ry, notice there is a file namedefault.html   and another named    post.html  .
+These files are the layout files, files which are wrapped around all generated
+content, like those from your Markdown formatted blog posts. For example, the
+
+post.html   file is wrapped around the generated content of each file stored in-
+
+side the _posts  directory. First the markup content is turned into HTML and
+then the layout wrapper is applied. If you look inside each of the files inside the
+
+_layouts    directory, you will see that each contains a placeholder with
+{{ content }}    . This placeholder is replaced with the generated content from
+
+other files.
+   These placeholders are actually a markup language on their own: “Liquid
+
+Templating.” Liquid Templating (or Liquid Markup) was developed and open
+sourced by Shopify, and is a safe way to include programmatic constructs (like
+loops and variables) into a template, without exposing the rendering context to
+
+a full fledged programming environment. Shopify wanted to build a way for un-
+trusted users of their public facing systems to upload dynamic content but not
+
+worry that the markup language would permit malicious activity; for example,
+given a full fledged embedded programming language, they would open them-
+
+selves to attack if a user wrote code to open network connections to sites on
+their internal networks. Templating languages like PHP or ERB (embedded ruby
+
+templates, popular with the Ruby on Rails framework) allow fully embedded
+code snippets and while this is very powerful when you have full control over
+
+your source documents, it can be dangerous to provide a mechanism where
+
+
+
+
+                                                                                           121

@@ -1,0 +1,67 @@
+                                                                                             The API
+
+
+that do need to be able to look at the repository contents, you can request the
+
+repo  scope, which grants read and write access to the entire contents of a
+repository, including commit statuses. As of this writing, there’s no way to re-
+
+quest read-only access to repositories, so if a service needs access to your data,
+you have to trust it with write access also.
+
+
+Raw statuses
+
+
+Now that we know how we get access to commit statuses, let’s see what they
+
+look like. Commit statuses exist as atomic entities, and each commit can have a
+practically unlimited number of them (the actual number is in the thousands).
+You can query for existing statuses by doing a GET request to the API serve/ at
+
+repos/<user>/<repo>/<ref>/statuses        , and it will return a list of them that
+looks like this:
+
+
+   [
+     {
+       "url": "https://api.github.com/repos/…",
+
+       "id": 224503786,
+       "state": "success",
+       "description": "The Travis CI build passed",
+       "target_url": "https://travis-ci.org/libgit2/libgit2/builds/63428108",
+       "context": "continuous-integration/travis-ci/push",
+
+       "created_at": "2015-05-21T03:11:02Z",
+       "updated_at": "2015-05-21T03:11:02Z"
+     },
+     …
+   ]
+
+
+   Most of this is self-explanatory, but a couple of fields need explaining. The
+state  field can be “success,” “failure,” “error,” or “pending,” depending on the
+
+state of the service’s decision. Thtarget_url   is a URL for the specific deci-
+sion made for this commit (in this case a build/test log), which helps the user
+
+figure out why a particular decision was reached. And thecontext   parameter
+is used for correlating multiple status updates to a single service; each applica-
+
+tion sets this according to its own rules, but any process that creates statuses
+should post the pending   status and the result status using the same context
+value.
+
+   This API is useful for getting the raw data involved, but it gets complicated
+quickly. How do you decide if a given commit is “good?” What if there are 3
+
+pending statuses, one success, another pending, two failures, and another suc-
+cess, in that order? Thecontext  field can help you correlate a single service’s
+
+
+
+
+
+
+                                                                                         103

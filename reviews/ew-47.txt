@@ -1,0 +1,67 @@
+                                                                                 Gists that render Gists
+
+
+     user = Octokit.user username
+     count = user.public_gists
+     erb :index, locals: { :count => count }
+   end
+
+
+   Our filesystem should look like this, with three files.
+
+   $ ls -1
+
+   Gemfile
+   hi.rb
+   index.erb
+
+
+   Run bundle  to install octokit and restart Sinatra by running ctrl-c, and then
+ruby hi.rb   . If you vishttp://localhost:4567/xrd      in your browser, you
+
+will see the count of public gists for uxrd ; modify the username in the URL
+to any specify any GitHub username and you will see their last five gists dis-
+
+played.
+
+
+
+                                                                                FIGURE 3-1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Going deeper into the Gist API
+
+The GitHub API uses hypermedia instead of basic resource driven APIs. If you
+
+use a client like Octokit, the hypermedia details are hidden behind an elegant
+ruby client. But, there is a benefit to understanding how hypermedia works
+
+when you need to retrieve deeper information from the GitHub API.
+   Most RESTful APIs come with a “sitemap”, generally a API reference docu-
+ment which tells a user which endpoints to use. You view the resources avail-
+
+able from that API and then apply some HTTP verb to do something to them.
+Hypermedia thinks of an API differently. Hypermedia APIs describe themselves
+
+inside their responses using “affordances.” What this means is that the API
+might respond like this:
+
+
+
+
+
+
+                                                                                         47

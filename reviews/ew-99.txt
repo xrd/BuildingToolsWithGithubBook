@@ -1,0 +1,67 @@
+                                                                                               Summary
+
+
+GUI applications using Python, with code that’s no harder to write than with
+other toolkits, and get the ability to run on every major platform for free.
+
+   We saw how to ask Git for credentials to a Git server usingit credential    .
+This feature is quite capable, and includes the ability to write a custom creden-
+tial storage back-end, but we at least saw a peek into how it works. Using this
+
+knowledge, you can piggy-back on your users’ existing habits to avoid having to
+ask them for the same things over and over again.
+
+   We also saw a rather nice HTTP API abstraction with   agithub  . We authenti-
+cated and queried the issue-search API endpoint, using what looked like object-
+
+method notation.  agithub   is a great example of how a library package can be
+both future-proof and idiomatic – the library constructs a query URL by looking
+
+at the chain of properties and methods used in the call. This is a great jumping-
+off point for querying other REST APIs using the same pattern.
+   Finally, the main thrust of this chapter was using the GitHub search API.
+
+You’ve learned about its general behavior, the different categories of search,
+how to interpret and sort results, and ways of focusing a search to reduce the
+
+number of uninteresting results. Using this knowledge you should be able to
+find anything you’re looking for on GitHub or GitHub Enterprise. You also know
+that the search UI on GitHub is just a thin layer over the search API, so the same
+
+tricks and techniques will serve you whether you’re writing code or using a
+browser.
+
+   In the next chapter we will look at using DotNET with the Commit Status API.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                              99

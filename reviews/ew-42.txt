@@ -1,0 +1,68 @@
+CHAPTER 3: Gists and the Gist API
+
+
+                        onto the publicly facing web page). And, you can “fork” gists, just like any other
+                        repository.
+
+                           You are allowed to branch within gist repositories; however, branches are
+                        not displayed inside of gist.github.com. But, if you need the benefits of branch-
+                        ing when using GitHub gists you can branch normally inside a repository and
+
+                        keep the branch information on the upstream repository after you push it up.
+                           You can have an unlimited number of public and secret gists. Instead of cre-
+
+                        ating a new private repository from your limited amount in a paid GitHub ac-
+                        count, you can take a tiny bit of code and make a secret gist, sharing this with
+
+                        others through a URL instead of the more onerous process of adding collabora-
+                        tors to a regular repository. Or, you can make a gist public, and share that URL
+
+                        to mailing lists or anywhere you need public feedback.
+
+
+                             As there are two types of gists (public and secret), it is important the un-
+                             derstand the differences between them. Public gists are searchable. Se-
+                             cret gists are not searchable, but they are accessible to anyone who
+                             knows the URL. Don’t post any code to gist which you need to keep secret
+                             as once you put it there, it is only as safe as the URL is secret.
+
+
+
+                           Most people share gists through the URL. But, you can embed gists inside of
+                        other contexts (like blogs) and get a simple and pretty snippet of code.
+
+
+                        Embedding Gists Inside HTML
+
+
+                        To embed inside of an HTML page look for the “Embed this gist” box to the left
+
+                        of a gist. Copy the code listed there (which will look something like <script
+                        src="https://gist.github.com/xrd/8923697.js"></script>                     and
+
+                        paste it into your HTML.
+                           If you wish to include only a particular file from the Gist (if it contains multi-
+
+                        ple files), then ad?file=hi.rb    to the end of the URL specified in the src at-
+                        tribute.
+
+
+
+                        Embedding Inside Jekyll blogs
+
+                        Though we have not yet explained how Jekyll works (the GitHub blogging tool),
+
+                        it seems valid to point out the ease in which you can publish gists into a blog if
+                        that blog happens to be Jekyll hosted on GitHub.
+
+                           Jekyll supports a fast shortcut code to embed a public gist inside of your Je-
+                        kyll blog hosted on GitHub, or on any site built on the “github-pages” branch
+
+                        mechanism (described in the Chapter 7 chapter). The shortcut         {% gist
+
+
+
+
+
+
+        42

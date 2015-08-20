@@ -1,0 +1,69 @@
+                                                                             A Jekyll Blog in 15 Minutes
+
+
+
+                                                                                FIGURE 7-2
+
+                                                                                A sample post
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   Our jekyll initialization command created this new post for us. This page is
+
+backed by the Markdown file inside the _posts directory which we saw earlier.
+
+
+   ---
+   layout: post
+   title: "Welcome to Jekyll!"
+   date:    2014-03-03 12:56:40
+   categories: jekyll update
+
+   ---
+
+   You'll find this post in your `_posts` directory - edit this post and re-build (or run with the `-w` switch) to see your chang▯es!
+   To add new posts, simply add a file in the `_posts` directory that follows the convention: YYYY-MM-DD-name-of-post.ext.
+
+
+   Jekyll also offers powerful support for code snippets:
+
+   {% highlight ruby %}
+
+   def print_hi(name)
+     puts "Hi, #{name}"
+   end
+   print_hi('Tom')
+   #=> prints 'Hi, Tom' to STDOUT.
+
+   {% endhighlight %}
+
+
+
+
+
+                                                                                       123

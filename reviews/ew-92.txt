@@ -1,0 +1,67 @@
+CHAPTER 5: Python and the Search API
+
+
+                                  self.passLabel = wx.StaticText(self, label='Password (or token):')
+                                  self.passBox = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
+                                  self.login = wx.Button(self, label='Login')
+                                  self.error = wx.StaticText(self, label='')
+                                  self.error.SetForegroundColour((200,0,0))
+
+
+                                  # Bind events
+                                  self.login.Bind(wx.EVT_BUTTON, self.do_login)
+                                  self.userBox.Bind(wx.EVT_TEXT_ENTER, self.do_login)
+                                  self.passBox.Bind(wx.EVT_TEXT_ENTER, self.do_login)
+
+
+                             def do_layout(self):
+                                  # Grid arrangement for controls
+                                  grid = wx.GridBagSizer(3,3)
+                                  grid.Add(self.userLabel, pos=(0,0),
+
+                                           flag=wx.TOP | wx.LEFT | wx.BOTTOM, border=5)
+                                  grid.Add(self.userBox, pos=(0,1),
+                                           flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+                                  grid.Add(self.passLabel, pos=(1,0),
+                                           flag=wx.TOP | wx.LEFT | wx.BOTTOM, border=5)
+
+                                  grid.Add(self.passBox, pos=(1,1),
+                                           flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+                                  grid.Add(self.login, pos=(2,0), span=(1,2),
+                                           flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+                                  grid.Add(self.error, pos=(3,0), span=(1,2),
+
+                                           flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+                                  grid.AddGrowableCol(1)
+
+                                  # Center the grid vertically
+                                  vbox = wx.BoxSizer(wx.VERTICAL)
+
+                                  vbox.Add((0,0), 1)
+                                  vbox.Add(grid, 0, wx.EXPAND)
+                                  vbox.Add((0,0), 2)
+                                  self.SetSizer(vbox)
+
+
+                             def do_login(self, _):
+                                  u = self.userBox.GetValue()
+                                  p = self.passBox.GetValue()
+                                  g = Github(u, p)
+                                  status,data = g.issues.get()
+
+                                  if status != 200:
+                                      self.error.SetLabel('ERROR: ' + data['message'])
+                                  elif callable(self.callback):
+                                      self.callback(u, p)
+
+
+                         There’s some structure that’s similar to above. We’ll start with the construc-
+                      tor.
+
+                         Recall that this panel is created with a keyword argument in thSearch-
+                      Frame  class, likLoginPanel(self, onlogin=self.login_accepted)         . In
+
+
+
+
+       92

@@ -1,0 +1,68 @@
+                                                              Conditional Requests to Avoid Rate Limitations
+
+
+    • Server returns an ETag header for a version of a content item.
+
+    • Your server includes this ETag in all subsequent requests.
+         ◦ If the server has a newer version it returns new content + a new
+
+            ETag
+         ◦ If the server doesn’t have a newer version it returns an HTTP 304
+
+
+   The following command listing demonstrates to commands. The first curl
+call to the GitHub API generates an ETag value, and the second value passes this
+
+ETag value as an If-None-Match header. You’ll note that the second response is
+an HTTP 304 which tells the caller that there is no new content available.
+
+
+   $ curl -i https://api.github.com/repos/twbs/bootstrap
+   HTTP/1.1 200 OK
+   Cache-Control: public, max-age=60, s-maxage=60
+   Last-Modified: Sun, 11 Aug 2013 20:25:37 GMT
+
+   ETag: "462c74009317cf64560b8e395b9d0cdd"
+
+   {
+     "id": 2126244,
+     "name": "bootstrap",
+
+     "full_name": "twbs/bootstrap",
+     ....
+   }
+
+
+   $ curl -i https://api.github.com/repos/twbs/bootstrap \
+              -H 'If-None-Match: "462c74009317cf64560b8e395b9d0cdd"'
+
+   HTTP/1.1 304 Not Modified
+   Status: 304 Not Modified
+
+   Cache-Control: public, max-age=60, s-maxage=60
+   Last-Modified: Sun, 11 Aug 2013 20:25:37 GMT
+   ETag: "462c74009317cf64560b8e395b9d0cdd"
+
+
+   If you are developing an application that needs to make a significant num-
+ber of requests to the GitHub API over a long period of time, you can use a cach-
+
+ing HTTP proxy like Squid to take care of automatically caching content, storing
+content alongside ETags, and injecting the “If-None-Match” header into GitHub
+API requests. If you do this, you’ll be automating the injection of conditional
+
+headers and helping to reduce the overall load on the GitHub API.
+   Use of conditional request headers is encouraged to conserve resources and
+
+make sure that the infrastructure that supports GitHub’s API isn’t asked to gen-
+erated content unnecessarily.
+
+   You might now be wondering: what are my rate limits and when should I
+care about them?
+
+
+
+
+
+
+                                                                                          33

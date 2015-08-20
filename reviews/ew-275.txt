@@ -1,0 +1,67 @@
+                                                                                Activities API Overview
+
+
+handler works correctly with an accept  and decline   method (they don’t yet
+exist in our handler code so we’ll add them next).
+
+   Our accept request handler has code which triggers our Probot to contact
+GitHub and add a comment to the pull request noting our targetted chat user
+accepted the request, and the network connection to the GitHub API is done
+
+through the GitHub API bindings on the   node-github    module. We want to
+make this testable, so we should pass in the GitHub binding object inside our
+
+interface, and during the test, pass in a mocked object. If we review the docu-
+mentation for thecreateComment    in the GitHub API binding, we see it requires
+
+information about the repository such as the user or organization which owns
+the repository, the repository name, the issue number (pull requests also are
+
+referenced by issue numbers) and the comment itself. To get this information
+we simply need to decode it from the Probot handler which receives the pull
+request information, and we will add code which does this (and is exposed in
+
+our handler for testing). We saw that a pull request comes in through a large
+JSON response, and we can use the URL we used earlier as the way we decode
+
+this information. So, we’ll need to have two more tests inside ou#response
+block, one for the decoding of the URL into a message object, and another to
+
+retrieve the username which we insert into the comment stored in the pull re-
+quest on the repository. We know what our test URL looks like since we saw it in
+our PR webhook message, but we don’t yet have the structure of the chat mes-
+
+sage from which we can pull out our username, so our test will need to be ad-
+justed when we know what it really looks like.
+
+   Declining the request means nothing happens. If we mock out our GitHub
+API binding, acceptance should login (using the authenticate   method) and
+
+then callcreateComment   . These are directly pulled from the GitHub API No-
+deJS documentation. Finally, we should record the result of this operation in-
+
+side the chat room which happens using the reply method on our response ob-
+ject.
+
+
+   ...
+   describe "#response", ->
+            createComment = jasmine.createSpy( 'createComment' ).and.
+                    callFake( ( msg, cb ) -> cb( false, "some data" ) )
+            issues = { createComment: createComment }
+
+            authenticate = jasmine.createSpy( 'ghAuthenticate' )
+            responder = { reply: jasmine.createSpy( 'reply' ),
+            send: jasmine.createSpy( 'send' ) }
+
+
+            beforeEach ->
+                    githubBinding = { authenticate: authenticate, issues: issues }
+                    github = Handler.setApiToken( githubBinding, "ABCDEF" )
+                    req = { body: '{ "pull_request" : { "url" : "http://pr/1" }}', headers: { "HTTP_X_HUB_SIGNATURE" : "cd970490d83c▯01b678fa9af55f3c7854b5d22918" } }
+                    Handler.prHandler( robot, req, responder )
+
+
+
+
+                                                                                        275

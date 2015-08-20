@@ -1,0 +1,76 @@
+                                                                                      Activities API Overview
+
+
+ble to understand what is happening inside of our Probot without running
+
+against the real Probot and not a test harness.
+
+
+ASSIGNING AN ACTIVE CHAT ROOM USER
+
+
+Now that we have an incoming pull request (albeit one which we are faking), we
+
+need to write the code to find a random user and assign them to the pull re-
+
+quest.
+
+
+     This next section is redundant; our Probot will function exactly as we
+     need it to if you were to disregard any code from this section. As I was
+
+     writing this book, I mistakenly missed the fact that the Hubobraincon-
+     tains a list of users and found another avenue to getting that data, the
+     Slack API. I wrote the chapter using the Slack API, and then discovered
+
+     my mistake. Initially I planned to remove this entire section. However, it
+     does demonstrate the ease of using an external service through the built
+     in HTTP client, which is a powerful feature of Hubot. And, it also demon-
+
+     strates how powerful tests aid you when developing a Hubot extension; I
+     was able to refactor to use a radically different internal code path for get-
+     ting the list of users and maintain faith that the end to end process of my
+
+     code works by refactoring and then fixing broken tests. And, though not
+     important for this section per se, the Slack API provides much richer data
+
+     on the users logged into a room, which could be valuable in other situa-
+     tions. If you want to skip to the next section, you will have all the code to
+     build our Probot as we described earlier. But, I think it is a worthwhile
+
+     read for general Hubot understanding.
+
+
+   To find a user in the room, one option is to go outside the Hubot API and use
+
+the Slack.com API to query for a list of users. The Slack.com API provides an
+endpoint giving you all users currently in a room. To access the Slack.com API,
+
+we will use the built in Hubot HTTP client. Once we have the the list of mem-
+bers in the room we can look over this list and randomly choose a member and
+
+deliver the PR request to them.
+
+
+   _SECRET = undefined
+
+
+   anyoneButProbot = (members) ->
+            user = undefined
+
+            while not user
+                      user = members[ parseInt( Math.random() * members.length ) ].name
+                      user = undefined if "probot" == user
+
+            user
+
+   sendPrRequest = ( robot, body, room, url ) ->
+
+            parsed = JSON.parse( body )
+            user = anyoneButProbot( parsed.members )
+
+
+
+
+
+                                                                                              261

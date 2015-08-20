@@ -1,0 +1,67 @@
+CHAPTER 5: Python and the Search API
+
+
+                            "items": [
+
+                              {
+                                "login": "ben",
+                                "id": 39902,
+                                "avatar_url": "…",
+                                "gravatar_id": "",
+                                "url": "…",
+
+                                "html_url": "…",
+                                …
+                                "score": 98.24275
+                              },
+                              {
+
+                                "login": "bengottlieb",
+                                "id": 53162,
+                                "avatar_url": "…",
+                                "gravatar_id": "",
+                                "url": "…",
+
+                                "html_url": "…",
+                                …
+                                "score": 35.834213
+                              },
+                            ]
+                          }
+
+
+                          The list of items in this case look like the results from a query users/
+
+                       <name>  endpoint. Useful items here are the user’s avatavatar_url   ), several
+                       links to other API endpoints repos_url  ,url ), and the type of result (user or
+
+                       organization, itype ).
+
+
+                       Our example application
+
+
+                       Now that we know a bit about how this API behaves, let’s do something useful
+
+                       with it.
+                          Imagine your development team uses GitHub to store their Git repositories,
+                       and that there are lots of little repositories for parts of the application that work
+
+                       together at runtime. This kind of situation ends up being fairly difficult to work
+                       with for your non-technical colleagues; if they want to report an issue, they
+
+                       don’t know where to go, and they don’t know how to find issues that already
+                       exist.
+                          Search can make this possible, but doing a search across an entire organiza-
+
+                       tion’s repositories involves using user:<organization>     operator, which is
+                       obtusely named, and kind of scary for non-programmers.
+
+                          The Search API can make this a bit easier. Let’s make a GUI application with
+                       just a single search box, which makes it dead simple for a non-technical user to
+
+
+
+
+
+       82

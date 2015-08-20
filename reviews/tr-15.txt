@@ -1,0 +1,51 @@
+                                          Introduction                     2
+
+
+
+
+
+
+
+
+
+The GitHub API is extremely comprehensive, permitting access and modifica-
+tion of almost all data and metadata stored or associated with a Git repository.
+Here is a summary of those sections ordered alphabetically as they are on the
+GitHub API documentation site (https://developer.github.com/v3/):
+
+    • Activity: notifications of interesting events in your developer life
+
+    • Gists: programmatically create and share code snippets
+    • Git Data: raw access to Git data over a remote API
+    • Issues: add and modify issues
+
+    • Miscellaneous: whatever does not fit into the general API categorization
+    •Organizations: access and retrieve organizational membership data
+
+    •Pull Requests: a powerful API layer on the popular merge process
+    •Repositories: modify everything and anything related to repositories
+
+    •Search: code driven search within the entire GitHub database
+    •Users: access user data
+
+    •Enterprise: specifics about using the API when using the private corporate
+     GitHub
+
+   In addition, though not a part of the API, there are other important technolo-
+gies you should know about when using GitHub which are not covered in the
+API documentation:
+
+    •Jekyll: hosting blogs and static documentation
+    •Gollum: wikis tied to a repository
+
+    •Hubot: a programmable chat robot used extensively at GitHub
+
+   With just one or two exceptions, Each of these sections of the GitHub tech-
+nology stack are covered in various chapters. The GitHub API documentation is
+a stellar reference which you will use constantly when writing any application
+that talks to the API, but the chapters in this book serve a different purpose:
+
+
+
+
+                                                                                   15

@@ -1,0 +1,69 @@
+CHAPTER 8: Android and the Git Data API
+
+
+                           $ cd $BLOG_NAME
+                           $ hub create
+                           $ git push -u origin master
+
+
+                           These commands install the correct libraries for using Jekyll (and one for our
+                        tests as well), generate a new blog using the jekyll command line tool, and then
+
+                        create a blog on GitHub with those files. On the second line we specify the
+                        name of the blog; you are welcome to change this to any name you’d like, just
+
+                        make sure the tests match the name.
+
+
+                             When you have finished running these commands, you should close the
+                             terminal window. There are other commands later in this chapter which
+                             should occur in a fresh directory and as such it is best not to run those
+
+                             commands from within the same directory where you created your jekyll
+                             blog. You’ve pushed all those files into GitHub, so you could safely delete
+                             the local repository in this directory.
+
+
+
+                        Android Development Tools
+
+
+                        If you don’t have a physical Android device, don’t fret. You can follow along
+                        with this chapter without having an actual Android device by doing develop-
+
+                        ment and testing on a virtual device.
+
+
+                        Installing the Java SDK
+
+
+                        Unfortunately there is no simple shell command to install Java in the same way
+
+                        as there is for Ruby and NodeJS using RVM or NVM. Oracle controls the Java
+                        language and distribution of official SDKs, and they restrict access to down-
+                        loads other than from java.oracle.com. Java is freely available, but you need to
+
+                        visit java.oracle.com and find the correct download for your needs. Android
+                        works with either the 1.6 or 1.7 versions of Java.
+
+
+
+                        Installing the Android SDK
+
+
+                        Creating AVDs for Development
+
+
+                        Once you have installed the SDK, you can create a virtual device called an AVD
+                        (Android Virtual Device). AVDs are very useful because you can see any screen
+
+                        resolution, any SDK version, and can quickly delete and reset the devices. In ad-
+                        dition, AVDs are created “rooted” by default, which allows you to view the con-
+
+                        tents of all files, a capability which is not available on non-rooted devices. This
+                        makes debugging AVDs much easier because, for example, you can inspect
+
+
+
+
+        162

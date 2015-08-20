@@ -1,0 +1,71 @@
+CHAPTER 7: Ruby and Jekyll
+
+
+                           ...
+
+                                 Regenerating: 1 files at 2014-06-20 12:54:52 ...done.
+                                 Regenerating: 2 files at 2014-06-20 12:55:03 ...done.
+                                 Regenerating: 1 files at 2014-06-20 12:55:15 ...done.
+                                 Regenerating: 4 files at 2014-06-20 12:55:15 ...done.
+
+                           ...
+
+                           And, if we reload our page we’ll see them listed inside our index.
+
+
+
+
+ FIGURE 7-8
+
+ Publishing a single
+ post
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                           If we trust that all these posts are correct, we can change thescraper.rb
+
+                        script to make them all public (inside the heredoc template, just change the
+                        published flag), or we could change files individually by hand as we did here.
+
+                           Taking a look at the blog post itself, we see this after clicking on the first link.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        148

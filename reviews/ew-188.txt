@@ -1,0 +1,67 @@
+CHAPTER 8: Android and the Git Data API
+
+
+
+                      Creating the Resource and Updating the Master
+
+
+                      Finally, we need to adjust “master” or “gh-pages”, the branch from which Git-
+                      Hub will generate your Jekyll blog. Previously, we determined the correct
+                      branch against which to apply our additions. GitHub follows this convention
+
+                      when generating your Jekyll blog, using either master or gh-pages as the check-
+                      out point for retrieving your content and then doing a site rebuild from a work-
+
+                      ing copy there. In our code, we use the commit we created and stored in the
+                      previous code to generate a commit resource, set the URL, and then use our da-
+                      ta service to update the reference inside the repository inside GitHub.
+
+
+                        ...
+                        TypedResource commitResource;
+                        private void createResource() {
+
+                             commitResource = new TypedResource();
+                             commitResource.setSha(newCommit.getSha());
+                             commitResource.setType(TypedResource.TYPE_COMMIT);
+                             commitResource.setUrl(newCommit.getUrl());
+                        }
+
+
+                        private void updateMasterResource() throws IOException {
+                             // get master reference and update it
+                             Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
+                             reference.setObject(commitResource);
+
+                             Reference response = dataService.editReference(repository, reference, true) ;
+                        }
+
+                        ...
+
+
+
+                      Implementing Our Final doPost
+
+
+                      Finally, we can now implement thdoPost()  method inside our MainActivi-
+                      tyclass.
+
+
+                        ...
+                             }
+                        }
+
+
+                        private void doPost() {
+                             new PostTask().execute( username, password );
+                        }
+
+                        class PostTask extends AsyncTask<String, Void, Boolean> {
+
+
+                             @Override
+                                 protected Boolean doInBackground(String... credentials) {
+
+
+
+       188

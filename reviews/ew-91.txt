@@ -1,0 +1,67 @@
+                                                                                            The Code
+
+
+   create_controls    is fairly straightforward. It instantiates a menu that only
+
+contains File>Exit, and a login panel, whose implementation we’ll cover a bit
+later on. Note that when we create a visible control, we passself  as the first
+
+parameter to the constructor. That’s because the SearchFrame   instance we’re
+constructing is the parent window of that control.
+
+   do_layout   uses a WxWidgets feature called “sizers” to do some automated
+layout. Sizers are a complex topic, but here’s all you need to know about this
+
+snippet:
+
+    • A BoxSizer  stacks widgets in a single direction, in this case vertically.
+
+    • The second parameter to   sizer.Add   is a scaling factor. If it’s zero, the
+      widget you’re adding will always stay the same size if the parent window
+
+      resizes; if it’s anything else, all the things the sizer is controlling will ad-
+      just to fill their container. There’s only one control in this sizer, but we still
+      want it to take up the full area of the window, so we p1.s
+
+    • The border  parameter tells the sizer how much area to leave around the
+
+      widget as padding.
+    • The wx.EXPAND   flag tells the sizer that we want the widget to expand in
+
+      the direction the sizer isn’t stacking. In this case, we’re stacking vertically,
+      but we also want this widget to expand horizontally.
+
+    • The wx.ALL  flag specifies which edges of the widget should have the bor-
+
+      der area.
+
+   That’s it! Aside from managing a couple of fields, most of this code is manag-
+ing the UI, which is almost exactly what we’d want from a UI class. Let’s write
+
+the first of the two panels that we swap in and out.
+
+
+GitHub login
+
+
+The LoginPanel   class is similar in structure to tSearchFrame   class, with a
+couple of key differences, which we’ll describe after the wall of code.
+
+
+   class LoginPanel(wx.Panel):
+       def __init__(self, *args, **kwargs):
+            self.callback = kwargs.pop('onlogin', None)
+            wx.Panel.__init__(self, *args, **kwargs)
+
+
+            self.create_controls()
+            self.do_layout()
+
+       def create_controls(self):
+            self.userLabel = wx.StaticText(self, label='Username:')
+
+            self.userBox = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
+
+
+
+                                                                                          91

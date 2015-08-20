@@ -1,0 +1,48 @@
+          CoffeScript, Hubot and the
+
+                                      Activities API                10
+
+
+
+
+
+
+
+
+Though the phrase has now been removed from their marketing materials, Git-
+Hub used to call itself a tool for “social coding.” This idea is still central to the
+services GitHub provides, intimate access to the social layer inside of GitHub
+through the Activity API.
+   The Activities API includes:
+
+   • notifications (comments issued to users through various events)
+   • stargazing tools (Facebook has “likes” while GitHub has “stars” to indi-
+
+     cate approval or interest)
+   • watching (a way to track GitHub data)
+   • events (a higher level activity stream useful for following actions of
+
+     users).
+
+    The Activity API section also includes “feeds.” While feeds are grouped
+    within the Activity API, they are not programmatic in the same way that
+    an API is, and we won’t cover them in depth here. Feeds are actually
+    Atom feeds and not interactive beyond that. Atom feeds are similar to
+    RSS feeds: a static feed you can subscribe to with an Atom client.
+
+   In this chapter we’ll investigate the Activity API by extending a chat robot.
+
+You might find it odd that a robot, generally considered an anti-social invention
+despite all best attempts, would play nicely with a social API, but this is a social
+robot. GitHubbers use an extensible chat robot called Hubot to record and au-
+tomate their tasks, and to have fun on the Internet. If there were any robot suit-
+ed for interacting with the GitHub Activity API, it’s Hubot, described on the site
+hubot.github.io as “a customizable, kegerator-powered life embetterment ro-
+
+bot.”
+   Hubot is a framework for developing chat robots. For many people, chat is at
+best a way to waste time and at worst an annoyance or distraction. For GitHub-
+
+
+
+                                                                             235

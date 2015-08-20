@@ -1,0 +1,71 @@
+CHAPTER 2: Introduction
+
+
+                       cURL: a starting point for API exploration
+
+
+                       There will be times when you want to quickly access information from the API
+
+                       without writing a formal program. Or, when you want to quickly get access to
+                       the raw HTTP request headers and content. Or, where you might even question
+
+                       the implementation of a client library and need confirmation it is doing the
+                       right thing from another vantage point. In these situations, cURL, a simple com-
+
+                       mand line HTTP tool, is the perfect fit. cURL, like the best unix tools, is a small
+                       program with a very specific and purposefully limited set of features for access-
+
+                       ing HTTP servers.
+                          cURL gives you the most naked vantage point you will find for the GitHub API
+
+                       (barring using a network traffic analysis tool). cURL, like the HTTP protocol
+                       which it speaks intimately, is stateless, meaning it is challenging to use cURL to
+
+                       hit a service and then use the results with a secondary request. We will use
+                       cURL in a later chapter within a shell script that explores solutions to this prob-
+
+                       lem, but note that cURL works best with one-off requests.
+
+
+                            INSTALLING CURL
+
+                            If you are running these examples on a Linux box, you should be able use
+                            your native package management tool to install cURL - either a “sudo
+
+                            yum install curl*” on a RedHat variant or “sudo apt-get install curl” on
+                            an Ubuntu (or Debian) system. If you are on any recent version of OSX,
+                            you already have cURL installed, but it you can’t find it, take a look at the
+
+                            HomeBrew project (http://brew.sh/) or MacPorts project (http://
+                            www.macports.org/). If you are running on Windows or another operating
+                            system, you best bet is to download cURL from the cURL web site here:
+                            http://curl.haxx.se/download.html
+
+
+
+                          Let’s make a request. We’ll start with the most basic GitHub API endpoint
+                       found at https://api.github.com.
+
+
+                          $ curl https://api.github.com
+                          {
+
+                             "current_user_url": "https://api.github.com/user",
+                             "current_user_authorizations_html_url":
+                             "https://github.com/settings/connections/applications{/client_id}",
+
+                             "authorizations_url": "https://api.github.com/authorizations",
+                             "code_search_url":
+                             "https://api.github.com/search/code?q={query}{&page,per_page,sort,order}",
+                             "emails_url": "https://api.github.com/user/emails",
+
+                             "emojis_url": "https://api.github.com/emojis",
+                             ...
+                          }
+
+
+
+
+
+
+        18

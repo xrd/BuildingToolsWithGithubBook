@@ -1,0 +1,70 @@
+CHAPTER 7: Ruby and Jekyll
+
+
+
+ FIGURE 7-5
+
+ Archive of
+ ByTravelers.com on
+ Archive.org
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                           Taking the URL from Chrome, we can use this as our starting point for scrap-
+
+                        ing. Clicking around throughout the site, it becomes evident that each URLs to
+                        a journal entry uses a standard format; in other words,   http://www.bytrav-
+
+                        elers.com/journal/entry/56         indicates the 56th journal item stored on the
+                        site. With this knowledge in hand, we can iterate over the first hundred or so
+
+                        URLs easily.
+                           Going to one of these pages through the archived site, it is useful to view the
+
+                        source of the page and start to understand the structure of a page which we can
+                        then use when pointing our mechanize scraper at the page to pull out content.
+
+                        Any modern web browser supports a debug mode, and Chrome (my browser of
+                        choice) supports this as well. If we hold down the control key and click (at least
+
+                        on Mac OSX; righting-click on Windows or Linux works in the same way) into the
+                        “body” of a journal entry on its page, we will see a context menu that gives us
+
+                        the option to “Inspect Element”. Chosing this option brings up the Chrome De-
+                        veloper Tools and shows us the HTML code of the page pretty printed for us.
+
+
+
+
+
+        136

@@ -1,0 +1,68 @@
+                                                                               Activities API Overview
+
+
+           name: 'xrd',
+           real_name: 'Chris Dawson',
+           email_address: 'cdawson@webiphany.com',
+           room: 'xrd' },
+
+        text: 'probot accept',
+        rawText: 'accept',
+        rawMessage:
+         { _client: [Object],
+           deleteMessage: [Function],
+
+           updateMessage: [Function],
+           type: 'message',
+           channel: 'D038PNPU6t',
+           user: '030YMBJYU',
+
+           text: 'accept',
+           ts: '1428436496.000012',
+           team: '0T03MYBJU' },
+        id: '1428436496.000012',
+        done: false,
+
+        room: 'xrd' },
+     match: [ 'probot accept', index: 0, input: 'probot accept' ],
+     envelope:
+      { room: 'xrd',
+        user:
+
+         { id: '5AY9MBQZ',
+           name: 'xrd',
+           real_name: 'Chris Dawson',
+           email_address: 'cdawson@webiphany.com',
+
+           room: 'xrd' },
+        message:
+         { user: [Object],
+           text: 'probot accept',
+           rawText: 'accept',
+
+           rawMessage: [Object],
+           id: '1428436496.000012',
+           done: false,
+           room: 'xrd' } } }
+
+
+   Inside it all we can find information we need, specifically the user name and
+email. So, let’s update our test and our handler code. The last test in our spec
+
+file can be modified to look like this:
+
+
+   ...
+   it "should get the username from the response object", (done) ->
+           res = { message: { user: { name: "Chris Dawson" } } }
+           expect( Handler.getUsernameFromResponse( res ) ).toEqual "Chris Dawson"
+           done()
+
+
+   ...
+
+
+
+
+
+                                                                                      279

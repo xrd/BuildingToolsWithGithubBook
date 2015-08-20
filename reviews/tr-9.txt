@@ -1,0 +1,48 @@
+                                               Preface            1
+
+
+
+
+
+
+
+
+In the 1930s, The Eagle and Child, a pub in Oxford simmered with creativity as
+JRR Tolkien and CS Lewis philosophized and created their fantasy worlds.
+Heian court life in 11th century Kyoto cradled Murasaki Shibu and produced
+The Tale of Genji, Japan’s greatest novel. In the 7th century during the
+Umayyad Caliphate of modern day Damascus, glittering Arabic palaces provid-
+ed fertile ground for the creation of a new form of poetry, the ghazal (“love po-
+
+ems”) the influence of which still courses through modern Arabic poetry.
+  Each era of major creative innovation has been backdropped by a unique
+and plumb space where collaboration and creativity flourished. Today, the col-
+laborative gathering space for some of the world’s greatest artists (artists who
+work as software developers) is a virtual town square, a site called GitHub.
+
+
+Who You Are
+
+This book should be an interesting source of information for people who have
+
+used Git or GitHub and want to “level-up” their skills related to these technolo-
+gies. People without any experience using GitHub or Git should start with an in-
+troductory book on these technologies.
+  You should have a good familiarity with at least one imperative modern pro-
+gramming language. You don’t need to be an expert programmer to read this
+book, but having some programming experience and familiarity with at least
+one language is essential.
+
+  You should understand the basics of the HTTP protocol. The GitHub team
+uses a very standard RESTful approach for its API. You should understand the
+difference between a GET request and POST request and what HTTP status
+codes mean at the very least.
+  Familiariy with web APIs is helpful, although this book simultaneously as-
+pires to provide a guide showing how a well thought out, well designed, and
+well tested web API creates a foundation for building fun and powerful tools. If
+
+
+
+
+
+                                                                         9

@@ -1,0 +1,67 @@
+CHAPTER 2: Introduction
+
+
+                       that the data has not changed since the last time the same request was made.
+                       This is valuable information if you are concerned about your usage limits (and
+                       in most cases you will be). You need to trigger 304s manually by adding condi-
+
+                       tional headers to your request.
+
+
+
+                       Conditional Requests to Avoid Rate Limitations
+
+                       If you are querying the GitHub APIs to obtain activity data for a user or a reposi-
+
+                       tory, there’s a good chance that many of your requests won’t return much activ-
+                       ity. If you check for new activity once every few minutes, there will be time peri-
+
+                       ods over which no activity has occurred. These requests, these constant polls
+                       still use up requests in your rate limit even though there’s no new activity to be
+
+                       delivered.
+                          In these cases, you can send conditional HTTP headers If-Modified-Since and
+                       If-None-Match to tell GitHub to return an HTTP 304 response code telling you
+
+                       that nothing has been modified. When you send a request with a conditional
+                       header and the GitHub API responds with a HTTP 304 response code, this re-
+
+                       quest is not deducted from your rate limit.
+                          The following command listing is an example of passing in the If-Modified-
+
+                       Since HTTP header to the GitHub API. Here we’ve specified that we’re only in-
+                       terested in receiving content if the Twitter Boostrap repositories has been al-
+                       tered after 7:49 PM GMT on Sunday, August 11, 2013. The GitHub API responds
+
+                       with a HTTP 304 response code which also tells us that the last time this reposi-
+                       tory changed was a minute earlier than our cutoff date.
+
+
+                          $ curl -i https://api.github.com/repos/twbs/bootstrap \
+                                     -H "If-Modified-Since: Sun, 11 Aug 2013 19:48:59 GMT"
+                          HTTP/1.1 304 Not Modified
+
+                          Server: GitHub.com
+                          Date: Sun, 11 Aug 2013 20:11:26 GMT
+                          Status: 304 Not Modified
+                          X-RateLimit-Limit: 60
+                          X-RateLimit-Remaining: 46
+
+                          X-RateLimit-Reset: 1376255215
+                          Cache-Control: public, max-age=60, s-maxage=60
+                          Last-Modified: Sun, 11 Aug 2013 19:48:39 GMT
+
+                          The GitHub API also understands HTTP caching tags. An ETag, or Entity Tag,
+
+                       is an HTTP header that is used to control whether or not content that you have
+                       previously cached is the most recent version. Here’s how your systems would
+
+                       use ETag:
+
+                           • Your server requests information from an HTTP server.
+
+
+
+
+
+        32

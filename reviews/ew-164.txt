@@ -1,0 +1,69 @@
+CHAPTER 8: Android and the Git Data API
+
+
+
+ FIGURE 8-2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            You are generally free to choose whatever settings you like. Google produces
+                         a real device called the Nexus 5. This is the Android reference device, and is a
+
+                         good option for a generic device with good support across all features. You can
+                         choose this one if you are confused about which to use.
+
+                            Once you have created an AVD, start it up. It will take a few minutes to boot;
+                         AVDs emulate the chipset in software and booting up can take a few minutes,
+                         unfortunately. There are alternative tools that speed up AVD boot time (Geny-
+
+                         motion is one of those), but usage of these tools is are outside the scope of this
+                         book. After your AVD has completed booting, you can test to see if it is correctly
+
+                         started and available using the adb command line tool.
+
+
+
+
+        164

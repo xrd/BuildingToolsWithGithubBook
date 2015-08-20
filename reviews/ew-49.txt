@@ -1,0 +1,67 @@
+                                                                                Gists that render Gists
+
+
+      links. In this case, cal.rels  shows a map of relationships, displayed
+
+      in   ruby    code    like:  #<Sawyer::Relation::Map:          [:ava-
+      tar, :self, :html, :followers, :following, :gists, :star-
+
+      red, :subscriptions, :organizations, :repos, :events, :re-
+
+      ceived_events]>
+    • Using one of these relationships starts by keying into the relationship
+
+      hash and then using the get and data methods to request that informa-
+      tion from the GitHub API:     followers    =   user.rels[:follow-
+
+      ers].get.data  .
+    • Once you call.get.data  you will have a new followers object populated
+
+      with an array of the followers (paged if it exceeds 100 items).
+
+   Let’s extend our Sinatra app to retrieve actual data about the user’s gists by
+using hypermedia references.
+
+
+   require 'sinatra'
+   require 'octokit'
+
+
+   set :views, "."
+
+   helpers do
+     def h(text)
+       Rack::Utils.escape_html(text)
+
+     end
+   end
+
+   get '/:username' do |username|
+     gists = Octokit.gists username, :per_page => 5
+
+     erb :index, locals: { :gists => gists, username: username }
+   end
+
+   The index.erb  file contains code to iterate over each gist and pull the con-
+
+tent. You can see that our response object is an array of gists, each which has
+an attribute calledfields . This fields attribute specifies the filenames avail-
+
+able in each gist. If you reference that filename against the files, the response
+includes a hypermedia ref  attribute. You can use this retreive raw content
+
+using the Octokit method.get.data  .
+
+   <html>
+
+   <body>
+
+   <h2>User <%= username %>'s last five gists</h2>
+
+   <% gists.each do |g| %>
+   <% g[:files].fields.each do |f| %>
+
+
+
+
+                                                                                        49

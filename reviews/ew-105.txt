@@ -1,0 +1,67 @@
+                                                                                          Let’s write an app
+
+
+    • state   is required, and must be one of    pending  , success  , error , or
+
+      failure  .
+
+    • target_url    is a link to detailed information on the process of deciding
+      what the state is or will be.
+
+    • description    is a short string describing what the service is doing to
+      make a decision.
+
+    • context   is an application-specific string to allow the API to manage mul-
+
+      tiple services contributing to a single commit’s status.
+
+   Notice how the last component in that URL is  <sha>  . While you can query for
+statuses or a combined status using a ref name (like  master  ), creating a status
+
+requires you to know the full SHA-1 hash of the commit you want to annotate.
+This is to avoid race conditions: if you were targeting a ref, it may have moved
+
+between when your process started and when it finishes, but the SHA of a com-
+mit will never change.
+
+
+
+Let’s write an app
+
+
+Alright, now that we know how to read and write statuses, let’s put this API to
+work. In this chapter, we’ll build a simple HTTP service that lets you create com-
+mit statuses for repositories you have access to, using the OAuth web flow for
+
+authorization. The system we’ll build will be fairly limited in scope, but it’s a
+great starting point to customize for your specific needs.
+
+   The language this time is C#, running on the CLR (Common Language Run-
+time). At one point in the history of computing this wouldn’t have been a good
+choice for a book like this, since it was only available on Windows, the develop-
+
+ment tools cost quite a bit of money, and the language and libraries were fairly
+limited. However, with the advent of Mono (an open-source implementation of
+
+the .NET runtime), the open-sourcing of the CLR core, and the availability of
+free tools, C# is now a completely valid and rather nice option for open-source
+
+or hobby developers. Plus, it has a vibrant ecosystem of packages we can lever-
+age to make our jobs easier.
+
+
+Libraries
+
+
+You’ll be happy to know that we won’t be writing an entire HTTP server from
+scratch in this chapter. There are a number of open-source packages that do
+
+this work for us, and in this project we’ll be using Nancy. Nancy is a project that
+started as a CLR port of the Sinatra framework for Ruby (it takes its name from
+
+
+
+
+
+
+                                                                                              105

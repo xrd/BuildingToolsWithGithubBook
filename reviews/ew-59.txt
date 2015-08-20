@@ -1,0 +1,78 @@
+                                                                                      Building a Gollum Editor
+
+
+
+     A word of caution when using the gollum command in server mode to
+     edit files locally inside a web browser. If you start the gollum server from
+
+     the command line you do have the capability to edit the files from any
+     computer within the same network. In other words, you could find your
+     IP address and use that address from your Chromebook or your tablet to
+
+     view and edit your wiki. However, remember that the gollum server com-
+     mand does not have an authentication system built into it, which means
+
+     that gollum thinks anyone accessing the wiki is the same user that start-
+     ed the gollum command. This is fine if you are in the other room editing
+
+     on your tablet while gollum runs on your work laptop. However, the gol-
+     lum server is not a good solution for offering a wiki up to many people
+     within a subnet. If multiple people edit files, there is no way that gollum
+
+     can track the different user contributions in the change log. This is not a
+     problem when editing your Gollum wiki inside GitHub.com: the GitHub
+
+     site knows who you are and properly assigns your changes to your user-
+     name inside the change log.
+
+
+
+   We’ve played a bit with the gollum command line tools. Let’s put these skills
+to use and make our own special gollum tool.
+
+
+
+
+Building a Gollum Editor
+
+
+Once you understand Git repositories, you can see the power of Gollum as a wi-
+
+ki format: as everything is built on Git, you can manage your wiki using all the
+great tools that come with Git. We’ve explored how easy it is to edit Gollum wi-
+
+kis: from within the command line, from the web browser, or from within Git-
+
+Hub. However, there might be times when you need to provide an entirely cus-
+tomized editing modality. As long as you write files into the repository in the
+
+way the gollum libraries understand, you can write your own editing interface
+
+to suit your own needs. Let’s experiment with this idea and build a new editing
+interface for Gollum wikis.
+
+
+
+     Gollum is a tool that provides flexibility by allowing local usage: this can
+     be very handy when you are on a plane and don’t want to pay for Wi-Fi.
+
+     However, at the time of this writing there is a bug where images are not
+     displayed, so although you can fully edit files using the logollum com-
+
+     mand, you will not be be able to view them when viewing your wiki on
+     you local machine. To view image files correctly, publish them into Git-
+     Hub.
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                 59

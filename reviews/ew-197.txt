@@ -1,0 +1,67 @@
+                                                                 Building a Coffee Shop Database on GitHub
+
+
+     });
+   })
+
+
+   We create a new Github() object using the constructor. This constructor can
+   take user credentials, but for now, we can just create it without those since
+
+   we are accessing a public repository.
+
+   Once we have our   github   object, we call the method  getRepo()   with a
+
+   owner and a name. This returns our repository object.
+
+
+   To actually load the data for this repository object, we call the show method
+   and pass it a callback which uses the two parameters err and  repo to han-
+
+   dle errors or otherwise provide us with details of the repository specified. In
+   this case we are using the Gollum wiki public repository to display some
+   sample data.
+
+
+   Once we have loaded the repository data, we need to call $apply  to tell An-
+
+   gular a change has occurred to the scope variable.
+
+   So, Github.js handles making the proper request to Github for us, and Angu-
+larJS handles putting the results into our web page.
+
+   If you load this up in your browser, you will see something like this:
+
+
+
+                                                                                  FIGURE 9-1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   Yikes, that is a lot of data. AngularJS’s JSON filter pretty printed it for us, but
+
+this is a bit too much. Change the HTML to be like this:
+
+   <html>
+
+   <head>
+   <title>CoffeeTe.ch</title>
+
+
+
+
+                                                                                         197

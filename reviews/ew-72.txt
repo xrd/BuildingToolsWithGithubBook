@@ -1,0 +1,67 @@
+CHAPTER 4: Gollum
+
+
+                          Clicking on any of the SHA hashes will display the page at that revision in our
+                       history and show us the state of the document at any given moment in history.
+                       Unfortunately, jumping back and forth between revisions requires two clicks,
+
+                       one from the review page to the list of revisions, and then another click to jump
+                       into the revision we want, but this permits us to review changes between the
+
+                       comps provided from our designer.
+                          It would be nice if GitHub provided a simple way to jump from a revision to
+
+                       the parent (older) revision, but they don’t expose this in their site as of this writ-
+                       ing. We can fix this, however, by generating our own special link inside the re-
+                       view page itself which will magically know about how to navigate to a previous
+
+                       version of the page.
+
+
+                       Improving Revision Navigation
+
+
+                       In our example, we only have three revisions right now, and all share the same
+                       commit message (“Adding new images”). This is not very descriptive and makes
+
+                       it challenging to understand the differences between revisions, critical when we
+                       are trying to understand how things have changed between comps. We can im-
+
+                       prove this easily.
+                          First, let’s add a commit message field to our upload form.
+
+
+                          <html>
+                          <body>
+                          <!-- message -->
+                          <form method='POST' enctype='multipart/form-data' action='/unpack'>
+                          Choose a zip file:
+
+                          <input type='file' name='zip'/>
+                          <input type='text' name='message' placeholder='Enter commit message'/>
+                          <input type='submit' name='submit'>
+                          </form>
+
+                          </body>
+                          </html>
+
+                          Then, let’s adjust the commit message inside our image.rb   script, which is
+
+                       a one line change to the options hash, setting the value of it to the parameter
+                       we are now passing in for “commit”.
+
+
+                            ...
+                          options[:committer] = { :email => @email, :name => @name, :time => Time.now }
+                          options[:message] = params[:message]
+
+                          options[:parents] = @repo.empty? ? [] : [ @repo.head.target ].compact
+                            ...
+
+
+
+
+
+
+
+        72

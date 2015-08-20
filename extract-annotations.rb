@@ -52,15 +52,16 @@ end
 todo_page = "## Todos ##\n\n"
 todos.keys.each do |k|
   t = todos[k]
-  initials = t[:initials]
-  page = t[:page]
-  unless initials and page
-    puts "Nope! #{initials} / #{page}"
+  initials = t['initials'] || t[:initials]
+  page = t['page'] || t[:page]
+  text = t[:text] || t['text']
+  unless initials and page and text
+    puts "Nope! #{initials} / #{page} -> #{t.inspect}"
     exit
   end
   todo_page += "- [ ] from page [#{page} #{initials}](#{initials}-#{page}.txt): '#{k}'\n"
   File.open( File.join( "reviews", "#{initials}-#{page}.txt" ), "w+" ) do |f|
-    f.write t[:text]
+    f.write text
   end
 end
 

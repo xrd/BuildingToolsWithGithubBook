@@ -1,0 +1,48 @@
+                                                Gollum             4
+
+
+
+
+
+
+
+
+Wikis have revolutionized the way we create and digest information. It turns out
+they are a great complement to technical projects (code repositories) because
+they allow non-technical users to contribute information without disturbing de-
+
+velopers. Gollum is GitHub’s open source version of a wiki. Just as Git has revo-
+lutionized collaborative editing of code, Gollum wikis layer the benefits of Git
+onto a proven publishing workflow. The true power of Gollum wikis reveal
+themselves when you see how tightly integrated with GitHub they are. You can
+quickly build and associate a wiki with any repository, and create a collabora-
+tive documentation system around any repository hosted on GitHub. And, you
+can pull in information from git repositories with ease, linking documentation
+
+with live code.
+  In this chapter we’ll explore the basics of using Gollum, creating a wiki on
+GitHub and then understanding how to edit it on GitHub, and as a repostory on
+our local machine. We will then create a Gollum wiki by hand from the com-
+mand line, and show the bare minimum set of files to call something a Gollum
+repository. Finally, we will build a simple image organization tool which allows
+us to edit a Gollum wiki in an entirely different way, but still publishes informa-
+
+tion into GitHub as a regular Gollum wiki, exploring a little bit of the internals of
+Git along the way.
+
+
+“The Story of Smeagol…”
+
+Gollum wikis are simply an agreed upon file structure. At its most basic form, a
+Gollum wiki is a git repository with aHome.ext(extwould be any of
+the supported wiki markup formats, which we will talk about later).
+
+  First, let’s learn how to create a gollum wiki from the GitHub interface, and
+then later we’ll move into creating one from scratch as a git repository.
+
+
+
+
+
+
+                                                                          51

@@ -1,0 +1,67 @@
+                                                            Building a Coffee Shop Database on GitHub
+
+
+describe( "GithubCtrl", function() {
+    var scope = undefined;
+    var ctrl = undefined;
+    var gh = undefined;
+    var repo = undefined;
+
+    var geo = undefined;
+
+    beforeEach( module( "coffeetech" ) );
+
+    beforeEach( inject( function ($controller, $rootScope ) {
+
+             generateMockGeolocationSupport();
+             generateMockRepositorySupport();
+             scope = $rootScope.$new();
+             ctrl = $controller( "GithubCtrl",
+
+                { $scope: scope, Github: gh, Geo: geo } );
+         } )
+    );
+
+
+    describe( "#init", function() {
+         it( "should initialize, grabbing current city", function() {
+             scope.init();
+             expect( geo.getCurrentPosition ).toHaveBeenCalled();
+             expect( gh.getRepo ).toHaveBeenCalled();
+
+             expect( repo.read ).toHaveBeenCalled();
+             expect( scope.cities.length ).toEqual( 2 );
+             expect( scope.city.name ).toEqual( "portland" );
+             expect( scope.shops.length ).toEqual( 3 );
+
+         });
+    });
+});
+
+
+First we declare our variables. If we did not do this, JavaScript would silently
+define them inside the functions the first time the variable is used and we
+
+would have some strange behavior.
+
+
+We load our coffeetech   module into our tests using themodule  method
+inside abeforeEach  call, code which is executed before our tests run.
+
+
+We will be creating two functions which generate the mock objects required
+for our tests. We’ll discuss these two functions in a bit.
+
+
+Our scope is the object where all our functionality is held, and by creating a
+
+new scope using the AngularJS utility function$rootScope.$new()    func-
+tion we can then use the scope later to test against the functionality we’ve
+
+implemented in our actual code.
+
+
+
+
+
+                                                                                   201

@@ -1,0 +1,67 @@
+CHAPTER 9: JavaScript and the Git Data API
+
+
+                          ng-repeat   is an AngularJS directive which iterates over an array of items.
+
+                          Here we use it to iterate over the items in oportland.json    file and insert
+                          a snippet of HTML with our data interpolated from each item in the iteration.
+
+
+                          We are now using Bootstrap to establish structure in our HTML. The     col-
+
+                          md-6  class tells Bootstrap to build a column sized at 50% of our 12 column
+                          layout. We setup two adjacent columns this way. And, if we are inside a mo-
+                          bile device, it properly stacks these columns.
+
+
+                          Notice how we bind to data from the JSON file.
+
+
+                       ERRORS ALREADY?
+
+
+                       If you run this in your browser, you will not see the shops for our city displayed.
+                       Something is broken, so let’s investigate. I recommend using the Chrome
+
+                       browser to debug this, but you can use any browser and set of developer tools
+                       you like. For Chrome, right clicking on the page anywhere and selecting “In-
+                       spect Element” at the bottom (or by the keyboard shortcut “F12” or “Ctrl + Shift
+
+                       + I” on Windows or Linux or “Cmd + Opt + I” on Mac ) will bring up the developer
+                       console. Then select the console window. Refresh the browser window, and
+
+                       you’ll see this in the console:
+
+                          Uncaught TypeError: Cannot call method 'select' of undefined
+
+
+                          If you click on the link to the right for github.js, you’ll see this.
+
+
+
+ FIGURE 9-3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                          You see at the point of error that we are callingselect  on the tree. Select
+                       appears to be a method defined on an underscore character. If you use Java-
+
+
+
+
+        208

@@ -1,0 +1,67 @@
+CHAPTER 4: Gollum
+
+
+                       have access to these variables, so our link needs to be relative, which works
+
+                       when we are in history review, but not in the normal review. It does not affect
+                       viewing the files so this would require educating your stakeholders on the limi-
+
+                       tations of this link.
+
+
+                       Summary
+
+
+                       In this chapter we learned how to create a Gollum wiki from scratch, both on
+
+                       GitHub and as a fresh repository from the comman line. We then looked at the
+                       different ways to use thgollum  command line tool and learned why this is a
+                       nice option when we want to run our own Gollum server. Finally, we built a cus-
+
+                       tomized Gollum image-centric editor using the Rugged library for Ruby.
+                          Our next chapter explores the GitHub API from what might be an unexpected
+
+                       vantage point: JavaScript. In this chapter we will show you how to host an en-
+                       tire application on GitHub, no server required, that still allows modification of
+                       data inside of GitHub by its users.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       74

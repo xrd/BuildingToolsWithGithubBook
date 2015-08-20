@@ -1,0 +1,67 @@
+CHAPTER 5: Python and the Search API
+
+
+                          When we add the search bar to the sizer, we use   0 as a scale factor. This
+
+                          means that it shouldn’t exand to fit the available size, but keep its own size
+                          instead, to leave room to add a results panel later on.
+
+
+                          Here’s where the actual search is being done.
+
+
+                          We pass the search results into another class, then add it to the main sizer
+                          with parameters to fill the remaining available space.
+
+
+                          If an error is returned from the search call instead, we display it here. There’s
+                          some code to adjust the wrap width of the text, based on the laid-out width
+
+                          of the control. This isn’t a great approach; doing it better is left as an exercise
+                          for the reader.
+
+                          Again, there’s a fair amount of code here, but most of it should look familiar.
+
+
+                       Displaying results
+
+
+                       So now we have our login panel, and a way for the user to enter a search query,
+
+                       but no way to display results. Let’s fix that.
+                          Whenever search results are retrieved, we create a new instance of Sear-
+
+                       chResultsPanel   , which then creates a series of  SearchResult    instances.
+                       Let’s look at both of them together:
+
+
+                          class SearchResultsPanel(wx.ScrolledWindow):
+                              def __init__(self, *args, **kwargs):
+                                  results = kwargs.pop('results', [])
+                                  wx.PyScrolledWindow.__init__(self, *args, **kwargs)
+
+
+                                  # Layout search result controls inside scrollable area
+                                  vbox = wx.BoxSizer(wx.VERTICAL)
+                                  if not results:
+
+                                       vbox.Add(wx.StaticText(self, label="(no results)"), 0, wx.EXPAND)
+                                  for r in results:
+                                       vbox.Add(SearchResult(self, result=r),
+                                                 flag=wx.TOP | wx.BOTTOM, border=8)
+                                  self.SetSizer(vbox)
+
+                                  self.SetScrollbars(0, 4, 0, 0)
+
+                          class SearchResult(wx.Panel):
+                              def __init__(self, *args, **kwargs):
+                                  self.result = kwargs.pop('result', {})
+
+                                  wx.Panel.__init__(self, *args, **kwargs)
+
+                                  self.create_controls()
+
+
+
+
+       96

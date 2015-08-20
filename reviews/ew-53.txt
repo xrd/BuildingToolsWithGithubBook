@@ -1,0 +1,68 @@
+                                                                                  “The Story of Smeagol…”
+
+
+
+                                                                                    FIGURE 4-2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   Your wiki is now as public as your repository is public. Public repositories
+
+have public wikis, accessible to anyone. Private repositories have private wikis,
+accessible only to those users or organizations which have rights to edit the
+repository data.
+
+   Wikis are powerful collaboration tools because they use a special language
+which compiles into HTML. Let’s review the options for Gollum wikis.
+
+
+
+Markup and Structure
+
+Gollum files can be written in any of the supported “Github Markup” formats,
+
+which includes ASCIIdoc, Creole, Markdown, Org Mode, Pod, RDoc, ReStructur-
+edText, Textile, and MediaWiki. The variety of markup languages brings flexibili-
+
+ty but it can be confusing to know which one to use. Markdown (and its variant
+cousins) is the most popular markup language on GitHub, and is well liked on
+
+other popular sites like Stack Overflow. If you are unsure which language to
+use, Markdown is a safe bet because it is ubiquitous across GitHub. The Chap-
+
+ter 7 chapter has a much deeper overview of Markdown.
+   If you do choose Markdown, In addition to the standard vanilla Markdown
+language tags, Gollum adds its own set wiki specific tags. There are often subtle
+
+
+
+
+
+                                                                                              53

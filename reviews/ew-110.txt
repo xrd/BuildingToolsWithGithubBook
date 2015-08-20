@@ -1,0 +1,67 @@
+CHAPTER 6: DotNet and the Commit Status API
+
+
+                          using Octokit. Note that we have to  await  the result of the network query,
+                          since it may take some time.
+
+
+                          Nancy request handlers can simply return a text string, which will be marked
+                          as HTML for the viewing browser. Here we return a simple string with the
+
+                          user’s name and number of followers.
+
+                       EXAMPLE 6-1.
+
+                          The  async  and  await  keywords bear special mention. These comprise a
+
+                       syntactic nicety that encapsulates a series of functions that are running on an
+                       event loop. The code looks like it runs in order, but really when thawait key-
+                       word is reached, the system starts an asynchronous request, and returns con-
+
+                       trol back to the main event loop. Once the request has finished, and the
+                       promise is fulfilled, the event loop will then call back into the code that’s ex-
+
+                       pecting the return value of theawait  keyword, with all the scope variables in-
+                       tact. This feature was introduced in .NET 4.0 (which was released in 2012), and
+
+                       it lets you write asynchronous code almost as though it were synchronous. This
+                       is but one of the features that make C# the favorite of many developers.
+
+                          This example is a bit more complicated than “hello, world,” but it’s still fairly
+                       succinct and clear. This bodes well, because we’re about to introduce some
+                       complexity, in the form of OAuth.
+
+
+
+                       OAuth flow
+
+
+                       In order to post a status update for a commit, we’re going to have to ask the
+                       user for permission. Apart from asking for their username and password (which
+                       gives way too much control, and if two-factor authentication is enabled may
+
+                       not even be enough), the only way to do this is OAuth, which isn’t entirely
+                       straightforward.
+
+                          Here’s a simple outline of the OAuth process, from our little server’s point of
+                       view:
+
+                          1. We need an authorization token, either because we don’t have one, or be-
+
+                             cause the one we have is expired. This is just a string of characters, but we
+                             can’t generate it ourselves, so we ask GitHub for one. This involves redi-
+                             recting the user’s browser to a GitHub API endpoint, with the kind of per-
+
+                             mission we’re asking for and some other details as query parameters.
+
+                          2. GitHub tells the user (through their browser) that an application is re-
+                             questing some permissions, and they can either allow or deny them.
+
+
+
+
+
+
+
+
+        110

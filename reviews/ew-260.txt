@@ -1,0 +1,68 @@
+CHAPTER 10: CoffeScript, Hubot and the Activities API
+
+
+                          $ node_modules/jasmine-node/bin/jasmine-node \
+                          --coffee spec/pr-delegator.spec.coffee
+                          ....
+
+
+                          Finished in 0.01 seconds
+                          4 tests, 6 assertions, 0 failures, 0 skipped
+
+                          Hubot will spawn the HTTP server wherever it runs so we can talk to it on
+
+                       our local machine (though this will likely be inside a firewall and inaccessible to
+                       GitHub), so we can test it using cURL locally. Remember that our robot router
+
+                       accepts commands as HTTP POST requests, so we need to specify a post re-
+                       quest (using the --data  switch with cURL).
+
+
+                          $ ( HUBOT_SLACK_TOKEN=xoxb-3295776784-nZxl1H3nyLsVcgdD29r1PZCq \
+                          ./bin/hubot -a slack 2> /dev/null | grep -i secret & )
+                          $ curl --data '' http://localhost:8080/pr
+
+                          Invalid secret
+                          OK
+                          $ curl --data 'secret=XYZABC' http://localhost:8080/pr
+                          Secret verified
+                          OK
+
+                          $ kill `ps a | grep node | grep -v grep | awk -F ' ' '{ print $1 }'`
+
+                          These commands verify that things are working properly. First, we start the
+
+                       server and pipe the output to grep to only display output which is related to our
+                       secret processing (we also background the entire chain using an ampersand
+
+                       and parentheses, a bash trick). Then, we hit the server running locally without
+                       the secret: the server (as it is running in the same shell) prints out the message
+
+                       “Invalid secret” using console.log   , and then curl prints out “OK” which is
+                       what was returned from our server. If we run the command again, this time in-
+                       cluding the secret as post parameters, we see that Hubot verified the secret in-
+
+                       ternally against its own secret, and then curl again prints “OK” which was what
+                       the express server inside of Hubot returned to the calling client. The final line
+
+                       quits Hubot: this command finds the PID for the Hubot client (which runs as a
+                       node process) and then sends it a SIGHUP signal, signaling to Hubot that it
+
+                       should quit.
+                          Provided you connected correctly to your Slack site, you’ll also see a mes-
+
+                       sage inside your #general channel which says “OMG, GitHub is on my caller-
+                       id!?!” We now have a simple way to trigger a pull request notification without
+                       going through the formality of actually generating a pull request. Between our
+
+                       script which issues real pull requests through the GitHub API and this one that
+                       fakes a webhook notification, we have the ability to test our code externally as
+
+                       we develop it. Of course, our tests are valuable, but sometimes we it is impossi-
+
+
+
+
+
+
+        260

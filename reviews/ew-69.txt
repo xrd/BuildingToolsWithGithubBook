@@ -1,0 +1,67 @@
+                                                                               Building a Gollum Editor
+
+
+   count: 0
+   size: 0
+   in-pack: 21
+   packs: 1
+   size-pack: 2578
+
+   prune-packable: 0
+   garbage: 0
+   size-garbage: 0
+
+   As you can see, our packed-size has barely changed, an indication that the
+
+only changes were a new Git tree object and commit object. We still do have the
+files located in our repository at a variety of paths so our review pages will work
+
+no matter what revision we are accessing.
+
+   $ find images
+
+   images
+   images/7507409915d00ad33d03c78af0a4004797eec4b4
+   images/7507409915d00ad33d03c78af0a4004797eec4b4/IMG_20120825_164703.jpg
+   images/7507409915d00ad33d03c78af0a4004797eec4b4/IMG_20130704_151522.jpg
+   images/7507409915d00ad33d03c78af0a4004797eec4b4/IMG_20130704_174217.jpg
+
+   images/7f9505a4bafe8c8f654e22ea3fd4dab8b4075f75
+   images/7f9505a4bafe8c8f654e22ea3fd4dab8b4075f75/IMG_20120825_164703.jpg
+   images/7f9505a4bafe8c8f654e22ea3fd4dab8b4075f75/IMG_20130704_151522.jpg
+   images/7f9505a4bafe8c8f654e22ea3fd4dab8b4075f75/IMG_20130704_174217.jpg
+   images/b4be28e5b24bfa46c4942d756a3a07efd24bc234
+
+   images/b4be28e5b24bfa46c4942d756a3a07efd24bc234/IMG_20130704_151522.jpg
+   images/b4be28e5b24bfa46c4942d756a3a07efd24bc234/IMG_20130704_174217.jpg
+
+   Git and Gollum can efficiently store the same file at different paths without
+
+overloading the repository.
+
+
+Reviewing on GitHub
+
+
+The raison d’etre for this wiki is to annotate a development project. If you fol-
+low the instructions above and create a new wiki for a repository, you’ll then be
+
+able to push up the changes we’ve made using our  image.rb  script. Once you
+have created a new wiki, look for a box on the right which says “Clone this wiki
+
+locally”.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                         69

@@ -1,0 +1,68 @@
+CHAPTER 4: Gollum
+
+
+                          [user]
+                                   name = Chris Dawson
+                                   email = xrdawson@gmail.com
+                          [credential]
+
+                                   helper = cache --timeout=3600
+                          ...
+
+                          Just to double check that everything worked properly, let’s verify that things
+
+                       are working correctly after uploading a ZIP file. Jumping into a terminal win-
+                       dow after uploading a new file, imagine running these commands:
+
+
+                          $ git status
+
+
+                          To our surprise, we will see something like this:
+
+                          $ git status
+
+                          On branch master
+                          Changes to be committed:
+                            (use "git reset HEAD <file>..." to unstage)
+
+                            deleted:     images/3190a7759f7f6688b5e08526301e14d115292a6e/IMG_20120825_164703.jpg
+
+                            deleted:     images/3190a7759f7f6688b5e08526301e14d115292a6e/IMG_20130704_151522.jpg
+                            deleted:     images/3190a7759f7f6688b5e08526301e14d115292a6e/IMG_20130704_174217.jpg
+
+                          We just added those files; why is Git reporting them as deleted?
+
+                          To understand why this happens, remember that in Git there are three
+                       places where files can reside: the working directory, the staging area or index,
+
+                       and the repository itself. Your working directory is the set of local files which
+                       you are working on. The  git status   command describes itself as “show the
+
+                       working tree status.” Rugged operates on the repository itself, and our Rugged
+                       calls above operated on the index and then built a commit. This is important to
+
+                       note because our files will not exist in our working directory if we only write
+                       them using the Rugged calls, and if we do this, we cannot reference them inside
+                       our wiki page when we are running Gollum locally. We’ll fix this in the next sec-
+
+                       tion.
+                          We’ve now added the files to our repository, but we have not exposed these
+
+                       files inside our wiki. Let’s modify our server script to write out each file to a wiki
+                       page for review. As we mentioned in the previous section, we need to make sure
+
+                       that we write the files to both the working index and the repository (using the
+                       Rugged library write call). Then we can generate a Review file which details all
+
+                       the images uploaded.
+
+
+
+
+
+
+
+
+
+        66

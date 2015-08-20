@@ -83,3 +83,6 @@ DEPENDENCIES
   oreilly-snippets (>= 0.0.11)
   pdf-reader
   rack
+
+BUNDLED WITH
+   1.10.4

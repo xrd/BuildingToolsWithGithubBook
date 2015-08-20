@@ -1,0 +1,67 @@
+CHAPTER 10: CoffeScript, Hubot and the Activities API
+
+
+                          it "should disallow calls without the url", (done) ->
+                                  req = { body: { secret: secret } }
+                                  Handler.prHandler( robot, req, res )
+                                  expect( robot.messageRoom ).not.toHaveBeenCalled()
+                                  expect( httpSpy ).not.toHaveBeenCalled()
+
+                                  expect( res.send ).toHaveBeenCalled()
+                                  done()
+
+                          it "should allow calls with the secret", (done) ->
+                                  req = { body: { secret: secret, url: "http://pr/1" } }
+
+                                  Handler.prHandler( robot, req, res )
+                                  expect( robot.messageRoom ).toHaveBeenCalled()
+                                  expect( httpSpy ).toHaveBeenCalled()
+                                  expect( res.send ).toHaveBeenCalled()
+                                  done()
+
+
+                          The code we write here was definitely not a piece of code where testing
+                       came easy; I refactored this multiple times to find a balance between an easy to
+
+                       read test and easy to read code. Writing test code takes effort, but when both
+                       your tests and code are readable and minimal, you generally can be sure you
+
+                       have a good implementation.
+                          We now have a functional and complete implementation of the code to re-
+                       trieve a list of users and assign an incoming pull request out to a randomly se-
+
+                       lected user from that list.
+
+
+                       THE USER LIST FROM THE HUBOT BRAIN
+
+                       Instead of using the Slack API, we can replace the code with a much simpler call
+
+                       torobot.brain.users    . Calling into the Slack users API takes a callback, but
+                       thebrain.users    call does not, which simplifies our code. We do verify inside
+
+                       our tests that we make a call to the HTTP Jasmine spy on theget function, so
+                       we will want to remove that inside our tests. We will need to provide a new
+
+                       function calleusers  to the Probot inside the faked brain we created
+                          Unfortunately, things don’t just work when we change our code to this:
+
+
+                          ...
+                          users = robot.brain.users()
+                          sendPrRequest( robot, users, room, url, number )
+
+                          ...
+
+                          It is likely that what we got back from the Slack API and what Hubot stores
+
+                       inside its brain for users are functionally the same information, but structural
+                       stored very differently. How can we investigate whether this assumption is cor-
+
+                       rect? NodeJS has a standard library module calledutil  which includes useful
+                       utility functions, as you might expect from the name. One of them iinspect
+
+
+
+
+       264

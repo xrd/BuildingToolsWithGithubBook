@@ -1,0 +1,70 @@
+CHAPTER 2: Introduction
+
+
+                       website). There are other competing and effective formats, such as XML or
+
+                       YAML, but JSON is quickly becoming the defacto standard for web services.
+                          A few of the reasons why JSON is so popular:
+
+                           • JSON is readable: JSON has a nice balance of human readability when
+
+                             compared to serialization formats like XML.
+
+                           • JSON can be used within JavaScript with very little modification (and
+                             cognitive processing on the part of the programmer). A data format which
+
+                             works equally well on both the client and server side was bound to be vic-
+                             torious, as JSON has been.
+
+                          You might expect that a site like GitHub, originally built on the Ruby on Rails
+
+                       stack (and some of that code is still live), would support specifying an alterna-
+                       tive format like XML, but XML is no longer supported. Long live JSON.
+
+                          JSON is very straightforward if you have used any other text based inter-
+                       change format. One note about JSON that is not always obvious or expected to
+
+                       people new to JSON: the format only supports using double-quotes, not single-
+                       quotes.
+
+                          We are using a command line tool, cURL, to retrieve data from the API. It
+                       would be handy to have a simple command line tool that also processes that
+
+                       JSON. Let’s talk about one such tool next.
+
+
+                       Parsing JSON from the Command Line
+
+
+                       JSON is a text format, so you could use any command line text processing tool,
+                       such as the venerable AWK, to process JSON responses. There is one fantastic
+
+                       JSON specific parsing tool which complements cURL that is worth knowing:
+                       “jq”. If you pipe JSON content (using t|echaracter for most shells) into jq, you
+
+                       can then easily extract pieces of the JSON using “filters.”
+
+
+                            INSTALLING JQ
+
+                            jq can be installed from source, using package managers brewor apt-
+                            get, and there are binaries on the downloads page for OSX, Linux, Win-
+
+                            dows and Solaris.
+
+
+                          Going deeper, in the prior example, let’s pull out something interesting from
+                       the API map that we receive when we access api.github.com.
+
+
+                          $ curl https://api.github.com | jq '.current_user_url'
+                            % Total     % Received % Xferd Average Speed        Time     Time      Time Current
+
+                                                              Dload Upload      Total    Spent     Left Speed
+                          100 2004 100 2004         0      0   4496       0 --:--:-- --:--:-- --:--:-- 4493
+                          "https://api.github.com/user"
+
+
+
+
+        20

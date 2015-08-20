@@ -1,0 +1,68 @@
+CHAPTER 9: JavaScript and the Git Data API
+
+
+                                      var newData = JSON.stringify( $scope.shops, stripHashKey, 2 );
+                                      $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json',
+                                                                newData,
+                                                                'Added my quirky information',
+
+                                                                function(err) {
+                                          if( !err ) {
+                                               // Annotate our data using a pull request
+                                               var pull = {
+
+                                                   title: "Adding quirky information to " + $scope.shopToAnnotate.name,
+                                                   body: "Created by :" + $scope.username,
+                                                   base: "gh-pages",
+                                                   head: $scope.username + ":" + "gh-pages"
+                                               };
+
+
+                                               target = gh.getRepo( "xrd", "spa.coffeete.ch" );
+
+
+                                               target.createPullRequest( pull, function( err, pullRequest ) {
+
+                                                   if( !err ) {
+                                                       $scope.notifyWaiting( "annotated", "Successfully sent annotation request" );
+
+
+                                                       $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 );
+
+
+                                                       $scope.$apply();
+                                                   }
+                                               } );
+                                          }
+                                          $scope.$apply();
+
+                                      });
+                                  }
+                                  $scope.$apply();
+                             } );
+
+
+                           ...
+
+
+                         We start by creating our annotation function. As we specified in our tests,
+                         this function takes a shop object, an object into which annotations about
+
+                         the shop are added.
+
+
+                         We prompt the user three times: username and password on GitHub, and
+                         the text they want to annotate. If this seems like a really bad way to do
+                         things, don’t worry, we’ll fix it in a moment.
+
+
+                         We create a new Github object with the username and password provided.
+
+                         We leave it as an exercise of the reader to contend with mistyped or incor-
+                         rect credentials.
+
+
+
+
+
+       216

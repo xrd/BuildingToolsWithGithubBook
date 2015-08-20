@@ -1,0 +1,67 @@
+CHAPTER 10: CoffeScript, Hubot and the Activities API
+
+
+                          $ heroku logs -t
+                          2014-11-18T07:07:18.716943+00:00 app[web.1]: Successfully 'connected'
+                          as hubot
+                          2014-11-18T07:07:18.576287+00:00 app[web.1]: Tue, 18 Nov 2014 07:07:18
+                          GMT connect deprecated limit: Restrict request size at location of
+
+                          read at
+                          node_modules/hubot/node_modules/express/node_modules/connect/lib/middleware/multipart.js:86:15
+                          ...
+
+                          When you send commands into your chat room you will notice events inside
+
+                       of Heroku. This is a good way to verify that your bot is wired into Slack properly.
+                          You might also want to publish this repository into GitHub. Heroku, as a part
+
+                       of hosting your live application, also hosts the full Git repository of your Hubot
+                       (Hubot, as friendly as it tries to be, is just another NodeJS application in the
+
+                       end). Heroku can host the entirety of the source code for your Hubot for you,
+                       but does not have the additional tools, like user management, that GitHub
+                       does. For this reason, use your GitHub account as your code repository, the
+
+                       place where team members develop new features of your chat bot, and then
+                       pull locally and push into Heroku using the ease of the Git workflow as a de-
+
+                       ployment layer.
+                          Now that we have created and installed Hubot, let’s look at the Activities API
+
+                       and determine how we want to code our extension.
+
+
+                       Activities API Overview
+
+
+                       The Activities API centers around notifications: notifications are similar to the
+
+                       notifications you see on social networking sites, events that occur which docu-
+                       ment important points of interest inside a timeline of activity. GitHub activity
+                       events are often tied to important milestones inside of a developer’s day, activi-
+
+                       ties like pushing commits into the main remote repository, asking questions on
+                       discussion threads associated with a repository, or assigning issues to a devel-
+
+                       oper for review.
+                          These notifications are accessible to team members without programmati-
+
+                       cally accessing the GitHub API. Team members are notified of events inside of
+                       their workflow using email based on several rules. GitHub will automatically
+                       send out notification emails when a user has watched a repository and issues
+
+                       or comments are added, a pull request is made, or there are comments made
+                       on a commit. In addition, even if a user has not watched a repository, they will
+
+                       be notified if that user is @mentioned (prefixing the   @ character to a team
+                       member’s name inside a comment), when an issue is assigned to them, or when
+
+                       that user participates in a discussion associated with any repository.
+                          The GitHub policy for notification is definitely to err on the side of being
+                       overly verbose. Many people live in their email, and making sure that all impor-
+
+
+
+
+        244

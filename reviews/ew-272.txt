@@ -1,0 +1,68 @@
+CHAPTER 10: CoffeScript, Hubot and the Activities API
+
+
+                                  expect( res.send ).toHaveBeenCalled()
+                                  done()
+                         ...
+
+
+                         Our implementation breaks our tests, so we will need to modify the cost to
+                      use the rawBody  attribute on the request object, break it apart from the pay-
+
+                      load key-value pair, URI decode it, and then if all that works, parse the JSON
+                      and start the verification process. Our tests describe all this for us. The new
+
+                      prHandler   method looks like this:
+
+                         ...
+
+                         exports.prHandler = ( robot, req, res ) ->
+
+                                  rawBody = req.rawBody
+                                  body = rawBody.split( '=' ) if rawBody
+
+                                  payloadData = body[1] if body and body.length == 2
+                                  if payloadData
+                                          decodedJson = decodeURIComponent payloadData
+                                          pr = JSON.parse decodedJson
+
+
+                                          if pr and pr.pull_request
+                                                   url = pr.pull_request.html_url
+                                                   secureHash = getSecureHash( rawBody )
+                                                   signatureKey = "x-hub-signature"
+                                                   webhookProvidedHash = req.headers[ signatureKey ] if req?.headers
+
+                                                   secureCompare = require 'secure-compare'
+                                                   if secureCompare( "sha1=#{secureHash}", webhookProvidedHash ) and url
+                                                           room = "general"
+                                                           users = robot.brain.users()
+
+                                                           sendPrRequest( robot, users, room, url )
+                                                   else
+                                                           console.log "Invalid secret or no URL specified"
+                                          else
+                                                   console.log "No pull request in here"
+
+
+                                  res.send "OK\n"
+
+                         _GITHUB = undefined
+
+                         ...
+
+                         When all is said and done, is verifying the signature even worth it? If we are
+
+                      not hosting our Probot on a service which handles our router requests over
+                      HTTPS, this HMAC verification could be compromised. And, given the issues
+                      with maintaining our own copy of the Hubot code in order to permit the valida-
+
+                      tion inside our Hubot extension, it might be best to ignore the validation head-
+                      er. The worst case, as our extension is written now, would be that an attacker
+
+                      could fake a pull request notification, and falsely engage chat room users
+
+
+
+
+       272

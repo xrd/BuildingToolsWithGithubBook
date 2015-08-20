@@ -1,0 +1,68 @@
+CHAPTER 2: Introduction
+
+
+                         these chapters are stories about building applications on top of the technolo-
+                         gies provided by GitHub. Within these stories you will learn the tradeoffs and
+
+                         considerations you will face when you use the GitHub API. Chapters in this book
+                         often cover multiple pieces of the API when appropriate for the story we are
+                         telling. We’ve generally tried to focus on a major API section and limit exposure
+
+                         to other pieces as much as possible, but most chapters do need to bring in
+                         small pieces of more than one section.
+
+
+                             • The “cURL” chapter: the chapter you are reading now covers a first look at
+                               the API through the command line HTTP client called cURL. We talk a bit
+                               about the response format and how to parse it within the command line,
+
+                               and also document authentication.
+
+                             • The “Gist” chapter: covers the Gist API, as well as command line tools and
+                               the Ruby language “Octokit” API client.
+
+                             • The “Gollum” chapter: explains usage of the Gollum command line tool
+                               and associated Ruby library (gem) which is backed by Grit, the C-
+
+                               language bindings for accessing Git repositories. We also document some
+                               details of the Git storage format and how it applies to storing large files
+
+                               inside of a Git repository, and show how to use the git command line
+                               tools to play with this information.
+
+                             • The “Search” chapter: we build a GUI search app using Python.
+
+                             • The “Commit Status” chapter: our final chapter documents a relatively
+                               new part of the API which documents the interactions between third par-
+
+                               ty tools and your code. This chapter builds an application using C# and
+                               the Nancy .NET GitHub API libraries.
+
+                             • The “Jekyll” chapter: if you push a specifically organized repository into
+                               GitHub, GitHub will host a fully featured blog, equivalent in most ways to
+
+                               a Wordpress site (well, except for the complexity part). This chapter docu-
+                               ments how to format your repository, how to use Markdown within Je-
+                               kyll, how to use programmatic looping constructs provided by Liquid
+
+                               Templates, and then shows how to import an entire web site from the In-
+                               ternet Archive into the Jekyll format using Ruby. We show how to respect-
+
+                               fully spider a site using caching, a valuable technique when using APIs or
+                               third party public information.
+
+                             • The “Android” chapter: in this chapter we create a mobile application tar-
+                               geting the Android OS. Our application reads and writes information into
+
+                               a Jekyll repository from the Git Data section of the API. We show how to
+                               create user interface tests for Android which verify GitHub API responses
+
+                               using the Calabash UI testing tool.
+
+                             • The “JavaScript” chapter: did you know you can host an entire “single
+                               page application” on GitHub? We show how you can build an application
+
+
+
+
+        16

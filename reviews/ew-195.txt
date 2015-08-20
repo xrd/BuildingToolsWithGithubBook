@@ -1,0 +1,67 @@
+                                                                Building a Coffee Shop Database on GitHub
+
+
+INSERTING GITHUB DATA USING GITHUB.JS
+
+Let’s add some GitHub data to our HTML file. Change the  index.html   file as
+
+follows.
+
+   <html>
+
+   <head>
+   <title>CoffeeTe.ch</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
+   </head>
+
+   <body ng-app="coffeetech">
+   <div class="container" ng-controller="GithubCtrl">
+   {{ repo | json }}
+   </div>
+
+   <script src="angular.js"></script>
+   <script src="github.js"></script>
+   <script src="coffeetech.js"></script>
+   </body>
+   </html>
+
+
+   We added or changed just three lines.
+
+
+   We added a reference to ourcoffeetech.js    file beneath our other JS refer-
+   ences.
+
+
+   We removed our databinding to the   Welcome to CoffeeTech      string and
+
+   replaced it with a binding to the variarepo filtered by the JSON filter.
+
+   Finally, we changed the ng-app  reference to use the module we defined in
+
+   our coffeetech.js   file.
+
+   If you have never used AngularJS before, you are probably thoroughly con-
+
+fused about the  coffeetech.js   file. Before we dive into the syntax, under-
+stand the following features of AngularJS, and then you’ll understand the signif-
+
+icant problems solved by those same features:
+
+    • AngularJS utilizes something called two-way databinding. AngularJS sol-
+      ves the problem you have with building JS apps: marshalling data from
+
+      your JS code into your HTML templates, marshalling data from your AJAX
+      calls into your JS code and then marshalling that into your HTML tem-
+      plates. Marcia, Marcia, Marcia! Enough already: allow AngularJS to do this
+
+      heavy lifting. To use it, we just define a variable on the AngularJS scope,
+      and then place a reference to the scope in our HTML using th{{ }}  da-
+
+      tabinding directives. In this case we set a variable callerepo on our
+
+
+
+
+                                                                                        195

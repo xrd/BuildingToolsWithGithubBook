@@ -1,0 +1,67 @@
+CHAPTER 2: Introduction
+
+
+                         $ echo "{ 'no' : 'bueno' }" | jq "."
+                         parse error: Invalid numeric literal at line 1, column 7
+
+                         The first JSON we pass into jq works, while the second, because it uses inva-
+
+                      lid single quote characters, fails with an error. Jq filters are strings passed as
+                      arguments, and the shell which provides the string to jq does not care, howev-
+
+                      er, if you use single quotes or double quotes, as you see above. The echo com-
+                      mand, if you didn’t already know, prints out whatever string you provide to it;
+                      when we combine this with the pipe character we can easily provide that string
+
+                      to jq through standard input.
+                         Jq is a powerful tool for quickly retrieving content from an arbitray JSON re-
+
+                      quest.   Jq   has   many    other   powerful   features,   documented    at
+                      stedolan.github.io/jq.
+                         We now know how to retrieve some interesting information from the GitHub
+
+                      API and parse out bits of information from that response, all in a single line.
+                      But, there will be times when you incorrectly specify parameters to cURL or the
+
+                      API, and the data is not what you expect. Now we’ll learn about how to debug
+                      the cURL tool and the API service itself to provide more context when things go
+
+                      wrong.
+
+
+                      Debugging Switches for cURL
+
+
+                      As mentioned, cURL is a great tool when you are verifying that a response is
+                      what you expect it to be. The response body is important, but often you’ll want
+
+                      access to the headers as well. cURL makes getting these easy with t-i and -
+                      v switches. The -i switch prints out request headers, and th-v switch prints
+
+                      out both request and response headers (the> character indicates request data,
+                      and the < character indicates response data).
+
+
+                         $ curl -i https://api.github.com
+                         HTTP/1.1 200 OK
+                         Server: GitHub.com
+
+                         Date: Wed, 03 Jun 2015 19:39:03 GMT
+                         Content-Type: application/json; charset=utf-8
+                         Content-Length: 2004
+                         Status: 200 OK
+                         X-RateLimit-Limit: 60
+
+                         ...
+                         {
+                           "current_user_url": "https://api.github.com/user",
+                           ...
+                         }
+
+                         $ curl -v https://api.github.com
+                         * Rebuilt URL to: https://api.github.com/
+
+
+
+
+       22

@@ -1,0 +1,67 @@
+CHAPTER 8: Android and the Git Data API
+
+
+                         if( null == theBranch ) {
+
+                             theBranch = master;
+                         }
+                         return theBranch;
+                             }
+
+                         ...
+
+
+
+                      Creating the Blob
+
+
+                      Contents inside a git repository are stored as blcreateBlob  manages stor-
+                      ing our content as a blob object, and then uses the dataService to store this
+
+                      blob into a repository. Until we have calleddataService.createBlob    , we
+                      have not actually placed the object inside GitHub. Also, remember that blobs
+
+                      are not linked into our DAG by themselves; they need to be associated with our
+                      DAG vis-a-vis a tree and commit object, which we do next.
+
+
+                         ...
+
+                             Blob blob;
+                             Tree baseTree;
+                             private void createBlob() throws IOException {
+
+                         Random random = new Random();
+                         blob = new Blob();
+                         blob.setContent(contentsBase64);
+                         blob.setEncoding(Blob.ENCODING_BASE64);
+                         dataService.createBlob(repository, blob);
+
+                             }
+
+                         ...
+
+
+                      Generating a Tree
+
+
+                      Next, we generate a tree. A tree wraps a blob object and provides basically a
+
+                      path to our object: if you know UNIX file system concepts, you can think of a
+                      tree as the filename path and the blob as an inode object. Our data service
+
+                      manager uses a repository name and a base SHA address, one that we retrieved
+                      earlier, to validate that this is a valid starting point inside our repository. Once
+                      we have a tree, we fill out the necessary tree attributes, like tree type (blob) and
+
+                      and tree mode (blob), and set the SHA from the previously created blob object
+                      along with the size. Then we store the tree into our GitHub account using the
+
+                      data service object.
+
+
+
+
+
+
+       186

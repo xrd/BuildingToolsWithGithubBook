@@ -1,0 +1,67 @@
+                                                                                   Activities API Overview
+
+
+Code Reviews via Pull Requests
+
+As we’ve seen in other chapters, pull requests are the mechanism used on Git-
+
+Hub to easily integrate code changes into a project. Contributors either fork the
+master repository and then issues a pull request against that repository, or, if
+
+they have write permission to the main repository, make a “feature” branch and
+then issue a pull request against the “master” branch.
+   Pull requests often come with a chat message indicating several people who
+
+should review the request. This tribal knowledge about who should be involved
+is only in the head of the developer who created the code. It could be that they
+
+invited the correct people. Or, it could be that they invited the people who they
+prefer to review their code for various (and completely rationale reasons). This
+can be an effective way to engage the right people around a new piece of code.
+
+And, it can have downsides as well: if the person is otherwise engaged, pull re-
+quests can linger when a notification email goes unread. And, there is good re-
+
+search to indicate that the best performing teams are those who share all tasks
+and responsibilities equally. It often does not scale to ask everyone to partici-
+
+pate in all code reviews associated with a pull request. But, it might be the case
+that randomly selecting developers involved in a project is a better (and more
+efficient) way to review code than asking the developer who created the code
+
+to determine these people.
+   Probot will assign active chat room users to do code reviews when a new
+
+pull request is created. We will use the GitHub Activities API to subscribe to pull
+request events. When Probot becomes aware that a pull request needs review,
+
+it will randomly assign a user in the chat room to do the review and then ask
+that user if they want to accept the challenge. If they accept, we will note that in
+the pull request comments.
+
+
+EXTENSION BOILERPLATE
+
+
+We will start writing our extension by defining the high level communication
+format we expect from our users. Our script has a simple vocabulary: it needs to
+
+recognize responses accepting a review request, or those that decline. Our ex-
+tension script should be in the        scripts   directory and named       pr-
+
+delegator.coffee    . This is just the back and forth we will be having with
+users; we are not yet writing any code to handle the pull request notifications.
+
+
+   module.exports = (robot) ->
+           robot.respond /accept/i, (res) ->
+
+                    accept( res )
+           robot.respond /decline/i, (res) ->
+                    decline( res )
+           accept = ( res ) ->
+
+
+
+
+                                                                                           247

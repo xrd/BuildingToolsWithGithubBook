@@ -1,0 +1,68 @@
+CHAPTER 10: CoffeScript, Hubot and the Activities API
+
+
+                          ...
+                          flattenUsers = (users) ->
+                                  rv = []
+                                  for x in Object.keys( users )
+
+                                          rv.push users[x]
+                                  rv
+
+                          anyoneButProbot = ( users ) ->
+                                  user = undefined
+
+                                  flattened = flattenUsers( users )
+                                  while not user
+                                           user = flattened[ parseInt( Math.random() * flattened.length ) ].name
+                                           user = undefined if "probot" == user
+
+                                  user
+
+                          ...
+
+
+                       SENDING PR DATA VIA WEBHOOK
+
+                       Our wiring is almost complete, so let’s actually send real pull request informa-
+
+                       tion. If we run our scriissue-pull-request.sh     we will see it sending data
+                       out to our Probot. Once we have deployed to Heroku, our Probot is listening on
+
+                       a public hostname. GitHub will accept the pull request and then send a JSON
+                       inside the body of a POST request made to our Probot. This JSON looks very
+
+                       different from the url encoded parameters we provide in our cURL script, so we
+                       need to modify our code to fit.
+
+                          If we retrieve the JSON from a POST, it will look something like this (refor-
+                       matted for clarity and brevity):
+
+
+                          {
+                              "action":"opened",
+                              "number":13,
+                              "pull_request": {
+
+                                "locked" : false,
+                                "comments_url" :
+                                "https://api.github.com/repos/xrd/test_repository/issues/13/comments",
+                                "url" : "https://api.github.com/repos/xrd/test_repository/pulls/13",
+
+                                "html_url" : "https://github.com/xrd/test_repository/pulls/13",
+                                }
+                                ...
+                          }
+
+
+                          Most importantly, you see a URL (thehtml_url  more specifically) which we
+                       will use inside our Probot message to the user. Retrieving the json and parsing
+
+                       it is trivial inside our Probot.
+
+
+
+
+
+
+       266

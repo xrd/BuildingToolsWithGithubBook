@@ -1,0 +1,68 @@
+CHAPTER 9: JavaScript and the Git Data API
+
+
+                           We do need to alter the GitHub application settings to use this, but fortu-
+                        nately it is only in one place. The “Authorization callback URL” should be set to
+
+                        http://localhost:3000/auth/github/callback             . This is the URL which
+                        our application will tell the GitHub API to redirect us back to after authentica-
+
+                        tion has successfully completed (the passport library automatically provides
+                        this when connecting to GitHub).
+                           We run this app by specifying the github client ID and secret on the com-
+
+                        mand line as environment variables (to avoid checking them into our source
+                        code repository). Your client ID and secret will be different, of course.
+
+
+                           $ GITHUB_CLIENT_ID=1234567890abcdefghijk \
+                           GITHUB_CLIENT_SECRET=0987654321kmnopqrstuv \
+
+                           node node/github-local-login.js
+
+                           Though we have something working, there are some significant problems
+
+                        with this approach:
+
+                            • We can run this locally as we are developing and testing, but eventually
+                              we will require a hosting provider, like Heroku or Nodejitsu, to host our
+
+                              application, or we will need to setup a full stack server, virtual or other-
+                              wise, ourselves.
+
+                            • If you did spend time reviewing this code, you’ll see a GET request at
+                              the /token.js    mount point. Once login has completed inside our ser-
+
+                              vice, we return to our JS application, and the web page in which it is hos-
+                              ted adds another script tag which loads the auth token using this access
+
+                              point. This is a consequence of browser security: since the application is
+                              hosted on the GitHub.io domain we cannot make requests using a more
+
+                              secure method like POST to another domain (the domain where our au-
+                              thentication service will be hosted). Unfortunately, this means that we
+                              have opened a security hole, since any other application running inside
+
+                              our browser could do the make the same GET request, hijacking the auth
+                              token.
+
+                            • We could migrate our entire app into this NodeJS application, using
+
+                              something like EJS templates, but then we are losing the fact that our ap-
+                              plication is simply our repository, and the point of this chapter becomes
+                              sadly moot.
+
+                            • This app is not very testable. One of the reasons AngularJS is such a pop-
+
+                              ular framework is that it makes you write JavaScript code which is test-
+                              able. Most NodeJS frameworks don’t make that easy, and I found it very
+
+                              difficult to wrap this code inside of any of the current test frameworks.
+
+
+
+
+
+
+
+        232

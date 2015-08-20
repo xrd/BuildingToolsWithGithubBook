@@ -1,0 +1,68 @@
+CHAPTER 9: JavaScript and the Git Data API
+
+
+
+ FIGURE 9-6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                           As you can see, we can see a clear diff of the changes our contributor made:
+                        they added an annotation that tells us “no turtles allowed”. We might want to
+
+                        consider a different location the next time we have a date with Morla. The diff is
+                        clear in that the green information is easy to read, which is a benefit we get
+
+                        when we use the    JSON.stringify     function with the third parameter set to
+                        something other than undefined. Unortunately, the first line is only different
+                        because we added a comma to it, but this is still a very readable diff.
+
+
+
+                        A SAFE LOGIN IMPLEMENTATION
+
+                        If I saw this app in the wild and knew nothing about the authors, I would never
+
+                        use it to submit data. The app asks for my GitHub username and password. Ask-
+                        ing for my username and password implicitly asks me to trust the authors of
+                        this application. Trust in this case means that I trust them to not maliciously
+
+                        use my credentials for nefarious purposes, and also asks me to trust that they
+                        are not doing something stupid which would allow an attacker to insert them-
+
+                        selves into the middle of the authentication process and steal my crendentials.
+                        It seems like every day we hear of a break-in at a major internet service; I want
+
+                        to believe that most people are out to do good in the world, so I am less wor-
+                        ried about the provider of such a service maliciously stealing my crendentials,
+
+                        but I am worried about a script kiddie attacking the service for fun and stealing
+                        my credentials. At any rate, I would never use a service which requires me to
+                        give up my username and password to another service, especially one which is
+
+                        as important as GitHub is to me.
+                           So, let’s use oAuth instead and resolve these problems.
+
+                           If we use oAuth, we enter our credentials directly into GitHub. We can take
+                        advantage of 2-factor authentication. Once we have entered our credentials,
+
+
+
+
+        220

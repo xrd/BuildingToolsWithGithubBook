@@ -1,0 +1,68 @@
+                                                                                         Authentication
+
+
+you do need simple and quick access to the GitHub API (and you don’t use two
+factor authentication) then HTTP basic authentication can help you in a small
+
+subset of use cases.
+
+
+oAuth
+
+
+oAuth is an authentication mechanism where tokens are tied to functionality or
+clients. In other words, you can specify what features of a service you want to
+
+permit an oAuth token to carry with it, and you can issue multiple tokens and
+tie those to specific clients: a cell phone app, a laptop, a smart watch, or even
+
+an Internet of Things toaster. And, importantly, you can revoke tokens without
+impacting other tokens.
+   The main downside to oAuth tokens is that they introduce a level of com-
+
+plexity that you may not be familiar with if you have only used HTTP Basic
+which generally only requires an extra header to the HTTP request, or an extra
+
+flag to a client tool like cURL.
+   oAuth solves the problems described above by linking tokens to scopes
+
+(specified subsets of functionality inside a webs service) and issuing as many
+tokens as you need to multiple clients.
+
+
+SCOPES: SPECIFIED ACTIONS TIED TO AUTHENTICATION TOKENS
+
+
+When you generate an oAuth token, you specify the access rights you require.
+Don’t be confused because we start with HTTP Basic to generate the oAuth to-
+
+ken: once you have the token, you no longer need to use HTTP Basic in succes-
+sive requests. If this token is properly issued, the oAuth token will have permis-
+sions to read and write to public repositories owned by that user.
+
+
+   $ curl -u username -d '{"scopes":["public_repo"]}' https://api.github.com/authorizations
+   {
+
+     "id": 1234567,
+     "url": "https://api.github.com/authorizations/1234567",
+     "app": {
+       "name": "My app",
+
+       "url": "https://developer.github.com/v3/oauth_authorizations/",
+       "client_id": "00000000000000000000"
+     },
+     "token": "abcdef87654321
+     ...
+
+   }
+
+   The JSON response, upon success, has a token you can extract and use for
+
+applications that need access to the GitHub API.
+
+
+
+
+
+                                                                                           27

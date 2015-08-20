@@ -1,0 +1,67 @@
+CHAPTER 4: Gollum
+
+
+                       Hacking Gollum
+
+                       Team software development often revolves around this idealized scenario: a
+
+                       business person develops the structure of the application with higher-up stake-
+                       holders, these ideas are passed down to a UI/UX designer who then creates
+
+                       wireframes and mockups of the interactions, and then a software developer
+                       takes these wireframes and builds the software. Put another way, program
+                       managers figure out what features provide the most value to users, which then
+
+                       trickles down into the wireframes as real interactions. Many hidden blocking
+                       paths are fleshed out here, places where the application would confuse the
+
+                       user, and time is saved because the software developer does not have to waste
+                       time building something that would not work anyway. By the time it reaches
+                       the developer, the UI interaction is streamlined and the costly and inflexible
+
+                       stage of building software has all the inefficiencies optimized away. The devel-
+                       oper can simply work on a piece of software and know there are no changes,
+
+                       changes which would be extremely costly to implement.
+                          In practice, this process is almost never so smooth. What typically happens
+
+                       is the business people don’t completely understand all the requirements when
+                       they document the structure they want, so after they have committed to a
+                       structure they later ask for changes, which trickle down into the designs. The
+
+                       “final and approved” mockups have to be changed and this then needs to be
+                       communicated to the developer, who has already started building something
+
+                       that was “set in stone.” Or, the developer, as she is building the software, real-
+                       izes there are missing steps to get to places inside the application, and needs to
+
+                       communicate this back to the designer. If you have multiple people doing soft-
+                       ware development on a project, this information then needs to fan out to them
+                       if their areas are affected by these changes. This information must traverse
+
+                       many different people, with many different methods of communication.
+                          Wikis are a great way to store this kind of information. Information which
+
+                       changes. Information which must be retrieved by many people and edited by
+                       many people. What better than to manage these informational transitions than
+
+                       a change tracking system like Git, and what better way to absorb this informa-
+                       tion than a Wiki built on top of Git, hosted on GitHub.
+
+
+                       Wireframe Review Tool
+
+
+                       Let’s build a simple tool which stores these types of changes. We’ll build an im-
+                       age editor that hosts changes to UI mockups. This will give our executives a
+
+                       place where they can see changes and updates. This will allow our UI designer a
+                       place to store their images and annotate them with vital information. And, we’ll
+
+                       have a place where developers can retrieve information without reviewing their
+                       email and wondering “Do I have the most up-to-date mockups?” We’ll buid a
+
+
+
+
+        60

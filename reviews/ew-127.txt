@@ -1,0 +1,67 @@
+                                                                                 A Jekyll Blog in 15 Minutes
+
+
+     The jekyll watch switch does reload all HTML and markup files, but does
+     not reload the _config.yml file. If you make changes to it, you will need
+     to stop and restart the server.
+
+
+
+   If you are running multiple Jekyll sites on the same laptop, you’ll quickly
+find that the second instance of  jekyll serve     fails because it cannot open
+
+port 4000. In this case, usejekyll --port 4010      to open port 4010 (or what-
+ever port you wish to use instead).
+
+
+Privacy Levels with Jekyll
+
+
+Jekyll repositories on GitHub can be either public or private repositories. If your
+
+repository is public you can host public content generated from the Jekyll
+source files without publishing the source files themselves. Remember, as no-
+
+ted previously, that any file without publishing: false      inside the YFM will
+be made public the moment you push it into your repository.
+
+
+Themes
+
+
+Jekyll does not support theming internally, but it is trivial to add any CSS files
+
+or entire CSS frameworks. You could do this yourself, or you could just fork an
+existing jekyll blog which has the theming you like. The most popular themed
+Jekyll blog structure is Octopress. We don’t display this here, but you another
+
+easy option is to add the Bootstrap CSS library just as we did in the Chapter 9
+chapter.
+
+
+
+Publishing on GitHub
+
+Once you have your blog created, you can easily publish it to GitHub. There are
+
+two ways which you can publish Jekyll blogs:
+
+    • As a github.io site
+
+    • On a domain you own
+
+   Github offers free personal blogs which are hosted on the github.io domain.
+And, you can host any site with your own domain name with a little bit of con-
+
+figuration.
+
+
+
+
+
+
+
+
+
+
+                                                                                            127

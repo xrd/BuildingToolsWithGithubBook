@@ -1,0 +1,67 @@
+CHAPTER 10: CoffeScript, Hubot and the Activities API
+
+
+                                  robot.messageRoom room, "#{user}: Hey, want a PR? #{url}"
+
+                          exports.prHandler = ( robot, req, res ) ->
+                                  slack_users_url =
+                                           "https://slack.com/api/users.list?token=" +
+
+                                           process.env.HUBOT_SLACK_TOKEN
+                                  secret = req.body?.secret
+                                  url = req.body?.url
+
+                                  if secret == _SECRET and url
+
+                                           room = "general"
+                                           robot.http( slack_users_url )
+                                                    .get() (err, response, body) ->
+                                                            sendPrRequest( robot, body, room, url ) unless err
+
+                                  else
+                                           console.log "Invalid secret or no URL specified"
+                                  res.send "OK\n"
+
+                          exports.setSecret = (secret) ->
+
+                                  _SECRET = secret
+
+
+                          We define a method called anyoneButProbot    that takes a list of users and
+                          finds a random one, as long as it is not the probot. You might notice there
+
+                          are some edge cases we should account for in our tests (endless while loop
+                          anyone?) which are left as an exercise for the reader.
+
+
+                          The sendPrRequest   method parses the JSON returned from the Slack API
+                          and then sends the members inside of the object into the anyoneButPro-
+
+                          bot call. It then uses the Hubot API to send a message to the room asking if
+                          that user will accept the pull request review invitation.
+
+
+                          We build the URL to the Slack service by tacking on the Slack API token to
+                          the base Slack API URL.
+
+
+                          As we did before, we pull out the secret and the PR URL, and then make sure
+
+                          they both exist.
+
+                          We use the built in HTTP client to make a GET request to the Slack API. Un-
+
+                          less we receive an error in the response callback, we use the data provided
+                          by the Slack API to initiate the PR review request.
+
+                          To test this using our cURL command, we need to modify the invocation
+
+                       slightly.
+
+
+                          $ curl --data 'secret=XYZABC&url=http://pr/1' \
+                          http://localhost:8080/pr
+
+
+
+       262

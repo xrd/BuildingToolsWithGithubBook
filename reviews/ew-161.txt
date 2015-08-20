@@ -1,0 +1,47 @@
+     Android and the Git Data API                                 8
+
+
+
+
+
+
+
+
+Android is currently the most popular operating system for mobile devices,
+overtaking Symbian OS in 2010, experiencing incredible growth since its release
+in 2008. If it is not the case already, mobile OSes like Android and iOS will soon
+be more prevalent than desktop OSes. Though it may not occur to many people
+yet, as more and more people shift to using mobile devices, we will see demand
+for developer tools on mobile devices. The GitHub API has a good set of bind-
+
+ings for developing Java and Android applications. We’ll use the egit libraries to
+develop a small Android application which posts to our blog hosted on GitHub.
+  Our blogging application will allow us to login to GitHub, and then ask us for
+a quick note describing how we are feeling. The application will then compose
+a Jekyll blog post for us and push the post into our blog on GitHub.
+
+
+Prerequisites
+
+
+Setting up a Jekyll blog
+
+We are writing an application which adds jekyll blog entries, and we are writing
+tests to verify our application works as advertisted, so we need a sandbox blog
+against which we can run commands. There are various ways to create a new
+Jekyll blog. The simplest is to run a series of Ruby commands documented
+here; if you want to know more about Jekyll, it is covered in more depth in the
+Jekyll chapter. There are a few items of note when establishing a Jekyll blog
+
+that have some complexity, things like mapping a hostname properly and using
+the correct branch inside git. For our purposes here, however, we won’t need to
+make sure all that is established. All we need is to make sure that we have a
+sandbox repository that has the structure of a jekyll blog.
+
+  $ printf "source 'https://rubygems.org'\n\ngem 'github-pages'\ngem 'hub'" >> Gemfile
+  $ export BLOG_NAME=mytestblog
+  $ bundle
+  $ jekyll new $BLOG_NAME
+
+
+                                                                        161

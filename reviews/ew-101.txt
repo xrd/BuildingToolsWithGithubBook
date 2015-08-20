@@ -1,0 +1,43 @@
+ DotNet and the Commit Status
+
+                                                 API       6
+
+
+
+
+
+
+
+At the risk of oversimplifying things too much, one way to look at a Git reposito-
+ry is as just a long series of commits. Each commit contains quite a bit of infor-
+mation: the contents of the source files, who created the commit and when, the
+author’s comments on what changes the commit introduces, and so on. This is
+all good stuff, and works very well for Git’s main use case: controlling the histo-
+ry of a software project.
+  GitHub’s commit-status API adds another layer of metadata to a commit:
+what various services say about that commit. This capability primarily shows
+itself in the pull-request UI, as shown in Figure 6-1. Each commit in the pull re-
+quest is annotated with a symbol indicating its status - a red “×” for failure or
+error, a green “✓” for success, or an amber “•” to indicate that a decision is in
+the process of being made. This feature also surfaces at the bottom of the pull-
+request; if the last commit in the branch is not marked as successful, you get a
+warning about merging the request.
+
+
+                                                           FIGURE 6-1
+
+                                                           pull-request UIn the
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                101

@@ -1,0 +1,67 @@
+CHAPTER 8: Android and the Git Data API
+
+
+                          Our tests will pass completely right now except for the final test which
+                       checks GitHub to verify a file was correctly posted. We can now proceed to writ-
+                       ing code to login to GitHub and write a file into our Jekyll repository.
+
+
+
+                       Code to Login to GitHub
+
+
+                       Let’s first work on thlogin()  method. Poking into the Egit libary reference
+                       (https://github.com/eclipse/egit-github/tree/master/
+                       org.eclipse.egit.github.core:), we can write GitHub login code that is as simple
+
+                       as the following.
+
+
+                          //Basic authentication
+                          GitHubClient client = new GitHubClient();
+                          client.setCredentials("user", "passw0rd");
+
+
+                          The context in which the code runs makes as much a difference as the code.
+                       Android requires that any code which makes network connections run inside a
+                       background thread. Android applications, in order to maintain responsive UI
+
+                       behavior, disallow any long running processes (or indeterminate processes, like
+                       network activity) from running on the main UI thread. If your eyes are starting
+
+                       to spin at the thought of learning about threading using Java, dispell your wor-
+                       ries. The Android SDK provides a great class for managing background thread
+
+                       code calledAsyncTask   . We implement a class which supports this interface by
+                       overriding at least one method which runs our background thread code (called
+
+                       doInBackground()    ).
+
+                          ...
+                          public class MainActivity extends Activity
+
+                          {
+                              /** Called when the activity is first created. */
+                              @Override
+                              public void onCreate(Bundle savedInstanceState)
+                              {
+
+                                  super.onCreate(savedInstanceState);
+                                  setContentView(R.layout.main);
+
+                                  Button login = (Button)findViewById( R.id.login );
+                                  login.setOnClickListener(new View.OnClickListener() {
+
+                                           public void onClick(View v) {
+                                                EditText utv = (EditText)findViewById( R.id.username );
+                                                EditText ptv = (EditText)findViewById( R.id.password );
+                                                String username = (String)utv.getText().toString();
+
+                                                String password = (String)ptv.getText().toString();
+                                                TextView status = (TextView)findViewById( R.id.login_status );
+                                                status.setText( "Logging in, please wait..." );
+
+
+
+
+       178

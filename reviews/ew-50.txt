@@ -1,0 +1,67 @@
+CHAPTER 3: Gists and the Gist API
+
+
+                         <b><%= f %></b>:
+
+                         <%= h g[:files][f.to_sym].rels[:raw].get.data %>
+
+                         <br/>
+
+                         <br/>
+
+                         <% end %>
+                         <% end %>
+
+
+                         </body>
+                         </html>
+
+                         Now we see the gists and the contents.
+
+
+
+
+ FIGURE 3-2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      Summary
+
+
+                      In this chapter we looked at gists and learned how they can be used to share
+
+                      code snippets. We built a simple application and stored it as a gist. This appli-
+                      cation retrieves data from the GitHub API using our first higher level language
+
+                      client library (the Octokit library for Ruby). We also went deeper into how Hy-
+                      permedia works and how a client library implements using Hypermedia meta-
+                      data.
+
+                         In the next chapter we will look at Gollum, the GitHub wiki. This chapter pro-
+                      vides an introduction to the Rugged Ruby library for accessing Git repositories
+
+                      and the Ruby library for accessing GitHub.
+
+
+
+
+
+
+
+
+
+
+       50

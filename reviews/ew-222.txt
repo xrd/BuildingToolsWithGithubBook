@@ -1,0 +1,68 @@
+CHAPTER 9: JavaScript and the Git Data API
+
+
+                       FIXING AUTHENTICATION WITH FIREBASE
+
+                       Instead of writing our own server to manage authentication and talk to the Git-
+
+                       Hub API, we will delegate that authentication to Firebase. Firebase is a real time
+                       communication toolset which integrates well with our choice of AngularJS. By
+
+                       far the simplest and safest option, Firebase offers AngularJS bindings (called
+                       “AngularFire”) and an integrated GitHub authentication component (called
+
+                       “Simple Login”). Together they resolve the authentication issue for us, and keep
+                       all our code hosted on GitHub. Delegation of our authentication component is
+                       easy with Firebase: we just modify our existing GitHub application, provide the
+
+                       credentials and GitHub oAuth scope to Firebase, and then our application off-
+                       loads user management to Firebase.
+
+                          First, we need to create a new GitHub application. In the top right corner on
+                       GitHub.com, click on the “Account settings” link, and then navigate to the “Ap-
+
+                       plications” link towards the bottom. Click on the “Developer Applications” tab
+                       in the right center column and then click on the “Register new application” but-
+
+                       ton. Make sure “Authorization callback URL” is set to   https://auth.fire-
+                       base.com/auth/github/callback        . Then save the application by clicking on
+
+                       the “Register application” button.
+
+
+
+ FIGURE 9-7
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        222

@@ -1,0 +1,67 @@
+CHAPTER 1: Preface
+
+
+                        you have not used web APIs extensively, but have experience using other types
+
+                        of APIs, this is good company.
+
+
+                        What You Will Learn
+
+
+                        Much of the book focuses on the technical capabilities exposed by GitHub and
+
+                        the powerful GitHub API. Perhaps you feel constrained by using Git only from
+                        within a certain toolset; for example, if you are an Android developer acciden-
+
+                        tally using Git to manage your app source code and want to unlock Git in other
+                        places in your life as a developer, this book provides a wider vista to learn about
+                        the power of Git and GitHub. If you have fallen into using Git for your own
+
+                        projects and are now interested in using Git within a larger community, this
+                        book can teach you all about the “social coding” style pioneered and dogfoo-
+
+                        ded by the GitHub team. This book provides a stepping stone for software de-
+                        velopers who have used other distributed version control systems and are look-
+                        ing for a bridge to using their skills with Git and within a web service like Git-
+
+                        Hub.
+                           Like any seasoned developer, automation of your tools is important to you,
+
+                        and this book provides examples of mundane tasks that we then convert them
+                        into automated and repeatable processes, and we show how to do this using a
+
+                        variety of languages talking to the GitHub API.
+                           If you are unfamiliar with the “command line” this book will give you a firm
+                        understanding of how to use it, and we bet you will find great power there. To
+
+                        make this book accessible to everyone, regardless of their editor or operating
+                        system, many of the programming samples work within the command line. If
+
+                        you have hated the command line since your father forced you to use it when
+                        you were five, this is the perfect book to rekindle a loving relationship with the
+
+                        bash shell.
+                           If you absorb not only the technical facets of using GitHub but also pay at-
+                        tention to the cultural and ideological changes offered behind the tools, you’ll
+
+                        very likely see a new way of working in the modern age. We focus on these
+                        “meta” viewpoints as we discuss the tools themselves to help you see these ex-
+
+                        tra opportunities.
+                           Almost every chapter has an associated repository hosted on GitHub where
+                        you can review the code discussed. Fork away and take these samples into your
+
+                        own projects and tools!
+                           Finally, we help you write testable API backed code. Even the most experi-
+
+                        enced developers often find that writing tests for their code is a challenge, de-
+                        spite the massive body of literature connecting quality code with tests. Testing
+
+                        can be especially challenging when you are testing something backed by an
+                        API; it requires a different level of thinking than is found in strict unit testing. To
+
+
+
+
+        10

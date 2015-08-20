@@ -1,0 +1,67 @@
+CHAPTER 6: DotNet and the Commit Status API
+
+
+                       updates, and you can order them by  created_at   to see how each one turned
+
+                       out, but that’s a lot of work. Fortunately, the API server can do it for you.
+
+
+                       Combined status
+
+
+                       If you instead do a GET t/repos/<user>/<repo>/<ref>/status        (note that
+                       the last word is singular), you’ll instead get a response that looks like this:
+
+
+                          {
+                            "state": "success",
+                            "statuses": [
+
+                              {
+                                "url": "https://api.github.com/repos/…",
+                                …
+                              },
+                              { … }
+
+                            ],
+                            "sha": "6675aaba883952a1c1b28390866301ee5c281d37",
+                            "total_count": 2,
+                            "repository": { … },
+                            "commit_url": "https://api.github.com/repos/…",
+
+                            "url": "https://api.github.com/repos/…"
+                          }
+
+                          The statuses  array is the result of the logic you’d probably write if you had
+
+                       to: it collapses the statuses by context, keeping only the last one. Tstate
+                       field contains an overall status that takes into account all of the contexts, pro-
+
+                       viding a final value based on these rules:
+
+                           •failure  if any of the contexts postedfailure   orerror  state
+
+                           •pending   if any of the contexts’ latest statpending  (or if there are no
+                            statuses)
+
+                           •success  if the latest status for every contesuccess
+
+                          This is probably exactly what you want, but if you find that your use case
+
+                       calls for different rules, you can always use statuses   endpoint to get the
+                       raw data and calculate your own combined status.
+
+
+                       Creating a status
+
+
+                       Now obviously these statuses have to come from somewhere. This API also in-
+
+                       cludes a facility for creating them. To do this, you simply make a POST request
+                       to/repos/<user>/<repo>/statuses/<sha>        , and supply a JSON object for
+                       the fields you want to include with your status:
+
+
+
+
+       104

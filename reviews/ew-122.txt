@@ -1,0 +1,68 @@
+CHAPTER 7: Ruby and Jekyll
+
+
+                        that embedded code could look like    system("rm -rf /")      . Liquid provides
+                        many of the benefits of embedded programming templates, without the dan-
+
+                        gers.
+                           Lastly, your jekyll directory has a special file ca_config.yml   . This is the
+
+                        jekyll configuration file. Peering into it, you’ll see it is very basic:
+
+                           name: Your New Jekyll Site
+
+                           markdown: redcarpet
+                           pygments: true
+
+                           We only have three lines to contend with and they are simple to understand:
+
+                        the name of our site, the Markdown parser used by our jekyll command, and
+                        whether to use pygments to do syntax highlighting.
+
+                           To view this site locally run this command:
+
+
+                           $ jekyll serve
+
+                           This command builds the entirety of your jekyll directory, and then starts a
+
+                        mini web server to serve the files up to you. If you then visihttp://local-
+                        host:4000   in your web browser, you will see something the front page of your
+
+                        site and a single blog post listed in the index.
+
+
+
+ FIGURE 7-1
+
+ A bare Jekyll site
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                           Clicking into the link inside the “Blog Posts” section, you will then see your
+
+                        first post.
+
+
+
+
+
+
+
+
+
+        122

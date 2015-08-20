@@ -1,0 +1,69 @@
+                                                                                Building a Gollum Editor
+
+
+special interface which allows quickly editing and reviewing these files locally.
+And all of it can be published into GitHub for review (though we won’t allow ed-
+
+iting of the information there, since GitHub has its own editing modality.)
+   Gollum is built on Ruby and uses the Grit library underneath. Using Ruby
+
+makes sense because we can leverage the existing Grit and Gollum libraries.
+We’ll also use Sinatra, the same web application library we used in the last
+
+chapter.
+
+
+     The gollumcommand is, in fact, a customized wrapper around Sinatra.
+
+
+   This will be a dual purpose repository. We can use the repository with gol-
+lum as a standard wiki. And, we can use it with our application to enter data in
+
+a more powerful way than gollum permits from its default interface. The data
+will still be compatible with gollum and will be hosted on GitHub.
+
+   To begin, initialize our repository.
+
+
+   $ mkdir images
+   $ cd images
+   $ git init .
+   $ printf "### Our home" > Home.md
+   $ git add Home.md
+
+   $ git commit -m "Initial checking"
+
+   We’ve just created a wiki compatible with gollum. Let’s see what it looks like
+
+inside gollum. run the  gollum   command then open      http://localhost:
+4567/  in your browser.
+
+
+
+
+                                                                                  FIGURE 4-3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                          61

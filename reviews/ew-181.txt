@@ -1,0 +1,67 @@
+                                                                                           Prerequisites
+
+
+   This code will not compile yet, because we need to import the support
+classes. The JARs and classes for Egit have already been added to our project
+
+automatically using gradle. Make sure you add these  import  statements to the
+top of the file, under the other imports.
+
+
+   ...
+   import android.view.View;
+   import android.os.AsyncTask;
+   import org.eclipse.egit.github.core.service.UserService;
+   import org.eclipse.egit.github.core.User;
+
+   import java.io.IOException;
+   ...
+
+
+Code to talk to GitHub
+
+
+Our last step is to write the code which handles putting content into GitHub.
+This is not a simple function, because the GitHub API requires you build out the
+
+structure used internally by Git. A great reference for learning more about this
+structure is the free and open source book called “Pro Git” and specifically the
+last chapter called “Git Internals”:http://git-scm.com/book/en/Git-Internals. In
+
+a nutshell, the GitHub API expects you to create a git “tree” and then place a
+“blob” object into that tree. You then wrap the tree in a “commit” object and
+
+then create that commit on GitHub using a data service wrapper. In addition,
+writing a tree into GitHub requires knowing the base SHA identifier, so you’ll see
+
+code which retrieves the last SHA in the tree associated with our current
+branch. This code will work regardless of whether we are pushing code into the
+master branch, or into the gh-pages branch, so this utility class works with real
+
+Jekyll blogs. It would be lovely if the GitHub API provided more “porcelain” (the
+Git term for user friendly verbs that insulate you from knowing the internals of
+
+Git) instead of only this “plumbing” API, but having the API work like this does
+give you full control over manipulating your repository and data programmati-
+
+cally in any way that you could possibly need to as it maps exactly to the capa-
+bilities you would have writing to a file stored in a local git repository on your
+hard drive.
+
+   We’ll write a helper class called GitHubHelper    and add a single method
+which writes a file to our repository.
+
+   The GitHub API requires that files written into repositories be Base64 enco-
+ded. The Apache Foundation provides a suite of tools published to Maven (the
+
+same  software repository where we grabbed the egit libraries) which can do
+this encoding for us. To add this library to our project, we need to add to our
+
+dependencies inside our  build.gradle   file:
+
+
+
+
+
+
+                                                                                           181

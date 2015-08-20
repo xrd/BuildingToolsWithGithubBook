@@ -1,0 +1,67 @@
+CHAPTER 6: DotNet and the Commit Status API
+
+
+                           The most obvious application for this feature is a continuous-integration ser-
+                        vice. A program like Jenkins will get a notification when new commits are push-
+                        ed to a branch, run a build/test cycle using the new code, and post the results
+
+                        through the commit-status API. An application like this can even include a link
+                        back to the build results, so the user can find out which tests failed. This is a
+
+                        great way to bring together everything needed to make a decision about a pro-
+                        posal: what code has changed, what do people think about it, and does this
+
+                        change break anything? The answer to all of these questions is available on the
+                        same page: the pull-request conversation view.
+                           Building and testing is only the beginning, though; the status of a commit
+
+                        can be used for other purposes as well. For example, open-source projects
+                        often have a license agreement that you must sign in order to submit a contri-
+
+                        bution. These are called “contributor license agreements,” and usually contain
+                        language about licensing the contribution to the maintainers of the project. But
+                        it’s tedious to manually check every incoming pull request to see if the author
+
+                        has signed the CLA, so a continuous-integration-style service can be used for
+                        this. CLAHub is one such example: it checks to see if all of the authors of the
+
+                        contained commits have signed the CLA, and marks the latest commit as “er-
+                        ror” if not.
+
+                           So now we know what the feature is, and what its intended use is. Let’s take
+                        a look at how a program can interact with it.
+
+
+
+                        The API
+
+
+                        First, let’s talk about access control. The commit status API exposes the need
+                        for OAuth as few others do. Making a repository private means you want com-
+                        plete control of what people or applications can access it. Naturally you trust
+
+                        GitHub’s internal code to do the right thing with your data, but what about
+                        some random application from the Internet? OAuth gives you a way to grant
+
+                        private-repository access to an application with limits – the use of OAuth scopes
+                        allows an application to ask for a specific set of permissions, but it won’t be
+
+                        able to do just any old thing with your data. Plus, these you’re always in control
+                        of these permissions; you can revoke an application’s access at any time.
+                           The OAuth system includes the concept of scopes, which can be requested
+
+                        by and granted to an application, each of which allows a certain set of actions.
+                        The commit-status API requires the   repo:status    OAuth scope, which allows
+
+                        an application read and write access to just commit statuses; there is no access
+                        granted to the actual contents of the repository. This might seem strange: how
+
+                        can you judge the status of a commit without being able to inspect its contents?
+                        Just remember that this feature has use cases beyond continuous integration,
+                        and an application may not need full access to make a decision. For services
+
+
+
+
+
+        102

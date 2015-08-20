@@ -1,0 +1,67 @@
+                                                                    The Harmless Brew that Spawned Jekyll
+
+
+changes are made. And, to faciliate interaction, you use client side JavaScript
+plugins instead of pushing that interaction into your database. Jekyll has found
+a sweet spot with a simple technology set that makes your life easier and
+
+makes beautiful blogs and simple web sites. And, the biggest benefit of doing
+things the “Jekyll” way is that all dependencies can sit within a repository, and
+
+this means your entire site can be hosted on GitHub.
+
+
+(Less Than) Evil Scientist Parents
+
+
+Like many of the open source technologies in heavy usage at GitHub, jekyll was
+originally developed by Tom Preson Warner, one of the co-founders of GitHub,
+
+and Nick Quaranto, of 37 Signals, though there are now thousands of contribu-
+tors to the Jekyll codebase. Like many open source projects, the strength of the
+tool comes not from the brilliance of the original developers or the brilliance of
+
+the idea, but the way that those original developers cultivated community and
+involvement among the users of the tool.
+
+
+
+Operating Jekyll Locally
+
+
+To really use jekyll, you’ll need thjekyll  gem. As we explain in the ???, we
+could install a ruby gem using this command:
+
+
+   $ gem install jekyll
+
+   There are two issues with doing installation this way. The first is that any
+
+commands we run inside the command line are lost to us and the world (other
+than in our private shell history file). The second is that if we are going to pub-
+lish any of our sites to GitHub, we will want to make sure we are matching the
+
+exact versions of Jekyll and its dependencies so that a site that works on our
+local laptop also works when published into GitHub. If you don’t take care of
+
+this, you’ll occasionally get an email like this from GitHub:
+
+    The page build failed with the following error:
+
+
+    page build failed
+
+    For information on troubleshooting Jekyll see
+    https://help.github.com/articles/using-jekyll-with-pages#troubleshooting
+
+    If you have any questions please contact GitHub Support.
+
+   The fix for these two issues is a simple one. You’ve probably seen other
+
+chapters using a Gemfile   to install ruby libraries. Instead of using a manual
+command like   bundle  to install from the command line, let’s put this depend-
+
+
+
+
+                                                                                          119

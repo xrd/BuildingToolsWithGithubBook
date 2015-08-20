@@ -1,0 +1,67 @@
+                                                               Building a Coffee Shop Database on GitHub
+
+
+            success( response );
+       } };
+       spyOn( geo, "getCurrentPosition" ).andCallThrough();
+   }
+
+
+   function generateMockRepositorySupport() {
+       repo = { read: function( branch, filename, cb ) {
+            cb( undefined, JSON.stringify( filename == "cities.json" ? CITIES : PORTLAND ) );
+       } };
+       spyOn( repo, "read" ).andCallThrough();
+
+
+       gh = new Github({});
+       spyOn( gh, "getRepo" ).andCallFake( function() {
+            return repo;
+       } );
+
+   }
+
+   beforeEach( inject( function ($controller, $rootScope ) {
+   ...
+
+
+   Now that we have a set of tests, run the test suite from the command line
+and watch them fail.
+
+
+   $ karma start karma.conf.js
+   Chrome 32.0.1700 (Mac OS X 10.9.1) GithubCtrl #init should initialize, grabbing current city FAILED
+            Error: [$injector:modulerr] Failed to instantiate module coffeetech due to:
+            Error: [$injector:nomod] Module 'coffeetech' is not available! You either misspelled the module name or forgot to load it. If re▯gistering a module ensure that you specify the dependencies as the second argument.
+
+   ...
+
+   Once we have failing tests that support the direction of our code, we can
+
+write the code to support the tests we have written. First add support fixtures,
+data files which have test data. Add tfixtures-cities.js    file.
+
+
+   var CITIES = [ { name: "portland", latitude: 45, longitude: 45 },
+     { name: "seattle", latitude: 47.662613, longitude: -122.323837 } ];
+
+
+   And, thefixtures-portland.js     file.
+
+   var PORTLAND = [ { "name" : "Very Good Coffee Shop", "latitude" : 45.52292, "longitude" : -122.643074 },
+
+   { "name" : "Very Bad Coffee Shop", "latitude" : 45.522181, "longitude" : -122.63709 },
+   { "name" : "Mediocre Coffee Shop", "latitude" : 45.520437, "longitude" : -122.67846 } ]
+
+   Then add the coffeetech.js   file. We’ll focus just on the setup code and the
+
+changes to the init function for now.
+
+
+   var mod = angular.module( 'coffeetech', [] );
+
+
+
+
+
+                                                                                       203

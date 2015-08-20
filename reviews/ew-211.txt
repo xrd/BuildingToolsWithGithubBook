@@ -1,0 +1,68 @@
+                                                                Building a Coffee Shop Database on GitHub
+
+
+   We alter our lat/lng information to point to a Google Maps page.
+
+
+   Now if we type in the word gluten  in our search box, we filter out anything
+except shops which match that, and we see the information pieces formatted
+as labels underneath the shop name.
+
+
+
+
+                                                                                 FIGURE 9-4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ADDING DATA USING PULL REQUESTS
+
+
+Now that we have a functioning application, let’s allow people to add informa-
+tion themselves and help build our database. Just beneath the link to the map
+link, add a button which will allow us to annotate affeeshop with extra infor-
+
+mation.
+   To add an annotation to our existing data we are going ask users to contrib-
+
+ute the “GitHub” way. Users will fork the repository, make a change, and then
+issue a pull-request. We can do all of this from our webapp using the Github.js
+
+library. This requires that we ask the users to login, so we will prompt them for
+their username and password, as well as the data they want to annotate.
+
+   The implementation we will use starts with adding an “annotate” button to
+our HTML.
+
+
+   <button ng-click="annotate(shop)">Add factoid</button>
+
+   Let’s add some tests. Add another file called         coffeetech.anno-
+
+tate.spec.js   with these contents:
+
+
+   describe( "GithubCtrl", function() {
+
+       var scope = undefined, gh = undefined, repo = undefined, prompter = undefined;
+
+
+       function generateMockPrompt() {
+
+
+
+
+                                                                                         211

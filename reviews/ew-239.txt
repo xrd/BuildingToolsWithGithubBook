@@ -1,0 +1,68 @@
+                                                                                           Our Blueprint
+
+
+   Now that we have a simple Hubot created we need to create the Slack site
+where our Hubot will live.
+
+
+
+Creating a Slack Account
+
+Going to slack.com starts you on the process to create your own Slack site.
+
+You’ll need to step through creating an account. Slack sites are segmented by
+organization, and you’ll want to establish a URL prefix for your Slack site. Typi-
+
+cally this is the name of your organization.
+
+
+NAMING THE CHANNEL
+
+Once you have your slack site created, you need to create a channel.
+
+
+
+
+                                                                                   FIGURE 10-1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   You can name the channel anything you want, but it is often a good
+mnemonic to use a name which suggests this is a channel where more serious
+
+work gets done. You could use a name like “PR Discussion” to indicate this is
+the channel where PRs are discussed. To keep things simple, we will use the
+name “#general”. Once you click on the link to create a channel, you’ll see a
+
+popup asking for the name and an optional description.  After you have created
+the channel, you will see a link to “Add a service integration.”
+
+
+
+
+
+                                                                                           239

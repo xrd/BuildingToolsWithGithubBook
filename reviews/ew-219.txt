@@ -1,0 +1,68 @@
+                                                                   Building a Coffee Shop Database on GitHub
+
+
+Accepting the user contribution via a pull request
+
+
+When someone makes an annotation to a shop, the owner of the original repos-
+itory gets a pull request notification on GitHub.
+
+
+
+                                                                                    FIGURE 9-5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   As the owner of this repository and manager of this data, I like managing
+contributions using pull requests inside GitHub. In my humble opinion, there
+
+are no better tools for managing and reviewing changes of information than
+those found on GitHub. This is a simple case of adding data and might look like
+
+overkill at this scale. You could imagine, however, that were you to have thou-
+sands of users, making many contributions per day, that all of a sudden you
+
+would need a complex system for managing, reviewing and accepting changes
+to your data set. GitHub gives you all these tools: diff’ing files, user manage-
+ment in case you wanted to delegate review to other people in your organiza-
+
+tion, among many other features GitHub provides. This may not be the most
+obvious way to manage a database of information, but there are compelling
+
+reasons to consider it against a traditional database like Postgresql or Mysql.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                            219

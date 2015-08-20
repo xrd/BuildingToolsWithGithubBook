@@ -1,0 +1,67 @@
+                                                                                               Our Blueprint
+
+
+til you find the one you want. If there is a developer service your team uses,
+odds are there is a Hubot plugin already available for it. By searching NPM, you
+could, for example, find plugins for adding or searching tickets in JIRA, Asana
+
+and Pivotal Tracker or ZenDesk, all popular ticket tracking systems used by
+thousands of developer teams worldwide.
+
+   Though you can likely find a plugin to support whatever developer service
+you search for on npmjs, it might not be perfectly suited to your workflow. So,
+
+let’s build our own Hubot extension and get exactly what we want for our team
+of developers.
+
+
+
+Our Blueprint
+
+
+We are going to build an extension to Hubot. When we are done, Hubot will be
+transformed into a robot that..
+
+    • listens for pull request events from GitHub by subscribing to notifications
+
+      using the GitHub Activities API
+    • invites people in the chat room to comment on those pull requests
+
+    • guarantees that communication between it and GitHub is securely deliv-
+
+      ered (with a caveat)
+    • retrieves vital information from an external service (the Slack.com API)
+
+    • has functionality fully described by automated tests.
+
+    • allows easy simulation of inputs and outputs which map to the inputs
+      and outputs it gets from APIs and services.
+
+    • runs with ease host on a major Paas (Heroku)
+
+   Hubot provides the skeleton for our chat robot. We’ll add the above func-
+
+tionality to Hubot and see how easy it is to combine these features into a coher-
+ent whole that solves a real problem.
+   Just so we are clear about the differences between a vanilla Hubot and our
+
+extended Hubot following the above blueprint, let’s give it a name: Probot.
+From now on, we will speak about unmodified Hubots by calling them Hubot,
+
+while we will call our amplified Hubot with PR delegation super powers the
+name “Probot.”
+
+
+Considerations and Limitations
+
+
+If you want stability with your Hubot, you need to host it on a server. Hubot is
+
+written in NodeJS and requires a hosting service that supports NodeJS. Our Hu-
+bot needs to sit on a public IP address (not inside the firewall) because we re-
+ceive notifications from GitHub. It is not strictly required that you host Hubot
+
+
+
+
+                                                                                               237

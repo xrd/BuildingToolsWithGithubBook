@@ -1,0 +1,70 @@
+CHAPTER 10: CoffeScript, Hubot and the Activities API
+
+
+
+ FIGURE 10-2
+
+
+
+
+
+
+
+
+
+
+
+
+
+                           Slack supports many different service integrations, and one of them is Hu-
+                        bot.
+
+
+
+
+ FIGURE 10-3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                           Choosing Hubot takes you to a settings screen for your Hubot integration.
+                           Slack automatically generates an authentication token for you. This token is
+
+                        used to verify the connection from your Hubot. This token can be revoked, and
+                        in fact the token from the image below has been revoked and can no longer be
+
+                        used to authenticate into Slack. If you ever accidentally publicize this token,
+                        you can easily revoke and reassign a token to your Hubot on this screen.
+
+                           You will also need to specify a name. Use “probot” and if you’d like, change
+                        the avatar associated with the Hubot.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        240

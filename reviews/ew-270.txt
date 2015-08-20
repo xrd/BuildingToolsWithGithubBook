@@ -1,0 +1,67 @@
+CHAPTER 10: CoffeScript, Hubot and the Activities API
+
+
+                       the body  object inside our request object. If the body is url encoded (as the PR
+
+                       information is encoded if we create the webhook with the content_type   set to
+                       form ), then the body parser url decodes the content, parses it as JSON, and
+
+                       then sets the inflated object to the body attribute on our request object. Nor-
+                       mally, this is a very handy process that removes a lot of grunt work for web ap-
+
+                       plication authors.
+                          Unfortunately, because express is bundled and configured for us long before
+
+                       our extension is loaded, we cannot interrupt the load order of the body parser
+                       middleware inside our extension and this means we cannot get access to the
+                       raw body content. The body parser middleware processes the stream of data by
+
+                       registering for events inside of the HTTP request flow. NodeJS made a mark on
+                       web application development by providing a network application toolkit cen-
+
+                       tered around one of the most controversial features of JavaScript: the asyn-
+                       chronous callback. In NodeJS, processes register for events and then return
+                       control to the host program. In other languages, like Ruby for example, when
+
+                       building services which receive data from clients, by default, you listen for in-
+                       coming data, and the moment you tell your program to listen, you have blocked
+
+                       other processing. Asynchronous programming is by no means a new concept
+                       (threading in many languages, for example), but NodeJS offers a simple way to
+                       interact with asynchronous functions through event registration. In the case of
+
+                       express middleware, however, this event registration process bites us, because
+                       middleware loaded first gets first access to incoming data, and once the body
+
+                       parser has processed our body content, we no longer can access the original
+                       content. We need access to the raw body content, and there is no way to install
+                       our own middleware which would provide it inside our Probot extension when
+
+                       a PR request is received on the router.
+                          What options do we have then? Well, fortunately, every bit of our stack here
+
+                       is open source, and we can modify the code inside Hubot which sets up our ex-
+                       press server to fit our needs. This code is installed by thenpm  tool into the
+
+                       node_modules    directory and we can easily find where express is configured in-
+                       side of Hubot. There are issues with doing it this way: if we renpm install
+
+                       we will blow away our  node_modules    directory, and this is something Heroku
+                       will do if it is not told otherwise. A better way might be to fork Hubot and store
+                       our own copy of Hubot inside of GitHub and then specify our forked copy inside
+
+                       of thepackage.json    file. This has issues too; if Hubot gets updated with a crit-
+                       ical security flaw, we need to merge those changes into our fork, a maintenance
+
+                       issue which we would avoid if we use tagged releases from the main repository.
+                       There is, unfortunately, no perfect way to resolve this problem that does not it-
+
+                       self create other problems.
+                          If you do choose to modify the built in hubot code, modify the file    ro-
+
+                       bot.coffee     inside   the   node_modules/hubot/src/         directory.  The
+
+
+
+
+        270

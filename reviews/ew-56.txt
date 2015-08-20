@@ -1,0 +1,70 @@
+CHAPTER 4: Gollum
+
+
+                       GOLLUM STRUCTURAL COMPONENTS
+
+
+                       Gollum includes capabilities to add sidebars, headers, and footers. If you in-
+                       clude a file calle_Sidebar.ext    inside your repository, you’ll see it as a side-
+
+                       bar for every file rendered. Sidebars are automatically added to any file and any
+                       file from subdirectories that do not have their own sidebar files. If you wanted
+
+                       to add sidebars specific to a subdirectory, add another file in the subdirectory
+                       and this file will override the top level sidebar file.
+
+
+                       NO STYLING OR JAVASCRIPT
+
+
+                       Finally, for security reasons, Gollum strips out all CSS and JavaScript from raw
+
+                       markup files. You can include your own JavaScript or CSS file when running
+                       Gollum locally using the --custom-css   or --custom-js    switches, but there is
+
+                       no way to include these files on a Wiki when your Gollum wiki is hosted on Git-
+                       Hub.
+
+                          Now that we have investigated the structure and format of using Gollum wi-
+                       kis, we can dig into the power tools that come with Gollum.
+
+
+
+                       Moving Gollum to Your Laptop
+
+
+                       Though many people edit Gollum wikis exclusively from within the GitHub on-
+                       line editor, there is a real flexibility and power when hosting your wiki locally
+
+                       and editing it from your laptop. To do this you need to install the command line
+                       tools for Gollum.
+
+
+                          $ gem install gollum
+
+
+                          You will then see thegollum  command in your path.
+
+
+                            There is a difference between thgollumcommand (what you run from
+                            the command line) and the suite of technologies that make up Gollum as
+
+                            a project. To differentiate between them, remember that we are talking
+                            about the suite when the word is capitalized (“Gollum”), and the com-
+                            mand line tool when the word is lowercased and fixed width fogol-
+                            lum).
+
+
+
+                          What additional options are opened up when running locally? Let’s take a
+                       deeper look.
+
+
+
+
+
+
+
+
+
+        56

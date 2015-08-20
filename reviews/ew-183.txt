@@ -1,0 +1,67 @@
+                                                                                 Writing the blog content
+
+
+                rv = true;
+            }
+            catch( IOException ieo ) {
+                ieo.printStackTrace();
+            }
+
+
+            return rv;
+       }
+
+
+
+       String blobSha;
+       Tree newTree;
+   ...
+
+   This class hides the details of the GitHub API, and the specifics of writing
+
+files to Jekyll repositories. We start by providing a constructor with our login
+and password. Then, we implement a method called SaveFile which takes the
+
+repository name and the post contents. From here, we work to build the proper
+structure for creating a new Jekyll post.
+
+
+
+Writing the blog content
+
+
+The following code snippet shows functions defined to generate the content
+which we will place into our remote git repository stored on GitHub.
+
+   We define several instance variables which store data we will use later in
+method calls; data like the SHA hash for our blob, the tree into which we will
+
+place our commit, and strings which are used when creating the commit.
+Though not typical of most Java class definitions which place all member vari-
+ables at the top of the class, placing them right above the methods which load
+
+data into them makes it easier to explain their relevance, so we do that for all
+variables used in the following methods.
+
+   Our method generateContent sets a commit message and then creates the
+YAML Front Matter (see the Jekyll chapter for more details on YFM if you need a
+refresher). We then base64 encode the contents of the blog post itself using a
+
+utility class found inside the Apache Commons library. Contents inside a git
+repository are stored either as UTF-8 content or base64; we could have used
+
+UTF-8 since this is text content but base64 works losslessly and you can always
+safely use base64 without concerning yourself about the content.
+
+   Filename generation is a bit more complex because Jekyll repositories re-
+quire a specific format: the date as yyyy-MM-dd, with the title of the post, re-
+placing all whitespace with hyphens.
+
+
+   ...
+
+
+
+
+
+                                                                                          183

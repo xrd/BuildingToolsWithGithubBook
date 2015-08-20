@@ -1,0 +1,67 @@
+                                                                                     Scraping Sites into Jekyll
+
+
+   The Tumblr import plugin has a few interesting options.
+
+   Write out HTML; if you prefer to use Markdown use   md .
+
+
+   This importer will grab images if you provide a true value.
+
+
+   Wrap code blocks (indented 4 spaces) in a Liquid “highlight” tag if this is set
+   to true.
+
+
+   Write pages that redirect from the old Tumblr paths to the new Jekyll paths
+   using this configuration option.
+
+
+   Exporting from Tumblr is considerably easier than Wordpress. The Tumblr
+exporter scrapes all public posts from the blog, and then converts to a Jekyll
+compatible post format.
+
+   We’ve seen how we can use the importers available on import.jekyllrb.com
+to import. What if we have a non-standard site that we need to import?
+
+
+
+Scraping Sites into Jekyll
+
+
+If you are stuck with a site that does not fit any of the standard importers, you
+could write your own importer by perusing the source of the Jekyll importers
+
+on GitHub (http://github.com/jekyll/jekyll-import). This is probably the right
+way to build an importer if you plan on letting others use it, as it will extend
+
+several jekyll importer classes already available to make importing standard for
+other contributors. Learning all the existing methods and reading through the
+
+dozens of samples can be a lot of work, however; another option is just to write
+out our files respecting the very simple format required by Jekyll. As we are pro-
+grammers in the true sense of the word we embrace and accept our laziness
+
+and choose the second route. Let’s write some code to scrape and generate a
+Jekyll site.
+
+   Almost fifteen years ago while traveling in Brazil I grew increasingly frustra-
+ted with the guide books I used. It seemed like every time I went to a restaurant
+recommended by a guidebook I left the restaurant thinking “well, either they
+
+paid for that review or the review was written several years ago when this res-
+taurant had a different owner.” To address this discrepancy between reviews
+
+and realities, I built a site called ByTravelers.com. The idea was that travelers
+could use ByTravelers to record their experiences and easily share their experi-
+
+ences with their friends and families (replacing the long emails they used to
+send) and that that information would then become an authentication source
+of information about good and bad travel experiences.
+
+
+
+
+
+
+                                                                                               133

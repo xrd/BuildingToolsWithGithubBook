@@ -1,0 +1,67 @@
+                                                                             Scraping Sites into Jekyll
+
+
+   <link href="/assets/css/site.css" rel="stylesheet">
+
+
+   </head>
+   ...
+
+
+GRABBING ORIGINAL IMAGES
+
+Our site is bare beyond text and the original colors; adding the images would
+
+add some pop. We can easily modify our scraper.rb  script and pull down the
+original images from our site and then republish them into our new Jekyll blog.
+
+Taking a look at the archived site, note that each title has an image to the left of
+it. If we customize ouprocess_title   method we can retrieve these images
+and then publish them into our blog.
+
+   Finding the image is easyimg = ( title/ "img" )     will retrieve an “img”
+tag from the title as passed to us. Printing out the element putsgis simple
+
+way to view the contents of the elements, one of which looks like this<img
+src="/web/20030502075943im_/http://www.bytravelers.com/
+
+images/pro/book.gif">     We can then dig into the element using syntax like
+
+img.attr('src')    and get to the actual source of the image. We’ll need to ap-
+pend the base site URL to this and can then retrieve the image from archive.org.
+   Unfortunately, the VCR gem does not easily allow us to make requests which
+
+are not captured. There are methods in VCR to ignore requests, but without
+heavily refactoring ourget_ith_method   . Instead we cheat by using a com-
+
+mand line tool called wget to download the image. The VCR gem works by
+hooking into ruby libraries which make HTTP calls; by using thwget tool we
+
+can avoid using Ruby for a moment and download the file manually.
+
+   ...
+   def process_title( i, title )
+
+     img = ( title / "img" )
+     src = img.attr('src').text()
+     filename = src.split( "/" ).pop
+
+     output = "assets/images/"
+
+     full = File.join( output, filename )
+
+     unless File.exists? full
+       root = "https://web.archive.org"
+       remote = root + src
+
+       contents = `wget --quiet -O #{full} #{remote}`
+     end
+
+     title = title.text()
+     if title
+
+       title.gsub!( /Title:/, "" )
+
+
+
+                                                                                      153

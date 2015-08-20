@@ -1,0 +1,67 @@
+                                                                                      Prerequisites
+
+
+   Then we run from the command line using this command  GH_USER=foobar
+
+GH_PASS=barfoo       GH_REPO=mytestblog        calabash-android       run
+build/apk/ghru-release-unsigned.apk       . Our tests will still fail to pass, but
+
+now we are establishing a baseline success story for the real functionality of our
+future app.
+
+
+
+
+                                                                              FIGURE 8-4
+
+
+
+
+
+
+
+
+
+
+
+
+Implementing the Login Screen
+
+
+So, let’s start building our application. Obviously we need to put a username
+and password field into our application. Jumping into our XML layout files and
+
+editing gives us this file:
+
+   <?xml version="1.0" encoding="utf-8"?>
+
+   <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+       android:orientation="vertical"
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent"
+       >
+
+   <TextView
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:text="GitHub Username:"
+       />
+
+   <EditText
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/username"
+       />
+
+
+   <TextView
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:text="GitHub Password:"
+       />
+
+
+
+
+
+                                                                                      173

@@ -1,0 +1,67 @@
+                                                                                           Summary
+
+
+                                                                                FIGURE 9-9
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   After you authorize the application, the flow is identical to the manually
+username and password authentication flow. As an optimization we could
+
+check for previous logins before callin$login()   again but we don’t do that
+here, meaning the login dialog is momentarily popped up each time we click
+
+the button.
+   Once users have logged in, they will be redirected to the application, and
+we’ll notify them they have submitted a pull request with their contribution.
+
+Since their contribution is associated with their GitHub account, they will re-
+ceive standard pull request notifications when their contribution is accepted, so
+
+we don’t need to implement that ourselves.
+
+
+Summary
+
+
+We’ve built an application in JavaScript that requires no server and provides
+
+users with a searchable coffeeshop database that accepts contributions in a
+very safe and secure way using the Pull Request API. We were able to complete-
+
+ly ignore all the administrative features of a data entry system, delegating all
+these to GitHub. Our single page app permits us to focus on one thing: making a
+powerful and useful application.
+
+   In our final chapter we will use CoffeeScript to create our own chat robot
+that requests pull request reviews from chat room members using the Activities
+
+API.
+
+
+
+
+
+
+                                                                                        227

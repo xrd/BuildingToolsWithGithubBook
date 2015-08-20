@@ -1,0 +1,68 @@
+                                                                               “The Story of Smeagol…”
+
+
+   ```ruby
+   def hello
+     puts "hello"
+   end
+
+   ```
+
+   A more interesting way of embedding code inside a Gollum repository is to
+
+use the file include syntax. Again, use a triple backtick, followed by the file type
+and then a reference to the code snippet inside a GitHub repository. You’ll need
+to include the branch as well.
+
+
+   ```html:github:xrd/TeddyHyde/blob/master/Gemfile```
+
+
+   This will pull the file on GitHub located inside the “TeddyHyde” repository
+for user “xrd” on the master branch named “Gemfile” and publish it with syntax
+
+hilighted into your wiki as if you had used this markup.
+
+   ```ruby
+
+   source 'https://rubygems.org'
+
+   gem "nokogiri"
+   gem "rspec"
+   gem 'calabash-android', :git => 'git://github.com/calabash/calabash-android.git'
+
+   ```
+
+   Unfortunately, you cannot specify a specific SHA commit to retrieve mo-
+
+ments in history within the git repository, but this is still a powerful way to ex-
+pose a file inside a Gollum wiki. If you need to do that, the best way might be to
+
+create a branch from a specific SHA commit, and then reference that branch
+when including the file.
+
+
+   $ git checkout 0be3e4475db2697b8
+   $ git checkout -b at_sha_0be3e4475db2697b8
+   $ echo "gem 'rails' # Adding rails to Gemfile" >> Gemfile
+   $ git commit -m "Added rails to Gemfile" -a
+
+   $ git push origin at_sha_0be3e4475db2697b8
+
+   This would generate a new branch based on an older commit, and push up
+
+the branch. Then, you could reference this inside your wiki with the following
+include
+
+
+   ```html:github:xrd/TeddyHyde/blob/at_sha_0be3e4475db2697b8/Gemfile```
+
+   Note that we’ve referenced the branch named after the specific SHA hash we
+
+want.
+
+
+
+
+
+                                                                                          55

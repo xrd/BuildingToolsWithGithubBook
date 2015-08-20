@@ -1,0 +1,48 @@
+                    Gists and the Gist API                          3
+
+
+
+
+
+
+
+
+GitHub revolutionized software development by responding to a deep desire to
+share information. But calling it just “sharing” does a disservice to the tools Git-
+Hub provides: these tools remove barriers to communication and streamline
+workflows and these tools also arose at exactly the moment when more and
+more companies permitted and more and more complementary technologies
+appeared to allow an emerging remote workforce. Gists service part of this
+
+need: they permit intimate code sharing and reuse, refactoring and play in a
+way not served by heavyweight tools predating it.
+  Gists are easy to create and the interface is stripped down to the barest level.
+You add a snippet of code and then share the URL. Gists autodetect the lan-
+guage in most cases and format it correctly. Gists can be used in more powerful
+ways than might appear at first glance and this chapter will explore other ways
+to share code and amplify your team.
+
+  To create a gist, go to gist.github.com and enter in any textual data. You then
+choose public or secret access and create the gist. After creating the gist, you
+receive a shareable URL with the code. If the type of textual data is specified,
+usually the coding language type, then the code will be formatted in a pretty
+way for better readability. If you need to share a small bit of code, or write
+something and discuss it, gists are a great tool.
+
+  There are other services that do this: pastebin was the first, and there are
+many others that offer variances on code sharing. But gists by GitHub are not
+simply a pasting service. Gists are first class repositories, forkable, editable and
+expansive. We’ll go over the basics of what gists are, and how to create them,
+and then show how they allow you to share code that is also a live application.
+
+
+Gists are repositories
+
+
+Every gist created is a tiny repository. You can update gists and see the history
+usinggit log. You can download gists, hack on the reposigit pushd
+them back into the repository on gist.github.com (which will republish them
+
+
+
+                                                                           41

@@ -1,0 +1,72 @@
+CHAPTER 2: Introduction
+
+
+
+                            If you are using two factor authentication, this flow requires additional
+                        steps, all of which are documented within the ???.
+
+                            To use this token, you specify the token inside an authorization header. It is a
+                        little bit early to talk about exactly how to interact with the API, but the syntax
+
+                        in cURL looks like the following. For a full flow, check out the Hubot chapter
+                        which shows how to use cURL with an oAuth token.
+
+
+                            $ curl -H "Authorization: token abcdef87654321" ...
+
+
+                            Scopes clarify how a service or application will use data inside the GitHub
+                        API. This makes it easy to audit how you are using the information if this was a
+
+                        token issued for your own personal use. But, most importantly, this provides
+                        valuable clarity and protection for those times when a third party application
+
+                        wants to access your information: you can be assured the application is limited
+                        in what data it can access, and you can revoke access easily.
+
+
+                        SCOPE LIMITATIONS
+
+
+                        There is one major limitation of scopes to be aware of: you cannot do fine-
+
+                        grained access to certain repositories only. If you provide access to any of your
+                        private repositories, you are providing access to all repositories.
+
+                            It is likely that GitHub will change the way scopes work and address some of
+                        these issues. The great thing about the way oAuth works is that to support
+
+                        these changes you will simply need to request a new token with the scope
+                        modified, but otherwise, the application authentication flow will be unchaged.
+
+
+                              Be very careful about the scopes you request when building a service or
+
+                              application. Users are (rightly) paranoid about the data they are handing
+                              over to you, and will evaluate your application based on the scopes re-
+                              quested. If they don’t think you need that scope, be sure to remove it
+                              from the list you provide to GitHub when authorizing and consider esca-
+
+                              lation to a higher scope after you have developed some trust with your
+                              users.
+
+
+
+                        SCOPE ESCALATION
+
+
+                        You can ask for scope at one point which is very limited, and then later ask for a
+                        greater scope. For example, when a user first accesses your application, you
+
+                        could only get the user scope to create a user object inside your service, and
+                        only when your application needs repository information for a user, then re-
+
+                        quest to escalate privileges. At this point the user will need to approve or disap-
+                        prove your request, but asking for everything up front (before you have a rela-
+
+                        tionship with the user) often results in a user abandoning the login.
+
+
+
+
+        28

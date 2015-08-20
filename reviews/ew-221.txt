@@ -1,0 +1,68 @@
+                                                                    Building a Coffee Shop Database on GitHub
+
+
+GitHub decides whether we are who we say we are, and then returns us to the
+application which requested access.
+
+   GitHub provides the application with what is called an oAuth token that en-
+capsulates exactly what services on GitHub we have access to, and whether
+that access is read-only or whether we can add data in a read-write manner.
+
+This means our requesting service can ask to modify only parts of our data
+within GitHub; this provides a much higher level of trust to users as they know
+
+the application cannot touch the more private parts within GitHub. Specifically,
+this means we could ask for access only to gists and not request access to our
+
+repositories. One important point about oAuth tokens is that they can be re-
+voked. So, once a specific action has been taken, we can destroy the token and
+
+revoke access. With simple username and password access, the only way to re-
+voke access is to change the password, which means any place you have saved
+that password (password managers or other applications which login via user-
+
+name and password) need to update their settings as well. With oAuth we can
+revoke a single token at any time (and GitHub makes it easy to do this) without
+
+affecting access to other services.
+
+
+Authentication Requires a Server
+
+
+We would like to host everything on GitHub, but sadly there is one piece which
+we cannot host there: the authentication component. Somehow we need to
+
+safely authenticate our user into GitHub and retrieve an oAuth token. There is
+currently no way to do this strictly client side (using only static HTML and Java-
+
+Script running in the browser). Other authentication providers like Facebook do
+provide pure JavaScript login functionality in their SDKs, but GitHub, citing se-
+
+curity concerns, has not release anything that does authentication purely on
+the client side as of yet.
+   Somehow we have to involve a server into our authentication process. The
+
+most obvious choice we have is to run a small authentication server, delegate
+authentication to it, and once authentication is completed, jump back in our
+
+application hosted on GitHub. We provide code (written in NodeJS, JavaScript
+for the server side) to do this at the end of the xchapter. But, creating even a
+
+simple authentication system has a baseline of complexity that seems like over-
+kill, and this code is complex and lengthy, and requires figuring out a hosting
+
+provider. If we could instead delegate this authentication to a third party, we
+could reduce a massive amount of code and complexity from our system. Let’s
+see what that looks like.
+
+
+
+
+
+
+
+
+
+
+                                                                                             221

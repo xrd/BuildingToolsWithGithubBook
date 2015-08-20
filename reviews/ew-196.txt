@@ -1,0 +1,67 @@
+CHAPTER 9: JavaScript and the Git Data API
+
+
+                            scope once we return from the show() method callback in the Github.js
+
+                            API call. Notice we don’t have to do anything to place data inside the
+                            HTML once the   repo.show()   callback has completed other than notify-
+
+                            ing AngularJS that data has changed using the$apply()   method. We on-
+                            ly need to call$apply()   if we are using a third party library that uses
+
+                            callbacks, anything defined within AngularJS is wrapped inside the$ap-
+                            ply()  block.
+
+                           • Inspecting a JS object inside your webpage can be complicated; do you
+                            extract information from the object, put them into <div>s, doing all the
+
+                            marshalling we just realized is a royal pain in the lives of most modern
+                            JavaScript developers? If we are using AngularJS it does not have to be.
+
+                            AngularJS provides a filter which you can apply (using the pipe character)
+                            that produces a pretty printed object in your webpage. You see that with
+
+                            the repo | json    code. json  is a filter AngularJS provides by default.
+                            We’ll use filters later in a powerful way.
+
+                           • Many people see this kind of two way databinding and assume it cannot
+                            be performant, arguing that AngularJS must be polling the JavaScript ob-
+
+                            jects to see changes. Not true! AngularJS is written in a smart way and
+                            only processes and changes the DOM when changes are noticed inside a
+                            digest cycle. If you put all your code properly into your scope, AngularJS
+
+                            will handle tracking changes for you. As we mentioned briefly above, us-
+                            ing a third party library that works with callbacks (like the Github.js li-
+
+                            brary) means you need to notify AngularJS that there has been a change
+                            by manually calling the $apply  function on the$scope  object once you
+                            have completed adding data to the scope inside the callback. Without
+
+                            this, your application would not respond to the change until a digest was
+                            triggered by some other incidental change in the scope.
+
+                           •AngularJS allows you to break application functionality into isolated
+                            components which makes your application more testable. When we call
+
+                            angular.controller     we are creating a controller which allows us to
+                            isolate and encapsulate functionality.
+
+
+                          Now let’s implement the coffeetech.js   file. Create a new file callcof-
+                       feetech.js  in the root of your repository.
+
+
+                          var mod = angular.module( 'coffeetech', [] )
+                          mod.controller( 'GithubCtrl', function( $scope ) {
+                            var github = new Github({} );
+                            var repo = github.getRepo( "gollum", "gollum" );
+
+                            repo.show( function(err, repo) {
+                              $scope.repo = repo;
+                              $scope.$apply();
+
+
+
+
+       196

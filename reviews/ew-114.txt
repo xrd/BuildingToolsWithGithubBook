@@ -1,0 +1,67 @@
+CHAPTER 6: DotNet and the Commit Status API
+
+
+                         Here we redirect the user back to what they were originally trying to do, with
+
+                         as little disruption as possible.
+
+                         Once all that is done, we’ve got our token and are able to continue on our
+                      merry way. All our handlers have to do to trigger an OAuth sequence is to call
+
+                      RedirectToOAuth()     if it’s necessary, and we’ll automatically return the user
+                      to where they were when the process completes.
+
+
+                      Status handler
+
+
+                      Having gone through all that OAuth business, we should now have a token that
+
+                      grants us permission to create commit statuses, so let’s see what it takes to do
+                      that. We’re going to add this handler to our Nancy module constructor:
+
+
+                         Get["/{user}/{repo}/{sha}/{status}", true] = async (parms, ct) =>
+                             {
+                                  var accessToken = Session["accessToken"] as string;
+                                  if (string.IsNullOrEmpty(accessToken))
+
+                                      return RedirectToOAuth();
+                                  client.Credentials = new Credentials(accessToken);
+
+                                  CommitState newState = Enum.Parse(typeof(CommitState),
+
+                                                                      parms.status,
+                                                                      true);
+                                  try
+                                  {
+                                      var newStatus = new NewCommitStatus
+
+                                      {
+                                          State = newState,
+                                          Context = "example-api-app",
+                                          TargetUrl = new Uri(Request.Url.SiteBase),
+                                      };
+
+                                      await client.Repository.CommitStatus.Create(parms.user,
+                                                                                     parms.repo,
+                                                                                     parms.sha,
+                                                                                     newStatus);
+                                  }
+
+                                  catch (NotFoundException)
+                                  {
+                                      return HttpStatusCode.NotFound;
+                                  }
+
+
+                                  var template = @"Done! Go to <a href=""https://"
+                                  + @"api.github.com/repos/{0}/{1}/commits/{2}/status"
+                                  + @""">this API endpiont</a>";
+                                  return String.Format(template,
+
+
+
+
+
+       114

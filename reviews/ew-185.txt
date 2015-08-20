@@ -1,0 +1,67 @@
+                                                            The Base SHA from the Repository and Branch
+
+
+   RepositoryBranch theBranch;
+   String baseCommitSha;
+   private String retrieveBaseSha() throws IOException {
+       // get some sha's from current state in git
+       repository = repositoryService.getRepository(login, repoName);
+
+       theBranch = getBranch();
+       return theBranch.getCommit().getSha();
+   }
+
+   ...
+
+
+
+The Base SHA from the Repository and Branch
+
+
+A git repository is a directed acrylic graph (DAG) and as such, each node in the
+graph must have a starting point. When we append content to our graph, we
+
+need to determine the starting point on that graph.retrieveBaseSha   does
+this: it finds the SHA hash for our starting point, a SHA hash which is functional-
+
+ly an address inside our tree. To determine this address, our applications needs
+to have a reference to the repository, and we use the repository service we in-
+stantiated earlier to get this reference. Once we have the repository, we need to
+
+look inside the correct brancgetBranch  does this for us.
+
+
+   ...
+
+       Repository repository;
+       RepositoryBranch theBranch;
+       String baseCommitSha;
+
+       private String retrieveBaseSha() throws IOException {
+           // get some sha's from current state in git
+           repository = repositoryService.getRepository(login, repoName);
+           theBranch = getBranch();
+
+           return theBranch.getCommit().getSha();
+       }
+
+       public RepositoryBranch getBranch() throws IOException {
+   List<RepositoryBranch> branches = repositoryService.getBranches(repository);
+
+   RepositoryBranch master = null;
+   // Iterate over the branches and find gh-pages or master
+   for( RepositoryBranch i : branches ) {
+       String theName = i.getName().toString();
+       if( theName.equalsIgnoreCase("gh-pages") ) {
+
+           theBranch = i;
+       }
+       else if( theName.equalsIgnoreCase("master") ) {
+           master = i;
+       }
+
+   }
+
+
+
+                                                                                      185

@@ -1,0 +1,67 @@
+                                                                                            The Code
+
+
+
+   And this is how you write a “main” function in WxPython. We instantiate an
+   App instance, create an instance of our top-level frame, and run the app’s
+
+   main loop.
+
+
+Git credential helper
+
+
+That’s how most of the UI code is going to be structured, but before we go any
+further, we should define a function to help us get the user’s GitHub credentials.
+
+We’ll be cheating a bit, by asking Git if it has the user’s login and password.
+   We’ll leverage thegit credential fill     command. This is used internally
+
+by Git to avoid having to ask the user for their GitHub password every time they
+interact with a GitHub remote. The way it works is by accepting all the known
+facts about a connection through      stdin , as text lines in the format
+
+“<key>=<value>”. Once the caller has supplied all the facts it knows, it can close
+the stdin stream (or supply an empty line), and Git will respond with all the
+
+facts it knows about this connection. With any luck, this will include the user’s
+login and password. The whole interaction looks a bit like this:
+
+
+   $ echo "host=github.com" | git credential fill
+   host=github.com
+   username=ben
+   password=(redacted)
+
+
+
+   This passes a single line tgit credential     and closes stdin , which Git
+   will recognize as the end of input.
+
+
+   Git responds with all the facts it knows about the connection. This includes
+   the input values, as well as the username and password if Git knows them.
+
+   One other thing that you should know about git-credential    is that by de-
+
+fault, if it doesn’t know anything about the host, it’ll ask the user at the termi-
+nal. That’s bad for a GUI app, so we’re going to be disabling that feature
+
+through the use of theGIT_ASKPASS   environment variable.
+   Here’s what our helper looks like:
+
+
+   GITHUB_HOST = 'github.com'
+   def git_credentials():
+       os.environ['GIT_ASKPASS'] = 'true'
+       p = subprocess.Popen(['git', 'credential', 'fill'],
+
+                              stdout=subprocess.PIPE,
+                              stdin=subprocess.PIPE)
+       stdout,_ = p.communicate('host={}\n\n'.format(GITHUB_HOST))
+
+
+
+
+
+                                                                                          87

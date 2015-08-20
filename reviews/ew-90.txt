@@ -1,0 +1,68 @@
+CHAPTER 5: Python and the Search API
+
+
+                          Each of these three methods comes in at a different point during our pro-
+                       gram’s execution. If our credentials are coming from Git, we proceed straight to
+
+                       test_credentials    ; if they’re coming from the login panel (see below), they go
+                       through the  login_accepted    callback first, which then calltest_creden-
+
+                       tials .
+                          Either way, what we do is try to fetch a list of the user’s organizations, to see
+
+                       if they work. Here you can see the usage pattern foagithub   – the URL path is
+                       mapped to object-property notation on an instance of the   Github  class, and
+
+                       the HTTP verb is mapped to a method call. The return values are a status code
+                       and the data, which has been decoded into a dictionary object. If it fails —
+
+                       meaning the returned status is not200 — we send the user to the login panel. If
+                       it succeeds, we calswitch_to_search_panel     .
+
+
+                            We’re doing a synchronous network call on the UI thread. This is usually
+
+                            a bad idea, because the UI will become unresponsive until the network
+                            call completes. Ideally we’d move this out onto another thread, and get
+                            the return value with a message, but for this simple example (and use
+                            case), it’ll do.
+
+
+                          The last method handles the UI switch. The login panel is referenced by two
+
+                       things: the SearchFrame   instance (the parent window), and the sizer that’s
+                       controlling its layout. Fortunately, calling Destroy()   method cleans both
+
+                       of those up, so we can then create theSearchPanel   instance and add it to our
+
+                       sizer. Doing this requires a specific call to the siLayout()  method; other-
+                       wise the sizer won’t know that it needs to adjust the position and size of the
+                       new panel.
+
+
+                              def create_controls(self):
+                                   # Set up a menu. This is mainly for "Cmd-Q" behavior on OSX
+
+                                   filemenu = wx.Menu()
+                                   filemenu.Append(wx.ID_EXIT, '&Exit')
+                                   menuBar = wx.MenuBar()
+                                   menuBar.Append(filemenu, '&File')
+                                   self.SetMenuBar(menuBar)
+
+
+                                   # Start with a login UI
+                                   self.login_panel = LoginPanel(self, onlogin=self.login_accepted)
+
+
+                              def do_layout(self):
+                                   self.sizer = wx.BoxSizer(wx.VERTICAL)
+                                   self.sizer.Add(self.login_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
+                                   self.SetSizer(self.sizer)
+
+
+
+
+
+
+
+        90

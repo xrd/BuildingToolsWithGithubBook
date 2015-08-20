@@ -1,0 +1,68 @@
+CHAPTER 9: JavaScript and the Git Data API
+
+
+                         $scope.detectCurrentCity = function() {
+                             // Calculate the distance from our current position and use
+                             // this to determine which city we are closest to and within
+                             // 25 miles
+
+                             for( var i = 0; i < $scope.cities.length; i++ ) {
+                                 var dist = $scope.calculateDistance( $scope.latitude,
+                                                                        $scope.longitude,
+                                                                        $scope.cities[i].latitude,
+                                                                        $scope.cities[i].longitude );
+
+                                 if( dist < 25 ) {
+                                     $scope.city = $scope.cities[i];
+                                     break;
+                                 }
+
+                             }
+                         }
+
+                         toRad = function(Value) {
+                             return Value * Math.PI / 180;
+
+                         };
+
+                         $scope.calculateDistance = function( latitude1,
+                                                                longitude1,
+
+                                                                latitude2,
+                                                                longitude2 ) {
+                             R = 6371;
+                             dLatitude = toRad(latitude2 - latitude1);
+                             dLongitude = toRad(longitude2 - longitude1);
+
+                             latitude1 = toRad(latitude1);
+                             latitude2 = toRad(latitude2);
+                             a = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) +
+                                 Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) *
+
+                                 Math.cos(latitude1) * Math.cos(latitude2);
+                             c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                             d = R * c;
+                             return d;
+                         }
+
+
+                         $scope.annotate = function() {
+                             user = Prompt( "Enter your github username" )
+                             password = Prompt( "Enter your github password" )
+
+                             data = Prompt( "Enter data to add" );
+                         };
+
+                         ...
+
+
+                         retrieveCity   retrieves a list of shops in the same way that we retrieved
+
+                         the list of cities.
+
+
+
+
+
+
+       206

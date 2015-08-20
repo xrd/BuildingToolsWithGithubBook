@@ -1,0 +1,67 @@
+CHAPTER 10: CoffeScript, Hubot and the Activities API
+
+
+                          And, our handler code defining   getUsernameFromResponse       simply turns
+                       into this:
+
+
+                          ...
+                          exports.getUsernameFromResponse = ( res ) ->
+                                   res.message.user.name
+
+
+                          ...
+
+                          With this information in hand, we can properly comment on the pull request.
+
+                       Well, almost.
+
+
+                       UNIFYING USERNAMES VIA THE COLLABORATORS API
+
+                       If the Slack username for the person who accepted the pull request is an exact
+
+                       match with their GitHub username, then we can assume they are the same per-
+                       son in real life and create a comment inside the pull request reminding them
+                       (and anyone else) that they will be reviewing the PR. We can use the collabora-
+
+                       tor sub section of the Repository API to look up their name on GitHub.
+                          If we don’t find them inside the list of users and there is not an exact match
+
+                       with their Slack name then we have at least one problem, maybe two. First, we
+                       could just have a mismatch in their identities (their usernames are different on
+
+                       each site). If this is the case, we could ask them to clarify this inside the slack
+                       room. We do have another case: the user is not a collaborator on the repository
+                       hosted on GitHub. If this is the case, clarifying their username is not going to
+
+                       help. The Repository API does support adding a user to the list of collaborators
+                       so we could do that here, but this arguably is a moment where a larger discus-
+
+                       sion should happen (write access to a repository is a big resposibility in a way
+                       that being inside a chat room is not). Adding a user as a repository collaborator
+                       should not be automated inside a chat room. Because of the complexity here,
+
+                       we will write code to unify a username inside the chat room, but we won’t han-
+                       dle the case where there is no clarification to be made because they are not in
+
+                       the repository collaborator list.
+                          Using the GitHub API binding binding we passed into our   setApiToken   call
+
+                       we will verify the user exists as a collaborator on the repository. The API binding
+                       provides a method called    getCollaborator     inside the  repos  namespace
+
+                       which we can use to verify that a username is on the list of collaborators. It
+                       takes as the first parameter a message which is used to specify the repository
+
+                       and owner, and then an attribute called   collabuser   which is the name you
+                       want to verify is a collaborator. The second parameter to the function is a call-
+                       back that is executed once the request has completed. If the callback returns
+
+                       without an error code, then our Probot should tag the pull request with a com-
+                       ment confirming and message the room.
+
+
+
+
+        280

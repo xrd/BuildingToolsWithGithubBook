@@ -1,0 +1,67 @@
+CHAPTER 10: CoffeScript, Hubot and the Activities API
+
+
+                         handler = require '../lib/handler'
+
+                         handler.setSecret "XYZABC"
+                         github = require 'node-github'
+                         handler.setApiToken github, "12345ABCDEF"
+
+
+                         module.exports = (robot) ->
+                                  robot.respond /accept/i, ( res ) ->
+                                          handler.accept( res )
+
+
+                                  robot.respond /decline/i, ( res ) ->
+                                          handler.decline( res )
+
+                                  robot.router.post '/pr', ( req, res ) ->
+                                          handler.prHandler( robot, req, res )
+
+
+                         Hopefully you will agree this is a very simple starting point for our extension,
+                      with the bulk of the work handled by our very testable handler.
+
+
+                      PEERING INTO THE RESPONSE OBJECT
+
+
+                      We need to get the username and it stands to reason the object passed to us
+                      when we get a respond callback might have it in there. The respond  method
+
+                      provided by the Hubot API is documented mostly by way of the example scripts
+                      which come with hubot. There is very little information on what the parameter
+
+                      passed to your callback looks like. Let’s useutil  library to inspect the data
+                      and print it to the console. We abbreviate the full output here, and show you
+
+                      that it contains information on the user who sent the message to our Probot.
+                      We can access this information by usingresponse.message.user.name      if, for
+
+                      example, we wanted to retrieve the name of the user.
+
+                         { robot:
+                            { name: 'probot',
+
+                               events: { domain: null, _events: [Object], _maxListeners: 10 },
+                               brain:
+                                { data: [Object],
+                                  autoSave: false,
+                                  saveInterval: [Object],
+
+                                  _events: [Object] },
+                               alias: false,
+                               adapter:
+                                { customMessage: [Function],
+
+                                  message: [Function],
+                           ...
+                           message:
+                            { user:
+                                { id: '...',
+
+
+
+
+       278

@@ -1,0 +1,67 @@
+                                                                                         Status Codes
+
+
+SIMPLIFIED OAUTH FLOW
+
+
+oAuth has many variants, but GitHub uses oAuth2. oAuth2 specifies a flow
+where:
+
+
+    • the application requests access
+    • the service provider (GitHub) requests authentication: username and
+
+      password usually.
+    • if two-factor authentication is enabled, ask for the OTP (one time pass-
+
+      word) code.
+
+    • GitHub responds with a token inside a JSON payload
+    • the application uses the oAuth token to make requests of the API.
+
+   A real world flow is described in full in the ???.
+
+   Now let’s review an important fundamental when using web services, the
+importance of the HTTP status code.
+
+
+
+Status Codes
+
+
+The GitHub API uses HTTP status codes to tell you definitive information about
+how your request was processed. If you are using a basic client like cURL, it will
+
+be important to validate the status code before you look at any of the data re-
+trieved. If you are writing your own API client, pay close attention to the status
+code before anything else.
+
+
+
+Success (200 or 201)
+
+If you have worked with any HTTP clients whatsoever, you know what the HTTP
+
+status code “200” means success. GitHub will respond with a 200 status code
+when your request destination URL and associated parameters are correct. If
+
+your request creates content on the server, then you will get a 201 status code,
+indicating a successful creation on the server.
+
+
+   $ curl -s -i https://api.github.com | grep Status
+   Status: 200 OK
+
+
+Naughty JSON (400)
+
+
+If your payload (the JSON you send to a request) is invalid, the GitHub API will
+respond with a 400 error, as shown below.
+
+
+
+
+
+
+                                                                                          29

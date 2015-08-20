@@ -1,0 +1,68 @@
+                                                                                  Prerequisites
+
+
+                     new LoginTask().execute( username, password );
+                 }
+             });
+    }
+
+
+    private void loggedIn() {
+
+        setContentView(R.layout.logged_in);
+
+
+        Button submit = (Button)findViewById( R.id.submit );
+        submit.setOnClickListener(new View.OnClickListener() {
+                 public void onClick(View v) {
+                     doPost();
+
+                 }
+             });
+    }
+
+
+    class LoginTask extends AsyncTask<String, Void, Boolean> {
+        @Override
+             protected Boolean doInBackground(String... credentials) {
+             boolean rv = false;
+             UserService us = new UserService();
+
+             us.getClient().setCredentials( credentials[0], credentials[1] );
+             try {
+                 User user = us.getUser( credentials[0] );
+                 rv = null != user;
+
+             }
+             catch( IOException ioe ) {}
+             return rv;
+        }
+
+
+        @Override
+             protected void onPostExecute(Boolean result) {
+             if( result ) {
+                 loggedIn();
+
+             }
+             else {
+                 TextView status = (TextView)findViewById( R.id.login_status );
+                 status.setText( "Invalid login, please check credentials" );
+
+             }
+        }
+    }
+
+    private void doPost() {
+
+        TextView tv = (TextView)findViewById( R.id.post_status );
+        tv.setText( "Successful jekyll post" );
+    }
+
+...
+
+
+
+
+
+                                                                                  179

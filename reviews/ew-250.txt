@@ -1,0 +1,67 @@
+CHAPTER 10: CoffeScript, Hubot and the Activities API
+
+
+                      a describe  function which is an organizing function to group testdescribe
+
+                      functions take an indentifier (in this c#probot  ) and a function which con-
+                      tains multipleit calls. In additiondescribe   function can also contain be-
+
+                      foreEach   function which configures common elements inside our  it calls; in
+
+                      this case we create a faked robot object which we will pass into ourProbot
+                      function call. When we are running Hubot itself, Hubot creates the robot and
+                      passes it into theProbot  function but when we run our tests, we generate a
+
+                      fake one and query it to make sure that it is receiving the proper configuration.
+                      If we make a change inside our actual Hubot code and forget to update our
+
+                      tests to verify those changes, our tests will fail and we’ll know we need to either
+                      augment our tests, or something broke inside our robot, a good automated
+                      sanity check for us when we are feverishly coding away, animating our helpful
+
+                      Probot.
+                         You should see some similarities between the calls made to our robot ro-
+
+                      bot.respond   and robot.router.post    ) and the tests. We setup “spies” using
+                      Jasmine that generate fake function calls capable of recording any interaction
+
+                      from outside sources (either our production code or the test code harness). In-
+                      side our it call, we then verify that those calls were made. We use expect
+
+                      function to verify that we have made two calls to trespond  function defined
+                      on the robot, and thatrobot.router.post    has been called as well.
+
+                         We need to install Jasmine, and we do this by adding to oupackage.json
+                      file. Append"jasmine-node": "^1.14.5"      to the file, and make sure to add a
+
+                      comma to the tuple above it. Adding this code specifies that the minimum ver-
+                      sion of jasmine node we will use is “1.14.5”.
+
+
+                         ...
+                           "hubot-shipit": "^0.1.1",
+                           "hubot-slack": "^3.2.1",
+                           "hubot-youtube": "^0.1.2",
+                           "jasmine-node": "^2.0.0"
+
+                         },
+                         "engines": {
+                         ...
+
+
+                         Runing the following commands will then install Jasmine (the library and a
+                      test runner command line tool) and run our tests. We abbreviate some of the
+                      installation output to save space.
+
+
+                         $ npm install
+                         ...
+                         hubot-slack@3.2.1 node_modules/hubot-slack
+
+                         └── slack-client@1.2.2 (log@1.4.0, coffee-script@1.6.3, ws@0.4.31)
+
+
+
+
+
+       250

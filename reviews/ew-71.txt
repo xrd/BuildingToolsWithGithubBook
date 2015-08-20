@@ -1,0 +1,70 @@
+                                                                                     Building a Gollum Editor
+
+
+
+                                                                                      FIGURE 4-5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   Not sure why our designer is providing us with an image of a couch, but I am
+
+sure he has his reasons.
+   Once have published the file, we can click on the “Review” link in the sidebar
+
+to see the most current version of the “Review” page. We also can review the
+revisions of this file by clicking on the “3 Commits” (or whatever number of
+
+commits have occurred with this file). link right underneath the page title.
+Jumping onto that page shows us the full history of this file.
+
+
+
+
+                                                                                      FIGURE 4-6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                71

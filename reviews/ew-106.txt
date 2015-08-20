@@ -1,0 +1,67 @@
+CHAPTER 6: DotNet and the Commit Status API
+
+
+                        Frank Sinatra’s daughter, Nancy). It’s very capable, but also very succinct, as
+                        you’ll see.
+                           We also won’t be directly implementing access to the GitHub API, because
+
+                        GitHub provides a CLR library for that. It’s called octokit.net, and it does all the
+                        right things with regard to asynchrony and type safety. This is the same library
+
+                        used by the GitHub client for Windows, so it’ll definitely do the job for our little
+                        application. It is, however, the source of a constraint on how we set up our ex-
+
+                        ample project: it requires a rather new version of the CLR (4.5) in order to func-
+                        tion. If you want some guidance on how to avoid this pitfall and follow along,
+                        continue reading the next section. If you’ve worked with Nancy before, and
+
+                        have installed NuGet packages in the past, you might be able to skip to the sec-
+                        tion labeled “First steps”.
+
+
+
+                        Following along
+
+                        If you’d like to follow along with the code examples, here’s how to set up a de-
+
+                        velopment environment with all the necessary elements. The process is differ-
+                        ent on Windows (using Visual Studio) and any other platforms (using Xamarin
+
+                        tools).
+
+
+                        VISUAL STUDIO
+
+                        If you’re running Windows, you’ll want to visit https://www.visualstudio.com/
+
+                        and download the Community edition of Visual Studio. The installer will
+                        present you with lots of options; for this example, we’ll only need the “web de-
+                        veloper” components, but feel free to check all the boxes that look interesting
+
+                        to you. (If you have access to a higher tier of Visual Studio, or already have it
+                        installed with the web-development packages, you’re all set.)
+
+                           In order to make things just a little smoother, you’ll want to install a plugin:
+                        the Nancy project templates. Visit https://visualstudiogallery.msdn.micro-
+
+                        soft.com/ and search for “nancy.templates”. As of this writing, there appears to
+                        be some difficulty with file formats, so when you download it, it comes as a ZIP
+                        file. If this has been resolved by the time you’re reading this, simply double-
+
+                        click the file to install the templates; if not, you’ll have to rename it to have
+                        a .vsix  extension first.
+
+                           The next step is to create a new project using one of the newly-installed tem-
+                        plates. Go to “File>New Project…” and select “Visual C#>Web>Nancy Applica-
+
+                        tion with ASP.NET Hosting” from the template list (as shown in Figure 6-2.
+                        Make sure the path and name settings at the bottom are to your liking, and
+                        click OK.
+
+
+
+
+
+
+
+        106

@@ -1,0 +1,67 @@
+                                                                                  Activities API Overview
+
+
+            Handler.prHandler( robot, req, res )
+            expect( robot.messageRoom ).not.toHaveBeenCalled()
+            expect( httpSpy ).not.toHaveBeenCalled()
+            expect( res.send ).toHaveBeenCalled()
+            done()
+
+
+   it "should allow calls with the secret and url", (done) ->
+            req = { body: '{ "pull_request" : { "html_url" : "http://pr/1" }}', headers: { "HTTP_X_HUB_SIGNATURE" : "cd970490d83c01b▯678fa9af55f3c7854b5d22918" } }
+            Handler.prHandler( robot, req, res )
+            expect( robot.messageRoom ).toHaveBeenCalled()
+
+            expect( httpSpy ).toHaveBeenCalled()
+            expect( res.send ).toHaveBeenCalled()
+            done()
+   ...
+
+
+   You’ll notice we moved the secret out of the JSON and into the headers. This
+is the same structure our Probot will see when the GitHub webhook encodes
+
+the content of the JSON and provides us with a secure hash in the
+HTTP_X_HUB_SIGNATURE key. Inside our test we will need to provide the same
+signature inside our mocked request object. We could duplicate our secure
+
+hash generation code from the handler implementation, or we could be lazy
+and just run our tests once (knowing they will fail this time), watch for the con-
+
+sole.log output which says “Hash: cd970490d83c…” and copy this hash into our
+mocked request object. Once we do this, our tests will pass.
+
+   Now, after reloading our Probot, if we issue a pull request using oissue-
+pull-request.sh    script, we should see the matching hashes. But, we won’t
+
+(at least if you used the same package.json    file as we specified above) be-
+cause of a critical bug inside of Hubot at the time of this writing.
+   As we mentioned earlier, Hubot bundles Express.js, a high performance web
+
+framework for NodeJS. Express.js has a modular architecture, where middle-
+ware is inserted into a request and response chain. This approach to building
+
+functionality and the wide array of middleware allows web developers to string
+together various standardized middleware components to use only those fea-
+
+tures needed for the problem at hand. Common middleware includes static file
+handlers (for serving static files), cookie handlers, session handlers, and body
+parsers. You can imagine circumstances where you would not need all of the list
+
+above (or you might need others) and this flexibility makes Express.js a popular
+choice for building NodeJS web applications.
+
+   The body parser middleware is of particular interest to us here: the body
+parser middleware is used to convert the “body” of a request into a JavaScript
+
+object attached to the request object. Above you saw us access it inside a vari-
+able we called req  inside our callback; obviously this stands for request. The
+
+body parser takes on converting whatever data content comes from inside the
+body of the HTTP request into a structured JavaScript associative array inside
+
+
+
+
+                                                                                         269

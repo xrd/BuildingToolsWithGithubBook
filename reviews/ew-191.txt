@@ -1,0 +1,51 @@
+  JavaScript and the Git Data API                                     9
+
+
+
+
+
+
+
+
+
+GitHub offers libraries which work within other programming languages and
+frameworks, and more often than not, these tools run on a server. Runnig a
+server means finding and managing a server, often an onerous and expensive
+task. The GitHub API is accessible purely on the client side, however, if you use
+
+the JavaScript client library. To demonstrate this library, we will build a single
+page app, hosting everything on GitHub and using the GitHub API through a
+pure JavaScript client-side library.
+  JavaScript is the lingua franca of the web, invented in 1995 as a scripting
+language embedded inside the first web browsers. JavaScript has recently
+
+found its way to the server side as well with NodeJS, an innovative toolkit for
+building high performance network servers. JavaScript is a useful language to
+know, whether on the server side or strictly client side web development. There
+is a separate GitHub API client for NodeJS which supports a different interface
+and has different considerations because of browser sandbox security issues.
+
+The client side JavaScript library is, in my humble opinion, a bit more ambi-
+tious because it is effective on the browser, and it opens up some fun integra-
+tions with Firebase as we will discuss later in the chapter.
+
+
+    The main weakness of JavaScript has always been testability. Mainly due
+    to the asynchronous nature of JavaScript, writing tests has never been
+    easy; polling for changes when a callback returns was until recently the
+    best way to test nonlinear code. But, recent toolkits like AngularJS and
+    promise-based libraries have made testing not only easy but elegant as
+    well. Building applications on top of third party services makes testing
+    even more important than it already was, and we’ll make sure to add
+    testing to our application to verify the functionality works as we expect.
+
+  A single page application should fulfill a single simple purpose. It has to be
+
+important and direct. It should help us do something important. Logically, this
+application should help us find good coffee.
+
+
+
+
+
+                                                                            191

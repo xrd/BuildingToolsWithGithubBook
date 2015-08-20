@@ -1,0 +1,68 @@
+CHAPTER 2: Introduction
+
+
+                        authentication supported by the   -u flag in curl. HTTP Basic Authentication is
+                        synonymous with username and password authentication.
+
+
+                           $ curl -u xrd https://api.github.com/rate_limit
+                           Enter host password for user 'xrd': xxxxxxxx
+                           {
+
+                             "rate": {
+                               "limit": 5000,
+                               "remaining": 4995,
+                               "reset": 1376251941
+
+                             }
+                           }
+
+                           This cURL command, authenticates into the GitHub API and then retrieves
+
+                        information about our own specific rate limits for our user account, protected
+                        information only available as a logged in user.
+
+
+                        BENEFITS OF USERNAME AUTHENTICATION
+
+
+                        Almost any client library you use will support HTTP Basic authentication. All the
+                        GitHub API clients we looked at support username and passwords. And, writing
+
+                        your own specific client is easy as this is a core feature of the HTTP standard, so
+                        if you use any standard HTTP library when building your own client, you will be
+
+                        able to access content inside the GitHub API.
+
+
+                        DOWNSIDES TO USERNAME AUTHENTICATION
+
+                        There are many reasons why username and password authentication is the
+
+                        wrong way to manage your GitHub API access.
+
+                            • HTTP Basic is an old protocol which never anticipated the granularity of
+                              web services. It is not possible to specify only certain features of a web
+
+                              service if you ask users to authenticate with username/passwords.
+
+                            • If you use a username and password to access GitHub API content from
+                              your cell phone, and then access API content from your laptop, you have
+                              no way to block access to one without blocking the other.
+
+                            • HTTP Basic authentication does not support extensions to the authenti-
+
+                              cation flow. Many modern services now support two-factor authentica-
+                              tion and there is no way to inject this into the process without changing
+
+                              the HTTP clients (web browsers, for example) or at least the flow they ex-
+                              pect (making the browser repeat the request).
+
+                           All of these problems are solved (or at least supported) with oAuth flows. For
+
+                        these reasons, there are very few reasons to use username and passwords. If
+
+
+
+
+        26

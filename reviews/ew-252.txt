@@ -1,0 +1,68 @@
+CHAPTER 10: CoffeScript, Hubot and the Activities API
+
+
+                         $ USERNAME=xrd
+                         $ curl https://api.github.com/authorizations --user $USERNAME --data
+                         '{"scopes":["repo"], "note": "Probot access to PRs" }' -X POST
+
+
+                         If you are using two-factor authentication then you will see a response mes-
+                      sage like this:
+
+
+                         {
+                            "message": "Must specify two-factor authentication OTP code.",
+                            "documentation_url":
+
+                            "https://developer.github.com/v3/auth#working-with-two-factor-authentication"
+                         }
+
+                         If you see this, then you will be receiving a one time password via your
+
+                      choice of two factor authentication alternative endpoint (either SMS or a two
+                      factor authentication app like Google Authenticator or recovery codes that you
+
+                      printed out). If you use text messaging, check your text messages and then re-
+                      send the request appending a header using cURL.
+
+
+                         $ curl https://api.github.com/authorizations --user $USERNAME --data
+                         '{"scopes":["repo"], "note": "Probot access to PRs" }' -X POST
+                         --header "X-GitHub-OTP: 423584"
+                         Enter host password for user 'xrd':
+
+
+                         If all these steps complete successfully (regardless of whether you are using
+
+                      2-factor auth or not) you will then receive an oauth token.
+
+                         {
+                            "id": 1234567,
+
+                            "url": "https://api.github.com/authorizations/1234567",
+                            "app": {
+                              "name": "Probot access to PRs (API)",
+                              "url": "https://developer.github.com/v3/oauth_authorizations/",
+
+                              "client_id": "00000000000000000000"
+                            },
+                            "token": "ad5a36c3b7322c4ae8bb9069d4f20fdf2e454266",
+                            "note": "Probot access to PRs",
+                            "note_url": null,
+
+                            "created_at": "2015-01-13T06:23:53Z",
+                            "updated_at": "2015-01-13T06:23:53Z",
+                            "scopes": [
+                              "notifications"
+                            ]
+
+                         }
+
+
+
+
+
+
+
+
+       252

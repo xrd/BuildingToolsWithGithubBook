@@ -1,0 +1,67 @@
+CHAPTER 8: Android and the Git Data API
+
+
+                          You may have complicated feelings about XML files (I know I do), but the An-
+                       droid layout XML files are a straightforward way to design layouts declaratively,
+                       and many GUI tools provide sophisticated ways to manage them. We’ll manage
+
+                       ours by hand as they are exceedingly simple.
+
+
+                       Preparing our application for Calabash testing
+
+
+                       Calabash requires the internet permission added to your AndroidManifest.xml
+                       file. Calabash is a set of technologies combined together to permit testing. One
+
+                       of these pieces is a wrapper around your application (built on Robotium) that
+                       communicates with Ruby over HTTP calls, and as such, your application must
+
+                       permit network communication. To enable this, edit the        AndroidMani-
+                       fest.xml  file to have the internet permission (look for the line labled uses-
+
+                       permission):
+
+                          <?xml version="1.0" encoding="utf-8"?>
+
+                          <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+                                package="com.whereimat"
+                                android:versionCode="1"
+                                android:versionName="1.0">
+                              <application android:label="@string/app_name"
+
+                                            android:icon="@drawable/ic_launcher">
+                                <uses-permission android:name="android.permission.INTERNET" />
+                                  <activity android:name=".MainActivity"
+                                             android:label="@string/app_name">
+                                       <intent-filter>
+
+                                           <action android:name="android.intent.action.MAIN" />
+                                           <category android:name="android.intent.category.LAUNCHER" />
+                                       </intent-filter>
+                                  </activity>
+                              </application>
+
+                          </manifest>
+
+
+                       Writing tests
+
+
+                       Practicing test driven development, we write tests for our application before
+                       writing the code. There are many options for writing tests on Java and Android.
+                       JUnit is a popular testing tool which permits writing unit tests. Robotium is an-
+
+                       other testing tool which focuses on adifferent aspect of testing, user interface
+                       tests. We’ll use a wrapper around Robotium called Calabash for Android which
+
+                       allows us to write in a high level domain specific language. I find that writing
+                       Calabash tests is a simpler way to write tests using APIs because Calabash tests
+
+                       interact with the entire application, rather than only the internals like unit test-
+                       ing. With unit testing you can be required to mock out network interactions,
+
+
+
+
+       168

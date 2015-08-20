@@ -1,0 +1,69 @@
+CHAPTER 7: Ruby and Jekyll
+
+
+                         <br/>
+                         <em>Posted on {{ post.date | date_to_string }}</em>
+                         <br/>
+
+                         {% endfor %}
+                         </div>
+
+
+                         Note that in this case the variable is presentedpost.image   as compared
+                      to page.image   when we are inside a post. Jekyll and Liquid are not consistent
+
+                      here, so caveat emptor.
+                         Our blog definitely has more life when we add in the original colors and im-
+                      ages. It still looks like a blog from the last millenium, but it is an improvement.
+
+
+
+
+ FIGURE 7-11
+
+ Restoring the
+ original colors and
+ images
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      MAPPING INTEGRATION
+
+                      This is a site about travel information, so it makes sense to add maps as well.
+
+                      We can process the location information we retrieved from the archived site
+                      and add a map image.
+
+                         Add a new function called process_location    and place it underneath the
+                      process_creation_date      method inside theget_ith_page   method.
+
+
+
+
+       156

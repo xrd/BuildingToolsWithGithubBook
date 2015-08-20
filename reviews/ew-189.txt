@@ -1,0 +1,67 @@
+                                                                        Implementing Our Final doPost
+
+
+           String login = credentials[0];
+           String password = credentials[1];
+
+           EditText post = (EditText)findViewById( R.id.post );
+           String postContents = post.getText().toString();
+
+
+           EditText repo = (EditText)findViewById( R.id.repository );
+           String repoName = repo.getText().toString();
+
+           GitHubHelper ghh = new GitHubHelper( login, password );
+
+           return ghh.SaveFile( repoName, postContents );
+       }
+
+       @Override
+           protected void onPostExecute(Boolean result) {
+
+           TextView status = (TextView)findViewById( R.id.post_status );
+           if( result ) {
+                status.setText( "Successful jekyll post" );
+           }
+           else {
+
+                status.setText( "Post failed." );
+           }
+       }
+   }
+
+
+   Our doPost()  command now does one thing: instantiates a new PostTask.
+As we are performing network operations, we again create a subclass oAsyn-
+
+cTask  which handles these operations automatically on a background thread.
+We pass in the username and password which we retrieved earlier along with
+
+the post contents and the repository name we specified. We’ve isolated our Git-
+Hub code into our helper class; our MainActivity class does only the necessary
+
+steps to retrieve items from UI elements and pass them on to our helper class.
+
+
+Passing our Tests
+
+
+Now that we have fully implemented our Android application, we can run our
+tests.
+
+
+   $ GH_REPO=mytestblog \
+   GH_USERNAME=myusername \
+   GH_PASSWORD=mypassword \
+   bundle exec \
+
+   calabash-android run build/apk/ghru-release-unsigned.apk
+
+   You’ll see them pass with flying colors this time:
+
+
+
+
+
+
+                                                                                      189

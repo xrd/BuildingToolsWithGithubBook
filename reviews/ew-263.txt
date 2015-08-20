@@ -1,0 +1,67 @@
+                                                                                Activities API Overview
+
+
+   Our randomly selected user will see the teusername: Hey, want a PR?
+http://pr/1   (and the Slack client will format that link as a clickable URL).
+
+   Unfortunately, our tests are now broken: we now have the failureTypeEr-
+ror: Object #<Object> has no method 'http'          . Our mocked Robot ob-
+
+ject that we pass into our tests does not have the http interface that comes with
+Hubot, so we should add it to our custom Robot. The method signature for the
+
+http client (which comes from the node-scoped-http-client     NodeJS pack-
+age) is hairy: you chain calls together to build up an HTTP client request and
+end up with a function returned into which you pass a callback where you han-
+
+dle the response body. This module makes you write code that is not particular-
+ly testable (said another way, it was challenging for me to understand what the
+
+faked test implementation should look like) but the setup code does work and
+the tests itself document an interface to our robot which is easily understanda-
+
+ble. We simulate the same chain, defining ahttp  attribute on the mocked ro-
+bot object, an attribute which resolves to a function call itself. Calling that func-
+
+tion returns an object which has a get method, and calling that function re-
+turns a function callback which when called executes that function with three
+parameters. In real life that function callback would contain the error code, the
+
+response object, and the JSON. In our case, as long as the error code is empty,
+our implementation will parse the JSON for members, and then issue the PR
+
+request.
+
+   json = '{ "members" : [ { "name" : "bar" } , { "name" : "foo" } ] }'
+
+
+   httpSpy = jasmine.createSpy( 'http' ).and.returnValue(
+            { get: () -> ( func ) ->
+                    func( undefined, undefined, json ) } )
+
+
+   beforeEach ->
+            robot = {
+                    messageRoom: jasmine.createSpy( 'messageRoom' )
+                    http: httpSpy
+                    }
+
+
+            res = { send: jasmine.createSpy( 'send' ) }
+            Handler.setSecret secret
+
+   it "should disallow calls without the secret", (done) ->
+
+            req = {}
+            Handler.prHandler( robot, req, res )
+            expect( robot.messageRoom ).not.toHaveBeenCalled()
+            expect( httpSpy ).not.toHaveBeenCalled()
+            expect( res.send ).toHaveBeenCalled()
+
+            done()
+
+
+
+
+
+                                                                                       263

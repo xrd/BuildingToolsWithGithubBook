@@ -1,0 +1,67 @@
+CHAPTER 9: JavaScript and the Git Data API
+
+
+                          our app and query for the new repository. If we are using AngularJS, we can
+                          ask it for a mocked and programmatic timeout interface which we can con-
+                          trol inside our tests.
+
+
+                          We generate our mocked GitHub method calls and spies, and we follow that
+
+                          by mocking our prompt calls.
+
+                          As mentioned above, we need to get     $timeout   we can use the injector to
+
+                          retrieve that in this way.
+
+
+                          We create a new describe block to organize our tests, calling it#annotate   .
+                          We then implement one    it function which is the single test we are creating:
+
+                          “annotate a shop.”
+
+                          After setting up the preconditions that our scope object should have a city
+
+                          selected, and creating a shop to annotate, We then call our annotate  meth-
+                          od.
+
+
+                          Once we have called  annotate  , our code should request our our credentials
+
+                          for the GitHub API, and then ask us for the information to use in annotating
+                          the shop. If this were happening in the browser, we would get three prompts.
+                          Our test mocks out prompt, and we should therefore see three calls made to
+
+                          our mocked prompt object. We also validate some state we should see on
+                          the scope object like holding a username and annotation for usage later.
+
+
+                          We should then see the first of our GitHub API calls being made: we should
+                          see GitHub.js issue a requet tofork the repository.
+
+
+                          We should then enter in our waiting state; we will tell the user we are waiting
+
+                          and our UI will use the scopewaiting.state    to notify them of that.
+
+                          Once we have flushed the timeout to simulate completion of the fork, we
+
+                          will then see our code storing the result of the forked repo into the scope.
+                          We’ll also see our other GitHub API calls to actually do the annotation.
+
+
+                          Finally, after everything is done, we should no longer be telling the user they
+                          are in a waiting state.
+
+
+                          If you are still running karma in the background, you’ll see the tests fail with:
+
+                          Chrome 32.0.1700 (Mac OS X 10.9.1) GithubCtrl #annotate should
+
+                          annotate a shop FAILED
+
+
+
+
+
+        214

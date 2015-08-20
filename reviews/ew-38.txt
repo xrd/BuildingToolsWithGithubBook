@@ -1,0 +1,68 @@
+CHAPTER 2: Introduction
+
+
+                          X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+                          X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+                          Access-Control-Allow-Origin: *
+                          X-GitHub-Request-Id: C0F1CF9E:07AD:3C493B:557107C7
+
+                          Strict-Transport-Security: max-age=31536000; includeSubdomains;
+                          preload
+
+                          We can see the “Access-Control-Allow-Credentials” header is set to true. It
+
+                       depends on the browser implementation, but some JavaScript host browsers
+                       will automatically make a “preflight” request to verify this header is set to true
+
+                       (and that other headers, like the “Access-Control-Allow-Origin” are set correctly
+                       and permit requests from that origin to proceed). Other JavaScript host brows-
+
+                       ers will need you to make that request. Once the browser has used the headers
+                       to confirm that CORS is permitted, you can make XHR requests to the GitHub
+                       API domain as you would any other XHR request going into the same domain.
+
+                          We’ve covered much of the details of connecting and dissecting the GitHub
+                       API, but there are a few other options to know about when using it. One of them
+
+                       is that you can use the GitHub API service to provide rendered content when
+                       you need it.
+
+
+
+                       Specifying Response Content Format
+
+                       When you send a request to the GitHub API, you have some ability to specify the
+
+                       format of the response you expect. For example, if you are requesting content
+                       that contains text from a commit’s comment thread, you can use the Accept
+
+                       header to ask for the raw markdown or for the HTML this markdown generates.
+                       You also have the ability to specify this version of the GitHub API you are using.
+
+                       At this point, you can specify either version 3 or beta of the API.
+
+
+                       RETRIEVING FORMATTED CONTENT
+
+                       The Accept header you send with a request can affect the format of text re-
+
+                       turned by the GitHub API. As an example, let’s assume you wanted to read the
+                       body of a GitHub Issue. An issue’s body is stored in markdown and will be sent
+
+                       back in the request by default. If we wanted to render the response as HTML
+                       instead of markdown, we could do this by sending a different accept header, as
+                       the following cURL commands demonstrate.
+
+
+                          $ URL='https://api.github.com/repos/rails/rails/issues/11819'
+                          $ curl -s $URL | jq '.body'
+
+                          "Hi, \r\n\r\nI have a problem with strong...."
+                          $ curl -s $URL | jq '.body_html'
+                          null
+                          $ curl -s $URL \
+
+
+
+
+        38

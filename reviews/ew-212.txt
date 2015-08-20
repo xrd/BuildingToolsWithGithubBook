@@ -1,0 +1,67 @@
+CHAPTER 9: JavaScript and the Git Data API
+
+
+                                  prompter = { prompt: function() { return "ABC" } };
+                                  spyOn( prompter, "prompt" ).andCallThrough();
+
+                             }
+
+
+                             var PR_ID = 12345;
+                             function generateMockRepositorySupport() {
+                                  repo = {
+                                      fork: function( cb ) {
+                                          cb( false );
+
+                                      },
+                                      write: function( branch, filename, data, commit_msg, cb ) {
+                                          cb( false );
+                                      },
+                                      createPullRequest: function( pull, cb ) {
+
+                                          cb( false, PR_ID );
+                                      },
+                                      read: function( branch, filename, cb ) {
+                                          cb( undefined, JSON.stringify( filename == "cities.json" ? CITIES : PORTLAND ) );
+                                      }
+
+                                  };
+                                  spyOn( repo, "fork" ).andCallThrough();
+                                  spyOn( repo, "write" ).andCallThrough();
+                                  spyOn( repo, "createPullRequest" ).andCallThrough();
+                                  spyOn( repo, "read" ).andCallThrough();
+
+
+                                  gh = { getRepo: function() {} };
+                                  spyOn( gh, "getRepo" ).andCallFake( function() {
+                                      return repo;
+
+                                  } );
+                                  ghs = { create: function() { return gh; } };
+                             }
+
+                         ...
+
+
+                         It looks similar to our previous tests where we mock out a bunch of items
+                      from the Github.js library.
+
+
+                         We added a mock prompt. We will be prompting the user for username,
+
+                         password and the annotating data, and we will use the native browser
+                         prompt mechanism to do this. If using prompt to gather information from
+                         the user sounds like an ugly way to do it, don’t fret, we’ll find a better way
+
+                         later.
+
+
+                         We added three new methods to our mock Github object:   fork ,write  and
+                         createPullRequest    . We test that these are called.
+
+
+
+
+
+
+       212

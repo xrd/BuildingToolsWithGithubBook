@@ -1,0 +1,67 @@
+CHAPTER 5: Python and the Search API
+
+
+
+                          We’re binding the click handler for this entire panel, but also the mouse-
+                          enter and mouse-leave events, so we can make it behavior more like a link in
+
+                          a browser.
+
+                          Here’s how you open the default browser to a URL in Python.
+
+
+                          Overall, WxPython isn’t so bad, once you get used to it. It lacks some facili-
+                       ties of newer frameworks, but there’s nothing better for getting a basic cross-
+                       platform UI out the door quickly.
+
+                          That’s all of the code! If you’ve been following along, you can run this code
+                       file and do issue searches. However, our use case has a non-technical user run-
+
+                       nnig this; let’s see what can be done to make it easy for them.
+
+
+                       Packaging
+
+
+                       What we’re not going to do is require anyone to install Python 2.7 and a bunch
+
+                       of packages. We’ll use PyInstaller to bundle our application into something
+                       that’s easy to distribute and run.
+                          Let’s assume you wrote all the code above into a file calsearch.py   , and
+
+                       agithub.py   is sitting in the same directory. Here’s how to tell PyInstaller to
+                       generate a single application for you:
+
+
+                          $ pyinstaller -w search.py
+
+
+                          That’s it! Th-w  flag tells PyInstaller to create a “windowed” build of your
+                       application, rather than the default console build. On OS X, this generates a
+
+                       search.app   application bundle, and on Windows this generates asearch.exe
+                       file. You can take either of these to a computer with no Python installed, and
+                       they’ll run perfectly.
+
+                          That’s because PyInstaller has copied everything necessary for your pro-
+                       gram to run, from the Python interpreter on up, inside that file. The one I just
+
+                       generated is 67MB, which seems large for such a simple program, but that num-
+                       ber is more reasonable when you consider what’s inside the package.
+
+
+
+                       Summary
+
+
+                       Whew! This chapter was quite a journey. Let’s take a breath, and look at what
+                       we’ve learned.
+                          The main bulk of the code in this chapter had to do with defining a graphical
+
+                       interface. Code for this task is always pretty verbose, because of the sheer com-
+                       plexity of the task. With WxPython in your tool belt, however, you can now write
+
+
+
+
+       98

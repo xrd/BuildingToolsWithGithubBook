@@ -1,0 +1,68 @@
+CHAPTER 2: Introduction
+
+
+                         $ curl -i https://api.github.com/
+                         HTTP/1.1 200 OK
+                         Server: GitHub.com
+                         Date: Sat, 25 Apr 2015 05:36:16 GMT
+
+                         Content-Type: application/json; charset=utf-8
+                         Content-Length: 2004
+                         Status: 200 OK
+                         X-RateLimit-Limit: 60
+                         X-RateLimit-Remaining: 58
+
+                         X-RateLimit-Reset: 1429943754
+                         Cache-Control: public, max-age=60, s-maxage=60
+                         ETag: "a5c656a9399ccd6b44e2f9a4291c8289"
+                         Vary: Accept
+
+                         X-GitHub-Media-Type: github.v3
+                         X-XSS-Protection: 1; mode=block
+                         X-Frame-Options: deny
+                         Content-Security-Policy: default-src 'none'
+                         Access-Control-Allow-Credentials: true
+
+                         Access-Control-Expose-Headers: ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Sc▯opes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+                         Access-Control-Allow-Origin: *
+                         X-GitHub-Request-Id: C0F1CF9E:567A:9610FCB:553B27D0
+                         Strict-Transport-Security: max-age=31536000; includeSubdomains; preload
+                         X-Content-Type-Options: nosniff
+
+                         Vary: Accept-Encoding
+                         X-Served-By: 13d09b732ebe76f892093130dc088652
+                         {
+                           "current_user_url": "https://api.github.com/user",
+
+                           "current_user_authorizations_html_url":
+                         "https://github.com/settings/connections/applications{/client_id}",
+                           "authorizations_url": "https://api.github.com/authorizations",
+                           "code_search_url":
+                         "https://api.github.com/search/code?q={query}{&page,per_page,sort,order}",
+
+                           ...
+                           "notifications_url": "https://api.github.com/notifications",
+                           "organization_repositories_url":
+                         "https://api.github.com/orgs/{org}/repos{?type,page,per_page,sort}",
+
+                           "organization_url": "https://api.github.com/orgs/{org}",
+                           "public_gists_url": "https://api.github.com/gists/public",
+                           "rate_limit_url": "https://api.github.com/rate_limit",
+                           "repository_url": "https://api.github.com/repos/{owner}/{repo}",
+                           ...
+
+                         }
+
+                         Using this map, is there anything interesting we can retrieve, perhaps infor-
+
+                      mation about GitHub itself? We can use the organizational URL and substitute
+                      “github” in the placeholder.
+
+
+                         $ curl https://api.github.com/orgs/github
+                         {
+
+
+
+
+       24

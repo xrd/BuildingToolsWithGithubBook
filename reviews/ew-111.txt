@@ -1,0 +1,68 @@
+                                                                                       Let’s write an app
+
+
+   3. If the user allows this access, their browser is redirected to a URL we
+      specified in step 1. A “code” is passed as a query parameter; this is not the
+
+      access token we want, but a time-limited key to get one.
+   4. From inside the handler for this request, we can use a REST API to get the
+
+      actual OAuth access token, which we can store somewhere safe. We do
+      this because if we already have a token, we can skip all the way to the last
+
+      step of this process.
+   5. Now we have permission, and we can use the GitHub API in authenticated
+
+      mode.
+
+   This might seem overly complicated, but its design achieves several goals.
+
+First, permission can be scoped – an application is almost never given full ac-
+cess to the user’s account and data. Second, the whole exchange is secure; at
+least one part of this has to go through the user, and cannot be automated.
+
+Third, the access token is never transmitted to the user’s browser, which avoids
+an entire class of security vulnerabilities.
+
+   Let’s walk through the code for our tiny little server’s implementation of this
+flow. First, once we have a token, we should store it so we’re not going through
+
+the entire redirect cycle for every user request. We’re going to store it in a cook-
+ie (though since this goes back and forth to the user’s browser, a production ap-
+
+plication would probably use a database). Nancy can help us with this, but first
+we have to enable it, and the way this is accomplished is by using a bootstrap-
+per. We’re going to add this class to our application:
+
+
+   using Nancy;
+   using Nancy.Bootstrapper;
+
+   using Nancy.Session;
+   using Nancy.TinyIoc;
+
+   namespace NancyApp
+   {
+
+       public class Bootstrapper : DefaultNancyBootstrapper
+       {
+            protected override void ApplicationStartup(TinyIoCContainer container,
+                                                            IPipelines pipelines)
+
+            {
+                CookieBasedSessions.Enable(pipelines);
+            }
+       }
+   }
+
+
+   Nancy will automatically detect a bootstrapper class, and use it to initialize
+
+our server. Now, from within aNancyModule   , we can use theSession   property
+to store and retrieve values that are transmitted as cookies.
+
+
+
+
+
+                                                                                           111

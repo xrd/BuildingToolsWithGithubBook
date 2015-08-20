@@ -1,0 +1,67 @@
+CHAPTER 5: Python and the Search API
+
+
+                      configuration options. If you’ve written GUI applications before, you’ll know
+
+                      how hard each of these problems are.
+                         For information on this project, you can visit http://pythonhosted.org/
+
+                      PyInstaller. You can install it using Python’s package manager, by runnipip
+                      install pyinstaller     .
+
+
+
+                      The Code
+
+
+                      Alright, now you have an idea of which parts of the Python ecosystem will be
+                      helping us on our journey. Let’s get started looking at the code that brings them
+
+                      all together. We’ll start with this skeleton file:
+
+                         #!/usr/bin/env python
+
+
+                         import os, subprocess
+                         import wx
+                         from agithub import Github
+
+
+                         class SearchFrame(wx.Frame):
+                              pass
+
+                         if __name__ == '__main__':
+                              app = wx.App()
+
+                              SearchFrame(None)
+                              app.MainLoop()
+
+                         If you run this program, you should get an empty window, which is always a
+
+                      hopeful start to any project. Let’s take a look at a few key things:
+
+                         The “shebang” specifies that this is a Python 2.7 program
+
+
+                         Here we import our handy libraries. We import WxPython ( wx ) whole cloth,
+
+                         but with agithub  we only need the  Github  (note the capitalization) class.
+                         os and subprocess   come from the Python standard library.
+
+
+                         This is the class for our main window. We’ll walk through the particulars lat-
+                         er on when we discuss the real implementation.
+
+
+                         In Python, you create the main entry point of an application using this syn-
+                         tax.
+
+
+
+
+
+
+
+
+
+       86

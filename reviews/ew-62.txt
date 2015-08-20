@@ -1,0 +1,67 @@
+CHAPTER 4: Gollum
+
+
+                         As you can see, this tiny set of commands was enough to create the basics of
+                      the gollum wiki structure.
+
+                         Create our sinatra script callimage.rb  , and then we can install the neces-
+                      sary gems and run our server application.
+
+
+                         require 'sinatra'
+                         require 'gollum-lib'
+                         wiki = Gollum::Wiki.new(".")
+                         get '/pages' do
+                            "All pages: \n" + wiki.pages.collect { |p| p.path }.join( "\n" )
+
+                         end
+
+                         $ printf "source 'https://rubygems.org'\n\ngem 'sinatra'\ngem 'gollum-lib'" >> Gemfile
+                         $ bundle install
+
+                         $ ruby image.rb
+                         $ open http://localhost:4567 # or whatever URL is reported from Sinatra
+
+                         Once you open this in your browser, you’ll see a report of the files that exist
+
+                      in our Gollum wiki right now. We’ve only added one file, Home.md  file.
+
+
+                      Programmatically Handling Images
+
+
+                      Let’s add to our server. We want to support uploading ZIP files into our system
+                      that we will then unpack and add to our repository, as well as adding a list of
+
+                      these files to our wiki. Modify our image.rb script to look like this:
+
+                         require 'sinatra'
+
+                         require 'gollum-lib'
+                         require 'tempfile'
+                         require 'zip/zip'
+
+
+                         def index( message=nil )
+                            response = File.read(File.join('.', 'index.html'))
+                            response.gsub!( "<!-- message -->\n", "<h2>Received and unpacked #{message}</h2>" ) if message
+                            response
+                         end
+
+
+                         wiki = Gollum::Wiki.new(".")
+                         get '/' do
+                            index()
+                         end
+
+
+                         post '/unpack' do
+                            @repo = Rugged::Repository.new('.')
+                            @index = Rugged::Index.new
+
+
+                            zip = params[:zip][:tempfile]
+
+
+
+       62

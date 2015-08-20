@@ -1,0 +1,68 @@
+                                                                               All The Headers and Data
+
+
+   * Hostname was NOT found in DNS cache
+   *   Trying 192.30.252.137...
+   * Connected to api.github.com (192.30.252.137) port 443 (#0)
+   * successfully set certificate verify locations:
+
+   *   CAfile: none
+     CApath: /etc/ssl/certs
+   * SSLv3, TLS handshake, Client hello (1):
+   * SSLv3, TLS handshake, Server hello (2):
+   ...
+
+   * CN=DigiCert SHA2 High Assurance Server CA
+   *         SSL certificate verify ok.
+   > GET / HTTP/1.1
+   > User-Agent: curl/7.35.0
+
+   > Host: api.github.com
+   > Accept: */*
+   >
+   < HTTP/1.1 200 OK
+   * Server GitHub.com is not blacklisted
+
+   ...
+
+   With the -v switch you get everything: DNS lookups, information on the SSL
+
+chain, and the full request and response information.
+
+
+     Be aware that if you print out headers, a tool like jq will get confused be-
+     cause you are no longer providing it with pure JSON.
+
+
+   This section shows us that there is interesting information not only in the
+
+body (the JSON data) but also in the headers. It is important to understand
+what headers are here and which ones are important. There are a lot of them
+which the HTTP specification requires, and we can often ignore those, but there
+
+are a few that are vital when you start making more than just a few isolated re-
+quest.
+
+
+
+All The Headers and Data
+
+
+Three headers are present in every GitHub API response which tell you about
+
+the GitHub API rate limits. They are X-RateLimit-Limit, X-RateLimit-Remaining,
+and X-RateLimit-Reset. These limits are explained in detail in “GitHub API Rate
+Limits”.
+
+   The X-GitHub-Media-Type header contains information that will come in
+handy when you are starting to retrieve text or blob content from the API. when
+
+you make a request to the GitHub API you can specify the format you want to
+work with by sending an Accept header with your request.
+
+   Let’s look at the full response from the original request.
+
+
+
+
+                                                                                         23

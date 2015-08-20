@@ -1,0 +1,67 @@
+CHAPTER 7: Ruby and Jekyll
+
+
+                        that recognizes we only need to be dynamic when new content is created and
+                        not when a new visitor requests the same page as the previous visitor. This is
+                        unfortunately how many sites work right now, resulting in the same page being
+
+                        regenerated over and over, and has led to overwrought solutions like page
+                        caching which has layered more lipstick on the pig. By acknowledging these
+
+                        facts, there is a massive reduction in complexity of Jekyll sites and with it, im-
+                        mense freedom. It may feel like you have traveled back in time, because when
+
+                        you look at a site built by Jekyll, you are looking at a set of static files, backed
+                        by nothing more complex than the same web server technologies available be-
+                        fore the dot com bust of 2000.
+
+
+
+                        The Harmless Brew that Spawned Jekyll
+
+
+                        Though you won’t see it in the documentation, the popularity of Jekyll is due in
+                        large part to the desire of bloggers, especially very technical ones, wanting a
+
+                        blogging tool option other than Wordpress. For many bloggers, Wordpress is a
+                        poor choice of blogging tools. Of course, there is always language snobbery in
+
+                        any programming community, but Wordpress is built on a language, PHP, which
+                        is widely reviled by developers from various language communities. Because
+
+                        PHP is more accessible language than other languages, the choice of PHP has
+                        fostered a large community of plugin developers. Unfortunately, this communi-
+                        ty is fractured, and the plugins which arise from it are at best poorly document-
+
+                        ed and poorly integrated, and at worst, poorly designed and buggy. While
+                        Wordpress does often have a plugin for anything you need, the problem it sol-
+
+                        ves often creates more problems in the long term when scalability or database
+                        optimization or security, for example, become concerns.
+                           Jekyll is interesting because of the components which are not present when
+
+                        compared against Wordpress. Jekyll does not require a database. Jekyll does
+                        not require you know how to write in HTML. While Wordpress ostensibly adver-
+
+                        tises itself as a tool which can be used without knowledge of these technolo-
+                        gies, talk to those of us who have struggled with recovery of a mangled data-
+
+                        base after installation of a new Wordpress plugin, or resolving scalability issues
+                        on a large Wordpress site, or analyzing and fixing broken HTML produced by the
+                        Wordpress editor. We’ll tell you that, when using Wordpress, you don’t need to
+
+                        know about MySQL or HTML at all, because it is already too late by then to fix
+                        whatever problem you are facing.
+
+                           Jekyll responds to these concerns in a really elegant way. Instead of author-
+                        ing in HTML, you author in a simple and readable language called Markdown,
+
+                        which the Jekyll engine converts automatically to HTML for you. Instead of stor-
+                        ing posts and other data inside a MySQL database, you use the filesystem to
+                        store posts and layouts and then regenerate the entire site when infrequent
+
+
+
+
+
+        118

@@ -1,0 +1,67 @@
+                                                                                             The Code
+
+
+the constructor definition, we pull that callback out and store it for later. After-
+
+ward, we just call the two other construction functions and return.
+   create_controls    has more to it thanSearchFrame   ’s version, because this
+
+panel has more controls. Every static-text, text-input, and button control gets
+its own line of code. Thewx.TE_PROCESS_ENTER     style tells the library that we
+
+want an event to be triggered if the user presses the enter key while the cursor
+is inside that text box.
+   The next block binds control events to method calls. Every event in WxPy-
+
+thon will call the handler with a single argument, an object which contains in-
+formation about the event. That means we can use the same event handler for
+
+any number of different kinds of events, so we do – thENTER  handlers for both
+text boxes and theBUTTON  handler for the button all go throughself.do_log-
+
+in .
+   do_layout   uses adifferent kind of sizer –GridBagSizer   . Again, the topic
+
+of sizers is way outside the scope of this chapter, but just know that this kind
+arranges things in a grid, and you can allow some of the rows or columns to
+stretch to fill the container. Here we drop all of the controls into their positions
+
+with the pos=(r,c)   notation (here “rows” come first, which isn’t like most co-
+ordinate systems), and cause one control to span two columns with the    span
+
+parameter. The  flags and  border  parameters mostly mean the same thins as
+before, and the AddGrowableCol    function tells the layout engine which parts
+
+of the grid should be allowed to stretch.
+   Then we do something curious: we put the  GridBagSizer    into another sizer.
+
+Sizer nesting is a powerful feature, and allows almost any window layout to be
+possible — although perhaps not easy or simple. The vertical box sizer also con-
+
+tains some bare tuples; this special form is called “adding a spacer.” In this case,
+we sandwich the sizer with all the controls between two spacers with different
+weights, making it float about a third of the way down the window. The effect is
+
+like Figure 5-3.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                           93

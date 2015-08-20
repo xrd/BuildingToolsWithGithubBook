@@ -1,0 +1,68 @@
+CHAPTER 8: Android and the Git Data API
+
+
+                          repositories {
+                              mavenCentral()
+                          }
+
+
+                          apply plugin: 'android'
+
+                          android {
+                              compileSdkVersion 19
+                              buildToolsVersion "19.0.1"
+
+
+                              sourceSets {
+                                main {
+                                  manifest.srcFile 'AndroidManifest.xml'
+
+                                  java.srcDirs = ['src']
+                                  resources.srcDirs = ['src']
+                                  res.srcDirs = ['res']
+                                  assets.srcDirs = ['assets']
+                                }
+
+                              }
+
+                          }
+
+
+                          dependencies {
+                            compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
+                          }
+
+
+                          Gradle build files use some standard boilerplate which you can ignore here,
+                       but there are two items which are worth noting.
+
+
+                          Gradle was not designed for Android; it started as a generic java build tool.
+                          We need to specify where the files to compile reside for an android project
+
+                          using thesourceSets   variable.
+
+
+                          We can install the egit library, our interface to the GitHub API from within
+                          Java, using this simple declaration. Gradle will download the proper JAR
+                          files from the Maven repository and build them into our application using
+
+                          this dependency declaration.
+
+
+                       INSTALLING GRADLE
+
+
+                       To use gradle, you need to install it manually. Gradle does not come packaged
+                       with the Java SDK nor with the Android SDK. There are various ways to install
+                       gradle: either using a built in package manager, or downloading from the web-
+
+                       site gradle.org. Gradle is in constant flux as new versions are released, and I
+                       found the easiest way for me to install it was to download into a directory
+
+                       called “bin” and unzip the files there. Then, I could specify exactly the version
+
+
+
+
+       166

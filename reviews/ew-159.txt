@@ -1,0 +1,67 @@
+                                                                                          Summary
+
+
+Publishing our blog to GitHub
+
+
+Like any other GitHub repository, we can then publish our blog using the same
+commands we saw with earlier repositories. Obviously you should change the
+
+username and blog name to suit your own needs.
+
+
+   $ export BLOG_NAME=xrd/bytravelers.com
+   $ gem install hub
+   $ hub create $BLOG_NAME # You might need to login here
+   $ sleep $((10*60)) && open $BLOG_NAME
+
+
+   And, don’t forget to setup DNS records and give yourself appropriate time to
+let those records propagate out.
+
+
+
+Summary
+
+
+We’ve shown that we can quickly setup a blog on GitHub that has version con-
+trol built in. We’ve shown how to import blogs like Wordpress into Jekyll. And,
+we’ve taken a site available only as an archive on the Internet Archive and scra-
+
+ped the content, images and even the colors, and then converted it to a Jekyll
+blog. Jekyll is a simple tool for managing websites, but a hidden benefit is that
+
+because Jekyll is so simple, you can easily write your own tools to interact and
+build on top of Jekyll. Once our site is a repository on GitHub, making changes
+yourself, or accepting them from other contributors is as easy as clicking
+
+“Merge” on a pull request.
+   In the next chapter we will continue looking at Jekyll by building an Android
+
+application that uses the Java GitHub API bindings and allows you to create Je-
+kyll blog posts with the Git Data API.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                       159

@@ -1,0 +1,68 @@
+                                                                                      The Code
+
+
+        self.do_layout()
+
+    def create_controls(self):
+        titlestr = self.result['title']
+
+        if self.result['state'] != 'open':
+             titlestr += ' ({})'.format(self.result['state'])
+        textstr = self.first_line(self.result['body'])
+        self.title = wx.StaticText(self, label=titlestr)
+        self.text = wx.StaticText(self, label=textstr)
+
+
+        # Adjust the title font
+        titleFont = wx.Font(16, wx.FONTFAMILY_DEFAULT,
+                              wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+
+        self.title.SetFont(titleFont)
+
+        # Bind click and hover events on this whole control
+        self.Bind(wx.EVT_LEFT_UP, self.on_click)
+
+        self.Bind(wx.EVT_ENTER_WINDOW, self.enter)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.leave)
+
+    def do_layout(self):
+        vbox = wx.BoxSizer(wx.VERTICAL)
+
+        vbox.Add(self.title, flag=wx.EXPAND | wx.BOTTOM, border=2)
+        vbox.Add(self.text, flag=wx.EXPAND)
+        self.SetSizer(vbox)
+
+    def enter(self, _):
+
+        self.title.SetForegroundColour(wx.BLUE)
+        self.text.SetForegroundColour(wx.BLUE)
+
+    def leave(self, _):
+
+        self.title.SetForegroundColour(wx.BLACK)
+        self.text.SetForegroundColour(wx.BLACK)
+
+    def on_click(self, event):
+        import webbrowser
+
+        webbrowser.open(self.result['html_url'])
+
+    def first_line(self, body):
+        return body.split('\n')[0].strip() or '(no body)'
+
+
+
+The containing panel is simple enough that it only consists of a constructor.
+This class’s job is to contain the results, and present them in a scroll window.
+
+
+A SearchResult   comprises two static text controls, which contain the is-
+sue’s title and the first line of its body.
+
+
+
+
+
+
+
+                                                                                    97

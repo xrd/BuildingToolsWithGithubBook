@@ -1,0 +1,67 @@
+                                                                    GitHub Has Amazing API Documentation
+
+
+   -H "Accept: application/vnd.github.html+json" | jq '.body_html'
+   "<p>Hi, </p>\n\n<p>I have a problem with..."
+
+
+   Without specifying an extra header, we get the internal representation of the
+   data, sent as markdown.
+
+
+   Note that if we don’t request the HTML representation, we don’t see it in the
+   JSON by default.
+
+
+   If we use a customized accept header like in the third instance, then our
+
+   JSON is populated with a rendered version of the body in HTML.
+
+   Besides “raw” and “html” there are two other format options that influence
+how Markdown content is delivered via the GitHub API. If you specify “text” as a
+
+format, the issue body would have been returned as plaintext. If you specify
+“full” then the content will be rendered multiple times including the raw Mark-
+down, rendered HTML, and rendered plaintext.
+
+   In addition to controlling the format of text content, you can also retrieve
+GitHub blobs either as raw binary or as a BASE64 encoded text. When retrieving
+
+commits, you can also specify that the content be returned either as a diff or as
+a patch. For more information about these fine-grained controls for formatting,
+
+see the GitHub API documentation.
+
+
+GitHub API Terms of Service
+
+
+Before you start building a system atop another service’s API, it is always wise
+to understand what, if any, limitations are placed on that API’s usage. Aside
+
+from the limitations on bandwidth, GitHub’s API is also covered by the overall
+GitHub Terms of Service. You can read these terms of service here: https://
+help.github.com/articles/github-terms-of-service
+
+
+
+GitHub Has Amazing API Documentation
+
+
+The GitHub team has already provided very thorough documentation on their
+API with examples using cURL. Bookmark this URL: https://develop-
+
+er.github.com/v3/. You’ll use it often. Do note that this URL is tied, obviously, to
+the current API “Version 3”, so this URL will change when a new version is re-
+
+leased.
+
+
+
+
+
+
+
+
+
+                                                                                           39

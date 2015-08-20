@@ -1,0 +1,49 @@
+           Python and the Search API                                   5
+
+
+
+
+
+
+
+
+Once you have enough data, no amount of organization will make everything
+easy to find. As Google has taught us, the only system that works at this scale is
+a search box. When you use GitHub, you’re exposed to both sides of this phe-
+nomenon: the repositories you have direct access to — which are relatively
+
+small in number — are given a single level of hierarchy, so you can keep them
+straight in your head. For the rest, the uncountable millions of public reposito-
+ries that belong to other people, there’s a search box, with powerful features to
+help you find what you’re looking for.
+   Helpfully, GitHub also exposes this capability as an API you can consume
+
+from your own applications. GitHub’s search API gives you access to the full
+power of the built-in search function. This includes the use of logical and scop-
+ing operators, loreand user. By integrating this feature with your applica-
+tion, you can provide your users a very powerful way of finding what they’re
+looking for.
+
+   In this chapter we’ll take a close look at this API, and try building something
+with it. We’ll see how the search API is structured, what kind of results come
+back, and how it can help us create a feature for someone on our team.
+
+
+General Principles
+
+The search API is split into four separate parts:
+
+   • Repositories
+   • Code
+
+   • Issues
+   • Users
+
+   These APIs all have separate subject matter, and have different formats for
+their results, but they all behave the same in a few key ways. We’re covering
+these first, because they’ll help you understand the results coming back from
+
+
+
+
+                                                                              75

@@ -1,0 +1,68 @@
+                                                                         Accessing Content from the Web
+
+
+   $ curl https://api.github.com/rate_limit
+   {
+     "resources": {
+       "core": {
+
+          "limit": 60,
+          "remaining": 48,
+          "reset": 1433398160
+       },
+       "search": {
+
+          "limit": 10,
+          "remaining": 10,
+          "reset": 1433395543
+       }
+
+     },
+     "rate": {
+       "limit": 60,
+       "remaining": 48,
+       "reset": 1433398160
+
+     }
+   }
+
+   60 requests over the course of an hour isn’t very much, and if you plan on
+
+doing anything interesting, you will likely exceed this limit quickly. If you are hit-
+ting up against the 60 requests per minute limit, you will likely want to investi-
+
+gate making authenticated requests to the GitHub API. We’ll show that when
+we discuss authenticated requests.
+
+
+     Calls to the Rate Limit API are not deducted from your Rate Limit. Isn’t
+     that nice of them?
+
+
+
+   At this point we have been accessing the GitHub API from a cURL client, and
+as long as our network permits it, we can do whatever we want. The GitHub API
+is accessible in other situations as well, like from within a browser context, and
+
+certain restrictions apply there, so let’s discuss that next.
+
+
+
+Accessing Content from the Web
+
+
+If you are using the GitHub API from a server side program or the command line
+then you are free to issue any network calls as long as your network permits it.
+
+If you are attempting to access the GitHub API from within a browser using
+JavaScript and the XHR (XmlHttpRequest) object, then you should be aware of
+limitations imposed by the browser’s same-origin policy. In a nutshell, you are
+
+not able to access domains from JavaScript using standard XHR requests out-
+side of the domain from which you retrieved the original page. There are two
+
+
+
+
+
+                                                                                          35

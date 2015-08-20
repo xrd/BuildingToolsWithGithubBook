@@ -1,0 +1,67 @@
+                                                                      Breadcrumbs to Successive API Paths
+
+
+   We’ve abbreviated the response to make it more readable. A few salient
+things to notice: there are a lot of URLs pointing to secondary information, pa-
+rameters are included in the URLs, and the response format is JSON.
+
+   What can we learn from this API response?
+
+
+
+Breadcrumbs to Successive API Paths
+
+The GitHub API is a Hypermedia API. Though a discussion on what constitutes
+
+hypermedia deserves an entire book of its own (Check out O’Reilly’s “Hyperme-
+dia APIs with HTML5 and Node”), you can absorb much of what makes hyper-
+
+media interesting by just looking at a response. First, you can see from the API
+response above that by making a request to the API, you actually get back a
+
+map of how you should make additional responses. Not all clients use this in-
+formation, of course, but one goal behind Hypermedia APIs is that clients can
+dynamically adjust their endpoints without recoding the client code. In other
+
+words, the API should be able to adjust its map, and then clients will adjust
+themselves, but you as the application developer using the client libraries will
+
+not need to understand or even be aware of the changes. If the thought of Git-
+Hub changing an API because clients should be written to handle new end-
+
+points automatically sounds worriesome, don’t fret too much: GitHub is very
+dilligent about maintaining and supporting their API in a way that most compa-
+nies would do well to emulate. But, you should know that you can rely on hav-
+
+ing a API reference inside the API itself, rather than hosted externally in docu-
+mentation which very easily could turn out to be out of date with the API itself.
+
+   This map includes not just URLs, but also information about how to provide
+parameters to the URLs. For example, the  code_search_url     key references a
+
+URL which obviously allows you to search within code on GitHub, but also tells
+you how to structure the parameters passed to this URL. If you have an intelli-
+gent client who can follow this simple format, you could dynamically generate
+
+the query without involving a developer who can read API documentation. At
+least that is the dream that Hypermedia points us to; if you are skeptical, at
+
+least know that APIs such as GitHub encode documentation into themselves,
+and you can bet GitHub has test coverage to prove that this documentation
+
+matches the information delivered by the API endpoints. That’s a strong guar-
+antee that is sadly missing from many other APIs.
+   Now let’s briefly discuss the format of all GitHub API responses: JSON.
+
+
+
+The JavaScript Object Notation (JSON) Format
+
+
+Every response you get back from the GitHub API will be in the JSON format.
+JSON is a “lightweight data interchange format” (read more on the JSON.org
+
+
+
+
+                                                                                           19

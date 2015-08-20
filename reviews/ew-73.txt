@@ -1,0 +1,67 @@
+                                                                                 Building a Gollum Editor
+
+
+   Now, if our designer posts a new version of the UI comps, they can specify
+what changes were made, and we have a record of that in our change log, ex-
+posed on the revisions section of our wiki hosted on GitHub.
+
+
+
+Fixing Linking Between Comp Pages
+
+
+We noted that there is no quick way to jump between comps once we are inside
+a review revision. However, if you recall we used the parent SHA hash to build
+out our image links. We can use this to build out a navigation inside our comp
+
+page when we are on a revision page while viewing the history.
+   Again, it is a simple change: one line within twrite_review_file     meth-
+
+od. After the block which creates each link to the image files, add a line which
+builds a link to the parent document via its SHA hash using the parent SHA
+
+found in our Rugged object under  @repo.head.target    . This link will allow us
+to navigate to prior revisions in our history.
+
+
+     ...
+   files.each do |f|
+     contents += "### #{f} \n[[#{dir}/#{f}]]\n\n"
+   end
+
+   contents += "[Prior revision (only when viewing history)](#{@repo.head.target})\n\n"
+
+   File.write review_filename, contents
+   oid = @repo.write( contents, :blob )
+     ...
+
+
+   Now, when we view the Review file history, we see a file with a link at the
+bottom to the link to each prior version. Is it possible to provide a link to the
+
+next version in our history? Unfortunately, we have no way to predict the SHA
+hash of the next commit made to the repository, so we cannot build this link
+
+inside our Review.md  file with our ruby script. However, we do get something
+just as good for free because we can simply use the back button to jump back
+
+to the prior page in the history stack of our browser. It would be nice if we could
+generate this link alongside the link we placed into the wiki markup, and we
+could do this using a link that runs an onclick handler delegating to a Java-
+
+Script command like   window.history.back()     , but Gollum foils us again by
+stripping JavaScript from our markup files as we noted before. This is a good
+
+thing generally, as we don’t want to permit rogue markup inside our wiki pages,
+but it does limit our options in this situation.
+
+   Unfortunately, these links do not work when you are viewing the review file
+itself (clicking on them brings you to a page which asks you to create this as a
+
+new page). Gollum, unlike Jekyll, does not support Liquid tags which would
+permit building a link using the username and repository. Right now we don’t
+
+
+
+
+                                                                                           73

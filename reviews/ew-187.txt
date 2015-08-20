@@ -1,0 +1,67 @@
+                                                                                Creating the Commit
+
+
+   ...
+       Tree baseTree;
+       private void generateTree() throws IOException {
+           baseTree = dataService.getTree(repository, baseCommitSha);
+   TreeEntry treeEntry = new TreeEntry();
+
+   treeEntry.setPath( filename );
+   treeEntry.setMode( TreeEntry.MODE_BLOB );
+   treeEntry.setType( TreeEntry.TYPE_BLOB );
+   treeEntry.setSha(blobSha);
+   treeEntry.setSize(blob.getContent().length());
+
+   Collection<TreeEntry> entries = new ArrayList<TreeEntry>();
+   entries.add(treeEntry);
+   newTree = dataService.createTree( repository, entries, baseTree.getSha() );
+       }
+
+
+   ...
+
+
+Creating the Commit
+
+
+We are getting close to actually finalizing our save. We have created a blob
+which stores the actual content, and created a tree which stores the path to the
+
+content (more or less), but since git is a version control system, we also need to
+store information about who wrote this object and why. A commit object stores
+
+this information. The process should look familiar coming from the previous
+steps: we create the commit and then add relevant metadata, in this case the
+
+commit message. The “who” of this commit is inferred from our login: GitHub
+knows that we authenticated and assigns this commit to us on the server side.
+We then use the data service to create the commit inside our repository in Git-
+
+Hub at the correct SHA address.
+
+
+   ...
+   Commit newCommit;
+   private void createCommit() throws IOException {
+       // create commit
+       Commit commit = new Commit();
+
+       commit.setMessage( commitMessage );
+       commit.setTree( newTree );
+       List<Commit> listOfCommits = new ArrayList<Commit>();
+       listOfCommits.add(new Commit().setSha(baseCommitSha));
+       commit.setParents(listOfCommits);
+
+       newCommit = dataService.createCommit(repository, commit);
+   }
+
+   ...
+
+
+
+
+
+
+
+                                                                                      187

@@ -1,0 +1,68 @@
+                                                                                   A Jekyll Blog in 15 Minutes
+
+
+   The date and categories are two other variables included in the YFM. They
+are completely optional and strangely unused by the structure and templates
+
+created by default using the Jekyll initializer. They do provide additional con-
+text to the post, but are only stored in the Markdown file and not included in-
+side the generated content itself. The categories list is often used to generate an
+
+index file of categories with a list of each post included in a category. If you
+come from a Wordpress background, you’ll likely have used categories. These
+
+are generated dynamically from the MySQL database each time you request a
+list of them, but in Jekyll this file is staticly generated. If you wanted something
+
+more dynamic, you could imagine generating a JSON file with these categories
+and files, and then building a JavaScript widget which requests this file and
+
+then does something more interactive on the client side. Jekyll can take any
+template file and convert it to JSON (or any other format) — you are not limited
+to just generating HTML files.
+
+   YFM is completely optional. A post or page can be rendered into your Jekyll
+site without any YFM inside it. Without YFM, your page is rendered using the de-
+
+faults for those variables, so make sure the default template, at the very least, is
+what you expect will wrap around all pages left with unspecified layouts.
+
+   One important default variable for YFM is the published variable. This vari-
+able is set to true by default. This means that if you create a file in your Jekyll
+
+repository and do not manually specify the published setting, it will be publish-
+ed automatically. If you set the variable to false then the post will not be pub-
+lished. With private repositories you can keep the contents of draft posts entire-
+
+ly private until writing has completed by making sure published is set to false.
+Unfortunately, not all tools that help you create Jekyll Markdown files remem-
+
+ber to set the published variable explicitly inside of YFM, so make sure you
+check before committing the file to your repository if there is something you
+
+don’t yet want published.
+
+
+Jekyll markup
+
+
+Going past the YFM, we can start to see the structure of Markdown files. Mark-
+down files can be, at their simplest, just textual information without any for-
+
+matting characters. In fact, if your layout files are well done, you can definitely
+create great blog posts without any fancing formatting, just pure textual con-
+
+tent.
+   But, with a few small Markdown additions, you can really make posts shine.
+One of the first Markdown components we notice is the backtick character,
+
+which is used to wrap small spans of code (or code-ish information, like file-
+names in this case). As you use more and more Markdown, you’ll find Mark-
+
+down to be insidiously clever in the way it provides formatting characters
+
+
+
+
+
+                                                                                              125

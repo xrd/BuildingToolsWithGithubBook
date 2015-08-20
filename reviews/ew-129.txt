@@ -1,0 +1,68 @@
+                                                                               A Jekyll Blog in 15 Minutes
+
+
+THE GH-PAGES BRANCH
+
+To work on the gh-pages branch, check it out and create the branch inside your
+
+repository.
+
+
+   $ git checkout -b gh-pages
+   $ rake post title="My next big blog post"
+   $ git add _posts
+   $ git commit -m "Added my next big blog post"
+   $ git push -u origin gh-pages
+
+
+   You will need to always remember to work on the gh-pages branch; if this
+repository is only used as a blog, then this probably is not an issue. Adding the
+
+-u switch will make sure that git always pushes up the gh-pages branch when-
+ever you do a push.
+
+
+THE CNAME FILE
+
+
+The CNAME file is a simple text file with the domain name inside of it.
+
+
+   $ echo 'mydomain.com' > CNAME
+   $ git add CNAME
+   $ git commit -m "Added CNAME"
+   $ git push
+
+
+   Once you have pushed the CNAME file to your repository, you can verify that
+GitHub thinks the blog is established correctly by visiting the admin page of
+
+your repository. An easy way to get there is using thegithub  gem, no longer
+actively maintained but still a useful command line tool.
+
+
+   $ gem install github
+   $ github admin # Opens up https://github.com/username/repo/settings
+
+
+   The github gem is a useful command line tool, but unfortunately it is tied to
+an older version of the GitHub API, which means the documented functionality
+
+is often incorrect.
+   If your blog is correctly setup, you will see something like Figure 3 in the mid-
+
+dle of your settings page.
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                         129

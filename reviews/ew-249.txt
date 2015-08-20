@@ -1,0 +1,67 @@
+                                                                                Activities API Overview
+
+
+   If Probot is running, you will need to restart it to reload any scripts. Kill Pro-
+
+bot (using Ctrl-C), and then restart it, and then play with commands inside your
+Slack site. Entering the commands probot accept   and probot decline    and
+
+you’ll see Probot respoding inside the channel. You’ll also see the messAc-
+cepted!  orDeclined!   printed to the console on which Probot is running.
+
+
+WRITING TESTS FOR HUBOT EXTENSIONS
+
+
+Now that we have the basics of our Probot working, let’s make sure we certify
+our code with some tests. We’ll use the Jasmine testing framework for NodeJS.
+
+It offers an elegant behavior driven testing syntax where you specify a behavior
+as the first parameter to ait function, and as a second parameter, a function
+
+which is run as the test itself. Jasmine manages running eachit call and dis-
+plays a nice output of passing and failed tests at the end of your run. Jasmine
+tests are typically written in JavaScript, but the latest versions of Jasmine sup-
+
+port tests also written in CoffeeScript. Hubot is written in CoffeeScript, so let’s
+write our tests in CoffeeScript as well. We need to put our tests inside a directo-
+
+ry called “spec” and make sure our filename ends with  .spec.coffee   . Let’s
+use spec/pr-delegator.spec.coffee        as the complete filename. Jasmine
+
+expects spec files to hav.spec. at the end of their filename (before the exten-
+sion, eithe.js  or.coffee  ); if your filename does not match this pattern Jas-
+
+mine won’t recognize it as a test.
+
+   Probot = require "../scripts/pr-delegator"
+
+   Handler = require "../lib/handler"
+
+   pr = undefined
+   robot = undefined
+
+   describe "#probot", ->
+
+            beforeEach () ->
+                    robot = {
+                             respond: jasmine.createSpy( 'respond' )
+                             router: {
+                                     post: jasmine.createSpy( 'post' )
+
+                                     }
+                             }
+
+            it "should verify our calls to respond", (done) ->
+                    pr = Probot robot
+
+                    expect( robot.respond.calls.count() ).toEqual( 2 )
+                    done()
+
+   The first line in our test requires, or loads, the Hubot extension module into
+
+our test script, giving us a function we save as a Probot variable. We then create
+
+
+
+                                                                                       249

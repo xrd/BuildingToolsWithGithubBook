@@ -1,0 +1,67 @@
+                                                                                       Prerequisites
+
+
+   $ adb devices -l
+
+   * daemon not running. starting it now on port 5037 *
+   * daemon started successfully *
+   List of devices attached
+   0222fdc60910aede         device usb:1D110000 product:hammerhead model:Nexus_5 device:hammerhead
+
+
+   Running the adb command starts a daemon service which communicates
+with your device. In this case the daemon reported that I have a single device
+attached via USB which is the emulated Nexus 5 device.
+
+
+
+Creating a New Project
+
+   $ mkdir ghru # GitHub R U?
+
+   $ cd ghru
+   $ android create project --target 13 --name GHRU --path . --activity GitHubRu --package com.githubru
+
+   These three commands create a new directory ghru , enter the directory, and
+
+then build a simple Android directory structure with the proper files.
+   If you have the ant tool installed, you can build this new project want the
+
+debug  command. This will create an APK in the bin directory called ./bin/
+Ghru-debug-unaligned.apk     . To install it on your device run the command
+
+ant debug install    . Then, you can launch the application by double clicking
+on the application titled “GitHubRu”.
+
+
+ADDING GRADLE SUPPORT
+
+
+Gradle is a new build system for Java and has become theoffical build system
+for the Android platform. Using a simpbuild.gradle   file we can build an en-
+
+tire Android application from the command line. Gradle is well supported with
+more advanced editors, so you can always import an Android project using Gra-
+dle and use it with editors like Eclipse or Android Studio. Ant used to be the de-
+
+fault and preferred method of building Java projects from the command line,
+but gradle syntax is so simple and powerful and lightweight that it is now the
+
+preferred build system by the Android team.
+
+   buildscript {
+
+       repositories {
+           mavenCentral()
+       }
+       dependencies {
+           classpath 'com.android.tools.build:gradle:0.6.+'
+       }
+
+   }
+
+
+
+
+
+                                                                                       165

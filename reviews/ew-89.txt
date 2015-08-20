@@ -1,0 +1,68 @@
+                                                                                            The Code
+
+
+
+            self.SetTitle('GitHub Issue Search')
+            self.Show()
+
+
+   The __init__   method is the constructor, so this is where we start when the
+main function callsSearchFrame()   . Here’s what’s happening at a high level –
+
+we’ll dig into the details in a bit:
+
+   1. Set up some layout dimensions and pass to the parent class’s constructor
+
+   2. Create the UI controls
+
+   3. Retrieve the credentials from the user using the credential helper we de-
+      scribed earlier
+
+   4. Change the title and display the application to the user
+
+   Before we get to how all those things are done, let’s step back a bit and talk
+about this class’s job. It’s responsible for maintaining the top-level “frame” (a
+
+window with a title bar, a menu, and so on), and deciding what’s displayed in
+that frame. In this case, we want to show a login UI first, and when we get valid
+
+credentials (either from Git or the user), we’ll switch to a searching UI.
+   Alright, enough background. Let’s walk through the code for getting and
+
+checking credentials.
+
+       def login_accepted(self, username, password):
+
+            self.credentials['username'] = username
+            self.credentials['password'] = password
+            if self.test_credentials():
+                self.switch_to_search_panel()
+
+
+       def test_credentials(self):
+            if any(k not in self.credentials for k in ['username', 'password']):
+                return False
+            g = Github(self.credentials['username'], self.credentials['password'])
+
+            status,data = g.user.orgs.get()
+            if status != 200:
+                print('bad credentials in store')
+                return False
+            self.orgs = [o['login'] for o in data]
+
+            return True
+
+       def switch_to_search_panel(self):
+            self.login_panel.Destroy()
+            self.search_panel = SearchPanel(self,
+
+                                               orgs=self.orgs,
+                                               credentials=self.credentials)
+            self.sizer.Add(self.search_panel, 1, flag=wx.EXPAND | wx.ALL, border=10)
+            self.sizer.Layout()
+
+
+
+
+
+                                                                                          89

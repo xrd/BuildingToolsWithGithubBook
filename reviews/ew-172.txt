@@ -1,0 +1,68 @@
+CHAPTER 8: Android and the Git Data API
+
+
+                      lishes the correct filename format for a Jekyll blog post (we’ll do this same for-
+                      matting in our Java code later). Then we write a method which uses the Cala-
+
+                      bash Ruby API to verify a UI element exists by the ID (these are the IDs created
+                      inside our XML layout files), and if so, sets the field to the text provided. After
+                      this our steps are very basic and uniform except for the last item. Our last item
+
+                      verifies that we successfully stored the data inside our GitHub repository by
+                      making a basic HTTP call using the Httparty ruby gem and then looking inside
+
+                      the retrieved content to make sure it matches the mood we saved earlier.
+
+
+                         require 'calabash-android/calabash_steps'
+                         require 'httparty'
+
+                         def set_title_and_mood
+                           moods = %w{ happy sad angry blue energized }
+
+                           @mood = "Feeling #{moods[(rand()*moods.length).to_i]} today"
+                           @title = @mood.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+                           date = (ENV['date'] ? Time.parse(ENV['date']) : Time.now).strftime('%Y-%m-%d')
+                           @filename = "_posts/#{date}-#{@title}.md"
+                         end
+
+
+                         def check_and_set( id, text )
+                           check_element_exists "edittext id:'#{id}'"
+                           query "edittext id:'#{id}'", :setText => text
+
+                         end
+
+                         When(/^I enter the username$/) do
+                           check_and_set( "username", ENV['GH_USERNAME'] )
+                         end
+
+
+                         When(/^I enter the password$/) do
+                           check_and_set( "password", ENV['GH_PASSWORD'] )
+                         end
+
+
+                         Then(/^I choose my blog$/) do
+                           check_and_set( "repository", ENV['GH_REPO'] )
+                         end
+
+
+                         Then(/^I enter my current mood status$/) do
+                           set_title_and_mood()
+                           check_and_set( "post", @mood )
+                         end
+
+
+                         And(/^I have a new jekyll post with my mood status$/) do
+                           url = "https://raw.githubusercontent.com/#{ENV['GH_USERNAME']}/#{ENV['GH_REPO']}/#{ENV['GH_BRANCH']||'master'}/#{@filename}"
+                           puts "Checking #{url} for content..."
+                           response = HTTParty.get( url )
+
+                           assert( response.body.include?( @mood ), "Post unsuccessful" )
+                         end
+
+
+
+
+       172

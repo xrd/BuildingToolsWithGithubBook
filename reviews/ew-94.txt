@@ -1,0 +1,68 @@
+CHAPTER 5: Python and the Search API
+
+
+
+ FIGURE 5-3
+
+ Resizing behavior of
+ login UI
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                          Then comes the  do_login   method, which tests out the given credentials,
+
+                       and if they work, passes them back through the callback set at construction
+                       time. If they don’t work, it sets the text of a label, whose foreground color has
+
+                       been set to a nice, alarming shade of red.
+
+
+                       GitHub search
+
+
+                       Once the user has successfully logged in, we destroy thLoginPanel   instance
+
+                       and show the SearchPanel  .
+
+                          class SearchPanel(wx.Panel):
+                              def __init__(self, *args, **kwargs):
+
+                                  self.orgs = kwargs.pop('orgs', [])
+                                  self.credentials = kwargs.pop('credentials', {})
+                                  wx.Panel.__init__(self, *args, **kwargs)
+
+
+                                  self.create_controls()
+                                  self.do_layout()
+
+                              def create_controls(self):
+                                  self.results_panel = None
+
+                                  self.orgChoice = wx.Choice(self, choices=self.orgs, style=wx.CB_SORT)
+                                  self.searchTerm = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
+                                  self.searchTerm.SetFocus()
+                                  self.searchButton = wx.Button(self, label="Search")
+
+
+                                  # Bind events
+                                  self.searchButton.Bind(wx.EVT_BUTTON, self.do_search)
+                                  self.searchTerm.Bind(wx.EVT_TEXT_ENTER, self.do_search)
+
+
+                              def do_layout(self):
+
+
+
+
+       94
