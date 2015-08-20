@@ -2,17 +2,23 @@
 
 require 'pdf-reader'
 require 'fileutils'
+require 'json'
 
 filename = ARGV.shift
 initials = ARGV.shift
+json = ARGV.shift
 
-unless filename and initials
-  puts "Need filename and initials as arguments"
+unless filename and initials and json
+  puts "Need filename and initials and json-file as arguments"
   exit
 end
 
-todos = []
-pages = []
+todos = {}
+if File.exists? File.join( "reviews", json )
+  data = File.read( File.join( "reviews", json ) )
+  todos = JSON.parse( data )
+end
+
 PDF::Reader.open(filename) do |reader|
   reader.pages.each do |page|
     begin
@@ -23,8 +29,8 @@ PDF::Reader.open(filename) do |reader|
           begin
             actual_annot = reader.objects[annot_ref]
             unless actual_annot[:Contents].nil?
-              todos << { page: page.number, comment: actual_annot[:Contents].inspect }
-              pages << { text: page.text, page: page.number }
+              comment = actual_annot[:Contents].inspect
+              todos[comment] = { page: page.number, text: page.text, initials: initials }
             end
           rescue Exception => e
             puts "Error in #{e.inspect}"
@@ -37,20 +43,27 @@ PDF::Reader.open(filename) do |reader|
   end
 end
 
-path = File.join "reviews", initials
-FileUtils.mkdir_p path
+FileUtils.mkdir_p "reviews"
+
+File.open( File.join( "reviews", json ), "w+" ) do |f|
+  f.write todos.to_json
+end
 
 todo_page = "## Todos ##\n\n"
-todos.each do |t|
-  todo_page += "- [ ] from page [#{t[:page]}](#{t[:page]}.txt): '#{t[:comment]}'\n"
-end
-
-File.open( File.join( path, "todos.md" ), "w+"  ) do |f|
-  f.write todo_page
-end
-
-pages.each do |p|
-  File.open( File.join( path, "#{p[:page]}.txt" ), "w+" ) do |f|
-    f.write p[:text]
+todos.keys.each do |k|
+  t = todos[k]
+  initials = t[:initials]
+  page = t[:page]
+  unless initials and page
+    puts "Nope! #{initials} / #{page}"
+    exit
   end
+  todo_page += "- [ ] from page [#{page} #{initials}](#{initials}-#{page}.txt): '#{k}'\n"
+  File.open( File.join( "reviews", "#{initials}-#{page}.txt" ), "w+" ) do |f|
+    f.write t[:text]
+  end
+end
+
+File.open( File.join( "reviews", "todos.md" ), "w+"  ) do |f|
+  f.write todo_page
 end
