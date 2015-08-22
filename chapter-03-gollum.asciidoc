@@ -193,7 +193,8 @@ publish the wiki into GitHub as-is.
 
 === Hacking Gollum
 
-On many software teams there is a tension between the design
+Would an image editor based on Gollum be of general use? On many
+software teams there is a tension between the design 
 team and the software team stemming from the fact that designers
 generally don't like using source code tools to manage images. This
 causes issues when software developers rely on designs that are
@@ -592,7 +593,7 @@ size-pack: 2029
 prune-packable: 0
 garbage: 0
 size-garbage: 0
-	      -------
+-------
 
 Inspecting the first ZIP file, I see these statistics about it.
 
