@@ -78,7 +78,7 @@ page]. We'll go over the most important ones here.
 
 ===== Links 
 
-Let's summarize a bit of Gollum syntax. Links are a good place to start.
+Links obviously convert into the `<a>` HTML tag.
 
 * Links use the syntax `[[Link]]`. 
 * You can add a link title using the bar character:
@@ -101,7 +101,7 @@ foobar|http://foobar.com]]`, so caveat emptor.
 
 Gollum (the wiki) was invented at GitHub, a company dedicated to
 improving the lives of software developers, so it stands to reason
-Gollum wikis would support code snippets. To include a snippet of
+Gollum wikis would support insertion of code snippets. To include a snippet of
 code, use three backticks, followed by the language name, and close
 the block of code using three more backticks.
 
@@ -165,7 +165,7 @@ following include
 Note that we've referenced the branch named after the specific SHA
 hash we want. 
 
-===== Gollum Structural Components
+===== Structural Components
 
 Gollum includes capabilities to add sidebars, headers, and footers. If
 you include a file called `_Sidebar.ext` inside your repository,
@@ -177,14 +177,11 @@ this file will override the top level sidebar file.
 
 ===== No Styling or JavaScript
 
-Finally, for security reasons, Gollum strips out all CSS and
+For security reasons, Gollum strips out all CSS and
 JavaScript from raw markup files. You can include your own JavaScript
 or CSS file when running Gollum locally using the `--custom-css` or
 `--custom-js` switches, but there is no way to include these files on a
 Wiki when your Gollum wiki is hosted on GitHub.
-
-Now that we have investigated the structure and format of using Gollum
-wikis, we can dig into the power tools that come with Gollum.
 
 ===== Inserting Images
 
@@ -194,7 +191,7 @@ named ceo.png inside your page. This basic syntax is often extended
 for additional funtionality. For example, to add a frame
 and an alt tag, you could use syntax like `[[ceo.png|frame|alt=Our CEO
 relaxing on the beach]]`. This creates the proper HTML tags for the
-same image, and alsox adds a frame and alt text (helpful for
+same image, and also adds a frame and alt text (helpful for
 better context and screenreaders). Review the documentation on the
 Gollum repository for more details about the breadth of the image
 options. 
@@ -274,20 +271,38 @@ Create our sinatra script called `image.rb`, and then we can install
 the necessary gems and run our server application.
 
 [source,ruby]
+------
 require 'sinatra'
 require 'gollum-lib'
 wiki = Gollum::Wiki.new(".")
 get '/pages' do
   "All pages: \n" + wiki.pages.collect { |p| p.path }.join( "\n" )
 end
+------
+
+Then, create the Gemfile.
 
 [source,bash]
+------
 $ echo "source 'https://rubygems.org'
 gem 'sinatra'
-gem 'gollum-lib'" >> Gemfile
+gem 'gollum-lib', '4.1.0'" >> Gemfile
 $ bundle install
-$ ruby image.rb
-$ open http://localhost:4567
+Fetching gem metadata from https://rubygems.org/..........
+Resolving dependencies...
+Installing charlock_holmes (0.7.3) 
+Using diff-lcs (1.2.5) 
+Installing github-markup (1.3.3) 
+Using mime-types (1.25.1) 
+...
+$ bundle exec ruby image.rb
+$ open http://localhost:4567/pages
+------
+
+We specify at least the minimum 4.1.0 for gollum-lib as the interface
+and list of supporting libraries has changed. We then run within the
+bundler context (using gems installed from this Gemfile rather than
+system gems) using the `bundle exec ruby image.rb` command.
 
 You'll see a report of the files that exist in our Gollum wiki right
 now. We've only added one file, the `Home.md` file.
