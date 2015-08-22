@@ -180,7 +180,7 @@ Android application.
 
 [source,java]
 -----
-[filename=".", language="js", sha="51338:support/xxx/MainActivity.java"]
+[filename=".", language="java", sha="51338:support/xxx/MainActivity.java"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -195,7 +195,7 @@ file which resides in our layouts directory called `main.xml`.
 
 [source,java]
 -----
-[filename=".", language="js", sha="d8f7a56e5fa3:support/android/wia/res/layout/main.xml"]
+[filename=".", language="java", sha="d8f7a56e5fa3:support/android/wia/res/layout/main.xml"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -220,7 +220,7 @@ file to have the internet permission (look for the line labled
 
 [source,yaml]
 -----
-[filename=".", language="js", sha="b8e957f:support/android/ghru/AndroidManifest.xml"]
+[filename=".", language="java", sha="b8e957f:support/android/ghru/AndroidManifest.xml"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -256,7 +256,7 @@ The `Gemfile` you just created should now look like this:
 
 [source,java]
 -----
-[filename=".", language="js", sha="ddb491b:support/android/ghru/Gemfile"]
+[filename=".", sha="ddb491b:support/android/ghru/Gemfile"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -270,7 +270,7 @@ boilerplate which we should change, so make the file named
 
 [source,yaml]
 -----
-[filename=".", language="js", sha="74d6fcd:support/android/ghru/features/my_first.feature"]
+[filename=".", sha="74d6fcd:support/android/ghru/features/my_first.feature"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -390,7 +390,7 @@ layout files and editing gives us this file:
 
 [source,xml]
 -----
-[filename=".", language="js", sha="06b58b5:support/android/ghru/res/layout/main.xml"]
+[filename=".", sha="06b58b5:support/android/ghru/res/layout/main.xml"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -421,7 +421,7 @@ two layouts.
 
 [source,java]
 -----
-[filename=".", language="js", sha="de816900a106fcc2436baaee4b495e2bfa8afbe4:support/android/ghru/src/com/githubru/MainActivity.java"]
+[filename=".", language="java", sha="de816900a106fcc2436baaee4b495e2bfa8afbe4:support/android/ghru/src/com/githubru/MainActivity.java"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -476,10 +476,11 @@ managing background thread code called `AsyncTask`. We implement a
 class which supports this interface by overriding at least one method
 which runs our background thread code (called `doInBackground()`). 
 
+
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="d4f646f:support/android/ghru/src/com/githubru/MainActivity.java", lines="15..-1"]
+[filename=".", language="java", sha="d4f646f:support/android/ghru/src/com/githubru/MainActivity.java", lines="15..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -494,7 +495,7 @@ background task, so we grab the status text element and update the text in it.
 <2> We then start the background thread process to do our login. This
 syntax creates a new thread for us with the username and password as
 parameters. Android will manage the lifecycle of this thread for us,
-meaning starting a new thread, separate from the main UI thread.
+including starting the new thread separate from the main UI thread.
 <2> Here we define the derived AsyncTask class. The three types in the
 generics signature provide a way to parameterize our instantiated task;
 we need to provide a username and password to the background task, and
@@ -531,7 +532,7 @@ statements to the top of the file, under the other imports.
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="467c40dc8d:support/android/ghru/src/com/githubru/MainActivity.java" lines="9..13"]
+[filename=".", language="java", sha="467c40dc8d:support/android/ghru/src/com/githubru/MainActivity.java" lines="9..13"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -573,7 +574,7 @@ to our project, we need to add to our dependencies inside our `build.gradle` fil
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="5f1181c:support/android/ghru/build.gradle" lines="31..35"]
+[filename=".", language="java", sha="5f1181c:support/android/ghru/build.gradle" lines="31..35"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -585,7 +586,7 @@ around the complicated GitHub API for us.
 
 [source,java]
 -----
-[filename=".", language="js", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="1..50"]
+[filename=".", language="java", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="1..50"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -611,7 +612,7 @@ GitHub.
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="d41083e:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="48..71"]
+[filename=".", language="java", sha="d41083e:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="48..71"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -659,7 +660,7 @@ and data)
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="114..137"]
+[filename=".", language="java", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="114..137"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -681,7 +682,7 @@ correct branch: `getBranch` does this for us.
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="a2ed219:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="108..137"]
+[filename=".", language="java", sha="a2ed219:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="108..137"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -701,7 +702,7 @@ tree and commit object, which we do next.
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="91..101"]
+[filename=".", language="java", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="91..101"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -724,7 +725,7 @@ account using the data service object.
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="b7a3874:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="101..114"]
+[filename=".", language="java", sha="b7a3874:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="101..114"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -749,7 +750,7 @@ inside our repository in GitHub at the correct SHA address.
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="b7a3874:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="138..149"]
+[filename=".", language="java", sha="b7a3874:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="138..149"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -771,7 +772,7 @@ to update the reference inside the repository inside GitHub.
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="b7a3874:support/android/ghru/src/com/githubru/GitHubHelper.java", lines="150..164", flatten="0"]
+[filename=".", language="java", sha="b7a3874:support/android/ghru/src/com/githubru/GitHubHelper.java", lines="150..164", flatten="0"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -786,7 +787,7 @@ Finally, we can now implement the `doPost()` method inside our
 [source,java]
 -----
 ...
-[filename=".", language="js", sha="2f0d210d1e74c1eae326c89047c6cded276640a2:support/android/ghru/src/com/githubru/MainActivity.java" lines="78..-1"]
+[filename=".", language="java", sha="2f0d210d1e74c1eae326c89047c6cded276640a2:support/android/ghru/src/com/githubru/MainActivity.java" lines="78..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -818,8 +819,6 @@ calabash-android run build/apk/ghru-release-unsigned.apk
 You'll see them pass with flying colors this time:
 
 image::images/android-calabash-success.png[A successful end-to-end test of our Android application]
-
-=== 
 
 If you want to see a more complicated version of the GitHub API on
 Android, take a look at https://github.com/xrd/TeddyHyde.git:[Teddy

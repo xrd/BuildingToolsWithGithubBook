@@ -695,6 +695,7 @@ managing background thread code called `AsyncTask`. We implement a
 class which supports this interface by overriding at least one method
 which runs our background thread code (called `doInBackground()`). 
 
+
 [source,java]
 -----
 ...
@@ -775,7 +776,7 @@ background task, so we grab the status text element and update the text in it.
 <2> We then start the background thread process to do our login. This
 syntax creates a new thread for us with the username and password as
 parameters. Android will manage the lifecycle of this thread for us,
-meaning starting a new thread, separate from the main UI thread.
+including starting the new thread separate from the main UI thread.
 <2> Here we define the derived AsyncTask class. The three types in the
 generics signature provide a way to parameterize our instantiated task;
 we need to provide a username and password to the background task, and
@@ -1191,20 +1192,20 @@ to update the reference inside the repository inside GitHub.
 [source,java]
 -----
 ...
-TypedResource commitResource;
-private void createResource() {
-    commitResource = new TypedResource();            
-    commitResource.setSha(newCommit.getSha());
-    commitResource.setType(TypedResource.TYPE_COMMIT);
-    commitResource.setUrl(newCommit.getUrl());
-}
+    TypedResource commitResource;
+    private void createResource() {
+        commitResource = new TypedResource();            
+        commitResource.setSha(newCommit.getSha());
+        commitResource.setType(TypedResource.TYPE_COMMIT);
+        commitResource.setUrl(newCommit.getUrl());
+    }
 
-private void updateMasterResource() throws IOException {
-    // get master reference and update it
-    Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
-    reference.setObject(commitResource);
-    Reference response = dataService.editReference(repository, reference, true) ;
-}
+    private void updateMasterResource() throws IOException {
+        // get master reference and update it
+        Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
+        reference.setObject(commitResource);
+        Reference response = dataService.editReference(repository, reference, true) ;
+    }
 
 ...
 -----
@@ -1280,8 +1281,6 @@ calabash-android run build/apk/ghru-release-unsigned.apk
 You'll see them pass with flying colors this time:
 
 image::images/android-calabash-success.png[A successful end-to-end test of our Android application]
-
-=== 
 
 If you want to see a more complicated version of the GitHub API on
 Android, take a look at https://github.com/xrd/TeddyHyde.git:[Teddy
