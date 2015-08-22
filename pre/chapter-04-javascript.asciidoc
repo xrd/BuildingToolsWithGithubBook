@@ -408,10 +408,17 @@ To write the test, let's clarify what we want our code to do:
   any of the cities. If so, set the current city to the first match.
 * If we found a city, load the JSON data file from GitHub
 
+Concretely, let's assert that we load the list of cities and have 2
+of them, then we load a matching city named "Portland", a city which
+has three shops available.
+
 We'll use a `ng-init` directive which is the mechanism to tell
 AngularJS we want to call the function specified when the controller
 has finished loading. We'll call this function `init` so let's test it
-below.
+below. 
+
+First, we will write the setup code for an AngularJS test written
+using the Jasmine test framework.
 
 [source,javascript]
 -------
@@ -432,19 +439,6 @@ describe( "GithubCtrl", function() {
 	       { $scope: scope, Github: gh, Geo: geo } ); // <5>
         } )
     );
-
-    describe( "#init", function() { // <7>
-        it( "should initialize, grabbing current city", function() {
-            scope.init(); // <8>
-            expect( geo.getCurrentPosition ).toHaveBeenCalled(); // <9>
-            expect( gh.getRepo ).toHaveBeenCalled(); // <10>
-            expect( repo.read ).toHaveBeenCalled();
-            expect( scope.cities.length ).toEqual( 2 ); // <11>
-            expect( scope.city.name ).toEqual( "portland" ); 
-            expect( scope.shops.length ).toEqual( 3 );
-        });
-    });
-});
 -------
 
 <1> First we declare our variables. If we did not do this, JavaScript
@@ -455,44 +449,48 @@ method inside a `beforeEach` call, code which is executed before our
 tests run.
 <3> We will be creating two functions which generate the mock objects
 required for our tests. We'll discuss these two functions in a bit.
-<4> Our scope is the object where all our functionality is held, and
-by creating a new scope using the AngularJS utility function
-`$rootScope.$new()` function we can then use the scope later to test
-against the functionality we've implemented in our actual code.
+<4> Scope is the angular convention for the object into which all
+functionality and state is stored. We create a new scope using the
+AngularJS utility function `$rootScope.$new()` function and store a
+reference to this scope so we can test functionality we've implemented
+in our actual code. 
 <5> We pass in the mocked objects (created by the mocked function
 calls) as well as the scope object and instantiate a controller
-object.
-<6> Now we can write our tests. We create a describe block to group
-them called `#init` as we are testing this function.
-<7> 
+object. This controller uses the scope to define functions and data,
+and since we have a reference to it, we can call those functions and
+inspect that data and assert our implementation is correct.
 
-This JS test file has the boilerplate code used in any AngularJS test.
-You setup the scope and instantiate the
-controller with that scope, and then can manually call the methods on
-the scope to simulate interaction with our app. As we are calling into
-a JavaScript function inside of the Github JS object which uses an
-asynchronous callback, we will likely have to wait for an AJAX call to
-return. Simulating this is difficult in a test, so instead we will
-create a mock object for Github and then inject it into our
-`GithubCtrl` controller. Instead of having our controller make real
-calls to Github, we can call into our mock object and verify the
-correct calls are made. The real meat of of
-our test is inside the `describe` and `it` blocks: we initialize the
-scope, and then expect that the functions on our mocked objects will be
-executed. And, we verify the data is correctly set on our scope.
+Now, let's write an actual test.
 
-Specifically, our test does these things:
+[source,javascript]
+-------
+    describe( "#init", function() { // <1>
+        it( "should initialize, grabbing current city", function() {
+            scope.init(); // <2>
+            expect( geo.getCurrentPosition ).toHaveBeenCalled(); // <3>
+            expect( gh.getRepo ).toHaveBeenCalled(); 
+            expect( repo.read ).toHaveBeenCalled(); 
+            expect( scope.cities.length ).toEqual( 2 ); // <4>
+            expect( scope.city.name ).toEqual( "portland" ); 
+            expect( scope.shops.length ).toEqual( 3 ); 
+        });
+    });
+});
+-------
 
-* Calls the `init` function defined in our controller (which will be
-  handled using our `ng-init` directive in the HTML).
-* Verify that the geolocation service was called.
-* Verify that we called `getRepo` on our mocked Github object.
-* Verify that we called `read` on the repo we returned from the
-  `getRepo` call.
-* Verify that we used the data returned from the read to fill our
-  cities object inside our scope object.
-* Verify that we calculated the correct current city as Portland.
-* Verify that we have loaded the JSON data file for the current city
+<1> Describe functions are used to group tests defined inside `it`
+functions. Since we are testing the `init` function, it seems logical
+to use an identifier called `#init`.
+<2> Our code starts when we call `init`, so call it here.
+<3> We assert that our code uses the various interfaces we defined on
+our injected objects: `getCurrentPosition` on the Geo object, and `read`
+on the repository object.
+<4> Then we assert the data is properly loaded. This means that we
+have two cities, the default city is loaded and the name is equal to
+the string "Portland" and that there are three shops loaded for that
+city. Behind the scenes in our implementation we will load these via
+JSON, but all we care about is that the interface and data matches our
+expectations. 
 
 Now we can implement the two mocking functions vital for the test. Put
 them in between the `beforeEach( module( "coffeetech" ) )` line and
@@ -504,22 +502,22 @@ visibility to Karma.
 ...
 beforeEach( module( "coffeetech" ) );
 
-function generateMockGeolocationSupport( lat, lng ) {
+function generateMockGeolocationSupport( lat, lng ) { // <1>
     response = ( lat && lng ) ? { coords: { lat: lat, lng: lng } } : { coords: CITIES[0] };
-    geo = { getCurrentPosition: function( success, failure ) {
-        success( response );
+    geo = { getCurrentPosition: function( success, failure ) { // <2>
+        success( response ); 
     } };
-    spyOn( geo, "getCurrentPosition" ).andCallThrough();
+    spyOn( geo, "getCurrentPosition" ).andCallThrough(); // <3>
 }
 
-function generateMockRepositorySupport() {
-    repo = { read: function( branch, filename, cb ) {
+function generateMockRepositorySupport() { // <4>
+    repo = { read: function( branch, filename, cb ) { // <5>
         cb( undefined, JSON.stringify( filename == "cities.json" ? CITIES : PORTLAND ) );  
     } };
     spyOn( repo, "read" ).andCallThrough();
 
     gh = new Github({});
-    spyOn( gh, "getRepo" ).andCallFake( function() {
+    spyOn( gh, "getRepo" ).andCallFake( function() { // <6>
         return repo;
     } );
 }
@@ -527,6 +525,35 @@ function generateMockRepositorySupport() {
 beforeEach( inject( function ($controller, $rootScope ) {
 ...
 -----
+
+This syntax looks confusing if you have never written Jasmine tests
+for JavaScript, but it actually solves a lot of problems in an elegant
+way. Most importantly, Jasmine provides a spyOn function that will
+intercept a call to it, and then allow you to assert that it was
+called. We saw that in our tests when we invoked the function
+`toHaveBeenCalled()`.
+
+Knowing this, now the tests are more readable.
+
+<1> We first implement the `generateMockLocation` function. 
+<2> Mock location involves creating a Geo object which has a single
+function `getCurrentPosition` which is a function that calls back into
+a success callback function provided. This exactly matches the native
+browser support for Geolocation which has the same function defined on it.
+<3> We then `spyOn` the function so we can assert that it was called
+in our actual tests.
+<4> Next we implement `generateMockRepositorySupport`. 
+<5> Again we implement a mock object which has a method `read`. This
+matches one function contained in the API provided by the JavaScript
+GitHub.js library. Just like in the previous mock, we `spyOn` the
+function so we can validate it was called. However, this is not the
+"top level" repository object, this is the object returned from the
+call to `getRepo`. We will take this mock object and return it from
+the `getRepo` call.
+<6> Now we are in a position to create the first mock object
+called. We spy on the `getRepo` call, and then return our next mock
+object, the repository object. This object is used to retrieve the
+actual information using the `read` call. 
 
 Now that we have a set of tests, run the test suite from the command
 line and watch them fail.
@@ -604,9 +631,11 @@ a distance calculation function, load the city once close proximity
 cities are determined, and finally, add a function to query the user
 for their GitHub credentials and annotation data.
 
+First, we can implement the city loading functions.
+
 [source,javascript]
 -------
-[filename=".", language="js", sha="9e850dc:support/js/coffeetech.js.7693187", lines="38..-1"]
+[filename=".", language="js", sha="9e850dc:support/js/coffeetech.js.7693187", lines="38..49"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -614,13 +643,23 @@ snippet~~~~~
 -------
 
 <1> `retrieveCity` retrieves a list of shops in the same way that we
-retrieved the list of cities.
-<2> `loadCity` 
-<3>
-<4>
-<5>
-<6>
-<7>
+retrieved the list of cities by reading from the repository
+object. After loading the data into the scope, we need to call
+`$apply()` to notify Angular.
+<2> `loadCity` uses the city name to load city data.
+
+Next we can 
+
+[source,javascript]
+-------
+[filename=".", language="js", sha="9e850dc:support/js/coffeetech.js.7693187", lines="50..-1"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-------
+
+
 
 At first glance, the calculate distance function looks confusing, no?
 This was code I developed after reading a post on Geocoding using a
