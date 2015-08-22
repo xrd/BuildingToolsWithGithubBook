@@ -23,6 +23,14 @@ entirely different way, but still publishes information into GitHub as
 a regular Gollum wiki, exploring a little bit of the internals of Git
 along the way.
 
+=== Chapter Prerequisites
+
+This chapter demonstrates code which modifies a Git repository
+programmatically. You will be able to follow along without possessing
+a deep understanding of the internals of Git. And, a good supplement
+to this chapter (and later chapters as well) is the http://shop.oreilly.com/product/0636920022862.do:["Version Control
+with Git"] book from O'Reilly.
+
 === "The Story of Smeagol..."
 
 Gollum wikis are simply an agreed upon file structure. At its most
@@ -78,9 +86,12 @@ page]. We'll go over the most important ones here.
 
 ===== Links 
 
-Links obviously convert into the `<a>` HTML tag.
+Links obviously convert into the `<a>` HTML tag. Each format has its
+own linking format: in Markdown you use `[text](URL)`. Gollum adds its
+own link tag: `[[Link]]`. 
 
-* Links use the syntax `[[Link]]`. 
+In addition:
+
 * You can add a link title using the bar character:
   `[[http://foobar.com|A link to foobar]]`. 
 * Links can be either external or internal links. 
@@ -92,6 +103,7 @@ Wikis are generally a collection of pages
 linked together in myriad ways, and this assumption about the
 structure of links makes writing pages easier. 
 
+[WARNING]
 As we mentioned, there are differences between Gollum wiki tags and other wikis despite
 having similar syntax. One such example is MediaWiki, where links with
 titles use the opposite ordering `[[A link to
@@ -114,56 +126,26 @@ end
 ```
 ----
 
-A more interesting way of embedding code inside a Gollum repository is
-to use the file include syntax. Again, use a triple backtick, followed
-by the file type and then a reference to the code snippet inside a
-GitHub repository. You'll need to include the branch as well.
+Gollum
+https://github.com/gollum/gollum/wiki/Home/b16ce34e46e26600dc77bdf9b5aa6efcaf42026d#github-syntax-highlighting:[used]
+to support inclusion of files from any GitHub repository 
+using a syntax like this: 
 
 [source,ruby]
-------
+-----
 ```html:github:xrd/TeddyHyde/blob/master/Gemfile```
-------
+-----
 
-This will pull the file on GitHub located inside the "TeddyHyde" repository for
-user "xrd" on the master branch named "Gemfile"  and publish it with
-syntax hilighted into your wiki as if you had used this markup.
+This would have pulled the file on GitHub located inside the
+"TeddyHyde" repository for user "xrd" on the master branch named "Gemfile"  and publish it with
+syntax hilighted into your wiki as if you had used this markup. This
+syntax was very flexible because it used the branch: you could expose
+any moment of history in your repository by checking out that moment
+and branching from it, so this was a powerful way to reference files
+from within Gollum. This functionality has been removed, sadly.
 
-[source,ruby]
--------
-```ruby
-source 'https://rubygems.org'
-
-gem "nokogiri"
-gem "rspec"
-gem 'calabash-android', 
-  :git => 'git://github.com/calabash/calabash-android.git'
-```
--------
-
-Unfortunately, you cannot specify a specific SHA commit to retrieve
-moments in history within the git repository, but this is still a
-powerful way to expose a file inside a Gollum wiki. If you need to do
-that, the best way might be to create a branch from a specific SHA
-commit, and then reference that branch when including the file.
-
-[source,bash]
-$ git checkout 0be3e4475db2697b8
-$ git checkout -b at_sha_0be3e4475db2697b8
-$ echo "gem 'rails' # Adding rails to Gemfile" >> Gemfile
-$ git commit -m "Added rails to Gemfile" -a
-$ git push origin at_sha_0be3e4475db2697b8
-
-This would generate a new branch based on an older commit, and push up
-the branch. Then, you could reference this inside your wiki with the
-following include
-
-[source,ruby]
-------
-```html:github:xrd/TeddyHyde/blob/at_sha_0be3e4475db2697b8/Gemfile```
-------
-
-Note that we've referenced the branch named after the specific SHA
-hash we want. 
+According to the documentation, this has been replaced by a tag
+allowing inclusion of files from the parent repository: 
 
 ===== Structural Components
 
@@ -185,7 +167,7 @@ Wiki when your Gollum wiki is hosted on GitHub.
 
 ===== Inserting Images
 
-Images are inserting into your document using the same tag format
+Images are inserted into your document using the same tag format
 `[[ceo.png]]`: this adds the correct HTML tags to include an image
 named ceo.png inside your page. This basic syntax is often extended
 for additional funtionality. For example, to add a frame
@@ -245,7 +227,7 @@ $ cd images
 $ git init .
 $ printf "### Our home" > Home.md
 $ git add Home.md
-$ git commit -m "Initial checking"
+$ git commit -m "Initial commit"
 
 We've just created a wiki compatible with gollum. Let's see what it
 looks like inside gollum. run the `gollum` command then open
@@ -418,6 +400,10 @@ Writing out: IMG5678.png
 ...
 ----
 
+We are not doing anything beyond printing out the names of the images
+in the zip. We'll actually insert them into our Git repository in the
+next section.
+
 ==== Leveraging the Rugged Library
 
 Our end goal for this script is to add files to our Gollum wiki, which
@@ -447,7 +433,7 @@ post '/unpack' do
   @index = Rugged::Index.new
 
   zip = params[:zip][:tempfile]
-  Zip::ZipFile.open( zip ) { |zipfile|
+  Zip::Zip.open( zip ) { |zipfile|
     zipfile.each do |f|
       contents = zipfile.read( f.name )
       filename = f.name.split( File::SEPARATOR ).pop
@@ -563,14 +549,13 @@ uploaded.
 
 ==== Optimizing for Image Storage
 
-If a designer uploads the same image twice, what happens? We might
-assume that our code, as it writes these files to a different path on
-disk inside the repository (the path is the parent SHA hash to make it
-unique) and we could therefore be adding the same 
-file multiple times, and creating a repository with wasted
-space. However, the nature of git permits us to add the same file
+If a designer uploads the same image twice, what happens? Our code
+writes these files to a different path on disk inside the repository
+(the path is the parent SHA hash to make it unique). It would look, to
+an untrained eye, that we are adding the file file multiple times. 
+However, the nature of Git permits us to add the same file
 multiple times without incurring any additional storage cost beyond
-the first addition. When a file is added to git repository, a SHA hash
+the first addition (and the minimal cost of a tree structure). When a file is added to git repository, an SHA hash
 is generated from the file contents. For example, generating the SHA hash
 from an empty file will always return the same SHA hash.footnote:[This is explained
 beautifully in the blog
@@ -750,7 +735,7 @@ image::images/gollum-android-project1-review.png[Images displayed within a Gollu
 Not sure why our designer is providing us with an image of a couch,
 but I am sure he has his reasons.
 
-Once have published the file, we can click on the "Review" link in the
+Once you have published the file, we can click on the "Review" link in the
 sidebar to see the most current version of the "Review" page. We also
 can review the revisions of this file by clicking on the "3 Commits"
 (or whatever number of commits have occurred with this file).
@@ -816,7 +801,7 @@ Now, if our designer posts a new version of the UI comps, they can
 specify what changes were made, and we have a record of that in our
 change log, exposed on the revisions section of our wiki hosted on GitHub.
 
-#### Fixing Linking Between Comp Pages
+==== Fixing Linking Between Comp Pages
 
 We noted that there is no quick way to jump between comps once we are
 inside a review revision. However, if you recall we used the parent
@@ -844,17 +829,16 @@ oid = @repo.write( contents, :blob )
   ...
 -----
 
-Now, when we view the Review file history, we see a file with a link
-at the bottom to the link to each prior version. Is it possible to
-provide a link to the next version in our history? Unfortunately, we
-have no way to predict the SHA hash of the next commit made to the
-repository, so we cannot build this link inside our `Review.md` file
-with our ruby script. However, we do get something just as good for
-free because we can simply use the back button to jump back to the
-prior page in the history stack of our browser. It would be nice if we
-could generate this link alongside the link we placed into the wiki
-markup, and we could do this using a link that runs an onclick handler
-delegating to a JavaScript command like
+Now, when we view the Review file history, we see a link to each prior
+version. Is it possible to provide a link to the next version in our
+history? Unfortunately, we have no way to predict the SHA hash of the
+next commit made to the repository, so we cannot build this link
+inside our `Review.md` file with our ruby script. However, we do get
+something just as good for free because we can simply use the back
+button to jump back to the prior page in the history stack of our
+browser. It would be nice if we could generate this link alongside the
+link we placed into the wiki markup, and we could do this using a link
+that runs an onclick handler delegating to a JavaScript command like
 `window.history.back()`, but Gollum foils us again by
 stripping JavaScript from our markup files as we noted before. This is a good thing
 generally, as we don't want to permit rogue markup inside our wiki
