@@ -319,7 +319,8 @@ script to look like this:
 require 'sinatra'
 require 'gollum-lib'
 require 'tempfile'
-require 'zip/zip'
+require 'zip'
+require 'rugged'
 
 def index( message=nil )
   response = File.read(File.join('.', 'index.html'))
@@ -337,7 +338,7 @@ post '/unpack' do
   @index = Rugged::Index.new
 
   zip = params[:zip][:tempfile]
-  Zip::ZipFile.open( zip ) { |zipfile|
+  Zip::Zip.open( zip ) { |zipfile|
     zipfile.each do |f|
       contents = zipfile.read( f.name )
       filename = f.name.split( File::SEPARATOR ).pop
@@ -348,7 +349,6 @@ post '/unpack' do
   }
   index( params[:zip][:filename] )
 end  
-
 -----
 
 We'll need an `index.html` file as well, so add that.
@@ -384,13 +384,23 @@ so update the required gems using the following commands, and then re-run
 our Sinatra server script.
 
 [source,bash]
-$ printf "gem 'rubyzip'\n" >> Gemfile
+$ printf "gem 'rubyzip', '1.1.7'\ngem 'rugged', '0.23.2'" >> Gemfile
 $ bundle install
 $ ruby image.rb
 
-Then, we can open `http://localhost:4567/` and test uploading a file
+
+[WARNING]
+Rugged requires the libgit2 libraries (the pure C libraries for accessing
+Git repositories). Rugged gives you access to modification of Git
+repositories in the elegance of the Ruby language but with the speed
+of C. However, as this library is based on libgit2, and libgit2
+requires a C compiler, you will need to install this toolset first to
+install Rugged. On OSX this can look like `brew install cmake` or
+`apt-get install cmake` for Linux.
+
+Then, we can open `http://localhost:4567/` and test uploading a zip file
 full of images. You'll see output similar to this in your console
-after uploading a file.
+after uploading a zip file.
 
 [source,bash]
 ----
