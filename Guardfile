@@ -22,6 +22,8 @@ guard 'shell' do
     asciidoc = File.read( m[0] )
     out = Asciidoctor.render( asciidoc,
                               :header_footer => true,
+			      :line_numbers => true,
+			      :src_numbered => 'numbered',
                               :safe => Asciidoctor::SafeMode::SAFE,
                               :attributes => {'linkcss!' => ''})
 

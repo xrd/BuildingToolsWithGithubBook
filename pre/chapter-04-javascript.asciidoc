@@ -246,6 +246,8 @@ you'll understand the significant problems solved by those same features:
   we call `angular.controller` we are creating a controller which
   allows us to isolate and encapsulate functionality.
 
+===== The AngularJS App
+
 Now let's implement the `coffeetech.js` file. Create a new file called
 `coffeetech.js` in the root of your repository.
 
@@ -322,18 +324,10 @@ our single page app.
 
 ===== Visualize Application Data Structure
 
-To really build this application we will need to take a step back and
-consider how we want to structure our data. Since we won't be using a
-server at all, we are going to use GitHub as our data store. GitHub is
-built on top of Git, a technology that could not be better suited for 
-storing content. However, there is a major difference between
-accessing data stored inside a Git repository and a traditional database:
-searchability. Git repositories are great for storing data, and
-GitHub exposes storing data through their API. The GitHub API does
-support searching of code, but the GitHub.js library does not expose
-access to this part of the API. So, let's make sure to
-design and store the data in a structured way so that we can search
-it on the client side.
+We want to use Git as our datastore, but Git and its associated tools
+(either command line tools or GitHub) don't offer the same features as
+a standard relational database. So, we need to think and plan how we
+will structure our data inside our repository to make it easily searchable.
 
 This application allows us to search coffee shops. These coffee shops
 will be, for the most part, in larger cities. If we keep all the data 
@@ -439,6 +433,7 @@ describe( "GithubCtrl", function() {
 	       { $scope: scope, Github: gh, Geo: geo } ); // <5>
         } )
     );
+...
 -------
 
 <1> First we declare our variables. If we did not do this, JavaScript
@@ -567,8 +562,13 @@ Chrome 32.0.1700 (Mac OS X 10.9.1) GithubCtrl #init should initialize, grabbing 
 ...
 --------
 
-Once we have failing tests that support the direction of our code, we
-can write the code to support the tests we have written. First add
+Now that we have failing tests we can write the code make them
+pass. Remember, when writing code, failure means you have taken the
+first step towards building something.
+
+===== Code to Support Our Tests
+
+First add
 support fixtures, data files which have test data. Add the
 `fixtures-cities.js` file. 
 
@@ -623,7 +623,11 @@ data inside the cities array to determine our current city.
 <7> Since we are calling outside of AngularJS and returning inside a
 callback, we need to call `scope.$apply()` like we showed in prior examples.
 
-Now let's look at the code to do our Geocoding. We'll build functions
+We are now ready to write our geocoding code.
+
+===== Geocoding Support
+
+We'll build functions
 to retrieve the data for a city from the GitHub API, find the location
 of the user using their browser's Geolocation feature, use the user's
 current location to determine what cities they are close to, implement
@@ -648,18 +652,33 @@ object. After loading the data into the scope, we need to call
 `$apply()` to notify Angular.
 <2> `loadCity` uses the city name to load city data.
 
-Next we can 
+Next we can implement the functionality to calculate distances between the current user and available cities. 
 
 [source,javascript]
 -------
-[filename=".", language="js", sha="9e850dc:support/js/coffeetech.js.7693187", lines="50..-1"]
+[filename=".", language="js", sha="8c7faf2:support/js/coffeetech.js.7693187", lines="51..-9"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 ...
 -------
 
-
+<1> We build a `getCurrentLocation` funtion which we will call within
+our code. We use the injected `Geo` object which has our
+`getCurrentPosition` function (which inside our tests will be the
+mocked function, and inside our real code just layers an abstraction
+on top of the native browser interface).
+<2> We need to provide an error callback to the `getCurrentPosition`
+call, so we implement that, which does logs it to the console.
+<3> Then we build `detectCurrentCity`, which will look over the list
+of cities and see if we are in one. 
+<4> We iterate over the list of cities and calculate whether they are
+within 25 miles of our current location. Each city is stored with its
+own latitude and longitude data. When we find a city, we store that in
+the scope as the official current city and exit the loop.
+<5> To calculate distance, we need to build a radian conversion
+function. 
+<6> Finally, we build our distance calculation function.
 
 At first glance, the calculate distance function looks confusing, no?
 This was code I developed after reading a post on Geocoding using a
@@ -690,7 +709,24 @@ distance in kilometers, not miles. So, we need to multiply the result
 by 0.621371 to get the value in miles, which ends up being close
 enough to what Google reports the distance to be. 
 
-Now, let's expose the new data inside the `index.html` file like so
+Now that we have our geocoding implementation complete, we can move on
+to acquiring credentials from the user.
+
+===== Requesting Credentials for GitHub
+
+Now, we have to build a way to ask for credentials. It's pretty simple.
+
+[source,javascript]
+-------
+...
+[filename=".", language="js", sha="8c7faf2:support/js/coffeetech.js.7693187", lines="-7..-1"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-------
+
+We can now expose the new data inside the `index.html` file like so
 (omitting the obvious from the HTML):
 
 [source,html]
@@ -705,11 +741,14 @@ snippet~~~~~
 of items. Here we use it to iterate over the items in our
 `portland.json` file and insert a snippet of HTML with our data
 interpolated from each item in the iteration.
-<2> We are now using Bootstrap to establish structure in our HTML. The
+<2> Bootstrap makes it easy to establish structure in our HTML. The
 `col-md-6` class tells Bootstrap to build a column sized at 50% of our 12
-column layout. We setup two adjacent columns this way. And, if we are 
-inside a mobile device, it properly stacks these columns.
-<3> Notice how we bind to data from the JSON file.
+column layout (the default for Bootstrap layouts). We setup two
+adjacent columns this way. And, if we are inside a mobile device, it
+properly stacks these columns. 
+<3> Using AngularJS two way databinding, we insert the name of the
+shop.
+
 
 ===== Errors Already?
 
@@ -779,13 +818,14 @@ structure of our data that will eventually come from our users.
 ===== Simulating User Reported Data
 
 So far we have built a database of cities and coffee shops in those
-cities. This does not provide any utility beyond any map service out there.
+cities. Google Maps or Apple Maps already provide this information.
 If we layer additional information on top of this data (like quirky
 information about the coffeeshop), however, then we might have something that
-someone might find useful alongside Google Maps. Let's add some faked
-data to our coffee shop information.
+someone might find useful once they have found the coffeeshop on their
+favorite mapping application. 
 
-Modify the `portland.json` file so it looks like this:
+So, to start, let's add some faked data to our coffee shop
+information. Modify the `portland.json` file so it looks like this:
 
 [source,html index.html]
 -----
@@ -830,11 +870,12 @@ link to the map link, add a button which will allow us to annotate a
 coffeeshop with extra information. 
 
 To add an annotation to our existing data we are going ask users to
-contribute the "GitHub" way. Users will fork the repository, make a
-change, and then issue a pull-request. We can do all of this from our
-webapp using the Github.js library. This requires that we ask the
-users to login, so we will prompt them for their username and
-password, as well as the data they want to annotate.
+contribute using the "fork" model. Users will fork the repository, make a
+change, and then issue a pull-request from the fork to the original
+repository . We can do all of this from our webapp using the Github.js
+library. This requires that we ask the users to login, so we will
+prompt them for their username and password, as well as the data they
+want to annotate. 
 
 The implementation we will use starts with adding an "annotate" button
 to our HTML. 
@@ -893,8 +934,8 @@ mocked and programmatic timeout interface which we can control inside
 our tests. 
 <2> We generate our mocked GitHub method calls and spies, and we 
 follow that by mocking our prompt calls.
-<3> As mentioned above, we need to get `$timeout` we can use the
-injector to retrieve that in this way.
+<3> As mentioned above, we need to get `$timeout`, and we can use the
+injector to retrieve the mocked one AngularJS provides using this call.
 <4> We create a new describe block to organize our tests, calling it
 `#annotate`. We then implement one `it` function which is the single
 test we are creating: "annotate a shop."
@@ -935,11 +976,10 @@ Now, let's implement this functionality in our `coffeetech.js` file.
 Add these lines to the bottom of the file, but before the last closing
 braces.
 
-
 [source,javascript]
 -----
 ...
-[filename=".", language="js", sha="fd7afcd:support/js/coffeetech.js.ba42181" lines="95..164"]
+[filename=".", language="js", sha="fd7afcd:support/js/coffeetech.js.ba42181" lines="95..110"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -967,23 +1007,46 @@ no way of registering for a notification, and as such, must poll
 GitHub to determine whether our fork has completed. In the real world,
 we probably would need to redo this request if we see it fail as this
 could just mean it was still pending on GitHub.
-<6> We build a convenience method which will create an empty array and
+
+
+[source,javascript]
+-----
+...
+[filename=".", language="js", sha="fd7afcd:support/js/coffeetech.js.ba42181" lines="111..124", callouts="2,9"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
+
+<1> We build a convenience method which will create an empty array and
 add the annotation to the list of annotations, or otherwise use the
 existing array. We don't want our code to crash if we try to add an
 annotation to an object for which there is an undefined array reference.
-<7> We define a transformation function which we'll use with the
+<2> We define a transformation function which we'll use with the
 `JSON.stringify` function later. AngularJS adds a tracking attribute
 (`$$hashKey`) to our objects when we use the `ng-repeat` directive and
 this function filters out that so that our pull request data is clean.
-<8> Once we have verified the fork has completed, we need to get the
+
+[source,javascript]
+-----
+...
+[filename=".", language="js", sha="fd7afcd:support/js/coffeetech.js.ba42181" lines="125..164", callouts="2,9,14"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
+
+<1> Once we have verified the fork has completed, we need to get the
 new forked repository. We use the username provided to our code when
 the user logs in to build the repository object. We then read the
 `cities.json` file from the repository; if we retrieve this file
 successfully (we don't see the `err` object evaluating to true) then
 we know we are ready to start editing data.
-<9> We notify the UI that we are annotating and tell the user they
+<2> We notify the UI that we are annotating and tell the user they
 will need to wait while the annotation request is in progress.
-<10> `JSON.stringify` converts our annotated shop object into a JSON
+<3> `JSON.stringify` converts our annotated shop object into a JSON
 object. If you have used JSON.stringify before, you might not know
 about the other two parameters (beyond just the object you want to
 serialize) you can provide to this function. These 
@@ -994,22 +1057,22 @@ resultant JSON. So, we provide the stripHashKey function to remove the
 indentation count makes it much easier to read a pull request, because
 the diff'ing algorithm can diff line by line rather than as a long
 JSON string, which is how `JSON.stringify` serializes by default.
-<11> To make a pull request, we create a pull request object which we
+<4> To make a pull request, we create a pull request object which we
 need to provide to the pull request method inside of GitHub.js.
-<12> We then get a reference to the target of the pull request, the
+<5> We then get a reference to the target of the pull request, the
 original repository.
-<13> We then issue the pull request against the target. This takes the pull request
+<8> We then issue the pull request against the target. This takes the pull request
 specification object we created earlier, and a callback function which
 has an error code if the request failed, and otherwise, a pull request
 object. 
-<14> Once the request has succeeded, we can notify the UI that the
+<6> Once the request has succeeded, we can notify the UI that the
 annotation process has completed, and then issue a timeout to remove
 that from the UI after 5000 milliseconds, or 5 seconds.
-<15> Any time we are inside a callback in a third part library (like
+<7> Any time we are inside a callback in a third part library (like
 GitHub.js) we, as mentioned before, need to use `$apply()` to notify
 Angular that our scope object has changed. In this case our scope is
 being modified that we will notify our users of the pull request.
-<16> Here we implement a convenience function to properly create a way
+<8> Here we implement a convenience function to properly create a way
 to notify users. We create a waiting object, and then update the state
 (which our app will use to hide or display messages) and then a
 message itself. If we provide an empty message, we will clear the
