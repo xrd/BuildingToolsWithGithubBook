@@ -357,7 +357,6 @@ Surprisingly, this is fairly unique feature among modern high-level programming 
 If you want this capability elsewhere, you usually have to use a high-complexity framework, a lower-level language like C++, or both.
 
 Thirdly, this will help make it easy to distribute.
-Python has a package available which
 There exists a Python package which bundles an entire Python program and all of its dependencies into a single file (or `.app` bundle on OS X).
 So giving this program to a colleague is as easy as emailing her a ZIP file, which will help with our use case: a non-technical user might not be totally comfortable clicking through an installer (or even have permissions to do so on their machine).
 
@@ -423,7 +422,6 @@ if __name__ == '__main__': # <4>
     app.MainLoop()
 ----
 
-If you run this program, you should get an empty window, which is always a hopeful start to any project.
 Let's take a look at a few key things:
 
 <1> The "shebang" specifies that this is a Python 2.7 program
@@ -436,6 +434,10 @@ Let's take a look at a few key things:
 <5> And this is how you write a "main" function in WxPython.
     We instantiate an `App` instance, create an instance of our top-level frame, and run the app's main loop.
 
+If you run this program right now, your command-line will appear to hang, but it's actually waiting for GUI input.
+This is because the wx library won't create a "frame" window that has no contents.
+Let's correct that, but first a quick diversion into Git internals, to make our experience a bit nicer.
+
 ==== Git credential helper
 
 That's how most of the UI code is going to be structured, but before we go any further, we should define a function to help us get the user's GitHub credentials.
@@ -443,7 +445,7 @@ We'll be cheating a bit, by asking Git if it has the user's login and password.
 
 We'll leverage the `git credential fill` command.
 This is used internally by Git to avoid having to ask the user for their GitHub password every time they interact with a GitHub remote.
-The way it works is by accepting all the known facts about a connection through `stdin`, as text lines in the format "<key>=<value>".
+The way it works is by accepting all the known facts about a connection as text lines through `stdin`, in the format "<key>=<value>".
 Once the caller has supplied all the facts it knows, it can close the stdin stream (or supply an empty line), and Git will respond with all the facts _it_ knows about this connection.
 With any luck, this will include the user's login and password.
 The whole interaction looks a bit like this:
@@ -482,7 +484,7 @@ def git_credentials():
     return creds <5>
 ----
 
-<1> Here we set `GIT_ASKPASS` to the string `'true'`, which is a UNIX program that always returns 0, which will cause `git-credential` to stop trying to get credentials when it gets to the "as the user" stage.
+<1> Here we set `GIT_ASKPASS` to the string `'true'`, which is a UNIX program that always returns 0, which will cause `git-credential` to stop trying to get credentials when it gets to the "ask the user" stage.
 <2> `subprocess.Popen` is the way you use a program with stdin and stdout in Python.
     The first argument is the `argv` of the new program, and we also specify that we want stdin and stdout to be captured.
 <3> `p.communicate` does the work of writing to stdin and returning the contents of stdout.
