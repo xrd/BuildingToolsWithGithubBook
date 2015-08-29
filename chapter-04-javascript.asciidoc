@@ -1,12 +1,13 @@
 [[JavaScript]]
 == JavaScript and the Git Data API
 
-Most of the tools presented in this book run on a desktop or
-server. However, exposing GitHub data can be extremely useful inside
-web pages, and it is possible to utilize the GitHub API from within a web
-browser context as well. In this chapter we discuss how to use the unofficial
+Most applications that interact with the GitHub API
+will execute on a server. You are not limited, however, to accessing
+the API from within a server side programming language exclusively. It
+is possible to utilize the GitHub API from within a web browser
+context as well. In this chapter we discuss how to use the unofficial
 JavaScript client library to access the GitHub API and build a single
-page application (SPA) which we host entirely on GitHub. 
+page application (SPA) which we host entirely on GitHub.
 
 [NOTE]
 The main weakness of JavaScript has always been testability. Mainly
@@ -19,18 +20,16 @@ third party services makes testing even more important than it already
 was, and we'll make sure to add testing to our application to verify
 the functionality works as we expect.
 
-A single page application should fulfill a single simple purpose. It
-has to be important and direct. It should help us do something
-important. Logically, this application should help us find good coffee.
+A single page application should fulfill a single simple
+purpose. Logically, this application should help us find good coffee. 
 
 === Building a Coffee Shop Database on GitHub
 
-In many of the software development shops where I have worked in Portland, there is
-an almost disturbing obsession with coffee. I suffer from
-the same malady, and it means I will drag my poor wife and infant son
-with me as I visit new cities, through the slime and filth of strange
-neighborhoods, just to find the perfect brew and complementary gluten
-free desserts. 
+Like many software developers, I suffer from an almost disturbing
+obsession with coffee. Perhaps it is really my family that suffers:
+when we travel to a new city, I drag my wife and children through
+questionable neighborhoods just to find the perfect brew and
+complementary gluten free desserts. 
 
 Google Maps is a great help on these quests, in that it will find me a
 coffee shop and reviews, but the granularity of information about that
@@ -60,7 +59,7 @@ More specifically, we'll use these technologies:
 
 You don't need to know these technologies in advance of working on this chapter.
 
-==== Setting up our single page app
+=== Set Up
 
 To create our app, let's first create our main web page and push it into our repository.
 
@@ -81,7 +80,7 @@ git config command, we specified that we want the default push branch
 to be gh-pages. This allows us to use `git push` to push our branch up
 instead of the longer `git push origin gh-pages`. 
 
-===== Mapping Hostnames
+==== Mapping Hostnames
 
 Once we publish these files into GitHub inside a repository we can connect the repository to a
 real hostname. There are two steps to take to do this:
@@ -108,15 +107,13 @@ the first time you connect a repository to a hostname; you will see
 subsequent changes almost instantaneously.
 
 [NOTE]
-=====
 Generally it takes several hours to even a few days to propagate DNS
 settings out into the wild, so make sure you choose and setup a
 hostname far in advance if your site has to be live by a certain point.
-=====
 
 Now we can install the libraries needed for this application.
 
-===== Adding the support libraries
+==== Adding the support libraries
 
 As we mentioned, we will use the GitHub.js library, AngularJS, and
 Bootstrap. Let's add those to our project now. Using whatever editor
@@ -151,7 +148,13 @@ of the advanced topics here:
   directive. This sanity checks whether AngularJS is working for us;
   if we see "Welcome to Coffeete.ch" without the braces then we know
   AngularJS is loading and working properly. If we see the braces,
-  then there is some error in our setup to resolve.
+  then there is some error in our setup to resolve. Two way
+  data-binding solves a significant pain point when building JS apps:
+  marshalling data back and forth between network events, into HTML
+  and out of HTML forms. AngularJS does all this heavy lifting for
+  you. In a moment we'll show how to use two-way databinding as it was
+  intended by defining a variable on the AngularJS scope. We then
+  access the variable using the same `{{ }}` databinding directives. 
 
 Then, download the necessary files locally using these commands. We
 include AngularJS, Github.js and Bootstrap CSS
@@ -165,10 +168,57 @@ $ wget https://github.com/michael/github/raw/master/github.js
 
 Now we are ready to use the GitHub library inside our SPA.
 
-===== Inserting GitHub Data using github.js
+=== An AngularJS Application using GitHub.js
 
-Let's add some GitHub data to our HTML file. Change the `index.html`
-file as follows.
+Now let's implement a file `coffeetech.js` file which is where we will
+build our single page application functionality. Create a new file called
+`coffeetech.js` in the root of your repository.
+
+[source,javascript]
+-----
+var mod = angular.module( 'coffeetech', [] ) // <1>
+mod.controller( 'GithubCtrl', function( $scope ) { // <2>
+  var github = new Github({} ); // <3>
+  var repo = github.getRepo( "gollum", "gollum" ); // <4>
+  repo.show( function(err, repo) { // <5>
+    $scope.repo = repo;
+    $scope.$apply(); // <6>
+  }); 
+})
+-----
+
+<1> Define a module named "coffeetech". Save a reference to the
+module which we will use next in defining a controller, a smaller
+bundle of functions. Modules are an AngularJS feature for grouping
+related functionality, and we will keep all our code for this
+application inside this module. 
+<2> We define a controller called `GithubCtrl` which bundles up
+functions and data. When we use the controller syntax, we name the
+controller, and then define a function with at least a single
+parameter: the scope object. I think of scope as the "world" available
+to the controller. The controller knows only of data and functions
+defined on its scope, and AngularJS does its magic as long as your
+functions or variables are defined on the scope.
+<3> We create a new Github() object using the constructor. This
+constructor can take user credentials, but for now, we can just
+create it without those since we are accessing a public repository. 
+<4> Once we have our `github` object, we call the method `getRepo()`
+ with a owner and a name. This returns our repository object. 
+<5> To actually load the data for this repository object, we call the `show`
+method and pass it a callback which uses the two parameters `err`
+and `repo` to handle errors or otherwise provide us with details of
+the repository specified. In this case we are using the Gollum wiki
+public repository to display some sample data. 
+<6> Once we have loaded the repository data, we need to call `$apply`
+to tell AngularJS a change has occurred to data stored within the
+scope variable. As we mentioned before, AngularJS knows only about
+functions and data defined on its scope. The `show` function is
+defined on the GitHub object, so any changes are not tracked by
+AngularJS, so we need to use `$apply()`.
+
+Github.js handles making the proper request to Github for us, and
+AngularJS handles putting the results into our web page. To modify our
+HTML to use this data, we change `index.html` to look like the following.
 
 [source,html]
 -------
@@ -180,7 +230,7 @@ file as follows.
 </head>
 <body ng-app="coffeetech"> <1>
 <div class="container" ng-controller="GithubCtrl">
-{{ repo | json }} <2>
+{{ repo }} <2>
 </div>
 <script src="angular.js"></script> 
 <script src="github.js"></script> 
@@ -189,94 +239,13 @@ file as follows.
 </html>
 -------
 
-We added or changed just three lines.  
-
 <1> Change the `ng-app` reference to use the module we
 defined in our `coffeetech.js` file. 
 <2> Remove our databinding to the `Welcome to CoffeeTech` string
-and replace it with a binding to the variable `repo` filtered by the JSON filter. 
+and replace it with a binding to the variable `repo` (by default
+AngularJS will filter complex objects and conver them to JSON).
 <3> Add a reference to our `coffeetech.js` file beneath our other JS
 references. 
-
-If you have never used AngularJS before, you are probably thoroughly
-confused about the `coffeetech.js` file. Before we dive into the
-syntax, understand the following features of AngularJS, and then
-you'll understand the significant problems solved by those same features:
-
-* AngularJS utilizes something called two-way databinding. AngularJS
-  solves the problem you have with building JS apps: marshalling data
-  from your JS code into your HTML templates, marshalling data from
-  your AJAX calls into your JS code and then marshalling that into
-  your HTML templates. Marcia, Marcia, Marcia! Enough already:
-  allow AngularJS to do this heavy lifting. To use it, we just
-  define a variable on the AngularJS scope, and then place a reference
-  to the scope in our HTML using the `{{ }}` databinding directives.
-  In this case we set a variable called `repo` on our scope once we
-  return from the show() method callback in the Github.js API call.
-  Notice we don't have to do anything to place data inside the HTML
-  once the `repo.show()` callback has completed other than notifying
-  AngularJS that data has changed using the `$apply()` method. We only
-  need to call `$apply()` if we are using a third party library that
-  uses callbacks, anything defined within AngularJS is wrapped inside
-  the `$apply()` block.
-* Inspecting a JS object inside your webpage can be complicated; do
-  you extract information from the object, put them into <div>s, doing
-  all the marshalling we just realized is a royal pain in the lives of
-  most modern JavaScript developers? If we are using AngularJS it does not
-  have to be. AngularJS provides a filter which you can apply (using the pipe
-  character) that produces a pretty printed object in your webpage. You
-  see that with the `repo | json` code. `json` is a filter AngularJS
-  provides by default. We'll use filters later in a powerful way.
-* Many people see this kind of two way databinding and assume it
-  cannot be performant, arguing that AngularJS must be polling the JavaScript
-  objects to see changes. Not true! AngularJS is written in a smart
-  way and only processes and changes the DOM when changes are noticed
-  inside a digest cycle. If you put all your code properly into your
-  scope, AngularJS will handle tracking changes for you. As we
-  mentioned briefly above, using a third party library that works with
-  callbacks (like the Github.js library) means you need to notify
-  AngularJS that there has been a change by manually calling the
-  `$apply` function on the `$scope` object once
-  you have completed adding data to the scope inside the
-  callback. Without this, your application would not respond to the
-  change until a digest was triggered by some other incidental change
-  in the scope.
-* AngularJS allows you to break application functionality into
-  isolated components which makes your application more testable. When
-  we call `angular.controller` we are creating a controller which
-  allows us to isolate and encapsulate functionality.
-
-Now let's implement the `coffeetech.js` file. Create a new file called
-`coffeetech.js` in the root of your repository.
-
-[source,javascript]
------
-var mod = angular.module( 'coffeetech', [] )
-mod.controller( 'GithubCtrl', function( $scope ) {
-  var github = new Github({} ); // <1>
-  var repo = github.getRepo( "gollum", "gollum" ); // <2>
-  repo.show( function(err, repo) { // <3>
-    $scope.repo = repo;
-    $scope.$apply(); // <4>
-  }); 
-})
------
-
-<1> We create a new Github() object using the constructor. This
-  constructor can take user credentials, but for now, we can just
-  create it without those since we are accessing a public repository. 
-<2> Once we have our `github` object, we call the method `getRepo()`
-  with a owner and a name. This returns our repository object. 
-<3> To actually load the data for this repository object, we call the show
-  method and pass it a callback which uses the two parameters `err`
-  and `repo` to handle errors or otherwise provide us with details of
-  the repository specified. In this case we are using the Gollum wiki
-  public repository to display some sample data. 
-<4> Once we have loaded the repository data, we need to call `$apply`
-  to tell Angular a change has occurred to the scope variable.
-
-So, Github.js handles making the proper request to Github for us, and
-AngularJS handles putting the results into our web page.
 
 If you load this up in your browser, you will see something like this:
 
@@ -307,12 +276,9 @@ src="angular.js"></script>
 -------
 
 We can filter this information by modifying the HTML to show just a
-few vital pieces of information from the repository JSON.
-
-<1> Use the `subscriber_count`
-<2> Use the `network_count`
-
-Now we see something more palatable.
+few vital pieces of information from the repository JSON. Let's
+display the `subscriber_count` and the `network_count`. Now we see
+something more palatable. 
 
 image::images/javascript-gollum-precise.png[Pulling Out What We Want]
 
@@ -320,20 +286,13 @@ We've just extracted the subscriber and network count from the gollum
 repository hosted on GitHub using the GitHub API and placed it into
 our single page app.
 
-===== Visualize Application Data Structure
+==== Visualize Application Data Structure
 
-To really build this application we will need to take a step back and
-consider how we want to structure our data. Since we won't be using a
-server at all, we are going to use GitHub as our data store. GitHub is
-built on top of Git, a technology that could not be better suited for 
-storing content. However, there is a major difference between
-accessing data stored inside a Git repository and a traditional database:
-searchability. Git repositories are great for storing data, and
-GitHub exposes storing data through their API. The GitHub API does
-support searching of code, but the GitHub.js library does not expose
-access to this part of the API. So, let's make sure to
-design and store the data in a structured way so that we can search
-it on the client side.
+We are going to be building a coffeeshop database. We want to use Git
+as our datastore, but Git and its associated tools (either command
+line tools or GitHub) don't offer the same features as 
+a standard relational database. So, we need to think and plan how we
+will structure our data inside our repository to make it easily searchable.
 
 This application allows us to search coffee shops. These coffee shops
 will be, for the most part, in larger cities. If we keep all the data 
@@ -351,8 +310,8 @@ this from that repository. It looks like the calls we need to use are
 repository, `repo.contents( branch, path, callback )`. 
 
 Now that we have a bare bones application let's pause and make sure we
-are building something that is future proofed. This means adding tests
-to our project.
+are building something we can refactor and maintain long term. This
+means adding tests to our project.
 
 ==== Making our App Testable
 
@@ -361,10 +320,10 @@ clearly about how our code will be used from the outside, but makes it
 easier for an outsider (meaning other team members) to use our code.
 Testing facilitates "social coding."
 
-We'll use a tool called `karma`. Karma simplifies writing JavaScript
-unit tests. We need to first install the tool, then write a test or two.
-Karma can easily be installed using NPM (installation of which is
-documented in the <<appendix>>).
+We'll use a JavaScript testing tool called "karma". Karma simplifies
+writing JavaScript unit tests. We need to first install the tool, then
+write a test or two. Karma can easily be installed using NPM
+(installation of which is documented in the <<appendix>>).
 
 [source,bash]
 -------
@@ -427,10 +386,17 @@ To write the test, let's clarify what we want our code to do:
   any of the cities. If so, set the current city to the first match.
 * If we found a city, load the JSON data file from GitHub
 
+Concretely, let's assert that we load the list of cities and have 2
+of them, then we load a matching city named "Portland", a city which
+has three shops available.
+
 We'll use a `ng-init` directive which is the mechanism to tell
 AngularJS we want to call the function specified when the controller
 has finished loading. We'll call this function `init` so let's test it
-below.
+below. 
+
+First, we will write the setup code for an AngularJS test written
+using the Jasmine test framework.
 
 [source,javascript]
 -------
@@ -451,67 +417,60 @@ describe( "GithubCtrl", function() {
 	       { $scope: scope, Github: gh, Geo: geo } ); // <5>
         } )
     );
-
-    describe( "#init", function() { // <7>
-        it( "should initialize, grabbing current city", function() {
-            scope.init(); // <8>
-            expect( geo.getCurrentPosition ).toHaveBeenCalled(); // <9>
-            expect( gh.getRepo ).toHaveBeenCalled(); // <10>
-            expect( repo.read ).toHaveBeenCalled();
-            expect( scope.cities.length ).toEqual( 2 ); // <11>
-            expect( scope.city.name ).toEqual( "portland" ); 
-            expect( scope.shops.length ).toEqual( 3 );
-        });
-    });
-});
+...
 -------
 
-<1> First we declare our variables. If we did not do this, JavaScript
-would silently define them inside the functions the first time the
-variable is used and we would have some strange behavior.
+<1> We declare our variables at the top of the function. If we did not
+do this, JavaScript would silently define them inside the functions
+the first time the variable is used. Then our variables would be
+different inside our setup code and the actual tests.
 <2> We load our `coffeetech` module into our tests using the `module`
 method inside a `beforeEach` call, code which is executed before our
 tests run.
 <3> We will be creating two functions which generate the mock objects
 required for our tests. We'll discuss these two functions in a bit.
-<4> Our scope is the object where all our functionality is held, and
-by creating a new scope using the AngularJS utility function
-`$rootScope.$new()` function we can then use the scope later to test
-against the functionality we've implemented in our actual code.
+<4> Scope is the angular convention for the object into which all
+functionality and state is stored. We create a new scope using the
+AngularJS utility function `$rootScope.$new()` function and store a
+reference to this scope so we can test functionality we've implemented
+in our actual code. 
 <5> We pass in the mocked objects (created by the mocked function
 calls) as well as the scope object and instantiate a controller
-object.
-<6> Now we can write our tests. We create a describe block to group
-them called `#init` as we are testing this function.
-<7> 
+object. This controller uses the scope to define functions and data,
+and since we have a reference to it, we can call those functions and
+inspect that data and assert our implementation is correct.
 
-This JS test file has the boilerplate code used in any AngularJS test.
-You setup the scope and instantiate the
-controller with that scope, and then can manually call the methods on
-the scope to simulate interaction with our app. As we are calling into
-a JavaScript function inside of the Github JS object which uses an
-asynchronous callback, we will likely have to wait for an AJAX call to
-return. Simulating this is difficult in a test, so instead we will
-create a mock object for Github and then inject it into our
-`GithubCtrl` controller. Instead of having our controller make real
-calls to Github, we can call into our mock object and verify the
-correct calls are made. The real meat of of
-our test is inside the `describe` and `it` blocks: we initialize the
-scope, and then expect that the functions on our mocked objects will be
-executed. And, we verify the data is correctly set on our scope.
+Now, let's write an actual test.
 
-Specifically, our test does these things:
+[source,javascript]
+-------
+    describe( "#init", function() { // <1>
+        it( "should initialize, grabbing current city", function() {
+            scope.init(); // <2>
+            expect( geo.getCurrentPosition ).toHaveBeenCalled(); // <3>
+            expect( gh.getRepo ).toHaveBeenCalled(); 
+            expect( repo.read ).toHaveBeenCalled(); 
+            expect( scope.cities.length ).toEqual( 2 ); // <4>
+            expect( scope.city.name ).toEqual( "portland" ); 
+            expect( scope.shops.length ).toEqual( 3 ); 
+        });
+    });
+});
+-------
 
-* Calls the `init` function defined in our controller (which will be
-  handled using our `ng-init` directive in the HTML).
-* Verify that the geolocation service was called.
-* Verify that we called `getRepo` on our mocked Github object.
-* Verify that we called `read` on the repo we returned from the
-  `getRepo` call.
-* Verify that we used the data returned from the read to fill our
-  cities object inside our scope object.
-* Verify that we calculated the correct current city as Portland.
-* Verify that we have loaded the JSON data file for the current city
+<1> Describe functions are used to group tests defined inside `it`
+functions. Since we are testing the `init` function, it seems logical
+to use an identifier called `#init`.
+<2> Our code starts when we call `init`, so call it here.
+<3> We assert that our code uses the various interfaces we defined on
+our injected objects: `getCurrentPosition` on the Geo object, and `read`
+on the repository object.
+<4> Then we assert the data is properly loaded. This means that we
+have two cities, the default city is loaded and the name is equal to
+the string "Portland" and that there are three shops loaded for that
+city. Behind the scenes in our implementation we will load these via
+JSON, but all we care about is that the interface and data matches our
+expectations. 
 
 Now we can implement the two mocking functions vital for the test. Put
 them in between the `beforeEach( module( "coffeetech" ) )` line and
@@ -523,22 +482,26 @@ visibility to Karma.
 ...
 beforeEach( module( "coffeetech" ) );
 
-function generateMockGeolocationSupport( lat, lng ) {
-    response = ( lat && lng ) ? { coords: { lat: lat, lng: lng } } : { coords: CITIES[0] };
-    geo = { getCurrentPosition: function( success, failure ) {
-        success( response );
+function generateMockGeolocationSupport( lat, lng ) { // <1>
+    response = ( lat && lng ) ? 
+        { coords: { lat: lat, lng: lng } } : 
+	{ coords: CITIES[0] };
+    geo = { getCurrentPosition: function( success, failure ) { // <2>
+        success( response ); 
     } };
-    spyOn( geo, "getCurrentPosition" ).andCallThrough();
+    spyOn( geo, "getCurrentPosition" ).andCallThrough(); // <3>
 }
 
-function generateMockRepositorySupport() {
-    repo = { read: function( branch, filename, cb ) {
-        cb( undefined, JSON.stringify( filename == "cities.json" ? CITIES : PORTLAND ) );  
+function generateMockRepositorySupport() { // <4>
+    repo = { read: function( branch, filename, cb ) { // <5>
+        cb( undefined, 
+	    JSON.stringify( filename == "cities.json" ? 
+	    		    CITIES : PORTLAND ) );  
     } };
     spyOn( repo, "read" ).andCallThrough();
 
     gh = new Github({});
-    spyOn( gh, "getRepo" ).andCallFake( function() {
+    spyOn( gh, "getRepo" ).andCallFake( function() { // <6>
         return repo;
     } );
 }
@@ -546,6 +509,32 @@ function generateMockRepositorySupport() {
 beforeEach( inject( function ($controller, $rootScope ) {
 ...
 -----
+
+This syntax looks confusing if you have never written Jasmine tests
+for JavaScript, but it actually solves a lot of problems in an elegant
+way. Most importantly, Jasmine provides a spyOn function that will
+intercept a call to it, and then allow you to assert that it was
+called. Any place in our tests you see `toHaveBeenCalled()` is an
+assertion that `spyOn` provides to us proving that a call was made.
+
+<1> We first implement the `generateMockLocation` function. 
+<2> Mock location involves creating a Geo object which has a single
+function `getCurrentPosition` which is a function that calls back into
+a success callback function provided. This exactly matches the native
+browser support for Geolocation which has the same function defined.
+<3> We then `spyOn` the function so we can assert that it was called
+in our actual tests.
+<4> Next we implement `generateMockRepositorySupport`. 
+<5> Again we implement a mock object: this one to provide a method called
+`read`. This function matches the function of the same name contained
+in the API provided by the JavaScript GitHub.js library. Just like in
+the previous mock, we `spyOn` the function so we can validate it was
+called. However, this is not the "top level" repository object, this
+is the object returned from the call to `getRepo`. We will take this
+mock object and return it from the `getRepo` call.
+<6> We spy on the `getRepo` call, and then return our next mock
+object, the repository object. This object is used to retrieve the
+actual information using the `read` call. 
 
 Now that we have a set of tests, run the test suite from the command
 line and watch them fail.
@@ -559,29 +548,48 @@ Chrome 32.0.1700 (Mac OS X 10.9.1) GithubCtrl #init should initialize, grabbing 
 ...
 --------
 
-Once we have failing tests that support the direction of our code, we
-can write the code to support the tests we have written. First add
-support fixtures, data files which have test data. Add the
-`fixtures-cities.js` file. 
+We now need to provide some test fixtures.
+
+==== Test Data
+
+We need to build our support fixtures, data files which have test data. Add the
+`fixtures-cities.js` file into the same directory as your other code.
 
 [source,javascript]
 --------
-var CITIES = [ { name: "portland", latitude: 45, longitude: 45 },
-  { name: "seattle", latitude: 47.662613, longitude: -122.323837 } ];
-
+var CITIES = [{
+    name: "portland",
+    latitude: 45,
+    longitude: 45
+}, {
+    name: "seattle",
+    latitude: 47.662613,
+    longitude: -122.323837
+}]
 --------
 
 And, the `fixtures-portland.js` file.
 
 [source,javascript] 
 -------
-var PORTLAND = [ { "name" : "Very Good Coffee Shop", "latitude" : 45.52292,  "longitude" : -122.643074 },
-{ "name" : "Very Bad Coffee Shop", "latitude" : 45.522181, "longitude" : -122.63709 },
-{ "name" : "Mediocre Coffee Shop", "latitude" : 45.520437, "longitude" : -122.67846 } ]
-
+var PORTLAND = [{
+    "name": "Very Good Coffee Shop",
+    "latitude": 45.52292,
+    "longitude": -122.643074
+}, {
+    "name": "Very Bad Coffee Shop",
+    "latitude": 45.522181,
+    "longitude": -122.63709
+}, {
+    "name": "Mediocre Coffee Shop",
+    "latitude": 45.520437,
+    "longitude": -122.67846
+}]
 -------
 
-Then add the `coffeetech.js` file. We'll focus just on the setup code
+==== CoffeeTech.js
+
+Then, add the `coffeetech.js` file. We'll focus just on the setup code
 and the changes to the init function for now.
 
 [source,javascript]
@@ -600,25 +608,25 @@ mod.factory( 'Prompt', [ '$window', function( $window ) {
     return $window.prompt;
 } ] );
 
-mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', 'Prompt', function( $scope, ghs, Geo, Prompt ) {
+mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', 'Prompt', function( $scope, ghs, Geo, Prompt ) {# <3>
     $scope.messages = []
 
-    $scope.init = function() {
+    $scope.init = function() {# <4>
         $scope.getCurrentLocation( function( position ) {
             $scope.latitude = position.coords.latitude;
             $scope.longitude = position.coords.longitude;
-            $scope.repo = ghs.getRepo( "xrd", "spa.coffeete.ch" ); // # <3>
-            $scope.repo.read( "gh-pages", "cities.json", function(err, data) { // # <4>
-                $scope.cities = JSON.parse( data ); // # <5>
+            $scope.repo = ghs.getRepo( "xrd", "spa.coffeete.ch" ); // # <5>
+            $scope.repo.read( "gh-pages", "cities.json", function(err, data) { // # <6>
+                $scope.cities = JSON.parse( data ); // # <7>
                 // Determine our current city
-                $scope.detectCurrentCity(); // # <6>
+                $scope.detectCurrentCity(); // # <8>
 
                 // If we have a city, get it
                 if( $scope.city ) {
                     $scope.retrieveCity();
                 }
 
-                $scope.$apply(); // # <7>
+                $scope.$apply(); // # <9>
             });
         });
     };
@@ -632,27 +640,45 @@ we would not have been able to easily mock it out in our tests.
 <2> We extract the geolocation support into an AngularJS factory. As
 we did with the GitHub library mock, we can now inject a fake one into
 our tests.
-<3> Set the username and repository. If you are putting this into
+<2> Our new controller "injects" the various objects we need. We have
+extracted the GitHub API object and a Geo object into dependencies,
+and this syntax finds the proper objects and provides them to our
+controller. You'll also notice a slightly different syntax for
+creating the controller `controller( "CtrlName", [ 'dependency1',
+'dependency2', function( dependency1, dependency2 ) {} ] );`. This
+style works even if JavaScript minification were to occur; the
+previous incarnation we saw would not have survived this process
+because AngularJS would not have known the dependency name after
+it had been mangled by a minimizer.
+<3> We extract the functionality into a function called `init` which
+we can explicitly call from within our tests.
+<3> Set the username and load the repository. If you are putting this into
 your own repository, modify this appropriately, but you can use these
 arguments until you do post this into your own repository.
 <4> We use the `read` method to pull file contents from the
 repository. Notice we use the `gh-pages` branch since we are storing our
 single page app and all the data there.
 <5> Once our data is returned to us, it is simply a string. We need to
-reconstitute this data back into a JavaScript object using the
-`JSON.parse` method.
+reconstitute this data to a JavaScript object usingor use in our code
+with the `JSON.parse` method. 
 <6> After we retrieve our data from the repository, we can use the
 data inside the cities array to determine our current city.
 <7> Since we are calling outside of AngularJS and returning inside a
 callback, we need to call `scope.$apply()` like we showed in prior examples.
 
-Now let's look at the code to do our Geocoding. We'll build functions
+We are now ready to write our Geocoding implementation.
+
+=== Geocoding Support
+
+We'll build functions
 to retrieve the data for a city from the GitHub API, find the location
 of the user using their browser's Geolocation feature, use the user's
 current location to determine what cities they are close to, implement
 a distance calculation function, load the city once close proximity
 cities are determined, and finally, add a function to query the user
 for their GitHub credentials and annotation data.
+
+First, we can implement the city loading functions.
 
 [source,javascript]
 -------
@@ -668,9 +694,21 @@ $scope.loadCity = function( city ) { // <2>
         $scope.shops = JSON.parse( data ); 
         $scope.$apply();
     });
-}
+...
+-------
 
-$scope.getCurrentLocation = function( cb ) { // <3>
+<1> `retrieveCity` retrieves a list of shops in the same way that we
+retrieved the list of cities by reading from the repository
+object. After loading the data into the scope, we need to call
+`$apply()` to notify Angular.
+<2> `loadCity` uses the city name to load city data.
+
+Next we can implement the functionality to calculate distances between the current user and available cities. 
+
+[source,javascript]
+-------
+
+$scope.getCurrentLocation = function( cb ) { // <1>
     if( undefined != Geo ) {
         Geo.getCurrentPosition( cb, $scope.geolocationError );
     } else {
@@ -678,16 +716,16 @@ $scope.getCurrentLocation = function( cb ) { // <3>
     }
 };
 
-$scope.geolocationError = function( error ) {
+$scope.geolocationError = function( error ) { // <2>
     console.log( "Inside failure" );
 };
 
-$scope.detectCurrentCity = function() {  // <4>
+$scope.detectCurrentCity = function() {  // <3>
     // Calculate the distance from our current position and use
     // this to determine which city we are closest to and within
     // 25 miles
     for( var i = 0; i < $scope.cities.length; i++ ) {
-        var dist = $scope.calculateDistance( $scope.latitude, 
+        var dist = $scope.calculateDistance( $scope.latitude, // <4>
                                              $scope.longitude, 
                                              $scope.cities[i].latitude, 
                                              $scope.cities[i].longitude );
@@ -698,11 +736,11 @@ $scope.detectCurrentCity = function() {  // <4>
     }
 }
 
-toRad = function(Value) {
+toRad = function(Value) { // <5>
     return Value * Math.PI / 180;
 };
 
-$scope.calculateDistance = function( latitude1,   // <5>
+$scope.calculateDistance = function( latitude1,   // <6>
                                      longitude1, 
                                      latitude2, 
                                      longitude2 ) {
@@ -717,32 +755,32 @@ $scope.calculateDistance = function( latitude1,   // <5>
     c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     d = R * c;
     return d;
-}
-
-$scope.annotate = function() { // <6>
-    user = Prompt( "Enter your github username" )
-    password = Prompt( "Enter your github password" )
-    data = Prompt( "Enter data to add" );
-};
-
 ...
 -------
 
-<1> `retrieveCity` retrieves a list of shops in the same way that we
-retrieved the list of cities.
-<2> `loadCity` 
-<3>
-<4>
-<5>
-<6>
-<7>
+<1> We build a `getCurrentLocation` funtion which we will call within
+our code. We use the injected `Geo` object which has our
+`getCurrentPosition` function (which inside our tests will be the
+mocked function, and inside our real code just layers an abstraction
+on top of the native browser interface).
+<2> We need to provide an error callback to the `getCurrentPosition`
+call, so we implement that, which does logs it to the console.
+<3> Then we build `detectCurrentCity`, which will look over the list
+of cities and see if we are in one. 
+<4> We iterate over the list of cities and calculate whether they are
+within 25 miles of our current location. Each city is stored with its
+own latitude and longitude data. When we find a city, we store that in
+the scope as the official current city and exit the loop.
+<5> To calculate distance, we need to build a radian conversion
+function. 
+<6> Finally, we build our distance calculation function.
 
 At first glance, the calculate distance function looks confusing, no?
 This was code I developed after reading a post on Geocoding using a
 stored procedure within the PostgreSQL database, and I converted the
 code to JavaScript. Unless you are a geocoding geek, how do we know
 this works as advertised? Well, let's write some tests to prove it.
-Add these lines to the bottom of your coffeetech.spec.js, just within
+Add these lines to the bottom of your `coffeetech.spec.js`, just within
 the last `});` closing braces
 
 [source,javascript]
@@ -766,7 +804,50 @@ distance in kilometers, not miles. So, we need to multiply the result
 by 0.621371 to get the value in miles, which ends up being close
 enough to what Google reports the distance to be. 
 
-Now, let's expose the new data inside the `index.html` file like so
+==== City Data
+
+Let's seed our application with some starting data and write out the
+`cities.json` file.
+
+[source,javascript]
+-------
+[
+  {
+    "longitude": -122.67620699999999,
+    "latitude": 45.523452,
+    "name": "portland"
+  },
+  {
+    "longitude": -122.323837,
+    "latitude": 47.662613,
+    "name": "seattle"
+  }
+]
+-------
+
+
+Now that we have our geocoding implementation complete and sample data
+in place, we can move on to acquiring credentials from the user.
+
+=== Adding Login
+
+If we want people to fork a repository on GitHub, we need to have them
+login to GitHub. So, we need to ask for credentials. 
+
+[source,javascript]
+-------
+...
+
+$scope.annotate = function() { // <1>
+    user = Prompt( "Enter your github username" )
+    password = Prompt( "Enter your github password" )
+    data = Prompt( "Enter data to add" );
+};
+
+...
+-------
+
+We can now expose the new data inside the `index.html` file like so
 (omitting the obvious from the HTML):
 
 [source,html]
@@ -796,13 +877,16 @@ Now, let's expose the new data inside the `index.html` file like so
 of items. Here we use it to iterate over the items in our
 `portland.json` file and insert a snippet of HTML with our data
 interpolated from each item in the iteration.
-<2> We are now using Bootstrap to establish structure in our HTML. The
+<2> Bootstrap makes it easy to establish structure in our HTML. The
 `col-md-6` class tells Bootstrap to build a column sized at 50% of our 12
-column layout. We setup two adjacent columns this way. And, if we are 
-inside a mobile device, it properly stacks these columns.
-<3> Notice how we bind to data from the JSON file.
+column layout (the default for Bootstrap layouts). We setup two
+adjacent columns this way. And, if we are inside a mobile device, it
+properly stacks these columns. 
+<3> Using AngularJS two way databinding, we insert the name of the
+shop.
 
-===== Errors Already?
+
+==== Errors Already?
 
 If you run this in your browser, you will not see the shops for our city
 displayed. Something is broken, so
@@ -869,22 +953,43 @@ includes look like this:
 Now we can build out some faked data and start envisioning the
 structure of our data that will eventually come from our users. 
 
-===== Simulating User Reported Data
+=== User Reported Data
 
 So far we have built a database of cities and coffee shops in those
-cities. This does not provide any utility beyond any map service out there.
+cities. Google Maps or Apple Maps already provide this information.
 If we layer additional information on top of this data (like quirky
 information about the coffeeshop), however, then we might have something that
-someone might find useful alongside Google Maps. Let's add some faked
-data to our coffee shop information.
+someone might find useful once they have found the coffeeshop on their
+favorite mapping application. 
 
-Modify the `portland.json` file so it looks like this:
+So, to start, let's add some faked data to our coffee shop
+information. Add a file called `portland.json` file that looks like
+this: 
 
 [source,html index.html]
 -----
-[ { "name" : "Very Good Coffee Shop", "latitude" : 45.52292,  "longitude" : -122.643074, "information" : [ "offers gluten free desserts", "free wifi", "accepts dogs" ] },
-{ "name" : "Very Bad Coffee Shop", "latitude" : 45.522181, "longitude" : -122.63709 },
-{ "name" : "Mediocre Coffee Shop", "latitude" : 45.520437, "longitude" : -122.67846 } ]
+[
+   {
+      "information" : [
+         "offers gluten free desserts",
+         "free wifi",
+         "accepts dogs"
+      ],
+      "longitude" : -122.643074,
+      "latitude" : 45.52292,
+      "name" : "Very Good Coffee Shop"
+   },
+   {
+      "latitude" : 45.522181,
+      "name" : "Very Bad Coffee Shop",
+      "longitude" : -122.63709
+   },
+   {
+      "name" : "Mediocre Coffee Shop",
+      "latitude" : 45.520437,
+      "longitude" : -122.67846
+   }
+]
 
 -----
 
@@ -941,19 +1046,23 @@ pieces formatted as labels underneath the shop name.
 
 image::images/javascript-search-box.png[Filtering coffeeshops using the term gluten]
 
-===== Adding Data Using Pull Requests
+==== User Submitted Data
 
 Now that we have a functioning application, let's allow people to add
 information themselves and help build our database. Just beneath the
 link to the map link, add a button which will allow us to annotate a
 coffeeshop with extra information. 
 
-To add an annotation to our existing data we are going ask users to
-contribute the "GitHub" way. Users will fork the repository, make a
-change, and then issue a pull-request. We can do all of this from our
-webapp using the Github.js library. This requires that we ask the
-users to login, so we will prompt them for their username and
-password, as well as the data they want to annotate.
+To make a contribution, users will fork the repository, make a change,
+and then issue a pull-request from the fork to the original
+repository. Forking means we create a copy of the original repository
+in our GitHub account. All these steps are 
+possible from within our webapp using the Github.js library. Of
+course, if someone is going to fork a repository into their account,
+we must ask the user to login, so we will prompt them for
+their username and password. If you are grimacing at the thought of a
+webapp asking for GitHub credentials, don't fret, we'll find a safe
+way to achieve the same thing shortly.
 
 The implementation we will use starts with adding an "annotate" button
 to our HTML. 
@@ -1014,16 +1123,15 @@ items from the Github.js library.
 
 <1> We added a mock prompt. We will be prompting the user for
 username, password and the annotating data, and we will use the native
-browser prompt mechanism to do this. If using prompt to gather
-information from the user sounds like an ugly way to do it, don't
-fret, we'll find a better way later. 
+browser prompt mechanism to do this. 
 <2> We added three new methods to our mock Github object: `fork`,
 `write` and `createPullRequest`. We test that these are called. 
 <3> When we call the `getRepo` function we want to spy on it so we can
 assure it is called, but we also want to return the fake repository we
 provide inside our test, and this syntax does that.
 
-Now let's implement the test itself.
+We have some setup code which is called in a before function to load
+the mock objects and establish a controller and scope for testing.
 
 [source,javascript]
 -----
@@ -1038,32 +1146,7 @@ beforeEach( inject( function ($controller, $rootScope, $injector ) {
     ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter } );
 } ) );
 
-
-describe( "#annotate", function() {  // <4>
-    it( "should annotate a shop", function() {
-        scope.city = PORTLAND
-        var shop = { name: "A coffeeshop" }
-        scope.annotate( shop ); // <5>
-        expect( scope.shopToAnnotate ).toBeTruthy();
-        expect( prompter.prompt.calls.length ).toEqual( 3 ); // <6>
-        expect( scope.username ).not.toBeFalsy();
-        expect( scope.annotation ).not.toBeFalsy();
-
-        expect( repo.fork ).toHaveBeenCalled(); // <7>
-        expect( scope.waiting.state ).toEqual( "forking" ); // <8>
-        $timeout.flush();
-
-        expect( scope.forkedRepo ).toBeTruthy(); // <9>
-        expect( repo.read ).toHaveBeenCalled(); 
-        expect( repo.write ).toHaveBeenCalled();
-        expect( repo.createPullRequest ).toHaveBeenCalled();
-        expect( scope.waiting.state ).toEqual( "annotated" );
-        $timeout.flush();
-
-        expect( scope.waiting ).toBeFalsy(); // <10>
-    });
-
-});
+...
 -----
 
 <1> According to the documentation for `fork` in the Github.js
@@ -1075,31 +1158,64 @@ mocked and programmatic timeout interface which we can control inside
 our tests. 
 <2> We generate our mocked GitHub method calls and spies, and we 
 follow that by mocking our prompt calls.
-<3> As mentioned above, we need to get `$timeout` we can use the
-injector to retrieve that in this way.
-<4> We create a new describe block to organize our tests, calling it
+<3> 
+
+[source,javascript]
+-----
+...
+describe( "#annotate", function() {  // <1>
+    it( "should annotate a shop", function() {
+        scope.city = PORTLAND
+        var shop = { name: "A coffeeshop" }
+        scope.annotate( shop ); 
+        expect( scope.shopToAnnotate ).toBeTruthy();// <2>
+        expect( prompter.prompt.calls.length ).toEqual( 3 ); 
+        expect( scope.username ).not.toBeFalsy();
+        expect( scope.annotation ).not.toBeFalsy();// <3>
+
+        expect( repo.fork ).toHaveBeenCalled(); 
+        expect( scope.waiting.state ).toEqual( "forking" ); 
+        $timeout.flush();// <4>
+
+        expect( scope.forkedRepo ).toBeTruthy(); 
+        expect( repo.read ).toHaveBeenCalled(); // <5>
+        expect( repo.write ).toHaveBeenCalled();
+        expect( repo.createPullRequest ).toHaveBeenCalled();
+        expect( scope.waiting.state ).toEqual( "annotated" );
+        $timeout.flush();
+
+        expect( scope.waiting ).toBeFalsy(); 
+    });
+
+});
+...
+-----
+
+<1> As mentioned above, we need to get `$timeout`, and we can use the
+injector to retrieve the mocked one AngularJS provides using this call.
+<2> We create a new describe block to organize our tests, calling it
 `#annotate`. We then implement one `it` function which is the single
 test we are creating: "annotate a shop."
-<5> After setting up the preconditions that our scope object should
+<3> After setting up the preconditions that our scope object should
 have a city selected, and creating a shop to annotate, We then call
 our `annotate` method.
-<6> Once we have called `annotate`, our code should request our
+<4> Once we have called `annotate`, our code should request our
 our credentials for the GitHub API, and then ask us for the information
 to use in annotating the shop. If this were happening in the browser,
 we would get three prompts. Our test mocks out prompt, and we should
 therefore see three calls made to our mocked prompt object. We also
 validate some state we should see on the scope object like holding a
 username and annotation for usage later.
-<7> We should then see the first of our GitHub API calls being made:
+<5> We should then see the first of our GitHub API calls being made:
 we should see GitHub.js issue a requet to `fork` the repository.
-<8> We should then enter in our waiting state; we will tell the user
+<6> We should then enter in our waiting state; we will tell the user
 we are waiting and our UI will use the scope `waiting.state` to notify
 them of that.
-<9> Once we have flushed the timeout to simulate completion of the
+<7> Once we have flushed the timeout to simulate completion of the
 fork, we will then see our code storing the result of the forked repo
 into the scope. We'll also see our other GitHub API calls to actually
 do the annotation.
-<10> Finally, after everything is done, we should no longer be telling
+<8> Finally, after everything is done, we should no longer be telling
 the user they are in a waiting state.
 
 If you are still running karma in the background, you'll see the tests
@@ -1115,8 +1231,9 @@ annotate a shop FAILED
 
 Now, let's implement this functionality in our `coffeetech.js` file.
 Add these lines to the bottom of the file, but before the last closing
-braces.
-
+braces. The function `annotate` actually does two things: make a fork of the
+repository for the user, and then adds annotation information to that
+repository using the GitHub API once the fork has completed. 
 
 [source,javascript]
 -----
@@ -1126,71 +1243,17 @@ $scope.annotate = function( shop ) { // <1>
     $scope.username = $window.prompt( "Enter your github username (not email!)" )
     pass = $window.prompt( "Enter your github password" ) 
     $scope.annotation = $window.prompt( "Enter data to add" ); // <2>
-    gh = ghs.create( $scope.username, pass ); // <3> 
+    gh = ghs.create( $scope.username, pass );  // <3>
     toFork = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <4>
     toFork.fork( function( err ) {
         if( !err ) { // <5>
-            $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );
-            $timeout( $scope.annotateAfterForkCompletes, 10000 );
+            $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );// <6>
+            $timeout( $scope.annotateAfterForkCompletes, 10000 );// <7>
             $scope.$apply();
         }
     } );
 
 };
-
-$scope.appendQuirkToShop = function() { // <6>
-    if( undefined == $scope.shopToAnnotate.information ) {
-        $scope.shopToAnnotate.information = [];
-    }
-    $scope.shopToAnnotate.information.push( $scope.annotation );
-};
-
-function stripHashKey( key, value ) { // <7>
-    if( key == "$$hashKey" ) { 
-        return undefined; 
-    } 
-    return value; 
-} 
-
-$scope.annotateAfterForkCompletes = function() {
-    $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" ); // <8>
-    $scope.forkedRepo.read( "gh-pages", "cities.json", function(err, data) { 
-        if( err ) {
-            $timeout( $scope.annotateAfterForkCompletes, 10000 );
-        }
-        else {
-            $scope.notifyWaiting( "annotating", "Annotating data on GitHub" ); // <9>
-            // Write the new data into our repository
-            $scope.appendQuirkToShop();
-
-            var newData = JSON.stringify( $scope.shops, stripHashKey, 2 ); //<10>
-            $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', 
-                                    newData, 
-                                    'Added my quirky information', 
-                                    function(err) {
-                if( !err ) {
-                    // Annotate our data using a pull request
-                    var pull = { // <11>
-                        title: "Adding quirky information to " + $scope.shopToAnnotate.name,
-                        body: "Created by :" + $scope.username,
-                        base: "gh-pages",
-                        head: $scope.username + ":" + "gh-pages"
-                    };
-                    target = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <12>
-                    target.createPullRequest( pull, function( err, pullRequest ) { // <13>
-                        if( !err ) {
-                            $scope.notifyWaiting( "annotated", "Successfully sent annotation request" );
-                            $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 ); // <14>
-                            $scope.$apply(); // <15>
-                        }
-                    } );
-                }
-                $scope.$apply();
-            });
-        }
-        $scope.$apply();
-    } );
-    
   ...
 -----
 
@@ -1215,23 +1278,72 @@ no way of registering for a notification, and as such, must poll
 GitHub to determine whether our fork has completed. In the real world,
 we probably would need to redo this request if we see it fail as this
 could just mean it was still pending on GitHub.
-<6> We build a convenience method which will create an empty array and
-add the annotation to the list of annotations, or otherwise use the
-existing array. We don't want our code to crash if we try to add an
-annotation to an object for which there is an undefined array reference.
-<7> We define a transformation function which we'll use with the
-`JSON.stringify` function later. AngularJS adds a tracking attribute
-(`$$hashKey`) to our objects when we use the `ng-repeat` directive and
-this function filters out that so that our pull request data is clean.
-<8> Once we have verified the fork has completed, we need to get the
+<6> We register a message using a key called "forking" which we can
+use inside our HTML template to display to the user that our fork has
+completed. We'll build this function out soon, and it basically stores
+the value and a string for display, and allows us to clear it when the
+message is no longer valid.
+<7> Finally, we call a method `annotateAfterForkCompletes` which adds
+data to our new forked repository once the process is fully complete.
+
+Let's now build the code to annotate our repository after the fork has
+completed.
+
+[source,javascript]
+-----
+...
+
+$scope.annotateAfterForkCompletes = function() {// <1>
+    $scope.forkedRepo = gh.getRepo( $scope.username, "spa.coffeete.ch" ); 
+    $scope.forkedRepo.read( "gh-pages", "cities.json", function(err, data) { 
+        if( err ) {
+            $timeout( $scope.annotateAfterForkCompletes, 10000 );
+        }
+        else {
+            $scope.notifyWaiting( "annotating", "Annotating data on GitHub" ); // <2>
+            // Write the new data into our repository
+            $scope.appendQuirkToShop();
+
+            var newData = JSON.stringify( $scope.shops, stripHashKey, 2 ); // <3>
+            $scope.forkedRepo.write('gh-pages', $scope.city.name + '.json', // <4>
+                                    newData, 
+                                    'Added my quirky information', 
+                                    function(err) {
+                if( !err ) {
+                    // Annotate our data using a pull request
+                    var pull = { // <5>
+                        title: "Adding quirky information to " + $scope.shopToAnnotate.name,
+                        body: "Created by :" + $scope.username,
+                        base: "gh-pages",
+                        head: $scope.username + ":" + "gh-pages"
+                    };
+                    target = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <6>
+                    target.createPullRequest( pull, function( err, pullRequest ) { // <7>
+                        if( !err ) {
+                            $scope.notifyWaiting( "annotated", "Successfully sent annotation request" );// <8>
+                            $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 ); 
+                            $scope.$apply(); // <9>
+                        }
+                    } );
+                }
+                $scope.$apply();
+            });
+        }
+        $scope.$apply();
+    } );
+    
+...
+-----
+
+<1> Once we have verified the fork has completed, we need to get the
 new forked repository. We use the username provided to our code when
 the user logs in to build the repository object. We then read the
 `cities.json` file from the repository; if we retrieve this file
 successfully (we don't see the `err` object evaluating to true) then
 we know we are ready to start editing data.
-<9> We notify the UI that we are annotating and tell the user they
+<2> We notify the UI that we are annotating and tell the user they
 will need to wait while the annotation request is in progress.
-<10> `JSON.stringify` converts our annotated shop object into a JSON
+<3> `JSON.stringify` converts our annotated shop object into a JSON
 object. If you have used JSON.stringify before, you might not know
 about the other two parameters (beyond just the object you want to
 serialize) you can provide to this function. These 
@@ -1242,26 +1354,73 @@ resultant JSON. So, we provide the stripHashKey function to remove the
 indentation count makes it much easier to read a pull request, because
 the diff'ing algorithm can diff line by line rather than as a long
 JSON string, which is how `JSON.stringify` serializes by default.
-<11> To make a pull request, we create a pull request object which we
+<3> We then write data back to the forked repository using the `write`
+function. If this succeeds, the error value will be undefined inside
+the callback function as the last parameter.
+<4> If our error was undefied, we are in a position where we can make
+a pull request back to the original repository. To make a pull
+request, we create a pull request object which we 
 need to provide to the pull request method inside of GitHub.js.
-<12> We then get a reference to the target of the pull request, the
+<5> We then get a reference to the target of the pull request, the
 original repository.
-<13> We then issue the pull request against the target. This takes the pull request
+<8> We then issue the pull request against the target. This takes the pull request
 specification object we created earlier, and a callback function which
 has an error code if the request failed, and otherwise, a pull request
 object. 
-<14> Once the request has succeeded, we can notify the UI that the
+<6> Once the request has succeeded, we can notify the UI that the
 annotation process has completed, and then issue a timeout to remove
 that from the UI after 5000 milliseconds, or 5 seconds.
-<15> Any time we are inside a callback in a third part library (like
+<7> Any time we are inside a callback in a third part library (like
 GitHub.js) we, as mentioned before, need to use `$apply()` to notify
 Angular that our scope object has changed. In this case our scope is
 being modified that we will notify our users of the pull request.
-<16> Here we implement a convenience function to properly create a way
-to notify users. We create a waiting object, and then update the state
-(which our app will use to hide or display messages) and then a
-message itself. If we provide an empty message, we will clear the
-object, effectively removing the message from the UI.
+
+We have three convenience methods to implement.
+
+[source,javascript]
+-----
+...
+
+$scope.appendQuirkToShop = function() { // <1>
+    if( undefined == $scope.shopToAnnotate.information ) {
+        $scope.shopToAnnotate.information = [];
+    }
+    $scope.shopToAnnotate.information.push( $scope.annotation );
+};
+
+function stripHashKey( key, value ) { // <2>
+    if( key == "$$hashKey" ) { 
+        return undefined; 
+    } 
+    return value; 
+} 
+
+$scope.notifyWaiting = function( state, msg ) { // <3>
+    if( state ) {
+        $scope.waiting = {};
+        $scope.waiting.state = state;
+        $scope.waiting.msg = msg;
+    }
+    else {
+        $scope.waiting = undefined;
+    }
+}
+...
+-----
+
+<1> The `appendQuirkToShop` function creates an empty array if it is
+not yet defined and then adds the annotation to the list of annotations
+We don't want our code to crash if we try to add an
+annotation to an object for which there is an undefined array reference.
+<2> We define a transformation function which we'll use with the
+`JSON.stringify` function later. AngularJS adds a tracking attribute
+(`$$hashKey`) to our objects when we use the `ng-repeat` directive and
+this function filters out that so that our pull request data is clean.
+<3> `notifyWaiting` (obviously) notifies users. We create a waiting
+object, and then update the state (which our app will use to hide or
+display messages) and then a message itself. If we provide an empty
+message, we will clear the object, effectively removing the message from the UI.
+
 
 Now we need to expost the status message in our UI by modifying the
 HTML.
@@ -1279,7 +1438,7 @@ HTML.
 ...
 -----
 
-==== Accepting the user contribution via a pull request
+=== Accepting Pull Requests
 
 When someone makes an annotation to a shop, the owner of the original repository
 gets a pull request notification on GitHub.
@@ -1299,35 +1458,33 @@ easy to read, which is a benefit we get when we use the
 other than undefined. Unortunately, the first line differs only by the
 extra comma but this is still a very readable diff.
 
-===== A Safe Login Implementation
+=== Towards a Safe Login Implementation
 
-If I saw this app in the wild and knew nothing about the authors, I
-would never use it to submit data. The app asks for my GitHub username
-and password. Asking for my username and password implicitly asks me
-to trust the authors of this application. Trust in this case means
-that I trust them to not 
+If I saw this app in the wild I would never use it to submit data. The
+app asks for my GitHub username and password. Asking for my username
+and password implicitly asks me to trust the authors of this
+application. Trust in this case means that I trust them to not 
 maliciously use my credentials for nefarious purposes, and also asks
 me to trust that they are not doing something stupid which would allow
 an attacker to insert themselves into the middle of the
-authentication process and steal my crendentials. It seems like every
-day we hear of a break-in at a major internet service; I want to
-believe that most people are out to do good in the world, so I am less
-worried about the provider of such a service maliciously stealing my
-crendentials, but I am worried about a script kiddie attacking the
-service for fun and stealing my credentials. At any rate, I would
-never use a service which requires me to give up my username and
-password to another service, especially one which is as important as
-GitHub is to me. 
+authentication process and steal my crendentials. GitHub is a large
+part of my online identity and I would never provide these
+crendentials to a web application.
 
-So, let's use oAuth instead and resolve these problems.
+Fortunately, we have an alternative to asking for passwords: oAuth.
 
-If we use oAuth, we enter our credentials directly into GitHub. We can
-take advantage of 2-factor authentication. Once we have entered our
-credentials, GitHub decides whether we are who we say we are, and then
-returns us to the application which requested access. 
+When we use oAuth, our users enter their credentials directly into
+GitHub. If our users have turned on 2-factor authentication, GitHub
+can still authenticate them (while our naive implementation could not
+be modified to accept this type of authentication process). Once we
+have entered our credentials, GitHub decides whether we 
+are who we say we are, and then returns us to the application which
+requested access. 
 
-GitHub provides the application with what is called an oAuth token that
-encapsulates exactly what services on GitHub we have access to, and
+[NOTE]
+There are many benefits to using oAuth. GitHub provides the
+application with what is called an oAuth token that encapsulates
+exactly what services on GitHub we have access to, and 
 whether that access is read-only or whether we can add data in a
 read-write manner. This means our requesting service can ask to modify
 only parts of our data within GitHub; this provides a much higher
@@ -1344,12 +1501,15 @@ their settings as well. With oAuth we can revoke a single token at any
 time (and GitHub makes it easy to do this) without affecting access to
 other services.  
 
+Let's modify our application to use oAuth.
+
 ==== Authentication Requires a Server
 
-We would like to host everything on GitHub, but sadly there is one
-piece which we cannot host there: the authentication component.
-Somehow we need to safely authenticate our user into GitHub and
-retrieve an oAuth token. There is currently no way to do this strictly
+Up until now we have been able to publish all our files into GitHub
+and they are hosted for us by GitHub. Sadly the authentication
+component cannot be hosted on GitHub. Somehow we need to safely
+authenticate our user into GitHub and retrieve an oAuth token. There
+is currently no way to do this strictly 
 client side (using only static HTML and JavaScript running in the
 browser). Other authentication providers like Facebook do provide pure
 JavaScript login functionality in their SDKs, but GitHub, citing
@@ -1361,14 +1521,13 @@ The most obvious choice we have is to run a small authentication
 server, delegate authentication to it, and once authentication is
 completed, jump back in our application hosted on GitHub. We provide
 code (written in NodeJS, JavaScript for the server side) to do
-this at the end of the xchapter. But, creating even a simple 
+this at the end of the chapter. But, creating even a simple 
 authentication system has a baseline of complexity that seems like
-overkill, and this code is complex and lengthy, and requires figuring
-out a hosting provider. If we could instead delegate this
-authentication to a third party, we could reduce a massive amount of
-code and complexity from our system. Let's see what that looks like.
+overkill. If we could instead delegate this authentication to a third
+party, we could reduce a massive amount of code and complexity from
+our system. 
 
-===== Fixing Authentication with Firebase
+==== Fixing Authentication with Firebase
 
 Instead of writing our own server to manage authentication and talk to
 the GitHub API, we will delegate that authentication to Firebase. Firebase is a
@@ -1411,7 +1570,7 @@ use that GitHub application. We want all
 functionality, especially external services, to be covered by tests,
 so we'll write that test coverage next.
 
-===== Writing tests against Firebase
+==== Testing Firebase
 
 Since we load firebase from their CDN, we first need to mock out the
 `Firebase` constructor using a simple shim. Put the following into a
@@ -1470,6 +1629,19 @@ describe( "#annotate", function() {
         expect( scope.username ).not.toBeFalsy();
         expect( scope.annotation ).not.toBeFalsy();
 
+        expect( repo.fork ).toHaveBeenCalled();
+        expect( scope.waiting.state ).toEqual( "forking" );
+        $timeout.flush();
+
+        expect( scope.forkedRepo ).toBeTruthy();
+        expect( repo.read ).toHaveBeenCalled();
+        expect( repo.write ).toHaveBeenCalled();
+        expect( repo.createPullRequest ).toHaveBeenCalled();
+        expect( scope.waiting.state ).toEqual( "annotated" );
+        $timeout.flush();
+
+        expect( scope.waiting ).toBeFalsy();
+    });
 -----
 
 <1> We add a `generateMockFirebaseSupport()` function which creates the mock
@@ -1481,10 +1653,10 @@ inject the real ones. We should modify our other spec file as well now that
 we are changing the required injections for any controller.
 <4> we change our `#annotate` test and create the auth object
 (normally created inside the initialization).
-<5> We prompt only once (we don't need to prompt for username and
-password any longer). 
+<5> We prompt only once for the data to annotate (we don't need to
+prompt for username and password any longer). 
 
-===== Implementing Firebase Login
+==== Implementing Firebase Login
 
 Now, add Firebase support to our AngularJS application. Add the
 references to the Firebase support libraries right after AngularJS is loaded:
