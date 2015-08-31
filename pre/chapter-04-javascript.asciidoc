@@ -1121,8 +1121,8 @@ snippet~~~~~
 not yet defined and then adds the annotation to the list of annotations
 We don't want our code to crash if we try to add an
 annotation to an object for which there is an undefined array reference.
-<2> We define a transformation function which we'll use with the
-`JSON.stringify` function later. AngularJS adds a tracking attribute
+<2> We define a transformation function which we used with the
+`JSON.stringify` function above. AngularJS adds a tracking attribute
 (`$$hashKey`) to our objects when we use the `ng-repeat` directive and
 this function filters out that so that our pull request data is clean.
 <3> `notifyWaiting` (obviously) notifies users. We create a waiting
