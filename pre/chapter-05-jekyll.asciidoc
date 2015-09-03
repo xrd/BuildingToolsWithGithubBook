@@ -693,10 +693,12 @@ extend several jekyll importer classes already available to make
 importing standard for other contributors. Learning all the existing
 methods and reading through the dozens of samples can be a lot of
 work, however; another option is just to write out our files
-respecting the very simple format required by Jekyll. As we are
-programmers in the true sense of the word we embrace and accept our
-laziness and choose the second route. Let's write some code to scrape
-and generate a Jekyll site.
+respecting the very simple format required by Jekyll. I started as a
+Perl programmer and always loved this quote from Larry Wall, the creator of Perl:
+"We will encourage you to develop the three great virtues of a
+programmer: laziness, impatience, and hubris." Let's accept our
+inherent laziness and choose the second route. We'll write some code
+to scrape a site and make a new Jekyll site.
 
 While living in Brazil in 2000 I built a site called ByTravelers.com,
 an early travel blog. At some point, I sadly lost the database and
@@ -704,8 +706,7 @@ thought the site contents were completely gone. Almost by accident, I
 happened upon ByTravelers on Archive.org, the Internet Archive. I
 found that almost all of the articles were listed there and
 available. Though the actual database is long gone, could we recover
-the site using Archive.org? Let's scrape the articles and convert them
-into a modern Jekyll site. 
+the site using Archive.org? 
 
 ==== Jekyll Scraping Tactics
 
@@ -766,6 +767,8 @@ rendered in a browser of this specific this HTML code.
 .Inspecting Page Structure
 image::images/jekyll-chrome-inspector.png[Inspecting Page Structure]
 
+REWRITE
+
 Moving over different places in the HTML code displays different areas of our
 page; finding our way to the `tr` tag above the large number of
 `td` tags gives us access to the `body` of the post. Once there, you
@@ -775,194 +778,361 @@ path we need to take inside the DOM to reach this particular piece of content. W
 indications in hand, we can start to write our parser to extract this
 text from pages scraped from the archive.
 
-==== Writing our Parser
+=== Setting Up
 
-Let's start by writing a parser class. 
+Goals: 
+* Modular
+* Testable
+* Simple
+
+==== Our Parser Runner
+
+A runner
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="5ddfa26:support/jekyll-parser/scraper.rb"]
+[filename="../final-scraper", language="ruby", sha="12260c3e1f32d5bcbe94:run.rb"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
-<1> VCR is a ruby library which caches HTTP requests. Typically used
-inside of tests, it is also an easy way to cache an HTTP request that
-you know will not change. Since these are pages stored inside an
-archive over ten years ago, it is safe to cache them, and the polite
-thing to do for an open system like Archive.org which relies on
-donations to pay for their bandwidth. The code you see here is
-boilerplate for configuring the VCR gem, loaded above.
-<2> Our scraping is handled with the `mechanize` gem, and our class
-should maintain a reference to the scraper by declaring it here.
-<3> After our class is instantiated, we hook into the class
-initialization stage and create our mechanize parser and assign it to
-the class.
-<4> As we noted above, we have about 100 pages stored in the archive
-which we want to scrape. We loop 100 times over a function called
-`get_ith_page` which will do the scraping for us. Right now this
-function just prints out the index it is supposed to scrape.
+Our runner has a simple interface, and this simple interface will
+carry over to our tests.
 
-Now that we have a harness for our scraper, let's install our scraper
-libraries.
+==== Our Scraper
 
-===== Scraper Library Installation
-
-Like other chapters which use Ruby, we create a `Gemfile` to manage
-our dependencies and then install them using the `bundle` command.
-
-[source]
+[source,ruby]
 -----
-$ printf "source 'https://rubygems.org'\ngem 'vcr'\ngem 'mechanize'\ngem 'webmock'\n" >> Gemfile
+[filename="../final-scraper", language="ruby", sha="12260c3e1f32d5bcbe94:scraper.rb"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+==== Manifest File
+
+[source,ruby]
+-----
+[filename="../final-scraper", language="ruby", sha="12260c3e1f32d5bcbe94:Gemfile"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+Then, install our gems using the command:
+
+[source,bash]
+------
 $ bundle
------
+------
 
-With that we have the libraries we'll use to retrieve the content, so
-we can commence writing our wrapper script.
+We now have the rspec tool installed and associated libraries.
 
-===== Parser Runner
-
-Our runner is simple.
+==== Test Harness
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="2245215:support/jekyll-parser/run.rb"]
+[filename="../final-scraper", language="ruby", sha="12260c3e1f32d5bcbe94:scraper_spec.rb"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
-If we run this code now, we will just see our debug output.
+If we run this, we will see this output. Remember, we run using the
+`bundle exec rspec scraper_spec.rb` command which makes everything run
+inside the bundler context (and load our libraries from the Gemfile,
+instead of the default system gems).
 
-[source]
+[source,bash]
 -----
-$ ruby run.rb
-...
-Loading 91th page
-Loading 92th page
-Loading 93th page
-Loading 94th page
-Loading 95th page
-Loading 96th page
-Loading 97th page
-Loading 98th page
-Loading 99th page
-...
+$ bundle exec rspec scraper_spec.rb
+.
+
+Finished in 0.00125 seconds (files took 0.12399 seconds to load)
+1 example, 0 failures
 -----
 
-===== Implementing Our Page Iterator
+There is nothing we are explicitly testing yet, but
+our test harness displays that our code inside our tests will match
+closely the code we write inside our runner wrapper.
 
-Now let's write the code which pulls out the information for the body
-and the title by implementing the `get_ith_page` method.
+=== Scraping Titles
 
+Let's start with something simple: scraping the titles from the
+site. 
+
+Use the mechanize gem, a powerful way to scrape sites. Add to the Gemfile.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="c4633e2:support/jekyll-parser/scraper.rb" lines="25..-3"]
+[filename="../final-scraper", language="ruby", sha="3e078f8:Gemfile"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
-<1> First, we load up a VCR cassette; this code says "store any HTTP requests
-inside my cassette directory ('cached', specified in the configure
-stage) under the name bt_#{index}". In more concrete terms, the first
-page loaded by our script will be cached and saved in a file at the
-path `cached/bt_1.yml` (VCR adds the yml extension because it stores
-the results as a structured YAML file).
-<2> Once we have loaded the page we see one of the powerful features
-of mechanize footnote:[Actually, this is handled by the Nokogiri parser, but
-Mechanizes exposes it transparently], a simple page searching syntax. If
-we provide the code `page / "table[valign=top] tr"` what we are doing
-is searching inside the page for a tag like `<table valign="top">` and
-then finding all the `<tr>` tags inside that. Recalling the DOM
-hierarchy we saw inside the Chrome Inspector, we can start to see how
-we will easily retrieve content from a scraped page.
-<3> We then take the 2nd and 5th (ruby uses zero-based offsets) rows, and
-process it using a method called `process_body` which, you guessed it,
-processes the two rows as title and body respectively.
-<4> The `process_body` method takes the retrieved DOM nodes and
-converts them to pure text (as opposed to leaving us with the HTML tags)
-and then strips whitespace from the front and end, and then prints the
-index in parentheses, the title and the first 50 characters of the body.
+Make sure to install using the `bundle` command.
 
-If we run our code now, we will see the body of our journal entries.
+[source,ruby]
+-----
+[filename="../final-scraper", language="ruby", sha="7ee2ec1:scraper.rb" callouts="1,5,9,14,15", callouts_prefix=" # #"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
 
-[source]
+<1> Require the mechanize library
+<2> We use a ruby method called `attr_accessor` which creates a public
+instance variable. We can use these variables using the `@root` syntax
+inside our script, and we can access the variable outside the class as
+well, both of which are valuable here.
+<3> Initialize the variables to default values. We store the root of
+the URL on Archive.org here.
+<4> We modify our run method to loop 100 times.
+<5> Generate a URL to the specific page, retrieve the page and then
+print out the index in our loop plus the title of the page object.
+
+Let's run our scraper and see what happens now.
+
+[source,bash]
+$ bundle exec ./run.rb
+-----
+...
+53 Read Journal Entries
+54 Read Journal Entries
+55 Read Journal Entries
+56 Read Journal Entries
+57 Internet Archive Wayback Machine
+58 Internet Archive Wayback Machine
+...
+-----
+
+You can see that some of the entries have a generic "Internet Archive
+Wayback Machine" while some have "Read Journal Entries". Archive.org
+will respond with a placeholder title when it does not have content
+from the site (as is the case with item #58, for example), so we
+should be sure to filter out these from our final pages.
+
+Now we can start thinking about how to scrape the interesting pieces
+of content we need from the pages we have identified as valuable.
+
+==== Refinining with Interactive Ruby 
+
+There are two things that make Mechanize immensely powerful as the
+foundation for a scraping tool: easy access to making HTTP calls, and
+a powerful searching syntax once you have a remote document. You've
+seen how Mechanize makes it simple to make a GET request. Now, let's
+explore sifting through a massive document to get the important pieces
+of textual content. We can manually explore scraping using the Ruby
+IRB (interactive ruby shell).
+
+[source,ruby]
 -------
-$ ruby run.rb
-(4) Third day in Salvador :: I'm now entering the my third day in Salvador.  Th
-(15) The Hill-Tribes of Northern Thailand :: I had heard about the hill-tribes in 
-northern Tha
-(22) Passion Play of Oberammergau :: On Sunday, Sept. 17 Jeanne picked up Vic at Jackie
-(23) "Angrezis in Bharat" :: Translation -  "Foreigners in India"Well since we 
-(24) Cuba - the good and bad :: April 1999Cuba, what an interesting place??!!
-My a
-(25) Nemaste :: Oct/Nov 2000"NEPAL"We spent our first 3 days in Ba
-(26) Mexico/Belize/Guatemala :: Feb/Mar 1999Dear All
-Well it´s been six weeks on t
-(27) South Africa :: Apr/May 1999I got in from South Africa a few days 
-...
+$ irb -r./scraper
+2.0.0-p481 :001 > scraper = Scraper.new
+ => #<Scraper:0x00000001e37ca8...>
+2.0.0-p481 :002 > page = scraper.agent.get "#{scraper.root}#{56}"
+ => #<Mechanize::Page {url #<URI::HTTP:0x00000001a85218...>
 -------
 
-The first time we run this, we will see a slow march as Mechanize
-grabs each page from the Archive.org server. The next time we run our
-parser, however, things will be much faster. We have cached all the
-pages and so instead of doing a slow network crawl we are now speeding
-across our local filesystem, reading files from disk and simulating
-our network connection. Our client code does not have to change at
-all, the real power of the VCR gem.
+The first line invokes IRB and uses the `-r` switch to load the
+scraper library in the current directory. If you have not used IRB
+before, there are a few things to know that 
+will make life easier. The IRB has a prompt, which indicates the
+version of Ruby you are using, and the index of the command you are
+running. IRB has a lot of features beyond what we will discuss here,
+but those indexes can be used to replay history and for job control,
+like many other types of shells. At the IRB prompt you can enter Ruby
+and IRB executes the command right there. Once the command executes, IRB prints the result;
+the characters `=>` indicate the return value. Many return values are
+complex objects: the return value when you use `scraper.agent.get` is
+a Mechanize ruby object. This is a very large object, so printing it
+out takes a lot of real estate, and we've abbreviated the majority of
+it here, and will do that for many complex objects to save space when
+discussing IRB.
 
-Now let's break the title and body processing into separate methods.
-Add a method called `process_title` and add that into the `get_ith_page` method underneath
-the renamed `process` method now called `process_body`.
+Now that we have the page, how do we extract information from it? When
+we used the Chrome inspector we saw a path to the post title
+(represented there by the path `html body table tbody tr td font table
+tbody tr`). This is a clue to finding the same content using
+Mechanize. Mechanize has a nice piece of syntactic sugar that makes it
+easy to search the DOM structure: the "/" operator. Let's try it. 
+
+[source,bash]
+-----
+2.0.0-p481 :003 > page / "html body table tbody tr td font table tbody
+tr"
+ => [] 
+-----
+
+If things had worked, we would have seen a return value with the
+content we wanted, but in this case we got back an empty
+array. Unfortunately, the paths vary when the document is loaded into
+a browser (the browser can customize the DOM or the server can send
+slightly different data to the client). But, if we experiment with
+similar paths, we will find what we need. IRB is a great place to
+experiment with different combinations until we get the right one. It
+helps to jump back and forth between Chrome and IRB, examining the
+structure of the HTML inside Chrome and then testing a path in
+IRB. Eventually, we come across this path:
+
+[source,ruby]
+-------
+2.0.0-p481 :004 > items = page /  "table[valign=top] tr"
+ => [#<Nokogiri::XML::Element:0xc05670 name="font" attributes=[#<Nokogiri::XML::Attr:0xc05328 name="size" value="-2">]...
+2.0.0-p481 :005 > items.length
+ => 5
+2.0.0-p481 :006 > items[0].text()
+ => "\n\n\n\n\n\n\n\n\n\nBeautiful Belize\n\n\n\n\n\n\n" 
+2.0.0-p481 :005 > items[0].text().strip
+ => "Beautiful Belize"
+-------
+
+Eureka, we found the pattern that gives us our title. We had to jump
+around inside the results from the query, but we can correlate the
+text on the page with the resultant structures found using the
+query. It is important to note that we had to strip whitespace from
+the title to make it presentable. We can incorporate this into our
+scraper code, but this is a good moment to think about how we can write
+tests to verify this works properly. And, testing provides us with
+another opportunity: using caching.
+
+==== Writing Tests and Caching
+
+Were we to run our `run.rb` script again, we would notice that it
+prints the document title, then halts as it retrieves the content from
+the server, and then prints again, stopping and starting. The content
+from Archive.org does not change at all since the original site was
+scraped years ago. It seems like a good opportunity to put a caching
+layer between us and the code, reducing impact on Archive.org and
+making our script run faster. In addition, if we structure our code to
+make retrieval and processing happen independently, we can write tests
+to verify the processing.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="6be532b0bd4b2055847339c76b7496ef47d902da:support/jekyll-parser/scraper.rb" lines="20..70"]
+[filename="../final-scraper", language="ruby", sha="c1eb33a:scraper.rb" callouts="1", callouts_prefix=" # #"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
-We've modified the `get_ith_page` method to save each page as a tuple
-(the title and body) and then print them out after processing inside
-the `run` method.
+We need to install the VCR and webmock libraries, so add to the
+Gemfile.
 
-<1> Our process body might look a little excessive. Why not just
-return the result of `row.text()`? The reason is that markdown
-is very specific about the format it requires for text formatting.
-Each block of text separated by two newlines will be formatted within
-`<p>` tags. Unfortunately, Mechanize and Nokogiri don't return text
-formatted that way, so this function retrieves each `<p>` tag we
-scraped, strips whitespace from the ends, and then adds it back to a
-body variable. If you scrape text from a site like we are doing here,
-you might need to normalize the text in a similar way.
-<2> Do the same type of processing with the title. With this site
-there are occasionally titles which include the word "Title:" in the
-title itself (authors have to be forgiven for their own formatting
-quirks) so strip that out if we see it there.
-<3> Keep track of each page in an array with each item of the array
-containing the title and body. We can then use this processed data
-later to build out our posts.
-<4> At the end of processing, just print out the processed data we
-saved to verify we are finding the right structure in our pages.
+[source,ruby]
+-----
+[filename="../final-scraper", language="ruby", sha="798360e:Gemfile"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
 
-If we re-run this script we will see identical output to the prior
-run, but now we are storing the information in an array and can use it
-to write out our Markdown files.
+And, run `bundle` to install the libraries.
 
-===== Generating Markdown
+If we run our script using `bundle exec ruby ./run.rb`, we will see it
+print out the titles. 
 
-Now that we have our information parsed out, we can generate Markdown
-from it. As we've seen, Jekyll Markdown files are very simple: just a
-bit of YAML at the beginning, with text content following, formatted as
-Markdown. 
+[source,bash]
+----
+$ bundle exec ruby ./run.rb
+Third day in Salvador
+The Hill-Tribes of Northern Thailand
+Passion Play of Oberammergau
+"Angrezis in Bharat"
+Cuba - the good and bad
+Nemaste
+Mexico/Belize/Guatemala
+...
+----
 
-We need to create a Git repository which we can push into GitHub.
-There is no reason why we cannot store our scraper scripts inside it,
-so let's just add the files to the same directory
+As a side effect of caching, things work much faster. If we analyze
+the time we save using the `time` command, we see these results.
+
+[source,bash]
+-----
+$ bundle exec ruby ./run.rb # before VCR
+real    0m29.907s
+user    0m2.220s
+sys     0m0.170s
+$ bundle exec ruby ./run.rb # after VCR
+real    0m3.750s
+user    0m3.474s
+sys     0m0.194s
+-----
+
+So, it takes an order of magnitude more time without caching. And, we
+get these cached responses for free, and inside our IRB sessions as well.
+
+The titles look good, but the fourth one is a little worrisome. Looks
+like one of the users decided to enclose their title in double
+quotes. To control the formatting, it would be nice to clean that
+up. Let's do that, and write tests to verify things work.
+
+[source,ruby]
+-----
+[filename="../final-scraper", language="ruby", sha="0d6d82c:scraper_spec.rb"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+If we run this, we see one test pass and one test fail.
+
+[source,bash]
+-----
+$ bundle exec rspec scraper_spec.rb
+F.
+
+Failures:
+
+  1) #run #process_titles should correct titles with double quotes
+     Failure/Error: expect( @scraper.process_title( ' something " with
+     a double quote' ) ).to_not match( /"/ )
+       expected "something \" with a double quote" not to match /"/
+       Diff:
+       @@ -1,2 +1,2 @@
+       -/"/
+       +"something \" with a double quote"
+     # ./scraper_spec.rb:10:in `block (3 levels) in <top (required)>'
+
+Finished in 0.01359 seconds (files took 0.83765 seconds to load)
+2 examples, 1 failure
+
+Failed examples:
+
+rspec ./scraper_spec.rb:9 # #run #process_titles should correct titles
+with double quotes
+-----
+
+To fix this test, let's strip out double quotes by changing one line
+in the scraper.rb file.
+
+[source,ruby]
+-----
+...
+[filename="../final-scraper", language="ruby", sha="5841a2e:scraper.rb", lines="36..36"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
+
+Now both tests pass.
+
+==== Writing Jekyll Posts
+
+Now that we have our titles, we can generate an actual Jekyll
+post. This will not have anything beyond the title, but setting up
+the structure of files that make up a real Jekyll blog up will allow
+us to use the Jekyll command line tool. This tool will spot check our
+new content as we will see errors when incorrect Markdown content is
+added to a post.
+
+Let's create a Git repository for our files. When the Jekyll tool
+runs, it generates all the files into a directory called "_site" so we
+should add a ".gitignore" file which ignores this directory.
 
 [source]
 ------
@@ -973,8 +1143,10 @@ $ git add .gitignore
 $ git commit -m "Initial checkin"
 ------
 
-To generate Markdown posts, edit the `run` method to write
-out the files after we have retrieved and parsed the pages from Archive.org.
+Jekyll Markdown files are very simple: just a bit of YAML at the
+beginning, with text content following, formatted as Markdown.  To
+generate Markdown posts, add a method called `write` which writes out
+the processed information after we have retrieved and parsed the pages from Archive.org.
 
 [source,ruby]
 -----
@@ -1243,6 +1415,198 @@ index 1873972..a4dbc21 100644
 The astute amongst you will also note that this shows we can add
 comments inside of our YAML Front Matter when needed. 
 
+
+==== Comprehensive Scraping
+
+Now that we have a framework in place, we can fully scrape the site,
+and write test coverage to make sure our processing works
+properly. We will scrape the remaining textual pieces of content which
+includes the body of the post, the author name, the location about
+which the article was written, the creation date, and then we will
+retrieve the images associated with the post. Then we will show how we
+can creatively insert them into a Jekyll post. And, for each
+component, we will assure our processing works by writing a test to
+verify the processing is proper.
+
+===== Body Content, Creation Date and Author
+
+
+
+===== Location and Inline Maps in Jekyll
+
+
+
+===== Adding Images to Jekyll
+
+
+
+<1> VCR is a ruby library which caches HTTP requests. Typically used
+inside of tests, it is also an easy way to cache an HTTP request that
+you know will not change. Since these are pages stored inside an
+archive over ten years ago, it is safe to cache them, and the polite
+thing to do for an open system like Archive.org which relies on
+donations to pay for their bandwidth. The code you see here is
+boilerplate for configuring the VCR gem, loaded above.
+<2> Our scraping is handled with the `mechanize` gem, and our class
+should maintain a reference to the scraper by declaring it here.
+<3> After our class is instantiated, we hook into the class
+initialization stage and create our mechanize parser and assign it to
+the class.
+<4> As we noted above, we have about 100 pages stored in the archive
+which we want to scrape. We loop 100 times over a function called
+`get_ith_page` which will do the scraping for us. Right now this
+function just prints out the index it is supposed to scrape.
+
+Now that we have a harness for our scraper, let's install our scraper
+libraries.
+
+===== Scraper Library Installation
+
+Like other chapters which use Ruby, we create a `Gemfile` to manage
+our dependencies and then install them using the `bundle` command.
+
+[source]
+-----
+$ printf "source 'https://rubygems.org'\ngem 'vcr'\ngem 'mechanize'\ngem 'webmock'\n" >> Gemfile
+$ bundle
+-----
+
+With that we have the libraries we'll use to retrieve the content, so
+we can commence writing our wrapper script.
+
+===== Parser Runner
+
+Our runner is simple.
+
+[source,ruby]
+-----
+[filename=".", language="ruby", sha="2245215:support/jekyll-parser/run.rb"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+If we run this code now, we will just see our debug output.
+
+[source]
+-----
+$ ruby run.rb
+...
+Loading 91th page
+Loading 92th page
+Loading 93th page
+Loading 94th page
+Loading 95th page
+Loading 96th page
+Loading 97th page
+Loading 98th page
+Loading 99th page
+...
+-----
+
+===== Implementing Our Page Iterator
+
+Now let's write the code which pulls out the information for the body
+and the title by implementing the `get_ith_page` method.
+
+
+[source,ruby]
+-----
+[filename=".", language="ruby", sha="c4633e2:support/jekyll-parser/scraper.rb" lines="25..-3"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+<1> First, we load up a VCR cassette; this code says "store any HTTP requests
+inside my cassette directory ('cached', specified in the configure
+stage) under the name bt_#{index}". In more concrete terms, the first
+page loaded by our script will be cached and saved in a file at the
+path `cached/bt_1.yml` (VCR adds the yml extension because it stores
+the results as a structured YAML file).
+<2> Once we have loaded the page we see one of the powerful features
+of mechanize footnote:[Actually, this is handled by the Nokogiri parser, but
+Mechanizes exposes it transparently], a simple page searching syntax. If
+we provide the code `page / "table[valign=top] tr"` what we are doing
+is searching inside the page for a tag like `<table valign="top">` and
+then finding all the `<tr>` tags inside that. Recalling the DOM
+hierarchy we saw inside the Chrome Inspector, we can start to see how
+we will easily retrieve content from a scraped page.
+<3> We then take the 2nd and 5th (ruby uses zero-based offsets) rows, and
+process it using a method called `process_body` which, you guessed it,
+processes the two rows as title and body respectively.
+<4> The `process_body` method takes the retrieved DOM nodes and
+converts them to pure text (as opposed to leaving us with the HTML tags)
+and then strips whitespace from the front and end, and then prints the
+index in parentheses, the title and the first 50 characters of the body.
+
+If we run our code now, we will see the body of our journal entries.
+
+[source]
+-------
+$ ruby run.rb
+(4) Third day in Salvador :: I'm now entering the my third day in Salvador.  Th
+(15) The Hill-Tribes of Northern Thailand :: I had heard about the hill-tribes in 
+northern Tha
+(22) Passion Play of Oberammergau :: On Sunday, Sept. 17 Jeanne picked up Vic at Jackie
+(23) "Angrezis in Bharat" :: Translation -  "Foreigners in India"Well since we 
+(24) Cuba - the good and bad :: April 1999Cuba, what an interesting place??!!
+My a
+(25) Nemaste :: Oct/Nov 2000"NEPAL"We spent our first 3 days in Ba
+(26) Mexico/Belize/Guatemala :: Feb/Mar 1999Dear All
+Well it´s been six weeks on t
+(27) South Africa :: Apr/May 1999I got in from South Africa a few days 
+...
+-------
+
+The first time we run this, we will see a slow march as Mechanize
+grabs each page from the Archive.org server. The next time we run our
+parser, however, things will be much faster. We have cached all the
+pages and so instead of doing a slow network crawl we are now speeding
+across our local filesystem, reading files from disk and simulating
+our network connection. Our client code does not have to change at
+all, the real power of the VCR gem.
+
+Now let's break the title and body processing into separate methods.
+Add a method called `process_title` and add that into the `get_ith_page` method underneath
+the renamed `process` method now called `process_body`.
+
+[source,ruby]
+-----
+[filename=".", language="ruby", sha="6be532b0bd4b2055847339c76b7496ef47d902da:support/jekyll-parser/scraper.rb" lines="75..-1"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+We've modified the `get_ith_page` method to save each page as a tuple
+(the title and body) and then print them out after processing inside
+the `run` method.
+
+<1> Our process body might look a little excessive. Why not just
+return the result of `row.text()`? The reason is that markdown
+is very specific about the format it requires for text formatting.
+Each block of text separated by two newlines will be formatted within
+`<p>` tags. Unfortunately, Mechanize and Nokogiri don't return text
+formatted that way, so this function retrieves each `<p>` tag we
+scraped, strips whitespace from the ends, and then adds it back to a
+body variable. If you scrape text from a site like we are doing here,
+you might need to normalize the text in a similar way.
+<2> Do the same type of processing with the title. With this site
+there are occasionally titles which include the word "Title:" in the
+title itself (authors have to be forgiven for their own formatting
+quirks) so strip that out if we see it there.
+<3> Keep track of each page in an array with each item of the array
+containing the title and body. We can then use this processed data
+later to build out our posts.
+<4> At the end of processing, just print out the processed data we
+saved to verify we are finding the right structure in our pages.
+
+If we re-run this script we will see identical output to the prior
+run, but now we are storing the information in an array and can use it
+to write out our Markdown files.
+
+
 ===== Customizing Styling
 
 Adding a CSS framework like Bootstrap helps things considerably, but
@@ -1312,8 +1676,8 @@ base site URL to this and can then retrieve the image from
 archive.org. 
 
 Unfortunately, the VCR gem does not easily allow us to 
-make requests which are not captured. There are methods in VCR to
-ignore requests, but without heavily refactoring our `get_ith_method`.
+make HTTP requests but that we don't want captured. There are methods in VCR to
+ignore requests, but using them would require heavily refactoring of our `get_ith_method`. 
 Instead we cheat by using a command line tool called `wget` to
 download the image. The VCR gem works by hooking into ruby libraries
 which make HTTP calls; by using the `wget` tool we can avoid using
