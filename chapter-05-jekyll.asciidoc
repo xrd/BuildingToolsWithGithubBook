@@ -277,7 +277,6 @@ categories: jekyll update
 ---
 -----
 
-
 YFM is a snippet of YAML ("YAML Aint Markup Language")
 delimited by three hyphens on both the top and bottom. YAML is a simple structured
 data serialization language used by many open source projects instead
@@ -843,17 +842,12 @@ end
 -----
 source "https://rubygems.org"
 
+gem "github-pages"
 gem "rspec"
 -----
 
-Then, install our gems using the command:
-
-[source,bash]
-------
-$ bundle
-------
-
-We now have the rspec tool installed and associated libraries.
+Then, install our gems using the command `bundle`. That installs the 
+rspec tool, the jekyll tool and associated libraries.
 
 ==== Test Harness
 
@@ -870,10 +864,9 @@ end
 
 -----
 
-If we run this, we will see this output. Remember, we run using the
-`bundle exec rspec scraper_spec.rb` command which makes everything run
-inside the bundler context (and load our libraries from the Gemfile,
-instead of the default system gems).
+Remember to run using the `bundle exec rspec scraper_spec.rb` command
+which makes everything run inside the bundler context (and load our
+libraries from the Gemfile, instead of the default system gems). 
 
 [source,bash]
 -----
@@ -893,17 +886,16 @@ closely the code we write inside our runner wrapper.
 Let's start with something simple: scraping the titles from the
 site. 
 
-Use the mechanize gem, a powerful way to scrape sites. Add to the Gemfile.
+Use the mechanize gem, a powerful way to scrape sites. Add these
+additional lines to the Gemfile using this command and the install the libraries.
 
-[source,ruby]
+[source,bash]
 -----
-source "https://rubygems.org"
-
-gem "rspec"
-gem "mechanize"
+$ echo "gem 'mechanize'" >> Gemfile
+$ bundle 
 -----
 
-Make sure to install using the `bundle` command.
+Now we can modify our scraper to use the mechanize gem and retrieve content from Archive.org.
 
 [source,ruby]
 -----
@@ -945,8 +937,8 @@ print out the index in our loop plus the title of the page object.
 Let's run our scraper and see what happens now.
 
 [source,bash]
-$ bundle exec ./run.rb
 -----
+$ bundle exec ./run.rb
 ...
 53 Read Journal Entries
 54 Read Journal Entries
@@ -993,13 +985,13 @@ version of Ruby you are using, and the index of the command you are
 running. IRB has a lot of features beyond what we will discuss here,
 but those indexes can be used to replay history and for job control,
 like many other types of shells. At the IRB prompt you can enter Ruby
-and IRB executes the command right there. Once the command executes, IRB prints the result;
-the characters `=>` indicate the return value. Many return values are
-complex objects: the return value when you use `scraper.agent.get` is
-a Mechanize ruby object. This is a very large object, so printing it
-out takes a lot of real estate, and we've abbreviated the majority of
-it here, and will do that for many complex objects to save space when
-discussing IRB.
+and IRB executes the command immediately. Once the command executes,
+IRB prints the result; the characters `=>` indicate the return
+value. Many return values are complex objects: the return value when
+you use `scraper.agent.get` is a Mechanize ruby object. This is a very
+large object, so printing it out takes a lot of real estate, and we've
+abbreviated the majority of it here, and will do that for many complex
+objects to save space when discussing IRB.
 
 Now that we have the page, how do we extract information from it? When
 we used the Chrome inspector we saw a path to the post title
@@ -1015,16 +1007,17 @@ tr"
  => [] 
 -----
 
-If things had worked, we would have seen a return value with the
-content we wanted, but in this case we got back an empty
-array. Unfortunately, the paths vary when the document is loaded into
-a browser (the browser can customize the DOM or the server can send
-slightly different data to the client). But, if we experiment with
-similar paths, we will find what we need. IRB is a great place to
-experiment with different combinations until we get the right one. It
-helps to jump back and forth between Chrome and IRB, examining the
-structure of the HTML inside Chrome and then testing a path in
-IRB. Eventually, we come across this path:
+If our query path had found anything, we would have seen a return
+value with the content we wanted, but in this case we got back an
+empty array (which indicates nothing was found). Unfortunately, the
+paths vary when the document is loaded into a browser (the browser can
+customize the DOM or the server can send slightly different data to
+the client). But, if we experiment with similar paths, we will find
+what we need. IRB is a great place to experiment with different
+combinations until we get the right one. It helps to jump back and
+forth between Chrome and IRB, examining the structure of the HTML
+inside Chrome and then testing a path in IRB. Eventually, we come
+across this query path: 
 
 [source,ruby]
 -------
@@ -1061,9 +1054,9 @@ to verify the processing.
 
 [source,ruby]
 -----
-require 'mechanize' # # <1>
-require 'vcr'
-VCR.configure do |c|
+require 'mechanize'
+require 'vcr' # # <1>
+VCR.configure do |c| # # <2>
   c.cassette_library_dir = 'cached'
   c.hook_into :webmock
 end
@@ -1072,22 +1065,22 @@ class Scraper
 
   attr_accessor :root
   attr_accessor :agent
-  attr_accessor :pages
+  attr_accessor :pages # # <3>
 
   def initialize
     @root = "http://web.archive.org/web/20030820233527/http://bytravelers.com/journal/entry/"
     @agent = Mechanize.new 
-    @pages = []
+    @pages = [] # # <4>
   end
 
   def scrape
     100.times do |i|
       begin
-        VCR.use_cassette("bt_#{i}") do
+        VCR.use_cassette("bt_#{i}") do # # <5>
           url = "#{@root}#{i}"
           @agent.get( url ) do |page|
             if page.title.eql? "Read Journal Entries"
-              pages << page
+              pages << page # # <6>
             end
           end
         end
@@ -1095,12 +1088,12 @@ class Scraper
     end
   end
 
-  def process_title( row )
+  def process_title( row ) # # <7>
     row.strip
   end
 
   def run
-    scrape()
+    scrape() # # <8>
     @pages.each do |page|
       rows = ( page / "table[valign=top] tr" )
       puts process_title( rows[0].text() )
@@ -1110,20 +1103,39 @@ class Scraper
 end
 -----
 
+<1> We require the VCR gem. 
+<2> VCR must be configured when you use it: in this case we specify a
+directory where results will be cached, and tell it what mocking
+library we should use to store the cached results.
+<3> We establish a new variable called pages. We will scrape all the
+pages into this array (and get them for free once the information is
+cached).
+<4> Initialize the pages array here
+<5> To use the VCR recording feature, we wrap any code which makes
+HTTP requests inside a VCR block with a name specifying the "cassette"
+to save it under. In this case, we use a cassette named "bt" (for
+ByTravelers) with the index of the page. The first time we use the
+scraper to request the page, it is retrieved and stored inside the
+cache. Successive calls to the scraper get method are retrieved from
+the cached responses.
+<6> We then look for any titles which look like pages archived into
+Archive.org (using the title to differentiate) and if we find one,
+store that page into our pages array for later processing.
+<6> We move the title processing into its own method called
+`process_title`. Here we use the information and remove any
+whitespace.
+<7> Inside of `run` we now call `scrape` to load the pages, and then
+iterate over each page, searching inside them and processing the titles.
+
 We need to install the VCR and webmock libraries, so add to the
 Gemfile.
 
-[source,ruby]
+[source,bash]
 -----
-source "https://rubygems.org"
-
-gem "rspec"
-gem "mechanize"
-gem "vcr"
-gem "webmock"
+$ echo "gem 'vcr'" >> Gemfile
+$ echo "gem 'webmock'" >> Gemfile
+$ bundle
 -----
-
-And, run `bundle` to install the libraries.
 
 If we run our script using `bundle exec ruby ./run.rb`, we will see it
 print out the titles. 
@@ -1175,11 +1187,13 @@ describe "#run" do
 
   describe "#process_titles" do
     it "should correct titles with double quotes" do
-      expect( @scraper.process_title( ' something " with a double quote' ) ).to_not match( /"/ )
+      str = ' something " with a double quote' 
+      expect( @scraper.process_title( str ) ).to_not match( /"/ )
     end
     
     it "should strip whitespace from titles" do
-      expect( @scraper.process_title( '\n\n something between newlines \n\n' ) ).to_not match( /^\n\n/ )
+      str = '\n\n something between newlines \n\n' 
+      expect( @scraper.process_title( str ) ).to_not match( /^\n\n/ )
     end
   end
 
@@ -1221,7 +1235,11 @@ in the scraper.rb file.
 [source,ruby]
 -----
 ...
-row.strip.gsub( /"/, '' )
+
+def process_title( row )
+  row.strip.gsub( /"/, '' )
+end
+
 ...
 -----
 
@@ -1254,65 +1272,155 @@ beginning, with text content following, formatted as Markdown.  To
 generate Markdown posts, add a method called `write` which writes out
 the processed information after we have retrieved and parsed the pages from Archive.org.
 
+Jekyll posts are stored inside the `_posts` directory. As a
+convention, filenames are generated with the date and title,
+lowercased, converted to a string without any characters beyond a-z
+and the hyphen, and terminated by the extension (usually ".md" for
+Markdown). In order to properly generate the filename, we will need to
+scrape the date, so we will do that as well. 
+
+As a more concrete example, we want to take something like `Cuba - the
+good and bad` that happened on January 12th, 2001, and make a filename
+like `2001-01-12-cuba-the-good-and-bad.md`. Or,
+`Mexico/Belize/Guatemala` from the same date, and make it into the
+filename `2001-01-12-mexico-belize-guatemala.md`. These conversions
+look like good places to write tests, so we can start there.
+
 [source,ruby]
 -----
-  def write_post( page )
-    title = page[0]
-    body = page[1]
-    creation_date = page[2]
-
-    title.gsub!( /"/, '' ) # <2>
-    
-    template = <<"TEMPLATE"  # <3>
----
-layout: default
-title: "#{title}"
-published: false
----
-
-#{body}
-TEMPLATE
-
-    title_for_filename = title.downcase.gsub( /,+/, '' ).gsub( /[\s\/\:\;]+/, '-') # <3>
-    filename = "_posts/#{creation_date}-#{title_for_filename}.md"
-    File.open( filename, "w+" ) do |f|
-      f.write template
-    end
+describe "#get_filename" do
+  it "should take 'Cuba - the good and bad' on January 12th, 2001 and get a proper filename" do
+    input = 'Cuba - the good and bad'
+    date = "January 12th, 2001"
+    output = "2001-01-12-cuba-the-good-and-bad.md"
+    expect( @scraper.get_filename( input, date ) ).to eq( output )
   end
 
-  def run
-    100.times do |i| 
-      get_ith_page( i ) 
-    end
-    100.times do |i|
-      if pages[i]
-        write_post( pages[i] ) # <1>
-      end
-    end
+  it "should `Mexico/Belize/Guatemala` and get a proper filename" do
+    input = "Mexico/Belize/Guatemala"
+    date = "2001-01-12" 
+    output = "2001-01-12-mexico-belize-guatemala.md"
+    expect( @scraper.get_filename( input, date ) ).to eq( output )
   end
-
-  def process_creation_date( i, row )
-    location, creation_date = row.text().split /last updated on:/ # <5>
-    creation_date.strip()
-  end  
-  
+end
 -----
 
-<1> First, we modify the `run` method to call our new `write_post`
-method. This method is reponsible for writing out each datum in the
-array of processed data to a markdown file.
-<2> We enclose the title inside the YAML inside of double quotes, so
-to make sure this does not conflict with the YAML parser we remove
-double quotes from the title here. We need to do this when we generate
-the filename later, so we use the `gsub!` method which modifies the
-string itself (rather than returning a new value but leaving the
-existing string intact).
-<2> Inside the `write_post` method we create a "heredoc" template, and
-then stick values inside of it. Heredocs provide a more readable way
-to write out larger textual data, especially those with newlines.
-Heredocs simply start with a tag and then end the contents with the same tag
-("TEMPLATE" here), and everything in between is treated as a single
-string. 
+Let's build the `get_filename` method. This method uses the handy Ruby
+`DateTime.parse` method to convert a string representation of a date
+into a date object, and then uses the `strfmtime` method to format
+that date into the format we want in our filename.
+
+[source,ruby]
+-----
+...
+def get_filename( title, date )
+  processed_date = DateTime.parse( date )
+  processed_title = title.downcase.gsub( /[^a-z]+/, '-' )
+  "#{processed_date.strftime('%Y-%m-%d')}-#{processed_title}.md"
+end
+...
+-----
+
+If we run our tests now, we will see them both pass. 
+
+Now we can write out the files themselves.
+
+[source,ruby]
+-----
+...
+def render( processed ) # # <1>
+  processed['layout'] = 'post'
+  rendered = "#{processed.to_yaml}---\n\n"
+  rendered
+end
+
+def write( rendered, processed ) # # <2>
+  Dir.mkdir( "_posts" ) unless File.exists?( "_posts" )
+  filename = get_filename( processed['title'], processed['creation_date'] )
+  File.open( "_posts/#{filename}", "w+" ) do |f|
+    f.write rendered
+  end
+end
+
+def process_creation_date( date )
+  date.split( /last updated on:/ )[1] # # <3>
+end
+
+def run
+  scrape()
+  @pages.each do |page|
+    rows = ( page / "table[valign=top] tr" )
+    processed = {} # # <4>
+    processed['title'] = process_title( rows[0].text() )
+    creation_date = DateTime.parse( process_creation_date( rows[3].text() ) )
+    processed['creation_date'] = "#{creation_date.strftime('%Y-%m-%d')}"
+    rendered = render( processed ) # # <5>
+    write( rendered, processed )
+  end
+end
+...
+-----
+
+<1> We define a render method. This takes the processed information
+(which arrives as a hash) and renders the information into the proper
+format: the YAML Front Matter (YFM) and then the body (which we don't
+have yet). We then return the rendered string.
+<2> The write method writes the rendered content to disk. It makes
+sure the "_posts" directory is available, and if not, creates it. It
+then writes out the file using our `get_filename` method to get the
+path, prefixed with the "_posts" directory.
+<3> `process_creation_date` takes a piece from the scraped page and
+breaks it apart by the string "last updated on:" and uses the second
+item in the resultant array.
+<4> Inside our run method we now build out the processed hash, finding
+the date and title using rows from the query path we used before. 
+<5> Once we have our processed array, we can "render" it and then
+write out the rendered string to our file system.
+
+Now let's use the jekyll command line tool to start looking at our
+posts and to troubleshoot any issues with our Jekyll repository.
+
+==== Using the Jekyll Command Line Tool
+
+Taking a moment to add our files to the Git repository, we can then
+take a look at our site using the `jekyll` command line tool.
+
+[source]
+----
+$ git add .
+$ git commit -m "Make this into a Jekyll site"
+...
+$ jekyll serve --watch
+Configuration file: none
+            Source: /home/xrdawson/bytravelers
+       Destination: /home/xrdawson/bytravelers/_site
+      Generating... 
+     Build Warning: Layout 'post' requested in _posts/2000-05-23-third-day-in-salvador.md does not exist.
+     Build Warning: Layout 'post' requested in _posts/2000-08-28-the-hill-tribes-of-northern-thailand.md does not exist.
+     ...
+                    done.
+ Auto-regeneration: enabled for '/home/xrdawson/bytravelers'
+Configuration file: none
+    Server address: http://0.0.0.0:4000/
+  Server running... press ctrl-c to stop.
+----
+
+We've started the Jekyll server in "watch" mode which means the site will
+be automatically regenerated if we edit the source files. Let's take a
+look at the site as currently configured on *http://localhost:4000*.
+
+[[no-posts]]
+.No posts at all
+image::images/jekyll-no-posts.png[No posts at all]
+
+There are no posts! Ah, we elected to keep posts "unpublished" for now
+to review them before making them public. If we edit any file
+individually and change the line `published: false` inside our YFM to
+`published: true` then we will see that this file becomes available
+inside our site. Let's do this for three of the files. Notice the
+server regenerates our files each time we change one of them.
+
+
 <3> Jekyll expects markdown filenames to have a specific format. We need
 to modify the title by remove commas and quotes, and then converting
 whitespace, colons and semicolons to hyphen characters. We also need
@@ -1423,38 +1531,6 @@ markdown: redcarpet
 pygments: true
 -----
 
-Taking a moment to add our files to the Git repository, we can then
-take a look at our site using the `jekyll` command line tool.
-
-[source]
-----
-$ git add .
-$ git commit -m "Make this into a Jekyll site"
-...
-$ jekyll serve --watch
-Configuration file: /Users/xrdawson/Projects/GithubBook/1234000000486/support/jekyll-parser/_config.yml
-            Source: /Users/xrdawson/Projects/GithubBook/1234000000486/support/jekyll-parser
-       Destination: /Users/xrdawson/Projects/GithubBook/1234000000486/support/jekyll-parser/_site
-      Generating... done.
- Auto-regeneration: enabled
-    Server address: http://0.0.0.0:4000
-  Server running... press ctrl-c to stop.
-----
-
-We've started the Jekyll server in "watch" mode which means the site will
-be automatically regenerated if we edit the source files. Let's take a
-look at the site as currently configured on *http://localhost:4000*.
-
-[[no-posts]]
-.No posts at all
-image::images/jekyll-no-posts.png[No posts at all]
-
-There are no posts! Ah, we elected to keep posts "unpublished" for now
-to review them before making them public. If we edit any file
-individually and change the line `published: false` inside our YFM to
-`published: true` then we will see that this file becomes available
-inside our site. Let's do this for three of the files. Notice the
-server regenerates our files each time we change one of them.
 
 [source]
 -------
