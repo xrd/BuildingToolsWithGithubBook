@@ -65,6 +65,3 @@ DEPENDENCIES
   guard-shell
   oreilly-snippets (= 0.0.16)
   rack
-
-BUNDLED WITH
-   1.10.4

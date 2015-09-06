@@ -12,7 +12,7 @@ monolithic web site technologies.
 Jekyll specifies a file structure format: conform to this format and
 Jekyll will compile your files into HTML. Jekyll builds on top of two
 proven tools: Markdown, a markup language which is surprisingly
-readable and expressive, and Liquid Templates, a simple programming language which
+readable and expressive, and Liquid Markup, a simple programming language which
 gives you just enough components to build modern web 
 pages requiring conditionals and loops, but safe enough that you can
 run untrusted pages on public servers. With these two technologies and
@@ -97,7 +97,7 @@ way to get your jekyll tool synced with the version running on GitHub.
 
 Now we are ready to create a Jekyll blog.
 
-=== A Jekyll Blog in 15 Minutes
+=== Jekyll Blog Quick Start
 
 Now that we have our required tools, let's create a simple blog. Run
 these commands.
@@ -165,9 +165,10 @@ that each contains a placeholder with `{{ content }}`. This
 placeholder is replaced with the generated content from other files.
 
 These placeholders are actually a markup language on their own:
-"Liquid Templating." Liquid Templating (or Liquid Markup) was developed and open sourced by
-Shopify, and is a safe way to include programmatic constructs (like loops
-and variables) into a template, without exposing the rendering context
+"Liquid Markup." Liquid Markup was developed and open sourced by
+Shopify.com. Liquid Markup arose from a desire to have a safe way
+to host programmatic constructs (like loops and variables) inside a
+template, without exposing the rendering context 
 to a full fledged programming environment. Shopify wanted to build a
 way for untrusted users of their public facing systems to upload
 dynamic content but not worry that the markup language would permit
@@ -179,7 +180,7 @@ templates, popular with the Ruby on Rails framework) allow fully
 embedded code snippets and while this is very powerful when you have full control
 over your source documents, it can be dangerous to provide a mechanism
 where that embedded code could look like `system("rm -rf /")`. 
-Liquid provides many of the benefits of embedded programming templates,
+Liquid Markup provides many of the benefits of embedded programming templates,
 without the dangers. 
 
 Lastly, your jekyll directory has a special file called `_config.yml`.
@@ -188,7 +189,7 @@ is very basic:
 
 [source,yaml]
 -----
-[filename=".", language="yml", sha="c6117f6:support/jekyll/_config.yml"]
+[filename="../final-scraper", language="yml", sha="152e5af:_config.yml"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -196,7 +197,7 @@ snippet~~~~~
 
 We only have three lines to contend with and they are simple to
 understand: the name of our site, the Markdown parser used by our
-jekyll command, and whether to use pygments to do syntax highlighting.
+jekyll command, and whether to use `pygments` to do syntax highlighting.
 
 To view this site locally run this command:
 
@@ -270,7 +271,7 @@ this file, you see that it manually specifies the `post` layout.
 
 The title is used to generate the `<title>` tag and can be used
 anywhere else you need it inside your template using the double
-braces syntax from Liquid: `{{ page.title }}`. Notice that any
+braces syntax from Liquid Markup: `{{ page.title }}`. Notice that any
 variable from the `_config.yml` file is prefixed with the `site.`
 namespace, while variables from your YFM are prefixed with `page.`. 
 Though the title matches the filename (after replacing
@@ -314,7 +315,7 @@ Markdown files remember to set the published variable explicitly
 inside of YFM, so make sure you check before committing the file to
 your repository if there is something you don't yet want published. 
 
-==== Jekyll markup
+==== Jekyll Markup
 
 Going past the YFM, we can start to see the structure of 
 Markdown files. Markdown files can be, at their simplest, just textual
@@ -405,11 +406,9 @@ push it into your repository.
 ==== Themes
 
 Jekyll does not support theming internally, but it is trivial to add
-any CSS files or entire CSS frameworks. You could do this yourself, or
-you could just fork an existing jekyll blog which has the theming you
-like. The most popular themed Jekyll blog structure is Octopress. We
-don't display this here, but you another easy option is to add the
-Bootstrap CSS library just as we did in the <<JavaScript>> chapter.
+any CSS files or entire CSS frameworks. You can also fork an existing
+jekyll blog which has the theming you like. We will show how and where
+to add your own customized CSS later in the chapter. 
 
 ==== Publishing on GitHub
 
@@ -668,7 +667,7 @@ The Tumblr import plugin has a few interesting options.
 
 <1> Write out HTML; if you prefer to use Markdown use `md`.
 <2> This importer will grab images if you provide a true value.
-<3> Wrap code blocks (indented 4 spaces) in a Liquid "highlight" tag
+<3> Wrap code blocks (indented 4 spaces) in a Liquid Markup "highlight" tag
 if this is set to true.
 <4> Write pages that redirect from the old Tumblr paths to the new
 Jekyll paths using this configuration option.
@@ -710,12 +709,12 @@ the site using Archive.org?
 ==== Jekyll Scraping Tactics
 
 We'll use Ruby to scrape the site; Ruby has some intuitive gems like
-mechanize which provide automation of web clients. There is an API for
-the Internet Archive, but I found it flakey and unreliable. Scraping
-the site itself works well, but to reduce load on the archive, we'll
-cache our results using a gem called `VCR` (typically used to cached
-results from hitting a web service during test runs but perfectly
-capable here as well). 
+mechanize which simplifies building web clients. There is an API for
+the Internet Archive, but I found it flakey and unreliable, so we'll
+just scrape the site. Scraping the site itself works well, but to
+reduce load on the archive, we'll cache our results using a gem called
+`VCR` (typically used to cached results from hitting a web service
+during test runs but perfectly capable here as well). 
 
 To write our parser, we will need to look at the structure of the
 archive presented on Archive.org. If we start on Archive.org, and
@@ -740,53 +739,20 @@ site is functionally archived inside Archive.org
 .Archive of ByTravelers.com on Archive.org
 image::images/jekyll-bytravelers-jun6.png[Archive of Bytravelers.com on Archive.org]
 
-Taking the URL from Chrome, we can use this as our starting point for
+Taking the URL from our browser, we can use this as our starting point for
 scraping. Clicking around throughout the site, it becomes evident that
 each URLs to a journal entry uses a standard format; in other words, 
 `http://www.bytravelers.com/journal/entry/56` indicates the 56th
 journal item stored on the site. With this knowledge in hand, we can
 iterate over the first hundred or so URLs easily. 
 
-Going to one of these pages through the archived site, it is useful to
-view the source of the page and start to understand the structure of a
-page which we can then use when pointing our mechanize scraper at the
-page to pull out content. Any modern web browser supports a debug mode, and Chrome (my
-browser of choice) supports this as well. If we hold down the control
-key and click (at least on Mac OSX; righting-click on Windows or
-Linux works in the same way) into the "body" of a journal entry on its
-page, we will see a context menu that gives us the option to "Inspect Element".
-Chosing this option brings up the Chrome Developer Tools and shows us
-the HTML code of the page pretty printed for us. There are a few other
-items of note if we hover over any of the printed items toward the
-bottom. As we moved our mouse over the `<p></p>` items, we see a
-highlight applied to the page above, indicating the visual result once
-rendered in a browser of this specific this HTML code. 
-
-[[inspecting-page-structure]]
-.Inspecting Page Structure
-image::images/jekyll-chrome-inspector.png[Inspecting Page Structure]
-
-REWRITE
-
-Moving over different places in the HTML code displays different areas of our
-page; finding our way to the `tr` tag above the large number of
-`td` tags gives us access to the `body` of the post. Once there, you
-can see at the very bottom of the frame a hierarchy like `html body
-table tbody tr td font table tbody tr` which tells us clues about the
-path we need to take inside the DOM to reach this particular piece of content. With these
-indications in hand, we can start to write our parser to extract this
-text from pages scraped from the archive.
-
 === Setting Up
 
-Goals: 
-* Modular
-* Testable
-* Simple
+We will write an HTML parser. We will build a parser class, and then
+use this class inside a runner script. The runner script will utilize
+the scraper class in the same way as our automated tests.
 
-==== Our Parser Runner
-
-A runner
+Let's start by writing the runner script.
 
 [source,ruby]
 -----
@@ -796,10 +762,7 @@ To be replaced
 snippet~~~~~
 -----
 
-Our runner has a simple interface, and this simple interface will
-carry over to our tests.
-
-==== Our Scraper
+Our scraper class looks like this.
 
 [source,ruby]
 -----
@@ -809,7 +772,8 @@ To be replaced
 snippet~~~~~
 -----
 
-==== Manifest File
+We also need to have a manifest file, the `Gemfile`, where we will
+document our library dependencies.
 
 [source,ruby]
 -----
@@ -822,7 +786,7 @@ snippet~~~~~
 Then, install our gems using the command `bundle`. That installs the 
 rspec tool, the jekyll tool and associated libraries.
 
-==== Test Harness
+Finally, we can create our test harness.
 
 [source,ruby]
 -----
@@ -854,8 +818,9 @@ closely the code we write inside our runner wrapper.
 Let's start with something simple: scraping the titles from the
 site. 
 
-Use the mechanize gem, a powerful way to scrape sites. Add these
-additional lines to the Gemfile using this command and the install the libraries.
+We will Use the mechanize gem, a simple and powerful way to scrape
+sites. Add these additional lines to the Gemfile using this command
+and the install the libraries. 
 
 [source,bash]
 -----
@@ -867,7 +832,7 @@ Now we can modify our scraper to use the mechanize gem and retrieve content from
 
 [source,ruby]
 -----
-[filename="../final-scraper", language="ruby", sha="7ee2ec1:scraper.rb" callouts="1,5,9,14,15", callouts_prefix=" # #"]
+[filename="../final-scraper", language="ruby", sha="7ee2ec1:scraper.rb" callouts="1,5,8,9,14,15", callouts_prefix=" # #"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -878,11 +843,15 @@ snippet~~~~~
 instance variable. We can use these variables using the `@root` syntax
 inside our script, and we can access the variable outside the class as
 well, both of which are valuable here.
+<3> When a method named `initialize` is defined for a class, this
+method is called right after object creation, so this is the appropriate
+place for us to initialize the member variables.
 <3> Initialize the variables to default values. We store the root of
 the URL on Archive.org here.
-<4> We modify our run method to loop 100 times.
-<5> Generate a URL to the specific page, retrieve the page and then
-print out the index in our loop plus the title of the page object.
+<4> Our run method runs the block inside 100 times.
+<5> Our block starts by generating a URL to the specific page,
+retrieves the page and then prints out the index in our loop plus the
+title of the page object. 
 
 Let's run our scraper and see what happens now.
 
@@ -905,15 +874,15 @@ will respond with a placeholder title when it does not have content
 from the site (as is the case with item #58, for example), so we
 should be sure to filter out these from our final pages.
 
-Now we can start thinking about how to scrape the interesting pieces
-of content we need from the pages we have identified as valuable.
+Now that we have all the content, we can start finding the important
+pieces inside and putting them into our Jekyll posts.
 
 ==== Refinining with Interactive Ruby 
 
 There are two things that make Mechanize immensely powerful as the
 foundation for a scraping tool: easy access to making HTTP calls, and
 a powerful searching syntax once you have a remote document. You've
-seen how Mechanize makes it simple to make a GET request. Now, let's
+seen how Mechanize makes it simple to make a GET request. Let's
 explore sifting through a massive document to get the important pieces
 of textual content. We can manually explore scraping using the Ruby
 IRB (interactive ruby shell).
@@ -937,37 +906,34 @@ but those indexes can be used to replay history and for job control,
 like many other types of shells. At the IRB prompt you can enter Ruby
 and IRB executes the command immediately. Once the command executes,
 IRB prints the result; the characters `=>` indicate the return
-value. Many return values are complex objects: the return value when
+value. When you are playing with Ruby, return values will often be complex
+objects: the return value when 
 you use `scraper.agent.get` is a Mechanize ruby object. This is a very
 large object, so printing it out takes a lot of real estate, and we've
 abbreviated the majority of it here, and will do that for many complex
 objects to save space when discussing IRB.
 
-Now that we have the page, how do we extract information from it? When
-we used the Chrome inspector we saw a path to the post title
-(represented there by the path `html body table tbody tr td font table
-tbody tr`). This is a clue to finding the same content using
-Mechanize. Mechanize has a nice piece of syntactic sugar that makes it
-easy to search the DOM structure: the "/" operator. Let's try it. 
+The last command in IRB saves the HTTP GET request as a page object.
+Once we have the page, how do we extract information from it?
+Mechanize has a nice piece of syntactic sugar that makes it easy to
+search the DOM structure: the "/" operator. Let's try it.
 
 [source,bash]
 -----
-2.0.0-p481 :003 > page / "html body table tbody tr td font table tbody
+2.0.0-p481 :003 > page / "
 tr"
  => [] 
 -----
 
 If our query path had found anything, we would have seen a return
-value with the content we wanted, but in this case we got back an
+value with an array of Mechanize objects, but in this case we got back an
 empty array (which indicates nothing was found). Unfortunately, the
 paths vary when the document is loaded into a browser (the browser can
 customize the DOM or the server can send slightly different data to
-the client). But, if we experiment with similar paths, we will find
-what we need. IRB is a great place to experiment with different
-combinations until we get the right one. It helps to jump back and
-forth between Chrome and IRB, examining the structure of the HTML
-inside Chrome and then testing a path in IRB. Eventually, we come
-across this query path: 
+the client). But, if we experiment with similar paths inside IRB, we
+will find what we need. It helps to jump back and forth between Chrome
+and IRB, examining the structure of the HTML inside Chrome and then
+testing a search path using IRB. Eventually, we come across this search path: 
 
 [source,ruby]
 -------
@@ -983,34 +949,40 @@ across this query path:
 
 Eureka, we found the pattern that gives us our title. We had to jump
 around inside the results from the query, but we can correlate the
-text on the page with the resultant structures found using the
-query. It is important to note that we had to strip whitespace from
-the title to make it presentable. We can incorporate this into our
-scraper code, but this is a good moment to think about how we can write
-tests to verify this works properly. And, testing provides us with
-another opportunity: using caching.
+text on the page inside the browser with different structures found
+using the query inside IRB. It is important to note that we have to
+strip whitespace from the title to make it presentable. We can
+incorporate this into our scraper code, but this is a good moment to
+think about how we can write tests to verify this works properly. And,
+when we start writing tests, we open the door for another opportunity:
+caching to our HTTP requests.
 
 ==== Writing Tests and Caching
 
 Were we to run our `run.rb` script again, we would notice that it
 prints the document title, then halts as it retrieves the content from
-the server, and then prints again, stopping and starting. The content
-from Archive.org does not change at all since the original site was
-scraped years ago. It seems like a good opportunity to put a caching
-layer between us and the code, reducing impact on Archive.org and
-making our script run faster. In addition, if we structure our code to
-make retrieval and processing happen independently, we can write tests
-to verify the processing.
+the server, and then prints again, stopping and starting until
+complete. The content from Archive.org does not change at all since
+the original site was 
+scraped years ago, so there is no reason we need to get the latest
+content; content even several months stale will be the same as content
+retrieved a few moments ago. It seems like a good opportunity to put a
+caching layer between us and the code, reducing impact on Archive.org
+and making our script run faster. In addition, if we structure our
+code to make retrieval and processing happen independently, we can
+write tests to verify the processing.
 
 [source,ruby]
 -----
-[filename="../final-scraper", language="ruby", sha="c1eb33a:scraper.rb" callouts="2,3,12,17,23,27,35,40", callouts_prefix=" # #"]
+[filename="../final-scraper", language="ruby", sha="1797422:scraper.rb" callouts="2,3,12,17,23,26,38,43", callouts_prefix=" # #"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
-<1> We require the VCR gem. 
+<1> We require the VCR gem: this gem intercepts HTTP requests, sending
+them out normally the first time, and caching all successive calls,
+completely transparent to the user.
 <2> VCR must be configured when you use it: in this case we specify a
 directory where results will be cached, and tell it what mocking
 library we should use to store the cached results.
@@ -1050,6 +1022,12 @@ print out the titles.
 [source,bash]
 ----
 $ bundle exec ruby ./run.rb
+Unable to scrape this file (14)
+Unable to scrape this file (43)
+Unable to scrape this file (47)
+Unable to scrape this file (71)
+Unable to scrape this file (94)
+Unable to scrape this file (96)
 Third day in Salvador
 The Hill-Tribes of Northern Thailand
 Passion Play of Oberammergau
@@ -1057,11 +1035,14 @@ Passion Play of Oberammergau
 Cuba - the good and bad
 Nemaste
 Mexico/Belize/Guatemala
+South Africa
 ...
 ----
 
-As a side effect of caching, things work much faster. If we analyze
-the time we save using the `time` command, we see these results.
+We print out the errors (when Archive.org does not have a page for a
+particular URL). Note that ss a side effect of caching, things work
+much faster. If we analyze the time we save using the `time` command,
+we see these results. 
 
 [source,bash]
 -----
@@ -1132,18 +1113,73 @@ snippet~~~~~
 ...
 -----
 
-Now both tests pass.
+Now both tests pass. That single line of code might worry you believe
+in defensive coding. If this function were called with a nil value,
+for example, it would crash. Even if we could guarantee that this
+situation would never occur from our calling context, it is better to
+make our method safe. Let's make sure it works and write a test to
+prove it.
+
+Add a test that asserts there is not an error when the argument to
+`process_title` is nil.
+
+[source,ruby]
+-----
+...
+[filename="../final-scraper", language="ruby", sha="63b7dd7:scraper_spec.rb", lines="19..21"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
+
+Running `rspec scraper_spec.rb` results in the following error, which
+we expect since we have not yet fixed the code.
+
+[source,bash]
+------
+..F..
+
+Failures:
+
+  1) #run #process_titles should not crash if the title is nil
+     Failure/Error: expect{ @scraper.process_title( nil ) }.to_not raise_error()
+       expected no Exception, got #<NoMethodError: undefined method `strip' for nil:NilClass> with backtrace:
+         # ./scraper.rb:38:in `process_title'
+         # ./scraper_spec.rb:20:in `block (4 levels) in <top (required)>'
+         # ./scraper_spec.rb:20:in `block (3 levels) in <top (required)>'
+     # ./scraper_spec.rb:20:in `block (3 levels) in <top (required)>'
+
+Finished in 0.00701 seconds
+5 examples, 1 failure
+
+Failed examples:
+
+rspec ./scraper_spec.rb:19 # #run #process_titles should not crash if the title is nil
+------
+
+We can fix it with this one simple change.
+
+[source,ruby]
+-----
+...
+[filename="../final-scraper", language="ruby", sha="63b7dd7:scraper.rb", lines="36..39"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
+
 
 ==== Writing Jekyll Posts
 
 Now that we have our titles, we can generate an actual Jekyll
-post. This will not have anything beyond the title, but setting up
-the structure of files that make up a real Jekyll blog up will allow
-us to use the Jekyll command line tool. This tool will spot check our
-new content as we will see errors when incorrect Markdown content is
-added to a post.
+post. To make things simple we will make each post just contain the
+titles for now, but we will quickly add other content. Getting the
+skeleton of a post established allows us to use the Jekyll command line
+tools to troubleshoot our setup.
 
-Let's create a Git repository for our files. When the Jekyll tool
+First, create a Git repository for our files. When the Jekyll tool
 runs, it generates all the files into a directory called "_site" so we
 should add a ".gitignore" file which ignores this directory.
 
@@ -1151,15 +1187,16 @@ should add a ".gitignore" file which ignores this directory.
 ------
 $ git init
 $ mkdir _posts
-$ printf "_site" >> .gitignore
+$ echo "_site" >> .gitignore
 $ git add .gitignore
 $ git commit -m "Initial checkin"
 ------
 
 Jekyll Markdown files are very simple: just a bit of YAML at the
 beginning, with text content following, formatted as Markdown.  To
-generate Markdown posts, add a method called `write` which writes out
-the processed information after we have retrieved and parsed the pages from Archive.org.
+generate Markdown posts, add a method called `write` to our scraper
+which writes out the processed information after we have retrieved and
+parsed the pages from Archive.org. 
 
 Jekyll posts are stored inside the `_posts` directory. As a
 convention, filenames are generated with the date and title,
@@ -1234,7 +1271,12 @@ posts and to troubleshoot any issues with our Jekyll repository.
 ==== Using the Jekyll Command Line Tool
 
 Taking a moment to add our files to the Git repository, we can then
-take a look at our site using the `jekyll` command line tool.
+take a look at our site using the `jekyll` command line tool. Using
+the command line tool locally will spot check our new content as we
+will see errors immediately (rather than getting notification emails
+from GitHub after publishing there). Errors can occur if our scraper
+does not correctly process the HTML retrieved from Archive.org and
+subsequently generates incorrect Markdown content, for example. 
 
 [source]
 ----
@@ -1256,79 +1298,40 @@ Configuration file: none
   Server running... press ctrl-c to stop.
 ----
 
-We've started the Jekyll server in "watch" mode which means the site will
-be automatically regenerated if we edit the source files. Let's take a
-look at the site as currently configured on *http://localhost:4000*.
+So, we see a few problems already. First, we don't have a layout for
+"post". And, there is no configuration file. Let's fix these problems.
 
-[[no-posts]]
-.No posts at all
-image::images/jekyll-no-posts.png[No posts at all]
+Add a file called `_config.yml` to the root directory.
 
-There are no posts! Ah, we elected to keep posts "unpublished" for now
-to review them before making them public. If we edit any file
-individually and change the line `published: false` inside our YFM to
-`published: true` then we will see that this file becomes available
-inside our site. Let's do this for three of the files. Notice the
-server regenerates our files each time we change one of them.
-
-
-<3> Jekyll expects markdown filenames to have a specific format. We need
-to modify the title by remove commas and quotes, and then converting
-whitespace, colons and semicolons to hyphen characters. We also need
-the creation date, which we retrieve in a later call, and parameterize
-the title with that information. Then we write out the file.
-<4> Inside our new `process_creation_date` method we extract the
-creation date from the scraped data. We don't show it here because it
-is trivial, but after the `process_body` method call (which is inside
-the `get_ith_page` method) we added a call to this new function,
-giving it `i` and `row[3]` as the arguments. 
-
-We now have the posts generated properly, but we don't have an entry
-page into the blog. We can create a `index.md` file which just
-displays an index of all the blog posts. Inside this file we will use
-Liquid Tags to generate that list of posts. Notice that the site
-variable is populated with the list of posts automatically (Jekyll
-loads these up as long as they are in the `_posts` directory). We
-generate a link with the post URL, create a teaser from the content by
-generating a snippet of the body using the truncate method. Then we
-indicate the date that file was processed.  Liquid provides a nice set
-of tools to convert and process text using the pipe character which
-allow you to build complex structures when combined with the looping
-constructs you see here.
-
-There are a wide swath of constructs available with Liquid Templates.
-You can review the documentation for specifics. One common source of
-confusion when first learning Liquid is the difference between output
-tags and logic tags. Output tags use double braces surrounding the
-content (`{{ site.title }}`) while logic tags use a brace and percent
-symbol (`{% if site.title %}`). As you might expect, output tags place
-some type of visible output into the page, and logic tags perform some
-logic operation, like conditionals or loops. 
-
-[source,html]
+[source,yaml]
 -----
-[filename=".", language="ruby", sha="843dd54:support/jekyll-parser/index.md"]
+[filename="../final-scraper", language="yml", sha="152e5af:_config.yml"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
-The above template has both output and logic tags. We see a logic tag
-in the form of `{% for ... %}` which loops over each post. Jekyll will
-process the entire posts directory and provide it to pages inside the
-`site.posts` variable, and the `for` logic tag allows us to iterate
-over them. Remember that if we use a `{% for ... %}` tag we need to
-"close" the tag with a matching `{% endfor %}` tag. Inside of our for
-loop we have several output tags: `{{ post.url }}` outputs the post
-URL associated with a post, for example. We also have "filters" which
-are methods defined to process data. One such filter is the
-`strip_html` filter which you might guess strips out HTML text,
-converting it to escaped text. This is necessary when your text could
-include HTML tags. You'll also notice that filters can be "chained";
-we process the body with the `strip_html` filter and then truncate the
-text by 40 characters using the `truncatewords:40` filter.
+Remember, the jekyll tool does not reload the configuration file
+automatically, so we should restart the tool by hitting control-C and
+restarting. 
 
-We also need to create a *default* layout, so create this inside the
+Then, create a directory called `_layouts`, and place a file called
+`post.html` inside it with these contents.
+
+[source,html]
+-----
+[filename=".", language="html", sha="325c1ef:support/jekyll-parser/_layouts/post.html"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+The `post.html` layout file is very simple: we use Liquid Markup tags
+to write out the title of the site (contained in an object called
+`page` which our template has access to) and then the content itself,
+which is the rendered output from the post page.
+
+We also need to create a "default" layout, so create this inside the
 `_layouts` directory with the filename `default.html`. 
 
 [source,html]
@@ -1342,55 +1345,59 @@ snippet~~~~~
 This file is almost pure HTML, with only the `{{ content }}` tag. When
 we specify `default` as the layout inside YAML for a Markdown file,
 the Markdown text is converted to HTML, and then this layout file is
-wrapped around it. Notice this default layout is the same layout we
-have used inside our post files. 
+wrapped around it. You can see that the initial post files specify the
+`post` layout, which is wrapped around the content, then the
+`post.html` layout file specifies the `default.html` layout, which is
+wrapped around the entire contents. 
 
-Finally, in order to convey that this is a Jekyll repository to both
-the command line Jekyll processor and GitHub service, we need to
-create a `_config.yml` file. We saw a simple version of this file
-earlier and can reuse this almost verbatim, changing only the name.
+When we add these files, we will see the Jekyll tool notice file
+system changes and regenerate files. We now have generated posts, but
+we don't have a master index file, so let's add this now.
 
-[source,yaml]
+==== Master Index File with Liquid Markup
+
+We now have the posts generated properly, but we don't have an entry
+page into the blog. We can create a `index.md` file which just
+displays an index of all the blog posts. 
+
+[source,html]
 -----
-[filename=".", language="ruby", sha="843dd54:support/jekyll-parser/_config.yml"]
+[filename=".", language="ruby", sha="843dd54:support/jekyll-parser/index.md"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
+Notice that the file combines Markdown (the single `#` character
+converts into an H1 tag) with regular HTML. You are free to mix
+regular HTML inside of Markdown files when there is not a Markdown
+equivalent. 
 
-[source]
--------
-...
-      Regenerating: 1 files at 2014-06-20 12:54:52 ...done.
-      Regenerating: 2 files at 2014-06-20 12:55:03 ...done.
-      Regenerating: 1 files at 2014-06-20 12:55:15 ...done.
-      Regenerating: 4 files at 2014-06-20 12:55:15 ...done.
-...
--------
+Output tags use double braces surrounding the
+content (`{{ site.title }}`) while logic tags use a brace and percent
+symbol (`{% if site.title %}`). As you might expect, output tags place
+some type of visible output into the page, and logic tags perform some
+logic operation, like conditionals or loops. 
 
-And, if we reload our page we'll see them listed inside our index.
 
-[[publishing-single-post]]
-.Publishing a single post
-image::images/jekyll-got-posts.png[Publishing some of the posts]
-
-If we trust that all these posts are correct, we can change the
-`scraper.rb` script to make them all public (inside the heredoc
-template, just change the published flag), or we could change files
-individually by hand as we did here.
-
-Taking a look at the blog post itself, we see this after clicking on
-the first link.
+The above template has both output and logic tags. We see a logic tag
+in the form of `{% for ... %}` which loops over each post. Jekyll will
+process the entire posts directory and provide it to pages inside the
+`site.posts` variable, and the `for` logic tag allows us to iterate
+over them. If we use a `{% for ... %}` tag we need to "close" the tag
+with a matching `{% endfor %}` tag. Inside of our for 
+loop we have several output tags: `{{ post.url }}` outputs the post
+URL associated with a post, for example. We also have "filters" which
+are methods defined to process data. One such filter is the
+`strip_html` filter which you might guess strips out HTML text,
+converting it to escaped text. This is necessary when your text could
+include HTML tags. You'll also notice that filters can be "chained";
+we process the body with the `strip_html` filter and then truncate the
+text by 40 characters using the `truncatewords:40` filter.
 
 [[not-so-beautiful]]
 .Not the best formatting
 image::images/jekyll-unformatted-post.png[Not the best formatting]
-
-Not very pretty at all. We can beautiful this by adding some styling
-to the page. We'll use Bootstrap, the most popular CSS framework on
-GitHub. To start, edit the layout to include Bootstrap from the
-Bootstrap CDN. And, add a `container` class around the content. 
 
 [source,html]
 -----
@@ -1481,9 +1488,8 @@ index 1873972..a4dbc21 100644
 ...
 ------
 
-The astute amongst you will also note that this shows we can add
-comments inside of our YAML Front Matter when needed. 
-
+This shows we can add comments inside of our YAML Front Matter when
+needed.  
 
 ==== Comprehensive Scraping
 
