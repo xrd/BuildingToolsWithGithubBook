@@ -1634,10 +1634,13 @@ time to let those records propagate out.
 === Summary
 
 We've explored the details of Jekyll, looking at the structure of a
-Jekyll blog. By investigating the internals of a Jekyll post, we 
-explained the intricacies of YAML Front Matter (YFM) and how
-seamlessly you can mix and match HTML with Markdown syntax. Jekyll
-blogs can utilize their own custom CSS and we've shown how easy it is
+Jekyll blog. Liquid Markup is a powerful way to use programmatic
+constructs inside of a Markdown file and we document the most
+important concepts around using this templating language. By
+investigating the internals of a Jekyll post, we explained the
+intricacies of YAML Front Matter (YFM) and how seamlessly you can mix
+and match HTML with Markdown syntax. Jekyll blogs can utilize their
+own custom CSS and we've shown how easy it is 
 to use a powerful complete library like Bootstrap layered underneath a
 site specific small CSS file. And, we built a scraper application
 which retrieves a remote site in its entirety and converts it into the
