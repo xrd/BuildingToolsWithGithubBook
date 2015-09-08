@@ -34,13 +34,13 @@ tools.
 ==== (Less Than) Evil Scientist Parents
 
 Like many of the open source technologies in heavy usage at GitHub,
-jekyll was originally developed by Tom Preson Warner, one of the
+Jekyll was originally developed by Tom Preson Warner, one of the
 co-founders of GitHub, and Nick Quaranto, of 37 Signals, though there
-are now thousands of contributors to the Jekyll codebase. Like many
-open source projects, the strength of the tool comes not from the
+are now thousands of contributors to the Jekyll codebase.
+Unsurprisingly, the strength of the Jekyll tool comes not from the 
 brilliance of the original developers or the brilliance of the idea,
 but the way that those original developers cultivated community and
-involvement among the users of the tool.
+involvement among their users.
 
 ==== Operating Jekyll Locally
 
@@ -99,7 +99,7 @@ Now we are ready to create a Jekyll blog.
 
 === Jekyll Blog Quick Start
 
-Now that we have our required tools, let's create a simple blog. Run
+We have our required tools installed, so let's create a simple blog. Run
 these commands.
 
 [source]
@@ -181,7 +181,8 @@ embedded code snippets and while this is very powerful when you have full contro
 over your source documents, it can be dangerous to provide a mechanism
 where that embedded code could look like `system("rm -rf /")`. 
 Liquid Markup provides many of the benefits of embedded programming templates,
-without the dangers. 
+without the dangers. We will show several examples of Liquid Markup
+and how they work later in the chapter.
 
 Lastly, your jekyll directory has a special file called `_config.yml`.
 This is the jekyll configuration file. Peering into it, you'll see it
@@ -680,21 +681,25 @@ that we need to import?
 
 === Scraping Sites into Jekyll
 
-If you are stuck with a site that does not fit any of the standard
-importers, you could write your own importer by perusing the
-http://github.com/jekyll/jekyll-import[source of the Jekyll
-importers on GitHub]. This is probably the right way to 
+Jekyll provides various importers that make it easy to convert an
+existing blog into a Jekyll blog. But, if you have a non-standard
+blog, or a site that is not a blog, you still have options for
+migrating it to Jekyll. The first option is to write your own importer
+by perusing the http://github.com/jekyll/jekyll-import[source of the
+Jekyll importers on GitHub]. This is probably the right way to 
 build an importer if you plan on letting others use it, as it will
 extend several jekyll importer classes already available to make
-importing standard for other contributors. Learning all the existing
-methods and reading through the dozens of samples can be a lot of
-work, however; another option is just to write out our files
-respecting the very simple format required by Jekyll. I started as a
-Perl programmer and always loved this quote from Larry Wall, the creator of Perl:
-"We will encourage you to develop the three great virtues of a
-programmer: laziness, impatience, and hubris." Let's accept our
-inherent laziness and choose the second route. We'll write some code
-to scrape a site and make a new Jekyll site.
+importing standard for other contributors. 
+
+Another option is to simply write out files in the simple format that
+is a Jekyll blog. This is much lazier than reading through the Jekyll
+tools and their libraries, of course. I started as a Perl programmer and
+always loved this quote from Larry Wall, the creator of Perl: "We will
+encourage you to develop the three great virtues of a programmer:
+laziness, impatience, and hubris." Let's accept our inherent laziness
+and choose the second route. We'll write some code to scrape a site
+and make a new Jekyll site from scratch, learning about the structure
+of a Jekyll blog through trial and error.
 
 While living in Brazil in 2000 I built a site called ByTravelers.com,
 an early travel blog. At some point, I sadly lost the database and
@@ -706,20 +711,11 @@ the site using Archive.org?
 
 ==== Jekyll Scraping Tactics
 
-We'll use Ruby to scrape the site; Ruby has some intuitive gems like
-mechanize which simplifies building web clients. There is an API for
-the Internet Archive, but I found it flakey and unreliable, so we'll
-just scrape the site. Scraping the site itself works well, but to
-reduce load on the archive, we'll cache our results using a gem called
-`VCR` (typically used to cached results from hitting a web service
-during test runs but perfectly capable here as well). 
-
-To write our parser, we will need to look at the structure of the
-archive presented on Archive.org. If we start on Archive.org, and
-enter "bytravelers.com" into the search box in the middle of the page,
-and then click "BROWSE HISTORY" we will be presented with a calendar
-view which shows all the pages scraped by the Internet Archive for
-this site. 
+We can start by looking at the structure of the archive presented on
+Archive.org. Go to Archive.org, and enter "bytravelers.com" into the
+search box in the middle of the page,  and then click "BROWSE HISTORY"
+we will be presented with a calendar view which shows all the pages
+scraped by the Internet Archive for this site. 
 
 [[calendar-view-archive]]
 .Calendar view of Archive.org
@@ -750,9 +746,9 @@ A naive implementation of a scraper would be a single Ruby file in
 which the execution and functionality were contained all in one.
 However, if we expose the functionality as a class, and then
 instantiate the class in a separate file, we can also write tests
-which utilize and validate the same steps as are inside the . So, let's take this
-secondary approach and create three files: the scraper class, the
-runner class (which instantiates and "runs" our scraper) and the test
+which utilize and validate the same steps as the runner script. So,
+let's take this smarter approach and create three files: the scraper
+class, the runner class (which instantiates and "runs" our scraper) and the test
 file (which instantiates and validates the functionality of our scraper).
 
 First, the runnner script.
@@ -819,11 +815,11 @@ closely the code we write inside our runner wrapper.
 ==== Scraping Titles
 
 Let's start with something simple: scraping the titles from the
-site. 
-
-We will use the mechanize gem, a simple and powerful way to scrape
-sites. Add these additional lines to the Gemfile using this command
-and the install the libraries. 
+site. We'll use Ruby to scrape the site; Ruby has some intuitive gems like
+mechanize which simplifies building web clients. There is an API for
+the Internet Archive, but I found it flakey and unreliable, so we'll
+just scrape the site. Add these additional lines to the Gemfile using
+this command and the install the libraries.
 
 [source,bash]
 -----
@@ -1439,15 +1435,15 @@ Use IRB to find the author and body content. Start by searching for the author i
 
 [source,bash]
 -----
-irb(main):037:0> rows[2].to_s
+2.0.0-p481 :037 > rows[2].to_s
 => "<tr>\n<td align=\"center\">\n\n\n\n<font size=\"+1\">author: \n\nMD \n\n<br>\n<font size=\"-2\"><a href=\"/web/20010409182418/http://www.bytravelers.com/journal/user/21\">read more from this author</a> | \n<a href=\"/web/20010409182418/http://www.bytravelers.com/maps/user/21\">see maps from this author</a></font>\n</font>\n\n</td>\n<td align=\"center\">\n\n\n\n\n<font size=\"-1\">No linked map</font>\n\n\n</td>\n</tr>"
-irb(main):038:0> ( rows[2] / "td font" )[0].text()
+2.0.0-p481 :038 > ( rows[2] / "td font" )[0].text()
 => "author: \n\nMD \n\n\nread more from this author | \nsee maps from this author\n"
-irb(main):039:0> author = ( rows[2] / "td font" )[0].text()
+2.0.0-p481 :039 > author = ( rows[2] / "td font" )[0].text()
 => "author: \n\nMD \n\n\nread more from this author | \nsee maps from this author\n"
-irb(main):040:0> author =~ /author:\s+\n\n([^\s]+)\n\n/
+2.0.0-p481 :040 > author =~ /author:\s+\n\n([^\s]+)\n\n/
 => 0
-irb(main):041:0> $1
+2.0.0-p481 :041 > $1
 => "MD"
 -----
 
@@ -1490,8 +1486,9 @@ We can then run `bundle exec ./run.rb` to rewrite our post files.
 
 ==== Adding Images to Jekyll
 
-Jekyll can host any binary files as well, and Markdown files can
-include these assets. Let's add the images from the original site.
+Jekyll can host any binary files as well, and Markdown files can host
+the proper markup to include these assets. Let's add the images from
+the original site. 
 
 [source,ruby]
 -----
@@ -1552,11 +1549,13 @@ Then, download the Bootstrap CSS file into the proper folder.
 
 [source,bash]
 -----
+$ mkdir assets/css
 $ curl https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css -o assets/css/bootstrap.min.css
 -----
 
 Adding a CSS framework like Bootstrap helps things considerably, but
-we should match the original colors as well. 
+we should match the original colors as well. Add a file called
+`site.css` into the `assets/css` directory.
 
 [source,css]
 -----
@@ -1573,12 +1572,10 @@ your imagination.
 
 [source,html]
 -----
-...
 [filename="../final-scraper", language="ruby", sha="1d0b30e:_layouts/default.html"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
-...
 -----
 
 If we reload, we will see a much prettier version of the site.
@@ -1589,7 +1586,7 @@ image::images/jekyll-now-livelier.png[Restoring the original images and colors]
 
 We've now entirely scraped an old site and built a new Jekyll blog, so
 there is just one thing left to do: encourage and permit
-collaboration, and GitHub makes that easy.
+collaboration, which GitHub makes particular easy.
 
 ==== Inviting Contributions with GitHub "Fork"
 
@@ -1613,6 +1610,10 @@ To be replaced
 snippet~~~~~
 ...
 -----
+
+Now anyone can fork our repository, add their own post to the `_posts`
+directory, and then issue a pull request asking us to incorporate the
+new post into our Jekyll blog.
 
 ==== Publishing our blog to GitHub
 
