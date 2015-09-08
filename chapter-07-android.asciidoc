@@ -157,7 +157,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.6.+'
+        classpath 'com.android.tools.build:gradle:1.0.0-rc2'
     }
 }
 
@@ -169,9 +169,9 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.1"
+    buildToolsVersion "19.1"
 
-    sourceSets { // <1>
+    sourceSets {  // // <1>
       main {
         manifest.srcFile 'AndroidManifest.xml'
         java.srcDirs = ['src']
@@ -184,17 +184,15 @@ android {
 }
 
 dependencies {
-  compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5' // <2>
+  compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'  // // <2>
+   compile( 'commons-codec:commons-codec:1.9' )
 }
-
-
-
 -----
 
 Gradle build files use some standard boilerplate which you can ignore
 here, but there are two items which are worth noting.
 
-<1> Gradle was not designed for Android; it started as a generic java
+<1> Gradle was not originally designed for Android; it started as a generic java
 build tool. We need to specify where the files to compile reside for an android
 project using the `sourceSets` variable.
 <2> We can install the egit library, our interface to the GitHub API
@@ -297,8 +295,9 @@ file to have the internet permission (look for the line labled
 
 ==== Writing tests
 
-There are many options for writing tests on Java and Android. JUnit is used for unit tests, while
-Robotium faciliates user interface tests. We'll use a wrapper around
+There are many options for writing tests on Java and Android. JUnit is
+an option for unit tests, while Robotium provides a way to write user
+interface tests. We'll use a wrapper around 
 Robotium called Calabash for Android which allows us to write in a
 high level domain specific language. Calabash uses a
 simple DSL for writing tests which is readable and elegant. Most
@@ -441,17 +440,15 @@ require 'calabash-android/calabash_steps'
 require 'httparty'
 
 def set_title_and_mood
-  moods = %w{ happy sad angry blue energized }  # <1>
-  @mood = "Feeling #{moods[(rand()*moods.length).to_i]} today" # <2>
-  @title = @mood.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '') # <3>
-  date = ( ENV['date'] ? 
-          Time.parse(ENV['date']) : 
-          Time.now ).strftime('%Y-%m-%d') # <4>
-  @filename = "_posts/#{date}-#{@title}.md" # <5>
+  moods = %w{ happy sad angry blue energized } # # <1>
+  @mood = "Feeling #{moods[(rand()*moods.length).to_i]} today" # # <2>
+  @title = @mood.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '') # # <3>
+  date = (ENV['date'] ? Time.parse(ENV['date']) : Time.now).strftime('%Y-%m-%d') # # <4>
+  @filename = "_posts/#{date}-#{@title}.md" # # <5>
 end
 
 def check_and_set( id, text )
-  check_element_exists "edittext id:'#{id}'"  # <6>
+  check_element_exists "edittext id:'#{id}'" # # <6>
   query "edittext id:'#{id}'", :setText => text
 end
 -----
@@ -684,24 +681,29 @@ client.setCredentials("user", "passw0rd");
 -----
 
 The context in which the code runs makes as much a difference as the
-code. Android requires that any 
-code which makes network connections run inside a background thread.
-Android applications, in order to maintain responsive UI behavior,
-disallow any long running processes (or indeterminate processes, like
-network activity) from running on the main UI thread. If your eyes are
-starting to spin at the thought of learning about threading using
-Java, dispell your worries. The Android SDK provides a great class for
-managing background thread code called `AsyncTask`. We implement a
-class which supports this interface by overriding at least one method
+code. The Android OS disallows any code from making network
+connections unless it runs inside a background thread.
+If your eyes are starting to spin at the thought of learning about
+threading using Java, dispell your worries. The Android SDK provides a
+great class for managing background thread code called `AsyncTask`. We
+implement a class which supports this interface by overriding at least one method
 which runs our background thread code (called `doInBackground()`). 
 
+Before we implement the login, we need to update our `onCreate`
+function to register a click  handler that will call the login task we
+will define. 
+
+<1> We retrieve the username and password from our UI elements. 
+<2> Our UI should notify the user that a login is occurring in a
+background task, so we grab the status text element and update the text in it. 
+<2> We then start the background thread process to do our login. This
+syntax creates a new thread for us with the username and password as
+parameters. Android will manage the lifecycle of this thread for us,
+including starting the new thread separate from the main UI thread.
 
 [source,java]
 -----
 ...
-public class MainActivity extends Activity
-{
-    /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -711,37 +713,32 @@ public class MainActivity extends Activity
         Button login = (Button)findViewById( R.id.login ); 
         login.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    EditText utv = (EditText)findViewById( R.id.username ); // <1>
+                    EditText utv = (EditText)findViewById( R.id.username ); 
                     EditText ptv = (EditText)findViewById( R.id.password );
-                    String username = utv.getText().toString();
-                    String password = ptv.getText().toString();
-                    TextView status = (TextView)findViewById( R.id.login_status ); // <2>
-                    status.setText( "Logging in, please wait..." );
-                    new LoginTask().execute( username, password ); // <3>
+                    username = (String)utv.getText().toString();
+                    password = (String)ptv.getText().toString(); // // <1>
+                    TextView status = (TextView)findViewById( R.id.login_status ); 
+                    status.setText( "Logging in, please wait..." ); // // <2>
+                    new LoginTask().execute( username, password );  // // <3>
                 }
             });
     }
+...
+-----
 
-    private void loggedIn() {
+Now we can implement `LoginTask`. 
 
-        setContentView(R.layout.logged_in); 
-
-        Button submit = (Button)findViewById( R.id.submit );
-        submit.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    doPost(); 
-                }
-            });
-    }
-
-    class LoginTask extends AsyncTask<String, Void, Boolean> {  // <4>
+[source,java]
+-----
+...
+    class LoginTask extends AsyncTask<String, Void, Boolean> {   // // <1>
         @Override
-            protected Boolean doInBackground(String... credentials) {
+            protected Boolean doInBackground(String... credentials) { // // <2>
             boolean rv = false;
             UserService us = new UserService();
-            us.getClient().setCredentials( credentials[0], credentials[1] ); // <5>
+            us.getClient().setCredentials( credentials[0], credentials[1] ); 
             try {
-                User user = us.getUser( credentials[0] ); // <6>
+                User user = us.getUser( credentials[0] );  // // <3>
                 rv = null != user;
             }
             catch( IOException ioe ) {}
@@ -751,32 +748,17 @@ public class MainActivity extends Activity
         @Override
             protected void onPostExecute(Boolean result) {
             if( result ) {
-                loggedIn(); // <7>
+                loggedIn();  // // <4>
             }
-            else {
+            else { // // <5>
                 TextView status = (TextView)findViewById( R.id.login_status );
-                status.setText( "Invalid login, please check credentials" ); // <8>
+                status.setText( "Invalid login, please check credentials" ); 
             }
         }
     }
-
-    private void doPost() {
-        TextView tv = (TextView)findViewById( R.id.post_status ); 
-        tv.setText( "Successful jekyll post" );
-    }
-    
 ...
 -----
 
-We've now implemented the login functionality.
-
-<1> We retrieve the username and password from our UI elements. 
-<2> Our UI should notify the user that a login is occurring in a
-background task, so we grab the status text element and update the text in it. 
-<2> We then start the background thread process to do our login. This
-syntax creates a new thread for us with the username and password as
-parameters. Android will manage the lifecycle of this thread for us,
-including starting the new thread separate from the main UI thread.
 <2> Here we define the derived AsyncTask class. The three types in the
 generics signature provide a way to parameterize our instantiated task;
 we need to provide a username and password to the background task, and
@@ -805,7 +787,75 @@ fact that when we call this, we are already logged into GitHub.
 because our credentials were incorrect, we indicate this in the status
 message. A user can retry if they wish.
 
-This code will not compile yet, because we need to import the support
+`loggedIn` updates the UI once logging in has completed and then makes
+the post on GitHub. Once again, we will need to implement `doPost` in an
+asynchronous task since it makes network connections.
+
+[source,java]
+-----
+...
+    private void loggedIn() {
+
+        setContentView(R.layout.logged_in);  // // <1>
+
+        Button submit = (Button)findViewById( R.id.submit );
+        submit.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    doPost();  // // <2>
+                }
+            });
+    }
+...
+-----
+
+<1> Change the UI to reflect the fact we are now logged in.
+<2> If we click on the button, make the post to the server.
+
+Building out `doPost` should be more familiar now that we have
+experience with AsynchronousTasks.
+
+[source,java]
+-----
+...
+    private void doPost() {
+        new PostTask().execute( username, password ); 
+    }
+
+    class PostTask extends AsyncTask<String, Void, Boolean> {  
+
+        @Override 
+            protected Boolean doInBackground(String... credentials) {
+            String login = credentials[0]; 
+            String password = credentials[1];
+
+            EditText post = (EditText)findViewById( R.id.post );
+            String postContents = post.getText().toString();
+
+            EditText repo = (EditText)findViewById( R.id.repository ); 
+            String repoName = repo.getText().toString();
+
+            GitHubHelper ghh = new GitHubHelper( login, password ); // // <1>
+            return ghh.SaveFile( repoName, postContents );
+        }
+        
+        @Override
+            protected void onPostExecute(Boolean result) {
+            TextView status = (TextView)findViewById( R.id.post_status );
+            if( result ) {
+                status.setText( "Successful jekyll post" );
+            }
+            else {
+                status.setText( "Post failed." ); 
+            }
+        }
+    }
+...
+-----
+
+<1> We will create a helper class that will wrap our interactions with
+GitHub. We'll call it `GitHubHelper`.
+
+We need to import the support
 classes. The JARs and classes for Egit have already been added to our project
 automatically using gradle. Make sure you add these `import`
 statements to the top of the file, under the other imports.
@@ -820,6 +870,8 @@ import org.eclipse.egit.github.core.User;
 import java.io.IOException;
 ...
 -----
+
+Now we are ready to write the code to write data into GitHub.
 
 ==== Code to talk to GitHub
 
@@ -838,11 +890,10 @@ regardless of whether we are pushing code into the master branch, or
 into the gh-pages branch, so this utility class works with real
 Jekyll blogs. It would be lovely if the GitHub API provided more
 "porcelain" (the Git term for user friendly verbs that insulate you
-from knowing the internals of Git) instead of only this "plumbing" API, but
-having the API work like this does give you full control over manipulating
-your repository and data programmatically in any way that you could
-possibly need to as it maps exactly to the capabilities you would
-have writing to a file stored in a local git repository on your hard drive.
+from knowing the internals of Git) instead of only this "plumbing" API.
+Having the API work like this does give you full control over your
+repository and gives you the same power you would have with a local 
+repository. 
 
 We'll write a helper class called `GitHubHelper` and add a single
 method which writes a file to our repository.
@@ -934,15 +985,15 @@ GitHubHelper class.
 
 === Writing the blog content
 
-First, we implement `generateContent()`. The following code snippet shows functions defined to generate the
-content which we will place into our remote git repository stored on
-GitHub.
+First, we implement `generateContent()`. The following code snippet
+shows functions defined to generate the content which we will place
+into our remote git repository stored on GitHub.
 
 [source,java]
 -----
 ...
 
-    String blobSha;  // <1>
+    String blobSha; // <1>
     Tree newTree;
     String commitMessage;
     String postContentsWithYfm;
@@ -951,18 +1002,18 @@ GitHub.
     String post;
     String repoName;
 
-    private void generateContent() {
-        commitMessage = "GitHubRu Update"; // <2>
+    private void generateContent() { // <2>
+        commitMessage = "GitHubRu Update";
         postContentsWithYfm = "---\nlayout: post\npublished: true\n---\n\n" + post;  // <3>
         contentsBase64 = new String( Base64.encodeBase64( postContentsWithYfm.getBytes() ) );  // <4>
-        getFilename( post ); // 4>
+        getFilename( post );
     }
 
-    private void getFilename( String post ) {  
+    private void getFilename( String post ) { 
         String title = post.substring( 0, post.length() > 30 ? 30 : post.length() ); // <5>
         String jekyllfied = title.toLowerCase().replaceAll( "\W+", "-").replaceAll( "\W+$", "" ); // <6>
-        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" ); // <7>
-        String prefix = sdf.format( new Date() );
+        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd-" );
+        String prefix = sdf.format( new Date() ); // <7>
         filename = "_posts/" + prefix + jekyllfied + ".md"; // <8>
     }
 ...
@@ -1003,8 +1054,7 @@ Next, we implement `createServices()`. There are several services
 (wrappers around git protocols) which we need to instantiate. We don't
 use them all immediately, but we will need them at various steps
 during the file save process. The `createServices` call manages these
-for us. Once we have created the three services (repositories, commit,
-and data) 
+for us. 
 
 [source,java]
 -----
@@ -1021,16 +1071,6 @@ and data)
         commitService.getClient().setCredentials( login, password );
         dataService = new DataService();
         dataService.getClient().setCredentials( login, password );
-    }
-
-    Repository repository;
-    RepositoryBranch theBranch;
-    String baseCommitSha;
-    private String retrieveBaseSha() throws IOException {
-        // get some sha's from current state in git
-        repository =  repositoryService.getRepository(login, repoName);
-        theBranch = getBranch(); 
-        return theBranch.getCommit().getSha();
     }
 
 ...
@@ -1284,25 +1324,22 @@ image::images/android-calabash-success.png[A successful end-to-end test of our A
 
 If you want to see a more complicated version of the GitHub API on
 Android, take a look at https://github.com/xrd/TeddyHyde.git:[Teddy
-Hyde] on the Google Play App Store. Teddy Hyde is the "the extensible,
-one handed GitHub editor for Android." I wrote this right after the
-birth of my son. I was searching for a way to publish Jekyll blogs hosted on GitHub, and
-writing on a desktop computer with my son sleeping on my chest proved
-difficult, so I wrote an Android application to allow me to do it
-using one hand from my cell phone. This app allowed me to stay creative even
-within the substantial life changes that come with a new baby. And,
-the GitHub API work surprisingly well from within an Android app using
-the Merlyn git libraries.
+Hyde] (also available on the Google Play Store). Teddy Hyde is the "the extensible,
+one handed GitHub editor for Android." A few years ago I was searching
+for a way to publish Jekyll blogs into GitHub while my infant son 
+slept on my chest. It is hard to type on a computer with a baby in one
+arm, and when I couldn't find a Jekyll editor for Android, I decided
+to write one myself.
 
 === Summary
 
 This application will allow you to write into a real Jekyll blog,
 adding posts, upon which GitHub will regenerate your site. This little
 application manages quite a few things: formatting the filename
-correctly, encoding the data for submission to GitHub, and all backed
-by a simple test to verify functionality. We even demonstrate how to write
-user interface tests which verify that the result of a GitHub API call
-is proper handled on the server side.
+correctly, encoding the data for submission to GitHub, and we have a
+user interface test which verifies the functionality. We even
+demonstrate how to write user interface tests which verify that the
+result of a GitHub API call is proper handled on the server side.
 
 In the next chapter we will look at building a single page application
 that edits information inside a GitHub repository using JavaScript and
