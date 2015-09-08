@@ -1645,12 +1645,14 @@ Next we retrieve our body from the scraped page. Add a method called
 def render( processed )
   processed['layout'] = 'post'
   filtered = processed.reject{ |k,v| k.eql?('body') } # # <1>
-  rendered = "#{filtered.to_yaml}---\n\n" + processed['body'] # # <2>
+  rendered = "#{filtered.to_yaml}---\n\n" + # # <2>
+    "### Written by: #{processed['author']}\n\n" +
+    processed['body']
   rendered
 end
-
+ # # <3>
 def process_body( paragraphs )
-  paragraphs.map { |p| p.text() }.join "\n\n" # # <3>
+  paragraphs.map { |p| p.text() }.join "\n\n"
 end
 
 def run
@@ -1658,11 +1660,11 @@ def run
   @pages.each do |page|
     rows = ( page / "table[valign=top] tr" )
     processed = {}
-    processed['title'] = process_title( rows[0].text() )
+    processed['title'] = process_title( rows[0].text() ) # # <4>
     processed['creation_date'] = process_creation_date( rows[3].text() )
-    processed['body'] = process_body( rows[4] / "p"  ) # # <4>
+    processed['body'] = process_body( rows[4] / "p"  ) # # <5>
     author_text = ( rows[2] / "td font" )[0].text()
-    processed['author'] = $1.strip if author_text =~ /author:\s+\n\n+(.+)\n\n+/ # # <5>
+    processed['author'] = $1.strip if author_text =~ /author:\s+\n\n+(.+)\n\n+/
     rendered = render( processed )
     write( rendered, processed )
   end
@@ -1672,7 +1674,8 @@ def run
 entire body content of a post to be included with the YFM. We can
 filter this out using the `reject` method (which returns a copy of the
 hash with any matching filter excluded).
-<2> Then, we append the body content to generate the new rendered output.
+<2> Then, we append the author and body content to generate the new
+rendered output. 
 <2> Our process body is straightforward: we convert each node passed
 into to text (using the `text()` method) and then rejoin them with
 double newlines. Markdown will properly format paragraphs if they are
@@ -1680,8 +1683,9 @@ separated by two newlines.
 <3> We then just need to invoke the `process_body` method and insert
 the results into our processed hash.
 <4> Next we use the query path we found in our IRB session to retrieve
-the author information, and insert it into our processed hash. This
-will then be inserted into our YFM automatically within the `render` method.
+the author information, and insert it into our processed hash. The
+author name will then be inserted into our YFM automatically within
+the `render` method and we will insert it into the post.
 
 We can then run `bundle exec ./run.rb` to rewrite our post files.
 
@@ -1860,18 +1864,20 @@ You might have seen the banner saying "Fork me on GitHub" on many a
 software project page hosted on GitHub. We can motivate others to
 participate in our blog using pull requests. Let's add that as a final touch and
 invite people to make contributions the GitHub way. The https://github.com/blog/273-github-ribbons:[GitHub blog
-first posted these banners] and we'll use their code as-is inside our
-`default.html` page.
+first posted these banners] and we'll use their code almost as-is inside our
+`default.html` page, just changing the reference to our repository in
+the link tag.
+
 
 [source,html]
 -----
 ...
 <body>
 
-<a href="https://github.com/xrd/bytravelers.com"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
-
-<div class="container">
-{{ content }}
+  <a href="https://github.com/xrd/bytravelers.com"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+  
+  <div class="container">
+    <div class="jumbotron">
 ...
 -----
 

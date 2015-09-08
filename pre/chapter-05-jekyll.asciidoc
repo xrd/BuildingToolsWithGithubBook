@@ -1461,7 +1461,7 @@ Next we retrieve our body from the scraped page. Add a method called
 
 [source,ruby]
 -----
-[filename="../final-scraper", language="ruby", sha="db09320:scraper.rb", lines="72..95", callouts="3,4,9,19,21" callouts_prefix=" # #"]
+[filename="../final-scraper", language="ruby", sha="08421bb:scraper.rb", lines="72..97", callouts="3,4,9,19,21" callouts_prefix=" # #"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1471,7 +1471,8 @@ snippet~~~~~
 entire body content of a post to be included with the YFM. We can
 filter this out using the `reject` method (which returns a copy of the
 hash with any matching filter excluded).
-<2> Then, we append the body content to generate the new rendered output.
+<2> Then, we append the author and body content to generate the new
+rendered output. 
 <2> Our process body is straightforward: we convert each node passed
 into to text (using the `text()` method) and then rejoin them with
 double newlines. Markdown will properly format paragraphs if they are
@@ -1479,8 +1480,9 @@ separated by two newlines.
 <3> We then just need to invoke the `process_body` method and insert
 the results into our processed hash.
 <4> Next we use the query path we found in our IRB session to retrieve
-the author information, and insert it into our processed hash. This
-will then be inserted into our YFM automatically within the `render` method.
+the author information, and insert it into our processed hash. The
+author name will then be inserted into our YFM automatically within
+the `render` method and we will insert it into the post.
 
 We can then run `bundle exec ./run.rb` to rewrite our post files.
 
@@ -1598,13 +1600,15 @@ You might have seen the banner saying "Fork me on GitHub" on many a
 software project page hosted on GitHub. We can motivate others to
 participate in our blog using pull requests. Let's add that as a final touch and
 invite people to make contributions the GitHub way. The https://github.com/blog/273-github-ribbons:[GitHub blog
-first posted these banners] and we'll use their code as-is inside our
-`default.html` page.
+first posted these banners] and we'll use their code almost as-is inside our
+`default.html` page, just changing the reference to our repository in
+the link tag.
+
 
 [source,html]
 -----
 ...
-[filename=".", language="ruby", sha="d7b8316:support/jekyll-parser/_layouts/default.html" lines="10..15"]
+[filename="../final-scraper", language="ruby", sha="d4da672:_layouts/default.html", lines="8..13"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
