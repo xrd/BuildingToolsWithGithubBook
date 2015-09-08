@@ -1634,8 +1634,9 @@ reference the author. This string is wrapped by a "font" tag and a
 "td" tag, so we can use these search queries to eliminate extra
 information. Then, we convert the HTML to text using the text() method
 and use a regular expression to pull out the text after the "author: "
-string. There is more than one way to get this information, of course,
-but this is sufficient.
+string. If a regular expression matches and has a captured expression,
+it will be held in the global variable `$1`. There is more than one
+way to get this information, of course.
 
 Next we retrieve our body from the scraped page. Add a method called
 `process_body` and insert this into our processed hash.
@@ -1671,9 +1672,8 @@ def run
 -----
 
 <1> We need to rewrite `render` slightly. There is no need from the
-entire body content of a post to be included with the YFM. We can
-filter this out using the `reject` method (which returns a copy of the
-hash with any matching filter excluded).
+entire body content of a post to be included in the YFM. We can
+filter this out using the `reject` method.
 <2> Then, we append the author and body content to generate the new
 rendered output. 
 <2> Our process body is straightforward: we convert each node passed
