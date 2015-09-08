@@ -383,11 +383,9 @@ regenerated automatically. Without the `-w` switch you would need to
 kill the jekyll server, and then restart it. 
 
 [CAUTION]
-====
 The jekyll watch switch does reload all HTML and markup files, but
 does not reload the _config.yml file. If you make changes to it, you
 will need to stop and restart the server.
-====
 
 If you are running multiple Jekyll sites on the same laptop, you'll
 quickly find that the second instance of `jekyll serve` fails because
@@ -746,13 +744,18 @@ each URLs to a journal entry uses a standard format; in other words,
 journal item stored on the site. With this knowledge in hand, we can
 iterate over the first hundred or so URLs easily. 
 
-=== Setting Up
+==== Setting Up
 
-We will write an HTML parser. We will build a parser class, and then
-use this class inside a runner script. The runner script will utilize
-the scraper class in the same way as our automated tests.
+A naive implementation of a scraper would be a single Ruby file in
+which the execution and functionality were contained all in one.
+However, if we expose the functionality as a class, and then
+instantiate the class in a separate file, we can also write tests
+which utilize and validate the same steps as are inside the . So, let's take this
+secondary approach and create three files: the scraper class, the
+runner class (which instantiates and "runs" our scraper) and the test
+file (which instantiates and validates the functionality of our scraper).
 
-Let's start by writing the runner script.
+First, the runnner script.
 
 [source,ruby]
 -----
@@ -762,7 +765,7 @@ To be replaced
 snippet~~~~~
 -----
 
-Our scraper class looks like this.
+Our bare bones scraper class just looks like this.
 
 [source,ruby]
 -----
@@ -813,12 +816,12 @@ There is nothing we are explicitly testing yet, but
 our test harness displays that our code inside our tests will match
 closely the code we write inside our runner wrapper.
 
-=== Scraping Titles
+==== Scraping Titles
 
 Let's start with something simple: scraping the titles from the
 site. 
 
-We will Use the mechanize gem, a simple and powerful way to scrape
+We will use the mechanize gem, a simple and powerful way to scrape
 sites. Add these additional lines to the Gemfile using this command
 and the install the libraries. 
 
@@ -842,12 +845,12 @@ snippet~~~~~
 <2> We use a ruby method called `attr_accessor` which creates a public
 instance variable. We can use these variables using the `@root` syntax
 inside our script, and we can access the variable outside the class as
-well, both of which are valuable here.
+well. 
 <3> When a method named `initialize` is defined for a class, this
 method is called right after object creation, so this is the appropriate
 place for us to initialize the member variables.
 <3> Initialize the variables to default values. We store the root of
-the URL on Archive.org here.
+the URL to the cached copy of ByTravelers.com here.
 <4> Our run method runs the block inside 100 times.
 <5> Our block starts by generating a URL to the specific page,
 retrieves the page and then prints out the index in our loop plus the
@@ -871,8 +874,9 @@ $ bundle exec ./run.rb
 You can see that some of the entries have a generic "Internet Archive
 Wayback Machine" while some have "Read Journal Entries". Archive.org
 will respond with a placeholder title when it does not have content
-from the site (as is the case with item #58, for example), so we
-should be sure to filter out these from our final pages.
+from the site (as is the case with item #58, for example). We should
+ignore those pages which don't have the string "Read Journal Entries"
+as the title. 
 
 Now that we have all the content, we can start finding the important
 pieces inside and putting them into our Jekyll posts.
@@ -1040,7 +1044,7 @@ South Africa
 ----
 
 We print out the errors (when Archive.org does not have a page for a
-particular URL). Note that ss a side effect of caching, things work
+particular URL). Note that as a side effect of caching, things work
 much faster. If we analyze the time we save using the `time` command,
 we see these results. 
 
@@ -1170,11 +1174,12 @@ snippet~~~~~
 ...
 -----
 
+Now we are in a position to write out the files for our actual posts.
 
 ==== Writing Jekyll Posts
 
-Now that we have our titles, we can generate an actual Jekyll
-post. To make things simple we will make each post just contain the
+With our titles in hand, we can generate an actual Jekyll
+post. To keep things simple each post will contain nothing beyond the
 titles for now, but we will quickly add other content. Getting the
 skeleton of a post established allows us to use the Jekyll command line
 tools to troubleshoot our setup.
@@ -1237,22 +1242,24 @@ snippet~~~~~
 
 If we run our tests now, we will see them both pass. 
 
-Now we can write out the files themselves.
+Now we can add to our scraper so that it can write out the posts.
 
 [source,ruby]
 -----
-...
-[filename="../final-scraper", language="ruby", sha="074311f:scraper.rb", lines="56..85", callouts="1,7,16,23,27" callouts_prefix=" # #"]
+[filename="../final-scraper", language="ruby", sha="31ab3b8:scraper.rb", lines="58..87", callouts="1,3,7,16,23,27" callouts_prefix=" # #"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
-...
 -----
 
 <1> We define a render method. This takes the processed information
 (which arrives as a hash) and renders the information into the proper
 format: the YAML Front Matter (YFM) and then the body (which we don't
 have yet). We then return the rendered string.
+<2> We use the `to_yaml` method on our hash. This method appears when
+we include the yaml library using `require 'yaml'` (not displayed
+here, but easy to add to the `scraper.rb` file and present in the
+samples on GitHub).
 <2> The write method writes the rendered content to disk. It makes
 sure the "_posts" directory is available, and if not, creates it. It
 then writes out the file using our `get_filename` method to get the
@@ -1264,6 +1271,23 @@ item in the resultant array.
 the date and title using rows from the query path we used before. 
 <5> Once we have our processed array, we can "render" it and then
 write out the rendered string to our file system.
+
+If we generate the posts by calling `bundle exec ruby ./run.rb` we
+will see our posts generated into the `_posts` directory. Choosing a
+random one, they look like this.
+
+[source,ruby]
+-----
+...
+[filename="../final-scraper", language="ruby", sha="31ab3b8:_posts/2003-03-23-beautiful-belize.md"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+...
+-----
+
+As you can see, for now, post are nothing more than the YFM, but this
+is still a perfectly valid Jekyll post.
 
 Now let's use the jekyll command line tool to start looking at our
 posts and to troubleshoot any issues with our Jekyll repository.
@@ -1395,344 +1419,97 @@ include HTML tags. You'll also notice that filters can be "chained";
 we process the body with the `strip_html` filter and then truncate the
 text by 40 characters using the `truncatewords:40` filter.
 
-[[not-so-beautiful]]
-.Not the best formatting
-image::images/jekyll-unformatted-post.png[Not the best formatting]
+If we open `http://localhost:4000` in our browser, we will see a
+simple index page with the titles of our posts.
 
-[source,html]
+image::images/jekyll-unformatted-index.png[Austere but a step in the right direction]
+
+This index page lists every post: let's make it display only the last
+ten posts. Copy the `index.md` file to a file named `archive.md`.
+Then, change the `{% for post in site.posts %}` tag to `{% for post in
+site.posts | limit:10 %}`. 
+
+Each post has an associated page which is generated by Jekyll.
+Clicking on any of the links displays the post, which is right now
+just the title. We can now add the rest of the pages from our scraper.
+
+==== Scraping Body and Author
+
+Use IRB to find the author and body content. Start by searching for the author information.
+
+[source,bash]
 -----
-[filename=".", language="html", sha="00be6cf:support/jekyll-parser/_layouts/default.html"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
------
-
-Notice that our files are regenerated in the terminal window with
-`jekyll serve -w`. Refreshing the page shows some improvement, but we
-can do better. Let's make a front page which shows just the ten most
-recent post, and an archive page which shows all the posts in reverse
-chronological order.
-
-First, copy the existing `index.md` file to a file named `archive.md`.
-Our current index looks just like our archive page needs to be. 
-To make the front page with ten posts change the `{% for post in
-site.posts %}` tag to `{% for post in site.posts | limit:10 %}`. This
-limits us to ten posts. Add a link to `archive.html` at the bottom of
-our `index.md` file.
-
-If we look at any of the pages we've scraped, they are now centered
-inside a box, but we don't have titles or anything else about the
-journal entry. Add a layout file just for posts by creating a file
-called `post.html` inside of the `_layouts` directory with the
-following contents.
-
-[source,html]
------
-[filename=".", language="html", sha="325c1ef:support/jekyll-parser/_layouts/post.html"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
+irb(main):037:0> rows[2].to_s
+=> "<tr>\n<td align=\"center\">\n\n\n\n<font size=\"+1\">author: \n\nMD \n\n<br>\n<font size=\"-2\"><a href=\"/web/20010409182418/http://www.bytravelers.com/journal/user/21\">read more from this author</a> | \n<a href=\"/web/20010409182418/http://www.bytravelers.com/maps/user/21\">see maps from this author</a></font>\n</font>\n\n</td>\n<td align=\"center\">\n\n\n\n\n<font size=\"-1\">No linked map</font>\n\n\n</td>\n</tr>"
+irb(main):038:0> ( rows[2] / "td font" )[0].text()
+=> "author: \n\nMD \n\n\nread more from this author | \nsee maps from this author\n"
+irb(main):039:0> author = ( rows[2] / "td font" )[0].text()
+=> "author: \n\nMD \n\n\nread more from this author | \nsee maps from this author\n"
+irb(main):040:0> author =~ /author:\s+\n\n([^\s]+)\n\n/
+=> 0
+irb(main):041:0> $1
+=> "MD"
 -----
 
-Notice also that this layout inherits the default layout. You can
-imagine wrapping many layouts within layouts to build up complicated
-output trees, but in this case we can now manage a base layout,
-including all the CSS and other complementary files associated with
-our site, and automatically propagate changes down into lower layout files.
+We start by looking at the second row and converting it to raw HTML.
+We see there is a string "author: " which is a likely place to
+reference the author. This string is wrapped by a "font" tag and a
+"td" tag, so we can use these search queries to eliminate extra
+information. Then, we convert the HTML to text using the text() method
+and use a regular expression to pull out the text after the "author: "
+string. There is more than one way to get this information, of course,
+but this is sufficient.
 
-Add these changes to the index, and commit them.
-
-[source]
------
-$ git add .
-$ git commit -m "Added layout specific to posts"
------
-
-Now that we have a post layout, we will need to adjust our post files
-to use this layout as right now they specify `layout: default` inside
-their YAML Front Matter. You might groan at the thought of editing all the
-files individually, but we don't need to go through that much effort
-as it turns out. If we make a one line change to our `scraper.rb`
-script (inside the `write_post` method) we can run the script again, and all our files will
-automatically be updated. As we committed them to our local git
-repository, we can also use tools like `git diff` to verify the
-changes we made were the correct ones.
+Next we retrieve our body from the scraped page. Add a method called
+`process_body` and insert this into our processed hash.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="364a202:support/jekyll-parser/scraper.rb" lines="24..36"]
+[filename="../final-scraper", language="ruby", sha="db09320:scraper.rb", lines="72..95", callouts="3,4,9,19,21" callouts_prefix=" # #"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
-If we then run `ruby scraper.rb` we will see something like
-`Regenerating: 31 files at 2014-06-24 09:00:39 ...done.` indicating
-that our post files have changed. We can also verify that we made the
-correct changes by using the `git diff _posts` command. The result
-will be something like the following.
+<1> We need to rewrite `render` slightly. There is no need from the
+entire body content of a post to be included with the YFM. We can
+filter this out using the `reject` method (which returns a copy of the
+hash with any matching filter excluded).
+<2> Then, we append the body content to generate the new rendered output.
+<2> Our process body is straightforward: we convert each node passed
+into to text (using the `text()` method) and then rejoin them with
+double newlines. Markdown will properly format paragraphs if they are
+separated by two newlines.
+<3> We then just need to invoke the `process_body` method and insert
+the results into our processed hash.
+<4> Next we use the query path we found in our IRB session to retrieve
+the author information, and insert it into our processed hash. This
+will then be inserted into our YFM automatically within the `render` method.
 
-[source]
-------
-$ git diff _posts
-diff --git a/support/jekyll-parser/_posts/2000-05-23-third-day-in-salvador.md b/support/jekyll-parser/_posts/2000-05-23-third-day-in-salvador.md
-index 1873972..a4dbc21 100644
---- a/support/jekyll-parser/_posts/2000-05-23-third-day-in-salvador.md
-+++ b/support/jekyll-parser/_posts/2000-05-23-third-day-in-salvador.md
-@@ -1,10 +1,16 @@
- ---
--layout: post
-+layout: post    #  <---- Set our layout variable to "post"
- published: true
- ---
-...
-------
+We can then run `bundle exec ./run.rb` to rewrite our post files.
 
-This shows we can add comments inside of our YAML Front Matter when
-needed.  
+==== Adding Images to Jekyll
 
-==== Comprehensive Scraping
-
-Now that we have a framework in place, we can fully scrape the site,
-and write test coverage to make sure our processing works
-properly. We will scrape the remaining textual pieces of content which
-includes the body of the post, the author name, the location about
-which the article was written, the creation date, and then we will
-retrieve the images associated with the post. Then we will show how we
-can creatively insert them into a Jekyll post. And, for each
-component, we will assure our processing works by writing a test to
-verify the processing is proper.
-
-===== Body Content, Creation Date and Author
-
-
-
-===== Location and Inline Maps in Jekyll
-
-
-
-===== Adding Images to Jekyll
-
-
-
-<1> VCR is a ruby library which caches HTTP requests. Typically used
-inside of tests, it is also an easy way to cache an HTTP request that
-you know will not change. Since these are pages stored inside an
-archive over ten years ago, it is safe to cache them, and the polite
-thing to do for an open system like Archive.org which relies on
-donations to pay for their bandwidth. The code you see here is
-boilerplate for configuring the VCR gem, loaded above.
-<2> Our scraping is handled with the `mechanize` gem, and our class
-should maintain a reference to the scraper by declaring it here.
-<3> After our class is instantiated, we hook into the class
-initialization stage and create our mechanize parser and assign it to
-the class.
-<4> As we noted above, we have about 100 pages stored in the archive
-which we want to scrape. We loop 100 times over a function called
-`get_ith_page` which will do the scraping for us. Right now this
-function just prints out the index it is supposed to scrape.
-
-Now that we have a harness for our scraper, let's install our scraper
-libraries.
-
-===== Scraper Library Installation
-
-Like other chapters which use Ruby, we create a `Gemfile` to manage
-our dependencies and then install them using the `bundle` command.
-
-[source]
------
-$ printf "source 'https://rubygems.org'\ngem 'vcr'\ngem 'mechanize'\ngem 'webmock'\n" >> Gemfile
-$ bundle
------
-
-With that we have the libraries we'll use to retrieve the content, so
-we can commence writing our wrapper script.
-
-===== Parser Runner
-
-Our runner is simple.
+Jekyll can host any binary files as well, and Markdown files can
+include these assets. Let's add the images from the original site.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="2245215:support/jekyll-parser/run.rb"]
+[filename="../final-scraper", language="ruby", sha="c56210a:scraper.rb", lines="84..101", callouts_prefix=" # #"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 -----
 
-If we run this code now, we will just see our debug output.
+We use the venerable cURL to download our images. This method is
+indempotent, meaning it can be run many times and will only download
+the files once. We use the `-L` switch to tell cURL to follow
+redirects, because these images URLs are transparently redirected
+inside the browser. 
 
-[source]
------
-$ ruby run.rb
-...
-Loading 91th page
-Loading 92th page
-Loading 93th page
-Loading 94th page
-Loading 95th page
-Loading 96th page
-Loading 97th page
-Loading 98th page
-Loading 99th page
-...
------
-
-===== Implementing Our Page Iterator
-
-Now let's write the code which pulls out the information for the body
-and the title by implementing the `get_ith_page` method.
-
-
-[source,ruby]
------
-[filename=".", language="ruby", sha="c4633e2:support/jekyll-parser/scraper.rb" lines="25..-3"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
------
-
-<1> First, we load up a VCR cassette; this code says "store any HTTP requests
-inside my cassette directory ('cached', specified in the configure
-stage) under the name bt_#{index}". In more concrete terms, the first
-page loaded by our script will be cached and saved in a file at the
-path `cached/bt_1.yml` (VCR adds the yml extension because it stores
-the results as a structured YAML file).
-<2> Once we have loaded the page we see one of the powerful features
-of mechanize footnote:[Actually, this is handled by the Nokogiri parser, but
-Mechanizes exposes it transparently], a simple page searching syntax. If
-we provide the code `page / "table[valign=top] tr"` what we are doing
-is searching inside the page for a tag like `<table valign="top">` and
-then finding all the `<tr>` tags inside that. Recalling the DOM
-hierarchy we saw inside the Chrome Inspector, we can start to see how
-we will easily retrieve content from a scraped page.
-<3> We then take the 2nd and 5th (ruby uses zero-based offsets) rows, and
-process it using a method called `process_body` which, you guessed it,
-processes the two rows as title and body respectively.
-<4> The `process_body` method takes the retrieved DOM nodes and
-converts them to pure text (as opposed to leaving us with the HTML tags)
-and then strips whitespace from the front and end, and then prints the
-index in parentheses, the title and the first 50 characters of the body.
-
-If we run our code now, we will see the body of our journal entries.
-
-[source]
--------
-$ ruby run.rb
-(4) Third day in Salvador :: I'm now entering the my third day in Salvador.  Th
-(15) The Hill-Tribes of Northern Thailand :: I had heard about the hill-tribes in 
-northern Tha
-(22) Passion Play of Oberammergau :: On Sunday, Sept. 17 Jeanne picked up Vic at Jackie
-(23) "Angrezis in Bharat" :: Translation -  "Foreigners in India"Well since we 
-(24) Cuba - the good and bad :: April 1999Cuba, what an interesting place??!!
-My a
-(25) Nemaste :: Oct/Nov 2000"NEPAL"We spent our first 3 days in Ba
-(26) Mexico/Belize/Guatemala :: Feb/Mar 1999Dear All
-Well it´s been six weeks on t
-(27) South Africa :: Apr/May 1999I got in from South Africa a few days 
-...
--------
-
-The first time we run this, we will see a slow march as Mechanize
-grabs each page from the Archive.org server. The next time we run our
-parser, however, things will be much faster. We have cached all the
-pages and so instead of doing a slow network crawl we are now speeding
-across our local filesystem, reading files from disk and simulating
-our network connection. Our client code does not have to change at
-all, the real power of the VCR gem.
-
-Now let's break the title and body processing into separate methods.
-Add a method called `process_title` and add that into the `get_ith_page` method underneath
-the renamed `process` method now called `process_body`.
-
-[source,ruby]
------
-[filename=".", language="ruby", sha="6be532b0bd4b2055847339c76b7496ef47d902da:support/jekyll-parser/scraper.rb" lines="75..-1"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
------
-
-We've modified the `get_ith_page` method to save each page as a tuple
-(the title and body) and then print them out after processing inside
-the `run` method.
-
-<1> Our process body might look a little excessive. Why not just
-return the result of `row.text()`? The reason is that markdown
-is very specific about the format it requires for text formatting.
-Each block of text separated by two newlines will be formatted within
-`<p>` tags. Unfortunately, Mechanize and Nokogiri don't return text
-formatted that way, so this function retrieves each `<p>` tag we
-scraped, strips whitespace from the ends, and then adds it back to a
-body variable. If you scrape text from a site like we are doing here,
-you might need to normalize the text in a similar way.
-<2> Do the same type of processing with the title. With this site
-there are occasionally titles which include the word "Title:" in the
-title itself (authors have to be forgiven for their own formatting
-quirks) so strip that out if we see it there.
-<3> Keep track of each page in an array with each item of the array
-containing the title and body. We can then use this processed data
-later to build out our posts.
-<4> At the end of processing, just print out the processed data we
-saved to verify we are finding the right structure in our pages.
-
-If we re-run this script we will see identical output to the prior
-run, but now we are storing the information in an array and can use it
-to write out our Markdown files.
-
-
-===== Customizing Styling
-
-Adding a CSS framework like Bootstrap helps things considerably, but
-we should match the original colors as well. The easiest way to get
-this information is to again view the site HTML using your browser's
-developer tools. On Chrome we can see that in the original body we
-hard code colors for the body, text and links. 
-
-[[hard-coding-colors]]
-.Hard coding colors into our HTML
-image::images/jekyll-hardcoded-colors.png[Hard coding colors into our HTML]
-
-We need to convert this into the modern equivalent CSS and we can then
-add this a CSS file and include it inside all our pages by adding
-a link from the `default.html` template. Make a new directory inside
-called `assets/css` and write a file called `site.css` and include the
-CSS to match our original site. The choice of using `assets/css` as
-the directory structure is completely arbitrary; we could have chosen
-any structure we wanted and as long as the reference was correct it
-would have worked with our HTML templates.
-
-[source,css]
------
-[filename=".", language="ruby", sha="e1590d3:support/jekyll-parser/assets/css/site.css"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
------
-
-Then, modify the `default.html` template and include the new CSS file
-to allow our style changes to "cascade" to all our other files.
-
-[source,css]
------
-...
-[filename=".", language="ruby", sha="e1590d3:support/jekyll-parser/_layouts/default.html" lines="3..8"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
-...
------
-
-===== Grabbing Original Images
-
-Our site is bare beyond text and the original colors; adding the
-images would add some pop. We can easily modify our `scraper.rb`
-script and pull down the original images from our site and then
-republish them into our new Jekyll blog. Taking a look at the archived
-site, note that each title has an image to the left of it. If we
-customize our `process_title` method we can retrieve these images and
-then publish them into our blog.
+We need to customize our run method to invoke the `process_image` call:
+add `processed['image'] = process_image( rows[0] )` after any of the
+other process methods.
 
 [WARNING]
 I paid an artist for the images used on the original
@@ -1740,176 +1517,89 @@ ByTravelers.com. If you are using this technique to scrape images or
 text content from another site, make sure you are abiding by all local
 and international copyright laws. 
 
-Finding the image is easy: `img = ( title/ "img" )` will retrieve an
-"img" tag from the title as passed to us. Printing out the element
-using `puts` is simple way to view the contents of the elements, one
-of which looks like this `<img
-src="/web/20030502075943im_/http://www.bytravelers.com/images/pro/book.gif">`
-We can then dig into the element using syntax like `img.attr('src')`
-and get to the actual source of the image. We'll need to append the
-base site URL to this and can then retrieve the image from
-archive.org. 
-
-Unfortunately, the VCR gem does not easily allow us to 
-make HTTP requests but that we don't want captured. There are methods in VCR to
-ignore requests, but using them would require heavily refactoring of our `get_ith_method`. 
-Instead we cheat by using a command line tool called `wget` to
-download the image. The VCR gem works by hooking into ruby libraries
-which make HTTP calls; by using the `wget` tool we can avoid using
-Ruby for a moment and download the file manually.
+Then, modify our post layout to include the image.
 
 [source,ruby]
 -----
-...
-[filename=".", language="ruby", sha="e5c56e4:support/jekyll-parser/scraper.rb" lines="81..102"]
+[filename="../final-scraper", language="ruby", sha="f64f3e9:_layouts/post.html"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
-...
 -----
 
-<1> First, use the HTML node and extract the `img` tag from it. We
-then process the result, picking the `src` attribute from the tag, and
-then split it up by slash characters and pull off the last item
-returning just the filename.
-<2> We then generate a path for the image. We chose `assets/images`,
-which keeps all our assets (like our CSS file) in a common place.
-<3> The `wget` command requires a full remote URL and the path we
-created previously. We give it the `--quiet` switch to reduce noise
-during our processing.
-<4> We will be placing the image into the template, so we want to
-return it with the title as processed data.
+Regenerating this page shows us an white background with an awkwardly
+juxtaposed colored image. Adding background colors to the entire site
+will help, so let's now modify the CSS for our site.
 
-Once we have processed the information, we will need to modify the
-post template. We passed back the image inside the processed data from
-the `process_title` method. Ruby is an untyped language and this makes
-it so that even though initially we were passing back a string result
-from `process_title` and are now passing back an array of strings, we
-don't need to change the `get_ith_page` which assembles the results of
-our processing functions and puts them into the `page` array. When we
-iterate over the `page` result later, we should interpret the first
-element differently and pull the first item out as our title, and use
-the second item as the image for the post. This can all happen inside
-our `write_post` method.
+==== Customizing Styling (CSS)
+
+We used Bootstrap in the JavaScript chapter and we will use it again
+here. We will also layer another CSS file on top of Bootstrap to
+customize the colors.
+
+First, add a reference to Bootstrap and our custom CSS inside of the
+master layout file: `default.html`.
 
 [source,ruby]
 -----
-...
-[filename=".", language="ruby", sha="d7293c0:support/jekyll-parser/scraper.rb" lines="22..40"]
+[filename="../final-scraper", language="ruby", sha="f64f3e9:_layouts/default.html"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
-...
 -----
 
-<1> As we mentioned, the first item in the array we receive is now the
-title and image packages as another array. We pull the first item out
-as the title text, and use the next item in the secondary array as the
-image.
-<2> What do we do with the image? Let's put it into the YAML Front
-Matter. We can then utilize it from within our `post.html` layout file
-using Liquid tags.
+Then, download the Bootstrap CSS file into the proper folder.
 
-Now, we modify our `post.html` layout to include the image near the
-title.
+[source,bash]
+-----
+$ curl https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css -o assets/css/bootstrap.min.css
+-----
+
+Adding a CSS framework like Bootstrap helps things considerably, but
+we should match the original colors as well. 
+
+[source,css]
+-----
+[filename="../final-scraper", language="ruby", sha="1d0b30e:assets/css/site.css"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
+-----
+
+With the Bootstrap library installed, we can slightly modify our
+default.html layout to make the site really standout. Many Jekyll
+blogs are quite minimalistic and stark, but you are limited only by
+your imagination. 
 
 [source,html]
 -----
-[filename=".", language="ruby", sha="7052195:support/jekyll-parser/_layouts/post.html"]
+...
+[filename="../final-scraper", language="ruby", sha="1d0b30e:_layouts/default.html"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
+...
 -----
 
-We use the Liquid template tags `{{ page.image }}` to retrieve the
-image from our YFM and build an image tag inside our template.
-
-We can also reuse this image on our index page (`index.md`).
-
-[source,html]
------
-[filename=".", language="ruby", sha="7052195:support/jekyll-parser/index.md"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
------
-
-Note that in this case the variable is presented as `post.image` as
-compared to `page.image` when we are inside a post. Jekyll and Liquid
-are not consistent here, so caveat emptor.
-
-Our blog definitely has more life when we add in the original colors and
-images. It still looks like a blog from the last millenium, but it is
-an improvement.
+If we reload, we will see a much prettier version of the site.
 
 [[jekyll-now-livelier]]
 .Restoring the original colors and images
-image::images/jekyll-now-livelier.png[Restoring our blog using images and colors]
+image::images/jekyll-now-livelier.png[Restoring the original images and colors]
 
-===== Mapping Integration
+We've now entirely scraped an old site and built a new Jekyll blog, so
+there is just one thing left to do: encourage and permit
+collaboration, and GitHub makes that easy.
 
-This is a site about travel information, so it makes sense to add maps
-as well. We can process the location information we retrieved from the
-archived site and add a map image. 
-
-Add a new function called `process_location` and place it underneath
-the `process_creation_date` method inside the `get_ith_page` method.
-
-[source,ruby]
------
-...
-[filename=".", language="ruby", sha="7291400:support/jekyll-parser/scraper.rb" lines="67..73"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
-...
------
-
-<1> As we did in the `process_creation_date` method, we grab the row
-and split it in two pieces. This time we are only interested in the
-first element, the location.
-<2> Each location string starts with the text "Concerning: " so we
-remove that here.
-<3> Return the result
-
-Now that we have the location, we need to insert it into the post
-itself. Once again we will place it inside the YFM. Modify the
-`write_post` method to grab the location from the array argument, and
-use that in the template inside the YFM.
-
-[source,ruby]
------
-...
-[filename=".", language="ruby", sha="7291400:support/jekyll-parser/scraper.rb" lines="22..42"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
-...
------
-
-Then, inside the `post.html` file, add an image tag with the map. We'll use a
-static image generated by Google Maps. We can utilize the location
-item inside the YFM and generate a map footnote:[This idea was
-modified from http://katydecorah.com/code/2013/09/06/google-maps-images-api-for-jekyll/::[a blog post on Katy Decorah's blog]].
-
-[source,html]
-----
-[filename=".", language="ruby", sha="4d7894a:support/jekyll-parser/_layouts/post.html"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
-----
-
-===== Inviting Contributions with GitHub "Fork"
+==== Inviting Contributions with GitHub "Fork"
 
 When you publish a Jekyll blog, the fact that it is a repository on
 GitHub makes it simple to manage and track changes. In addition,
 because forking is a button click away, you can ask people to
 contribute or make changes with very little friction.
-You might have seen the banner
-saying "Fork me on GitHub" on many a software project page hosted on
-GitHub. We can motivate others to participate in our blog 
-using pull requests. Let's add that as a final touch and
+You might have seen the banner saying "Fork me on GitHub" on many a
+software project page hosted on GitHub. We can motivate others to
+participate in our blog using pull requests. Let's add that as a final touch and
 invite people to make contributions the GitHub way. The https://github.com/blog/273-github-ribbons:[GitHub blog
 first posted these banners] and we'll use their code as-is inside our
 `default.html` page.
@@ -1943,16 +1633,19 @@ time to let those records propagate out.
 
 === Summary
 
-We've shown that we can quickly setup a blog on GitHub that has
-version control built in. We've shown how to import blogs like
-Wordpress into Jekyll. And, we've taken a site available only as an
-archive on the Internet Archive and scraped the content, images and
-even the colors, and then converted it to a Jekyll blog. Jekyll is a
-simple tool for managing websites, but a hidden benefit is that
-because Jekyll is so simple, you can easily write your own tools to
-interact and build on top of Jekyll. Once our site is a repository on
-GitHub, making changes yourself, or accepting them from other
-contributors is as easy as clicking "Merge" on a pull request. 
+We've explored the details of Jekyll, looking at the structure of a
+Jekyll blog. By investigating the internals of a Jekyll post, we 
+explained the intricacies of YAML Front Matter (YFM) and how
+seamlessly you can mix and match HTML with Markdown syntax. Jekyll
+blogs can utilize their own custom CSS and we've shown how easy it is
+to use a powerful complete library like Bootstrap layered underneath a
+site specific small CSS file. And, we built a scraper application
+which retrieves a remote site in its entirety and converts it into the
+correct structure of a Jekyll blog. Even though this scraper application was
+built specifically for a particular site, by adding testing and
+properly structuring the components it should be evident how to reuse
+much of the scraper for anything else you want to quickly convert into
+a Jekyll blog.
 
 In the next chapter we will continue looking at Jekyll by building an
 Android application that uses the Java GitHub API bindings and allows

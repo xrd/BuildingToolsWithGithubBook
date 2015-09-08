@@ -162,7 +162,7 @@ include AngularJS, Github.js and Bootstrap CSS
 [source,bash]
 -------
 $ wget https://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.js
-$ wget https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css
+$ wget https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css
 $ wget https://github.com/michael/github/raw/master/github.js
 -------
 
