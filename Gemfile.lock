@@ -41,7 +41,7 @@ GEM
     notiffany (0.0.7)
       nenv (~> 0.1)
       shellany (~> 0.0)
-    oreilly-snippets (0.0.14)
+    oreilly-snippets (0.0.16)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -63,8 +63,5 @@ DEPENDENCIES
   guard-asciidoctor
   guard-livereload
   guard-shell
-  oreilly-snippets (= 0.0.14)
+  oreilly-snippets (= 0.0.16)
   rack
-
-BUNDLED WITH
-   1.10.4
