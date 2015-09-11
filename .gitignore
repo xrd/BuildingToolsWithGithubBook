@@ -13,3 +13,5 @@ preface.asciidoc.html
 toc.asciidoc.html
 book.asciidoc.html
 ch01.asciidoc.html
+support/android/ghru/.idea/
+support/android/ghru/ghru.iml

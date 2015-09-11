@@ -1,19 +1,21 @@
 == Android and the Git Data API
 
-Android is currently the most popular operating system for mobile
-devices, overtaking Symbian OS in 2010, experiencing incredible growth
-since its release in 2008. If it is not the case already, mobile OSes like 
-Android and iOS will soon be more prevalent than desktop OSes. Though it 
-may not occur to many people yet, as more and more people shift to using 
-mobile devices, we will see demand for developer tools on mobile devices. 
-The GitHub API has a good set of bindings for developing Java and
-Android applications. We'll use the egit libraries to develop a small
-Android application which posts to our blog hosted on GitHub.
+You might not use your phone right now as a developer tool, but the
+odds are that you will soon. Though it is still a far fetched idea to
+write code on your mobile device, phones and tablets can be great
+tools for reading code. But, we can go beyond the read-only
+limitation. The GitHub API is accessible through the well
+written egit client library, and this library supports both reading
+data stored on GitHub and writing data back into it. These are a
+perfect set of tools to build applications on top of the Android
+platform, currently the world's most popular mobile OS.
 
-Our blogging application will allow us to login to
-GitHub, and then ask us for a quick note describing how we are
-feeling. The application will then compose a Jekyll blog post for us
-and push the post into our blog on GitHub. 
+In this chapter, we'll use the egit libraries to develop a small 
+Android application which posts to our blog hosted on GitHub. Our
+blogging application will allow us to login to GitHub, and then ask us
+for a quick note describing how we are feeling. The application will
+then compose a Jekyll blog post for us and push the post into our blog
+on GitHub.  
 
 === Setting Up
 
