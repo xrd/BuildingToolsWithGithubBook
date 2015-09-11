@@ -7,9 +7,12 @@
     "chapter-01-introduction.asciidoc",
     "chapter-02-gist.asciidoc",
     "chapter-03-gollum.asciidoc",
+    "chapter-08-python-search.asciidoc",
+    "chapter-09-commit-status-dotnet.asciidoc",
     "chapter-04-javascript.asciidoc",
     "chapter-05-jekyll.asciidoc",
-    "chapter-06-hubot-activities.asciidoc"
+    "chapter-06-hubot-activities.asciidoc",
+    "chapter-07-android.asciidoc"
   ],
   "formats": {
     "pdf": {
@@ -17,7 +20,9 @@
       "index": true,
       "toc": true,
       "syntaxhighlighting": true,
-      "show_comments": false
+      "show_comments": false,
+      "color_count": false,
+      "trim_size": false
     },
     "epub": {
       "index": true,
@@ -41,6 +46,8 @@
     }
   },
   "theme": "oreillymedia/atlas_tech1c_theme",
-  "title": "github",
-  "templating": false
+  "title": "Building Tools with GitHub",
+  "templating": false,
+  "print_isbn13": "",
+  "lang": "en"
 }

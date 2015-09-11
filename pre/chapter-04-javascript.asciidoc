@@ -1,7 +1,7 @@
 [[JavaScript]]
 == JavaScript and the Git Data API
 
-Applications integrating the GitHub API will typically reside inside a
+Applications utilizing the GitHub API will typically reside inside a
 server. You are not limited, however, to accessing
 the API from within server side programming languages exclusively.
 The GitHub API works perfectly well from within a web browser context
