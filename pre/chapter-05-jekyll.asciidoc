@@ -1,13 +1,30 @@
 [[Jekyll]]
 == Ruby and Jekyll
 
-The GitHub Jekyll repository (https://github.com/jekyll/jekyll) calls
-itself a "blog-aware, static site generator in Ruby." 
-At its core, Jekyll is a very simple set of technologies for building
-web sites. Simplicity is what gives Jekyll its power: using Jekyll you
-will never have to learn about database backends, complicated server
-installations or any of the myriad processes involved with most
-monolithic web site technologies.
+The Jekyll project calls itself a "blog-aware, static site generator
+in Ruby." At its core, Jekyll is a very simple set of
+technologies for building web sites. Simplicity is what gives Jekyll
+its power: using Jekyll you will never have to learn about database
+backends, complicated server installations or any of the myriad
+processes involved with most monolithic web site technologies. Many
+prominent technical bloggers use Jekyll as their blogging platform. 
+
+Like many of the open source technologies in heavy usage at GitHub,
+Jekyll was originally developed by Tom Preson Warner, one of the
+co-founders of GitHub, and Nick Quaranto, of 37 Signals, though there
+are now thousands of contributors to the Jekyll codebase.
+Unsurprisingly, the strength of the Jekyll tool comes not from the
+brilliance of the original developers or the brilliance of the idea,
+but the way that those original developers cultivated community and
+involvement among their users.
+
+In this chapter we will investigate the structure of a Jekyll blog,
+illustrating the few major technology pieces involved, and then create
+a Jekyll blog. Then we will write a Ruby program which scrapes a
+blog-like website and converts the scraped information into a Jekyll
+blog.
+
+=== What is Jekyll?
 
 Jekyll specifies a file structure format: conform to this format and
 Jekyll will compile your files into HTML. Jekyll builds on top of two
@@ -30,17 +47,6 @@ operate upon. This means you can build your own tools to interact with
 a Jekyll blog. Combining an open source tool like Jekyll with a well
 written API like the GitHub API makes for some powerful publishing
 tools.
-
-==== (Less Than) Evil Scientist Parents
-
-Like many of the open source technologies in heavy usage at GitHub,
-Jekyll was originally developed by Tom Preson Warner, one of the
-co-founders of GitHub, and Nick Quaranto, of 37 Signals, though there
-are now thousands of contributors to the Jekyll codebase.
-Unsurprisingly, the strength of the Jekyll tool comes not from the 
-brilliance of the original developers or the brilliance of the idea,
-but the way that those original developers cultivated community and
-involvement among their users.
 
 ==== Operating Jekyll Locally
 

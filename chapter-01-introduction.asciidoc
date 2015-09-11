@@ -1,16 +1,18 @@
 [[introduction]]
 == Introduction
 
-This chapter is your first look at retrieving data from the
-GitHub API. Successive chapters show you how to access information
-from the GitHub API using a variety of client libraries, and when you
-use these tools the nuts and bolts of the API are hidden from
-you. This chapter gives you a naked viewpoint of the GitHub API and
-documents the details of the raw HTTP requests and responses. It also
-discusses the different ways to access public and private data inside
-of GitHub and where limitations exist. And, it gives you an overview
-of the options for accessing GitHub data when running inside a web
-browser context where network access is restrained. 
+This chapter eases us into reading and writing data from the GitHub
+API. Successive chapters show you how to access information
+from the GitHub API using a variety of client libraries. These client
+libraries, by design, hide the nuts and bolts of the API from you,
+providing streamlined and idiomatic methods to view and modify data
+inside a Git repository hosted on GitHub. This chapter, however, gives
+you a naked viewpoint of the GitHub API and  documents the details of
+the raw HTTP requests and responses. It also discusses the different
+ways to access public and private data inside of GitHub and where
+limitations exist. And, it gives you an overview of the options for
+accessing GitHub data when running inside a web browser context where
+network access is restrained.
 
 === cURL
 

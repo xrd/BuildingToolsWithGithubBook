@@ -3,12 +3,16 @@
 GitHub revolutionized software development by responding to a deep
 desire to share information. But calling it just "sharing" does a disservice to
 the tools GitHub provides: these tools remove barriers to
-communication and streamline workflows and these tools also arose at
-exactly the moment when more and more companies permitted and more and
-more complementary technologies appeared to allow an emerging remote
-workforce. Gists service part of this need: they permit intimate code
-sharing and reuse, refactoring and play in a way not served by
-heavyweight tools predating it.
+communication and streamline workflows. These tools also arose at
+exactly the moment when the information technology revolution forced
+companies to adopt more open technologies which assisted an emerging remote
+workforce. 
+
+Gists service part of this need: they permit intimate code
+sharing and reuse, refactoring and play in a way not served by the
+heavyweight tools predating it. In this chapter we will explore using
+Gists to share code, and then build an application hosted as a
+Gist that uses the Gist API.
 
 === Easy Code Sharing
 
