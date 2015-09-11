@@ -1,8 +1,8 @@
 == Android and the Git Data API
 
 You might not use your phone right now as a developer tool, but the
-odds are that you will soon. Though it is still a far fetched idea to
-write code on your mobile device, phones and tablets can be great
+odds are that you will soon. Though there are few tools that allow you to
+write code on your mobile device, phones and tablets can be great 
 tools for reading code. But, we can go beyond the read-only
 limitation. The GitHub API is accessible through the well
 written egit client library, and this library supports both reading
