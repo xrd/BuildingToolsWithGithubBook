@@ -1,12 +1,13 @@
 [[JavaScript]]
 == JavaScript and the Git Data API
 
-Most applications that interact with the GitHub API
-will execute on a server. You are not limited, however, to accessing
-the API from within a server side programming language exclusively. It
-is possible to utilize the GitHub API from within a web browser
-context as well. In this chapter we discuss how to use the unofficial
-JavaScript client library to access the GitHub API and build a single
+Applications utilizing the GitHub API will typically reside inside a
+server. You are not limited, however, to accessing
+the API from within server side programming languages exclusively.
+The GitHub API works perfectly well from within a web browser context
+as well, and the UI to your application come for free if you know a
+little HTML. In this chapter we discuss how to use the unofficial
+JavaScript client library to access the GitHub API and build a single 
 page application (SPA) which we host entirely on GitHub.
 
 [NOTE]
@@ -162,7 +163,7 @@ include AngularJS, Github.js and Bootstrap CSS
 [source,bash]
 -------
 $ wget https://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.js
-$ wget https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css
+$ wget https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css
 $ wget https://github.com/michael/github/raw/master/github.js
 -------
 
