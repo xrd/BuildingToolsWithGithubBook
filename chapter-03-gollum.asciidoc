@@ -4,14 +4,10 @@ Wikis have revolutionized the way we create and digest
 information. It turns out they are a great complement to technical
 projects (code repositories) because they allow non-technical
 users to contribute information without disturbing developers. Gollum
-is GitHub's open source version of a wiki. Just as Git has
+is an open source wiki created by GitHub. Just as Git has
 revolutionized collaborative editing of code, Gollum wikis layer the
-benefits of Git onto a proven publishing workflow. The true power of
-Gollum wikis reveal themselves when you see how tightly integrated
-with GitHub they are. You can quickly build and associate a wiki with
-any repository, and create a collaborative documentation system around
-any repository hosted on GitHub. And, you can pull in information from
-git repositories with ease, linking documentation with live code.
+benefits of Git onto a proven publishing workflow. GitHub makes it
+easy to associate a wiki with any repository. 
 
 In this chapter we'll explore the basics of using Gollum, creating a
 wiki on GitHub and then understanding how to edit it on GitHub, and as

@@ -6,12 +6,8 @@ projects (code repositories) because they allow non-technical
 users to contribute information without disturbing developers. Gollum
 is an open source wiki created by GitHub. Just as Git has
 revolutionized collaborative editing of code, Gollum wikis layer the
-benefits of Git onto a proven publishing workflow. The true power of
-Gollum wikis reveal themselves when you see how tightly integrated
-with GitHub they are. You can quickly build and associate a wiki with
-any repository, and create a collaborative documentation system around
-any repository hosted on GitHub. And, you can pull in information from
-git repositories with ease, linking documentation with live code.
+benefits of Git onto a proven publishing workflow. GitHub makes it
+easy to associate a wiki with any repository. 
 
 In this chapter we'll explore the basics of using Gollum, creating a
 wiki on GitHub and then understanding how to edit it on GitHub, and as
@@ -299,7 +295,7 @@ script to look like this:
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="25c1052:support/gollum/image.rb" lines="1..33"]
+[filename=".", language="ruby", sha="2e66308:support/gollum/image.rb.25c1052" lines="1..33"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -393,7 +389,7 @@ like this.
 
 [source,ruby]
 -----
-[filename=".", language="ruby", sha="9ac26d2:support/gollum/image.rb" lines="23..80"]
+[filename=".", language="ruby", sha="38bc87d:support/gollum/image.rb.9ac26d2" lines="23..80"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
