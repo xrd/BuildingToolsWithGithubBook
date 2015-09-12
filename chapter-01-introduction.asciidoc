@@ -71,12 +71,12 @@ hypermedia deserves an entire book of its own (Check out O'Reilly's
 "Hypermedia APIs with HTML5 and Node"), you can absorb much of what
 makes hypermedia interesting by just looking at a response. First, you
 can see from the API response above that by making a request to the
-API, you actually get back a map of how you should make additional
+API, you receive a map, directions on how to make additional
 responses. Not all clients use this information, of course, but one
 goal behind Hypermedia APIs is that clients can dynamically adjust
 their endpoints without recoding the client code. If the thought of
 GitHub changing an API because clients *should* be written to handle
-new endpoints automatically soundsworriesome, don't fret too much:
+new endpoints automatically sounds worriesome, don't fret too much:
 GitHub is very dilligent about maintaining and supporting their API in a way
 that most companies would do well to emulate. But, you should know
 that you can rely on having a API reference inside the API itself,
@@ -84,7 +84,7 @@ rather than hosted externally in documentation which very easily could
 turn out to be out of date with the API itself. 
 
 These API maps are rich with data. For example, they are not just URLs
-to conten, but also information about how to provide parameters to the
+to content, but also information about how to provide parameters to the
 URLs. Looking at the previous example, the `code_search_url` key 
 references a URL which obviously allows you to search within code on
 GitHub, but also tells you how to structure the parameters passed to
@@ -1032,7 +1032,7 @@ wanted to render the response as HTML instead of markdown, we could do
 this by sending a different accept header, as the following cURL
 commands demonstrate.
 
-[source]
+[source,bash]
 ----
 $ URL='https://api.github.com/repos/rails/rails/issues/11819'
 $ curl -s $URL | jq '.body'
