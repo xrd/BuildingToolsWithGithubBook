@@ -5,12 +5,12 @@ odds are that you will soon. Though there are few tools that allow you to
 write code on your mobile device, phones and tablets can be great 
 tools for reading code. But, we can go beyond the read-only
 limitation. The GitHub API is accessible through the well
-written egit client library, and this library supports both reading
+written EGit client library for Java, and this library supports both reading
 data stored on GitHub and writing data back into it. These are a
-perfect set of tools to build applications on top of the Android
+perfect set of building blocks to develop applications for the Android
 platform, currently the world's most popular mobile OS.
 
-In this chapter, we'll use the egit libraries to develop a small 
+In this chapter, we'll use the Java EGit libraries to develop a small 
 Android application which posts to our blog hosted on GitHub. Our
 blogging application will allow us to login to GitHub, and then ask us
 for a quick note describing how we are feeling. The application will
@@ -166,7 +166,7 @@ here, but there are two items which are worth noting.
 <1> Gradle was not originally designed for Android; it started as a generic java
 build tool. We need to specify where the files to compile reside for an android
 project using the `sourceSets` variable.
-<2> We can install the egit library, our interface to the GitHub API
+<2> We can install the EGit library, our interface to the GitHub API
 from within Java, using this simple declaration. Gradle will download
 the proper JAR files from the Maven repository and build them into our
 application using this dependency declaration.
@@ -456,8 +456,7 @@ our Jekyll repository.
 ==== Code to Login to GitHub
 
 Let's first work on the `login()` method. Poking into the
-https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core:[Egit
-libary reference], we can write GitHub login code that is as simple as
+https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core:[EGit libary reference], we can write GitHub login code that is as simple as
 the following. 
 
 [source,java]
@@ -572,7 +571,7 @@ snippet~~~~~
 GitHub. We'll call it `GitHubHelper`.
 
 We need to import the support
-classes. The JARs and classes for Egit have already been added to our project
+classes. The JARs and classes for EGit have already been added to our project
 automatically using gradle. Make sure you add these `import`
 statements to the top of the file, under the other imports.
 
@@ -616,7 +615,7 @@ method which writes a file to our repository.
 The GitHub API requires that files written into repositories be
 Base64 encoded. The Apache Foundation provides a suite of tools
 published to Maven (the same software repository where we grabbed the
-egit libraries) which can do this encoding for us. To add this library
+EGit libraries) which can do this encoding for us. To add this library
 to our project, we need to add to our dependencies inside our `build.gradle` file:
 
 [source,java]
