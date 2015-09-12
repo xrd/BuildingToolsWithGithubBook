@@ -19,8 +19,8 @@ important and complex. Let's call these tools that are strictly to
 support writing software (rather than software tools for the general
 population) meta-tools.
 
-One of the most famous meta-tools in the history of the software
-development world is Git. Git is a meta-tool to help software developers
+One of the most important meta-tools in the software development world
+is Git. Git is a meta-tool to help software developers  
 manage the complexity that comes from writing software. Git allows
 software developers to store snapshots of their programs (and then
 easily restore those snapshots if necessary) and to easily collaborate
@@ -80,7 +80,7 @@ operating system. Critically, if that business model does not turn out
 to be correct, you can respond quickly to changing requirements and
 iterate to build another application for an Android wearable. Or,
 perhaps you'll build an integrated car application, or any other
-screen (or even non-screen) application. As long as your applications
+console (or even non-console) application. As long as your applications
 can send and receive data using calls to a remote API you are free to
 build whatever user interface you want on whatever platform you want.
 
@@ -97,7 +97,8 @@ GitHub, and the GitHub API is useful to know there as well, as it
 layers the functionality of Git into a networked programming interface.
 
 The GitHub API is perhaps the best designed API I've ever used. It is
-a hypermedia API, which means it is future proofed. It is well
+a hypermedia API, which is an arguably successful attempt to make
+API clients resilient to API changes, a tricky problem. The API is well
 versioned. It is comprehensive, mapping closely to most features of
 Git. It is consistent across sections and well organized. The GitHub
 API is a great API on which to build applications, serving as a
@@ -336,6 +337,31 @@ tools. Between them you will have a solid toolset to begin
 exploration of the GitHub API. Several chapters in this book use Ruby
 or JavaScript, so putting in some time to learn at least a little bit will
 make the journey through this book richer for you.
+
+=== Operating System Prerequisites
+
+We, the authors, wrote this book using MacBook Pros. MacBooks have a
+ubiquitous shell ("BASH") that works almost identically to the one
+found on any Linux machine. If you use either of these two operating
+systems, you will be able to run the code from any chapter. 
+
+If you use a Windows machine (or an OS that does not include the BASH
+shell) then some of the commands and code examples may not work
+without installing additional software. 
+
+Any easy remedy is to use VirtualBox and Vagrant. VirtualBox is a
+freely available virtualization system for x86 hardware. Vagrant is a
+tool for managing development environments: using VirtualBox and
+Vagrant you can quickly install a Linux virtual machine. To do this,
+visit the downloads page for
+https://www.virtualbox.org/wiki/Downloads[VirtualBox] and
+https://www.vagrantup.com/downloads.html[Vagrant]. Once you have
+installed these two tools, you can then install an Ubuntu Linux
+virtual machine with these two commands:
+
+[source,bash]
+$ vagrant init hashicorp/precise32
+$ vagrant up
 
 === Who This Book is Not For
 

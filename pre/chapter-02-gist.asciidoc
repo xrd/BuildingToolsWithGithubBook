@@ -89,21 +89,14 @@ URL specified in the src attribute.
 
 ==== Embedding Inside Jekyll blogs
 
-Though we have not yet explained how Jekyll works (the GitHub blogging
-tool), it seems valid to point out the ease in which you can publish
-gists into a blog if that blog happens to be Jekyll hosted on GitHub.
-
-Jekyll supports a fast shortcut code to embed a public gist inside of your
-Jekyll blog hosted on GitHub, or on any site built on the
-"github-pages" branch mechanism (described in the <<Jekyll>>
-chapter).  The shortcut `{% gist 8138797 %}` will embed a private gist
-which would be found at `http://gist.github.com/8138797`. 
-
-If you want to use a specific file within the gist, add a filename to
-the gist code like `{% gist 8138797 hi.rb %}`.
-
-Secret gists can also be embedded. If you use a secret gist, prefix
-the username of the account holder in the gist like so: `{% gist xrd/8138797 hi.rb %}`.
+Jekyll blogs (explained in the <<Jekyll>> chapter) can easily host
+gists using a special syntax. The shortcut `{% gist 8138797 %}` will
+embed a private gist which would be found at
+`http://gist.github.com/8138797`.  If you want to use a 
+specific file within the gist, add a filename to the gist code like
+`{% gist 8138797 hi.rb %}`. Secret gists can also be embedded. If you
+use a secret gist, prefix the username of the account holder in the
+gist like so: `{% gist xrd/8138797 hi.rb %}`. 
 
 === Gist from the command line
 
@@ -198,41 +191,18 @@ public gist.
 
 You now have a shareable gist of code, which anyone can use to review.
 More importantly, this is a repository with executable code. To clone
-it, look for the Clone URL to the right of the Gist itself. You should
-see a link like:
+it, look for the Clone URL to the right of the Gist itself. You will
+likely see a Git protocol URL, and an HTTPS URL. If you are cloning
+the URL and intend only to read the Gist, you can use the HTTPS
+URL. You technically can push changes once you have cloned a
+repository using the HTTPS URL but not if you have two factor
+authentication enabled. In most cases it is easier and more flexible
+to use the Git protocol URL.
 
-https://gist.github.com/8138797.git
-
-This is a HTTPS clone URL. Though you use this URL, updating Gists
-from this URL is more troublesome. For example, if you are using two
-factor authentication with your account, HTTP Basic authentication will fail. 
-
-[source,bash]
------
-$ # Make some changes 
-$ git commit -m "Made some changes" -a
-$ git push
-Username for 'https://gist.github.com': xrd
-Password for 'https://xrd@gist.github.com': 
-remote: Invalid username or password.
-fatal: Authentication failed for 'https://gist.github.com/8138797.git/'
------
-
-If you don't use two factor authentication, it is still bothersome to
-re-enter your username and password each time you push to the
-repository. Though there are ways you can mitigate re-entering in 
-your username and password each time you push (using `git config
-credential.helper store`), there is a simpler way to allow updates:
-use the SSH URL.
+Let's clone it now.
 
 [source,bash]
------------
 $ git clone git@gist.github.com:8138797.git
------------
-
-Notice that you use a different protocol (git) with an `@` symbol
-between the hostname, and then a colon as the delimiter between the
-hostname and the path to the repository.
 
 Once you have cloned the repository, go inside it. You'll see a list
 of files, a list which right now numbers only one file.
