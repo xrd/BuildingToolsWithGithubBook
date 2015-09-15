@@ -60,7 +60,13 @@ Here's a sample result from a query, which has been heavily edited to focus only
 Starting from the top: the `total_count` field represents the total number of search results that turned up from this query.
 It's not uncommon for a fairly specific search to turn up thousands of results – remember, there are millions of repositories on GitHub.
 By default, only the first 30 are returned, but you can customize this with `page` and `per_page` query parameters in the url.
-For example, a GET request to `search/repositories?q=foobar&page=2&page_size=45` will return 45 items, starting with the 46th result.
+For example, a GET request to this URL will return 45 items, starting with the 46th result:
+
+[source]
+----
+search/repositories?q=foobar&page=2&page_size=45
+----
+ 
 Page sizes are generally limited to 100.
 
 The `incomplete_results` field refers to a computational limit placed on the search API.
@@ -76,7 +82,7 @@ If you do pay attention to it, remember it only has meaning when compared to oth
 Of course, it's always better if you can avoid pagination altogether, or at least get the best results in the first page.
 Qualifiers and operators can help narrow your search results to fewer pages, hopefully allowing the right result to float to the top.
 
-All searches are done through a search query, which is encoded and passed in the URL as the `q` parameter.
+With the Search API, all searches are done through a search query, which is encoded and passed in the URL as the `q` parameter.
 Most of the query will be free text, but the API also supports some powerful syntax, such as these forms:
 
 - `x AND y`, as well as `OR` and `NOT`
@@ -92,7 +98,13 @@ Numerical values and dates can have ranges:
 - `<2015-02-01` will match any date previous to the one given
 - `2015-02-01..2015-03-01` will match dates within the given range, including the end points
 
-For example, to find Python code written by the user tpope during July of 2012, you would write `"user:tpope language:python created:2012-07-01..2015-07-31"`.
+For example, to find Python code written by the user tpope during July of 2012, you would write `"user:tpope language:python created:2012-07-01..2015-07-31"` for the query parameter.
+That would be encoded in a URL like so:
+
+[source]
+----
+search/repositories?q=user%3Atpope+language%3Apython+created%3A2012-07-01..2015-07-31
+----
 
 There are many other options besides.
 Check out https://github.com/search/advanced[] for a UI that can help you construct a query.
@@ -121,7 +133,9 @@ The `search/repositories` endpoint looks in the repository metadata to match you
 This includes the project's name and description by default, though you can also search the README file by specifying `in:readme` in the query.
 Other qualifiers are documented at https://developer.github.com/v3/search/#search-repositories[].
 
-Its response looks something like this:
+A query such as `search/repositories?q=foobar` might result in a response that looks something like this:
+
+<<<
 
 [source,json]
 ----
@@ -151,7 +165,7 @@ Its response looks something like this:
 }
 ----
 
-Each item in `items` looks a lot like the result of a query to the repositories API.
+Each item in `items` is the description of a repository.
 All sorts of useful information is included, such as a URL to the UI for this repository (`html_url`), the owner's avatar (`owner.avatar_url`), and a URL suitable for cloning the repository using Git (`git_url`).
 
 ===== Code Search
@@ -169,6 +183,7 @@ Fifth, and possibly most importantly, you _must_ specify a repository owner usin
 
 The JSON returned looks something like this:
 
+<<<
 [source,json]
 ----
 {
@@ -367,7 +382,7 @@ As is unfortunately typical with Python development, installation methods vary f
 ==== AGitHub
 
 The first thing we should mention is the library we'll use to talk to the GitHub API, which is called `agithub`.
-`agithub` implements is a very thin layer that converts GitHub's REST API into method calls on objects, resulting in delightfully readable code.
+`agithub` is a very thin layer that converts GitHub's REST API into method calls on objects, resulting in delightfully readable code.
 
 `agithub` can be found at https://github.com/jpaugh/agithub[], and the "installation" is simply to download a copy of the `agithub.py` source file and place it alongside your project files.
 
@@ -512,13 +527,13 @@ class SearchFrame(wx.Frame):
 
         self.create_controls()
         self.do_layout()
+        self.SetTitle('GitHub Issue Search')
 
         # Try to pre-load credentials from Git's cache
         self.credentials = git_credentials()
         if self.test_credentials():
             self.switch_to_search_panel()
 
-        self.SetTitle('GitHub Issue Search')
         self.Show()
 ----
 
@@ -810,7 +825,7 @@ We'll skip the usual walkthrough, to point out a couple of interesting features.
 <1> When creating the panel, we pass in the user's credentials and list of organizations as keyword arguments, so they show up in the `kwargs` dictionary.
     Here we use `pop` to make sure the parent class's constructor doesn't get confused by them.
 <2> Here we capture both the search button's "click" event, as well as the text box's "enter key" event.
-    Both should case the search to be performed.
+    Both should cause the search to be performed.
 <3> When we add the search bar to the sizer, we use `0` as a scale factor.
     This means that it shouldn't exand to fit the available size, but keep its own size instead, to leave room to add a results panel later on.
 <4> Here's where the actual search is being done.
@@ -898,7 +913,7 @@ class SearchResult(wx.Panel):
 <1> The containing panel is simple enough that it only consists of a constructor.
     This class's job is to contain the results, and present them in a scroll window.
 <2> A `SearchResult` comprises two static text controls, which contain the issue's title and the first line of its body.
-<3> We're binding the click handler for this entire panel, but also the mouse-enter and mouse-leave events, so we can make it behavior more like a link in a browser.
+<3> We're not only binding the click handler for this entire panel, but also the mouse-enter and mouse-leave events, so we can make it behave more like a link in a browser.
 <4> Here's how you open the default browser to a URL in Python.
 
 So now you've seen the code for a simple WxPython application.
@@ -908,7 +923,7 @@ WxPython may lack some facilities of newer frameworks, but there's nothing bette
 
 That's all of the code!
 If you've been following along and typing all this code into a file, you can run that file and do issue searches.
-However, our use case has a non-technical user runnnig this; let's see what can be done to make it easier for them to get started.
+However, our use case has a non-technical user running this; let's see what can be done to make it easier for them to get started.
 
 === Packaging
 
