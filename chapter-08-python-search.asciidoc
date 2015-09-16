@@ -356,8 +356,10 @@ Let's make a GUI application with just a single search box, which makes it dead 
 It'll end up looking a bit like <<search_app>>.
 
 [[search_app]]
-.GitHub search application
-image::images/python-search.png[]
+.GitHub search application on three platforms
+image:images/search-win.png[width=33%]
+image:images/search-osx.png[width=33%]
+image:images/search-linux.png[width=33%]
 
 ==== User flow
 
