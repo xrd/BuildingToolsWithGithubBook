@@ -1280,12 +1280,10 @@ random one, they look like this.
 
 [source,ruby]
 -----
-...
 [filename="../final-scraper", language="ruby", sha="31ab3b8:_posts/2003-03-23-beautiful-belize.md"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
-...
 -----
 
 As you can see, for now, post are nothing more than the YFM, but this

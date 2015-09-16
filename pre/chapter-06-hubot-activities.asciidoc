@@ -1449,7 +1449,7 @@ a JavaScript object attached to the request object. Above you saw us
 access it inside a variable we called `req` inside our callback;
 obviously this stands for request. The body parser takes on converting
 whatever data content comes from inside the body of the HTTP request into a
-structured JavaScript associative array inside the `body` object inside our
+structured JavaScript associative array inside the `body` object within our
 request object. If the body is url encoded (as the PR information is
 encoded if we create the webhook with the `content_type` set to
 `form`), then the body parser url decodes the content, parses it as

@@ -1429,7 +1429,6 @@ random one, they look like this.
 
 [source,ruby]
 -----
-...
 ---
 title: Beautiful Belize
 creation_date: '2003-03-23'
@@ -1437,7 +1436,6 @@ layout: post
 ---
 
 
-...
 -----
 
 As you can see, for now, post are nothing more than the YFM, but this
