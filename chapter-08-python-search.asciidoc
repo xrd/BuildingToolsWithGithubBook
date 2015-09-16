@@ -38,6 +38,16 @@ Also, since _all_ Enterprise repositories are private, anonymous search is compl
 
 Secondly, authenticating opens up your rate limit. The limits on search are stricter than other APIs anyways, because search is computationally expensive, but anonymous searches are stricter still. As of this writing, and according to the documentation, anonymous searches are limited to 5 per minute, and you can do 20 authenticated queries per minute. Take a look at <<developer-api-rates>> for more on how to work with rate limits.
 
+Here's that same information in tabular form:
+
+[options=header, cols="2,1,1"]
+|======================
+|                                      | Anonymous | Authenticated
+| Results include private repositories | No        | Yes
+| Use with Enterprise                  | No        | Yes
+| Rate limit                           | 5/minute  | 20/minute
+|======================
+
 ===== Result Format
 
 No matter what you're searching for, the return value from the API follows a certain format.
