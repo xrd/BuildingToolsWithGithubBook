@@ -87,6 +87,18 @@ Search results are returned in the `items` array, and each item always has a `sc
 This field is numeric, but it's only a relative measure of how well a result matches the query, and is used for the default sort order – highest score first.
 If you do pay attention to it, remember it only has meaning when compared to other results from the same query; a result with a score of 50 isn't necessarily ten times "better" than a result scored 5.
 
+Here's a summary of the important fields:
+
+[options="header", cols="1m,3"]
+|==================
+| Field | Meaning
+| total_count | Total search result count
+| incomplete_results | `true` if search was halted before finishing
+| items | List of search results
+| (item).score | Relevance of this item as a search result
+|==================
+
+
 ===== Search Operators and Qualifiers
 
 Of course, it's always better if you can avoid pagination altogether, or at least get the best results in the first page.
