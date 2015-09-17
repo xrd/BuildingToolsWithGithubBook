@@ -16,19 +16,12 @@ Gist that uses the Gist API.
 
 === Easy Code Sharing
 
-Gists are easy to create and the interface minimal. You add a snippet
-of code and then share the URL. Gists autodetect the language in most
-cases and format it correctly. Gists can be used in more powerful ways
-than might appear at first glance and this chapter will explore other
-ways to share code and amplify your team.
-
-To create a gist, go to gist.github.com and enter in any textual
-data. You then create a public or secret gist by selecting the
-appropriate button. After creating the gist, you receive a 
-shareable URL with the code. If the type of textual data is specified,
-usually the coding language type, then the code will be formatted in a
-pretty way for better readability. If you need to share a small bit of code,
-or write something and discuss it, gists are a great tool. 
+Gists are straighforward to create. You copy a snippet
+of code into the large text box in the center, optionally enter in a
+description or filename, and then choose between a public or private
+gist. Once your Gist has been created you are presented with a URL to
+share. Gists autodetect the language in most cases and syntax
+highlight according to the language when displayed.
 
 image::images/gists-easy-sharing.png[Creating a Gist on GitHub]
 
@@ -49,11 +42,11 @@ gist.github.com (which will republish them onto the publicly
 facing web page). And, you can "fork" gists, just like
 any other repository. 
 
-You are allowed to branch within gist repositories; however, branches
+You are allowed to branch within Gist repositories; however, branches
 are not displayed inside of gist.github.com. But, if you need the
-benefits of branching when using GitHub gists you can branch normally
-inside a repository and keep the branch information on the upstream
-repository after you push it up. 
+benefits of branching when using Gists you can branch normally
+inside a repository and the branch information is retained on the
+upstream repository after you push it up. 
 
 You can have an unlimited number of public and secret gists. Instead
 of creating a new private repository from your limited amount in a
@@ -97,6 +90,9 @@ specific file within the gist, add a filename to the gist code like
 `{% gist 8138797 hi.rb %}`. Secret gists can also be embedded. If you
 use a secret gist, prefix the username of the account holder in the
 gist like so: `{% gist xrd/8138797 hi.rb %}`. 
+
+Now let's look at creating Gists from outside the GitHub.com site,
+using the command line.
 
 === Gist from the command line
 
@@ -253,8 +249,9 @@ code.
 
 === Gists that render Gists
 
-Let's add to our application and use the octokit gem to pull all
-public gists for any user we specify. Why would we want to make a gist
+Let's add to our application and use the Octokit Ruby gem to pull all
+public gists for any user we specify. The Octokit library is the
+the official Ruby library for accessing the GitHub API. Why would we want to make a gist
 that displays other gists? Self-referential meta code is all the rage, the
 modern day response to René Magritte's famous work: "Ceci n'est pas une
 pipe.".footnote:[Explained best by Ben
@@ -434,9 +431,7 @@ whether I got it right and now GitHub broke their API, or if I never
 had the interface to the API correct. The non-deterministic results of
 the API via Hypermedia make me uncomfortable using it in production.
 
-image::images/gists-hypermedia-broken.png[]
-
-////
+image::images/gists-hypermedia-broken.png[Our Last Five Gists]
 
 === Summary
 
