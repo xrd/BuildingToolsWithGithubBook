@@ -7,20 +7,14 @@ If you write software on a daily basis, you will realize the act of
 writing software is the craft of creating tools. Software is nothing
 more than a tool. A spreadsheet is fundamentally a tool to
 add and subtract numbers. A video game is fundamentally a tool to
-alleviate boredom. But, there are lots of technology books that
-explain the process and technologies behind software tools like those
-so this book leaves that discussion to those books.
-
-Almost immediately after people started writing software tools we
-suddenly discovered the need to write tools which supported us in writing
-the original software. These tools are often hidden from the general
-population that uses the public software but they are equally
-important and complex. Let's call these tools that are strictly to
-support writing software (rather than software tools for the general
-population) meta-tools.
+alleviate boredom. Almost immediately after people started writing
+software tools we then discovered we needed more tools to permit us to
+write the tools we set out to build in the first place. Let's
+call these tools that are strictly to support writing software (rather
+than software tools for the general population) meta-tools.
 
 One of the most important meta-tools in the software development world
-is Git. Git is a meta-tool to help software developers  
+is Git. Git is a meta-tool which helps software developers  
 manage the complexity that comes from writing software. Git allows
 software developers to store snapshots of their programs (and then
 easily restore those snapshots if necessary) and to easily collaborate
@@ -40,14 +34,12 @@ door. GitHub employees are proud of this prioritization and have
 written extensively about the benefits which include easy on-boarding
 of new hires and a transparent workflow visible to all employees. 
 
-This book focuses on the tools that GitHub uses internally and the
-technologies required to support these tools. The GitHub service is
-itself a meta-tool and this book discusses how to use the powerful
-tools GitHub provides to build your own meta-tools and amplify your
-software development. Specifically these technologies are the GitHub
-API and related GitHub technologies the Gollum wiki, Jekyll static
-page generator, and the chat robot called Hubot (if you are not
-familiar with any of these, we'll explain them fully in their
+This book looks on the tools that GitHub uses internally. The
+GitHub.com website is itself a meta-tool and we discuss the many
+facets of the GitHub service. Specifically these technologies are the
+GitHub API and related GitHub technologies the Gollum wiki, Jekyll
+static  page generator, and the chat robot called Hubot (if you are
+not familiar with any of these, we'll explain them fully in their
 respective chapters).
 
 To reiterate, this book is not a reference of those technologies. This
@@ -108,7 +100,7 @@ case study for a well designed API.
 
 The GitHub API is extremely comprehensive, permitting access and
 modification of almost all data and metadata stored or associated with
-a Git repository. Here is a summary of those sections ordered
+a Git repository. Here is a grouped summary of the API ordered
 alphabetically as they are on the GitHub API documentation site
 (https://developer.github.com/v3/): 
 
@@ -134,8 +126,8 @@ covered in the API documentation:
 * Gollum: wikis tied to a repository
 * Hubot: a programmable chat robot used extensively at GitHub
 
-With just one or two exceptions, each of these sections of the GitHub
-technology stack are covered in various chapters. The GitHub API
+Each of these sections of the GitHub technology stack are covered in
+various chapters (with two exceptions we explain below). The GitHub API 
 documentation is a stellar reference which you will use constantly
 when writing any application that talks to the API, but the chapters
 in this book serve a different purpose: 
@@ -147,6 +139,8 @@ when appropriate for the story we are telling. We've generally tried
 to focus on a major API section and limit exposure to other pieces as
 much as possible, but most chapters do need to bring in small pieces
 of more than one section. 
+
+Here is a short synopsis of each chapter:
 
 * The "cURL" chapter: the chapter you are reading now covers a
   first look at the API through the command line HTTP client called

@@ -1,5 +1,5 @@
 [[introduction]]
-== Introduction
+== The Unclad GitHub API
 
 This chapter eases us into reading and writing data from the GitHub
 API. Successive chapters show you how to access information
@@ -298,7 +298,7 @@ important. There are a lot of them which the HTTP specification
 requires, and we can often ignore those, but there are a few that are
 vital when you start making more than just a few isolated request.
 
-=== All The Headers and Data
+=== Important Headers
 
 Three headers are present in every GitHub API response which tell you
 about the GitHub API rate limits.  They are X-RateLimit-Limit,
@@ -312,7 +312,7 @@ format you want to work with by sending an Accept header with your request.
 
 Now, let's use a response to build another response.
 
-===
+=== Following a Hypermedia API
 
 We'll use the "map" of the API by hitting the base endpoint, and then
 use the response to manually generate another request.
@@ -364,10 +364,11 @@ from April that indicates GitHub launched as a company a month earlier
 not added to the GitHub site features until a month after the company launched?
 
 So far all of our requests have retrieved publicly available
-information. But, the GitHub API starts getting really interesting
-when we authenticate and access private information and publicly
-inaccessible services. Another way to say it: if you are using GitHub
-to write data, you need to know about authentication. 
+information. But, the GitHub API has a much richer set of information
+that is available only once we authenticate and access private
+information and publicly inaccessible services. For example, if you
+are using the API to write data into GitHub, you need to know about
+authentication.  
 
 [[authentication]]
 === Authentication
@@ -533,9 +534,11 @@ privileges. At this point the user will need to approve or disapprove
 your request, but asking for everything up front (before you have a
 relationship with the user) often results in a user abandoning the login.
 
-===== Simplified oAuth Flow 
+Now let's get into the specifics of authentication using OAuth.
 
-oAuth has many variants, but GitHub uses oAuth2. oAuth2 specifies a
+===== Simplified OAuth Flow 
+
+OAuth has many variants, but GitHub uses OAuth2. OAuth2 specifies a
 flow where:
 
 * the application requests access
@@ -543,12 +546,12 @@ flow where:
   password usually.
 * if two-factor authentication is enabled, ask for the OTP (one time password) code.
 * GitHub responds with a token inside a JSON payload
-* the application uses the oAuth token to make requests of the API.
+* the application uses the OAuth token to make requests of the API.
 
-A real world flow is described in full in the <<Hubot chapter>>.
+A real world flow is described in full in the <<Hubot>> chapter.
 
-Now let's review an important fundamental when using web services, the
-importance of the HTTP status code.
+Now let's look at the variety of HTTP status codes GitHub uses to
+communicate feedback when using the API. 
 
 === Status Codes
 
@@ -557,7 +560,9 @@ information about how your request was processed. If you are using a
 basic client like cURL, it will be important to validate the status
 code before you look at any of the data retrieved. If you are writing
 your own API client, pay close attention to the status code before
-anything else.
+anything else. If you are new to the GitHub API, it is worth reviewing
+the responses codes thoroughly until you get to are familiar with the
+various conditions that can cause errors when making a request.
 
 ==== Success (200 or 201)
 
@@ -651,7 +656,8 @@ key inside the request payload.
 
 ==== Successful Creation (201)
 
-Now, let's use valid JSON and see what happens:
+We've seen what happens when the JSON is invalid, but what happens
+when the JSON is valid for our request?
 
 [source]
 -----
@@ -688,98 +694,9 @@ succeeded. They give a little bit of extra information, however, in
 that they tell the client that the data has not changed since the last
 time the same request was made. This is valuable information if you
 are concerned about your usage limits (and in most cases you will
-be). 
-
-You need to trigger 304s manually by adding conditional headers
-to your request so let's demonstrate this next.
-
-=== Conditional Requests to Avoid Rate Limitations
-
-If you are querying the GitHub APIs to obtain activity data for a user
-or a repository, there's a good chance that many of your requests
-won't return much activity.  If you check for new activity once every
-few minutes, there will be time periods over which no activity has
-occurred.  These requests, these constant polls still use up requests
-in your rate limit even though there's no new activity to be
-delivered.
-
-In these cases, you can send conditional HTTP headers
-If-Modified-Since and If-None-Match to tell GitHub to return an HTTP
-304 response code telling you that nothing has been modified.  When
-you send a request with a conditional header and the GitHub API responds
-with a HTTP 304 response code, this request is not deducted from your
-rate limit.
-
-The following command listing is an example of passing in the
-If-Modified-Since HTTP header to the GitHub API. Here we've
-specified that we're only interested in receiving content if the
-Twitter Boostrap repositories has been altered after 7:49 PM GMT on
-Sunday, August 11, 2013.  The GitHub API responds with a HTTP 304
-response code which also tells us that the last time this repository
-changed was a minute earlier than our cutoff date.
-
-----
-$ curl -i https://api.github.com/repos/twbs/bootstrap \
-          -H "If-Modified-Since: Sun, 11 Aug 2013 19:48:59 GMT"
-HTTP/1.1 304 Not Modified
-Server: GitHub.com
-Date: Sun, 11 Aug 2013 20:11:26 GMT
-Status: 304 Not Modified
-X-RateLimit-Limit: 60
-X-RateLimit-Remaining: 46
-X-RateLimit-Reset: 1376255215
-Cache-Control: public, max-age=60, s-maxage=60
-Last-Modified: Sun, 11 Aug 2013 19:48:39 GMT
-----
-
-The GitHub API also understands HTTP caching tags. An ETag, or Entity Tag, is an HTTP
-header that is used to control whether or not content that you have
-previously cached is the most recent version.  Here's how your systems
-would use ETag:
-
-* Your server requests information from an HTTP server.
-* Server returns an ETag header for a version of a content item.
-*  Your server includes this ETag in all subsequent requests.
-**  If the server has a newer version it returns new content + a new
-   ETag
-** If the server doesn't have a newer version it returns an HTTP 304
-
-The following command listing demonstrates to commands.  The first
-curl call to the GitHub API generates an ETag value, and the second
-value passes this ETag value as an If-None-Match header.  You'll note
-that the second response is an HTTP 304 which tells the caller that
-there is no new content available.
-
-----
-$ curl -i https://api.github.com/repos/twbs/bootstrap
-HTTP/1.1 200 OK
-Cache-Control: public, max-age=60, s-maxage=60
-Last-Modified: Sun, 11 Aug 2013 20:25:37 GMT
-ETag: "462c74009317cf64560b8e395b9d0cdd"
-
-{
-  "id": 2126244,
-  "name": "bootstrap",
-  "full_name": "twbs/bootstrap",
-  ....
-}
-
-$ curl -i https://api.github.com/repos/twbs/bootstrap \
-          -H 'If-None-Match: "462c74009317cf64560b8e395b9d0cdd"' 
-
-HTTP/1.1 304 Not Modified
-Status: 304 Not Modified
-Cache-Control: public, max-age=60, s-maxage=60
-Last-Modified: Sun, 11 Aug 2013 20:25:37 GMT
-ETag: "462c74009317cf64560b8e395b9d0cdd"
-----
-
-Use of conditional request headers is encouraged to conserve resources
-and make sure that the infrastructure that supports GitHub's API isn't
-asked to generated content unnecessarily.
-
-You might now be wondering: what are my rate limits and when should I
-care about them? 
+be). We have not yet explained how rate limits work, so let's discuss
+that and then return to demonstrate triggering a 304 response code by using
+conditional headers. 
 
 [[developer-api-rates]]
 ==== GitHub API Rate Limits
@@ -862,9 +779,93 @@ minute limit, you will likely want to investigate making authenticated
 requests to the GitHub API. We'll show that when we discuss
 authenticated requests.
 
-[NOTE]
-Calls to the Rate Limit API are not deducted from your Rate Limit.
-Isn't that nice of them?
+Calls to the rate limit API are not deducted from your rate
+limits. And, remember, rate limits are reset after 24 hours.
+
+=== Conditional Requests to Avoid Rate Limitations
+
+If you are querying the GitHub APIs to obtain activity data for a user
+or a repository, there's a good chance that many of your requests
+won't return much activity.  If you check for new activity once every
+few minutes, there will be time periods over which no activity has
+occurred.  These constant polls still use up requests
+in your rate limit even though there's no new activity to be
+delivered.
+
+In these cases, you can send conditional HTTP headers
+`If-Modified-Since` and `If-None-Match` to tell GitHub to return an HTTP
+304 response code telling you that nothing has been modified.  When
+you send a request with a conditional header and the GitHub API responds
+with a HTTP 304 response code, this request is not deducted from your
+rate limit.
+
+The following command listing is an example of passing in the
+If-Modified-Since HTTP header to the GitHub API. Here we've
+specified that we're only interested in receiving content if the
+Twitter Boostrap repositories has been altered after 7:49 PM GMT on
+Sunday, August 11, 2013.  The GitHub API responds with a HTTP 304
+response code which also tells us that the last time this repository
+changed was a minute earlier than our cutoff date.
+
+----
+$ curl -i https://api.github.com/repos/twbs/bootstrap \
+          -H "If-Modified-Since: Sun, 11 Aug 2013 19:48:59 GMT"
+HTTP/1.1 304 Not Modified
+Server: GitHub.com
+Date: Sun, 11 Aug 2013 20:11:26 GMT
+Status: 304 Not Modified
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 46
+X-RateLimit-Reset: 1376255215
+Cache-Control: public, max-age=60, s-maxage=60
+Last-Modified: Sun, 11 Aug 2013 19:48:39 GMT
+----
+
+The GitHub API also understands HTTP caching tags. An ETag, or Entity Tag, is an HTTP
+header that is used to control whether or not content that you have
+previously cached is the most recent version.  Here's how your systems
+would use ETag:
+
+* Your server requests information from an HTTP server.
+* Server returns an ETag header for a version of a content item.
+*  Your server includes this ETag in all subsequent requests.
+**  If the server has a newer version it returns new content + a new
+   ETag
+** If the server doesn't have a newer version it returns an HTTP 304
+
+The following command listing demonstrates to commands.  The first
+curl call to the GitHub API generates an ETag value, and the second
+value passes this ETag value as an If-None-Match header.  You'll note
+that the second response is an HTTP 304 which tells the caller that
+there is no new content available.
+
+----
+$ curl -i https://api.github.com/repos/twbs/bootstrap
+HTTP/1.1 200 OK
+Cache-Control: public, max-age=60, s-maxage=60
+Last-Modified: Sun, 11 Aug 2013 20:25:37 GMT
+ETag: "462c74009317cf64560b8e395b9d0cdd"
+
+{
+  "id": 2126244,
+  "name": "bootstrap",
+  "full_name": "twbs/bootstrap",
+  ....
+}
+
+$ curl -i https://api.github.com/repos/twbs/bootstrap \
+          -H 'If-None-Match: "462c74009317cf64560b8e395b9d0cdd"' 
+
+HTTP/1.1 304 Not Modified
+Status: 304 Not Modified
+Cache-Control: public, max-age=60, s-maxage=60
+Last-Modified: Sun, 11 Aug 2013 20:25:37 GMT
+ETag: "462c74009317cf64560b8e395b9d0cdd"
+----
+
+Use of conditional request headers is encouraged to conserve resources
+and make sure that the infrastructure that supports GitHub's API isn't
+asked to generated content unnecessarily.
 
 At this point we have been accessing the GitHub API from a cURL
 client, and as long as our network permits it, we can do whatever we
@@ -958,13 +959,13 @@ but official way to access external services from within a web page.
 
 ==== CORS Support
 
-CORS is the "correct" way to access GitHub content from within a browser
-context. CORS requires that the server be properly configured in
-advance; the server must be indicate when queried that it allows cross
-domain requests. If the server effectively says "yes, you can access
-my content from a different domain" then CORS requests are
-permitted. The HTML5Rocks website has a great tutorial explaining many
-details of CORS:
+CORS is the W3C (a web standards body) approved way to access content
+from a different domain than the original host. CORS requires that the
+server be properly configured in advance; the server must indicate
+when queried that it allows cross domain requests. If the server
+effectively says "yes, you can access my content from a different
+domain" then CORS requests are permitted. The HTML5Rocks website has a
+great tutorial explaining many details of CORS:
 http://www.html5rocks.com/en/tutorials/cors/.  
 
 Because XHR using CORS allows the same type of XHR requests as you get
@@ -1066,8 +1067,7 @@ be returned either as a diff or as a patch.  For more information
 about these fine-grained controls for formatting, see the GitHub API
 documentation.
 
-=== GitHub Has Amazing API Documentation
-
+[NOTE]
 The GitHub team has already provided very thorough documentation on
 their API with examples using cURL. Bookmark this URL:
 https://developer.github.com/v3/. You'll use it often. Do note that
