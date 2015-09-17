@@ -131,11 +131,21 @@ single device attached via USB which is the emulated Nexus 5 device.
 [source,bash]
 $ mkdir ghru # GitHub R U?
 $ cd ghru
-$ android create project --target 13 --name GHRU --path . --activity GitHubRu --package com.githubru
+$ android create project --target android-19 \
+--name GHRU --path . \
+--activity GitHubRu --package com.githubru
 
 These three commands create a new directory `ghru`, enter the
 directory, and then build a simple Android directory structure with
 the proper files.
+
+[NOTE]
+You may not have the same installation of Android targets necessary to
+run this command. In this case you might get an error like `Error:
+Target id is not valid. Use 'android list targets' to get the target
+ids.`. If you receive this error, run the command `android list
+targets` and use a different target. Generally any target beyond
+android-19 should work with this code.
 
 If you have the ant tool installed, you can build this new project
 with the `ant debug` command. This will create an APK in the bin
@@ -371,7 +381,7 @@ line represents a verification happening outside of our
 Android application. Calabash allows us to test from whatever vantage
 point works best given the situation. 
 
-When using calabash, you need to understand two types of files: "feature"
+When using Calabash, you need to understand two types of files: "feature"
 files and "step" files. Feature files define human readable actions
 comprising a test. Step files define the code, written in Ruby, behind
 these actions. Step files are entirely optional as there are many default steps

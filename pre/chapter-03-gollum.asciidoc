@@ -1,13 +1,16 @@
-== Gollum
+== GitHub Wikis with Gollum
 
 Wikis have revolutionized the way we create and digest
 information. It turns out they are a great complement to technical
 projects (code repositories) because they allow non-technical
-users to contribute information without disturbing developers. Gollum
+users to contribute in ways other than adding code. Gollum
 is an open source wiki created by GitHub. Just as Git has
 revolutionized collaborative editing of code, Gollum wikis layer the
-benefits of Git onto a proven publishing workflow. GitHub makes it
-easy to associate a wiki with any repository. 
+benefits of Git onto the widely used Wiki publishing workflow. Gollum
+wikis are themselves repositories that generally annotate other
+typically code-centric repositories. GitHub makes it easy to associate
+a wiki with any 
+repository. 
 
 In this chapter we'll explore the basics of using Gollum, creating a
 wiki on GitHub and then understanding how to edit it on GitHub, and as
@@ -19,18 +22,17 @@ entirely different way, but still publishes information into GitHub as
 a regular Gollum wiki, exploring a little bit of the internals of Git
 along the way.
 
-=== Chapter Prerequisites
-
+[NOTE]
 This chapter demonstrates code which modifies a Git repository
 programmatically. You will be able to follow along without possessing
 a deep understanding of the internals of Git. And, a good supplement
-to this chapter (and later chapters as well) is the http://shop.oreilly.com/product/0636920022862.do:["Version Control
-with Git"] book from O'Reilly.
+to this chapter (and later chapters as well) is the
+http://shop.oreilly.com/product/0636920022862.do:["Version Control
+with Git"] book from O'Reilly. 
 
 === "The Story of Smeagol..."
 
-Gollum wikis are simply an agreed upon file structure. At its most
-basic form, a Gollum wiki is a git repository with a single file,
+At its most basic form, a Gollum wiki is a git repository with a single file,
 `Home.ext` (`ext` would be any of the supported wiki markup formats,
 which we will talk about later). 
 
@@ -57,9 +59,7 @@ repositories have public wikis, accessible to anyone. Private
 repositories have private wikis, accessible only to those users or
 organizations which have rights to edit the repository data. 
 
-Wikis are powerful collaboration tools because they use a special
-language which compiles into HTML. Let's review the options for Gollum
-wikis.
+Let's review the markup options for Gollum wikis now.
 
 ==== Markup and Structure
 
@@ -110,8 +110,9 @@ foobar|http://foobar.com]]`, so caveat emptor.
 Gollum (the wiki) was invented at GitHub, a company dedicated to
 improving the lives of software developers, so it stands to reason
 Gollum wikis would support insertion of code snippets. To include a snippet of
-code, use three backticks, followed by the language name, and close
-the block of code using three more backticks.
+code, use three backticks, followed by an optional language name, and close
+the block of code using three more backticks. If you use the language
+name, Gollum will do proper syntax highlighting for most languages.
 
 [source,ruby]
 ----
@@ -122,26 +123,24 @@ end
 ```
 ----
 
-Gollum
-https://github.com/gollum/gollum/wiki/Home/b16ce34e46e26600dc77bdf9b5aa6efcaf42026d#github-syntax-highlighting:[used]
-to support inclusion of files from any GitHub repository 
-using a syntax like this: 
+Gollum https://github.com/gollum/gollum/wiki/Home/b16ce34e46e26600dc77bdf9b5aa6efcaf42026d#github-syntax-highlighting:[used]
+to support inclusion of files from any GitHub repository (and any
+branch!) using a syntax like this: 
 
 [source,ruby]
 -----
-```html:github:xrd/TeddyHyde/blob/master/Gemfile```
+```ruby:github:xrd/TeddyHyde/blob/master/Gemfile```
 -----
 
-This would have pulled the file on GitHub located inside the
-"TeddyHyde" repository for user "xrd" on the master branch named "Gemfile"  and publish it with
-syntax hilighted into your wiki as if you had used this markup. This
-syntax was very flexible because it used the branch: you could expose
-any moment of history in your repository by checking out that moment
-and branching from it, so this was a powerful way to reference files
-from within Gollum. This functionality has been removed, sadly.
+Unforunately, this no longer works. Supposedly, this tag allows
+inclusion of files from the parent repository:  
 
-According to the documentation, this has been replaced by a tag
-allowing inclusion of files from the parent repository: 
+[source,ruby]
+-----
+```ruby:/lib/gollum/app.rb```
+-----
+
+But, I found this to be broken as well.
 
 ===== Structural Components
 
@@ -150,14 +149,14 @@ you include a file called `_Sidebar.ext` inside your repository,
 you'll see it as a sidebar for every file rendered. Sidebars are
 automatically added to any file and any file from subdirectories that
 do not have their own sidebar files. If you wanted to add sidebars
-specific to a subdirectory, add another file in the subdirectory and
-this file will override the top level sidebar file. 
+specific to a subdirectory, add another sidebar file in the
+subdirectory and this file will override the top level sidebar file.  
 
 ===== No Styling or JavaScript
 
 For security reasons, Gollum strips out all CSS and
 JavaScript from raw markup files. You can include your own JavaScript
-or CSS file when running Gollum locally using the `--custom-css` or
+or CSS file when running Gollum locally (from the command line, discussed using the `--custom-css` or
 `--custom-js` switches, but there is no way to include these files on a
 Wiki when your Gollum wiki is hosted on GitHub.
 
