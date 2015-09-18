@@ -1,13 +1,16 @@
-== Gollum
+== GitHub Wikis with Gollum
 
 Wikis have revolutionized the way we create and digest
 information. It turns out they are a great complement to technical
 projects (code repositories) because they allow non-technical
-users to contribute information without disturbing developers. Gollum
+users to contribute in ways other than adding code. Gollum
 is an open source wiki created by GitHub. Just as Git has
 revolutionized collaborative editing of code, Gollum wikis layer the
-benefits of Git onto a proven publishing workflow. GitHub makes it
-easy to associate a wiki with any repository. 
+benefits of Git onto the widely used Wiki publishing workflow. Gollum
+wikis are themselves repositories that generally annotate other
+typically code-centric repositories. GitHub makes it easy to associate
+a wiki with any 
+repository. 
 
 In this chapter we'll explore the basics of using Gollum, creating a
 wiki on GitHub and then understanding how to edit it on GitHub, and as
@@ -19,18 +22,17 @@ entirely different way, but still publishes information into GitHub as
 a regular Gollum wiki, exploring a little bit of the internals of Git
 along the way.
 
-=== Chapter Prerequisites
-
+[NOTE]
 This chapter demonstrates code which modifies a Git repository
 programmatically. You will be able to follow along without possessing
 a deep understanding of the internals of Git. And, a good supplement
-to this chapter (and later chapters as well) is the http://shop.oreilly.com/product/0636920022862.do:["Version Control
-with Git"] book from O'Reilly.
+to this chapter (and later chapters as well) is the
+http://shop.oreilly.com/product/0636920022862.do:["Version Control
+with Git"] book from O'Reilly. 
 
 === "The Story of Smeagol..."
 
-Gollum wikis are simply an agreed upon file structure. At its most
-basic form, a Gollum wiki is a git repository with a single file,
+At its most basic form, a Gollum wiki is a git repository with a single file,
 `Home.ext` (`ext` would be any of the supported wiki markup formats,
 which we will talk about later). 
 
@@ -57,9 +59,7 @@ repositories have public wikis, accessible to anyone. Private
 repositories have private wikis, accessible only to those users or
 organizations which have rights to edit the repository data. 
 
-Wikis are powerful collaboration tools because they use a special
-language which compiles into HTML. Let's review the options for Gollum
-wikis.
+Let's review the markup options for Gollum wikis now.
 
 ==== Markup and Structure
 
@@ -110,8 +110,9 @@ foobar|http://foobar.com]]`, so caveat emptor.
 Gollum (the wiki) was invented at GitHub, a company dedicated to
 improving the lives of software developers, so it stands to reason
 Gollum wikis would support insertion of code snippets. To include a snippet of
-code, use three backticks, followed by the language name, and close
-the block of code using three more backticks.
+code, use three backticks, followed by an optional language name, and close
+the block of code using three more backticks. If you use the language
+name, Gollum will do proper syntax highlighting for most languages.
 
 [source,ruby]
 ----
@@ -122,26 +123,26 @@ end
 ```
 ----
 
-Gollum
-https://github.com/gollum/gollum/wiki/Home/b16ce34e46e26600dc77bdf9b5aa6efcaf42026d#github-syntax-highlighting:[used]
-to support inclusion of files from any GitHub repository 
-using a syntax like this: 
+Gollum https://github.com/gollum/gollum/wiki/Home/b16ce34e46e26600dc77bdf9b5aa6efcaf42026d#github-syntax-highlighting:[used]
+to support inclusion of files from any GitHub repository (and any
+branch!) using a syntax like this: 
 
 [source,ruby]
 -----
-```html:github:xrd/TeddyHyde/blob/master/Gemfile```
+```ruby:github:xrd/TeddyHyde/blob/master/Gemfile```
 -----
 
-This would have pulled the file on GitHub located inside the
-"TeddyHyde" repository for user "xrd" on the master branch named "Gemfile"  and publish it with
-syntax hilighted into your wiki as if you had used this markup. This
-syntax was very flexible because it used the branch: you could expose
-any moment of history in your repository by checking out that moment
-and branching from it, so this was a powerful way to reference files
-from within Gollum. This functionality has been removed, sadly.
+Unforunately, this no longer works. Supposedly, this tag allows
+inclusion of files from the parent repository:  
 
-According to the documentation, this has been replaced by a tag
-allowing inclusion of files from the parent repository: 
+[source,ruby]
+-----
+```ruby:/lib/gollum/app.rb```
+-----
+
+But, I found this to be broken as well. At the time of this writing,
+it tragically appears there is no way to insert code from the parent
+repository into your Wiki content.
 
 ===== Structural Components
 
@@ -150,14 +151,15 @@ you include a file called `_Sidebar.ext` inside your repository,
 you'll see it as a sidebar for every file rendered. Sidebars are
 automatically added to any file and any file from subdirectories that
 do not have their own sidebar files. If you wanted to add sidebars
-specific to a subdirectory, add another file in the subdirectory and
-this file will override the top level sidebar file. 
+specific to a subdirectory, add another sidebar file in the
+subdirectory and this file will override the top level sidebar file.  
 
 ===== No Styling or JavaScript
 
 For security reasons, Gollum strips out all CSS and
 JavaScript from raw markup files. You can include your own JavaScript
-or CSS file when running Gollum locally using the `--custom-css` or
+or CSS file when running Gollum from the command line,
+(discussed momentarilys) using the `--custom-css` or 
 `--custom-js` switches, but there is no way to include these files on a
 Wiki when your Gollum wiki is hosted on GitHub.
 
@@ -201,14 +203,6 @@ non-technical users. Since Gollum is a hackable Wiki, we can build our
 own workflow tool that allows designers to manage images and coders to
 easily see those changes in a source code repository. 
 
-Gollum is built on Ruby and uses the Grit library underneath. Using
-Ruby makes sense because we can leverage the existing Grit and Gollum
-libraries. We'll also use Sinatra, the same web application library we
-used in the last chapter.
-
-[NOTE]
-The `gollum` command is, in fact, a customized wrapper around Sinatra.
-
 This will be a dual purpose repository. We can use the repository with
 gollum as a standard wiki. And, we can use it with our application to
 enter data in a more powerful way than gollum permits from its default
@@ -244,10 +238,12 @@ your index, they will not be visible to Gollum.
 Now let's begin creating the web app that will help us store images
 inside a Gollum wiki.
 
-==== Our Gollum Editor Starting Point
+=== The Starting Point of a Gollum Editor
 
-Create our sinatra script called `image.rb`, and then we can install
-the necessary gems and run our server application.
+Now we will create our custom editor. We'll use Sinatra, a Ruby
+library that provides a simple DSL (domain specific language) for
+building web applications. First, create a file called `image.rb` and
+put the following contents inside it.
 
 [source,ruby]
 ------
@@ -259,12 +255,13 @@ get '/pages' do
 end
 ------
 
-Then, create the Gemfile.
+Then, create the Gemfile, install the dependencies and run the web
+application. 
 
 [source,bash]
 ------
 $ echo "source 'https://rubygems.org'
-gem 'sinatra'
+gem 'sinatra', '1.4.5'
 gem 'gollum-lib', '4.1.0'" >> Gemfile
 $ bundle install
 Fetching gem metadata from https://rubygems.org/..........
@@ -286,7 +283,7 @@ system gems) using the `bundle exec ruby image.rb` command.
 You'll see a report of the files that exist in our Gollum wiki right
 now. We've only added one file, the `Home.md` file.
 
-==== Programmatically Handling Images
+=== Programmatically Handling Images
 
 Let's add to our server. We want to support uploading ZIP files into
 our system that we will then unpack and add to our repository, as well
@@ -358,14 +355,15 @@ we always need to render our index page. When we do render it after
 unzipping, we replace a comment stored in the index file with a status
 message indicating the script received the correct file we posted.
 
-We need to add an additional ruby library to enable this application,
-so update the required gems using the following commands, and then re-run
+We need to add the new Ruby libraries (RubyZip and Rugged) to our Gemfile:
+update the required gems using the following commands, and then re-run
 our Sinatra server script.
 
 [source,bash]
-$ printf "gem 'rubyzip', '1.1.7'\ngem 'rugged', '0.23.2'" >> Gemfile
+$ echo "gem 'rubyzip', '1.1.7'
+gem 'rugged', '0.23.2'" >> Gemfile
 $ bundle install
-$ ruby image.rb
+$ bundle exec ruby image.rb
 
 
 [WARNING]
@@ -401,7 +399,7 @@ We are not doing anything beyond printing out the names of the images
 in the zip. We'll actually insert them into our Git repository in the
 next section.
 
-==== Leveraging the Rugged Library
+=== Using the Rugged Library
 
 Our end goal for this script is to add files to our Gollum wiki, which
 means adding files to the repository which backs our Gollum wiki.
@@ -416,9 +414,10 @@ is written in Ruby and, if you like Ruby, is a more elegant way to
 interface with a Git repository than raw git commands. As you might
 expect, Rugged is maintained by several employees of GitHub.
 
-To change our script to modify our Git repository, modify the `puts`
-statement inside the zip loop to call a new method called
-`write_file_to_repo`. And, at the end of the zip block, add a method
+To change our script to modify our Git repository, let's change our
+script to no longer print the filename (using the `puts` method inside
+the zip decode block) and instead call a new method called
+`write_file_to_repo`. And, at the end of the zip block, add a method 
 called `build_commit` which builds the commit from our new files. Our
 new file (omitting the unchanged code at the head of the file) looks
 like this.
@@ -544,7 +543,7 @@ the working index and the repository (using the Rugged library `write`
 call). Then we can generate a Review file which details all the images
 uploaded.
 
-==== Optimizing for Image Storage
+=== Optimizing for Image Storage
 
 If a designer uploads the same image twice, what happens? Our code
 writes these files to a different path on disk inside the repository
@@ -692,7 +691,7 @@ images/b4be28e5b24bfa46c4942d756a3a07efd24bc234/IMG_20130704_174217.jpg
 Git and Gollum can efficiently store the same file at different paths
 without overloading the repository.
 
-==== Reviewing on GitHub
+=== Reviewing on GitHub
 
 The raison d'etre for this wiki is to annotate a development project.
 If you follow the instructions above and create a new wiki for a
@@ -755,7 +754,7 @@ this in their site as of this writing. We can fix this, however, by generating
 our own special link inside the review page itself which will
 magically know about how to navigate to a previous version of the page.
 
-==== Improving Revision Navigation
+=== Improving Revision Navigation
 
 In our example, we only have three revisions right now, and all share the same commit
 message ("Adding new images"). This is not very descriptive and makes
@@ -798,7 +797,7 @@ Now, if our designer posts a new version of the UI comps, they can
 specify what changes were made, and we have a record of that in our
 change log, exposed on the revisions section of our wiki hosted on GitHub.
 
-==== Fixing Linking Between Comp Pages
+=== Fixing Linking Between Comp Pages
 
 We noted that there is no quick way to jump between comps once we are
 inside a review revision. However, if you recall we used the parent
@@ -858,7 +857,7 @@ scratch, both on GitHub and as a fresh repository from the comman
 line. We then looked at the different ways to use the `gollum` command
 line tool and learned why this is a nice option when we want to run
 our own Gollum server. Finally, we built a customized Gollum
-image-centric editor using the Rugged library for Ruby.
+image-centric editor using the Rugged and Sinatra Ruby libraries.
 
 In the next chapter we'll switch gears completely, and build a GUI
 application for searching GitHub issues. And we'll do it in Python.
