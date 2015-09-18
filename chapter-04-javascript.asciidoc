@@ -10,7 +10,6 @@ little HTML. In this chapter we discuss how to use the unofficial
 JavaScript client library to access the GitHub API and build a single 
 page application (SPA) which we host entirely on GitHub.
 
-[NOTE]
 The main weakness of JavaScript has always been testability. Mainly
 due to the asynchronous nature of JavaScript, writing tests has never
 been easy; polling for changes when a callback returns was until
@@ -20,6 +19,18 @@ not only easy but elegant as well. Building applications on top of
 third party services makes testing even more important than it already
 was, and we'll make sure to add testing to our application to verify
 the functionality works as we expect.
+
+JavaScript should be generally accessible to most people who know other
+imperative programming languages. There is one feature, however, that
+can be challenging: the callback function. In JavaScript, functions
+are first class objects, meaning they can be passed as arguments to
+other functions, and stored as the value of a variable. You will find
+callbacks everywhere in JavaScript programming. Callbacks make
+debugging and understanding JavaScript code more challenging at
+times. As we stated earlier, writing code that includes tests makes
+understanding the entire picture easier, and we will do that in this
+chapter to further explain sections where necessary function callbacks
+may initially look confusing.
 
 A single page application should fulfill a single simple
 purpose. Logically, this application should help us find good coffee. 
@@ -146,11 +157,12 @@ of the advanced topics here:
 <2> The `ng-app` attribute in the body tag tells AngularJS to initialize
   and compile our page from the body tag downward. 
 <3> The `{{ }}` (double brackets) are an AngularJS two-way data binding
-  directive. This sanity checks whether AngularJS is working for us;
-  if we see "Welcome to Coffeete.ch" without the braces then we know
-  AngularJS is loading and working properly. If we see the braces,
-  then there is some error in our setup to resolve. Two way
-  data-binding solves a significant pain point when building JS apps:
+  directive. You'll see two-way data binding in action very soon if it
+  is not already familiar. Adding this code here sanity checks whether
+  AngularJS is working for us; if we see "Welcome to Coffeete.ch"
+  without the braces then we know AngularJS is loading and working
+  properly. If we see the braces, then there is some error in our
+  setup to resolve. Two way data-binding solves a significant pain point when building JS apps:
   marshalling data back and forth between network events, into HTML
   and out of HTML forms. AngularJS does all this heavy lifting for
   you. In a moment we'll show how to use two-way databinding as it was
@@ -252,8 +264,9 @@ If you load this up in your browser, you will see something like this:
 
 image::images/javascript-gollum.png[The Whole Messy JSON]
 
-Yikes, that is a lot of data. AngularJS's JSON filter pretty printed
-it for us, but this is a bit too much. Change the HTML to be like this:
+That is a lot of data. AngularJS's JSON filter pretty printed
+it for us, but this is a bit too much. Let's change the HTML to reduce
+some noise.
 
 [source,html]
 -------
@@ -410,12 +423,12 @@ describe( "GithubCtrl", function() {
 
     beforeEach( module( "coffeetech" ) ); // <2>
   
-    beforeEach( inject( function ($controller, $rootScope ) {
-            generateMockGeolocationSupport(); // <3>
+    beforeEach( inject( function ($controller, $rootScope ) { // <3>
+            generateMockGeolocationSupport(); // <4>
             generateMockRepositorySupport();
-            scope = $rootScope.$new(); // <4>
+            scope = $rootScope.$new(); // <5>
             ctrl = $controller( "GithubCtrl", 
-	       { $scope: scope, Github: gh, Geo: geo } ); // <5>
+	       { $scope: scope, Github: gh, Geo: geo } ); // <6>
         } )
     );
 ...
@@ -428,6 +441,8 @@ different inside our setup code and the actual tests.
 <2> We load our `coffeetech` module into our tests using the `module`
 method inside a `beforeEach` call, code which is executed before our
 tests run.
+<3> `inject` is the AngularJS way to provide our before functions with
+the `$controller` and `$rootScope` objects, which we use to setup our tests.
 <3> We will be creating two functions which generate the mock objects
 required for our tests. We'll discuss these two functions in a bit.
 <4> Scope is the angular convention for the object into which all
@@ -446,12 +461,12 @@ Now, let's write an actual test.
 [source,javascript]
 -------
     describe( "#init", function() { // <1>
-        it( "should initialize, grabbing current city", function() {
-            scope.init(); // <2>
-            expect( geo.getCurrentPosition ).toHaveBeenCalled(); // <3>
+        it( "should initialize, grabbing current city", function() { // <2>
+            scope.init(); // <3>
+            expect( geo.getCurrentPosition ).toHaveBeenCalled(); // <4>
             expect( gh.getRepo ).toHaveBeenCalled(); 
             expect( repo.read ).toHaveBeenCalled(); 
-            expect( scope.cities.length ).toEqual( 2 ); // <4>
+            expect( scope.cities.length ).toEqual( 2 ); // <5>
             expect( scope.city.name ).toEqual( "portland" ); 
             expect( scope.shops.length ).toEqual( 3 ); 
         });
@@ -462,7 +477,10 @@ Now, let's write an actual test.
 <1> Describe functions are used to group tests defined inside `it`
 functions. Since we are testing the `init` function, it seems logical
 to use an identifier called `#init`.
-<2> Our code starts when we call `init`, so call it here.
+<2> `describe` blocks group tests while `it` blocks actually specify
+code which is run as a test. 
+<2> Our controller code begins with an `init` call, so we mimic that
+inside our test to setup the controller state.
 <3> We assert that our code uses the various interfaces we defined on
 our injected objects: `getCurrentPosition` on the Geo object, and `read`
 on the repository object.
@@ -472,6 +490,14 @@ the string "Portland" and that there are three shops loaded for that
 city. Behind the scenes in our implementation we will load these via
 JSON, but all we care about is that the interface and data matches our
 expectations. 
+
+This syntax initially can look confusing if you have never written
+Jasmine tests for JavaScript, but it actually solves a lot of problems
+in an elegant way. Most importantly, Jasmine provides a `spyOn`
+function that will intercept a call to it, and then allow you to
+assert that it was called. Any place in our tests you see
+`toHaveBeenCalled()` is an assertion that `spyOn` provides to us
+proving that a call was made. 
 
 Now we can implement the two mocking functions vital for the test. Put
 them in between the `beforeEach( module( "coffeetech" ) )` line and
@@ -510,13 +536,6 @@ function generateMockRepositorySupport() { // <4>
 beforeEach( inject( function ($controller, $rootScope ) {
 ...
 -----
-
-This syntax looks confusing if you have never written Jasmine tests
-for JavaScript, but it actually solves a lot of problems in an elegant
-way. Most importantly, Jasmine provides a spyOn function that will
-intercept a call to it, and then allow you to assert that it was
-called. Any place in our tests you see `toHaveBeenCalled()` is an
-assertion that `spyOn` provides to us proving that a call was made.
 
 <1> We first implement the `generateMockLocation` function. 
 <2> Mock location involves creating a Geo object which has a single
@@ -782,13 +801,18 @@ stored procedure within the PostgreSQL database, and I converted the
 code to JavaScript. Unless you are a geocoding geek, how do we know
 this works as advertised? Well, let's write some tests to prove it.
 Add these lines to the bottom of your `coffeetech.spec.js`, just within
-the last `});` closing braces
+the last `});` closing braces:
 
 [source,javascript]
 -----
     describe( "#calculateDistance", function() {
         it( "should find distance between two points", function() {
-            expect( parseInt( scope.calculateDistance( 14.599512, 120.98422, 10.315699, 123.885437 ) * 0.61371 ) ).toEqual( 354 );
+            expect( parseInt( 
+	        scope.calculateDistance( 14.599512, 
+					 120.98422, 
+					 10.315699, 
+					 123.885437 ) * 0.61371 ) ).
+			toEqual( 354 );
         });
     });
 
@@ -839,7 +863,7 @@ login to GitHub. So, we need to ask for credentials.
 -------
 ...
 
-$scope.annotate = function() { // <1>
+$scope.annotate = function() { 
     user = Prompt( "Enter your github username" )
     password = Prompt( "Enter your github password" )
     data = Prompt( "Enter data to add" );
@@ -954,7 +978,7 @@ includes look like this:
 Now we can build out some faked data and start envisioning the
 structure of our data that will eventually come from our users. 
 
-=== User Reported Data
+=== Displaying (Soon-To-Be) User Reported Data
 
 So far we have built a database of cities and coffee shops in those
 cities. Google Maps or Apple Maps already provide this information.
@@ -1047,7 +1071,7 @@ pieces formatted as labels underneath the shop name.
 
 image::images/javascript-search-box.png[Filtering coffeeshops using the term gluten]
 
-==== User Submitted Data
+==== User Contributed Data
 
 Now that we have a functioning application, let's allow people to add
 information themselves and help build our database. Just beneath the
@@ -1159,7 +1183,8 @@ mocked and programmatic timeout interface which we can control inside
 our tests. 
 <2> We generate our mocked GitHub method calls and spies, and we 
 follow that by mocking our prompt calls.
-<3> 
+<1> As mentioned above, we need to get `$timeout`, and we can use the
+injector to retrieve the mocked one AngularJS provides for testing using this call.
 
 [source,javascript]
 -----
@@ -1168,22 +1193,22 @@ describe( "#annotate", function() {  // <1>
     it( "should annotate a shop", function() {
         scope.city = PORTLAND
         var shop = { name: "A coffeeshop" }
-        scope.annotate( shop ); 
-        expect( scope.shopToAnnotate ).toBeTruthy();// <2>
+        scope.annotate( shop ); // <2>
+        expect( scope.shopToAnnotate ).toBeTruthy();// <3>
         expect( prompter.prompt.calls.length ).toEqual( 3 ); 
         expect( scope.username ).not.toBeFalsy();
-        expect( scope.annotation ).not.toBeFalsy();// <3>
+        expect( scope.annotation ).not.toBeFalsy();
 
-        expect( repo.fork ).toHaveBeenCalled(); 
-        expect( scope.waiting.state ).toEqual( "forking" ); 
-        $timeout.flush();// <4>
+        expect( repo.fork ).toHaveBeenCalled(); // <4>
+        expect( scope.waiting.state ).toEqual( "forking" ); // <5>
+        $timeout.flush();// <6>
 
-        expect( scope.forkedRepo ).toBeTruthy(); 
-        expect( repo.read ).toHaveBeenCalled(); // <5>
+        expect( scope.forkedRepo ).toBeTruthy(); // <7>
+        expect( repo.read ).toHaveBeenCalled(); 
         expect( repo.write ).toHaveBeenCalled();
         expect( repo.createPullRequest ).toHaveBeenCalled();
         expect( scope.waiting.state ).toEqual( "annotated" );
-        $timeout.flush();
+        $timeout.flush();// <8>
 
         expect( scope.waiting ).toBeFalsy(); 
     });
@@ -1192,8 +1217,6 @@ describe( "#annotate", function() {  // <1>
 ...
 -----
 
-<1> As mentioned above, we need to get `$timeout`, and we can use the
-injector to retrieve the mocked one AngularJS provides using this call.
 <2> We create a new describe block to organize our tests, calling it
 `#annotate`. We then implement one `it` function which is the single
 test we are creating: "annotate a shop."
@@ -1203,21 +1226,22 @@ our `annotate` method.
 <4> Once we have called `annotate`, our code should request our
 our credentials for the GitHub API, and then ask us for the information
 to use in annotating the shop. If this were happening in the browser,
-we would get three prompts. Our test mocks out prompt, and we should
-therefore see three calls made to our mocked prompt object. We also
+we would get three prompts. Our test mocks out the `prompt` object
+here, and we should therefore see three calls made to our mocked prompt object. We also
 validate some state we should see on the scope object like holding a
 username and annotation for usage later.
 <5> We should then see the first of our GitHub API calls being made:
-we should see GitHub.js issue a requet to `fork` the repository.
+GitHub.js should issue a request to `fork` the repository.
 <6> We should then enter in our waiting state; we will tell the user
 we are waiting and our UI will use the scope `waiting.state` to notify
 them of that.
-<7> Once we have flushed the timeout to simulate completion of the
+<7> Once we have flushed the timeout which simulates completion of the
 fork, we will then see our code storing the result of the forked repo
-into the scope. We'll also see our other GitHub API calls to actually
-do the annotation.
-<8> Finally, after everything is done, we should no longer be telling
-the user they are in a waiting state.
+into the scope. 
+<7> Next we can observe the other GitHub API calls which perform the annotation.
+<8> We flush again to resolve the timeouts, and then finally, after
+everything is done, we should no longer be telling the user they are
+in a waiting state.
 
 If you are still running karma in the background, you'll see the tests
 fail with:
@@ -1553,7 +1577,7 @@ application by clicking on the "Register application" button.
 image::images/javascript-new-application.png[A new GitHub application for oAuth]
 
 Now, create an account on Firebase. Once you have done this, create
-a new app called "CoffeeTech". The APP URL needs be unique, so use
+a new app called "CoffeeTech" inside Firebase. The APP URL needs be unique, so use
 "coffeetech-<USERNAME>", replacing USERNAME with your GitHub username.
 Once you have created the app, click on "View Firebase" button. You'll
 then see a settings screen, and click on "Simple Login" and then
@@ -2024,3 +2048,4 @@ with this approach:
   code which is testable. Most NodeJS frameworks don't make that easy,
   and I found it very difficult to wrap this code inside of any of the
   current test frameworks.
+
