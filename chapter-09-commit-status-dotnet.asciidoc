@@ -44,6 +44,19 @@ Just remember that this feature has use cases beyond continuous integration, and
 For services that do need to be able to look at the repository contents, you can request the `repo` scope, which grants read _and_ write access to the entire contents of a repository, including commit statuses.
 As of this writing, there's no way to request read-only access to repositories, so if a service needs access to your data, you have to trust it with write access also.
 
+You can also use this API in anonymous mode, without using OAuth at all.
+However, in that case you're limited to reading statuses from public repositories; there is no writing, and private repositories are off limits.
+
+Just to summarize:
+
+[options="header"]
+|=====
+| OAuth Scope      | Access to statuses | Access to repo data
+| None (anonymous) | Read-only on public repos | Read-only on public repos
+| `repo:status`    | Read/write         | None
+| `repo`           | Read/write         | Read/write
+|=====
+
 ==== Raw statuses
 
 Now that we know how we get access to commit statuses, let's see what they look like.
@@ -68,9 +81,14 @@ You can query for existing statuses by doing a GET request to the API server at 
 ----
 
 Most of this is self-explanatory, but a couple of fields need explaining.
-The `state` field can be "success," "failure," "error," or "pending," depending on the state of the service's decision.
-The `target_url` is a URL for the specific decision made for this commit (in this case a build/test log), which helps the user figure out why a particular decision was reached.
-And the `context` parameter is used for correlating multiple status updates to a single service; each application sets this according to its own rules, but any process that creates statuses should post the `pending` status and the result status using the same context value.
+
+[options=header, cols="1m,4"]
+|======================
+| Field      | Description
+| state      | One of `success`, `failure`, `error`, or `pending`.
+| target_url | A URL for the specific decision made for this commit (in this case a build/test log), which helps the user figure out why a particular decision was reached.
+| context    | Used for correlating multiple status updates to a single service; each application sets this according to its own rules, but any process that creates statuses should post the `pending` status and the result status using the same context value.
+|======================
 
 This API is useful for getting the raw data involved, but it gets complicated quickly.
 How do you decide if a given commit is "good?"
@@ -104,9 +122,13 @@ If you instead do a GET to `/repos/<user>/<repo>/<ref>/status` (note that the la
 The `statuses` array is the result of the logic you'd probably write if you had to: it collapses the statuses by context, keeping only the last one.
 The `state` field contains an overall status that takes into account all of the contexts, providing a final value based on these rules:
 
-- `failure` if any of the contexts posted a `failure` or `error` state
-- `pending` if any of the contexts' latest state is `pending` (or if there are no statuses)
-- `success` if the latest status for every context is `success`
+[options="header", cols="1m,3"]
+|======================
+| Status    | Cause
+| `failure` | any of the contexts posted a `failure` or `error` state
+| `pending` | any of the contexts' latest state is `pending`, or there are no statuses
+| `success` | latest status for every context is `success`
+|======================
 
 This is probably exactly what you want, but if you find that your use case calls for different rules, you can always use the `statuses` endpoint to get the raw data and calculate your own combined status.
 
@@ -116,10 +138,14 @@ Now obviously these statuses have to come from somewhere.
 This API also includes a facility for creating them.
 To do this, you simply make a POST request to `/repos/<user>/<repo>/statuses/<sha>`, and supply a JSON object for the fields you want to include with your status:
 
-- `state` is required, and must be one of `pending`, `success`, `error`, or `failure`.
-- `target_url` is a link to detailed information on the process of deciding what the state is or will be.
-- `description` is a short string describing what the service is doing to make a decision.
-- `context` is an application-specific string to allow the API to manage multiple services contributing to a single commit's status.
+[options="header", cols="1m,3"]
+|======================
+| Field         | Description
+| `state`       | Must be one of `pending`, `success`, `error`, or `failure` (required).
+| `target_url`  | A link to detailed information on the process of deciding what the state is or will be.
+| `description` | A short string describing what the service is doing to make a decision.
+| `context`     | An application-specific string to allow the API to manage multiple services contributing to a single commit's status.
+|======================
 
 Notice how the last component in that URL is `<sha>`.
 While you can query for statuses or a combined status using a ref name (like `master`), creating a status requires you to know the full SHA-1 hash of the commit you want to annotate.
