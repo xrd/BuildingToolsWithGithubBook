@@ -177,7 +177,7 @@ If you want some guidance on how to avoid this pitfall and follow along, continu
 If you've worked with Nancy before, and have installed NuGet packages in the past, you might be able to skip to the section labeled <<commit_status_first_steps>>.
 
 
-==== Following along
+==== Development Environment
 
 If you'd like to follow along with the code examples, here's how to set up a development environment with all the necessary elements.
 The process is different on Windows (using Visual Studio) and any other platforms (using Xamarin tools).
@@ -190,8 +190,8 @@ The installer will present you with lots of options; for this example, we'll onl
 
 In order to make things just a little smoother, you'll want to install a plugin: the Nancy project templates.
 Visit https://visualstudiogallery.msdn.microsoft.com/[] and search for "nancy.templates".
-As of this writing, there appears to be some difficulty with file formats, so when you download it, it comes as a ZIP file.
-If this has been resolved by the time you're reading this, simply double-click the file to install the templates; if not, you'll have to rename it to have a `.vsix` extension first.
+Choose the search result named "Nancy.Templates", which belongs to the NancyFx organization, and click "Get Now."
+This should download a `.vsix` file, which you can double-click to install the templates into Visual Studio.
 
 The next step is to create a new project using one of the newly-installed templates.
 Go to "File>New Project…" and select "Visual C#>Web>Nancy Application with ASP.NET Hosting" from the template list (as shown in <<vs_new_project>>.
@@ -242,7 +242,7 @@ Xamarin will start the server and open a browser window to http://127.0.0.1:8008
 
 
 [[commit_status_first_steps]]
-==== First steps
+==== Sending the Request
 
 Alright, now that we have a project ready for some code, let's get our Nancy application up and running.
 Here's what it looks like to do perform a simple request using Nancy and Octokit.
@@ -489,7 +489,8 @@ Get["/{user}/{repo}/{sha}/{status}", true] = async (parms, ct) => // <1>
     Octokit tries to maintain type safety for all of its APIs, so we can't just use the raw string.
 <4> The `NewCommitStatus` object encapsulates all the things you can set when creating a new status.
     Here we set the state we parsed earlier, a hopefully-unique context value that identifies our service, and a not-very-useful target URL (which should really go to an explanation of how the result was derived).
-<5> This is the REST call to create the new status, which is asynchronous.
+<5> This is the REST call to create the new status.
+    It's an `async` method, which means we have to `await` the result before we can do anything with it.
 <6> There are a number of exceptions that could be thrown from the API, but the biggest one we want to handle is the `NotFoundException`, which has been translated from the HTTP 404 status.
     Here we translate it back to make for a nice(r) experience for the user.
 <7> If we succeed, we render a snippet of HTML and return it from our handler.

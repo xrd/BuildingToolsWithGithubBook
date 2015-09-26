@@ -10,19 +10,13 @@ GitHub's search API gives you access to the full power of the built-in search fu
 This includes  the use of logical and scoping operators, like `"or"` and `"user"`.
 By integrating this feature with your application, you can provide your users a very powerful way of finding what they're looking for.
 
-In this chapter we'll take a close look at this API, and try building something with it.
+In this chapter we'll take a close look at this API, and try building a useful application with it.
 We'll see how the search API is structured, what kind of results come back, and how it can help us create a feature for someone on our team.
 
-==== General Principles
+==== Search API General Principles
 
-The search API is split into four separate parts:
-
-- Repositories
-- Code
-- Issues
-- Users
-
-These APIs all have separate subject matter, and have different formats for their results, but they all behave the same in a few key ways.
+The search API is split into four separate parts: repositories, code, issues, and users.
+These APIs all have different subject matter, and have different formats for their results, but they all behave the same in a few key ways.
 We're covering these first, because they'll help you understand the results coming back from the specific API calls that we cover further down.
 There are four major areas of commonality.
 
@@ -197,7 +191,7 @@ You can try matching the contents of the files themselves, or their paths (using
 (For complete documentation on the other available qualifiers, check out https://developer.github.com/v3/search/#search-code[].)
 
 This API is subject to several limits that don't affect the other search endpoints, because of the sheer amount of data the server must sort through to find matches.
-First, it requires that you provide a free-text search term; specifying a query with _only_ operators (like `language:python`) is valid with other APIs, but not here.
+First, it requires that you provide a general search term (a phrase to match); specifying a query with _only_ operators (like `language:python`) is valid with other APIs, but not here.
 Second, any wildcard characters in the query will be ignored.
 Third, files above a certain size will not be searched.
 Fourth, it only searches the default branch of any given project, which is usually `master`.
@@ -391,7 +385,7 @@ We'll use Python for our implementation language, for several reasons.
 First, because we haven't yet seen it in this book, and we like to expose you to a wide variety of languages.
 One of our goals is to help the reader explore technologies they might not have seen before.
 
-Secondly, there's a library for building GUI applications that run without modification on Mac OS X, Linux, and Windows.
+Secondly, there's a Python library for building GUI applications that run without modification on Mac OS X, Linux, and Windows.
 Surprisingly, this is fairly unique feature among modern high-level programming languages.
 If you want this capability elsewhere, you usually have to use a high-complexity framework, a lower-level language like C++, or both.
 
@@ -514,7 +508,7 @@ def git_credentials():
     p = subprocess.Popen(['git', 'credential', 'fill'],
                          stdout=subprocess.PIPE,
                          stdin=subprocess.PIPE) <2>
-    stdout,_ = p.communicate('host={}\n\n'.format(GITHUB_HOST)) <3>
+    stdout,stderr = p.communicate('host={}\n\n'.format(GITHUB_HOST)) <3>
 
     creds = {}
     for line in stdout.split('\n')[:-1]: <4>
@@ -523,15 +517,14 @@ def git_credentials():
     return creds <5>
 ----
 
-<1> Here we set `GIT_ASKPASS` to the string `'true'`, which is a UNIX program that always returns 0, which will cause `git-credential` to stop trying to get credentials when it gets to the "ask the user" stage.
+<1> Here we set `GIT_ASKPASS` to the string `'true'`, which is a UNIX program that always succeeds, which will in turn cause `git-credential` to stop trying to get credentials when it gets to the "ask the user" stage.
 <2> `subprocess.Popen` is the way you use a program with stdin and stdout in Python.
-    The first argument is the `argv` of the new program, and we also specify that we want stdin and stdout to be captured.
+    The first argument is a list of arguments for the new program, and we also specify that we want stdin and stdout to be captured.
 <3> `p.communicate` does the work of writing to stdin and returning the contents of stdout.
     It also returns the contents of stderr, which we ignore in this program.
 <4> Here we process the stdout contents by splitting each line at the '=' character, and slurping it into a dictionary.
-
-So the return value from this call should be a dictionary with `'username'` and `'password'` values.
-Handy!
+<5> So the return value from this call should be a dictionary with `'username'` and `'password'` values.
+    Handy!
 
 
 ==== Windowing and interface
@@ -542,7 +535,7 @@ Let's get closer to that goal by filling in the main frame's implementation:
 [source,python]
 ----
 class SearchFrame(wx.Frame):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs): # <1>
         kwargs.setdefault('size', (600,500))
         wx.Frame.__init__(self, *args, **kwargs)
 
@@ -560,6 +553,10 @@ class SearchFrame(wx.Frame):
 
         self.Show()
 ----
+
+<1> There's a bit of syntax here that might be confusing.
+    The `*args` and `**kwargs` entries here are ways of capturing multiple arguments into one parameter.
+    For now, just know that we're only capturing them here so we can pass them to the parent class constructor two lines down.
 
 The `__init__` method is the constructor, so this is where we start when the main function calls `SearchFrame()`.
 Here's what's happening at a high level – we'll dig into the details in a bit:
@@ -680,7 +677,7 @@ The `LoginPanel` class is similar in structure to the `SearchFrame` class, with 
 [source, python]
 ----
 class LoginPanel(wx.Panel):
-    def __init__(self, *args, **kwargs): # <1>
+    def __init__(self, *args, **kwargs):
         self.callback = kwargs.pop('onlogin', None)
         wx.Panel.__init__(self, *args, **kwargs)
 
@@ -736,14 +733,10 @@ class LoginPanel(wx.Panel):
             self.callback(u, p)
 ----
 
-<1> There's a bit of syntax here that might be confusing.
-    The `*args` and `**kwargs` entries here are ways of capturing multiple arguments into one parameter.
-    For now, just know that we're only capturing them here so we can pass them to the parent class constructor two lines down.
-
 There's some structure that's similar to above.
 We'll start with the constructor.
 
-Recall that this panel is created with a keyword argument in the `SearchFrame` class, like `LoginPanel(self, onlogin=self.login_accepted)`.
+Recall that this panel is created with a keyword argument in `SearchFrame`'s `create_controls` method, like `LoginPanel(self, onlogin=self.login_accepted)`.
 In the constructor definition, we pull that callback out and store it for later.
 Afterward, we just call the two other construction functions and return.
 
@@ -753,7 +746,7 @@ The `wx.TE_PROCESS_ENTER` style tells the library that we want an event to be tr
 
 The next block binds control events to method calls.
 Every event in WxPython will call the handler with a single argument, an object which contains information about the event.
-That means we can use the same event handler for any number of different kinds of events, so we do – the `ENTER` handlers for both text boxes and the `BUTTON` handler for the button all go through `self.do_login`.
+That means we can use the same function to handle any number of different kinds of events, so we do – the `ENTER` handlers for both text boxes and the `BUTTON` handler for the button all go through `self.do_login`.
 
 `do_layout` uses a different kind of sizer – a `GridBagSizer`.
 Again, the topic of sizers is _way_ outside the scope of this chapter, but just know that this kind arranges things in a grid, and you can allow some of the rows or columns to stretch to fill the container.
@@ -777,7 +770,7 @@ If they don't work, it sets the text of a label, whose foreground color has been
 
 Once the user has successfully logged in, we destroy the `LoginPanel` instance and show the `SearchPanel`.
 
-[[source,python]]
+[source, python]
 ----
 class SearchPanel(wx.Panel):
     def __init__(self, *args, **kwargs):
