@@ -607,8 +607,9 @@ will specify `published: true` which will publish the page or post
 into your blog. If you want to review each item individually, you can
 specify a status of `private` which will export the pages into Jekyll
 but leave them unpublished. Remember that if your repository is
-public, they will not be listed on the blog but can still be seen if
-someone peruses the source code for your blog on GitHub.  
+public, posts marked as unpublished will not be displayed in the blog but
+can still be seen if someone visits your the repository for your blog
+on GitHub.
 
 There are many more options than listed here. For example, by default,
 the Wordpress-Jekyll importer imports categories from your Wordpress
