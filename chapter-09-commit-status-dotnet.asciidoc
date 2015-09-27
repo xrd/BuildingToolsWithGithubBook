@@ -44,6 +44,19 @@ Just remember that this feature has use cases beyond continuous integration, and
 For services that do need to be able to look at the repository contents, you can request the `repo` scope, which grants read _and_ write access to the entire contents of a repository, including commit statuses.
 As of this writing, there's no way to request read-only access to repositories, so if a service needs access to your data, you have to trust it with write access also.
 
+You can also use this API in anonymous mode, without using OAuth at all.
+However, in that case you're limited to reading statuses from public repositories; there is no writing, and private repositories are off limits.
+
+Just to summarize:
+
+[options="header"]
+|=====
+| OAuth Scope      | Access to statuses | Access to repo data
+| None (anonymous) | Read-only on public repos | Read-only on public repos
+| `repo:status`    | Read/write         | None
+| `repo`           | Read/write         | Read/write
+|=====
+
 ==== Raw statuses
 
 Now that we know how we get access to commit statuses, let's see what they look like.
@@ -68,9 +81,14 @@ You can query for existing statuses by doing a GET request to the API server at 
 ----
 
 Most of this is self-explanatory, but a couple of fields need explaining.
-The `state` field can be "success," "failure," "error," or "pending," depending on the state of the service's decision.
-The `target_url` is a URL for the specific decision made for this commit (in this case a build/test log), which helps the user figure out why a particular decision was reached.
-And the `context` parameter is used for correlating multiple status updates to a single service; each application sets this according to its own rules, but any process that creates statuses should post the `pending` status and the result status using the same context value.
+
+[options=header, cols="1m,4"]
+|======================
+| Field      | Description
+| state      | One of `success`, `failure`, `error`, or `pending`.
+| target_url | A URL for the specific decision made for this commit (in this case a build/test log), which helps the user figure out why a particular decision was reached.
+| context    | Used for correlating multiple status updates to a single service; each application sets this according to its own rules, but any process that creates statuses should post the `pending` status and the result status using the same context value.
+|======================
 
 This API is useful for getting the raw data involved, but it gets complicated quickly.
 How do you decide if a given commit is "good?"
@@ -104,9 +122,13 @@ If you instead do a GET to `/repos/<user>/<repo>/<ref>/status` (note that the la
 The `statuses` array is the result of the logic you'd probably write if you had to: it collapses the statuses by context, keeping only the last one.
 The `state` field contains an overall status that takes into account all of the contexts, providing a final value based on these rules:
 
-- `failure` if any of the contexts posted a `failure` or `error` state
-- `pending` if any of the contexts' latest state is `pending` (or if there are no statuses)
-- `success` if the latest status for every context is `success`
+[options="header", cols="1m,3"]
+|======================
+| Status    | Cause
+| `failure` | any of the contexts posted a `failure` or `error` state
+| `pending` | any of the contexts' latest state is `pending`, or there are no statuses
+| `success` | latest status for every context is `success`
+|======================
 
 This is probably exactly what you want, but if you find that your use case calls for different rules, you can always use the `statuses` endpoint to get the raw data and calculate your own combined status.
 
@@ -116,10 +138,14 @@ Now obviously these statuses have to come from somewhere.
 This API also includes a facility for creating them.
 To do this, you simply make a POST request to `/repos/<user>/<repo>/statuses/<sha>`, and supply a JSON object for the fields you want to include with your status:
 
-- `state` is required, and must be one of `pending`, `success`, `error`, or `failure`.
-- `target_url` is a link to detailed information on the process of deciding what the state is or will be.
-- `description` is a short string describing what the service is doing to make a decision.
-- `context` is an application-specific string to allow the API to manage multiple services contributing to a single commit's status.
+[options="header", cols="1m,3"]
+|======================
+| Field         | Description
+| `state`       | Must be one of `pending`, `success`, `error`, or `failure` (required).
+| `target_url`  | A link to detailed information on the process of deciding what the state is or will be.
+| `description` | A short string describing what the service is doing to make a decision.
+| `context`     | An application-specific string to allow the API to manage multiple services contributing to a single commit's status.
+|======================
 
 Notice how the last component in that URL is `<sha>`.
 While you can query for statuses or a combined status using a ref name (like `master`), creating a status requires you to know the full SHA-1 hash of the commit you want to annotate.
@@ -151,7 +177,7 @@ If you want some guidance on how to avoid this pitfall and follow along, continu
 If you've worked with Nancy before, and have installed NuGet packages in the past, you might be able to skip to the section labeled <<commit_status_first_steps>>.
 
 
-==== Following along
+==== Development Environment
 
 If you'd like to follow along with the code examples, here's how to set up a development environment with all the necessary elements.
 The process is different on Windows (using Visual Studio) and any other platforms (using Xamarin tools).
@@ -164,8 +190,8 @@ The installer will present you with lots of options; for this example, we'll onl
 
 In order to make things just a little smoother, you'll want to install a plugin: the Nancy project templates.
 Visit https://visualstudiogallery.msdn.microsoft.com/[] and search for "nancy.templates".
-As of this writing, there appears to be some difficulty with file formats, so when you download it, it comes as a ZIP file.
-If this has been resolved by the time you're reading this, simply double-click the file to install the templates; if not, you'll have to rename it to have a `.vsix` extension first.
+Choose the search result named "Nancy.Templates", which belongs to the NancyFx organization, and click "Get Now."
+This should download a `.vsix` file, which you can double-click to install the templates into Visual Studio.
 
 The next step is to create a new project using one of the newly-installed templates.
 Go to "File>New Project…" and select "Visual C#>Web>Nancy Application with ASP.NET Hosting" from the template list (as shown in <<vs_new_project>>.
@@ -216,7 +242,7 @@ Xamarin will start the server and open a browser window to http://127.0.0.1:8008
 
 
 [[commit_status_first_steps]]
-==== First steps
+==== Sending the Request
 
 Alright, now that we have a project ready for some code, let's get our Nancy application up and running.
 Here's what it looks like to do perform a simple request using Nancy and Octokit.
@@ -463,7 +489,8 @@ Get["/{user}/{repo}/{sha}/{status}", true] = async (parms, ct) => // <1>
     Octokit tries to maintain type safety for all of its APIs, so we can't just use the raw string.
 <4> The `NewCommitStatus` object encapsulates all the things you can set when creating a new status.
     Here we set the state we parsed earlier, a hopefully-unique context value that identifies our service, and a not-very-useful target URL (which should really go to an explanation of how the result was derived).
-<5> This is the REST call to create the new status, which is asynchronous.
+<5> This is the REST call to create the new status.
+    It's an `async` method, which means we have to `await` the result before we can do anything with it.
 <6> There are a number of exceptions that could be thrown from the API, but the biggest one we want to handle is the `NotFoundException`, which has been translated from the HTTP 404 status.
     Here we translate it back to make for a nice(r) experience for the user.
 <7> If we succeed, we render a snippet of HTML and return it from our handler.
