@@ -570,7 +570,7 @@ experience with AsynchronousTasks.
 [source,java]
 -----
 ...
-[filename=".", language="java", sha="dce3035bb1a21c04b:support/android/ghru/src/com/githubru/MainActivity.java", lines="78..-2", callouts="18", callouts_prefix=" // //"]
+[filename=".", language="java", sha="47d8d82:support/android/ghru/src/com/githubru/MainActivity.java", lines="78..-2", callouts="18", callouts_prefix=" // //"]
 snippet~~~~~
 To be replaced
 snippet~~~~~

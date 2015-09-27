@@ -835,7 +835,7 @@ experience with AsynchronousTasks.
     class PostTask extends AsyncTask<String, Void, Boolean> {  
 
         @Override 
-            protected Boolean doInBackground(String... credentials) {
+        protected Boolean doInBackground(String... credentials) {
             String login = credentials[0]; 
             String password = credentials[1];
 
@@ -850,7 +850,7 @@ experience with AsynchronousTasks.
         }
         
         @Override
-            protected void onPostExecute(Boolean result) {
+        protected void onPostExecute(Boolean result) {
             TextView status = (TextView)findViewById( R.id.post_status );
             if( result ) {
                 status.setText( "Successful jekyll post" );
