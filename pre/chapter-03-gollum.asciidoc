@@ -27,7 +27,7 @@ This chapter demonstrates code which modifies a Git repository
 programmatically. You will be able to follow along without possessing
 a deep understanding of the internals of Git. And, a good supplement
 to this chapter (and later chapters as well) is the
-http://shop.oreilly.com/product/0636920022862.do:["Version Control
+http://shop.oreilly.com/product/0636920022862.do["Version Control
 with Git"] book from O'Reilly. 
 
 === "The Story of Smeagol..."
@@ -77,7 +77,7 @@ If you do choose Markdown, In addition to the standard vanilla
 Markdown language tags, Gollum adds its own set wiki specific tags. There 
 are often subtle (or conflicting) differences from other Wiki markup
 so it is worth reviewing the
-https://github.com/gollum/gollum/wiki:[Gollum repository documentation
+https://github.com/gollum/gollum/wiki[Gollum repository documentation
 page]. We'll go over the most important ones here.
 
 ===== Links 
@@ -123,17 +123,19 @@ end
 ```
 ----
 
-Gollum https://github.com/gollum/gollum/wiki/Home/b16ce34e46e26600dc77bdf9b5aa6efcaf42026d#github-syntax-highlighting:[used]
-to support inclusion of files from any GitHub repository (and any
-branch!) using a syntax like this: 
+Gollum
+https://github.com/gollum/gollum/wiki/Home/b16ce34e46e26600dc77bdf9b5aa6efcaf42026d#github-syntax-highlighting[at
+one point] supported inclusion of files from any GitHub repository
+(and any branch!) using a syntax like this: 
 
 [source,ruby]
 -----
 ```ruby:github:xrd/TeddyHyde/blob/master/Gemfile```
 -----
 
-Unforunately, this no longer works. Supposedly, this tag allows
-inclusion of files from the parent repository:  
+Unforunately, this no longer works. According to current documentation
+on for Gollum, this tag allows inclusion of files from the parent
+repository: 
 
 [source,ruby]
 -----
@@ -142,7 +144,7 @@ inclusion of files from the parent repository:
 
 But, I found this to be broken as well. At the time of this writing,
 it tragically appears there is no way to insert code from the parent
-repository into your Wiki content.
+repository (or any other repository) into your Wiki content.
 
 ===== Structural Components
 
@@ -479,7 +481,7 @@ However, the nature of Git permits us to add the same file
 multiple times without incurring any additional storage cost beyond
 the first addition (and the minimal cost of a tree structure). When a file is added to git repository, an SHA hash
 is generated from the file contents. For example, generating the SHA hash
-from an empty file will always return the same SHA hash.footnote:[This is explained
+from an empty file will always return the same SHA hash.footnote[This is explained
 beautifully in the blog
 http://alblue.bandlem.com/2011/08/git-tip-of-week-objects.html.]
 

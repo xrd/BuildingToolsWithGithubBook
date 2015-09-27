@@ -382,7 +382,7 @@ inside the scripts directory.
   actions when a room topic changes or when users leave rooms.
 * Hubots can handle generic errors at the top level. Hubot can be
   programmed with a catch-all error handler so that no matter where
-  you code failed, you can catch it without crashing your bot.
+  your code failed, you can catch it without crashing your bot.
 
 Hubot will use the first five of these features:
 
@@ -1865,7 +1865,7 @@ username inside the chat room, but we won't handle the case where
 there is no clarification to be made because they are not in the
 repository collaborator list.
 
-Using the GitHub API binding binding we passed into our `setApiToken`
+Using the GitHub API binding we passed into our `setApiToken`
 call we will verify the user exists as a collaborator on the
 repository. The API binding provides a method called `getCollaborator`
 inside the `repos` namespace which we can use to verify that a

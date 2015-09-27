@@ -64,10 +64,10 @@ expectations we have of the GitHub API.
 
 More specifically, we'll use these technologies:
 
-* https://github.com/michael/github:[an (unofficial) GitHub API JavaScript library]
-* http://angularjs.org:[AngularJS] a "superpowered framework" for writing JS applications that
+* https://github.com/michael/github[an (unofficial) GitHub API JavaScript library]
+* http://angularjs.org[AngularJS] a "superpowered framework" for writing JS applications that
   are testable.
-* http://getbootstrap.com:[Bootstrap] a CSS library which simplifies building beautiful webapps
+* http://getbootstrap.com[Bootstrap] a CSS library which simplifies building beautiful webapps
 
 You don't need to know these technologies in advance of working on this chapter.
 
@@ -256,7 +256,7 @@ HTML to use this data, we change `index.html` to look like the following.
 defined in our `coffeetech.js` file. 
 <2> Remove our databinding to the `Welcome to CoffeeTech` string
 and replace it with a binding to the variable `repo` (by default
-AngularJS will filter complex objects and conver them to JSON).
+AngularJS will filter complex objects and convert them to JSON).
 <3> Add a reference to our `coffeetech.js` file beneath our other JS
 references. 
 
@@ -315,7 +315,7 @@ a file named after the city, and then either use geolocation on the
 client side to retrieve a set of the data, or ask the user to choose
 their city manually.
 
-If we look at the https://github.com/michael/github:[Github.js javascript documentation on Github]
+If we look at the https://github.com/michael/github[Github.js javascript documentation on Github]
 we can see that there are some 
 options for us to pull content from a repository. We'll store a data
 file in JSON named after the city inside our repository and retrieve
@@ -391,7 +391,16 @@ has finished loading. We'll call this function `init` so let's test it
 below. 
 
 First, we will write the setup code for an AngularJS test written
-using the Jasmine test framework.
+using the Jasmine test framework. Jasmine is a "Behavior-Driven
+JavaScript" library which provides functions to group and create
+expectation based tests. Within the Jasmine framework are "matchers"
+which allow for the most common assertions (comparing a variety of
+expected types to the resultant types from function calls) and the
+ability to define your own custom matchers. Jasmine also gives you the
+ability to "spy" on functions, which is another way of saying Jasmine
+can intercept function calls to validate that those calls were made in
+the way you anticipate. It is easiest to explain the power of Jasmine
+by showing the elegance of the tests themselves, so let's do that now.
 
 [source,javascript]
 -------
@@ -628,8 +637,7 @@ arguments until you do post this into your own repository.
 repository. Notice we use the `gh-pages` branch since we are storing our
 single page app and all the data there.
 <5> Once our data is returned to us, it is simply a string. We need to
-reconstitute this data to a JavaScript object usingor use in our code
-with the `JSON.parse` method. 
+reconstitute this data to a JavaScript object using the `JSON.parse` method. 
 <6> After we retrieve our data from the repository, we can use the
 data inside the cities array to determine our current city.
 <7> Since we are calling outside of AngularJS and returning inside a
@@ -998,7 +1006,7 @@ test we are creating: "annotate a shop."
 have a city selected, and creating a shop to annotate, We then call
 our `annotate` method.
 <4> Once we have called `annotate`, our code should request our
-our credentials for the GitHub API, and then ask us for the information
+credentials for the GitHub API, and then ask us for the information
 to use in annotating the shop. If this were happening in the browser,
 we would get three prompts. Our test mocks out the `prompt` object
 here, and we should therefore see three calls made to our mocked prompt object. We also
@@ -1156,7 +1164,7 @@ display messages) and then a message itself. If we provide an empty
 message, we will clear the object, effectively removing the message from the UI.
 
 
-Now we need to expost the status message in our UI by modifying the
+Now we need to expose the status message in our UI by modifying the
 HTML.
 
 [source,javascript]
@@ -1186,7 +1194,7 @@ might want to consider a different location the next time we have a
 date with Morla. The diff is clear in that the green information is
 easy to read, which is a benefit we get when we use the
 `JSON.stringify` function with the third parameter set to something
-other than undefined. Unortunately, the first line differs only by the
+other than undefined. Unfortunately, the first line differs only by the
 extra comma but this is still a very readable diff.
 
 === Towards a Safe Login Implementation
@@ -1244,7 +1252,7 @@ is currently no way to do this strictly
 client side (using only static HTML and JavaScript running in the
 browser). Other authentication providers like Facebook do provide pure
 JavaScript login functionality in their SDKs, but GitHub, citing
-security concerns, has not release anything that does authentication
+security concerns, has not released anything that does authentication
 purely on the client side as of yet.
 
 Somehow we have to involve a server into our authentication process.
@@ -1406,8 +1414,8 @@ we'll get a dialog like this one indicating we are logging into GitHub
 
 image::images/javascript-firebase-simplelogin.png[The final step in the permission flow for GitHub access using Firebase]
 
-After you authorize the application, the flow is identical to the
-manually username and password authentication flow. As an optimization
+After you authorize the application, the execution flow is identical to the
+the prior authentication flow (using username and password). As an optimization
 we could check for previous logins before calling `$login()` again but
 we don't do that here, meaning the login dialog is momentarily popped up
 each time we click the button.

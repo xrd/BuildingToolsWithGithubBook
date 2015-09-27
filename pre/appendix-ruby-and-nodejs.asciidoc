@@ -1,4 +1,4 @@
-[appendix]
+[[appendix]]
 == Ruby and NodeJS at GitHub
 
 The founders of GitHub all had deep ties and contributions to the Ruby

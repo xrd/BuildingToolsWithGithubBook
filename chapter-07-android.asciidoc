@@ -387,10 +387,9 @@ comprising a test. Step files define the code, written in Ruby, behind
 these actions. Step files are entirely optional as there are many default steps
 defined inside of Calabash that suit many app actions. You can find a
 full list of default calabash steps on the
-https://github.com/calabash/calabash-android/blob/master/ruby-gem/lib/calabash-android/canned_steps.md:[Canned
-Steps] page.
-Though you are not required to write steps and can often avoid writing ruby
-code entirely when writing calabash tests for Android applications,
+https://github.com/calabash/calabash-android/blob/master/ruby-gem/lib/calabash-android/canned_steps.md[Canned
+Steps] page. Though you are not required to write steps and can often
+avoid writing ruby code entirely when writing calabash tests for Android applications,
 steps files are very useful when you want to refactor a long
 set of actions into a smaller piece and reuse it, or when you need to
 do something in Ruby that is not possible in a meta DSL (domain
@@ -439,7 +438,7 @@ point, with pending indicated for the places we will be adding our
 code. Once the boilerplate is pasted in, modify it to enter
 text into several Android text widgets. These ruby commands for
 calabash are available in the 
-https://github.com/calabash/calabash-android/blob/master/documentation/ruby_api.md:[Ruby API document]
+https://github.com/calabash/calabash-android/blob/master/documentation/ruby_api.md[Ruby API document]
 
 Let's write some Ruby code to back our feature file. We'll start by
 writing some support functions: `set_title_and_mood` (a function to
@@ -681,8 +680,9 @@ our Jekyll repository.
 ==== Code to Login to GitHub
 
 Let's first work on the `login()` method. Poking into the
-https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core:[EGit libary reference], we can write GitHub login code that is as simple as
-the following. 
+https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core[EGit
+libary reference], we can write GitHub login code that is as simple as
+the following.  
 
 [source,java]
 -----
@@ -1334,7 +1334,7 @@ You'll see them pass with flying colors this time:
 image::images/android-calabash-success.png[A successful end-to-end test of our Android application]
 
 If you want to see a more complicated version of the GitHub API on
-Android, take a look at https://github.com/xrd/TeddyHyde.git:[Teddy
+Android, take a look at https://github.com/xrd/TeddyHyde.git[Teddy
 Hyde] (also available on the Google Play Store). Teddy Hyde is the "the extensible,
 one handed GitHub editor for Android." A few years ago I was searching
 for a way to publish Jekyll blogs into GitHub while my infant son 

@@ -254,7 +254,7 @@ public gists for any user we specify. The Octokit library is the
 the official Ruby library for accessing the GitHub API. Why would we want to make a gist
 that displays other gists? Self-referential meta code is all the rage, the
 modern day response to René Magritte's famous work: "Ceci n'est pas une
-pipe.".footnote:[Explained best by Ben
+pipe.".footnote[Explained best by Ben
 Zimmer http://www.bostonglobe.com/ideas/2012/05/05/dude-this-headline-meta-dude-this-headline-meta/it75G5CSqi82NtoQHIucEP/story.html?camp=pm]
 
 Add a view `index.erb` at the root of our directory.
@@ -332,7 +332,7 @@ Hypermedia APIs describe themselves inside their responses using
 
 In this payload, you can see that there is an id ("xrd") and a name
 ("Chris Dawson").  This particular payload was forked from the HAL explanation at the
-https://phlyrestfully.readthedocs.org/en/latest/halprimer.html:[HAL
+https://phlyrestfully.readthedocs.org/en/latest/halprimer.html[HAL
 Primer document] and you can find a more detailed explanation of these concepts
 there. 
 
@@ -357,7 +357,7 @@ the right way to access information from the response itself. In other
 words, with a hypermedia client the API back end can change and your
 client code should not need to.
 
-This is explained in great detail in the book http://www.amazon.com/o/ASIN/1449306578?tag=adapas02-20:[Building
+This is explained in great detail in the book http://www.amazon.com/o/ASIN/1449306578?tag=adapas02-20[Building
 Hypermedia APIs with HTML5 and Node].
 
 ==== Using Hypermedia Data from Octokit

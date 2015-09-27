@@ -18,11 +18,14 @@ brilliance of the original developers or the brilliance of the idea,
 but the way that those original developers cultivated community and
 involvement among their users.
 
+=== Learning and Building with Jekyll
+
 In this chapter we will investigate the structure of a Jekyll blog,
-illustrating the few major technology pieces involved, and then create
-a Jekyll blog. Then we will write a Ruby program which scrapes a
-blog-like website and converts the scraped information into a Jekyll
-blog.
+illustrating the few major technology pieces involved. Once we have
+familiarized ourselves with Jekyll, we will then create a Jekyll blog
+from scratch using the command line tools. Then we will write a Ruby
+program which scrapes a blog-like website and converts the scraped
+information into a new Jekyll blog.
 
 === What is Jekyll?
 
@@ -389,9 +392,9 @@ unordered lists, emphasis and more. And, if you cannot find a
 Markdown equivalent, you can embed normal HTML right next to
 Markdown formatting characters. The best way to write Markdown is to
 keep a
-https://github.com/adam-p/Markdown-here/wiki/Markdown-Cheatsheet:[Markdown
-cheat sheet] near you when writing. John Gruber from Daring 
-Fireball invented Markdown, and his site has a more in depth
+https://github.com/adam-p/Markdown-here/wiki/Markdown-Cheatsheet[Markdown
+cheat sheet] near you when writing. http://daringfireball.net[John Gruber from Daring 
+Fireball] invented Markdown, and his site has a more in depth
 description of the how and why of Markdown.
 
 ==== Using the jekyll command
@@ -575,7 +578,7 @@ service attack), you would need to respond to this, and deal with the
 DNS propagation issues. If you instead use a subdomain, the CNAME
 record will automatically redirect to the correct IP even if that is
 changed by GitHub footnote:[This is all well documented on the
-https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages:[GitHub
+https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages[GitHub
 blog]]. 
 
 === Importing from other blogs
@@ -592,9 +595,9 @@ which automate things for you.
 ==== From Wordpress
 
 The most popular importer is the Wordpress importer. You will need the 
-the 'jekyll-import' gem, which is installed separately from the jekyll
-gem. If you have installed the `github-pages` gem then the importers
-are installed alongside the other tools packaged with this bundle.
+'jekyll-import' gem. This gem is distributed separately from the core
+jekyll gem, but will be installed if you use the "github-pages" gem
+inside your Gemfile and use the `bundle` command.
 
 ===== Importing with direct database access
 
@@ -652,8 +655,10 @@ This can be used to export files from a server which you don't
 maintain, but works with sites you maintain and might be a more
 plausible option than running against a database.
 
-To export the XML file, visit the export page on your site
-(https://BLOGNAME.com/wp-admin/export.php).
+To export the XML file, visit the export page on your Wordpress
+site. This is usually mapped to "/wp-admin/export.php", so it will be
+something like "https://blogname.com/wp-admin/export.php" (replacing
+blogname.com with your blog's name).
 
 Like many free tools, there are definitely limitations to using this
 method of export. If your Wordpress site is anything beyond the
@@ -672,7 +677,7 @@ curve and option set.
 
 If you use another blog format other than Wordpress, chances are there
 is a Jekyll importer for it. Jekyll has dozens of importers, well
-documented on the Jekyll importer site http://import.jekyllrb.com/. 
+documented on the http://import.jekyllrb.com[Jekyll importer site]. 
 
 For example, this command line example from the importer site exports
 from Tumblr blogs.
@@ -734,7 +739,7 @@ thought the site contents were completely gone. Almost by accident, I
 happened upon ByTravelers on Archive.org, the Internet Archive. I
 found that almost all of the articles were listed there and
 available. Though the actual database is long gone, could we recover
-the site using Archive.org? 
+the data from the site using Archive.org? 
 
 ==== Jekyll Scraping Tactics
 
@@ -1867,7 +1872,7 @@ contribute or make changes with very little friction.
 You might have seen the banner saying "Fork me on GitHub" on many a
 software project page hosted on GitHub. We can motivate others to
 participate in our blog using pull requests. Let's add that as a final touch and
-invite people to make contributions the GitHub way. The https://github.com/blog/273-github-ribbons:[GitHub blog
+invite people to make contributions the GitHub way. The https://github.com/blog/273-github-ribbons[GitHub blog
 first posted these banners] and we'll use their code almost as-is inside our
 `default.html` page, just changing the reference to our repository in
 the link tag.
