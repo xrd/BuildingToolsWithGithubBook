@@ -666,6 +666,42 @@ Sizers are a complex topic, but here's all you need to know about this snippet:
   In this case, we're stacking vertically, but we also want this widget to expand horizontally.
 * The `wx.ALL` flag specifies which edges of the widget should have the border area.
 
+Let's make sure we're following good practices, and write some tests.
+There isn't a lot here we can verify automatedly, but what there is should be covered.
+
+[source,python]
+----
+from nose.tools import eq_, ok_, raises # <1>
+
+class TestApp:
+    def setUp(self): # <2>
+        self.f = None
+        self.app = wx.App()
+
+    def tearDown(self):
+        if self.f:
+           self.f.Destroy()
+        self.app.Destroy()
+        
+    def test_switching_panels(self): # <3>
+        self.f = SearchFrame(None, id=-1)
+        # Sub-panels should exist, and be of the right type
+        ok_(isinstance(self.f.login_panel, LoginPanel))
+        ok_(isinstance(self.f.search_panel, SearchPanel))
+        # Already destroyed
+        raises(RuntimeError, lambda: self.f.login_panel.Destroy())
+        # Not already destroyed
+        ok_(self.f.search_panel.Destroy())
+----
+
+<1> Here we're using a testing tool called Nose.
+    Install it with `pip install nose`, and invoke it at the command line by typing `nosetests app.py`.
+    It uses naming conventions to identify tests and fixtures, and is generally nice to work with.
+<2> Nose will automatically find these `setUp` and `tearDown` methods, and call them before and after each test method is run.
+    In this case, we're just managing the frames that we want to test, as well as an `App` instance for all of them to belong to.
+<3> Here's a test method that Nose will find and run.
+    We ensure the sub-panels are the right type, and that we've auto-transitioned to the SearchPanel by finding credentials in Git's storage.
+
 That's it!
 Aside from managing a couple of fields, most of this code is managing the UI, which is almost exactly what we'd want from a UI class.
 Let's write the first of the two panels that we swap in and out.
