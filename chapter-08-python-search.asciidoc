@@ -990,3 +990,28 @@ You also know that the search UI on GitHub is just a thin layer over the search 
 Time to switch gears a bit.
 The next chapter introduces the Commit Status API, which is a way of annotating individual commits in a Git repository with a "good" or "bad" flag.
 We'll be using what only a few years ago would have been a polarizing choice: C# and the CLR.
+
+[NOTE]
+====
+The code in this chapter has been written to connect to github.com, but it can easily be adapted to use a GitHub Enterprise instance instead.
+Rather than use the `agithub.Github` class, you would instead use a class that's defined like this:
+
+[source,py]
+----
+class GitHubEnterprise(agithub.API):
+    def __init__(self, api_url, *args, **kwargs):
+        props = ConnectionProperties(
+                    api_url = api_url,
+                    secure_http = True,
+                    extra_headers = {
+                        'accept' :    'application/vnd.github.v3+json'
+                        }
+                    )
+
+        self.setClient(Client(*args, **kwargs))
+        self.setConnectionProperties(props)
+
+g = GitHubEnterprise('github.mycorp.com', 'myusername', 'mypassword')
+----
+====
+
