@@ -258,6 +258,9 @@ Here's what the test code looks like:
 using NUnit.Framework;
 using Nancy;
 using Nancy.Testing;
+using Nancy.Bootstrapper;
+using System.Collections.Generic;
+using Nancy.Session;
 
 namespace NancyApplication1.Tests
 {
@@ -268,7 +271,9 @@ namespace NancyApplication1.Tests
 
 		[SetUp]
 		public void Setup(){
-			var bootstrapper = new DefaultNancyBootstrapper ();
+			this.bootstrapper = new ConfigurableBootstrapper(with => {
+				with.Module<Handler>(); 
+			});
 			this.browser = new Browser (bootstrapper);
 		}
 
@@ -476,11 +481,59 @@ Get["/authorize", true] = async (parms, ct) => // <1>
     Again, this wouldn't be a good idea for a real application, but for our purposes it'll do.
 <5> Here we redirect the user back to what they were originally trying to do, with as little disruption as possible.
 
-And here's a test for that endpoint:
+This last endpoint is something we can test.
+Here's a start on that, that covers the handling of the CSRF token.
+In order to handle sessions, we need to add this snippet to our test project's namespace:
 
 [source,cs]
 ----
+public static class BootstrapperExtensions
+{
+	public static void WithSession(this IPipelines pipeline,
+                                       IDictionary<string, object> session)
+	{
+		pipeline.BeforeRequest.AddItemToEndOfPipeline(ctx =>
+			{
+				ctx.Request.Session = new Session(session);
+				return null;
+			});
+	}
+}
 ----
+
+This is an _extension method_ which allows us to provide a `Session` object for a request, something the CSRF handling uses.
+Now that that exists, we can add a test method to our test-suite class:
+
+[source,cs]
+----
+[Test]
+public void HandlesAuthorization()
+{
+	// Mismatched CSRF token
+	bootstrapper.WithSession(new Dictionary<string, object> { 
+		{ "CSRF:State", "sometoken" }, 
+	});
+	var result = this.browser.Get ("/authorize", (with) => {
+		with.HttpRequest();
+		with.Query("state", "someothertoken");
+	});
+	Assert.AreEqual (HttpStatusCode.Unauthorized, result.StatusCode);
+
+	// Matching CSRF token
+	bootstrapper.WithSession(new Dictionary<string, object> { 
+		{ "CSRF:State", "sometoken" },
+                { "OrigUrl", "http://success" },
+	});
+	result = this.browser.Get ("/authorize", (with) => {
+		with.HttpRequest();
+		with.Query("state", "sometoken");
+	});
+	result.ShouldHaveRedirectedTo ("http://success");
+}
+----
+
+The first part sets up a mismatched CSRF token; it's `"sometoken"` in the session (which is set before the API call is made), and `"someothertoken"` in the request (which should be sent from GitHub), so we assert that the status code is 401.
+The second part has matching tokens, so we assert that the response is a redirect to the URL we put into the Session.
 
 Once all that is done, we've got our token and are able to continue on our merry way.
 All our handlers have to do to trigger an OAuth sequence is to call `RedirectToOAuth()` if it's necessary, and we'll automatically return the user to where they were when the process completes.
