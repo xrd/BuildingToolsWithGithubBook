@@ -530,7 +530,7 @@ def git_credentials():
 ==== Windowing and interface
 
 Okay, so now we have something that can help us skip a login screen, but we don't have a way of showing that login screen to the user.
-Let's get closer to that goal by filling in the main frame's implementation:
+Let's get closer to that goal by filling in the main frame's implementation.
 
 [source,python]
 ----
@@ -666,6 +666,42 @@ Sizers are a complex topic, but here's all you need to know about this snippet:
   In this case, we're stacking vertically, but we also want this widget to expand horizontally.
 * The `wx.ALL` flag specifies which edges of the widget should have the border area.
 
+Let's make sure we're following good practices, and write some tests.
+There isn't a lot here we can verify automatedly, but what there is should be covered.
+
+[source,python]
+----
+from nose.tools import eq_, ok_, raises # <1>
+
+class TestApp:
+    def setUp(self): # <2>
+        self.f = None
+        self.app = wx.App()
+
+    def tearDown(self):
+        if self.f:
+           self.f.Destroy()
+        self.app.Destroy()
+        
+    def test_switching_panels(self): # <3>
+        self.f = SearchFrame(None, id=-1)
+        # Sub-panels should exist, and be of the right type
+        ok_(isinstance(self.f.login_panel, LoginPanel))
+        ok_(isinstance(self.f.search_panel, SearchPanel))
+        # Already destroyed
+        raises(RuntimeError, lambda: self.f.login_panel.Destroy())
+        # Not already destroyed
+        ok_(self.f.search_panel.Destroy())
+----
+
+<1> Here we're using a testing tool called Nose.
+    Install it with `pip install nose`, and invoke it at the command line by typing `nosetests app.py`.
+    It uses naming conventions to identify tests and fixtures, and is generally nice to work with.
+<2> Nose will automatically find these `setUp` and `tearDown` methods, and call them before and after each test method is run.
+    In this case, we're just managing the frames that we want to test, as well as an `App` instance for all of them to belong to.
+<3> Here's a test method that Nose will find and run.
+    We ensure the sub-panels are the right type, and that we've auto-transitioned to the SearchPanel by finding credentials in Git's storage.
+
 That's it!
 Aside from managing a couple of fields, most of this code is managing the UI, which is almost exactly what we'd want from a UI class.
 Let's write the first of the two panels that we swap in and out.
@@ -766,6 +802,19 @@ image::images/python-sizers.png[]
 Then comes the `do_login` method, which tests out the given credentials, and if they work, passes them back through the callback set at construction time.
 If they don't work, it sets the text of a label, whose foreground color has been set to a nice, alarming shade of red.
 
+Let's make sure this behavior is tested at least a little bit.
+Again, there's not much that it's doing other than setting up WxPython stuff, but we can validate that a login error is displayed by adding this method to the test class:
+
+[source,python]
+----
+    def test_login_panel(self):
+        self.f = wx.Frame(None)
+        lp = LoginPanel(self.f)
+        eq_(lp.error.GetLabelText(), '')
+        lp.do_login(None)
+        ok_(lp.error.GetLabelText().startswith('ERROR'))
+----
+
 ==== GitHub search
 
 Once the user has successfully logged in, we destroy the `LoginPanel` instance and show the `SearchPanel`.
@@ -853,6 +902,19 @@ We'll skip the usual walkthrough, to point out a couple of interesting features.
     This isn't a great approach; doing it better is left as an exercise for the reader.
 
 Again, there's a fair amount of code here, but most of it should look familiar.
+Here's the test code that covers the above:
+
+[source,python]
+----
+    def test_search_panel(self):
+        self.f = wx.Frame(None)
+        sp = SearchPanel(self.f, orgs=['a', 'b', 'c'])
+        eq_(0, sp.orgChoice.GetCurrentSelection())
+        eq_('a', sp.orgChoice.GetString(0))
+        sp.display_error(400, {'errors': [{'message': 'xyz'}]})
+        ok_(isinstance(sp.results_panel, wx.StaticText))
+        eq_('xyz', sp.results_panel.GetLabelText().strip())
+----
 
 ==== Displaying results
 

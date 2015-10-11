@@ -10,12 +10,12 @@ def git_credentials():
     p = subprocess.Popen(['git', 'credential', 'fill'],
                          stdout=subprocess.PIPE,
                          stdin=subprocess.PIPE)
-    stdout,_ = p.communicate('host={}\n\n'.format(GITHUB_HOST))
+    stdout,_ = p.communicate('host={}\n\n'.format(GITHUB_HOST).encode('utf-8'))
 
     creds = {}
-    for line in stdout.split('\n')[:-1]:
-        k,v = line.split('=')
-        creds[k] = v
+    for line in stdout.split(b'\n')[:-1]:
+        k,v = line.split(b'=')
+        creds[k.decode('utf-8')] = v.decode('utf-8')
     return creds
 
 class SearchFrame(wx.Frame):
@@ -263,3 +263,43 @@ if __name__ == '__main__':
     app = wx.App()
     SearchFrame(None)
     app.MainLoop()
+
+
+# Tests class
+from nose.tools import eq_, ok_, raises
+
+class TestApp:
+    def setUp(self):
+        self.f = None
+        self.app = wx.App()
+
+    def tearDown(self):
+        if self.f:
+            self.f.Destroy()
+        self.app.Destroy()
+        
+    def test_main_panel(self):
+        self.f = SearchFrame(None, id=-1)
+        # Sub-panels should exist, and be of the right type
+        ok_(isinstance(self.f.login_panel, LoginPanel))
+        ok_(isinstance(self.f.search_panel, SearchPanel))
+        # Already destroyed
+        raises(RuntimeError, lambda: self.f.login_panel.Destroy())
+        # Not already destroyed
+        ok_(self.f.search_panel.Destroy())
+
+    def test_login_panel(self):
+        self.f = wx.Frame(None)
+        lp = LoginPanel(self.f)
+        eq_(lp.error.GetLabelText(), '')
+        lp.do_login(None)
+        ok_(lp.error.GetLabelText().startswith('ERROR'))
+
+    def test_search_panel(self):
+        self.f = wx.Frame(None)
+        sp = SearchPanel(self.f, orgs=['a', 'b', 'c'])
+        eq_(0, sp.orgChoice.GetCurrentSelection())
+        eq_('a', sp.orgChoice.GetString(0))
+        sp.display_error(400, {'errors': [{'message': 'xyz'}]})
+        ok_(isinstance(sp.results_panel, wx.StaticText))
+        eq_('xyz', sp.results_panel.GetLabelText().strip())
