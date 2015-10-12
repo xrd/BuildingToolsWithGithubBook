@@ -221,7 +221,7 @@ is a good reference for issues in that way.
 The enterprise API works almost exactly the same as the GitHub.com
 site API. We don't have a chapter telling a story about an enterprise
 version of the API, but we do provide an appendix which provides a few
-notes about how the examples with the enterprise server. We also
+notes about how the examples work when using an enterprise server. We also
 provide the specific syntax for each of the languages used in the
 chapters that will make any of the examples provided work with an
 enterprise server.
