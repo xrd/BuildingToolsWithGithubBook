@@ -112,11 +112,11 @@ puts github.repos.list
 
 For the EGit Java library, this code specifies an enterprise endpoint.
 
-[source,ruby]
+[source,java]
 -----
 GitHubClient client = new GitHubClient("github.bigcorpdev.example.com");
-UserService service = new UserService(client);
-service.getUser("internaluser");
+UserService us = new UserService(client);
+us.getUser("internaluser");
 -----
 
 When you create a new GitHub backed service object of any type, you
@@ -145,6 +145,30 @@ var github = new Github({
 -----
 
 ==== Python
+
+The agithub client we use in the Python chapter does not permit
+parameterizing an enterprise endpoint when creating the GitHub
+client. To use an enterprise endpoint you need to define a new class
+that overrides the built in `agithub.Github` and then use that new
+client in place of the built in one. 
+
+[source,py]
+----
+class GitHubEnterprise(agithub.API):
+    def __init__(self, api_url, *args, **kwargs):
+        props = ConnectionProperties(
+                    api_url = api_url,
+                    secure_http = True,
+                    extra_headers = {
+                        'accept' :    'application/vnd.github.v3+json'
+                        }
+                    )
+
+        self.setClient(Client(*args, **kwargs))
+        self.setConnectionProperties(props)
+
+g = GitHubEnterprise('github.mycorp.com', 'myusername', 'mypassword')
+----
 
 === Management API
 
