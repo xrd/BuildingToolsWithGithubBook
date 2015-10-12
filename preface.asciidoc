@@ -219,9 +219,12 @@ type of issue. The Hubot chapter documents using pull requests and
 is a good reference for issues in that way.
 
 The enterprise API works almost exactly the same as the GitHub.com
-site API. We don't have a chapter telling a story about the enterprise
-API, but we do provide an appendix which provides a few notes about
-how to use it with a few API client libraries.
+site API. We don't have a chapter telling a story about an enterprise
+version of the API, but we do provide an appendix which provides a few
+notes about how the examples work when using an enterprise server. We also
+provide the specific syntax for each of the languages used in the
+chapters that will make any of the examples provided work with an
+enterprise server.
 
 Through these stories about the technologies behind GitHub we hope to
 give you an inside look into the inner workings of the brain of a
