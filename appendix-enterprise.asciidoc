@@ -91,7 +91,14 @@ If you use a client library, most provide a way
 to configure the library to use a different endpoint, as is required
 when you are using an enterprise GitHub instance. 
 
-The ruby client configuration looks like this:
+This book documents connecting to GitHub using five different
+languages: Ruby, Java, JavaScript, Python and C#. Here are examples in
+each language. With these snippets in hand, any example in the book
+can be converted to work against a GitHub enterprise server.
+
+==== Ruby Client Configuration
+
+For the Octokit Ruby library, use code like this:
 
 [source,ruby]
 -----
@@ -100,6 +107,44 @@ github = Github.new
        	   endpoint: 'https://github.bigdevcorp.example.com/api/v3/'
 puts github.repos.list
 -----
+
+==== Java
+
+For the EGit Java library, this code specifies an enterprise endpoint.
+
+[source,ruby]
+-----
+GitHubClient client = new GitHubClient("github.bigcorpdev.example.com");
+UserService service = new UserService(client);
+service.getUser("internaluser");
+-----
+
+When you create a new GitHub backed service object of any type, you
+parameterize the service constructor with the customized client
+object.
+
+Also, note that this library is specifically configured for Version 3 (v3) of the
+API (you cannot specify another version). If you need to use a newer
+version of the API, you will need to make sure you are using the
+correct version of the EGit libraries. And, unfortunately, there is no
+way to use an older version of the API with this Java client if you
+have an outdated enterprise server which for some reason cannot be
+upgraded. 
+
+==== JavaScript
+
+The JavaScript library we write about in this book ("GitHub.js") uses the
+following syntax to specify a GitHub enterprise backend.
+
+[source,javascript]
+-----
+var github = new Github({
+  apiUrl: "https://github.bigdevcorp.example.com/api/v3"
+  ...
+});
+-----
+
+==== Python
 
 === Management API
 
