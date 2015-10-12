@@ -170,6 +170,19 @@ class GitHubEnterprise(agithub.API):
 g = GitHubEnterprise('github.mycorp.com', 'myusername', 'mypassword')
 ----
 
+==== C#
+
+The default behavior of the Octokit library is to connect to
+github.com, but it's relatively straightforward to give it another API
+host instead. Simply replace the instantiation of the `GitHubClient`
+object with something like this:
+
+[source,cs]
+----
+var ghe = new Uri("https://github.myenterprise.com/");
+var client = new GitHubClient(new ProductHeaderValue("my-cool-app"), ghe);
+----
+
 === Management API
 
 Enterprise servers have a special additional API section that isn't
