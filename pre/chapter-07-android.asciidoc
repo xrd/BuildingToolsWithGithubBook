@@ -131,7 +131,7 @@ single device attached via USB which is the emulated Nexus 5 device.
 [source,bash]
 $ mkdir ghru # GitHub R U?
 $ cd ghru
-$ android create project --target android-19 \
+$ android create project --target android-21 \
 --name GHRU --path . \
 --activity GitHubRu --package com.githubru
 
@@ -145,7 +145,7 @@ run this command. In this case you might get an error like `Error:
 Target id is not valid. Use 'android list targets' to get the target
 ids.`. If you receive this error, run the command `android list
 targets` and use a different target. Generally any target beyond
-android-19 should work with this code.
+android-21 should work with this code.
 
 If you have the ant tool installed, you can build this new project
 with the `ant debug` command. This will create an APK in the bin
