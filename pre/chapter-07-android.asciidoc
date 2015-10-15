@@ -878,12 +878,26 @@ image::images/android-calabash-success.png[A successful end-to-end test of our A
 
 If you want to see a more complicated version of the GitHub API on
 Android, take a look at https://github.com/xrd/TeddyHyde.git[Teddy
-Hyde] (also available on the Google Play Store). Teddy Hyde is the "the extensible,
-one handed GitHub editor for Android." A few years ago I was searching
-for a way to publish Jekyll blogs into GitHub while my infant son 
-slept on my chest. It is hard to type on a computer with a baby in one
-arm, and when I couldn't find a Jekyll editor for Android, I decided
-to write one myself.
+Hyde] (also available on the Google Play Store). I wanted something I
+could use from my Android phone (since using a computer one handed
+while your infant son sleeps on your chest is challenging). I could
+not find anything suitable, so I wrote this app. Teddy Hyde offers a
+much richer set of tools to edit Jekyll blogs on GitHub. 
+
+=== Troubleshooting
+
+Murphy's law says: "Whatever can go wrong, will go wrong." At the
+eleventh hour, right before this book was entering technical review,
+GitHub made a subtle change to their API which broke the code in this
+chapter. To aid in troubleshooting this problem, I reached out to GitHub
+support. GitHub will not debug code samples, however, and
+they requested I send them the API calls I made using cURL. The Java
+EGit GitHub library is somewhat opaque and I was unable to determine a
+way to get back the raw requests and responses from each service
+object request. Fortunately,
+Android allows you to utilize a proxy which can capture the requests.
+
+There is a 
 
 === Summary
 
