@@ -1640,16 +1640,48 @@ we specified. We've isolated our GitHub code into our helper class;
 our MainActivity class does only the necessary steps to retrieve items
 from UI elements and pass them on to our helper class.
 
-=== Passing our tests
+=== Passing all our tests
+
+Now, we can run both our unit tests and our UI tests and both will
+pass. 
+
+[source,bash]
+-----
+$ GITHUB_HELPER_PASSWORD=MyPwd123 gradle testDebugUnitTest
+...
+:app:mockableAndroidJar UP-TO-DATE
+:app:assembleDebugUnitTest UP-TO-DATE
+:app:testDebugUnitTest UP-TO-DATE
+
+BUILD SUCCESSFUL
+$ gradle connectedAndroidTest
+...
+:app:compileDebugAndroidTestNdk UP-TO-DATE
+:app:compileDebugAndroidTestSources
+:app:preDexDebugAndroidTest
+:app:dexDebugAndroidTest
+:app:packageDebugAndroidTest
+:app:assembleDebugAndroidTest
+:app:connectedDebugAndroidTest
+
+BUILD SUCCESSFUL
+-----
+
+We can also install the application to our emulator or a real
+device and play with it to write Jekyll blogs into GitHub.
+
+[source,bash]
+-----
+$ gradle assembleRelease
+$ adb install app/build/outputs/apk/app-release-unsigned.apk
+-----
 
 [NOTE]
 If you want to see a more complicated version of the GitHub API on
 Android, take a look at https://github.com/xrd/TeddyHyde.git[Teddy
-Hyde] (also available on the Google Play Store). I wanted something I
-could use from my Android phone (since using a computer one handed
-while your infant son sleeps on your chest is challenging). I could
-not find anything suitable, so I wrote this app. Teddy Hyde offers a
-much richer set of tools to edit Jekyll blogs on GitHub. 
+Hyde] (also available on the Google Play Store). Teddy Hyde uses OAuth
+to login to GitHub, and has a much richer set of features for editing
+Jekyll blogs.
 
 === Summary
 
