@@ -779,7 +779,7 @@ signature as our unit test uses.
 Let's implement each of the functions specified in the
 GitHubHelper class.
 
-=== Writing the blog content
+==== Writing the blog content
 
 First, we implement `generateContent()`. The following code snippet
 shows functions defined to generate the content which we will place
@@ -832,7 +832,7 @@ there. For production code, we probably want to create a test that
 validates this edge case and adjust our function to handle it gracefully
 if the "master" branch does not exist.
 
-=== Services 
+==== GitHub Services 
 
 Next, we implement `createServices()`. There are several services
 (wrappers around git protocols) which we need to instantiate. We don't
@@ -850,7 +850,7 @@ snippet~~~~~
 ...
 -----
 
-=== The Base SHA from the Repository and Branch
+==== The Base SHA from the Repository and Branch
 
 Now we implement `retrieveBaseSha()`. A git repository is a directed acrylic graph (DAG) and as such, each
 node in the graph must have a starting point. When we append content
@@ -872,7 +872,7 @@ snippet~~~~~
 ...
 -----
 
-=== Creating the Blob
+==== Creating the Blob
 
 Contents inside a git repository are stored as blobs. `createBlob`
 manages storing our content as a blob object, and then uses the
@@ -892,7 +892,7 @@ snippet~~~~~
 ...
 -----
 
-=== Generating a Tree
+==== Generating a Tree
 
 Next, we generate a tree by implementing `generateTree()`. A tree
 wraps a blob object and provides basically a path to our object:
@@ -915,7 +915,7 @@ snippet~~~~~
 ...
 -----
 
-=== Creating the Commit
+==== Creating the Commit
 
 We are getting close to actually finalizing the creation of content:
 next, implement `createCommit()`. We have created
@@ -961,7 +961,7 @@ Now that we have a working commit structure created, we are almost
 complete with our git data API call. We just need to create a resource
 and update master with that information.
 
-=== Creating the Resource and Updating the Master
+==== Creating the Resource and Updating the Master
 
 Finally, we create `updateMasterResource()`. We need to adjust
 "master" or "gh-pages", the branch from which GitHub will generate
@@ -983,7 +983,7 @@ snippet~~~~~
 ...
 -----
 
-=== Implementing Our Final doPost
+==== Implementing Our Final doPost
 
 Finally, we can now implement the `doPost()` function inside our
 `MainActivity` class.
@@ -1006,7 +1006,7 @@ we specified. We've isolated our GitHub code into our helper class;
 our MainActivity class does only the necessary steps to retrieve items
 from UI elements and pass them on to our helper class.
 
-=== Passing all our tests
+==== Passing all our tests
 
 Now, we can run both our unit tests and our UI tests and both will
 pass. 
