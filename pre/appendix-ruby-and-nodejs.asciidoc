@@ -202,7 +202,7 @@ package to an existing `package.json` file, you can append `--save` to
 the npm command and npm will update package.json for you once the
 installation of the package has completed.
 
-=== Command Line Basics
+=== Command Line Basics and the Shell
 
 Though most chapters focus on a specific programming language (aside
 from the cURL chapter), all of the chapters contain command line
@@ -236,7 +236,7 @@ persist them across commands.
 [source,bash]
 $ PASSWORD=MyPwd123 myProgram  # myProgram retrieves the variable PASSWORD
 $ export PASSWORD=MyPwd123
-$ myProgram # using the export command, we persist the value across calls
+$ myProgram # PASSWORD is now a persisted key value
 
 ==== Splitting Commands into Multiple Lines
 
@@ -248,13 +248,16 @@ character.
 [source,bash]
 ------
 $ git log -S http
+...
 $ git \
 log \
 -S \
 http
+...
 ------
 
-These two commands are exactly the same.
+Though not the most compelling command to break into multiple lines,
+this example shows two commands that do exactly the same thing.
 
 ==== Piping Output to Successive Commands
 
@@ -283,7 +286,21 @@ This invocation uses the "cat" program to outout the file
 program which looks inside the input to find all lines which contain
 the string "http".
 
+==== Redirection
 
+Similar to the pipe, shells support redirecting output to files using
+the `>` and `>>` characters. `>` will overwrite an existing file (or
+create a new file if it does not exist) while the double `>>` string
+will append to a file.
+
+[source,bash]
+-----
+$ cat /etc/mime.types | grep http > saved-output.txt
+-----
+
+After running this command, the file `saved-output.txt` will contain
+the same text as was produced in the prior example for the pipe. The
+file will be overwritten if it existed already.
 
 
 
