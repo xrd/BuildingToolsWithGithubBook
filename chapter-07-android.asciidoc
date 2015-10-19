@@ -1187,7 +1187,7 @@ into our remote git repository stored on GitHub.
         postContentsWithYfm =  // // <3>
 	    "---\n" +
 	    "layout: post\n" +
-	    "published: true\n"
+	    "published: true\n" +
 	    "title: '" + title + "'\n---\n\n" +
 	    post;
         contentsBase64 =  // // <4>

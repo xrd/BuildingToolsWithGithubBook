@@ -788,7 +788,7 @@ into our remote git repository stored on GitHub.
 [source,java]
 -----
 ...
-[filename="../GhRu2", language="java", sha="20b6f7c:app/src/main/java/com/ghru/GitHubHelper.java", lines="49..81", callouts="1,9,10,16,22,26,29,31" callouts_prefix=" // //"]
+[filename="../GhRu2", language="java", sha="b44d3fbc4105cf77a1f83efcf9b33752825c79b9:app/src/main/java/com/ghru/GitHubHelper.java", lines="49..81", callouts="1,9,10,16,22,26,29,31" callouts_prefix=" // //"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
