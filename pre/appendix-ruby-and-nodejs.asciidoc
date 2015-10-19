@@ -1,23 +1,35 @@
 [[appendix]]
-== Ruby and NodeJS at GitHub
+== Ruby, NodeJS (and the Shell) at GitHub
 
 The founders of GitHub all had deep ties and contributions to the Ruby
 programming language, so we cover it more than other languages in this
-book. In recent years, NodeJS (JavaScript for the server side) has
+book. 
+
+In recent years, NodeJS (JavaScript for the server side) has
 grown in popularity, and JavaScript has always been an interesting
 language because it works on both the client side and server
 side. GitHub has offered several popular open source projects written
-in NodeJS. For these reasons, this appendix gives a little more detail
-on using these two languages
+in NodeJS. 
+
+For these reasons, this appendix gives a little more detail
+on using these two languages.
+
+In addition, some fluency with the shell is beneficial. There are many
+GUI programs which hide the command line from you, but to truly dive
+deep into the GitHub API, it is worthwhile to use the command line
+inside a shell. These examples all work with BASH (the Bourne Again
+Shell), but are careful not to use any advanced features of BASH (so
+they should convert to other shells if you are strongly favor another
+shell). 
 
 === GitHub and Ruby
 
-GitHub is a company with its foundations sitting on top of the Ruby
-language. Tom Preston Warner (one of three founders of GitHub) built
-the initial libraries for using git with Ruby, a library called
-Grit. You can host blogs on GitHub for free, and this tool called
-Jekyll is built using Ruby. Gollum, the technology which powers GitHub
-wikis, is built using Grit and runs on Ruby. 
+When one day they document the history of GitHub, the Ruby language will
+take its place as a major character. Tom Preston Warner (one of three
+founders of GitHub) built the initial libraries for using git with
+Ruby, a library called Grit. You can host blogs on GitHub for free,
+and this tool called Jekyll is built using Ruby. Gollum, the
+technology which powers GitHub wikis, is built using Grit and runs on Ruby. 
 
 To understand GitHub, it is best to understand a little bit of Ruby.
 You can use many of the tools used at GitHub by simply installing Ruby,
@@ -189,4 +201,90 @@ install all libraries specified by the application if there is a
 package to an existing `package.json` file, you can append `--save` to
 the npm command and npm will update package.json for you once the
 installation of the package has completed.
+
+=== Command Line Basics
+
+Though most chapters focus on a specific programming language (aside
+from the cURL chapter), all of the chapters contain command line
+invocations. There are a few intricacies when using the shell that you
+might not be familiar with that we will explain here, with an actual
+example of each.
+
+==== Shell Comments 
+
+If you type a hash character ("#") into a shell command, the rest of
+the line is considered a comment. This makes it easy to document
+commands on the same line.
+
+[source,bash]
+$ cat file.txt # This prints out the file "file.txt"
+
+This command ends after the `file.txt` string. We use this often
+throughout the chapter to document shell commands.
+
+==== Providing Variables to Commands
+
+When a process runs in the shell, it runs within an environment, and
+this environment can be configured with key/value pairs. These are called
+environment variables. A common reason for this is that you can write
+a program which reads passwords from the environment variables and
+then specify them at run time rather than in the source code. You
+specify environment variables either as key values pairs joined by an
+equal sign in front of a command, or by using the `export` command to
+persist them across commands.
+
+[source,bash]
+$ PASSWORD=MyPwd123 myProgram  # myProgram retrieves the variable PASSWORD
+$ export PASSWORD=MyPwd123
+$ myProgram # using the export command, we persist the value across calls
+
+==== Splitting Commands into Multiple Lines
+
+The shell invokes commands when you hit the enter key. But, there are
+times when you want to break a command into multiple lines for
+readability. In this case, break each line up using the backslash
+character.
+
+[source,bash]
+------
+$ git log -S http
+$ git \
+log \
+-S \
+http
+------
+
+These two commands are exactly the same.
+
+==== Piping Output to Successive Commands
+
+Shell commands were written long in an era when programs fulfilled
+upon a small set of functionality, in stark contrast to today's
+monolithic GUI programs. Each program generally did a few simple
+things and then passed information to another program for further
+processing. Programs then needed an elegant way to pass data between
+each other, and the pipe was born. Pipes facilitate communication
+between processes: one command's output becomes another command's
+input.
+
+[source,bash]
+-----
+$ cat /etc/mime.types | grep http
+application/http
+application/vnd.httphone
+application/x-httpd-eruby			rhtml
+application/x-httpd-php
+phtml pht php
+application/x-httpd-php-source			phps
+-----
+
+This invocation uses the "cat" program to outout the file
+/etc/mime.types, and then passes this information to the "grep"
+program which looks inside the input to find all lines which contain
+the string "http".
+
+
+
+
+
 
