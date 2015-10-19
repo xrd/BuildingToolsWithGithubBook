@@ -1,7 +1,7 @@
 source "https://rubygems.org" 
 
 gem 'rack'
-gem 'oreilly-snippets', '0.0.17'
+gem 'oreilly-snippets', '0.0.18'
 gem 'asciidoctor'
 gem "guard"
 gem "guard-asciidoctor"
