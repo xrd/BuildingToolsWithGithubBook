@@ -61,13 +61,13 @@ those commands from within the same directory where you created your
 jekyll blog. You've pushed all those files into GitHub, so you could
 safely delete the local repository in this directory.
 
-=== Android Development Tools
+==== Android Development Tools
 
 If you don't have a physical Android device, don't fret. You can follow
 along with this chapter without having an actual Android device by doing
 development and testing on a virtual device. 
 
-==== Installing the Java SDK
+===== Installing the Java SDK
 
 Unfortunately there is no simple shell command to install Java in the
 same way as there is for Ruby and NodeJS using RVM or NVM. 
@@ -77,7 +77,7 @@ Java is freely available, but you need to visit java.oracle.com and
 find the correct download for your needs. Android works with either
 the 1.6 or 1.7 versions of Java.
 
-==== Installing the Android SDK
+===== Installing the Android SDK
 
 For this application we only need the Android SDK and not the full
 bundle of Android Studio. Go to https://developer.android.com/sdk and
@@ -85,7 +85,7 @@ download the appropriate ZIP or TGZ file for your platform. You will
 need to establish the proper environment variables so make sure to
 follow the README included in the archive.
 
-==== Creating AVDs for Development
+===== Creating AVDs for Development
 
 Once you have installed the Android SDK, you can create a virtual device
 called an AVD (Android Virtual Device). To create an AVD, run the
@@ -126,7 +126,7 @@ Running the adb command starts a daemon service which communicates
 with your device. In this case the daemon reported that I have a
 single device available, the emulated Nexus 5 device.
 
-==== Creating a New Project
+=== Creating a New Project
 
 Let's now create our Android project. The following commands will
 setup a directory structure and create the basic files necessary to
@@ -158,7 +158,7 @@ ids.`. If you receive this error, run the command `android list
 targets` and use a different target. Generally any target beyond
 android-21 should work with this code.
 
-===== Adding Gradle support
+==== Adding Gradle support
 
 Gradle is a build system for Java and has become the offical build
 system for the Android platform. Using a simple `build.gradle` file (well,
@@ -281,7 +281,7 @@ runner which we configured above.
 We also need a `gradle.settings` file that just has this inside it:
 `include ':app'`
 
-===== Default Android Main
+==== Default Android Main
 
 When we use the above commands to create a new android application, it
 creates a sample entry point which is the starting point of our
@@ -1166,7 +1166,7 @@ signature as our unit test uses.
 Let's implement each of the functions specified in the
 GitHubHelper class.
 
-=== Writing the blog content
+==== Writing the blog content
 
 First, we implement `generateContent()`. The following code snippet
 shows functions defined to generate the content which we will place
@@ -1247,7 +1247,7 @@ there. For production code, we probably want to create a test that
 validates this edge case and adjust our function to handle it gracefully
 if the "master" branch does not exist.
 
-=== Services 
+==== GitHub Services 
 
 Next, we implement `createServices()`. There are several services
 (wrappers around git protocols) which we need to instantiate. We don't
@@ -1273,7 +1273,7 @@ for us.
 ...
 -----
 
-=== The Base SHA from the Repository and Branch
+==== The Base SHA from the Repository and Branch
 
 Now we implement `retrieveBaseSha()`. A git repository is a directed acrylic graph (DAG) and as such, each
 node in the graph must have a starting point. When we append content
@@ -1321,7 +1321,7 @@ correct branch: `getBranch` does this for us.
 ...
 -----
 
-=== Creating the Blob
+==== Creating the Blob
 
 Contents inside a git repository are stored as blobs. `createBlob`
 manages storing our content as a blob object, and then uses the
@@ -1348,7 +1348,7 @@ tree and commit object, which we do next.
 ...
 -----
 
-=== Generating a Tree
+==== Generating a Tree
 
 Next, we generate a tree by implementing `generateTree()`. A tree
 wraps a blob object and provides basically a path to our object:
@@ -1381,7 +1381,7 @@ account using the data service object.
 ...
 -----
 
-=== Creating the Commit
+==== Creating the Commit
 
 We are getting close to actually finalizing the creation of content:
 next, implement `createCommit()`. We have created
@@ -1454,7 +1454,7 @@ Now that we have a working commit structure created, we are almost
 complete with our git data API call. We just need to create a resource
 and update master with that information.
 
-=== Creating the Resource and Updating the Master
+==== Creating the Resource and Updating the Master
 
 Finally, we create `updateMasterResource()`. We need to adjust
 "master" or "gh-pages", the branch from which GitHub will generate
@@ -1487,7 +1487,7 @@ to update the reference inside the repository inside GitHub.
 ...
 -----
 
-=== Implementing Our Final doPost
+==== Implementing Our Final doPost
 
 Finally, we can now implement the `doPost()` function inside our
 `MainActivity` class.
@@ -1541,7 +1541,7 @@ we specified. We've isolated our GitHub code into our helper class;
 our MainActivity class does only the necessary steps to retrieve items
 from UI elements and pass them on to our helper class.
 
-=== Passing all our tests
+==== Passing all our tests
 
 Now, we can run both our unit tests and our UI tests and both will
 pass. 
