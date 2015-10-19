@@ -173,7 +173,8 @@ First, install Gradle.
 $ mkdir ~/gradle
 $ cd ~/gradle
 $ curl -L \
-https://services.gradle.org/distributions/gradle-2.7-all.zip -o gradle.zip
+https://services.gradle.org/distributions/gradle-2.7-all.zip \
+-o gradle.zip
 $ unzip gradle.zip
 $ export PATH=$PATH:~/gradle/gradle-2.7/bin
 
@@ -225,8 +226,8 @@ from within Java.
 encode content into Base64, one of the options for storing data inside
 a GitHub repository using the API.
 <2> Lastly, we install the espresso libraries, the Google UI testing
-framework. The first line installs the test runner which we configured
-above. 
+framework. The first line (of the three libraries) installs the test
+runner which we configured above. 
 
 We also need a `gradle.settings` file that just has this inside it:
 `include ':app'`
@@ -235,7 +236,12 @@ We also need a `gradle.settings` file that just has this inside it:
 
 When we use the above commands to create a new android application, it
 creates a sample entry point which is the starting point of our
-Android application. 
+Android application. All Android applications have a file called
+`AndroidManifest.xml` which specifies this activity and also supplies
+a list of permissions to the apps. Modify the `AndroidManifest.xml` so
+that it looks like this, taking care to include a line which specifies
+that this app will use the Internet permission (required if our app
+will be talking to the GitHub API).
 
 [source,java]
 -----
@@ -323,20 +329,22 @@ In this chapter we will create a unit test and UI test.
 
 One important note: Unit tests run on your development machine, not the Android 
 device itself. UI tests run on the Android device (or emulator). There
-can be subtle differences between the Java running on your development
+can be subtle differences between the Java interpreter running on your development
 machine and the Dalvik interpreter running on your Android device, so
-it is worthwhile to use a mixture of the three types of tests. 
+it is worthwhile to use a mixture of the three types of tests. Stated
+another way, write at least one test which runs on the device or
+emulator itself!
 
 ==== Unit Tests for our GitHub Client
 
 Let's start by defining a unit test. Since the unit test runs on our
-development machine, our test should not touch any Android specific
-classes. This forces us to isolate functionality outside of the
-Android interface. We will define a helper class which will handle all
-the interaction with the GitHub API but does not know about Android
-whatsoever. Then, we can write a test harness that takes that class,
-instantiates it and validates our calls to GitHub produce the right
-results.
+development machine, our test and implementation code should be
+written such that they not need to load any Android classes. This
+forces us to constrain functionality to only the GitHub API. We will
+define a helper class which will handle all the interaction with the
+GitHub API but does not know about Android whatsoever. Then, we can
+write a test harness that takes that class, instantiates it and
+validates our calls to GitHub produce the right results.
 
 [NOTE]
 You might legitimately ask: is a unit test the right place to verify
@@ -356,8 +364,10 @@ To be replaced
 snippet~~~~~
 -----
 
-<1> First, we import the OkHttp library. We will use this to verify
-that our GitHub calls made it all the way into GitHub.
+<1> First, we import the OkHttp library, a library for making HTTP
+calls. We will verify that our GitHub API calls made it all the way into
+GitHub by looking at the event log for our repository, a log
+accessible via HTTP.
 <2> Next, we import a set of matchers, which allow us to make
 assertions inside our code, and which JUnit will then verify or flag
 an error. The remaining imports should be evident.
@@ -919,107 +929,6 @@ commit message. The "who" of this commit is inferred from our login:
 GitHub knows that we authenticated and assigns this commit to us on
 the server side. We then use the data service to create the commit
 inside our repository in GitHub at the correct SHA address.
-
-[source,java]
------
-...
-[filename=".", language="java", sha="b7a3874:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="138..149"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
-...
------
-
-Unfortunately, right as this book went into early release on the
-O'Reilly website, this code stopped working.
-
-=== Using MITM Proxy
-
-Murphy's law says: "Whatever can go wrong, will go wrong." At the
-eleventh hour, right at the moment when this book was entering
-technical review, GitHub made a subtle change to their API which broke
-the code in the previous section. Printing out the error from the response noted nothing
-more than: "Invalid request. nil is not a string. nil is not a
-string. (422)."  To troubleshooting the error I reached out to GitHub
-support. GitHub support will not debug code samples, so they requested I send
-them the API calls I made using cURL. The Java EGit GitHub library is
-somewhat opaque and I was unable to determine a way to get back the
-raw requests and responses from each service object
-request. Fortunately, there is an easy way to capture and investigate
-these network calls: utilize a man-in-the-middle proxy. 
-
-We'll use a "mitmproxy," an open source man-in-the-middle
-proxy. mitmproxy is written in Python, and installation is
-straightforward with `pip` (Python package management system). To
-install mitmproxy, use `pip install mitmproxy`. mitmproxy does require
-that certain cryptographic libraries are installed, so if `pip install
-mitmproxy` does not work, refer to the excellent documentation at
-https://mitmproxy.org/[the mitmproxy website]. mitmproxy runs on OSX
-or Linux, and you can install it on the same laptop on which runs your
-Android emulator (which we recommend here).
-
-Once mitmproxy is installed, usage is trivial: run the command
-`mitmproxy` and then connect your proxy client to it. Android can
-then be configured to use mitmproxy with the following command:
-
-[source,bash]
------
-$ emulator -avd AvdName -http-proxy http://10.0.0.5:8080
------
-
-You would use your IP address instead of "10.0.0.5". mitmproxy works
-by intercepting traffic from your device and then relaying it to the
-intended destination. For this to work over HTTPS (the protocol on
-which the GitHub API operates) you need to install the generated proxy
-certificate. Visit the site "mitm.it" and if your device is configured
-to use the proxy correctly, you will see a screen inviting you to
-install the proxy certificate (you are not actually connecting to
-mitm.it but to the mitmproxy). 
-
-image::images/android-mitm-cert.png[Installing the mitmproxy certificate]
-
-If you do not see this screen, and instead see a message stating "If
-you can see this, traffic is not passing through mitmproxy." then you
-are actually visiting the real site mitm.it and need to review your
-network settings.
-
-After choosing the Android icon, you will be prompted to save the
-certificate; give it a name ("mitmproxy" fits) and click "OK." Now all
-device network traffic will be routed through the proxy.
-
-image::images/android-mitm-cert-name.png[Naming the mitmproxy certificate]
-
-mitmproxy shows each HTTP protocol request sent, and has several
-keyboard commands which allow you to inspect this traffic. Each
-request is listed, and the up and down arrows keys move between the
-different requests (or you can use "j" and
-"k", the "VI" editor keybindings). 
-
-image::images/android-mitm-login.png[Multiple requests inside of mitmproxy]
-
-Once you have a request you are
-interested in, hitting the "enter/return" key selects that
-request. You are then presented with a request/response viewer. Using
-the tab key will move between the full request, the full response
-(allowing you to scroll down to see any of the headers, and the
-response), as well as details of the connection, like SSL certificates.
-
-image::images/android-mitm-inspect.png[Inspecting JSON using mitmproxy]
-
-Using mitmproxy in between clients requests and API responses is a
-great way to see what is actually sent by your client and what
-is actually returned by the server. Once you have this raw
-information in hand, it is easy to convert it into a cURL request if
-necessary (like what you need when you contact GitHub support). 
-
-With this information in hand, I was able to send off the raw request
-and GitHub helped me isolate the issue to missing information inside
-the commit object. A few months prior, GitHub did not require commits
-to have an author name or email, but they now do. So, let's fix our
-code to pull this information out of the user object and annotate our
-commit request with it.
-
-=== Fixing "createCommit"
 
 [source,java]
 -----
