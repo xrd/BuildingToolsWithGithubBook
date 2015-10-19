@@ -61,13 +61,13 @@ those commands from within the same directory where you created your
 jekyll blog. You've pushed all those files into GitHub, so you could
 safely delete the local repository in this directory.
 
-=== Android Development Tools
+==== Android Development Tools
 
 If you don't have a physical Android device, don't fret. You can follow
 along with this chapter without having an actual Android device by doing
 development and testing on a virtual device. 
 
-==== Installing the Java SDK
+===== Installing the Java SDK
 
 Unfortunately there is no simple shell command to install Java in the
 same way as there is for Ruby and NodeJS using RVM or NVM. 
@@ -77,7 +77,7 @@ Java is freely available, but you need to visit java.oracle.com and
 find the correct download for your needs. Android works with either
 the 1.6 or 1.7 versions of Java.
 
-==== Installing the Android SDK
+===== Installing the Android SDK
 
 For this application we only need the Android SDK and not the full
 bundle of Android Studio. Go to https://developer.android.com/sdk and
@@ -85,7 +85,7 @@ download the appropriate ZIP or TGZ file for your platform. You will
 need to establish the proper environment variables so make sure to
 follow the README included in the archive.
 
-==== Creating AVDs for Development
+===== Creating AVDs for Development
 
 Once you have installed the Android SDK, you can create a virtual device
 called an AVD (Android Virtual Device). To create an AVD, run the
@@ -126,7 +126,7 @@ Running the adb command starts a daemon service which communicates
 with your device. In this case the daemon reported that I have a
 single device available, the emulated Nexus 5 device.
 
-==== Creating a New Project
+=== Creating a New Project
 
 Let's now create our Android project. The following commands will
 setup a directory structure and create the basic files necessary to
@@ -158,7 +158,7 @@ ids.`. If you receive this error, run the command `android list
 targets` and use a different target. Generally any target beyond
 android-21 should work with this code.
 
-===== Adding Gradle support
+==== Adding Gradle support
 
 Gradle is a build system for Java and has become the offical build
 system for the Android platform. Using a simple `build.gradle` file (well,
@@ -232,7 +232,7 @@ runner which we configured above.
 We also need a `gradle.settings` file that just has this inside it:
 `include ':app'`
 
-===== Default Android Main
+==== Default Android Main
 
 When we use the above commands to create a new android application, it
 creates a sample entry point which is the starting point of our
