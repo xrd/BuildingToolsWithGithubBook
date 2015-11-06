@@ -1640,7 +1640,7 @@ should change the username and blog name to suit your own needs.
 $ export BLOG_NAME=xrd/bytravelers.com
 $ gem install hub
 $ hub create $BLOG_NAME # You might need to login here
-$ sleep $((10*60)) && open $BLOG_NAME
+$ sleep $((10*60)) && open http://bytravelers.com
 ----
 
 And, don't forget to setup DNS records and give yourself appropriate
