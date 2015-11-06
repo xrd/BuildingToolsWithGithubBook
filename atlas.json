@@ -11,7 +11,10 @@
     "chapter-09-commit-status-dotnet.asciidoc",
     "chapter-05-jekyll.asciidoc",
     "chapter-07-android.asciidoc",
-    "chapter-04-javascript.asciidoc"
+    "chapter-06-hubot-activities.asciidoc",
+    "chapter-04-javascript.asciidoc",
+    "appendix-enterprise.asciidoc",
+    "appendix-ruby-and-nodejs.asciidoc"
   ],
   "formats": {
     "pdf": {
@@ -28,13 +31,15 @@
       "toc": true,
       "epubcheck": true,
       "syntaxhighlighting": true,
-      "show_comments": false
+      "show_comments": false,
+      "downsample_images": false
     },
     "mobi": {
       "index": true,
       "toc": true,
       "syntaxhighlighting": true,
-      "show_comments": false
+      "show_comments": false,
+      "downsample_images": false
     },
     "html": {
       "index": true,
