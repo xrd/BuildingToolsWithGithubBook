@@ -74,37 +74,150 @@ same way as there is for Ruby and NodeJS using RVM or NVM.
 Oracle controls the Java language and distribution of official SDKs,
 and they restrict access to downloads other than from java.oracle.com.
 Java is freely available, but you need to visit java.oracle.com and
-find the correct download for your needs. Android works with either
-the 1.6 or 1.7 versions of Java.
+find the correct download for your needs. Android works with the 1.7
+versions of Java or better.
 
-===== Installing the Android SDK
+===== Installing Android Studio
 
-For this application we only need the Android SDK and not the full
-bundle of Android Studio. Go to https://developer.android.com/sdk and
-download the appropriate ZIP or TGZ file for your platform. You will
-need to establish the proper environment variables so make sure to
-follow the README included in the archive.
+We will use Android Studio, the Google IDE for developing Android
+applications. To install it, go to
+https://developer.android.com/sdk/index.html and you will see a
+download button for your platform (OSX, Linux and Windows
+supported). Android Studio bundles all the important tools for
+building Android applications.
+
+=== Creating a New Project
+
+Let's now create our Android project. When you first open Android
+Studio, you will see an option in the right pane inviting you to
+create a new project. Click on the "Start a new Android Studio
+project" option. In the next step, you will see a screen for
+configuring your new project. Enter in GhRU ("GitHub R U?") into the
+Application Name and use `example.com` as the Company Domain (or use
+your own domain, but be aware this will make the directory structure
+presented in this chapter different than yours). Android Studio should
+automatically generate the "package name" for you as
+`com.example.ghru`. 
+
+You will then need to choose a target SDK. The higher the target,
+the better access to newer Android APIs, but the fewer number of
+devices which can run the application. The code in this chapter will
+work with older SDKs, so let's make a balanced choice and use Android
+4.4 (KitKat) running on phone and tablets. At the moment this means,
+according to Android Studio, that our application will run on 49.5% of
+Android devices in the world.  
+
+image::images/android-target-devices.png[Choose an Android SDK]
+
+You will then be presented with a choice of activities. Choose "Blank
+Activity". You will be taken to a screen which allows you to customize
+the activity. Accept the defaults of "MainActivity" as the Activity
+Name and the associated files for the layout, title and menu resource
+name. Then click the "Finish" button to generate the project.
+
+After completing these steps, Android Studio will create gradle
+configuration files and generate the structure of your
+application. Once this has completed, you can review the file tree of
+your project by clicking on the left hand vertical tab labeled
+"Project".
+
+image::images/android-project-structure.png[Reviewing the Android project structure for the first time]
+
+If you have never seen an Android project before, this screen deserves
+some explanation. The "app" directory contains your application code and
+resources (layout files, images, and strings). Inside the "app"
+directory you will see several other directories: The "java" directory
+contains, quite obviously, any java code for the project, which
+includes the application files, and also programs which do not reside
+in the app when it is published to the app store but perform testing
+on the app. The "res" directory contains the resources as we
+mentioned. Android Studio lists all build files under the "Gradle
+Scripts" section, and groups them regardless of their directory
+placement. You can see two "build.gradle" files, the first of which
+you can generally ignore, though the second we will need to adjust.
+
+Now we are ready to start editing our project.
+
+==== Editing the Gradle Build File
+
+First, we need to add to our Gradle build file and specify the
+dependent libraries. Gradle is a build system for Java and has become
+the offical build system for the Android platform. Open the
+`build.gradle` within the `app` module (the second of the two
+`build.gradle` files). We will make two
+changes to this file (documented below), and let's display the entire file
+here to explain how it works.  
+
+[source,groovy]
+-----
+apply plugin: 'com.android.application' //  <1>
+
+android {
+    compileSdkVersion 23 //  <2>
+    buildToolsVersion "23.0.1"
+
+    defaultConfig {
+        applicationId "com.example.ghru"
+        minSdkVersion 19
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+	testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner" //  <3>
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar']) //  <4>
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.0.1'
+
+    testCompile 'com.squareup.okhttp:okhttp:2.5.0' //  <5>
+    compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
+    compile 'commons-codec:commons-codec:1.9'
+    androidTestCompile 'com.android.support.test:runner:0.4'
+    androidTestCompile 'com.android.support.test:rules:0.4'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+}
+-----
+
+<1> First, we load the Android gradle plugin. This extends our project
+to allow an `android` block, which we specify next.
+<4> Next, we configure our Android block, with things like the target
+versio (which we choose when setting up our project) and the actual
+SDK which we are using to compile the application.
+<2> *Our first addition is here*: in order to write UI tests, we need to specify a test runner
+called the `AndroidJUnitRunner`
+<1> Android Studio automatically adds a configuration to our build
+file which loads any JARS (Java libraries) from the `lib` directory,
+and installs the standard JUnit test tools. 
+<1> *Our second addition is here*: With these six lines we install the
+OkHttp library from Square (which gives us a simple interface to
+making HTTP calls in our tests). We also install the EGit GitHub
+libraries, and commons codec, which is an Apache Foundation library
+that helps to encode content into Base64, one of the options for storing data inside
+a GitHub repository using the API. Lastly, we install the espresso
+libraries, the Google UI testing framework. The first line (of the
+three libraries) installs the test runner which we configured above. 
 
 ===== Creating AVDs for Development
 
-Once you have installed the Android SDK, you can create a virtual device
-called an AVD (Android Virtual Device). To create an AVD, run the
-`android avd` command from a shell prompt. You'll see the AVD manager,
-and can create new devices and manage existing ones. Mine has multiple
-AVDs already created; yours will be empty the first time.
+Android Studio makes creating AVD (Android Virtual Devices) simple. To
+start, under the "Tools" menu, click on "Android" and then select
+"AVD Manager". To create a new AVD, click on the "Create Virtual
+Device.." button and follow the prompts. You are generally free to
+choose whatever settings you like. Google produces a real device
+called the Nexus 5. This is the Android reference device, and is a
+good option for a generic device with good support across all
+features. You can choose this one if you are confused about which to
+use.
 
-image::images/android-avd.png[The Android Virtual Device (AVD) Manager]
-
-To create a new AVD, click on the "New.." button and follow the
-prompts.
-
-image::images/android-new-avd.png[Creating a new Android Virtual Device]
-
-You are generally free to choose whatever settings you like. Google
-produces a real device called the Nexus 5. This is the Android
-reference device, and is a good option for a generic device with good
-support across all features. You can choose this one if you are
-confused about which to use. 
+image::images/android-studio-new-avd.png[Creating a new Android Virtual Device]
 
 Once you have created an AVD, start it up. It will take a few minutes
 to boot; AVDs emulate the chipset in software and
@@ -126,175 +239,24 @@ Running the adb command starts a daemon service which communicates
 with your device. In this case the daemon reported that I have a
 single device available, the emulated Nexus 5 device.
 
-=== Creating a New Project
-
-Let's now create our Android project. The following commands will
-setup a directory structure and create the basic files necessary to
-compile an Android application.
-
-[source,bash]
-$ mkdir ghru # GitHub R U?
-$ cd ghru
-$ android create project --target android-21 \
---name GHRU --path . \
---activity GitHubRu --package com.ghru
-$ mkdir -p app/src/main/res
-$ mkdir -p app/src/main/java
-$ mkdir -p app/src/test/java/com/ghru
-$ mv res/* app/src/main/.
-
-These commands create the files, and then modify the directory
-structure to model what the Gradle tools expect to see for an Android
-project. We could have adjusted our gradle build files to handle the
-structure generated by the stock Android tools (the `android create` command),
-but adjusting for Gradle means our project structure will match what
-other Android projects look like (especially those created by Android Studio).
-
-[NOTE]
-You may not have the same installation of Android targets necessary to
-run this command. In this case you might get an error like `Error:
-Target id is not valid. Use 'android list targets' to get the target
-ids.`. If you receive this error, run the command `android list
-targets` and use a different target. Generally any target beyond
-android-21 should work with this code.
-
-==== Adding Gradle support
-
-Gradle is a build system for Java and has become the offical build
-system for the Android platform. Using a simple `build.gradle` file (well,
-two actually) we can build an entire Android application from the
-command line. Gradle is well supported with more advanced editors, so
-you can always import an Android project using Gradle and use it with
-editors like Eclipse or Android Studio. 
-
-First, install Gradle.
-
-[source,bash]
-$ mkdir ~/gradle
-$ cd ~/gradle
-$ curl -L \
-https://services.gradle.org/distributions/gradle-2.7-all.zip \
--o gradle.zip
-$ unzip gradle.zip
-$ export PATH=$PATH:~/gradle/gradle-2.7/bin
-
-This downloads the latest gradle and installs the gradle executable (a
-shell script actually) into your path so you can run `gradle` from
-anywhere.
-
-Once we have gradle installed, we can create our gradle build
-files. We need two: a top level file, and our app specific file.
-
-Our top level file should be called `build.gradle` and sits in the
-root of the ghru directory.
-
-[source,groovy]
------
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.3.0'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
-
-allprojects {
-    repositories {
-        jcenter()
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
------
-
-This file is mostly boilerplate.
-
-Inside our app directory, we create the Android gradle build file (also
-called `build.gradle`).
-
-[source,groovy]
------
-apply plugin: 'com.android.application' //  <1>
-
-android {
-    compileSdkVersion 23 //  <2>
-    buildToolsVersion "23.0.1"
-
-    defaultConfig { //  <3>
-        applicationId "com.ghru"
-        minSdkVersion 21
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner" //  <4>
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-}
-
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12' //  <5>
-    testCompile 'com.squareup.okhttp:okhttp:2.5.0'
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5' //  <6>
-    compile( 'commons-codec:commons-codec:1.9' ) //  <7>
-    androidTestCompile 'com.android.support.test:runner:0.4' //  <8>
-    androidTestCompile 'com.android.support.test:rules:0.4'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
-}
------
-
-<1> We load the Android gradle plugin.
-<1> Here we specify the Android toolset to use in compilation.
-<2> We then apply the boilerplate Android setup code, standard in any
-gradle based Android project. 
-<2> In order to write UI tests, we need to specify a test runner
-called the `AndroidJUnitRunner`
-<1> We tell gradle to load some support libraries for our tests, the
-OkHttp library from Square (which gives us a simple interface to
-making HTTP calls in our tests) and the JUnit testing library. Gradle
-will download the proper JAR files from the Maven repository and build
-them into our application using this dependency declaration. 
-<2> This declaration installs the EGit library, our interface to the GitHub API
-from within Java. 
-<3> Commons codec is an Apache Foundation library which helps to
-encode content into Base64, one of the options for storing data inside
-a GitHub repository using the API.
-<2> Lastly, we install the espresso libraries, the Google UI testing
-framework. The first line (of the three libraries) installs the test
-runner which we configured above. 
-
-We also need a `gradle.settings` file that just has this inside it:
-`include ':app'`
-
 ==== Default Android Main
 
 When we use the above commands to create a new android application, it
 creates a sample entry point which is the starting point of our
 Android application. All Android applications have a file called
 `AndroidManifest.xml` which specifies this activity and also supplies
-a list of permissions to the apps. Modify the `AndroidManifest.xml` so
-that it looks like this, taking care to include a line which specifies
-that this app will use the Internet permission (required if our app
-will be talking to the GitHub API).
+a list of permissions to the apps. Open the `AndroidManifest.xml` file
+from within the manifests directory. We need to make one change, to
+add a line which specifies that this app will use the Internet
+permission (required if our app will be talking to the GitHub
+API). Note that when viewing this file inside Android Studio the IDE
+can interpolate strings from resources, so you might see the
+`android:label` attribute displayed as "GhRU" with a grey tinge, when
+in fact the XML file itself has the value displayed below (`@string/app_name`).
 
 [source,java]
 -----
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.ghru">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.ghru">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -319,15 +281,27 @@ will be talking to the GitHub API).
 When the application is launched, the Android OS will launch this
 activity and then call the `onCreate` function for us. Inside this
 function, our application calls our parent's implementation of
-`onCreate`, and then inflates the layout for our application. This
-layout corresponds to an automatically generated XML file which
-resides in our layouts directory called `main.xml`. This application
-requires that we login, so we know we at least need a field and a
+`onCreate`, and then inflates the layout for our application. Layouts
+are XML files in which the UI of an Android application is
+declaratively described.
+
+Adnroid Studio created a default layout for us (called
+`activity_main.xml`), but let's ignore that and create our own
+layout. To do so, right click (control-click on OSX) on the `layouts`
+directory, and then choose "New" and then "Layout resource file" at
+the very top of the list (Android Studio nicely chooses the most
+likely candidate given the context of the click). Enter "main.xml" as
+the file name, and accept the other default.s
+
+This application requires that we login, so we know we at least need a field and a
 descriptive label for the username, a password field (and associated
 descriptive label) for the password, a button to click that tells our
 app to attempt to login, and a status field which indicates success or
 failure of the login. So, let's modify the generated `main.xml` to
-specify this user interface. 
+specify this user interface. To edit this file as text, click on the
+tab labeled "Text" next to the tab labeled "Design" at the very bottom
+of the `main.xml` pane to switch to text view. Then, edit the file to
+look like the following.
 
 [source,java]
 -----
@@ -398,8 +372,11 @@ happening here.
   a handler to a button or retrieve text entered by the user from an
   entry field. We will demonstrate this in a moment.
 
+You can review the visual structure of this XML file by clicking in
+the "Design" tab to switch back to design mode.
+
 We also need a layout once we have logged in. Create a file called
-`logged_in.xml` inside the `app/src/main/res/layout` directory. Once
+`logged_in.xml` using the same set of steps. Once
 logged in, the user is presented with a layout asking them to choose
 which repository to save into, asks them to enter their blog post into
 a large text field and then click a button to submit that blog
@@ -508,19 +485,28 @@ unit tests are quickly ignored by software developers? Would it be
 better to mock out the response data inside our unit tests? These are
 all good questions! 
 
-Inside the `app/src/test/java/com/ghru` directory, add a file called
-`GitHubHelperTest.java` that looks like the following.
+First, make a directory to store the unit test. Unfortunately, at the
+time of this writing, Android Studio makes it strangely difficult to
+create a unit test directory for an Android gradle project, so jump
+into a terminal and make a directory manually. 
+
+[source,bash]
+-----
+$ mkdir -p app/src/test/java/com/example
+-----
+
+Inside this directory, add a file called `GitHubHelperTest.java` that looks like the following.
 
 [source,java]
 -----
-package com.ghru;
+package com.example;
 
-import com.squareup.okhttp.OkHttpClient; //  <1>
-import com.squareup.okhttp.Request;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request; //  <1>
 import com.squareup.okhttp.Response;
 
-import org.hamcrest.Description; //  <2>
-import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeMatcher; //  <2>
 import org.junit.Test;
 
 import java.util.Date;
@@ -531,28 +517,28 @@ import static org.junit.Assert.*;
 /**
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
  */
-public class GitHubHelperTest { //  <3>
-    @Test
+public class GitHubHelperTest {
+    @Test //  <3>
     public void testClient() throws Exception {
 
-        String login = "BurningOnUp"; //  <4>
-        String password = System.getenv("GITHUB_HELPER_PASSWORD");
+        String login = "BurningOnUp";
+        String password = System.getenv("GITHUB_HELPER_PASSWORD"); //  <4>
         String repoName = "BurningOnUp.github.io";
 
-        int randomNumber = (int)(Math.random() * 10000000); //  <5>
-        String randomString = String.valueOf( randomNumber );
+        int randomNumber = (int)(Math.random() * 10000000);
+        String randomString = String.valueOf( randomNumber ); //  <5>
         String randomAndDate = randomString + " " + (new Date()).toString() ;
 
-        GitHubHelper ghh = new GitHubHelper( login, password ); //  <6>
-        ghh.SaveFile(repoName, 
+        GitHubHelper ghh = new GitHubHelper( login, password );
+        ghh.SaveFile(repoName,  //  <6>
 		     "Some random title", 
 		     "Some random body text", 
 		     randomAndDate );
 
-        Thread.sleep(3000); //  <7>
-
-        String url = "https://api.github.com/repos/" +  //  <8>
-	    login + "/" + repoName + "/events";
+        Thread.sleep(3000);
+ //  <7>
+        String url = "https://api.github.com/repos/" + 
+	    login + "/" + repoName + "/events"; //  <8>
         OkHttpClient ok = new OkHttpClient();
         Request request = new Request.Builder()
                 .url( url )
@@ -560,11 +546,9 @@ public class GitHubHelperTest { //  <3>
         Response response = ok.newCall(request).execute();
         String body = response.body().string();
 
-        assertTrue( "Body does not have: " + randomAndDate,   //  <9>
-		    body.contains( randomAndDate ) );
+        assertTrue( "Body does not have: " + randomAndDate,  
+		    body.contains( randomAndDate ) ); //  <9>
     }
-
-}
 -----
 
 <1> First, we import the OkHttp library, a library for making HTTP
@@ -642,7 +626,9 @@ and it has a commit message which matches our random string format. We
 could reconstitute this into a complex object structure, but scanning
 the JSON as a string works for our test.
 
-We can run these tests using this command.
+When we generate our project, Android Studio creates Gradle wrappers
+which allow us to run our commands from the command line. We can run
+our test using the command below. 
 
 [source,bash]
 -----
@@ -652,7 +638,7 @@ $ GITHUB_HELPER_PASSWORD=MyPwd123 gradle testReleaseUnitTest
 :app:checkReleaseManifest
 ...
 
-com.ghru.GitHubHelperTest > testClient FAILED
+com.example.GitHubHelperTest > testClient FAILED
     java.lang.AssertionError at GitHubHelperTest.java:42
 
 1 test completed, 1 failed
@@ -696,39 +682,38 @@ inside the test class is run as a test.
 
 [source,java]
 -----
-package com.ghru; // // <1>
+package com.example; 
 
-import android.support.test.InstrumentationRegistry; // // <2>
+
+import android.support.test.InstrumentationRegistry; // // <1>
 import android.test.ActivityInstrumentationTestCase2;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.*;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 
-public class MainActivityTest  // // <3>
+public class MainActivityTest  // // <2>
     extends ActivityInstrumentationTestCase2<MainActivity> {
 
     public MainActivityTest() {
-        super( MainActivity.class ); // // <4>
+        super( MainActivity.class ); // // <3>
     }
 
-    public void testLogin() { // // <5>
-        injectInstrumentation(InstrumentationRegistry.getInstrumentation()); // // <6>
+    public void testLogin() { // // <4>
+        injectInstrumentation(InstrumentationRegistry.getInstrumentation()); // // <5>
         MainActivity mainActivity = getActivity();
-        onView( withId( R.id.username )) // // <7>
+        onView( withId( R.id.username )) // // <6>
 	    .perform(typeText("BurningOnUp"));
-        String password = mainActivity.getString(R.string.github_helper_password); // // <8>
-        onView(withId(R.id.password)) // // <9>
+        String password = mainActivity.getString(R.string.github_helper_password); // // <7>
+        onView(withId(R.id.password)) // // <8>
 	    .perform(typeText(password));
         onView(withId(R.id.login))
 	    .perform(click());
         onView( withId( R.id.loggedIn ))
-	    .check( matches( withText("Logged into GitHub")) ); // // <10>
+	    .check( matches( withText("Logged into GitHub")) ); // // <9>
     }
-}
 -----
 
-<1> We use the same package name as our other activity classes.
 <2> We then import the instrumentation registry (for instrumenting the
 tests of our app), the base class, and matchers which will be used to
 make assertions in our tests.
@@ -775,12 +760,12 @@ directory inside the resource folder. This file should look like this.
 
 Make sure this is not checked into your source code by
 adding an exception to `.gitignore`. Run the command `echo
-"secrets.xml" >> .gitgnore` to do this.
+"secrets.xml" >> .gitgnore` to do ignore this when adding files to our
+git repository. .
 
-We can now run our tests with the command `gradle
-connectedAndroidTest`. Much like before, as we have not yet
-implemented the code to back these tests, we will get a failure
-report, similar to the one we saw with our unit tests.
+Now, run the tests with the command `./gradlew connectedAndroidTest`. Much like
+before, as we have not yet implemented the code to back these tests,
+we will get a failure report, similar to the one we saw with our unit tests.
 
 We have created our tests; let's now build the application itself to
 pass these tests.
@@ -881,7 +866,7 @@ code. The Android OS disallows any code from making network
 connections unless it runs inside a background thread.
 If your eyes are starting to spin at the thought of learning about
 threading using Java, dispell your worries. The Android SDK provides a
-great class for managing background thread code called `AsyncTask`. We
+great class for managing background tasks called `AsyncTask`. We
 implement a class which supports this interface by overriding at least one function
 which runs our background thread code (called `doInBackground()`). 
 
@@ -1108,7 +1093,7 @@ around the complicated GitHub API for us.
 
 [source,java]
 -----
-package com.ghru;
+package com.example;
 
 import android.util.Log;
 
