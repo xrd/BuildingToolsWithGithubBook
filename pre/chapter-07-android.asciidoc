@@ -351,19 +351,19 @@ all good questions!
 
 First, make a directory to store the unit test. Unfortunately, at the
 time of this writing, Android Studio makes it strangely difficult to
-create a unit test directory for an Android gradle project, so jump
+create the test directory for an Android gradle project, so jump
 into a terminal and make a directory manually. 
 
 [source,bash]
 -----
-$ mkdir -p app/src/test/java/com/example
+$ mkdir -p app/src/androidTest/java/com/example/ghru
 -----
 
 Inside this directory, add a file called `GitHubHelperTest.java` that looks like the following.
 
 [source,java]
 -----
-[filename="../GhRu2", language="java", sha="9240cbdbc62e6e8a781b712407706963bb59a5f3:app/src/test/java/com/ghru/GitHubHelperTest.java", callouts="3,7,19,23,27,31,37,39,48", callouts_prefix=" // "]
+[filename="../GhRu2", language="java", sha="f4253e28ea4d3c084a:app/src/androidTest/java/com/example/ghru/GitHubHelperTest.java", callouts="3,7,16,20,24,29,33,39,45", callouts_prefix=" // "]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -373,9 +373,9 @@ snippet~~~~~
 calls. We will verify that our GitHub API calls made it all the way into
 GitHub by looking at the event log for our repository, a log
 accessible via HTTP.
-<2> Next, we import a set of matchers, which allow us to make
-assertions inside our code, and which JUnit will then verify or flag
-an error. The remaining imports should be obvious.
+<2> Next, we import JUnit, which provides us with an annotation
+`@Test` we can use to indicate to a test runner that certain methods
+are test functions (and should be executed as tests when in test mode).
 <3> We create a class called `GitHubHelperTest`. In it, we define a
 sole test case `testClient`. We use the `@Test` annotation to indicate
 to JUnit that this is a test case.
@@ -392,8 +392,8 @@ with login credentials, then use the `SaveFile` function to save the
 file. The last parameter is our commit message, which we will verify
 later.
 <7> There can be times when the GitHub API has registered the commit
-but the event is not yet displayed in the API; sleeping for a few
-seconds fixes this.
+but the event is not yet displayed in results coming back from the
+API; sleeping for a few seconds fixes this.
 <7> Next we go through the steps to make an HTTP call with the OkHttp
 library. We load a URL which provides us with the events for a
 specified repository, events which will have the commit message when

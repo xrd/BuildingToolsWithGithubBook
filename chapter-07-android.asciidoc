@@ -486,32 +486,29 @@ all good questions!
 
 First, make a directory to store the unit test. Unfortunately, at the
 time of this writing, Android Studio makes it strangely difficult to
-create a unit test directory for an Android gradle project, so jump
+create the test directory for an Android gradle project, so jump
 into a terminal and make a directory manually. 
 
 [source,bash]
 -----
-$ mkdir -p app/src/test/java/com/example
+$ mkdir -p app/src/androidTest/java/com/example/ghru
 -----
 
 Inside this directory, add a file called `GitHubHelperTest.java` that looks like the following.
 
 [source,java]
 -----
-package com.ghru;
+package com.example.ghru;
 
 import com.squareup.okhttp.OkHttpClient; //  <1>
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-import org.hamcrest.Description; //  <2>
-import org.hamcrest.TypeSafeMatcher;
-import org.junit.Test;
+import org.junit.Test; //  <2>
 
 import java.util.Date;
 
-import static java.lang.Integer.parseInt;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
@@ -528,18 +525,18 @@ public class GitHubHelperTest { //  <3>
         String randomString = String.valueOf( randomNumber );
         String randomAndDate = randomString + " " + (new Date()).toString() ;
 
-        GitHubHelper ghh = new GitHubHelper( login, password ); //  <6>
-        ghh.SaveFile(repoName, 
+        GitHubHelper ghh = new GitHubHelper( login, password );
+        ghh.SaveFile(repoName,  //  <6>
 		     "Some random title", 
 		     "Some random body text", 
 		     randomAndDate );
+ //  <7>
+        Thread.sleep(3000);
 
-        Thread.sleep(3000); //  <7>
-
-        String url = "https://api.github.com/repos/" +  //  <8>
+        String url = "https://api.github.com/repos/" + 
 	    login + "/" + repoName + "/events";
         OkHttpClient ok = new OkHttpClient();
-        Request request = new Request.Builder()
+        Request request = new Request.Builder() //  <8>
                 .url( url )
                 .build();
         Response response = ok.newCall(request).execute();
@@ -556,9 +553,9 @@ public class GitHubHelperTest { //  <3>
 calls. We will verify that our GitHub API calls made it all the way into
 GitHub by looking at the event log for our repository, a log
 accessible via HTTP.
-<2> Next, we import a set of matchers, which allow us to make
-assertions inside our code, and which JUnit will then verify or flag
-an error. The remaining imports should be obvious.
+<2> Next, we import JUnit, which provides us with an annotation
+`@Test` we can use to indicate to a test runner that certain methods
+are test functions (and should be executed as tests when in test mode).
 <3> We create a class called `GitHubHelperTest`. In it, we define a
 sole test case `testClient`. We use the `@Test` annotation to indicate
 to JUnit that this is a test case.
@@ -575,8 +572,8 @@ with login credentials, then use the `SaveFile` function to save the
 file. The last parameter is our commit message, which we will verify
 later.
 <7> There can be times when the GitHub API has registered the commit
-but the event is not yet displayed in the API; sleeping for a few
-seconds fixes this.
+but the event is not yet displayed in results coming back from the
+API; sleeping for a few seconds fixes this.
 <7> Next we go through the steps to make an HTTP call with the OkHttp
 library. We load a URL which provides us with the events for a
 specified repository, events which will have the commit message when
