@@ -150,7 +150,7 @@ here to explain how it works.
 
 [source,groovy]
 -----
-[filename="../GhRu", language="groovy", sha="518189d:app/build.gradle", callouts="1,4,13,24,28", callouts_prefix=" // "]
+[filename="../GhRu2", language="groovy", sha="f57a20c:app/build.gradle", callouts="1,4,13,24,27", callouts_prefix=" // "]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -159,14 +159,14 @@ snippet~~~~~
 <1> First, we load the Android gradle plugin. This extends our project
 to allow an `android` block, which we specify next.
 <4> Next, we configure our Android block, with things like the target
-versio (which we choose when setting up our project) and the actual
+version (which we choose when setting up our project) and the actual
 SDK which we are using to compile the application.
 <2> *Our first addition is here*: in order to write UI tests, we need to specify a test runner
 called the `AndroidJUnitRunner`
 <1> Android Studio automatically adds a configuration to our build
 file which loads any JARS (Java libraries) from the `lib` directory,
 and installs the standard JUnit test tools. 
-<1> *Our second addition is here*: With these six lines we install the
+<1> *Our second addition is here*: With the next six lines we install the
 OkHttp library from Square (which gives us a simple interface to
 making HTTP calls in our tests). We also install the EGit GitHub
 libraries, and commons codec, which is an Apache Foundation library
@@ -226,7 +226,7 @@ in fact the XML file itself has the value displayed below (`@string/app_name`).
 
 [source,java]
 -----
-[filename="../GhRu", language="java", sha="b53f1250ce9a9:app/src/main/AndroidManifest.xml"]
+[filename="../GhRu2", language="java", sha="0f68b1f4a0fd6c:app/src/main/AndroidManifest.xml"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -363,8 +363,7 @@ Inside this directory, add a file called `GitHubHelperTest.java` that looks like
 
 [source,java]
 -----
-package com.example;
-[filename="../GhRu2", language="java", sha="9240cbdbc62e6e8a781b712407706963bb59a5f3:app/src/test/java/com/ghru/GitHubHelperTest.java", callouts="3,7,19,23,27,31,37,39,48", callouts_prefix=" // ", lines="2..-1"]
+[filename="../GhRu2", language="java", sha="9240cbdbc62e6e8a781b712407706963bb59a5f3:app/src/test/java/com/ghru/GitHubHelperTest.java", callouts="3,7,19,23,27,31,37,39,48", callouts_prefix=" // "]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -376,7 +375,7 @@ GitHub by looking at the event log for our repository, a log
 accessible via HTTP.
 <2> Next, we import a set of matchers, which allow us to make
 assertions inside our code, and which JUnit will then verify or flag
-an error. The remaining imports should be evident.
+an error. The remaining imports should be obvious.
 <3> We create a class called `GitHubHelperTest`. In it, we define a
 sole test case `testClient`. We use the `@Test` annotation to indicate
 to JUnit that this is a test case.
@@ -503,7 +502,7 @@ inside the test class is run as a test.
 -----
 package com.example; 
 
-[filename="../GhRu2", language="java", sha="057fe45:app/src/androidTest/java/com/ghru/MainActivityTest.java", callouts="2,9,13,16,17,19,21,22,27", callouts_prefix=" // //", lines="2..-1"]
+[filename="../GhRu2", language="java", sha="2ef2fcf:app/src/androidTest/java/com/example/ghru/MainActivityTest.java", callouts="2,9,13,16,17,19,21,22,27", callouts_prefix=" // //", lines="2..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -522,7 +521,7 @@ this case `MainActivity`.
 `getActivity`, which actually instantiates and starts the activity. In
 many espresso tests these two steps will occur in a function annotated as
 a `@Before` function if they are used across multiple tests (in which
-case they will be run before each test). Here to simplify our funciton
+case they will be run before each test). Here to simplify our function
 count we can call them inside the single test function.
 <6> We now are interacting with the UI of our application under
 test. With the `onView` function we can interact with a view (for
@@ -553,9 +552,8 @@ snippet~~~~~
 -----
 
 Make sure this is not checked into your source code by
-adding an exception to `.gitignore`. Run the command `echo
-"secrets.xml" >> .gitgnore` to do ignore this when adding files to our
-git repository. .
+adding an exception to `.gitignore` (The command `echo
+"secrets.xml" >> .gitgnore` is a quick way to add this to your .gitignore file).
 
 Now, run the tests with the command `./gradlew connectedAndroidTest`. Much like
 before, as we have not yet implemented the code to back these tests,
@@ -571,7 +569,7 @@ implement the functionality to use the two layouts we defined early on.
 
 [source,java]
 -----
-[filename=".", language="java", sha="de816900a106fcc2436baaee4b495e2bfa8afbe4:support/android/ghru/src/com/githubru/MainActivity.java"]
+[filename="../GhRu2", language="java", sha="25288cbf57ae28085b:app/src/main/java/com/example/ghru/MainActivity.java", callouts="21,23,30,34,41", callouts_prefix=" // //"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -581,7 +579,7 @@ This code mocks out the functionality we will be building and shows us
 exactly what the UI will look like once that code is completed.
 
 <1> We register a click handler for our login button.
-<2> When the login button is clicked, we call the `login()` function.
+<2> When the login button is clicked, we call the `login()` function which triggers a login flow.
 <3> Once we have logged in, we inflate the logged in layout, suitable
 for making a blog post.
 <4> We then setup another click handler for the submit button; when
@@ -684,30 +682,39 @@ fact that when we call this, we are already logged into GitHub.
 because our credentials were incorrect, we indicate this in the status
 message. A user can retry if they wish.
 
-`loggedIn` updates the UI once logging in has completed and then makes
-the post on GitHub. Once again, we will need to implement `doPost` in an
-asynchronous task since it makes network connections.
+`loggedIn` updates the UI once logging in has completed and then initiates
+the post on GitHub. 
 
 [source,java]
 -----
 ...
-[filename=".", language="java", sha="dce3035bb1a21c04b:support/android/ghru/src/com/githubru/MainActivity.java", lines="40..50", callouts="3,8", callouts_prefix=" // //"]
+[filename="../GhRu2", language="java", sha="a359323a346a5bbda49:app/src/main/java/com/example/ghru/MainActivity.java", lines="40..63", callouts="3,6,12,21", callouts_prefix=" // //"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
 ...
 -----
 
-<1> Change the UI to reflect the fact we are now logged in.
-<2> If we click on the button, make the post to the server.
+<1> Inflate the logged in layout to reflect the fact we are now logged
+in.
+<2> Then, install a click handler so that when we submit our post
+information, we can start the process to create the post on GitHub.
+<3> We need to gather up three details which the user provides: the
+post body, the post title, and the repository name. 
+<4> Using these three pieces of data, we can then call into `doPost`
+and initiate the asynchronous task.
 
 Building out `doPost` should be more familiar now that we have
-experience with AsynchronousTasks.
+experience with AsyncTask.
 
 [source,java]
 -----
+[filename="../GhRu2", language="java", sha="0f68b1f4a0fd6c:app/src/main/java/com/ghru/MainActivity.java", lines="30..60", callouts="18", callouts_prefix=" // //"]
+snippet~~~~~
+To be replaced
+snippet~~~~~
 ...
-[filename=".", language="java", sha="47d8d82:support/android/ghru/src/com/githubru/MainActivity.java", lines="78..-2", callouts="18", callouts_prefix=" // //"]
+[filename="../GhRu2", language="java", sha="0f68b1f4a0fd6c:app/src/main/java/com/ghru/MainActivity.java", lines="70..-2", callouts="18", callouts_prefix=" // //"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -774,7 +781,7 @@ around the complicated GitHub API for us.
 [source,java]
 -----
 package com.example;
-[filename="../GhRu2", language="java", sha="5264d60:app/src/main/java/com/ghru/GitHubHelper.java" lines="2..47"]
+[filename="../GhRu2", language="java", sha="5721c1c:app/src/main/java/com/example/ghru/GitHubHelper.java" lines="2..45"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -784,7 +791,7 @@ snippet~~~~~
 The `SaveFile` function goes through each step of writing data into
 a repository using the GitHub API. We will walk through each of these
 functions. As you can see, the `SaveFile` function has the same
-signature as our unit test uses.
+signature as the function we call inside our unit test.
 
 Let's implement each of the functions specified in the
 GitHubHelper class.
@@ -798,7 +805,7 @@ into our remote git repository stored on GitHub.
 [source,java]
 -----
 ...
-[filename="../GhRu2", language="java", sha="b44d3fbc4105cf77a1f83efcf9b33752825c79b9:app/src/main/java/com/ghru/GitHubHelper.java", lines="49..81", callouts="1,9,10,16,22,26,29,31" callouts_prefix=" // //"]
+[filename="../GhRu2", language="java", sha="a608f2d3df0ca9a21:app/src/main/java/com/example/ghru/GitHubHelper.java", lines="49..81", callouts="1,9,10,16,22,26,29,31" callouts_prefix=" // //"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -835,12 +842,7 @@ the java `SimpleDateFormat` class to help in creating a string of that format.
 <8> Finally, create the filename from all these pieces, prepending
 `_posts` to the filename, where Jekyll expects posts to reside.
 
-One exercise for the reader: what happens if there is no "master"
-branch? It is a convention, not a guarantee, that a repository has a
-"master" branch, but this code relies on the assumption it is
-there. For production code, we probably want to create a test that
-validates this edge case and adjust our function to handle it gracefully
-if the "master" branch does not exist.
+Now we will setup the services necessary to store a commit inside GitHub.
 
 ==== GitHub Services 
 
@@ -853,7 +855,7 @@ for us.
 [source,java]
 -----
 ...
-[filename="../GhRu2", language="java", sha="20b6f7c:app/src/main/java/com/ghru/GitHubHelper.java", lines="105..116"]
+[filename="../GhRu2", language="java", sha="a608f2d3df0ca9a2:app/src/main/java/com/example/ghru/GitHubHelper.java", lines="105..116"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -875,7 +877,7 @@ correct branch: `getBranch` does this for us.
 [source,java]
 -----
 ...
-[filename=".", language="java", sha="a2ed219:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="108..137"]
+[filename="../GhRu2", language="java", sha="a608f2d3df0ca9a2:app/src/main/java/com/example/ghru/GitHubHelper.java" lines="108..145"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -895,7 +897,7 @@ tree and commit object, which we do next.
 [source,java]
 -----
 ...
-[filename=".", language="java", sha="a27974c:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="91..101"]
+[filename="../GhRu2", language="java", sha="a608f2d3df0ca9a2:app/src/main/java/com/example/ghru/GitHubHelper.java" lines="82..90"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -905,12 +907,13 @@ snippet~~~~~
 ==== Generating a Tree
 
 Next, we generate a tree by implementing `generateTree()`. A tree
-wraps a blob object and provides basically a path to our object:
-you can think of a tree as the filename path and the blob as an inode 
-object. Our data service manager uses a repository name and a base SHA
-address, one that we retrieved earlier, to validate that this is a
-valid starting point inside our repository. Once we have a tree, we
-fill out the necessary tree attributes, like tree type (blob) and and
+wraps a blob object and provides basically a path to our object: if
+you were designing an operating system, the tree would be the filename
+path and the blob is an inode. Our data service manager uses a
+repository name and a base SHA address, one that we retrieved earlier,
+to validate that this is a valid starting point inside our
+repository. Once we have a tree, we fill out the necessary tree
+attributes, like tree type (blob) and and 
 tree mode (blob), and set the SHA from the previously created blob
 object along with the size. Then we store the tree into our GitHub
 account using the data service object. 
@@ -918,7 +921,7 @@ account using the data service object.
 [source,java]
 -----
 ...
-[filename=".", language="java", sha="b7a3874:support/android/ghru/src/com/githubru/GitHubHelper.java" lines="101..114"]
+[filename="../GhRu2", language="java", sha="a608f2d3df0ca9a2:app/src/main/java/com/example/ghru/GitHubHelper.java" lines="91..104"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -935,15 +938,14 @@ version control system, we also need to store information about who
 wrote this object and why. A commit object stores this
 information. The process should look familiar coming from the previous
 steps: we create the commit and then add relevant metadata, in this case the
-commit message. The "who" of this commit is inferred from our login:
-GitHub knows that we authenticated and assigns this commit to us on
-the server side. We then use the data service to create the commit
+commit message. We also need to provide the commit user with the
+commit. We then use the data service to create the commit
 inside our repository in GitHub at the correct SHA address.
 
 [source,java]
 -----
 ...
-[filename="../GhRu2", language="java", sha="5ec51bd6521d6dc922a8:app/src/main/java/com/ghru/GitHubHelper.java", lines="146..176", callouts_prefix=" // //", callouts="3,5,6,9,13,24,26"]
+[filename="../GhRu2", language="java", sha="cbbf6dbe7ab6568778c87beef66f75a9d43bf0d9:app/src/main/java/com/example/ghru/GitHubHelper.java", lines="146..180", callouts_prefix=" // //", callouts="3,5,6,9,13,24,26,29,34"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -963,35 +965,27 @@ object.
 <5> Do the same process to establish the email for the commit user.
 <6> Now, return to the `createCommit` function and create a commit
 object. 
-<7> Now, as our tests and troubleshooting proves, we need to use an
-author and committer, so pass in the commit user we created in the
-`createCommitUser` function. 
+<7> We need to use an author and committer, so pass in the commit user
+we created in the `createCommitUser` function. 
+<8> Next, generate a list of commits. We will only use one, but you
+might recall commits can have multiple parents (a merge, for example)
+and we need to specify the parent or parents for a commit. We create
+the list, create a parent and set the base SHA we determined earlier,
+and then indicate in our new commit that it is the parent.
+<9> Finally, we create the commit using our data service object.
+
+[WARNING] 
+The base commit SHA (the parent of our new commit) is very important. If you do not
+properly acquire the base parent SHA and were to push your commit
+without indicating the parent SHA in the commit, you will effectively
+perform a force push to the branch and the last commit will have no
+parent. This means you will effectively lose history in your
+repository, as the branch tip commit will have lost its connection to
+previous commits. 
 
 Now that we have a working commit structure created, we are almost
 complete with our git data API call. We just need to create a resource
 and update master with that information.
-
-==== Creating the Resource and Updating the Master
-
-Finally, we create `updateMasterResource()`. We need to adjust
-"master" or "gh-pages", the branch from which GitHub will generate
-your Jekyll blog. Previously, we determined the correct branch against which to apply our additions. GitHub
-follows this convention when generating your Jekyll blog, using either
-master or gh-pages as the checkout point for retrieving your content
-and then doing a site rebuild from a working copy there. In our code,
-we use the commit we created and stored in the previous code to
-generate a commit resource, set the URL, and then use our data service
-to update the reference inside the repository inside GitHub.
-
-[source,java]
------
-...
-[filename=".", language="java", sha="b7a3874:support/android/ghru/src/com/githubru/GitHubHelper.java", lines="150..164", flatten="0"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
-...
------
 
 ==== Implementing Our Final doPost
 
@@ -1001,7 +995,7 @@ Finally, we can now implement the `doPost()` function inside our
 [source,java]
 -----
 ...
-[filename=".", language="java", sha="2f0d210d1e74c1eae326c89047c6cded276640a2:support/android/ghru/src/com/githubru/MainActivity.java" lines="78..-1"]
+[filename="../GhRu2", language="java", sha="2ef2fcf6c8758:app/src/main/java/com/example/ghru/MainActivity.java" lines="78..-1"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
