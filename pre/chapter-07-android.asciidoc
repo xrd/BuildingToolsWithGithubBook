@@ -974,12 +974,12 @@ and then indicate in our new commit that it is the parent.
 ==== Updating the Master Resource
 
 Our final step is to take the new commit SHA and update your branch
-reference. 
+reference to point to it. 
 
 [source,java]
 -----
 ...
-[filename="../GhRu2", language="java", sha="f2e7922:app/src/main/java/com/example/ghru/GitHubHelper.java", lines="189..-1", callouts_prefix=" // //", callouts="3,9,13"]
+[filename="../GhRu2", language="java", sha="b520926:app/src/main/java/com/example/ghru/GitHubHelper.java", lines="189..-1", callouts_prefix=" // //", callouts="3,12,14"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -990,7 +990,8 @@ snippet~~~~~
 new commit SHA, indicate it is a resource of commit type, and then
 link it to our commit using its URL.
 <2> We use the data service object to get the current branch reference
-from GitHub.
+from GitHub. Branch references are retrieved by appending "heads" to
+the branch (we determined the branch in a prior step).
 <3> Finally, we update the branch reference to our new commit resource.
 
 This is the complete code to add data to GitHub using the Git Data

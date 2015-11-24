@@ -1486,7 +1486,7 @@ and then indicate in our new commit that it is the parent.
 ==== Updating the Master Resource
 
 Our final step is to take the new commit SHA and update your branch
-reference. 
+reference to point to it. 
 
 [source,java]
 -----
@@ -1499,11 +1499,12 @@ reference.
         commitResource.setUrl(newCommit.getUrl());
     }
 
-    private void updateMasterResource() throws IOException { // // <2>
-        // get master reference and update it
-        Reference reference = dataService.getReference(repository, "heads/" + theBranch.getName() );
+    private void updateMasterResource() throws IOException {
+        Reference reference =
+                dataService.getReference(repository,
+                        "heads/" + theBranch.getName() ); // // <2>
         reference.setObject(commitResource);
-        Reference response = dataService.editReference(repository, reference, true) ; // // <3>
+        dataService.editReference(repository, reference, true) ; // // <3>
     }
 ...
 -----
@@ -1512,7 +1513,8 @@ reference.
 new commit SHA, indicate it is a resource of commit type, and then
 link it to our commit using its URL.
 <2> We use the data service object to get the current branch reference
-from GitHub.
+from GitHub. Branch references are retrieved by appending "heads" to
+the branch (we determined the branch in a prior step).
 <3> Finally, we update the branch reference to our new commit resource.
 
 This is the complete code to add data to GitHub using the Git Data
