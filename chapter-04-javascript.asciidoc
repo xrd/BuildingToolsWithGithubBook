@@ -971,7 +971,7 @@ $ wget https://raw.github.com/dankogai/js-base64/master/base64.js
 Then, add the libraries to your index.html so that the JavaScript
 includes look like this:
 
-[source,html index.html]
+[source,html]
 -----
 ...
 
@@ -999,7 +999,7 @@ So, to start, let's add some faked data to our coffee shop
 information. Add a file called `portland.json` file that looks like
 this: 
 
-[source,html index.html]
+[source,html]
 -----
 [
    {
@@ -1877,7 +1877,7 @@ and allows us to run `npm install` to download them all.
 Then, add the following code into a file named
 `node/github-local-login.js`. 
 
-[source,javascript app.js]
+[source,javascript]
 ----
 var express = require('express')
   , passport = require('passport')

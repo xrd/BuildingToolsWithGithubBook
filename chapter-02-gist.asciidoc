@@ -449,7 +449,7 @@ attribute. Retrieve the `raw` content using the Octokit method `.get.data`.
 
 Now we see the gists and the contents.
 
-image::images/gists-last-five.png[Last five gists, with details]
+image::images/gists-last-five.png["Last five gists, with details"]
 
 
 ////

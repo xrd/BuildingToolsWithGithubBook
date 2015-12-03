@@ -483,7 +483,7 @@ The JSON response, upon success, has a token you can extract and use
 for applications that need access to the GitHub API.
 
 If you are using two factor authentication, this flow requires
-additional steps, all of which are documented within the <<Hubot Chapter>>.
+additional steps, all of which are documented within the <<Hubot>>.
 
 To use this token, you specify the token inside an authorization
 header. 
