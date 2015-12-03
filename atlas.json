@@ -16,7 +16,10 @@
     "chapter-06-hubot-activities.asciidoc",
     "chapter-04-javascript.asciidoc",
     "appendix-enterprise.asciidoc",
-    "appendix-ruby-and-nodejs.asciidoc"
+    "appendix-ruby-and-nodejs.asciidoc",
+    "ix.html",
+    "author_bio.html",
+    "colo.html"
   ],
   "formats": {
     "pdf": {
