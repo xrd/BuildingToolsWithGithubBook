@@ -25,8 +25,8 @@
       "toc": true,
       "syntaxhighlighting": true,
       "show_comments": false,
-      "color_count": false,
-      "trim_size": false
+      "color_count": "1",
+      "trim_size": "7inx9.1875in"
     },
     "epub": {
       "index": true,
