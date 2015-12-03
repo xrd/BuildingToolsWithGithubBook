@@ -295,74 +295,80 @@ tab labeled "Text" next to the tab labeled "Design" at the very bottom
 of the `main.xml` pane to switch to text view. Then, edit the file to
 look like the following.
 
-[source,java]
------
-<?xml version="1.0" encoding="utf-8"?> <!-- <1> -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+++++
+<pre data-type="programlisting" data-code-language="java">&lt;?xml version="1.0" encoding="utf-8"?&gt; &lt;-- <a class="co" id="aco_android_and_the_git_data_api_CO2-1" href="#acallout_android_and_the_git_data_api_CO2-1"><img src="callouts/1.png" alt="1"/></a> --&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    > <!-- <2> -->
-<TextView
+    &gt;  &lt;-- <a class="co" id="aco_android_and_the_git_data_api_CO2-2" href="#acallout_android_and_the_git_data_api_CO2-2"><img src="callouts/2.png" alt="2"/></a> --&gt;
+&lt;TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="GitHub Username:"
-    />
-<EditText
+    /&gt;
+&lt;EditText
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/username"
-    />
+    /&gt;
 
-<TextView
+&lt;TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="GitHub Password:"
-    />
+    /&gt;
 
-<EditText
+&lt;EditText
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/password"
     android:inputType="textWebPassword"
-    /> <!-- <3> -->
+    /&gt;  &lt;-- <a class="co" id="aco_android_and_the_git_data_api_CO2-3" href="#acallout_android_and_the_git_data_api_CO2-3"><img src="callouts/3.png" alt="3"/></a> --&gt;
 
-<Button
+&lt;Button
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Login"
     android:id="@+id/login"
-    /> <!-- <4> -->
+    /&gt;  &lt;-- <a class="co" id="aco_android_and_the_git_data_api_CO2-4" href="#acallout_android_and_the_git_data_api_CO2-4"><img src="callouts/4.png" alt="4"/></a> --&gt;
 
-<TextView
+&lt;TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/login_status"
-    />
+    /&gt;
 
-</LinearLayout>
------
+&lt;/LinearLayout&gt;</pre>
 
-You may have complicated feelings about XML files (I know I do), but
+<p>You may have complicated feelings about XML files (I know I do), but
 the Android layout XML files are a straightforward way to design
 layouts declaratively, and there is a great ecosystem of GUI tools
 that provide sophisticated ways to manage them. Scanning this XML
 file, it should be relatively straightforward to understand what is
-happening here.
+happening here.</p>
 
-<1> The entire layout is wrapped in a `LinearLayout` which simply
-  positions each element stacked vertically inside it. We set the 
-  height and width layout attributes to `match_parent` which means this
-  layout occupies the entire space of the screen.
-<2> We then add the elements we described above: pairs of `TextView`
-  and `EditView` for the label and entry options necessary for the
-  username and password. 
-<3> The password field customizes the type to be a password field,
-  which means the entry is hidden when we enter it. 
-<4> Some elements in the XML have an ID attribute, which allows us to
-  access the items within our Java code, such as when we need to assign
-  a handler to a button or retrieve text entered by the user from an
-  entry field. We will demonstrate this in a moment.
+<dl class="calloutlist">
+<dt><a class="co" id="acallout_android_and_the_git_data_api_CO2-1" href="#aco_android_and_the_git_data_api_CO2-1"><img src="callouts/1.png" alt="1"/></a></dt>
+<dd><p>The entire layout is wrapped in a <code>LinearLayout</code> which simply
+positions each element stacked vertically inside it. We set the
+height and width layout attributes to <code>match_parent</code> which means this
+layout occupies the entire space of the screen.</p></dd>
+<dt><a class="co" id="acallout_android_and_the_git_data_api_CO2-2" href="#aco_android_and_the_git_data_api_CO2-2"><img src="callouts/2.png" alt="2"/></a></dt>
+<dd><p>We then add the elements we described above: pairs of <code>TextView</code>
+and <code>EditView</code> for the label and entry options necessary for the
+username and password.</p></dd>
+<dt><a class="co" id="acallout_android_and_the_git_data_api_CO2-3" href="#aco_android_and_the_git_data_api_CO2-3"><img src="callouts/3.png" alt="3"/></a></dt>
+<dd><p>The password field customizes the type to be a password field,
+which means the entry is hidden when we enter it.</p></dd>
+<dt><a class="co" id="acallout_android_and_the_git_data_api_CO2-4" href="#aco_android_and_the_git_data_api_CO2-4"><img src="callouts/4.png" alt="4"/></a></dt>
+<dd><p>Some elements in the XML have an ID attribute, which allows us to
+access the items within our Java code, such as when we need to assign
+a handler to a button or retrieve text entered by the user from an
+entry field. We will demonstrate this in a moment.</p></dd>
+</dl>
+++++
+
 
 You can review the visual structure of this XML file by clicking in
 the "Design" tab to switch back to design mode.
