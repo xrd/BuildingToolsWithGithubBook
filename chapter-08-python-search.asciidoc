@@ -351,9 +351,13 @@ It'll end up looking a bit like <<search_app>>.
 
 [[search_app]]
 .GitHub search application on three platforms
-image:images/search-win.png[width=33%]
-image:images/search-osx.png[width=33%]
-image:images/search-linux.png[width=33%]
+====
+image::images/search-win.png[]
+
+image::images/search-osx.png[]
+
+image::images/search-linux.png[]
+====
 
 ==== User flow
 
