@@ -278,8 +278,8 @@ some noise.
 </head>
 <body ng-app="coffeetech">
 <div class="container" ng-controller="GithubCtrl">
-<div>Subscriber count: {{ repo.subscribers_count }}</div> <1>
-<div>Network count: {{ repo.network_count }}</div> <2>
+<div>Subscriber count: {{ repo.subscribers_count }}</div> 
+<div>Network count: {{ repo.network_count }}</div> 
 </div>
 <script
 src="angular.js"></script>
@@ -1461,7 +1461,7 @@ HTML.
 [source,javascript]
 -----
 ...
-<input class="ctinput" ng-model="search" placeholder="Enter search parameters..."/> <!--1-->
+<input class="ctinput" ng-model="search" placeholder="Enter search parameters..."/> 
 
 <h3 ng-show="city">Current city: {{city.name}}</h3>
 
