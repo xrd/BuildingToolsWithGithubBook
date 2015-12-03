@@ -452,7 +452,7 @@ Now we see the gists and the contents.
 image::images/gists-last-five.png["Last five gists, with details"]
 
 
-////
+
 
 The main benefit of using Hypermedia is that you don't need to harcode
 URLs into your application, making your application less brittle when
