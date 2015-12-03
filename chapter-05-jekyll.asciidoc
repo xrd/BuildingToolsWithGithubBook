@@ -56,7 +56,7 @@ tools.
 To really use jekyll, you'll need the `jekyll` gem. As we explain in
 the <<appendix>>, we could install a ruby gem using this command:
 
-[source]
+[source,text]
 ------
 $ gem install jekyll
 ------
@@ -70,7 +70,7 @@ dependencies so that a site that works on our local laptop also works
 when published into GitHub. If you don't take care of this, you'll
 occasionally get an email like this from GitHub: 
 
-[source]
+[source,text]
 ----
 
  The page build failed with the following error:
@@ -95,7 +95,7 @@ to make sure that everything is properly setup and synchronized and
 generally this will reproduce the issues on your local setup, which is
 a much faster place to fix them.
 
-[source]
+[source,text]
 ------
 $ printf "gem 'github-pages' >> Gemfile
 $ bundle install
@@ -111,7 +111,7 @@ Now we are ready to create a Jekyll blog.
 We have our required tools installed, so let's create a simple blog. Run
 these commands.
 
-[source]
+[source,text]
 -----
 $ jekyll new myblog
 $ cd myblog
@@ -210,7 +210,7 @@ jekyll command, and whether to use `pygments` to do syntax highlighting.
 
 To view this site locally run this command:
 
-[source]
+[source,text]
 -----
 $ jekyll serve
 -----
@@ -473,7 +473,7 @@ to determine the best way for your system.
 
 Use thse commands to install your github.io hosted Jekyll blog.
 
-[source]
+[source,text]
 ------
 $ export USERNAME=xrd 
 $ jekyll new $USERNAME.github.io
@@ -503,7 +503,7 @@ the GitHub servers.
 To work on the gh-pages branch, check it out and create the branch
 inside your repository. 
 
-[source]
+[source,text]
 -----
 $ git checkout -b gh-pages
 $ rake post title="My next big blog post"
@@ -522,7 +522,7 @@ the gh-pages branch whenever you do a push.
 The CNAME file is a simple text file with the domain name inside of
 it. 
 
-[source]
+[source,text]
 -----
 $ echo 'mydomain.com' > CNAME
 $ git add CNAME
@@ -536,7 +536,7 @@ admin page of your repository. An easy way to get there is using the
 `github` gem, no longer actively maintained but still a useful command
 line tool.
 
-[source]
+[source,text]
 -----
 $ gem install github
 $ github admin # Opens up https://github.com/username/repo/settings
@@ -604,7 +604,7 @@ inside your Gemfile and use the `bundle` command.
 Once you have the `jekyll-import` gem, you can convert a Wordpress
 blog using a command like this:
 
-[source]
+[source,text]
 ----
 $ ruby -rubygems -e 'require "jekyll-import";  
     JekyllImport::Importers::WordPress.run({
@@ -642,7 +642,7 @@ false`.
 Another alternative is to export the entire database as an XML file.
 Then, you can run the importer on that file.
 
-[source]
+[source,text]
 ----
 ruby -rubygems -e 'require "jekyll-import";
     JekyllImport::Importers::WordpressDotCom.run({
@@ -1307,7 +1307,7 @@ First, create a Git repository for our files. When the Jekyll tool
 runs, it generates all the files into a directory called "_site" so we
 should add a ".gitignore" file which ignores this directory.
 
-[source]
+[source,text]
 ------
 $ git init
 $ mkdir _posts
@@ -1460,7 +1460,7 @@ from GitHub after publishing there). Errors can occur if our scraper
 does not correctly process the HTML retrieved from Archive.org and
 subsequently generates incorrect Markdown content, for example. 
 
-[source]
+[source,text]
 ----
 $ git add .
 $ git commit -m "Make this into a Jekyll site"
@@ -1901,7 +1901,7 @@ Like any other GitHub repository, we can then publish our blog using
 the same commands we saw with earlier repositories. Obviously you
 should change the username and blog name to suit your own needs. 
 
-[source]
+[source,text]
 ----
 $ export BLOG_NAME=xrd/bytravelers.com
 $ gem install hub
