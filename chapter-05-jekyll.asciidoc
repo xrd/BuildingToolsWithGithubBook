@@ -223,14 +223,14 @@ the index.
 
 [[bare-jekyll-site]]
 .A bare Jekyll site
-image::images/jekyll-bare.png[A bare Jekyll site]
+image::images/btwg_0601.png[A bare Jekyll site]
 
 Clicking into the link inside the "Blog Posts" section, you will then
 see your first post.
 
 [[a-sample-post]]
 .A sample post
-image::images/jekyll-welcome.png[A sample post co-authored by Tom Preston-Warner]
+image::images/btwg_0602.png[A sample post co-authored by Tom Preston-Warner]
 
 Our jekyll initialization command created this new post for us. This page
 is backed by the Markdown file inside the _posts directory which we
@@ -551,7 +551,7 @@ in the middle of your settings page.
 
 [[settings-jekyll-blog]]
 .Settings for a Jekyll blog
-image::images/jekyll-settings.png[Settings for a Jekyll blog]
+image::images/btwg_0603.png[Settings for a Jekyll blog]
 
 GitHub has properly recognized the CNAME file and will accept requests
 made to that host on its servers. We are still not yet complete,
@@ -752,7 +752,7 @@ scraped by the Internet Archive for this site.
 
 [[calendar-view-archive]]
 .Calendar view of Archive.org
-image::images/jekyll-bytravelers-archive.png[The calendar view for Archive.org ]
+image::images/btwg_0604.png[The calendar view for Archive.org ]
 
 In the middle of 2003 I took down the server, intending to
 upgrade it to another set of technologies, and never got around to
@@ -764,7 +764,7 @@ site is functionally archived inside Archive.org
 
 [[calendar-view-bytravelers]]
 .Archive of ByTravelers.com on Archive.org
-image::images/jekyll-bytravelers-jun6.png[Archive of Bytravelers.com on Archive.org]
+image::images/btwg_0605.png[Archive of Bytravelers.com on Archive.org]
 
 Taking the URL from our browser, we can use this as our starting point for
 scraping. Clicking around throughout the site, it becomes evident that
@@ -1609,7 +1609,7 @@ text by 40 characters using the `truncatewords:40` filter.
 If we open `http://localhost:4000` in our browser, we will see a
 simple index page with the titles of our posts.
 
-image::images/jekyll-unformatted-index.png[Austere but a step in the right direction]
+image::images/btwg_06in01.png[Austere but a step in the right direction]
 
 This index page lists every post: let's make it display only the last
 ten posts. Copy the `index.md` file to a file named `archive.md`.
@@ -1858,7 +1858,7 @@ If we reload, we will see a much prettier version of the site.
 
 [[jekyll-now-livelier]]
 .Restoring the original colors and images
-image::images/jekyll-now-livelier.png[Restoring the original images and colors]
+image::images/btwg_0606.png[Restoring the original images and colors]
 
 We've now entirely scraped an old site and built a new Jekyll blog, so
 there is just one thing left to do: encourage and permit

@@ -107,7 +107,7 @@ work with older SDKs, so let's make a balanced choice and use Android
 according to Android Studio, that our application will run on 49.5% of
 Android devices in the world.  
 
-image::images/android-target-devices.png[Choose an Android SDK]
+image::images/btwg_07in01.png[Choose an Android SDK]
 
 You will then be presented with a choice of activities. Choose "Blank
 Activity". You will be taken to a screen which allows you to customize
@@ -121,7 +121,7 @@ application. Once this has completed, you can review the file tree of
 your project by clicking on the left hand vertical tab labeled
 "Project".
 
-image::images/android-project-structure.png[Reviewing the Android project structure for the first time]
+image::images/btwg_07in02.png[Reviewing the Android project structure for the first time]
 
 If you have never seen an Android project before, this screen deserves
 some explanation. The "app" directory contains your application code and
@@ -222,7 +222,7 @@ good option for a generic device with good support across all
 features. You can choose this one if you are confused about which to
 use.
 
-image::images/android-studio-new-avd.png[Creating a new Android Virtual Device]
+image::images/btwg_07in03.png[Creating a new Android Virtual Device]
 
 Once you have created an AVD, start it up. It will take a few minutes
 to boot; AVDs emulate the chipset in software and
@@ -804,7 +804,7 @@ Even though our code is not functionally complete, this application will
 compile. This is a good time to play with this application and verify
 the UI looks appropriate. Our login form looks like this:
 
-image::images/android-log-in.png[A simple UI for making blog post entries]
+image::images/btwg_07in04.png[A simple UI for making blog post entries]
 
 ==== Code to Login to GitHub
 
@@ -1542,7 +1542,7 @@ display your test class "GitHubHelperTest.java". We will need to store
 the username and password as environment variables, so click to add
 these. Your final configuration should look like the following.
 
-image::images/android-unit-test.png[Creating a unit test configuration]
+image::images/btwg_07in05.png[Creating a unit test configuration]
 
 Now, create the UI tests configuration: switch to "Android Instrumentation Tests" in the "Test Artifact"
 of the "Build Variants" tab. Then, click on the "Run" menu, and again

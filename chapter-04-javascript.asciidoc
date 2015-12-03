@@ -262,7 +262,7 @@ references.
 
 If you load this up in your browser, you will see something like this:
 
-image::images/javascript-gollum.png[The Whole Messy JSON]
+image::images/btwg_09in01.png[The Whole Messy JSON]
 
 That is a lot of data. AngularJS's JSON filter pretty printed
 it for us, but this is a bit too much. Let's change the HTML to reduce
@@ -294,7 +294,7 @@ few vital pieces of information from the repository JSON. Let's
 display the `subscriber_count` and the `network_count`. Now we see
 something more palatable. 
 
-image::images/javascript-gollum-precise.png[Pulling Out What We Want]
+image::images/btwg_09in02.png[Pulling Out What We Want]
 
 We've just extracted the subscriber and network count from the gollum
 repository hosted on GitHub using the GitHub API and placed it into
@@ -940,7 +940,7 @@ Uncaught TypeError: Cannot call method 'select' of undefined
 
 If you click on the link to the right for github.js, you'll see this.
 
-image::images/javascript-underscore-missing.png[An Unexpected Error]
+image::images/btwg_09in03.png[An Unexpected Error]
 
 You see at the point of error that we are calling `select` on the tree.
 Select appears to be a method defined on an underscore character. If
@@ -1077,7 +1077,7 @@ Now if we type in the word `gluten` in our search box, we filter out
 anything except shops which match that, and we see the information
 pieces formatted as labels underneath the shop name.
 
-image::images/javascript-search-box.png[Filtering coffeeshops using the term gluten]
+image::images/btwg_09in04.png[Filtering coffeeshops using the term gluten]
 
 ==== User Contributed Data
 
@@ -1476,11 +1476,11 @@ HTML.
 When someone makes an annotation to a shop, the owner of the original repository
 gets a pull request notification on GitHub.
 
-image::images/javascript-pull-request.png[Adding information through a pull request]
+image::images/btwg_09in05.png[Adding information through a pull request]
 
 Now we can review changes through GitHub's integrated online diff tool.
 
-image::images/javascript-pull-request-diff.png[Reviewing annotation pull request diff's from within GitHub]
+image::images/btwg_09in06.png[Reviewing annotation pull request diff's from within GitHub]
 
 As you can see, we can see a clear diff of the changes our contributor
 made: they added an annotation that tells us "no turtles allowed". We
@@ -1582,7 +1582,7 @@ navigate to the "Applications" link towards the bottom. Click on the
 `https://auth.firebase.com/auth/github/callback`. Then save the
 application by clicking on the "Register application" button.
 
-image::images/javascript-new-application.png[A new GitHub application for oAuth]
+image::images/btwg_09in07.png[A new GitHub application for oAuth]
 
 Now, create an account on Firebase. Once you have done this, create
 a new app called "CoffeeTech" inside Firebase. The APP URL needs be unique, so use
@@ -1591,7 +1591,7 @@ Once you have created the app, click on "View Firebase" button. You'll
 then see a settings screen, and click on "Simple Login" and then
 "GitHub."
 
-image::images/javascript-view-firebase.png[Creating the Firebase Hosted Login]
+image::images/btwg_09in08.png[Creating the Firebase Hosted Login]
 
 Then, copy your GitHub client ID and secret to the sections inside the
 Firebase Simple Login settings for the GitHub provider. Make sure the
@@ -1777,7 +1777,7 @@ After we make these changes, we can click the "Add factoid" button and
 we'll get a dialog like this one indicating we are logging into GitHub
 (via the Firebase SimpleLogin).
 
-image::images/javascript-firebase-simplelogin.png[The final step in the permission flow for GitHub access using Firebase]
+image::images/btwg_09in09.png[The final step in the permission flow for GitHub access using Firebase]
 
 After you authorize the application, the execution flow is identical to the
 the prior authentication flow (using username and password). As an optimization

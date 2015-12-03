@@ -11,7 +11,7 @@ This feature also surfaces at the bottom of the pull-request; if the last commit
 
 [[status_pr]]
 .Commit status in the pull-request UI
-image::images/commit-status-ui.png[Commit status in the pull-request UI]
+image::images/btwg_0501.png[Commit status in the pull-request UI]
 
 The most obvious application for this feature is a continuous-integration service.
 A program like Jenkins will get a notification when new commits are pushed to a branch, run a build/test cycle using the new code, and post the results through the commit-status API.
@@ -199,7 +199,7 @@ Make sure the path and name settings at the bottom are to your liking, and click
 
 [[vs_new_project]]
 .Creating a Nancy application in Visual Studio
-image::images/vs-new-project.png[]
+image::images/btwg_0502.png[]
 
 Next, change the target CLR framework version to something that will work with Octokit.
 Right-click on the project's node in the Solution Explorer, and select "Properties."
@@ -225,7 +225,7 @@ Go to "File>New>Solution…", and choose "ASP.NET>Empty ASP.NET Project" from th
 
 [[xamarin_new_project]]
 .Creating an empty ASP.NET application in Xamarin Studio
-image::images/xamarin-new-project.png[]
+image::images/btwg_0503.png[]
 
 The rest of the wizard steps are about the project name and location; feel free to name and locate this project however you like.
 

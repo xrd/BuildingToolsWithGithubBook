@@ -352,11 +352,11 @@ It'll end up looking a bit like <<search_app>>.
 [[search_app]]
 .GitHub search application on three platforms
 ====
-image::images/search-win.png[]
+image::images/btwg_04in01.png[]
 
-image::images/search-osx.png[]
+image::images/btwg_04in02.png[]
 
-image::images/search-linux.png[]
+image::images/btwg_04in03.png[]
 ====
 
 ==== User flow
@@ -371,7 +371,7 @@ To make this easier, our program will try to get GitHub credentials from Git's c
 
 [[search_login_ui]]
 .Login UI
-image::images/python-login.png[]
+image::images/btwg_0401.png[]
 
 Once the user logs in, they'll be shown a search box.
 Typing in a search query and hitting enter will result in a scrollable list of search results, with titles and the first line of the description.
@@ -801,7 +801,7 @@ The effect is like <<search_resizing>>.
 
 [[search_resizing]]
 .Resizing behavior of login UI
-image::images/python-sizers.png[]
+image::images/btwg_0402.png[]
 
 Then comes the `do_login` method, which tests out the given credentials, and if they work, passes them back through the callback set at construction time.
 If they don't work, it sets the text of a label, whose foreground color has been set to a nice, alarming shade of red.
