@@ -48,7 +48,7 @@ Notes from Tools:
 
 ** PROD: Add any authors to project that need to be added.
 
-** Syntax highlighting: applied to [ FILL IN ] out of [ FILL IN ] code listings.
+** Syntax highlighting: applied to 275 out of 290 code listings.
 
 ** Please let Tools know ASAP if there are any other global problems for which we can help automate a fix.
 
