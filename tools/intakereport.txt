@@ -1,0 +1,95 @@
+Building Tools with GitHub, 1E / 9781449368012
+DESK # 40204
+
+Stylesheet: animal
+Toolchain: Atlas 2
+
+Atlas URL: https://atlas.oreilly.com/oreillymedia/github
+
+Incoming format: Asciidoc
+Outgoing format: Asciidoc
+
+Preliminary pagecount: TOTAL 298 with figs
+  
+Is this book in Early Release? YES
+
+Resources
+=========
+
+** Figs: Illustrations is still working on the figs. 
+   48 total. (36 are informal; 0 are inline.)
+
+   Once the figs are processed on /work, you'll need to add them to the book's repo in Git.
+
+** Intake Report:
+   (Git repo) tools/intakereport.txt
+
+** MS Snapshot:
+    To view the submitted files, you'll need to checkout the git tag named 'manuscript_to_prod' 
+    by running the following command in your checkout:
+    
+    $ git checkout manuscript_to_prod
+    
+    This will temporarily switch the files in your repo to the state they were in when the manuscript_to_prod tag 
+    was created. 
+    To switch the files back to the current state, run:
+    
+    $ git checkout master
+  
+  
+Notes from Tools:
+=================
+
+** In chapter-04-javascript.asciidoc you will find this markup that is causing an error in all outputs: [source,error] . "error" is not a supported lexer and needs to be either removed or changed to a different, applicable lexer.
+
+** There were a number of code listings that had no syntax highlighting lexer specified, but still used the markup "[source]" on the code listing. Because this is invalid to have, I added the lexer name "text" to all of the listings (the text lexer does nothing, and functions as a placeholder). That said, there are now a number of code listings with "[source,text]" as the syntax highlighting language specified. Feel free to do nothing, or add a specific language in place of "text" as you see fit.
+
+** The ToC for chapter 4 (file is: chapter-08-python-search.asciidoc) is rendering badly because the section markup is incorrect. Specifically, there is a chapter level heading "==" and then the next heading is a sect2 "====". LEAVING TO PROD to sort out the section hierarchy for this chapter.
+
+** PROD: Add any authors to project that need to be added.
+
+** Syntax highlighting: applied to [ FILL IN ] out of [ FILL IN ] code listings.
+
+** Please let Tools know ASAP if there are any other global problems for which we can help automate a fix.
+
+
+Notes from Dan:
+==================
+
+Tech Book
+ERD: February 2016
+Page count: 292
+Incoming format: asciidoc
+Source files: Author wrote in a private repo, so we’ll end up moving this to “oreillymedia” during intake. But for now, the repo is here: https://atlas.oreilly.com/xrd/github [DONE --TOOLS]
+Interior Design: 1-color, 7×9, Animal (animal_theme)
+Editor: Brian MacDonald
+Acq Editor: Meg Blanchette
+Prod Ed: Nick
+
+Read for intake. Due: 12/10
+
+The order of the files in the build list is correct, but you’ll see that it looks wrong, given the numbers that appear in the file names. Keep with the order in the build list.
+
+Please note that the title (on the title page) in the source files is wrong. Should match the PDB: Building Tools with GitHub [FIXED --TOOLS]
+Preface markup and page numbering need to be fixed. [DONE --TOOLS]
+Please add the code callout icons. [DONE --TOOLS]
+Chapter 11 should be Appendix B. [DONE --TOOLS]
+
+Prod/Mel:
+
+I’ve added a ce task to the calendar.
+BMac points out that the author didn’t do a great job of applying code font where needed in the text. Please ask the copyeditor to watch out for that. 
+Lots of long code lines.
+Illustrations: due 12/23
+
+Schedule
+https://docs.google.com/spreadsheets/d/1jY-sJopHsZVAV1c3itH0CVeGJfU8FV4lwqzRQBm0P30/edit#gid=0&vpid=H1
+
+
+==================
+
+Please let me know about any other issues.
+
+Thanks,
+Chris
+
