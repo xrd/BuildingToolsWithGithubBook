@@ -13,14 +13,14 @@ By integrating this feature with your application, you can provide your users a 
 In this chapter we'll take a close look at this API, and try building a useful application with it.
 We'll see how the search API is structured, what kind of results come back, and how it can help us create a feature for someone on our team.
 
-==== Search API General Principles
+=== Search API General Principles
 
 The search API is split into four separate parts: repositories, code, issues, and users.
 These APIs all have different subject matter, and have different formats for their results, but they all behave the same in a few key ways.
 We're covering these first, because they'll help you understand the results coming back from the specific API calls that we cover further down.
 There are four major areas of commonality.
 
-===== Authentication
+==== Authentication
 
 Your identity as a user can determine the result set from a search query, so it's important to know about authentication.
 We cover GitHub authentication fully in <<authentication>>, but this API is also available without logging in.
@@ -42,7 +42,7 @@ Here's that same information in tabular form:
 | Rate limit                           | 5/minute  | 20/minute
 |======================
 
-===== Result Format
+==== Result Format
 
 No matter what you're searching for, the return value from the API follows a certain format.
 Here's a sample result from a query, which has been heavily edited to focus only on the parts you'll always see:
@@ -93,7 +93,7 @@ Here's a summary of the important fields:
 |==================
 
 
-===== Search Operators and Qualifiers
+==== Search Operators and Qualifiers
 
 Of course, it's always better if you can avoid pagination altogether, or at least get the best results in the first page.
 Qualifiers and operators can help narrow your search results to fewer pages, hopefully allowing the right result to float to the top.
@@ -126,7 +126,7 @@ There are many other options besides.
 Check out https://github.com/search/advanced[] for a UI that can help you construct a query.
 
 
-===== Sorting
+==== Sorting
 
 If search query operators can't narrow down a result set to just the most important items, perhaps sorting them can.
 Search results are returned in a definite order, never at random.
@@ -136,14 +136,14 @@ If you want to override this, you can pass `stars`, `forks`, or `updated` in the
 You can also reverse the sort order using the `order` parameter, like `search/repositories?q=foobar&sort=stars&order=desc`.
 The default is `desc` ("descending"), but `asc` is also accepted, and will reverse the order.
 
-==== Search APIs in Detail
+=== Search APIs in Detail
 
 Now that we've covered how all these APIs behave the same, let's discuss their specifics.
 The search API is compartmentalized into four categories: repositories, code, issues, and users.
 The basic mechanism is the same for all four: send a GET request to the endpoint, and provide a URL-encoded search term as the `q` parameter.
 We'll show an abridged response from each of the four, along with some discussion of what to expect.
 
-===== Repository Search
+==== Repository Search
 
 The `search/repositories` endpoint looks in the repository metadata to match your query.
 This includes the project's name and description by default, though you can also search the README file by specifying `in:readme` in the query.
@@ -184,7 +184,7 @@ A query such as `search/repositories?q=foobar` might result in a response that l
 Each item in `items` is the description of a repository.
 All sorts of useful information is included, such as a URL to the UI for this repository (`html_url`), the owner's avatar (`owner.avatar_url`), and a URL suitable for cloning the repository using Git (`git_url`).
 
-===== Code Search
+==== Code Search
 
 The `search/code` endpoint is for searching the contents of a repository.
 You can try matching the contents of the files themselves, or their paths (using `in:path`).
@@ -236,7 +236,7 @@ The JSON returned looks something like this:
 Each item has some data about the file that turned up, including its name and URLs for a couple of representations of it.
 Then there's the blob of data about its repository, followed by a score, which is used for the default "best match" sorting.
 
-===== Issue Search
+==== Issue Search
 
 Repositories contain more than just code.
 The `search/issues` endpoint looks for matches in the issues and pull requests attached to a project.
@@ -293,7 +293,7 @@ Again, each item in the list looks like the result of a call to the issues API.
 There are a lot of useful bits of data here, such as the issue's title (`title`), labels (`labels`), and links to information about the pull-request data (`pull_request.url`), which won't be present if the result isn't a pull request.
 
 
-===== User Search
+==== User Search
 
 All the other search APIs are centered around repositories, but this endpoint searches a different namespace: GitHub users.
 By default, only a user's login name and public email address are searched; the `in` qualifier can extend this to include the user's full name as well, with `in:fullname,login,email`.
