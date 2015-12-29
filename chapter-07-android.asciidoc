@@ -907,8 +907,11 @@ Now we can implement `LoginTask`.
 ...
 -----
 
-<2> Here we define our class derived from AsyncTask. The three types
-in the generics signature provide a way to parameterize our
+<2> Here we define our class derived from AsyncTask. You see three
+types in the generics signature: `String`, `Void`, and
+`Boolean`. These are the parameters to our entry point, an
+intermediate callback and the final callback which returns control to
+the calling thread. The first type allows us to parameterize our
 instantiated task; we need to provide a username and password to the
 background task, and the first type in the signature allows us to pass
 an array of Strings. You can see in the actual function definition
@@ -1094,12 +1097,7 @@ identifier, so you'll see code which retrieves the last SHA in the
 tree associated with our current branch. This code will work
 regardless of whether we are pushing code into the master branch, or
 into the gh-pages branch, so this utility class works with real
-Jekyll blogs. It would be lovely if the GitHub API provided more
-"porcelain" (the Git term for user friendly verbs that insulate you
-from knowing the internals of Git) instead of just this "plumbing"
-API. Having the API work like this, however, does give you full
-control over your repository and gives you the same power you would
-have with a local repository. 
+Jekyll blogs. 
 
 We'll write a helper class called `GitHubHelper` and add a single
 function which writes a file to our repository.
@@ -1240,16 +1238,17 @@ including the YAML Front Matter (YFM), the post contents encoded as
 Base64, the filename, and then the three parameters we saved from the
 call to `SaveFile()` function: the post itself, the title and the
 repository name. 
-<2> The `generateContent` function creates the content for our
-addition: the filename, and the raw contents and the contents Base64 encoded.
+<2> The `generateContent` function creates the necessary components for our
+new post: the full content Base64 encoded, and the filename we will
+use to store the content.
 <3> Here we create the YAML Front Matter (see the <<Jekyll>> chapter for more
 details on YFM). This YAML specifies the "post" layout and sets
 publishing to "true". We need to terminate the YAML with two newlines.
 <4> Base64 encode the contents of the blog post
 itself using a utility class found inside the Apache Commons
 library. Contents inside a git repository are stored either as UTF-8
-content or base64; we could have used UTF-8 since this is text content
-but base64 works losslessly and you can always safely use base64
+content or Base64; we could have used UTF-8 since this is text content
+but Base64 works losslessly and you can always safely use Base64
 without concerning yourself about the content.
 <5> Next, inside `getFilename()`, create the title by using the first
 30 characters of the post.
