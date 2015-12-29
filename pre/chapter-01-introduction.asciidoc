@@ -374,7 +374,7 @@ authentication.
 === Authentication
 
 There are two ways to authenticate when making a request to the GitHub
-API: username and passwords (HTTP Basic), and oAuth tokens. 
+API: username and passwords (HTTP Basic), and OAuth tokens. 
 
 ==== Username and Password Authentication
 
@@ -426,37 +426,37 @@ wrong way to manage your GitHub API access.
   without changing the HTTP clients (web browsers, for example) or at
   least the flow they expect (making the browser repeat the request).
 
-All of these problems are solved (or at least supported) with oAuth
+All of these problems are solved (or at least supported) with OAuth
 flows. For these reasons, there are very few reasons to use username
 and passwords. If you do need simple and quick access to the GitHub
 API (and you don't use two factor authentication) then HTTP basic
 authentication can help you in a small subset of use cases.
 
-==== oAuth 
+==== OAuth 
 
-oAuth is an authentication mechanism where tokens are tied to
+OAuth is an authentication mechanism where tokens are tied to
 functionality or clients. In other words, you can specify what
-features of a service you want to permit an oAuth token to carry with
+features of a service you want to permit an OAuth token to carry with
 it, and you can issue multiple tokens and tie those to specific
 clients: a cell phone app, a laptop, a smart watch, or even an
 Internet of Things toaster. And, importantly, you can revoke tokens
 without impacting other tokens. 
 
-The main downside to oAuth tokens is that they introduce a level of
+The main downside to OAuth tokens is that they introduce a level of
 complexity that you may not be familiar with if you have only used
 HTTP Basic. HTTP Basic requests generally only require adding an extra
 header to the HTTP request, or an extra flag to a client tool like cURL.
 
-oAuth solves the problems described above by linking tokens to scopes
+OAuth solves the problems described above by linking tokens to scopes
 (specified subsets of functionality inside a webs service) and
 issuing as many tokens as you need to multiple clients. 
 
 ===== Scopes: specified actions tied to authentication tokens
 
-When you generate an oAuth token, you specify the access rights you
+When you generate an OAuth token, you specify the access rights you
 require. Though our examples create the token using HTTP Basic, once
 you have the token, you no longer need to use HTTP Basic in successive
-requests. If this token is properly issued, the oAuth token will have
+requests. If this token is properly issued, the OAuth token will have
 permissions to read and write to public repositories owned by that user. 
 
 The following cURL command uses HTTP Basic to initiate the token
@@ -509,7 +509,7 @@ access to any of your private repositories, you are providing access
 to all repositories.  
 
 It is likely that GitHub will change the way scopes work and address
-some of these issues. The great thing about the way oAuth works is
+some of these issues. The great thing about the way OAuth works is
 that to support these changes you will simply need to request a new
 token with the scope modified, but otherwise, the application
 authentication flow will be unchaged.

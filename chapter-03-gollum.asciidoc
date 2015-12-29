@@ -555,7 +555,7 @@ However, the nature of Git permits us to add the same file
 multiple times without incurring any additional storage cost beyond
 the first addition (and the minimal cost of a tree structure). When a file is added to git repository, an SHA hash
 is generated from the file contents. For example, generating the SHA hash
-from an empty file will always return the same SHA hash.footnote[This is explained
+from an empty file will always return the same SHA hash footnote:[This is explained
 beautifully in the blog
 http://alblue.bandlem.com/2011/08/git-tip-of-week-objects.html.]
 
