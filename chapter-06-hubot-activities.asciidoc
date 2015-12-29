@@ -2147,7 +2147,7 @@ callback returns without an error code, then our Hubot should tag the
 pull request with a comment confirming and message the room.
 
 Our new test reflects usage of the `repos.getCollaborator` call. In
-our test setup block we mocking out the call to `getCollaborator`
+our test setup block we mock out the call to `getCollaborator`
 and using Jasmine to "spy on" it so we can assure it was called later
 in our actual test.  Our setup is more beefy than before, but we are
 following the same patterns of generating spies to watch methods, and
@@ -2197,9 +2197,12 @@ exports.accept = ( robot, res ) ->
                 
                 _GITHUB.issues.createComment msg, ( err, data ) ->
                         unless err
-                                res.reply "Thanks, I've noted that in a PR comment. Review the PR here: "
+                                res.reply "Thanks, I've noted that in a PR comment. " +
+					  "Review the PR here: #{url}"
                         else
-                                res.reply "Something went wrong, I could not tag you on the PR comment: #{require('util').inspect( err )}"
+                                res.reply "Something went wrong."  +
+					  "I could not tag you on the PR comment: " +
+					  "#{require('util').inspect( err )}"
                 
 exports.decline = ( res ) ->
         res.reply "No problem, we'll go through this PR in a bug scrub"
@@ -2271,7 +2274,7 @@ functionality is contained into a highly testable module. Along
 the way, we got intimate with the Hubot API, and even discussed how to
 modify (and the drawbacks surrounding) modifying the source code to
 Hubot itself. Finally we demonstrated how to use the Activities API
-receiving (and faking data) coming a GitHub webhook. There is a
+receiving (and faking data) coming from a GitHub webhook. There is a
 natural fit to Hubot and the GitHub API, and this chapter shows how
 easy and fun it can be. Using Hubot you can amplify and
 streamline developer workflow within the dialog happening between your
