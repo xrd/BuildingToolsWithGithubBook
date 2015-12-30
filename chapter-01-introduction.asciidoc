@@ -104,8 +104,11 @@ Now let's briefly discuss the format of all GitHub API responses: JSON.
 Every response you get back from the GitHub API will be in the JSON
 format. JSON is a "lightweight data interchange format" (read more on
 the JSON.org website). There are other competing and effective
-formats, such as XML or YAML, but JSON is quickly becoming the defacto 
+formats, such as XML ("Extensible Markup Language") or YAML ("YAML
+Ain't Markup Language"), but JSON is quickly becoming the defacto 
 standard for web services. 
+
+YAML
 
 A few of the reasons why JSON is so popular:
 
@@ -165,7 +168,10 @@ key/value pairs inside an associative array. It uses the
 the value there.
 
 You also will notice that curl printed out transfer time
-information (to standard error, so jq did not see it). If we want to
+information. cURL printed this information to "standard error" which
+is a shell convention used for messaging errors and an output stream
+which jq will correctly ignore (in other words, the JSON format stream
+will not be corrupted by error messages). If we want to
 restrict that information and clean up the request we should use the
 `-s` switch, which runs cURL in "silent" mode.
 
@@ -427,10 +433,9 @@ wrong way to manage your GitHub API access.
   least the flow they expect (making the browser repeat the request).
 
 All of these problems are solved (or at least supported) with OAuth
-flows. For these reasons, there are very few reasons to use username
-and passwords. If you do need simple and quick access to the GitHub
-API (and you don't use two factor authentication) then HTTP basic
-authentication can help you in a small subset of use cases.
+flows. Given all these concerns, the only time you will want to use
+username and password authentication is when convenience trumps all
+other considerations.
 
 ==== OAuth 
 
@@ -637,7 +642,7 @@ What happens if the JSON is valid, but the fields are incorrect?
 
 [source,json]
 -----
-curl -i -u chris@burningon.com -d '{ "a" : "b" }' -X POST
+$ curl -i -u chris@burningon.com -d '{ "a" : "b" }' -X POST
 https://api.github.com/gists
 Enter host password for user 'chris@burningon.com':
 HTTP/1.1 422 Unprocessable Entity
@@ -833,7 +838,7 @@ would use ETag:
    ETag
 ** If the server doesn't have a newer version it returns an HTTP 304
 
-The following command listing demonstrates to commands.  The first
+The following command listing demonstrates two commands.  The first
 curl call to the GitHub API generates an ETag value, and the second
 value passes this ETag value as an If-None-Match header.  You'll note
 that the second response is an HTTP 304 which tells the caller that
@@ -890,9 +895,9 @@ clever (JSON-P) and one fully supported but slightly more onerous (CORS).
 
 JSON-P is a browser hack, more or less, that allows retrieval of
 information from servers outside of the same-origin policy. JSON-P
-works because <script> tags are not checked against the same-origin
-policy; in other words, you can specify your page should load scripts
-from any domain and the browser will permit it. With JSON-P, you load
+works because `<script>` tags are not checked against the same-origin
+policy; in other words, your page can include references to content on
+servers other than the from which the page originated. With JSON-P, you load
 a JavaScript file which resolves to a specially encoded data payload
 wrapped in a callback function you implement. The GitHub API supports
 this syntax: you request a script with a parameter on the URL
@@ -970,8 +975,8 @@ http://www.html5rocks.com/en/tutorials/cors/.
 
 Because XHR using CORS allows the same type of XHR requests as you get
 from the same domain origin, you can make requests beyond GET to the
-GitHub API: POST, DELETE and UPDATE. Between JSON-P and CORS there are
-options to retrieve content from the GitHub API. The choice is between
+GitHub API: POST, DELETE and UPDATE. Between JSON-P and CORS you have two options for accessing content
+from the GitHub API inside of web browsers. The choice is between
 the simplicity of JSON-P and the power and extra configuration of CORS.
 
 We can prove using cURL that the GitHub API server is responding correctly for

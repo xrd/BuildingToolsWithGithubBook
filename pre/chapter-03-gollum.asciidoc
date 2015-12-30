@@ -32,7 +32,7 @@ with Git"] book from O'Reilly.
 
 === "The Story of Smeagol..."
 
-At its most basic form, a Gollum wiki is a git repository with a single file,
+At its most basic form, a Gollum wiki is a Git repository with a single file,
 `Home.ext` (`ext` would be any of the supported wiki markup formats,
 which we will talk about later). 
 
@@ -173,8 +173,9 @@ named ceo.png inside your page. This basic syntax is often extended
 for additional funtionality. For example, to add a frame
 and an alt tag, you could use syntax like `[[ceo.png|frame|alt=Our CEO
 relaxing on the beach]]`. This creates the proper HTML tags for the
-same image, and also adds a frame and alt text (helpful for
-better context and screenreaders). Review the documentation on the
+same image, and also adds a frame and alt text (helpful for better
+context and the extra information is used by screenreaders for
+visually impaired users as well).  Review the documentation on the
 Gollum repository for more details about the breadth of the image
 options. 
 
@@ -277,7 +278,7 @@ $ bundle exec ruby image.rb
 $ open http://localhost:4567/pages
 ------
 
-We specify at least the minimum 4.1.0 for gollum-lib as the interface
+We specify at least the minimum 4.1.0 for `gollum-lib` as the interface
 and list of supporting libraries has changed. We then run within the
 bundler context (using gems installed from this Gemfile rather than
 system gems) using the `bundle exec ruby image.rb` command.
@@ -289,7 +290,7 @@ now. We've only added one file, the `Home.md` file.
 
 Let's add to our server. We want to support uploading ZIP files into
 our system that we will then unpack and add to our repository, as well
-as adding a list of these files to our wiki. Modify our image.rb
+as adding a list of these files to our wiki. Modify our `image.rb`
 script to look like this:
 
 [source,ruby]
@@ -375,10 +376,10 @@ Grit). Gollum, at the time of this writing uses the Grit libraries,
 which also provide a binding to the libgit2 library, a "portable, pure
 C implementation of the Git core methods." Grit has been abandoned
 (though there are unofficial maintainers) and the Gollum team intends
-to use Rugged as the long term library backing Gollum. Rugged 
-is written in Ruby and, if you like Ruby, is a more elegant way to
-interface with a Git repository than raw git commands. As you might
-expect, Rugged is maintained by several employees of GitHub.
+to use Rugged as the long term library backing Gollum. Rugged is
+written in Ruby and (provided you like Ruby) is a more 
+elegant way to interface with a Git repository than raw git
+commands. As you might expect, Rugged is maintained by several employees of GitHub.
 
 To change our script to modify our Git repository, let's change our
 script to no longer print the filename (using the `puts` method inside
@@ -474,8 +475,10 @@ uploaded.
 === Optimizing for Image Storage
 
 If a designer uploads the same image twice, what happens? Our code
-writes these files to a different path on disk inside the repository
-(the path is the parent SHA hash to make it unique). It would look, to
+writes the uploaded image to a path on disk that is based on 
+the parent SHA hash of the repository (and this means we will always
+write the file to a different path, even when the file is the same as
+a previous uploaded file). It would look, to
 an untrained eye, that we are adding the file file multiple times. 
 However, the nature of Git permits us to add the same file
 multiple times without incurring any additional storage cost beyond
@@ -532,8 +535,8 @@ Archive:  /Users/xrdawson/Downloads/Photos (4).zip
   2078191                   2 files
 -----
 
-I then use another ZIP file which has one additional file, with the
-other two included files exactly identical.
+Now, let's use another ZIP file, with the same two files present but
+now with an additional image file added.
 
 [source,bash]
 -----
@@ -723,7 +726,7 @@ change log, exposed on the revisions section of our wiki hosted on GitHub.
 We noted that there is no quick way to jump between comps once we are
 inside a review revision. However, if you recall we used the parent
 SHA hash to build out our image links. We can use this to build out a
-navigation inside our comp page when we are on a revision page while
+navigation links inside our comp page when we are on a revision page while
 viewing the history.
 
 Again, it is a simple change: one line within the `write_review_file`
@@ -750,13 +753,12 @@ next commit made to the repository, so we cannot build this link
 inside our `Review.md` file with our ruby script. However, we do get
 something just as good for free because we can simply use the back
 button to jump back to the prior page in the history stack of our
-browser. It would be nice if we could generate this link alongside the
-link we placed into the wiki markup, and we could do this using a link
-that runs an onclick handler delegating to a JavaScript command like
-`window.history.back()`, but Gollum foils us again by
-stripping JavaScript from our markup files as we noted before. This is a good thing
-generally, as we don't want to permit rogue markup inside our wiki
-pages, but it does limit our options in this situation.
+browser. We might try to get clever
+and use a link with JavaScript to call "window.history.back()" but
+Gollum will foil this attempt by stripping JavaScript from rendered
+markup files. This is generally is a good thing, as we don't want to
+permit rogue markup inside our wiki pages, but it does limit our
+options in this situation. 
 
 Unfortunately, these links do not work when you are viewing the review file itself
 (clicking on them brings you to a page which asks you to create this
