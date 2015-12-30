@@ -44,7 +44,11 @@ describe( "GithubCtrl", function() {
         generateMockPrompt();
         $timeout = $injector.get( '$timeout' ); // <3>
         scope = $rootScope.$new();
-        ctrl = $controller( "GithubCtrl", { $scope: scope, Github: ghs, '$timeout': $timeout, '$window': prompter } );
+        ctrl = $controller( "GithubCtrl", 
+	     { $scope: scope, 
+	       Github: ghs, 
+	       '$timeout': $timeout, 
+	       '$window': prompter } );
     } ) );
 
 
