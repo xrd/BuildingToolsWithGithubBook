@@ -2011,11 +2011,8 @@ functionality is contained into a highly testable module. Along
 the way, we got intimate with the Hubot API, and even discussed how to
 modify (and the drawbacks surrounding) modifying the source code to
 Hubot itself. Finally we demonstrated how to use the Activities API
-receiving (and faking data) coming from a GitHub webhook. There is a
-natural fit to Hubot and the GitHub API, and this chapter shows how
-easy and fun it can be. Using Hubot you can amplify and
-streamline developer workflow within the dialog happening between your
-vibrant developers and this helpful robot.  
+receiving (and faking data) coming from a GitHub webhook. 
+
 
 
 
