@@ -233,7 +233,7 @@ see your first post.
 image::images/jekyll-welcome.png[A sample post co-authored by Tom Preston-Warner]
 
 Our jekyll initialization command created this new post for us. This page
-is backed by the Markdown file inside the _posts directory which we
+is backed by the Markdown file inside the `_posts` directory which we
 saw earlier. 
 
 [source,yaml]
@@ -415,7 +415,7 @@ kill the jekyll server, and then restart it.
 
 [CAUTION]
 The jekyll watch switch does reload all HTML and markup files, but
-does not reload the _config.yml file. If you make changes to it, you
+does not reload the `_config.yml` file. If you make changes to it, you
 will need to stop and restart the server.
 
 If you are running multiple Jekyll sites on the same laptop, you'll
@@ -463,7 +463,7 @@ a few simple commands. Make sure to change the first line to reflect
 your username.
 
 [NOTE]
-The hub tool was originally written in Ruby and as such could be
+The `hub` tool was originally written in Ruby and as such could be
 easily installed using only `gem instal hub`, but hub was recently
 rewritten in Go. Go has a somewhat more complicated installation
 process, so we won't document it here. If you have the `brew` command
@@ -596,7 +596,7 @@ which automate things for you.
 
 The most popular importer is the Wordpress importer. You will need the 
 'jekyll-import' gem. This gem is distributed separately from the core
-jekyll gem, but will be installed if you use the "github-pages" gem
+jekyll gem, but will be installed if you use the `github-pages` gem
 inside your Gemfile and use the `bundle` command.
 
 ===== Importing with direct database access
@@ -669,7 +669,7 @@ blog. This metadata can include pages, tags, custom fields, and image
 attachments. 
 
 If you want to keep this metadata, then you might
-consider another import option like `Exitwp`. Exitwp is a python tool 
+consider another import option like Exitwp. Exitwp is a python tool 
 which provides a much higher level of fidelity between the original
 Wordpress site and the final Jekyll site, but has a longer learning
 curve and option set.
@@ -900,9 +900,9 @@ end
 
 <1> Require the mechanize library
 <2> We use a ruby method called `attr_accessor` which creates a public
-instance variable. We can use these variables using the `@root` syntax
-inside our script, and we can access the variable outside the class as
-well. 
+instance variable. We can use variables created using `attr_accessor`
+by prefixing the variable name with an `@` character. Instance
+variables are accessible outside the class as well. 
 <3> When a method named `initialize` is defined for a class, this
 method is called right after object creation, so this is the appropriate
 place for us to initialize the member variables.
@@ -933,7 +933,8 @@ Wayback Machine" while some have "Read Journal Entries". Archive.org
 will respond with a placeholder title when it does not have content
 from the site (as is the case with item #58, for example). We should
 ignore those pages which don't have the string "Read Journal Entries"
-as the title. 
+as the title (which tells us Archive.org does have cached content from
+our site). 
 
 Now that we have all the content, we can start finding the important
 pieces inside and putting them into our Jekyll posts.
@@ -981,8 +982,7 @@ search the DOM structure: the "/" operator. Let's try it.
 
 [source,bash]
 -----
-2.0.0-p481 :003 > page / "
-tr"
+2.0.0-p481 :003 > page / "tr"
  => [] 
 -----
 
@@ -999,7 +999,9 @@ testing a search path using IRB. Eventually, we come across this search path:
 [source,ruby]
 -------
 2.0.0-p481 :004 > items = page /  "table[valign=top] tr"
- => [#<Nokogiri::XML::Element:0xc05670 name="font" attributes=[#<Nokogiri::XML::Attr:0xc05328 name="size" value="-2">]...
+ => [#<Nokogiri::XML::Element:0xc05670 name="font" 
+      attributes=[#<Nokogiri::XML::Attr:0xc05328 name="size" 
+      value="-2">]...
 2.0.0-p481 :005 > items.length
  => 5
 2.0.0-p481 :006 > items[0].text()
@@ -1101,7 +1103,7 @@ HTTP requests inside a VCR block with a name specifying the "cassette"
 to save it under. In this case, we use a cassette named "bt" (for
 ByTravelers) with the index of the page. The first time we use the
 scraper to request the page, it is retrieved and stored inside the
-cache. Successive calls to the scraper get method are retrieved from
+cache. Successive calls to the scraper `get` method are retrieved from
 the cached responses.
 <6> We then look for any titles which look like pages archived into
 Archive.org (using the title to differentiate) and if we find one,
@@ -1152,11 +1154,11 @@ we see these results.
 
 [source,bash]
 -----
-$ bundle exec ruby ./run.rb # before VCR
+$ time bundle exec ruby ./run.rb # before VCR
 real    0m29.907s
 user    0m2.220s
 sys     0m0.170s
-$ bundle exec ruby ./run.rb # after VCR
+$ time bundle exec ruby ./run.rb # after VCR
 real    0m3.750s
 user    0m3.474s
 sys     0m0.194s
@@ -1237,12 +1239,12 @@ end
 ...
 -----
 
-Now both tests pass. That single line of code might worry you believe
-in defensive coding. If this function were called with a nil value,
-for example, it would crash. Even if we could guarantee that this
-situation would never occur from our calling context, it is better to
-make our method safe. Let's make sure it works and write a test to
-prove it.
+Now both tests pass. That line of code might be worrisome if
+you believe in defensive coding. If this function were called with a
+nil value, for example, it would crash. Even if we could guarantee
+that this situation would never occur from our calling context, it is
+better to make our method safe. Let's make sure it works and write a
+test to prove it.
 
 Add a test that asserts there is not an error when the argument to
 `process_title` is nil.
@@ -1267,7 +1269,8 @@ Failures:
 
   1) #run #process_titles should not crash if the title is nil
      Failure/Error: expect{ @scraper.process_title( nil ) }.to_not raise_error()
-       expected no Exception, got #<NoMethodError: undefined method `strip' for nil:NilClass> with backtrace:
+       expected no Exception, got #<NoMethodError: undefined method
+     `strip' for nil:NilClass> with backtrace:
          # ./scraper.rb:38:in `process_title'
          # ./scraper_spec.rb:20:in `block (4 levels) in <top (required)>'
          # ./scraper_spec.rb:20:in `block (3 levels) in <top (required)>'
@@ -1487,7 +1490,7 @@ Add a file called `_config.yml` to the root directory.
 
 [source,yaml]
 -----
-name: Your New Jekyll Site
+name: ByTravelers.com: Online travel information
 markdown: redcarpet
 highlighter: pygments
 -----
@@ -1544,8 +1547,8 @@ wrapped around it. You can see that the initial post files specify the
 `post.html` layout file specifies the `default.html` layout, which is
 wrapped around the entire contents. 
 
-When we add these files, we will see the Jekyll tool notice file
-system changes and regenerate files. We now have generated posts, but
+When we add these files, the Jekyll tool will notice the file
+system has changed and regenerate files. We now have generated posts, but
 we don't have a master index file, so let's add this now.
 
 ==== Master Index File with Liquid Markup
@@ -1627,7 +1630,7 @@ Use IRB to find the author and body content. Start by searching for the author i
 [source,bash]
 -----
 2.0.0-p481 :037 > rows[2].to_s
-=> "<tr>\n<td align=\"center\">\n\n\n\n<font size=\"+1\">author: \n\nMD \n\n<br>\n<font size=\"-2\"><a href=\"/web/20010409182418/http://www.bytravelers.com/journal/user/21\">read more from this author</a> | \n<a href=\"/web/20010409182418/http://www.bytravelers.com/maps/user/21\">see maps from this author</a></font>\n</font>\n\n</td>\n<td align=\"center\">\n\n\n\n\n<font size=\"-1\">No linked map</font>\n\n\n</td>\n</tr>"
+=> "<tr>\n<td align=\"center\">\n\n\n\n<font size=\"+1\">author:..."
 2.0.0-p481 :038 > ( rows[2] / "td font" )[0].text()
 => "author: \n\nMD \n\n\nread more from this author | \nsee maps from this author\n"
 2.0.0-p481 :039 > author = ( rows[2] / "td font" )[0].text()
@@ -1642,7 +1645,7 @@ We start by looking at the second row and converting it to raw HTML.
 We see there is a string "author: " which is a likely place to
 reference the author. This string is wrapped by a "font" tag and a
 "td" tag, so we can use these search queries to eliminate extra
-information. Then, we convert the HTML to text using the text() method
+information. Then, we convert the HTML to text using the `text()` method
 and use a regular expression to pull out the text after the "author: "
 string. If a regular expression matches and has a captured expression,
 it will be held in the global variable `$1`. There is more than one
@@ -1727,11 +1730,10 @@ def process_image( title )
 end
 -----
 
-We use the venerable cURL to download our images. This method is
-indempotent, meaning it can be run many times and will only download
-the files once. We use the `-L` switch to tell cURL to follow
-redirects, because these images URLs are transparently redirected
-inside the browser. 
+We use the venerable cURL to download our images. Our code makes it so
+that the file is only downloaded the first time. We use the `-L`
+switch to tell cURL to follow redirects, because these images URLs are
+transparently redirected inside the browser. 
 
 We need to customize our run method to invoke the `process_image` call:
 add `processed['image'] = process_image( rows[0] )` after any of the
@@ -1797,7 +1799,9 @@ Then, download the Bootstrap CSS file into the proper folder.
 [source,bash]
 -----
 $ mkdir assets/css
-$ curl https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css -o assets/css/bootstrap.min.css
+$ curl \
+https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css \
+-o assets/css/bootstrap.min.css
 -----
 
 Adding a CSS framework like Bootstrap helps things considerably, but
@@ -1821,7 +1825,7 @@ background-color: #FFFFCC;
 -----
 
 With the Bootstrap library installed, we can slightly modify our
-default.html layout to make the site really standout. Many Jekyll
+`default.html` layout to make the site really standout. Many Jekyll
 blogs are quite minimalistic and stark, but you are limited only by
 your imagination. 
 
@@ -1884,10 +1888,16 @@ the link tag.
 ...
 <body>
 
-  <a href="https://github.com/xrd/bytravelers.com"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+  <a href="https://github.com/xrd/bytravelers.com">
+    <img style="position: absolute; top: 0; right: 0; border: 0;" 
+	   src="https://..." 
+	   alt="Fork me on GitHub" 
+	   data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
   
   <div class="container">
     <div class="jumbotron">
+      <h1>ByTravelers.com</h1>
+      Alternative travel information
 ...
 -----
 

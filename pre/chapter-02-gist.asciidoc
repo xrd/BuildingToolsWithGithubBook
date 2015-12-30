@@ -11,19 +11,19 @@ workforce.
 Gists service part of this need: they permit intimate code
 sharing and reuse, refactoring and play in a way not served by the
 heavyweight tools predating it. In this chapter we will explore using
-Gists to share code, and then build an application hosted as a
-Gist that uses the Gist API.
+gists to share code, and then build an application hosted as a
+gist that uses the Gist API.
 
 === Easy Code Sharing
 
 Gists are straighforward to create. You copy a snippet
 of code into the large text box in the center, optionally enter in a
 description or filename, and then choose between a public or private
-gist. Once your Gist has been created you are presented with a URL to
+gist. Once your gist has been created you are presented with a URL to
 share. Gists autodetect the language in most cases and syntax
 highlight according to the language when displayed.
 
-image::images/gists-easy-sharing.png[Creating a Gist on GitHub]
+image::images/gists-easy-sharing.png[Creating a gist on GitHub]
 
 There are other services that do this: pastebin was the first, and
 there are many others that offer variances on code sharing. But gists
@@ -42,9 +42,9 @@ gist.github.com (which will republish them onto the publicly
 facing web page). And, you can "fork" gists, just like
 any other repository. 
 
-You are allowed to branch within Gist repositories; however, branches
+You are allowed to branch within gist repositories; however, branches
 are not displayed inside of gist.github.com. But, if you need the
-benefits of branching when using Gists you can branch normally
+benefits of branching when using gists you can branch normally
 inside a repository and the branch information is retained on the
 upstream repository after you push it up. 
 
@@ -76,7 +76,7 @@ something like `<script
 src="https://gist.github.com/xrd/8923697.js"></script>` and paste it
 into your HTML. 
 
-If you wish to include only a particular file from the Gist (if it
+If you wish to include only a particular file from the gist (if it
 contains multiple files), then add `?file=hi.rb` to the end of the
 URL specified in the src attribute.
 
@@ -91,7 +91,7 @@ specific file within the gist, add a filename to the gist code like
 use a secret gist, prefix the username of the account holder in the
 gist like so: `{% gist xrd/8138797 hi.rb %}`. 
 
-Now let's look at creating Gists from outside the GitHub.com site,
+Now let's look at creating gists from outside the GitHub.com site,
 using the command line.
 
 === Gist from the command line
@@ -185,11 +185,11 @@ snippet~~~~~
 Create a gist for this by visiting gist.github.com. Enter in the text exactly as above and then choose
 public gist.
 
-You now have a shareable gist of code, which anyone can use to review.
+You now have a share-friendly gist of code, which anyone can use to review.
 More importantly, this is a repository with executable code. To clone
-it, look for the Clone URL to the right of the Gist itself. You will
+it, look for the Clone URL to the right of the gist itself. You will
 likely see a Git protocol URL, and an HTTPS URL. If you are cloning
-the URL and intend only to read the Gist, you can use the HTTPS
+the URL and intend only to read the gist, you can use the HTTPS
 URL. You technically can push changes once you have cloned a
 repository using the HTTPS URL but not if you have two factor
 authentication enabled. In most cases it is easier and more flexible
@@ -247,14 +247,14 @@ the web. Our repository now not only has the code, but a well known
 manifest file which explains the necessary components when running the
 code. 
 
-=== Gists that render Gists
+=== Gists that render gists
 
 Let's add to our application and use the Octokit Ruby gem to pull all
 public gists for any user we specify. The Octokit library is the
 the official Ruby library for accessing the GitHub API. Why would we want to make a gist
 that displays other gists? Self-referential meta code is all the rage, the
 modern day response to René Magritte's famous work: "Ceci n'est pas une
-pipe.".footnote[Explained best by Ben
+pipe." footnote:[Explained best by Ben
 Zimmer http://www.bostonglobe.com/ideas/2012/05/05/dude-this-headline-meta-dude-this-headline-meta/it75G5CSqi82NtoQHIucEP/story.html?camp=pm]
 
 Add a view `index.erb` at the root of our directory.
@@ -393,7 +393,7 @@ snippet~~~~~
 
 The `index.erb` file contains code to iterate over each gist and pull
 the content. You can see that our response object is an array of
-gists, each which has an attribute called `fields`. This fields attribute
+gists, each which has an attribute called `fields`. This `fields` attribute
 specifies the filenames available in each gist. If you reference that
 filename against the files, the response includes a hypermedia `ref`
 attribute. Retrieve the `raw` content using the Octokit method `.get.data`.
@@ -409,29 +409,6 @@ snippet~~~~~
 Now we see the gists and the contents.
 
 image::images/gists-last-five.png[Last five gists, with details]
-
-
-////
-
-The main benefit of using Hypermedia is that you don't need to harcode
-URLs into your application, making your application less brittle when
-inevitable changes to the API occur. 
-link:$$http://signalvnoise.com/posts/3373-getting-hyper-about-hypermedia-apis$$[Cool URIs don’t change] 
-(ironically a post by David Heinemeier Hansen
-talking about why Hypermedia is overblow). As I was developing this
-simple Sintra application, I attempted to refactor the code. From that
-point onward, the GitHub API issued redirects to all my calls for raw
-gist data. So, while my code did not change, the end result did. I no
-longer get the content, but a HTML message indicating I am being
-redirected. Perhaps I am using the hypermedia references incorrectly,
-but I was able to retrieve the correct content previously. Now I
-am not. Perl people argue that "there is more than one way to do it"
-(TIMTOWTDI) is a good thing, but in this case I am left wondering
-whether I got it right and now GitHub broke their API, or if I never
-had the interface to the API correct. The non-deterministic results of
-the API via Hypermedia make me uncomfortable using it in production.
-
-image::images/gists-hypermedia-broken.png[Our Last Five Gists]
 
 === Summary
 

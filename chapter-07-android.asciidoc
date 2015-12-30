@@ -107,6 +107,8 @@ work with older SDKs, so let's make a balanced choice and use Android
 according to Android Studio, that our application will run on 49.5% of
 Android devices in the world.  
 
+[[choose-android-sdk]]
+.Choose an Android SDK
 image::images/android-target-devices.png[Choose an Android SDK]
 
 You will then be presented with a choice of activities. Choose "Blank
@@ -121,6 +123,8 @@ application. Once this has completed, you can review the file tree of
 your project by clicking on the left hand vertical tab labeled
 "Project".
 
+[[reviewing-android-project-structure]]
+.Reviewing the Android project structure for the first time]
 image::images/android-project-structure.png[Reviewing the Android project structure for the first time]
 
 If you have never seen an Android project before, this screen deserves
@@ -222,7 +226,9 @@ good option for a generic device with good support across all
 features. You can choose this one if you are confused about which to
 use.
 
-image::images/android-studio-new-avd.png[Creating a new Android Virtual Device]
+[[creating-new-avd]]
+.Creating a new AVD
+image::images/android-studio-new-avd.png[Creating a new AVD]
 
 Once you have created an AVD, start it up. It will take a few minutes
 to boot; AVDs emulate the chipset in software and
@@ -798,6 +804,8 @@ Even though our code is not functionally complete, this application will
 compile. This is a good time to play with this application and verify
 the UI looks appropriate. Our login form looks like this:
 
+[[simple-ui-blog-posts]]
+.A simple UI for making blog post entries
 image::images/android-log-in.png[A simple UI for making blog post entries]
 
 ==== Code to Login to GitHub
@@ -899,8 +907,11 @@ Now we can implement `LoginTask`.
 ...
 -----
 
-<2> Here we define our class derived from AsyncTask. The three types
-in the generics signature provide a way to parameterize our
+<2> Here we define our class derived from AsyncTask. You see three
+types in the generics signature: `String`, `Void`, and
+`Boolean`. These are the parameters to our entry point, an
+intermediate callback and the final callback which returns control to
+the calling thread. The first type allows us to parameterize our
 instantiated task; we need to provide a username and password to the
 background task, and the first type in the signature allows us to pass
 an array of Strings. You can see in the actual function definition
@@ -1086,12 +1097,7 @@ identifier, so you'll see code which retrieves the last SHA in the
 tree associated with our current branch. This code will work
 regardless of whether we are pushing code into the master branch, or
 into the gh-pages branch, so this utility class works with real
-Jekyll blogs. It would be lovely if the GitHub API provided more
-"porcelain" (the Git term for user friendly verbs that insulate you
-from knowing the internals of Git) instead of just this "plumbing"
-API. Having the API work like this, however, does give you full
-control over your repository and gives you the same power you would
-have with a local repository. 
+Jekyll blogs. 
 
 We'll write a helper class called `GitHubHelper` and add a single
 function which writes a file to our repository.
@@ -1232,16 +1238,17 @@ including the YAML Front Matter (YFM), the post contents encoded as
 Base64, the filename, and then the three parameters we saved from the
 call to `SaveFile()` function: the post itself, the title and the
 repository name. 
-<2> The `generateContent` function creates the content for our
-addition: the filename, and the raw contents and the contents Base64 encoded.
+<2> The `generateContent` function creates the necessary components for our
+new post: the full content Base64 encoded, and the filename we will
+use to store the content.
 <3> Here we create the YAML Front Matter (see the <<Jekyll>> chapter for more
 details on YFM). This YAML specifies the "post" layout and sets
 publishing to "true". We need to terminate the YAML with two newlines.
 <4> Base64 encode the contents of the blog post
 itself using a utility class found inside the Apache Commons
 library. Contents inside a git repository are stored either as UTF-8
-content or base64; we could have used UTF-8 since this is text content
-but base64 works losslessly and you can always safely use base64
+content or Base64; we could have used UTF-8 since this is text content
+but Base64 works losslessly and you can always safely use Base64
 without concerning yourself about the content.
 <5> Next, inside `getFilename()`, create the title by using the first
 30 characters of the post.
@@ -1536,6 +1543,8 @@ display your test class "GitHubHelperTest.java". We will need to store
 the username and password as environment variables, so click to add
 these. Your final configuration should look like the following.
 
+[[creating-unit-tests]]
+.Creating a unit test configuration
 image::images/android-unit-test.png[Creating a unit test configuration]
 
 Now, create the UI tests configuration: switch to "Android Instrumentation Tests" in the "Test Artifact"

@@ -19,7 +19,7 @@ manage the complexity that comes from writing software. Git allows
 software developers to store snapshots of their programs (and then
 easily restore those snapshots if necessary) and to easily collaborate
 with other programmers (a surprisingly complicated problem). Git is
-called a source code management tool and though there were many other
+called a source code management (SCM) tool and though there were many other
 SCMs before Git, Git has taken the software world by storm like no
 other before it and now dominates the SCM landscape. 
 
@@ -37,7 +37,7 @@ of new hires and a transparent workflow visible to all employees.
 This book looks on the tools that GitHub uses internally. The
 GitHub.com website is itself a meta-tool and we discuss the many
 facets of the GitHub service. Specifically these technologies are the
-GitHub API and related GitHub technologies the Gollum wiki, Jekyll
+GitHub API and related GitHub technologies, the Gollum wiki, Jekyll
 static  page generator, and the chat robot called Hubot (if you are
 not familiar with any of these, we'll explain them fully in their
 respective chapters).
@@ -100,7 +100,7 @@ case study for a well designed API.
 
 The GitHub API is extremely comprehensive, permitting access and
 modification of almost all data and metadata stored or associated with
-a Git repository. Here is a grouped summary of the API ordered
+a Git repository. Here is a grouped summary of the sections of the API ordered
 alphabetically as they are on the GitHub API documentation site
 (https://developer.github.com/v3/): 
 
@@ -248,11 +248,12 @@ uses a very standard RESTful approach for its API. You should
 understand the difference between a GET request and POST request and what
 HTTP status codes mean at the very least.
 
-Familiarity with web APIs is helpful, although this book simultaneously
-aspires to provide a guide showing how a well thought out,
-well designed, and well tested web API creates a foundation for building
-fun and powerful tools. If you have not used web APIs extensively, but
-have experience using other types of APIs, you will be in good company.
+Familiarity with web other web APIs will make traversing these
+chapters easier, although this book simultaneously aspires to provide
+a guide showing how a well thought out, well designed, and well tested
+web API creates a foundation for building fun and powerful tools. If
+you have not used web APIs extensively, but have experience using
+other types of APIs, you will be in good company. 
 
 === What You Will Learn
 
@@ -475,11 +476,12 @@ daughter Charlotte, you are my little smiling Buddha. To my mother,
 who showed me how to write and, most importantly, why to write, which
 is something we need more of in the technology world. To Tim O'Brien
 who invited me into this project, thank you, and I hope we can
-collaborate again. And, to David J. Groom, though we have never met
-face to face, your suggestions and excitement about the book early on
-came at a critical moment in the life of this book, and I thank you
-for channeling the excitement I hoped to cultivate with people who
-would one day pick up this book.
+collaborate again. To Bradley Horowitz, who demonstrates how small
+acts of kindness can have immeasurable impact. And, to David J. Groom,
+though we have never met face to face, your suggestions and excitement
+about the book early on came at a critical moment in the life of this
+book, and I thank you for channeling the excitement I hoped to
+cultivate with people who would one day pick up this book.
 
 Ben would like to thank his wife, Becky, for her ongoing support and
 (when needed) push from behind. None of this would have happened
