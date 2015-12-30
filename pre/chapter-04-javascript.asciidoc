@@ -32,9 +32,6 @@ understanding the entire picture easier, and we will do that in this
 chapter to further explain sections where necessary function callbacks
 may initially look confusing.
 
-A single page application should fulfill a single simple
-purpose. Logically, this application should help us find good coffee. 
-
 === Building a Coffee Shop Database on GitHub
 
 Like many software developers, I suffer from an almost disturbing
@@ -212,7 +209,7 @@ parameter: the scope object. I think of scope as the "world" available
 to the controller. The controller knows only of data and functions
 defined on its scope, and AngularJS does its magic as long as your
 functions or variables are defined on the scope.
-<3> We create a new Github() object using the constructor. This
+<3> We create a new `Github()` object using the constructor. This
 constructor can take user credentials, but for now, we can just
 create it without those since we are accessing a public repository. 
 <4> Once we have our `github` object, we call the method `getRepo()`
@@ -262,6 +259,7 @@ references.
 
 If you load this up in your browser, you will see something like this:
 
+.The Whole Messy JSON
 image::images/javascript-gollum.png[The Whole Messy JSON]
 
 That is a lot of data. AngularJS's JSON filter pretty printed
@@ -294,6 +292,7 @@ few vital pieces of information from the repository JSON. Let's
 display the `subscriber_count` and the `network_count`. Now we see
 something more palatable. 
 
+.Pulling Out What We Want
 image::images/javascript-gollum-precise.png[Pulling Out What We Want]
 
 We've just extracted the subscriber and network count from the gollum
@@ -474,10 +473,11 @@ inside our test to setup the controller state.
 <3> We assert that our code uses the various interfaces we defined on
 our injected objects: `getCurrentPosition` on the Geo object, and `read`
 on the repository object.
-<4> Then we assert the data is properly loaded. This means that we
-have two cities, the default city is loaded and the name is equal to
-the string "Portland" and that there are three shops loaded for that
-city. Behind the scenes in our implementation we will load these via
+<4> Then we assert the data is properly loaded. Our test verifies that
+there are two cities, that a default city has been loaded and the name
+of the default city is equal to the string "Portland". In addition,
+the test verifies there are three shops loaded for the default
+city. Behind the scenes in our implementation we will load these via 
 JSON, but all we care about is that the interface and data matches our
 expectations. 
 
@@ -552,9 +552,13 @@ line and watch them fail.
 [source,bash]
 --------
 $ karma start karma.conf.js
-Chrome 32.0.1700 (Mac OS X 10.9.1) GithubCtrl #init should initialize, grabbing current city FAILED
+Chrome 32.0.1700 (Mac OS X 10.9.1) GithubCtrl #init should initialize, 
+          grabbing current city FAILED
 	Error: [$injector:modulerr] Failed to instantiate module coffeetech due to:
-	Error: [$injector:nomod] Module 'coffeetech' is not available! You either misspelled the module name or forgot to load it. If registering a module ensure that you specify the dependencies as the second argument.
+	Error: [$injector:nomod] Module 'coffeetech' is not available! 
+	  You either misspelled the module name or forgot to load it. 
+	  If registering a module ensure that you specify the
+	  dependencies as the second argument.
 ...
 --------
 
@@ -600,11 +604,11 @@ var PORTLAND = [{
 ==== CoffeeTech.js
 
 Then, add the `coffeetech.js` file. We'll focus just on the setup code
-and the changes to the init function for now.
+and the changes to the `init` function for now.
 
 [source,javascript]
 -------
-[filename=".", callouts="3,7,15,18,22,23,24,26,33", language="js", sha="021262697f6798e0912519a874161dad1cc3ed9a:support/js/coffeetech.js.7693187", lines="1..36"]
+[filename=".", callouts="3,7,15,19,23,24,25,27,34", language="js", sha="5ca8f96:support/js/coffeetech.js.7693187.wrapped", lines="1..36", callouts_prefix=" // //"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -819,6 +823,7 @@ Uncaught TypeError: Cannot call method 'select' of undefined
 
 If you click on the link to the right for github.js, you'll see this.
 
+.An Unexpected Error
 image::images/javascript-underscore-missing.png[An Unexpected Error]
 
 You see at the point of error that we are calling `select` on the tree.
@@ -909,6 +914,7 @@ Now if we type in the word `gluten` in our search box, we filter out
 anything except shops which match that, and we see the information
 pieces formatted as labels underneath the shop name.
 
+.Filtering coffeeshops using the term gluten
 image::images/javascript-search-box.png[Filtering coffeeshops using the term gluten]
 
 ==== User Contributed Data
@@ -1182,10 +1188,12 @@ snippet~~~~~
 When someone makes an annotation to a shop, the owner of the original repository
 gets a pull request notification on GitHub.
 
+.Adding information through a pull request
 image::images/javascript-pull-request.png[Adding information through a pull request]
 
 Now we can review changes through GitHub's integrated online diff tool.
 
+.Reviewing annotation pull request diff's from within GitHub
 image::images/javascript-pull-request-diff.png[Reviewing annotation pull request diff's from within GitHub]
 
 As you can see, we can see a clear diff of the changes our contributor
@@ -1288,7 +1296,8 @@ navigate to the "Applications" link towards the bottom. Click on the
 `https://auth.firebase.com/auth/github/callback`. Then save the
 application by clicking on the "Register application" button.
 
-image::images/javascript-new-application.png[A new GitHub application for oAuth]
+.A new GitHub application for OAuth
+image::images/javascript-new-application.png[A new GitHub application for OAuth
 
 Now, create an account on Firebase. Once you have done this, create
 a new app called "CoffeeTech" inside Firebase. The APP URL needs be unique, so use
@@ -1297,6 +1306,7 @@ Once you have created the app, click on "View Firebase" button. You'll
 then see a settings screen, and click on "Simple Login" and then
 "GitHub."
 
+.Creating the Firebase Hosted Login
 image::images/javascript-view-firebase.png[Creating the Firebase Hosted Login]
 
 Then, copy your GitHub client ID and secret to the sections inside the
@@ -1412,6 +1422,7 @@ After we make these changes, we can click the "Add factoid" button and
 we'll get a dialog like this one indicating we are logging into GitHub
 (via the Firebase SimpleLogin).
 
+.The final step in the permission flow for GitHub access using Firebase
 image::images/javascript-firebase-simplelogin.png[The final step in the permission flow for GitHub access using Firebase]
 
 After you authorize the application, the execution flow is identical to the
