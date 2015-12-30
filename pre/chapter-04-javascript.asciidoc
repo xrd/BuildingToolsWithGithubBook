@@ -1267,11 +1267,11 @@ The most obvious choice we have is to run a small authentication
 server, delegate authentication to it, and once authentication is
 completed, jump back in our application hosted on GitHub. We provide
 code (written in NodeJS, JavaScript for the server side) to do
-this at the end of the chapter. But, creating even a simple 
-authentication system has a baseline of complexity that seems like
-overkill. If we could instead delegate this authentication to a third
-party, we could reduce a massive amount of code and complexity from
-our system. 
+this in the associated repository for this chapter. But, creating even
+a simple  authentication system has a baseline of complexity that
+seems like overkill. If we could instead delegate this authentication
+to a third party, we could reduce a massive amount of code and
+complexity from our system. 
 
 ==== Fixing Authentication with Firebase
 
@@ -1337,7 +1337,7 @@ To test our code, we make the following changes to our
 
 [source,javascript]
 -----
-[filename=".", language="js", sha="003855b:support/js/coffeetech-annotate.spec.js" lines="39..90"]
+[filename=".", language="js", sha="72d892e:support/js/coffeetech-annotate.spec.js.wrapped" lines="39..95"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1448,107 +1448,3 @@ making a powerful and useful application.
 In our final chapter we will use CoffeeScript to create our own chat
 robot that requests pull request reviews from chat room members
 using the Activities API.
-
-=== Addendum: a NodeJS GitHub Authentication Service
-
-If you feel more comfortable using your own authentication server and
-not using the Firebase option presented above, this addendum to the
-chapter shows you how to do this. 
-
-There are several libraries which offer support for OAuth
-authentication on GitHub, but the consistency of NodeJS modules often
-leaves something to be desired. As I was building this chapter I
-experimented with several authentication modules and quickly
-discovered even though that module might have been the sanctioned and
-approved module last year, that it has already been abandoned this
-year. There is a tendency to build software using the latest libraries
-as you might assume the newest library would have the fewest bugs. In
-my experience, NodeJS libraries come with less test coverage than
-other language libraries, and for this reason, often have more
-breaking changes than the authors would care to admit. Another reason
-to build testable code. 
-
-The library I finally settled upon is called Passport, written by
-Stuart P. Benchley, which supports a strategy called `passport-github`
-written by Jared Hanson. Both are open source and, of course, hosted
-on GitHub. We'll write a simple NodeJS server which allows login via
-GitHub, and then provides our single page application with a token to
-use when talking to the GitHub API using Github.js.
-
-==== Our own NodeJS Application
-
-Let's build our app inside a directory called `node`. Doing this will keep
-our code separate from our client side code and prevent our karma
-test runner from loading these files as part of test runs.
-
-To build out NodeJS application we will first create the application
-package manifest (`node/package.json`) which specifies the required pieces
-and allows us to run `npm install` to download them all.
-
-[source,javascript]
-----
-[filename=".", language="js", sha="c08eb2c:support/js/package.json"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
-----
-
-Then, add the following code into a file named
-`node/github-local-login.js`. 
-
-[source,javascript app.js]
-----
-[filename=".", language="js", sha="a3635f9:support/js/github-local-login.js"]
-snippet~~~~~
-To be replaced
-snippet~~~~~
-----
-
-We do need to alter the GitHub application settings to use this, but
-fortunately it is only in one place. The "Authorization
-callback URL" should be set to
-`http://localhost:3000/auth/github/callback`. This is the URL which 
-our application will tell the GitHub API to redirect us back to after
-authentication has successfully completed (the passport library
-automatically provides this when connecting to GitHub).
-
-We run this app by specifying the github client ID and secret on the
-command line as environment variables (to avoid checking them into our
-source code repository). Your client ID and secret will be different,
-of course.
-
-[source,bash]
------
-$ GITHUB_CLIENT_ID=1234567890abcdefghijk \
-GITHUB_CLIENT_SECRET=0987654321kmnopqrstuv \
-node node/github-local-login.js
------
-
-Though we have something working, there are some significant problems
-with this approach:
-
-* We can run this locally as we are developing and testing, but
-  eventually we will require a hosting provider, like Heroku or
-  Nodejitsu, to host our application, or we will need to setup a full
-  stack server, virtual or otherwise, ourselves.
-* If you did spend time reviewing this code, you'll see a GET request
-  at the `/token.js` mount point. Once login has completed inside our
-  service, we return to our JS application, and the web page in which
-  it is hosted adds another script tag which loads the auth token
-  using this access point. This is a consequence of browser security:
-  since the application is hosted on the GitHub.io domain we cannot
-  make requests using a more secure method like POST to another domain
-  (the domain where our authentication service will be hosted). 
-  Unfortunately, this means that we have opened a security hole, since
-  any other application running inside our browser could do the
-  make the same GET request, hijacking the auth token.
-* We could migrate our entire app into this NodeJS application, using
-  something like EJS templates, but then we are losing the fact that
-  our application is simply our repository, and the point of this
-  chapter becomes sadly moot.
-* This app is not very testable. One of the reasons AngularJS
-  is such a popular framework is that it makes you write JavaScript
-  code which is testable. Most NodeJS frameworks don't make that easy,
-  and I found it very difficult to wrap this code inside of any of the
-  current test frameworks.
-
