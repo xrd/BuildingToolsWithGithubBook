@@ -13,14 +13,14 @@ By integrating this feature with your application, you can provide your users a 
 In this chapter we'll take a close look at this API, and try building a useful application with it.
 We'll see how the search API is structured, what kind of results come back, and how it can help us create a feature for someone on our team.
 
-==== Search API General Principles
+=== Search API General Principles
 
 The search API is split into four separate parts: repositories, code, issues, and users.
 These APIs all have different subject matter, and have different formats for their results, but they all behave the same in a few key ways.
 We're covering these first, because they'll help you understand the results coming back from the specific API calls that we cover later.
 There are four major areas of commonality.
 
-===== Authentication
+==== Authentication
 
 Your identity as a user can determine the result set from a search query, so it's important to know about authentication.
 We cover GitHub authentication fully in <<authentication>>, but this API is also available without logging in.
@@ -42,7 +42,7 @@ Here's that same information in tabular form:
 | Rate limit                           | 5/minute  | 20/minute
 |======================
 
-===== Result Format
+==== Result Format
 
 No matter what you're searching for, the return value from the API follows a certain format.
 Here's a sample result from a query, which has been heavily edited to focus only on the parts you'll always see:
@@ -66,7 +66,7 @@ It's not uncommon for a fairly specific search to turn up thousands of results â
 By default, only the first 30 are returned, but you can customize this with `page` and `per_page` query parameters in the URL.
 For example, a GET request to this URL will return 45 items, starting with the 46th result:
 
-[source]
+[source,text]
 ----
 search/repositories?q=foobar&page=2&page_size=45
 ----
@@ -93,7 +93,7 @@ Here's a summary of the important fields:
 |==================
 
 
-===== Search Operators and Qualifiers
+==== Search Operators and Qualifiers
 
 Of course, it's always better if you can avoid pagination altogether, or at least get the best results in the first page.
 Qualifiers and operators can help narrow your search results to fewer pages, hopefully allowing the right result to float to the top.
@@ -117,7 +117,7 @@ Numerical values and dates can have ranges:
 For example, to find Python code written by the user tpope during July of 2012, you would write `"user:tpope language:python created:2012-07-01..2015-07-31"` for the query parameter.
 That would be encoded in a URL like so:
 
-[source]
+[source,text]
 ----
 search/repositories?q=user%3Atpope+language%3Apython+created%3A2012-07-01..2015-07-31
 ----
@@ -126,7 +126,7 @@ There are many other options.
 Check out https://github.com/search/advanced[] for a UI that can help you construct a query.
 
 
-===== Sorting
+==== Sorting
 
 If search query operators can't narrow down a result set to just the most important items, perhaps sorting them can.
 Search results are returned in a definite order, never at random.
@@ -136,14 +136,14 @@ If you want to override this, you can pass `stars`, `forks`, or `updated` in the
 You can also reverse the sort order using the `order` parameter, like `search/repositories?q=foobar&sort=stars&order=desc`.
 The default is `desc` ("descending"), but `asc` is also accepted, and will reverse the order.
 
-==== Search APIs in Detail
+=== Search APIs in Detail
 
 Now that we've covered how all these APIs behave the same, let's discuss their specifics.
 The search API is compartmentalized into four categories: repositories, code, issues, and users.
 The basic mechanism is the same for all four: send a GET request to the endpoint, and provide a URL-encoded search term as the `q` parameter.
 We'll show an abridged response from each of the four, along with some discussion of what to expect.
 
-===== Repository Search
+==== Repository Search
 
 The `search/repositories` endpoint looks in the repository metadata to match your query.
 This includes the project's name and description by default, though you can also search the `README` file by specifying `in:readme` in the query.
@@ -184,7 +184,7 @@ A query such as `search/repositories?q=foobar` might result in a response that l
 Each item in `items` is the description of a repository.
 All sorts of useful information is included, such as a URL to the UI for this repository (`html_url`), the owner's avatar (`owner.avatar_url`), and a URL suitable for cloning the repository using Git (`git_url`).
 
-===== Code Search
+==== Code Search
 
 The `search/code` endpoint is for searching the contents of a repository.
 You can try matching the contents of the files themselves, or their paths (using `in:path`).
@@ -236,7 +236,7 @@ The JSON returned looks something like this:
 Each item has some data about the file that turned up, including its name and URLs for a couple of representations of it.
 Then there's the blob of data about its repository, followed by a score, which is used for the default "best match" sorting.
 
-===== Issue Search
+==== Issue Search
 
 Repositories contain more than just code.
 The `search/issues` endpoint looks for matches in the issues and pull requests attached to a project.
@@ -293,7 +293,7 @@ Again, each item in the list looks like the result of a call to the issues API.
 There are a lot of useful bits of data here, such as the issue's title (`title`), labels (`labels`), and links to information about the pull-request data (`pull_request.url`), which won't be present if the result isn't a pull request.
 
 
-===== User Search
+==== User Search
 
 All the other search APIs are centered around repositories, but this endpoint searches a different namespace: GitHub users.
 By default, only a user's login name and public email address are searched; the `in` qualifier can extend this to include the user's full name as well, with `in:fullname,login,email`.
@@ -351,9 +351,13 @@ It'll end up looking a bit like <<search_app>>.
 
 [[search_app]]
 .GitHub search application on three platforms
-image:images/search-win.png[width=33%]
-image:images/search-osx.png[width=33%]
-image:images/search-linux.png[width=33%]
+====
+image::images/btwg_04in01.png[]
+
+image::images/btwg_04in02.png[]
+
+image::images/btwg_04in03.png[]
+====
 
 ==== User Flow
 
@@ -367,7 +371,7 @@ To make this easier, our program will try to get GitHub credentials from Git's c
 
 [[search_login_ui]]
 .Login UI
-image::images/python-login.png[]
+image::images/btwg_0401.png[]
 
 Once the user logs in, they'll be shown a search box.
 Typing in a search query and hitting enter will result in a scrollable list of search results, with titles and the first line of the description.
@@ -797,7 +801,7 @@ The effect is like <<search_resizing>>.
 
 [[search_resizing]]
 .Resizing behavior of login UI
-image::images/python-sizers.png[]
+image::images/btwg_0402.png[]
 
 Then comes the `do_login` method, which tests out the given credentials, and if they work, passes them back through the callback set at construction time.
 If they don't work, it sets the text of a label, whose foreground color has been set to a nice, alarming shade of red.

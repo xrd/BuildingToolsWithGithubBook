@@ -23,7 +23,7 @@ gist. Once your gist has been created you are presented with a URL to
 share. Gists autodetect the language in most cases and syntax
 highlight according to the language when displayed.
 
-image::images/gists-easy-sharing.png[Creating a gist on GitHub]
+image::images/btwg_02in01.png[Creating a Gist on GitHub]
 
 There are other services that do this: pastebin was the first, and
 there are many others that offer variances on code sharing. But gists
@@ -313,7 +313,7 @@ your browser, you will see the count of public gists for user `xrd`;
 modify the username in the URL to any specify any GitHub username and you will see
 their last five gists displayed.
 
-image::images/gists-gist-count.png[Displaying the gist count]
+image::images/btwg_02in02.png[Displaying the gist count]
 
 ==== Going deeper into the Gist API
 
@@ -449,7 +449,7 @@ attribute. Retrieve the `raw` content using the Octokit method `.get.data`.
 
 Now we see the gists and the contents.
 
-image::images/gists-last-five.png[Last five gists, with details]
+image::images/btwg_02in03.png["Last five gists, with details"]
 
 === Summary
 

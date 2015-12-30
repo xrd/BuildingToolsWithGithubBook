@@ -260,7 +260,7 @@ references.
 If you load this up in your browser, you will see something like this:
 
 .The Whole Messy JSON
-image::images/javascript-gollum.png[The Whole Messy JSON]
+image::images/btwg_09in01.png[The Whole Messy JSON]
 
 That is a lot of data. AngularJS's JSON filter pretty printed
 it for us, but this is a bit too much. Let's change the HTML to reduce
@@ -276,8 +276,8 @@ some noise.
 </head>
 <body ng-app="coffeetech">
 <div class="container" ng-controller="GithubCtrl">
-<div>Subscriber count: {{ repo.subscribers_count }}</div> <1>
-<div>Network count: {{ repo.network_count }}</div> <2>
+<div>Subscriber count: {{ repo.subscribers_count }}</div> 
+<div>Network count: {{ repo.network_count }}</div> 
 </div>
 <script
 src="angular.js"></script>
@@ -293,7 +293,7 @@ display the `subscriber_count` and the `network_count`. Now we see
 something more palatable. 
 
 .Pulling Out What We Want
-image::images/javascript-gollum-precise.png[Pulling Out What We Want]
+image::images/btwg_09in02.png[Pulling Out What We Want]
 
 We've just extracted the subscriber and network count from the gollum
 repository hosted on GitHub using the GitHub API and placed it into
@@ -945,7 +945,7 @@ Uncaught TypeError: Cannot call method 'select' of undefined
 If you click on the link to the right for github.js, you'll see this.
 
 .An Unexpected Error
-image::images/javascript-underscore-missing.png[An Unexpected Error]
+image::images/btwg_09in03.png[An Unexpected Error]
 
 You see at the point of error that we are calling `select` on the tree.
 Select appears to be a method defined on an underscore character. If
@@ -976,7 +976,7 @@ $ wget https://raw.github.com/dankogai/js-base64/master/base64.js
 Then, add the libraries to your `index.html` so that the JavaScript
 includes look like this:
 
-[source,html index.html]
+[source,html]
 -----
 ...
 
@@ -1004,7 +1004,7 @@ So, to start, let's add some faked data to our coffee shop
 information. Add a file called `portland.json` file that looks like
 this: 
 
-[source,html index.html]
+[source,html]
 -----
 [
    {
@@ -1083,7 +1083,7 @@ anything except shops which match that, and we see the information
 pieces formatted as labels underneath the shop name.
 
 .Filtering coffeeshops using the term gluten
-image::images/javascript-search-box.png[Filtering coffeeshops using the term gluten]
+image::images/btwg_09in04.png[Filtering coffeeshops using the term gluten]
 
 ==== User Contributed Data
 
@@ -1469,7 +1469,7 @@ HTML.
 [source,javascript]
 -----
 ...
-<input class="ctinput" ng-model="search" placeholder="Enter search parameters..."/> <!--1-->
+<input class="ctinput" ng-model="search" placeholder="Enter search parameters..."/> 
 
 <h3 ng-show="city">Current city: {{city.name}}</h3>
 
@@ -1491,6 +1491,13 @@ Now we can review changes through GitHub's integrated online diff tool.
 
 .Reviewing annotation pull request diff's from within GitHub
 image::images/javascript-pull-request-diff.png[Reviewing annotation pull request diff's from within GitHub]
+=======
+image::images/btwg_09in05.png[Adding information through a pull request]
+
+Now we can review changes through GitHub's integrated online diff tool.
+
+image::images/btwg_09in06.png[Reviewing annotation pull request diff's from within GitHub]
+>>>>>>> 57120ebc31d6bdce61cee5e022b578451dfefb4e
 
 Here we  see a clear "diff" of the changes our contributor
 made: they added an annotation that tells us "no turtles allowed". We
@@ -1593,7 +1600,7 @@ navigate to the "Applications" link towards the bottom. Click on the
 application by clicking on the "Register application" button.
 
 .A new GitHub application for OAuth
-image::images/javascript-new-application.png[A new GitHub application for OAuth
+image::images/btwg_09in07.png[A new GitHub application for oAuth]
 
 Now, create an account on Firebase. Once you have done this, create
 a new app called "CoffeeTech" inside Firebase. The APP URL needs be unique, so use
@@ -1603,7 +1610,7 @@ then see a settings screen, and click on "Simple Login" and then
 "GitHub."
 
 .Creating the Firebase Hosted Login
-image::images/javascript-view-firebase.png[Creating the Firebase Hosted Login]
+image::images/btwg_09in08.png[Creating the Firebase Hosted Login]
 
 Then, copy your GitHub client ID and secret to the sections inside the
 Firebase Simple Login settings for the GitHub provider. Make sure the
@@ -1797,7 +1804,7 @@ we'll get a dialog like this one indicating we are logging into GitHub
 (via the Firebase SimpleLogin).
 
 .The final step in the permission flow for GitHub access using Firebase
-image::images/javascript-firebase-simplelogin.png[The final step in the permission flow for GitHub access using Firebase]
+image::images/btwg_09in09.png[The final step in the permission flow for GitHub access using Firebase]
 
 After you authorize the application, the execution flow is identical to the
 the prior authentication flow (using username and password). As an optimization

@@ -120,7 +120,7 @@ for your Slack site. Typically this is the name of your organization.
 
 Once you have your slack site created, you need to create a channel.
 
-image::images/hubot-create-channel.png[Creating the #generic channel]
+image::images/btwg_08in01.png[Creating the #generic channel]
 
 You can name the channel anything you want, but it is often a good
 mnemonic to use a name which suggests this is a channel where more
@@ -131,12 +131,12 @@ the link to create a channel, you'll see a popup asking for the name
 and an optional description. After you have created the channel,
 you will see a link to "Add a service integration." 
 
-image::images/hubot-add-service-integration.png[Adding service integrations to Slack]
+image::images/btwg_08in02.png[Adding service integrations to Slack]
 
 Slack supports many different service integrations, and one of them is
 Hubot.  
 
-image::images/hubot-choose-hubot-integration.png[Choosing Hubot from the man Slack integration options]
+image::images/btwg_08in03.png[Choosing Hubot from the man Slack integration options]
 
 Choosing Hubot takes you to a settings screen for your Hubot integration.
 
@@ -150,7 +150,7 @@ revoke and reassign a token to your Hubot on this screen.
 You will also need to specify a name. Use "probot" and if you'd like,
 change the avatar associated with the Hubot.
 
-image::images/hubot-choose-username.png[Choose Hubot's name]
+image::images/btwg_08in04.png[Choose Hubot's name]
 
 Make sure you save your integration before continuing.
 
@@ -190,7 +190,7 @@ is properly connectd by typing in the name of your Hubot
 and then a command like `the rules`. For example, if our Hubot is
 named `probot`, then we would type `probot the rules`. 
 
-image::images/hubot-verify.png[Hubot telling us the rules]
+image::images/btwg_08in05.png[Hubot telling us the rules]
 
 We see that our hubot printed out the rules it
 abides by (published originally by Isaac Asimov in his "Runaround"
@@ -200,7 +200,7 @@ short story in 1942).
 
 Hubot out of the box supports many commands. To get a list, type "help".
 
-image::images/hubot-help.png[The built-in Hubot commands]
+image::images/btwg_08in06.png[The built-in Hubot commands]
 
 The `pug me` command is a favorite. Many people new to Hubot
 quickly get sucked into spending hours looking at cute pictures of
@@ -960,7 +960,7 @@ settings for our repository, follow the link to "Webhooks and
 Services" on the left navigation bar, and we will then find at the
 very bottom of the page a list of recent deliveries to our webhook.
 
-image::images/hubot-recent-deliveries.png[A list of failed webhook deliveries]
+image::images/btwg_08in07.png[A list of failed webhook deliveries]
 
 These requests all failed; our Hubot is not correctly configured
 to handle real HTTP requests from GitHub. This does show that GitHub is

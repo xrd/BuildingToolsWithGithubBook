@@ -2,6 +2,7 @@
   "branch": "master",
   "files": [
     "titlepage.html",
+    "copyright.html",
     "toc.html",
     "preface.asciidoc",
     "chapter-01-introduction.asciidoc",
@@ -14,7 +15,10 @@
     "chapter-06-hubot-activities.asciidoc",
     "chapter-04-javascript.asciidoc",
     "appendix-enterprise.asciidoc",
-    "appendix-ruby-and-nodejs.asciidoc"
+    "appendix-ruby-and-nodejs.asciidoc",
+    "ix.html",
+    "author_bio.html",
+    "colo.html"
   ],
   "formats": {
     "pdf": {
@@ -23,8 +27,9 @@
       "toc": true,
       "syntaxhighlighting": true,
       "show_comments": false,
-      "color_count": false,
-      "trim_size": false
+      "color_count": "1",
+      "trim_size": "7inx9.1875in",
+      "antennahouse_version": "AHFormatterV62_64-MR4"
     },
     "epub": {
       "index": true,
@@ -49,7 +54,7 @@
       "consolidated": false
     }
   },
-  "theme": "oreillymedia/atlas_tech1c_theme",
+  "theme": "oreillymedia/animal_theme",
   "title": "Building Tools with GitHub",
   "templating": false,
   "print_isbn13": "",

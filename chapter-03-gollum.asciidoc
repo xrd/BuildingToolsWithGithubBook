@@ -43,7 +43,7 @@ To create a wiki linked to your repository, visit the repository
 page and then look in the rightmost colum. You'll see an icon which
 looks like a book, next to which will be the word "Wiki." 
 
-image::images/gollum-wiki.png[Integrated Gollum Wiki in the Sidebar]
+image::images/btwg_03in01.png[Integrated Gollum Wiki in the Sidebar]
 
 Clicking on this link will bring you to a page where you are asked to
 create a wiki for the first time. GitHub will ask you to create the
@@ -52,7 +52,7 @@ automatically create a page template with the project name; you can
 customize this information to suit your own needs. Clicking on the
 "Save Page" will save your first page and create the wiki for you.
 
-image::images/gollum-wiki-create.png[Starting a Gollum Wiki]
+image::images/btwg_03in02.png[Starting a Gollum Wiki]
 
 Your wiki is now as public as your repository is public. Public
 repositories have public wikis, accessible to anyone. Private
@@ -183,7 +183,7 @@ You can also add images using the editor on GitHub. But, you'll notice
 that either way you are adding a link to an image and that there is no
 way to upload images into GitHub from the editor. 
 
-image::images/gollum-image-url.png[No image upload, only image URLs]
+image::images/btwg_03in03.png["No image upload, only image URLs"]
 
 For non-technical users, this makes Gollum Wikis on GitHub almost
 unusable if they need to add images. Let's address this problem by
@@ -227,7 +227,7 @@ We've just created a wiki compatible with gollum. Let's see what it
 looks like inside gollum. run the `gollum` command then open
 `http://localhost:4567/` in your browser.
 
-image::images/gollum-first-view.png[Gollum running locally]
+image::images/btwg_03in04.png[Gollum running locally]
 
 As you can see, this tiny set of commands was enough to create the
 basics of the gollum wiki structure.
@@ -704,7 +704,7 @@ repository, you'll then be able to push up the changes we've made
 using our `image.rb` script. Once you have created a new wiki, look
 for a box on the right which says "Clone this wiki locally". 
 
-image::images/gollum-local-clone-url.png[Gollum git clone URL]
+image::images/btwg_03in05.png[Gollum git clone URL]
 
 Copy that link, and then enter a terminal window where we can then add a remote
 URL to our local repository which allows us to synchronize our
@@ -731,7 +731,7 @@ changes. If we then visit the wiki, we'll see an additional file
 listed under the pages sidebar to the right. Clicking on the review
 page, we can see the images we've added most recently.
 
-image::images/gollum-android-project1-review.png[Images displayed within a Gollum wiki]
+image::images/btwg_03in06.png[Images displayed within a Gollum wiki]
 
 Not sure why our designer is providing us with an image of a couch,
 but I am sure he has his reasons.
@@ -743,7 +743,7 @@ can review the revisions of this file by clicking on the "3 Commits"
 link right underneath the page title. Jumping onto that page shows us
 the full history of this file.
 
-image::images/gollum-android-project1-revisions.png[A view on the revisions from within GitHub]
+image::images/btwg_03in07.png[A view on the revisions from within GitHub]
 
 Clicking on any of the SHA hashes will display the page at that
 revision in our history and show us the state of the document at any given

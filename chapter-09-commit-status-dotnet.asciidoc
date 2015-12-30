@@ -11,7 +11,7 @@ This feature also surfaces at the bottom of the pull-request; if the last commit
 
 [[status_pr]]
 .Commit status in the pull-request UI
-image::images/commit-status-ui.png[Commit status in the pull-request UI]
+image::images/btwg_0501.png[Commit status in the pull-request UI]
 
 The most obvious application for this feature is a continuous-integration service.
 A program like Jenkins will get a notification when new commits are pushed to a branch, run a build/test cycle using the new code, and post the results through the commit-status API.
@@ -198,7 +198,7 @@ Make sure the path and name settings at the bottom are to your liking, and click
 
 [[vs_new_project]]
 .Creating a Nancy application in Visual Studio
-image::images/vs-new-project.png[]
+image::images/btwg_0502.png[]
 
 Next, change the target CLR framework version to something that will work with Octokit.
 Right-click on the project's node in the Solution Explorer, and select "Properties."
@@ -224,7 +224,7 @@ Go to "File>New>Solution…", and choose "ASP.NET>Empty ASP.NET Project" from th
 
 [[xamarin_new_project]]
 .Creating an empty ASP.NET application in Xamarin Studio
-image::images/xamarin-new-project.png[]
+image::images/btwg_0503.png[]
 
 The rest of the wizard steps are about the project name and location; feel free to name and locate this project however you like.
 
@@ -252,7 +252,7 @@ The first thing we're going to write is an endpoint that reports how many follow
 In order to test it, we'll choose a well-known user, and make sure their real name is fetched.
 Here's what the test code looks like:
 
-[source,cs]
+[source,csharp]
 ----
 using NUnit.Framework;
 using Nancy;
@@ -295,7 +295,7 @@ namespace NancyApplication1.Tests
 Now that we have a failing test, let's write the code to implement that endpoint in Nancy.
 Here's what the initial version of that file will look like:
 
-[source,cs]
+[source,csharp]
 ----
 using Nancy;
 using Octokit;
@@ -375,7 +375,7 @@ We're going to store it in a cookie (though since this goes back and forth to th
 Nancy can help us with this, but first we have to enable it, and the way this is accomplished is by using a bootstrapper.
 We're going to add this class to our application:
 
-[source,cs]
+[source,csharp]
 ----
 
 using Nancy;
@@ -402,7 +402,7 @@ Now, from within a `NancyModule`, we can use the `Session` property to store and
 Next, we have to include our application's ID and secret in some of the requests, so we embed them in the code by adding these fields to the `Handler` class.
 If you don't have an application, visit https://github.com/settings/developers[] to create one and use `http://localhost:8080/authorize` (depending in your environment, the port number might be slightly different) for the callback URL – we'll see why in a bit.
 
-[source,cs]
+[source,csharp]
 ----
         private const string clientId = "<clientId>";
         private const string clientSecret = "<clientSecret>";
@@ -412,7 +412,7 @@ Obviously, you should use values from your own API application if you're followi
 
 After that, we'll need a helper method that kicks off the OAuth process:
 
-[source,cs]
+[source,csharp]
 ----
 private Response RedirectToOAuth()
 {
@@ -445,7 +445,7 @@ In our GitHub application settings, we specified an authorization URL.
 In this case, we've specified `http://localhost:8080/authorize`, and that's where GitHub will redirect the user's browser if they decide to grant our application the permissions it's asking for.
 Here's the handler for that endpoint, which has been inserted into the module constructor:
 
-[source,cs]
+[source,csharp]
 ----
 Get["/authorize", true] = async (parms, ct) => // <1>
     {
@@ -483,7 +483,7 @@ Get["/authorize", true] = async (parms, ct) => // <1>
 This last endpoint is something we can test, but we'll need to be able to handle sessions.
 In order to do that, we'll add this snippet to our test project's namespace:
 
-[source,cs]
+[source,csharp]
 ----
 public static class BootstrapperExtensions
 {
@@ -502,7 +502,7 @@ public static class BootstrapperExtensions
 This is an _extension method_ that allows us to provide a `Session` object for a request, something the CSRF handling uses.
 Now that that exists, we can add a test method to our test-suite class:
 
-[source,cs]
+[source,csharp]
 ----
 [Test]
 public void HandlesAuthorization()
@@ -541,7 +541,7 @@ All our handlers have to do to trigger an OAuth sequence is to call `RedirectToO
 Having gone through all that OAuth business, we should now have a token that grants us permission to create commit statuses.
 We're going to add this handler to our Nancy module constructor:
 
-[source,cs]
+[source,csharp]
 ----
 
 Get["/{user}/{repo}/{sha}/{status}", true] = async (parms, ct) => // <1>
