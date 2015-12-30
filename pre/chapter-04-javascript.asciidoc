@@ -852,7 +852,7 @@ $ wget http://underscorejs.org/underscore-min.js
 $ wget https://raw.github.com/dankogai/js-base64/master/base64.js
 -------
 
-Then, add the libraries to your index.html so that the JavaScript
+Then, add the libraries to your `index.html` so that the JavaScript
 includes look like this:
 
 [source,html index.html]
@@ -976,7 +976,7 @@ the mock objects and establish a controller and scope for testing.
 [source,javascript]
 -----
 ...
-[filename=".", language="js", sha="4dc8cc2:support/js/coffeetech-annotate.spec.js.987cdaf", lines="40..49"]
+[filename=".", language="js", sha="61bc2dc:support/js/coffeetech-annotate.spec.js.987cdaf.wrapped", lines="40..53", callouts_prefix=" // //", callouts="2,4,6"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1137,8 +1137,7 @@ annotation process has completed, and then issue a timeout to remove
 that from the UI after 5000 milliseconds, or 5 seconds.
 <7> Any time we are inside a callback in a third part library (like
 GitHub.js) we, as mentioned before, need to use `$apply()` to notify
-Angular that our scope object has changed. In this case our scope is
-being modified that we will notify our users of the pull request.
+Angular that our scope object has changed. 
 
 We have three convenience methods to implement.
 
@@ -1196,7 +1195,7 @@ Now we can review changes through GitHub's integrated online diff tool.
 .Reviewing annotation pull request diff's from within GitHub
 image::images/javascript-pull-request-diff.png[Reviewing annotation pull request diff's from within GitHub]
 
-As you can see, we can see a clear diff of the changes our contributor
+Here we  see a clear "diff" of the changes our contributor
 made: they added an annotation that tells us "no turtles allowed". We
 might want to consider a different location the next time we have a
 date with Morla. The diff is clear in that the green information is
@@ -1218,9 +1217,9 @@ authentication process and steal my crendentials. GitHub is a large
 part of my online identity and I would never provide these
 crendentials to a web application.
 
-Fortunately, we have an alternative to asking for passwords: oAuth.
+Fortunately, we have an alternative to asking for passwords: OAuth.
 
-When we use oAuth, our users enter their credentials directly into
+When we use OAuth, our users enter their credentials directly into
 GitHub. If our users have turned on 2-factor authentication, GitHub
 can still authenticate them (while our naive implementation could not
 be modified to accept this type of authentication process). Once we
@@ -1229,8 +1228,8 @@ are who we say we are, and then returns us to the application which
 requested access. 
 
 [NOTE]
-There are many benefits to using oAuth. GitHub provides the
-application with what is called an oAuth token that encapsulates
+There are many benefits to using OAuth. GitHub provides the
+application with what is called an OAuth token that encapsulates
 exactly what services on GitHub we have access to, and 
 whether that access is read-only or whether we can add data in a
 read-write manner. This means our requesting service can ask to modify
@@ -1238,24 +1237,24 @@ only parts of our data within GitHub; this provides a much higher
 level of trust to users as they know the application cannot touch the
 more private parts within GitHub. Specifically, this means we could
 ask for access only to gists and not request access to our
-repositories. One important point about oAuth tokens is that they can
+repositories. One important point about OAuth tokens is that they can
 be revoked. So, once a specific action has been taken, we can destroy
 the token and revoke access. With simple username and password access,
 the only way to revoke access is to change the password, which means
 any place you have saved that password (password managers or other
 applications which login via username and password) need to update
-their settings as well. With oAuth we can revoke a single token at any
+their settings as well. With OAuth we can revoke a single token at any
 time (and GitHub makes it easy to do this) without affecting access to
 other services.  
 
-Let's modify our application to use oAuth.
+Let's modify our application to use OAuth.
 
 ==== Authentication Requires a Server
 
 Up until now we have been able to publish all our files into GitHub
 and they are hosted for us by GitHub. Sadly the authentication
 component cannot be hosted on GitHub. Somehow we need to safely
-authenticate our user into GitHub and retrieve an oAuth token. There
+authenticate our user into GitHub and retrieve an OAuth token. There
 is currently no way to do this strictly 
 client side (using only static HTML and JavaScript running in the
 browser). Other authentication providers like Facebook do provide pure
@@ -1285,7 +1284,7 @@ integrated GitHub authentication component (called "Simple Login").
 Together they resolve the authentication issue for us, and keep all
 our code hosted on GitHub. Delegation of our authentication component is easy with
 Firebase: we just modify our existing GitHub application, provide the credentials
-and GitHub oAuth scope to Firebase, and then our application offloads
+and GitHub OAuth scope to Firebase, and then our application offloads
 user management to Firebase.  
 
 First, we need to create a new GitHub application. In the top right
@@ -1382,13 +1381,12 @@ To be replaced
 snippet~~~~~
 -----
 
-When we instantiate our controller, we need
-to inject Firebase and FirebaseSimpleLogin and initialize them inside
-our `init` method.
+When we instantiate our controller, we need to inject `Firebase` and
+`FirebaseSimpleLogin` and initialize them inside our `init` method.
 
 [source,javascript]
 -----
-[filename=".", language="js", sha="cb28565:support/js/coffeetech.js" lines="15..23"]
+[filename=".", language="js", sha="d8bd191:support/js/coffeetech.js.wrapped", lines="15..26"]
 snippet~~~~~
 To be replaced
 snippet~~~~~
@@ -1457,7 +1455,7 @@ If you feel more comfortable using your own authentication server and
 not using the Firebase option presented above, this addendum to the
 chapter shows you how to do this. 
 
-There are several libraries which offer support for oAuth
+There are several libraries which offer support for OAuth
 authentication on GitHub, but the consistency of NodeJS modules often
 leaves something to be desired. As I was building this chapter I
 experimented with several authentication modules and quickly
