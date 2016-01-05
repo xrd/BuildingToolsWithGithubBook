@@ -3,7 +3,7 @@
 
 Once you have enough data, no amount of organization will make everything easy to find.
 As Google has taught us, the only system that works at this scale is a search box.
-When you use GitHub, you're exposed to both sides of this phenomenon: the repositories you have direct access to, which are relatively small in number, are given a single level of hierarchy, so you can keep them straight in your head.
+When you use GitHub, you're exposed to both sides of this phenomenon: the repositories you have direct access to&#x2014;which are relatively small in number&#x2014;are given a single level of hierarchy, so you can keep them straight in your head.
 For the rest, the uncountable millions of public repositories that belong to other people, there's a search box, with powerful features to help you find what you're looking for.
 
 Helpfully, GitHub also exposes this capability as an API you can consume from your own applications.
@@ -113,7 +113,7 @@ Numerical values and dates can have ranges:
 
 - `2015-02-01` will match only the given date
 - `<2015-02-01` will match any date previous to the one given
-- `2015-02-01..2015-03-01` will match dates within the given range, including the end points
+- `2015-02-01..2015-03-01` will match dates within the given range, including the endpoints
 
 For example, to find Python code written by the user tpope during July of 2012, you would write `"user:tpope language:python created:2012-07-01..2015-07-31"` for the query parameter.
 That would be encoded in a URL like so:
@@ -147,7 +147,7 @@ We'll show an abridged response from each of the four, along with some discussio
 ==== Repository Search
 
 The `search/repositories` endpoint looks in the repository metadata to match your query.
-This includes the project's name and description by default, though you can also search the `README` file by specifying `in:readme` in the query.
+This includes the project's name and description by default, though you can also search the README file by specifying `in:readme` in the query.
 Other qualifiers are documented at https://developer.github.com/v3/search/#search-repositories[].
 
 A query such as `search/repositories?q=foobar` might result in a response that looks something like this:
@@ -243,9 +243,9 @@ Repositories contain more than just code.
 The `search/issues` endpoint looks for matches in the issues and pull requests attached to a project.
 This endpoint responds to a wide variety of search qualifiers, such as:
 
-- `type` - either "pr" for pull requests, or "issue" for issues (the default is both)
-- `team` - match issues whose discussions mention a specific team (only works for organizations you belong to)
-- `no` - match issues that are missing a piece of data (as in "no:label")
+- `type`&#x2014;either "pr" for pull requests, or "issue" for issues (the default is both)
+- `team`&#x2014;match issues whose discussions mention a specific team (only works for organizations you belong to)
+- `no`&#x2014;match issues that are missing a piece of data (as in "no:label")
 
 There are many more; see https://developer.github.com/v3/search/#search-issues[] for complete documentation.
 
@@ -290,7 +290,7 @@ The result of a call to this endpoint looks like this:
 }
 ----
 
-Again, each item in the list looks like the result of a call to the issues API.
+Again, each item in the list looks like the result of a call to the issued API.
 There are a lot of useful bits of data here, such as the issue's title (`title`), labels (`labels`), and links to information about the pull-request data (`pull_request.url`), which won't be present if the result isn't a pull request.
 
 
@@ -416,12 +416,12 @@ It's an object-oriented Python layer over the top of a toolkit called WxWidgets,
 WxWidgets supports Linux, Mac, and Windows operating systems with native controls, so you can access all of those platforms with the same Python code.
 
 Information about the WxPython project can be found at http://www.wxpython.org[], and you'll find a download link for your platform on the left-hand side of the page.
-The next version of WxPython (code-named "Phoenix"), will be installable via PIP, but at the time of this writing Phoenix is still prerelease software, so it's probably safer to use the stable version.
+The next version of WxPython (code-named "Phoenix") will be installable via PIP, but at the time of this writing Phoenix is still prerelease software, so it's probably safer to use the stable version.
 
 [NOTE]
 ====
 A bit of background on Python: it's undergoing a transition.
-Currently there are two actively used versions: Python 2.7, and Python 3 (3.5 at the time of this writing).
+Currently there are two actively used versions: Python 2.7 and Python 3 (3.5 at the time of this writing).
 Most of the details are unimportant, but in order to follow along with this example, you'll have to be running Python 2.7, because WxPython doesn't currently support Python 3.
 Support for Python 3 is planned for the upcoming Phoenix release, so most of the code below is written in a "polyglot" fashion, so you shouldn't run into any trouble running it under Python 3 if Phoenix has arrived by the time you read this.
 ====
@@ -435,7 +435,7 @@ It does all this without needing much input from you, and there are only a few c
 If you've written GUI applications before, you'll know how hard each of these problems are.
 
 For information on this project, you can visit http://pythonhosted.org/PyInstaller[].
-You can install it using Python's package manager, by running `pip install pyinstaller`.
+You can install it using Python's package manager by running `pip install pyinstaller`.
 
 === The Code
 
@@ -527,7 +527,7 @@ def git_credentials():
     The first argument is a list of arguments for the new program, and we also specify that we want stdin and stdout to be captured.
 <3> `p.communicate` does the work of writing to stdin and returning the contents of stdout.
     It also returns the contents of stderr, which we ignore in this program.
-<4> Here we process the stdout contents by splitting each line at the '=' character, and slurping it into a dictionary.
+<4> Here we process the stdout contents by splitting each line at the '=' character and slurping it into a dictionary.
 <5> So the return value from this call should be a dictionary with `'username'` and `'password'` values.
     Handy!
 
@@ -618,7 +618,7 @@ If our credentials are coming from Git, we proceed straight to `test_credentials
 Either way, what we do is try to fetch a list of the user's organizations, to see if they work.
 Here you can see the usage pattern for `agithub` – the URL path is mapped to object-property notation on an instance of the `Github` class, and the HTTP verb is mapped to a method call.
 The return values are a status code and the data, which has been decoded into a dictionary object.
-If it fails - meaning the returned status is not `200` - we send the user to the login panel.
+If it fails&#x2014;meaning the returned status is not `200`&#x2014;we send the user to the login panel.
 If it succeeds, we call `switch_to_search_panel`.
 
 [NOTE]
@@ -705,13 +705,13 @@ class TestApp:
 <2> Nose will automatically find these `setUp` and `tearDown` methods, and call them before and after each test method is run.
     In this case, we're just managing the frames we want to test, as well as an `App` instance for all of them to belong to.
 <3> Here's a test method that Nose will find and run.
-    We ensure the sub-panels are the right type, and that we've auto-transitioned to the SearchPanel by finding credentials in Git's storage.
+    We ensure the subpanels are the right type, and that we've auto-transitioned to the SearchPanel by finding credentials in Git's storage.
 
 That's it!
 Aside from managing a couple of fields, most of this code is managing the UI, which is almost exactly what we'd want from a UI class.
 Let's write the first of the two panels we swap in and out.
 
-==== GitHub login
+==== GitHub Login
 
 The `LoginPanel` class is similar in structure to the `SearchFrame` class, with a couple of key differences, which we'll describe after the wall of code.
 
@@ -786,7 +786,7 @@ Every static-text, text-input, and button control gets its own line of code.
 The `wx.TE_PROCESS_ENTER` style tells the library we want an event to be triggered if the user presses the enter key while the cursor is inside that text box.
 
 The next block binds control events to method calls.
-Every event in WxPython will call the handler with a single argument, an object which contains information about the event.
+Every event in WxPython will call the handler with a single argument, an object that contains information about the event.
 That means we can use the same function to handle any number of different kinds of events, so we do – the `ENTER` handlers for both text boxes and the `BUTTON` handler for the button all go through `self.do_login`.
 
 `do_layout` uses a different kind of sizer – a `GridBagSizer`.
@@ -795,7 +795,7 @@ Here we drop all of the controls into their positions with the `pos=(r,c)` notat
 The `flags` and `border` parameters mostly mean the same things as before, and the `AddGrowableCol` function tells the layout engine which parts of the grid should be allowed to stretch.
 
 Then we do something curious: we put the `GridBagSizer` _into another sizer_.
-Sizer nesting is a powerful feature, and allows almost any window layout to be possible - although perhaps not easy or simple.
+Sizer nesting is a powerful feature, and allows almost any window layout to be possible&#x2014;although perhaps not easy or simple.
 The vertical box sizer also contains some bare tuples; this special form is called "adding a spacer."
 In this case, we sandwich the sizer with all the controls between two spacers with different weights, making it float about a third of the way down the window.
 The effect is like <<search_resizing>>.
@@ -891,7 +891,7 @@ class SearchPanel(wx.Panel):
 ----
 
 There's quite a bit here, but some of it is familiar.
-We'll skip the usual walkthrough, to point out a couple of interesting features.
+We'll skip the usual walkthrough to point out a couple of interesting features.
 
 <1> When creating the panel, we pass in the user's credentials and list of organizations as keyword arguments, so they show up in the `kwargs` dictionary.
     Here we use `pop` to make sure the parent class's constructor doesn't get confused by them.
@@ -995,7 +995,7 @@ class SearchResult(wx.Panel):
 ----
 
 <1> The containing panel is simple enough that it only consists of a constructor.
-    This class's job is to contain the results, and present them in a scroll window.
+    This class's job is to contain the results and present them in a scroll window.
 <2> A `SearchResult` is comprised of two static text controls, which contain the issue's title and the first line of its body.
 <3> We're not only binding the click handler for this entire panel, but also the mouse-enter and mouse-leave events, so we can make it behave more like a link in a browser.
 <4> Here's how you open the default browser to a URL in Python.
@@ -1007,7 +1007,7 @@ WxPython may lack some facilities of newer frameworks, but there's nothing bette
 
 That's all of the code!
 If you've been following along and typing all this code into a file, you can run that file and do issue searches.
-However, our use case has a non-technical user running this; let's see what can be done to make it easier for them to get started.
+However, our use case has a nontechnical user running this; let's see what can be done to make it easier for them to get started.
 
 === Packaging
 
@@ -1041,12 +1041,12 @@ Code for this task is always pretty verbose, because of the sheer complexity of 
 With WxPython in your tool belt, however, you can now write GUI applications using Python, with code that's no harder to write than with other toolkits, and get the ability to run on every major platform for free.
 
 We saw how to ask Git for credentials to a Git server using `git credential`.
-This feature is quite capable, and includes the ability to write a custom credential storage back-end, but we at least saw a peek into how it works.
-Using this knowledge, you can piggy-back on your users' existing habits to avoid having to ask them for the same things over and over again.
+This feature is quite capable, and includes the ability to write a custom credential storage backend, but we at least saw a peek into how it works.
+Using this knowledge, you can piggyback on your users' existing habits to avoid having to ask them for the same things over and over again.
 
 We also saw a rather nice HTTP API abstraction with `agithub`.
 We authenticated and queried the issue search API endpoint using what looked like object-method notation.
-`agithub` is a great example of how a library package can be both future-proof and idiomatic – the library constructs a query URL by looking at the chain of properties and methods used in the call.
+`agithub` is a great example of how a library package can be both future-proof and idiomatic&#x2014;the library constructs a query URL by looking at the chain of properties and methods used in the call.
 This is a great jumping-off point for querying other REST APIs using the same pattern.
 
 Finally, the main thrust of this chapter was using the GitHub search API.

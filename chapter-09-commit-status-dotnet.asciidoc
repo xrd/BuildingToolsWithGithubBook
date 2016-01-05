@@ -7,7 +7,7 @@ This is all good stuff, and works very well for Git's main use case: controlling
 
 GitHub's commit-status API adds another layer of metadata to a commit: what various services _say_ about that commit.
 This capability primarily shows itself in the pull-request UI, as shown in <<status_pr>>.
-Each commit in the pull request is annotated with a symbol indicating its status - a red "&#xd7;" for failure or error, a green "&#x2713;" for success, or an amber "&#x2022;" to indicate that a decision is in the process of being made.
+Each commit in the pull request is annotated with a symbol indicating its status&#x2014;a red "&#xd7;" for failure or error, a green "&#x2713;" for success, or an amber "&#x2022;" to indicate that a decision is in the process of being made.
 This feature also surfaces at the bottom of the pull-request; if the last commit in the branch is not marked as successful, you get a warning about merging the request.
 
 [[status_pr]]
@@ -45,7 +45,7 @@ For services that do need to be able to look at the repository contents, you can
 As of this writing, there's no way to request read-only access to repositories, so if a service needs access to your data, you have to trust it with write access.
 
 You can also use this API in anonymous mode, without using OAuth at all.
-However, in that case you're limited to reading statuses from public repositories; there is no writing, and private repositories are off limits.
+However, in that case you're limited to reading statuses from public repositories; there is no writing, and private repositories are off-limits.
 
 Just to summarize:
 
@@ -92,7 +92,7 @@ Most of this is self-explanatory, but a couple of fields need explaining.
 
 This API is useful for getting the raw data involved, but it gets complicated quickly.
 How do you decide if a given commit is "good?"
-What if there are 3 pending statuses, one success, another pending, two failures, and another success, in that order?
+What if there are three pending statuses, one success, another pending, two failures, and another success, in that order?
 The `context` field can help you correlate a single service's updates, and you can order them by `created_at` to see how each one turned out, but that's a lot of work.
 Fortunately, the API server can do it for you.
 
@@ -154,7 +154,7 @@ This is to avoid race conditions: if you were targeting a ref, it may have moved
 === Let's Write an App
 
 Alright, now that we know how to read and write statuses, let's put this API to work.
-In this chapter, we'll build a simple HTTP service that lets you create commit statuses for repositories you have access to, using the OAuth web flow for authorization.
+In this chapter, we'll build a simple HTTP service that lets you create commit statuses for repositories you have access to using the OAuth web flow for authorization.
 The system we'll build will be fairly limited in scope, but it's a great starting point to customize for your specific needs.
 
 The language this time is C#, running on the CLR (Common Language Runtime).
@@ -204,7 +204,7 @@ image::images/btwg_0502.png[]
 Next, change the target CLR framework version to something that will work with Octokit.
 Right-click on the project's node in the Solution Explorer, and select "Properties."
 In the "Application" section, set Target Framework to be ".NET 4.5" (or later), and save.
-You may be prompted to re-load the solution.
+You may be prompted to reload the solution.
 
 The very last step is to add NuGet packages for Octokit and Nancy.
 Right-click on the project node in Solution Explorer, and select "Manage NuGet Packages…"
@@ -250,7 +250,7 @@ In order to do this, generate a new unit-test project alongside your existing ap
 You can then copy and paste the test examples over the top of the default test module that comes with that template.
 
 The first thing we're going to write is an endpoint that reports how many followers a user has.
-In order to test it, we'll choose a well-known user, and make sure their real name is fetched.
+In order to test it, we'll choose a well-known user and make sure their real name is fetched.
 Here's what the test code looks like:
 
 [source,csharp]
@@ -290,7 +290,7 @@ namespace NancyApplication1.Tests
 }
 ----
 
-<1> Here we're using the `Browser` class provided by Nancy.Testing to make a request to `/mojombo`, which should give us the number of likes for that GitHub user.
+<1> Here we're using the `Browser` class provided by +Nancy.Testing+ to make a request to `/mojombo`, which should give us the number of likes for that GitHub user.
 <2> Here we're asserting that mojombo's real name is fetched by the endpoint.
 
 Now that we have a failing test, let's write the code to implement that endpoint in Nancy.
@@ -609,7 +609,7 @@ Even if you haven't written a lot of code during this chapter, you've learned a 
 
 You've seen the commit status API, and you've seen how it's used by continuous integration software, but you know that it can be used for much more.
 You can read and write statuses, and you know how the API server coalesces many statuses into a single pass/fail value, and you also know how to write your own multistatus calculation if the default one doesn't meet your needs.
-You also know what's behind the green checkmarks and red X's you see in your pull requests.
+You also know what's behind the green checkmarks and red Xs you see in your pull requests.
 
 You've learned how the OAuth web flow works, and why it's designed the way it is.
 OAuth is the key to many other capabilities of the GitHub API, and it's the right thing to do with regards to trust and permissions.
