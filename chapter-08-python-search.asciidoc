@@ -1,3 +1,4 @@
+[[python_search_api]]
 == Python and the Search API
 
 Once you have enough data, no amount of organization will make everything easy to find.

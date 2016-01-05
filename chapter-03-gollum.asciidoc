@@ -1,3 +1,4 @@
+[[chapter3]]
 == GitHub Wikis with Gollum
 
 Wikis have revolutionized the way we create and digest

@@ -1,5 +1,4 @@
 [[Hubot]]
-
 == CoffeScript, Hubot and the Activities API
 
 Though the phrase has now been removed from their marketing materials,
@@ -15,7 +14,7 @@ extensible chat robot called Hubot to record and automate their tasks,
 and to have fun on the Internet. If there were any robot suited for
 interacting with the GitHub Activity API, it's Hubot, described on the
 site hubot.github.io as "a customizable, kegerator-powered life
-embetterment robot." 
+embetterment robot."
 
 === The Activities API
 
@@ -24,7 +23,7 @@ The Activities API includes:
 * notifications (comments issued to users through various events)
 * stargazing tools (Facebook has "likes" while GitHub has "stars" to indicate approval or interest)
 * watching (a way to track GitHub data)
-* events (a higher level activity stream useful for following actions of users). 
+* events (a higher level activity stream useful for following actions of users).
 
 [NOTE]
 The Activity API section also includes "feeds." While feeds are
@@ -32,7 +31,7 @@ grouped within the Activity API, they are not programmatic in the same
 way that an API is, and we won't cover them in depth here.  Feeds are
 actually Atom feeds and not interactive beyond that. Atom feeds are
 similar to RSS feeds: a static feed you can subscribe to with an Atom
-client. 
+client.
 
 === Planning for PR Satisfaction Guaranteed
 
@@ -72,7 +71,7 @@ Hubot works with many chat endpoints. Your Hubot can connect to almost
 any popular chat service or protocol: IRC, XMPP and many commercial
 services like Gchat, Basecamp, even Twitter. Slack is a relatively new
 entrant into the world of chat services, but despite its youth, the
-Slack API is solid and connecting third party clients to the Slack 
+Slack API is solid and connecting third party clients to the Slack
 service is simple and straightforward. We'll use Slack as our chat endpoint.
 
 Now let's create our Hubot and configure it to use Slack.
@@ -98,7 +97,7 @@ important ones.
 <1> NPM is the tool which installs packages for NodeJS (documented in
 the NodeJS appendix). The `npm install -g
 generator-hubot` command installs a command line tool called yeoman
-and a plugin for yeoman that scaffolds hubot. 
+and a plugin for yeoman that scaffolds hubot.
 <2> You should create a new directory and enter it so that when you
 create your Hubot you can store it entirely in its own space.
 <3> You run the generator using the `yo hubot` command. This builds
@@ -129,18 +128,18 @@ indicate this is the channel where PRs are discussed. To keep things
 simple, we will use the name "#general". Once you click on
 the link to create a channel, you'll see a popup asking for the name
 and an optional description. After you have created the channel,
-you will see a link to "Add a service integration." 
+you will see a link to "Add a service integration."
 
 image::images/btwg_08in02.png[Adding service integrations to Slack]
 
 Slack supports many different service integrations, and one of them is
-Hubot.  
+Hubot.
 
 image::images/btwg_08in03.png[Choosing Hubot from the man Slack integration options]
 
 Choosing Hubot takes you to a settings screen for your Hubot integration.
 
-Slack automatically generates an authentication token for you. 
+Slack automatically generates an authentication token for you.
 This token is used to verify the connection from your Hubot. This
 token can be revoked, and in fact the token from the image below
 has been revoked and can no longer be used to authenticate into
@@ -159,7 +158,7 @@ Make sure you save your integration before continuing.
 Eventually you will want to run your Hubot on a server, but Hubot can
 run from a laptop behind a firewall as well. At the beginning of
 development, while testing and developing your bot and the changes are
-fast and furious, you probably want to run Hubot 
+fast and furious, you probably want to run Hubot
 locally. In fact, Hubot behind a firewall is almost identical in its
 feature set with one major exception: anything behind the firewall is
 inaccessible, obviously, to external services. We are eventually going
@@ -188,7 +187,7 @@ Your bot should be setup and waiting in the #general room inside your
 Slack site. Go to the #general room. Then, you can test that hubot
 is properly connectd by typing in the name of your Hubot
 and then a command like `the rules`. For example, if our Hubot is
-named `probot`, then we would type `probot the rules`. 
+named `probot`, then we would type `probot the rules`.
 
 image::images/btwg_08in05.png[Hubot telling us the rules]
 
@@ -209,14 +208,14 @@ pugs. Beware!
 === Installation on Heroku
 
 Now that we've successfully started our hubot locally, we can move it
-to Heroku and keep it running even when our laptop is turned off. 
+to Heroku and keep it running even when our laptop is turned off.
 
 ==== Setting up Heroku
 
 Heroku requires registration before using it. Heroku offers free plans and everything
 we'll do here can be done using a free plan. Once you have created an
 acccount, install the heroku toolbelt found here:
-https://toolbelt.heroku.com/. The toolbelt provides a set 
+https://toolbelt.heroku.com/. The toolbelt provides a set
 of tools useful for managing Heroku applications. You will need to
 have Ruby setup as explained in the first chapter.
 
@@ -294,7 +293,7 @@ activity. GitHub activity events are often tied to important
 milestones inside of a developer's day, activities like pushing
 commits into the main remote repository, asking questions on
 discussion threads associated with a repository, or assigning issues
-to a developer for review. 
+to a developer for review.
 
 These notifications are accessible to team members without
 programmatically accessing the GitHub API. Team members are notified
@@ -312,7 +311,7 @@ The GitHub policy for notification is definitely to err on the side of
 being overly verbose. Many people live in their email, and making sure
 that all important activities are distributed to the right people
 involved makes sense, and GitHub has a good set of rules for making
-sure the correct notifications get to the right parties. 
+sure the correct notifications get to the right parties.
 
 Email does falter as a to-do list, however, and at times the ease in
 which email can be delivered breeds a secondary problem: overwhelm. It
@@ -331,14 +330,14 @@ CoffeeScript. CoffeeScript is a intermediate language which compiles
 directly to JavaScript. Many people prefer writing in CoffeeScript
 because it has a cleaner syntax and writes "safer"
 JavaScript (the syntax helps you avoid common tricky pitfalls in the
-JavaScript language, like what "this" refers to). 
+JavaScript language, like what "this" refers to).
 CoffeeScript is a indentation based language (much like
 Python) and after the initial learning curve, can feel easier to read
 than JavaScript, especially when you have many nested function
 callbacks (common in JavaScript programming); it is easier to see
 where a function begins and ends given the indentation levels. Hubot
 is itself written in CoffeeScript and we'll write our extension in
-CoffeeScript as well. 
+CoffeeScript as well.
 
 [NOTE]
 CoffeeScript is a language where indentation is important. For
@@ -350,7 +349,7 @@ re-indented it to fit the context into which it sits.
 
 The Hubot extension module format is exceedingly simple. You write
 JavaScript modules (using the `export` syntax) and Hubot passes you in
-a robot object which you program using several API methods. 
+a robot object which you program using several API methods.
 
 There are a few concepts useful to programming Hubot. You can find
 an example of each of these methods inside the `example.coffee` file
@@ -362,7 +361,7 @@ inside the scripts directory.
   if you restart Hubot. However, a persistence mechanism is exposed
   via redis, though this is optional and requires configuration. The
   brain is they way you set and get values which are saved across
-  discrete messages. 
+  discrete messages.
 * Hubots have different respose mechanisms. They can choose to respond
   only when they hear exact phrases or when keywords are found in any
   message, and you don't need to do the grunt work inside your code to
@@ -408,7 +407,7 @@ on GitHub to easily integrate code changes into a project. Contributors
 either fork the master repository and then issues a pull request against that
 repository, or, if they have write permission to the main
 repository, make a "feature" branch and then issue a pull request
-against the "master" branch. 
+against the "master" branch.
 
 Pull requests often come with a chat message indicating several people
 who should review the request. This tribal knowledge about who should
@@ -417,7 +416,7 @@ code. It could be that they invited the correct people. Or, it could
 be that they invited the people who they prefer to review their code
 for various (and completely rational reasons). This can be an
 effective way to engage the right people around a new piece of
-code. 
+code.
 
 And, inviting reviewers this way can have downsides as well: if the
 person is otherwise engaged, pull requests can linger when a
@@ -435,7 +434,7 @@ Activities API to subscribe to pull request events. When Hubot
 becomes aware that a pull request needs review, it will randomly
 assign a user in the chat room to do the review and then ask that user
 if they want to accept the challenge. If they accept, we will note
-that in the pull request comments. 
+that in the pull request comments.
 
 ===== Extension Boilerplate
 
@@ -459,7 +458,7 @@ module.exports = (robot) -> # <1>
                console.log "Accepted!" # <5>
        decline = ( res ) -> # <6>
                res.reply "OK, I'll find someone else"
-               console.log "Declined!" 
+               console.log "Declined!"
 -----
 
 This is a dense piece of code and can be confusing if you are new to
@@ -470,7 +469,7 @@ amazingly powerful code for such a small snippet after reading these notes.
 `exports` syntax. This code defines a function that expects a single
 parameter; when the function is executed, the parameter will be called
 robot. The Hubot framework will pass in a robot object for us that we
-will program further down. 
+will program further down.
 <2> The Hubot API defines a method on the robot object called
 `respond` which we use here. It takes two parameters: a regular
 express to match against and a function which receives an instance of
@@ -481,7 +480,7 @@ response object. We define accept in a moment.
 <4> Now we define the `accept` method. The accept method receives the
 response object generated by the Hubot framework and calls the `reply`
 method which, you guessed it, sends a message back into the chat
-channel with the text "Thanks, you got it!". 
+channel with the text "Thanks, you got it!".
 <5> The accept method then also calls `console.log` with information
 that is displayed on the console from which we started Hubot. This is
 a simple way for us to assure everything worked correctly; if we don't
@@ -490,7 +489,7 @@ is not visible to any users in the channel. It is good practice to
 remove this code when you finalize your production code, but if you
 forget, it won't affect anything happening in the channel.
 <6> We then define the `decline` method using the same APIs as for the
-`accept` method. 
+`accept` method.
 
 If Hubot is running, you will need to restart it to reload any
 scripts. Kill Hubot (using Ctrl-C), and then restart it, and then
@@ -498,7 +497,7 @@ play with commands inside your Slack site. Entering the commands
 `probot accept` and `probot decline` and you'll see Hubot
 respoding inside the channel. You'll also see the message `Accepted!` or
 `Declined!` printed to the console on which Hubot is
-running. 
+running.
 
 ===== Writing Tests for Hubot Extensions
 
@@ -512,13 +511,13 @@ nice output of passing and failed tests at the end of your
 run. Jasmine tests are typically written in JavaScript, but the latest versions of
 Jasmine support tests also written in CoffeeScript. Hubot is written
 in CoffeeScript, so let's write our tests in CoffeeScript as
-well. We need to put our tests inside a 
+well. We need to put our tests inside a
 directory called "spec" and make sure our filename ends with
 `.spec.coffee`. Let's use `spec/pr-delegator.spec.coffee` as the
 complete filename. Jasmine expects spec files to have `.spec.` at the
 end of their filename (before the extension, either `.js` or
 `.coffee`); if your filename does not match this pattern Jasmine won't
-recognize it as a test. 
+recognize it as a test.
 
 [source,coffeescript]
 -----
@@ -546,7 +545,7 @@ describe "#probot", ->
 
 The first line in our test requires, or loads, the Hubot extension
 module into our test script, giving us a function we save as a Probot
-variable. We then create a `describe` 
+variable. We then create a `describe`
 function which is an organizing function to group tests. `describe`
 functions take an indentifier (in this case `#probot`) and a function
 which contains multiple `it` calls. In addition, a `describe` function
@@ -576,7 +575,7 @@ We need to install Jasmine, and we do this by adding to our
 `package.json` file. Append `"jasmine-node": "^1.14.5"` to the file,
 and make sure to add a comma to the tuple above it. Adding this code
 specifies that the minimum version of jasmine node we will use is
-"1.14.5". 
+"1.14.5".
 
 [source,javascript]
 -----
@@ -599,7 +598,7 @@ $ npm install
 ...
 hubot-slack@3.2.1 node_modules/hubot-slack
 └── slack-client@1.2.2 (log@1.4.0, coffee-script@1.6.3, ws@0.4.31)
-... 
+...
 $ ./node_modules/.bin/jasmine-node --coffee spec/
 
 .
@@ -660,7 +659,7 @@ will get back a token inside the JSON response.
 ```
 
 If you are using two-factor authentication then you will see a
-response message like this:  
+response message like this:
 
 ```
 {
@@ -671,7 +670,7 @@ response message like this:
 ```
 
 If you get this message in response to the prior cURL command, then
-you will be receiving a one time password via 
+you will be receiving a one time password via
 your choice of two factor authentication alternative endpoint (either
 SMS or a two factor authentication app like Google Authenticator or
 recovery codes that you printed out). If you
@@ -681,14 +680,14 @@ request appending a header using cURL.
 ```
 $ curl https://api.github.com/authorizations --user $USERNAME --data
 '{"scopes":["repo"], "note": "Probot access to PRs" }' -X POST
---header "X-GitHub-OTP: 423584"                                           
+--header "X-GitHub-OTP: 423584"
 Enter host password for user 'xrd':
 ```
 
 If all these steps complete successfully (regardless of whether you
 are using 2-factor auth or not) you will then receive an oauth token.
-                                                 
-```  
+
+```
 {
   "id": 1234567,
   "url": "https://api.github.com/authorizations/1234567",
@@ -715,7 +714,7 @@ Once this is completed we now have our token which we can use to
 create a webhook. Make sure to use the correct repository name and
 access token before running the cURL command. We will also need the
 endpoint that we created when we published into Heroku (in our case
-`https://inqry-chatbot.herokuapp.com`) 
+`https://inqry-chatbot.herokuapp.com`)
 
 ```
 $ REPOSITORY=testing_repostory
@@ -810,7 +809,7 @@ it "should verify our calls to router.post", (done) ->
 
 This additional test will fail should we run it. Now we can add to our
 Hubot and have it handle webhook callbacks from GitHub. Add this to
-the end of the file. 
+the end of the file.
 
 [source,coffeescript]
 -----
@@ -826,7 +825,7 @@ endpoint is public.
 
 [source.bash]
 ------
-$ ./node_modules/.bin/jasmine-node --coffee spec/                                                
+$ ./node_modules/.bin/jasmine-node --coffee spec/
 ..
 $ git commit -m "Working tests and associated code" -a
 ...
@@ -842,14 +841,14 @@ Delta compression using up to 8 threads.
 ------
 
 We now have an end-to-end Hubot setup, ready to receive webhook
-notifications. 
+notifications.
 
 ==== Triggering Real Pull Requests
 
 We can now start testing our Hubot with real GitHub
 notifications. First, let's set up a repository which we can use for
 testing. Creating the new repository on GitHub is a quick task if we
-use the `hub` tool described in the previous chapter on Jekyll. 
+use the `hub` tool described in the previous chapter on Jekyll.
 
 [source,bash]
 -------
@@ -879,7 +878,7 @@ command line invocations and variables that we used when generating
 our webhook using the API via cURL. Our config variable is similar,
 but the required fields in this case are: the title and body for the
 pull request, the "head" key which matches the name of the branch, and
-where to merge it to using the "base" key. 
+where to merge it to using the "base" key.
 
 Creating a new branch, adding some content and then issuing a pull
 request against the branch might be something we need to do several
@@ -906,14 +905,14 @@ echo "Adding some content" >> test-$DATE.txt
 git commit -m "Adding test file to test branch at $DATE" -a
 git push origin $NEW_BRANCH
 CONFIG=$(echo '
-{ "title": "PR on '$DATE'", 
-  "body" : "Pull this PR'$DATE'", 
-  "head": "'$NEW_BRANCH'", 
-  "base": "master" 
+{ "title": "PR on '$DATE'",
+  "body" : "Pull this PR'$DATE'",
+  "head": "'$NEW_BRANCH'",
+  "base": "master"
 }' )
 URL=https://api.github.com/repos/$USERNAME/$REPOSITORY/pulls
 curl -H "Authorization: token $AUTH_TOKEN" \
--H "Content-Type: application/json" -X POST -d "$CONFIG" "$URL"   
+-H "Content-Type: application/json" -X POST -d "$CONFIG" "$URL"
 ------
 
 This script generates a unique string based on the current time. It
@@ -926,7 +925,7 @@ had expired) this command will do nothing other than add testing data
 to your test repository, so you can experiment safely. Just be sure
 to pay attention to whether you see a successful JSON request as shown
 below or an error message. And, as we are going to run this script as
-a command, make it executable using the `chmod` command. 
+a command, make it executable using the `chmod` command.
 
 Now, let's run it and see what happens.
 
@@ -952,7 +951,7 @@ $ ./issue-pull-request.sh
 This returns a huge JSON response (abbreviated here), but you can see
 the first item is a link to the pull request. For a human readable
 link, we should use the link called `html_url`. Were we to visit this
-link, we could merge the pull request from within the GitHub web UI. 
+link, we could merge the pull request from within the GitHub web UI.
 
 To see more context on what is happening with this pull request, once
 we are looking at this pull request inside of GitHub, we can then navigate to the
@@ -966,7 +965,7 @@ These requests all failed; our Hubot is not correctly configured
 to handle real HTTP requests from GitHub. This does show that GitHub is
 trying to do something when a pull request is received. We'll work on
 getting our handler code written and pushed into Heroku, and then
-issue another PR. 
+issue another PR.
 
 ==== Handling PR Notifications as Post Requests over HTTP
 
@@ -986,7 +985,7 @@ simple: if the Hubot receives the proper parameters (most importantly
 that the internal secret matches the secret sent on the request) then
 we accept the PR as valid and message our room with further
 instructions, namely inviting some user to review this pull
-request. Our handler then needs to expose two methods: 
+request. Our handler then needs to expose two methods:
 `prHandler` which is where we delegate any information coming from an
 HTTP request to the `/pr` route, and a method where we can configure
 the secret, which we call `setSecret`. Once we have established this
@@ -1007,14 +1006,14 @@ describe "#pr", ->
         secret = "ABCDEF"
         robot = undefined
         res = undefined
-        
+
         beforeEach ->
                 robot = {
                         messageRoom: jasmine.createSpy()
                         }
                 res = { send: jasmine.createSpy() }
                 Handler.setSecret secret
-        
+
         it "should disallow calls without the secret", (done) ->
                 req = {}
                 Handler.prHandler( robot, req, res )
@@ -1074,7 +1073,7 @@ If we run our tests we will see them all pass:
 [source,bash]
 ------
 $ node_modules/jasmine-node/bin/jasmine-node \
---coffee spec/pr-delegator.spec.coffee 
+--coffee spec/pr-delegator.spec.coffee
 ....
 
 Finished in 0.01 seconds
@@ -1093,7 +1092,7 @@ switch with cURL).
 --------
 $ ( HUBOT_SLACK_TOKEN=xoxb-3295776784-nZxl1H3nyLsVcgdD29r1PZCq \
 ./bin/hubot -a slack 2> /dev/null | grep -i secret & )
-$ curl --data '' http://localhost:8080/pr                                                                                             
+$ curl --data '' http://localhost:8080/pr
 Invalid secret
 OK
 $ curl --data 'secret=XYZABC' http://localhost:8080/pr
@@ -1107,16 +1106,16 @@ start the server, piping the output to `grep` to contrain output
 related to our secret processing (we also background the
 entire chain using an ampersand and parentheses, a bash trick). Then,
 we hit the server running locally without the secret: the server (as
-it is running in the same shell) prints out the 
+it is running in the same shell) prints out the
 message "Invalid secret" using `console.log`, and then curl prints out
 "OK" which is what was returned from our server. If we run the command
 again, this time including the secret as post parameters, we see that
 Hubot verified the secret internally against its own secret, and then
 curl again prints "OK" which was what the express server inside of
-Hubot returned to the calling client. The final line quits Hubot: 
+Hubot returned to the calling client. The final line quits Hubot:
 this command finds the PID for the Hubot client (which runs as a node
-process) and then sends it a SIGHUP signal, signaling to Hubot that it 
-should quit. 
+process) and then sends it a SIGHUP signal, signaling to Hubot that it
+should quit.
 
 Provided you connected correctly to your Slack site, you'll also see a
 message inside your #general channel which says "OMG, GitHub is on my
@@ -1133,7 +1132,7 @@ real Hubot and not a test harness.
 
 Now that we have an incoming pull request (albeit one which we are
 faking), we need to write the code to find a random user and assign them
-to the pull request. 
+to the pull request.
 
 [WARNING]
 This next section is redundant; our Hubot will function
@@ -1144,7 +1143,7 @@ getting that data, the Slack API. I wrote the chapter using the Slack
 API, and then discovered my mistake. Initially I planned to remove
 this entire section. However, it does demonstrate the ease of using an
 external service through the built in HTTP client, which is a powerful
-feature of Hubot. And, it also demonstrates how powerful tests aid you 
+feature of Hubot. And, it also demonstrates how powerful tests aid you
 when developing a Hubot extension; I was able to refactor to use a
 radically different internal code path for getting the list of users
 and maintain faith that the end to end process of my code works by
@@ -1160,8 +1159,8 @@ outside the Hubot API and use the Slack.com API to query for a list of
 users. The Slack.com API provides an endpoint giving you all
 users currently in a room. To access the Slack.com API, we will
 use the built in Hubot HTTP client. Once we have the the
-list of members in the room we can look over this list 
-and randomly choose a member and deliver the PR request to them. 
+list of members in the room we can look over this list
+and randomly choose a member and deliver the PR request to them.
 
 [source,coffeescript]
 --------
@@ -1179,7 +1178,7 @@ sendPrRequest = ( robot, body, room, url ) -> # <2>
         user = anyoneButProbot( parsed.members )
         robot.messageRoom room, "#{user}: Hey, want a PR? #{url}"
 
-exports.prHandler = ( robot, req, res ) -> 
+exports.prHandler = ( robot, req, res ) ->
         slack_users_url =   # <3>
                 "https://slack.com/api/users.list?token=" +
                 process.env.HUBOT_SLACK_TOKEN
@@ -1189,8 +1188,8 @@ exports.prHandler = ( robot, req, res ) ->
         if secret == _SECRET and url
                 room = "general"
                 robot.http( slack_users_url ) # <5>
-                        .get() (err, response, body) ->  
-                                sendPrRequest( robot, body, room, url ) unless err 
+                        .get() (err, response, body) ->
+                                sendPrRequest( robot, body, room, url ) unless err
         else
                 console.log "Invalid secret or no URL specified"
         res.send "OK\n"
@@ -1200,14 +1199,14 @@ exports.setSecret = (secret) ->
 --------
 
 <1> We define a method called `anyoneButProbot` that takes a list of
-users and finds a random one, as long as it is not the hubot. 
+users and finds a random one, as long as it is not the hubot.
 <2> The `sendPrRequest` method parses the JSON returned from the Slack
 API and then sends the members inside of the object into the
 `anyoneButProbot` call. It then uses the Hubot API to send a message
 to the room asking if that user will accept the pull request review
-invitation. 
+invitation.
 <3> We build the URL to the Slack service by tacking on the Slack API
-token to the base Slack API URL. 
+token to the base Slack API URL.
 <4> As we did before, we pull out the secret and the PR URL, and then
 make sure they both exist.
 <5> We use the built in HTTP client to make a GET request to the
@@ -1226,7 +1225,7 @@ http://localhost:8080/pr
 
 Our randomly selected user will see the text `username: Hey, want a
 PR? http://pr/1` (and the Slack client will format that link as a
-clickable URL). 
+clickable URL).
 
 Unfortunately, our tests are now broken: we now have the failure: `TypeError:
 Object #<Object> has no method 'http'`. Our mocked Robot object that
@@ -1235,7 +1234,7 @@ with Hubot, so we should add it to our custom Robot. The method
 signature for the  http client (which comes from the
 `node-scoped-http-client` NodeJS package) is hairy: you chain calls
 together to build up an HTTP client request and end up with a function
-returned into which you pass a callback where you handle the response 
+returned into which you pass a callback where you handle the response
 body. This module makes you write code that is not particularly
 testable (said another way, it was challenging for me to understand
 what the faked test implementation should look like) but the setup
@@ -1248,7 +1247,7 @@ returns a function callback which when called executes that function
 with three parameters. In real life that function callback would
 contain the error code, the response object, and the JSON. In our
 case, as long as the error code is empty, our implementation will
-parse the JSON for members, and then issue the PR request. 
+parse the JSON for members, and then issue the PR request.
 
 [source,coffeescript]
 -----
@@ -1263,7 +1262,7 @@ beforeEach ->
                 messageRoom: jasmine.createSpy( 'messageRoom' )
                 http: httpSpy
                 }
-                
+
         res = { send: jasmine.createSpy( 'send' ) }
         Handler.setSecret secret
 
@@ -1282,7 +1281,7 @@ it "should disallow calls without the url", (done) ->
         expect( httpSpy ).not.toHaveBeenCalled()
         expect( res.send ).toHaveBeenCalled()
         done()
-        
+
 it "should allow calls with the secret", (done) ->
         req = { body: { secret: secret, url: "http://pr/1" } }
         Handler.prHandler( robot, req, res )
@@ -1328,7 +1327,7 @@ sendPrRequest( robot, users, room, url, number )
 It is likely that what we got back from the Slack API and what Hubot
 stores inside its brain for users are functionally the same
 information, but structural stored very differently. How can we
-investigate whether this assumption is correct? 
+investigate whether this assumption is correct?
 NodeJS has a standard library module called `util` which includes
 useful utility functions, as you might expect from the name.
 One of them is `inspect` which will dig into an object and
@@ -1339,27 +1338,27 @@ we can see the full contents of a live response object passed into our
 
 [source,json]
 -------------
-{ U04FVFE97: 
+{ U04FVFE97:
    { id: 'U04FVFE97',
      name: 'ben',
      real_name: 'Ben Straub',
      email_address: 'xxx' },
-  U038PNUP2: 
+  U038PNUP2:
    { id: 'U038PNUP2',
      name: 'probot',
      real_name: '',
      email_address: undefined },
-  U04624M1A: 
+  U04624M1A:
    { id: 'U04624M1A',
      name: 'teddyhyde',
      real_name: 'Teddy Hyde',
      email_address: 'xxx' },
-  U030YMBJY: 
+  U030YMBJY:
    { id: 'U030YMBJY',
      name: 'xrd',
      real_name: 'Chris Dawson',
      email_address: 'xxx' },
-  USLACKBOT: 
+  USLACKBOT:
    { id: 'USLACKBOT',
      name: 'slackbot',
      real_name: 'Slack Bot',
@@ -1369,10 +1368,10 @@ we can see the full contents of a live response object passed into our
 Ah, we were right: the Slack API returns an array while this is an
 associate array (called a hash in other languages). So, we need to
 refactor our inputs to the test to take an associative array instead
-of an array, and then we need a function to flatten it 
+of an array, and then we need a function to flatten it
 out (after that our code will work the same as before). We will return
 that when the user calls `robot.brain.users` so add a new spy as the
-`users` key inside our fake robot. 
+`users` key inside our fake robot.
 
 [source,coffeescript]
 -----
@@ -1394,7 +1393,7 @@ flattenUsers = (users) ->
         rv = []
         for x in Object.keys( users )
                rv.push users[x]
-        rv 
+        rv
 
 anyoneButProbot = ( users ) ->
         user = undefined
@@ -1423,7 +1422,7 @@ If we retrieve the JSON from a POST, it will look something like this
 
 [source,json]
 -------
-{ 
+{
     "action":"opened",
     "number":13,
     "pull_request": {
@@ -1499,7 +1498,7 @@ handler. To do this, we will need to retrieve the secure hash GitHub
 provides inside the request headers. Then, we will need to calculate
 the hash ourselves using the secret we maintain internally. If these
 hashes match, then we know the incoming request and JSON is truly from
-GitHub and not an attacker. 
+GitHub and not an attacker.
 
 [source,coffeescript]
 -----
@@ -1533,16 +1532,16 @@ exports.prHandler = ( robot, req, res ) ->
 -----
 
 The signature is a "hash message authentication code" (HMAC). HMAC
-cryptography is vulnerable to timing attacks. When you use this 
+cryptography is vulnerable to timing attacks. When you use this
 encryption technique, the time it takes to complete a comparison of
-the computed hash and the sent hash can be the starting point for an attacker to gain 
+the computed hash and the sent hash can be the starting point for an attacker to gain
 forced access to a server. More specifically to JavaScript, naive
 comparison operators like `==` will leak this timing information.
 To eliminate the risk that this information could be used to
 compromise the host system, we use a module called `secure-compare`
 that obscures this timing information when making a comparison. To
 load this module, we need to add it to our package.json manifest file
-with the command `npm install secure-compare --save`. 
+with the command `npm install secure-compare --save`.
 
 Now we can adjust our tests to fit the new reality of our handler.
 
@@ -1558,8 +1557,8 @@ it "should disallow calls without the secret and url", (done) ->
         done()
 
 it "should allow calls with the secret and url", (done) ->
-        req = { body: '{ "pull_request" : { "html_url" : "http://pr/1" }}', 
-  		headers: { "HTTP_X_HUB_SIGNATURE" : 
+        req = { body: '{ "pull_request" : { "html_url" : "http://pr/1" }}',
+  		headers: { "HTTP_X_HUB_SIGNATURE" :
 		           "cd970490d83c01b678fa9af55f3c7854b5d22918" } }
         Handler.prHandler( robot, req, res )
         expect( robot.messageRoom ).toHaveBeenCalled()
@@ -1574,12 +1573,12 @@ headers. This is the same structure our Hubot will see when the
 GitHub webhook encodes the content of the JSON and provides us with a
 secure hash in the HTTP_X_HUB_SIGNATURE key. Inside our test we will need
 to provide the same signature inside our mocked request object. We
-could duplicate our secure hash generation code from the 
+could duplicate our secure hash generation code from the
 handler implementation, or we could be lazy and just run our tests
 once (knowing they will fail this time), watch for the
 console.log output which says "Hash: cd970490d83c..." and copy this
 hash into our mocked request object. Once we do this, our tests will
-pass. 
+pass.
 
 Now, after reloading our Hubot, if we issue a pull request using our
 `issue-pull-request.sh` script, we should see the matching
@@ -1597,7 +1596,7 @@ problem at hand. Common middleware includes static file handlers (for
 serving static files), cookie handlers, session handlers, and body
 parsers. You can imagine circumstances where you would not need all of
 the list above (or you might need others) and this flexibility makes
-Express.js a popular choice for building NodeJS web applications. 
+Express.js a popular choice for building NodeJS web applications.
 
 The body parser middleware is of particular interest to us here: the
 body parser middleware is used to convert the "body" of a request into
@@ -1617,7 +1616,7 @@ Unfortunately, because the `express` object is bundled and configured for us lon
 before our extension is loaded, we cannot interrupt the load order of
 the body parser middleware inside our extension and this means we
 cannot get access to the raw body content. The body parser middleware
-processes the stream of 
+processes the stream of
 data by registering for events inside of the HTTP request flow. NodeJS
 made a mark on web application development by providing a network
 application toolkit centered around one of the
@@ -1652,7 +1651,7 @@ Hubot gets updated with a critical security flaw, we need to merge
 those changes into our fork, a maintenance issue which we would avoid
 if we use tagged releases from the main repository. There is,
 unfortunately, no perfect way to resolve this problem that does not
-itself create other problems. 
+itself create other problems.
 
 If you do choose to modify the built in hubot code, modify the file
 `robot.coffee` inside the `node_modules/hubot/src/` directory. The
@@ -1686,19 +1685,19 @@ app.use express.query()
 
 Express middleware have a very simple interface: they are nothing more
 than a JavaScript function callback which receives a request, response
-and continuation function passed as parameters. We 
+and continuation function passed as parameters. We
 register a listener when data content (the body) is propagated, and
 then add the body content to a variable on the request object. When
 the request object is passed into our handler for pull requests within
 our Hubot, we have the raw data prefilled. The `next()` function is
 used to indicate to the middleware host that the next middleware can
-proceed. 
+proceed.
 
 We now need to adjust our tests to fit this new requirement. We prime
-the pump with a request object that has this `rawBody` inside 
+the pump with a request object that has this `rawBody` inside
 it, and we should properly encode the content using
 `encodeURIComponent` to match the format in which it will be appearing
-from GitHub. 
+from GitHub.
 
 [source,coffeescript]
 --------------
@@ -1772,11 +1771,11 @@ notification, and falsely engage chat room users around it. If the PR
 the attacker used was fake, it might confuse our Hubot, but no real
 harm would be done. If they used an existing real PR, an attacker
 could trick our Hubot into adding data to the PR, adding confusion in
-the comments about who accepted the review request. We won't solve that 
+the comments about who accepted the review request. We won't solve that
 potential problem with this code, but you can imagine adding code to
 our Hubot that handles a case like this (for example, by checking
 first to see if someone was already tagged on the PR, and ignoring
-successive incoming webhooks associated with that PR). 
+successive incoming webhooks associated with that PR).
 
 ===== Responding to the PR Request
 
@@ -1787,7 +1786,7 @@ request. We put placeholders in our Hubot extension to notify us with
 a debugging message when the user responds and send a message back to
 whoever sent us a message, but now we can actually wire up handling
 the response and adding to the pull request on GitHub based on the
-user who we are interacting with (provided they accepted). 
+user who we are interacting with (provided they accepted).
 
 There are multiple ways in which a Hubot can interact with chat room
 messages. We chose the `respond` method, but there is another method
@@ -1798,7 +1797,7 @@ enabled) will be processed by our Hubot. We could have used `hear`
 but in our case we are processing a simple response, and
 without a clear direction for the message, it would be difficult to
 always make sure we were interpreting the message in the correct
-context. `respond` makes more sense here. 
+context. `respond` makes more sense here.
 
 If they decline the request, let's just graciously note that the offer
 was declined.
@@ -1819,7 +1818,7 @@ pull request identifier in the communication with the target
 user. And, users should be told to reply with a string like `accept
 112`. The Hubot can then interpret this to mean they are accepting PR
 #112 and not the other pull request which the hubot invited John to
-respond to ten seconds later.  
+respond to ten seconds later.
 
 If we do this, our hubot does need to save the state of pull request
 invitations. Fortunately, there is an extremely easy way to do this
@@ -1846,7 +1845,7 @@ at the API documentation, we see that it supports authentication using
 an oAuth token (using the `github.authenticate( {  'type' : 'oauth':
 'token' : '...' }` syntax), and has methods we can use to add a comment to an
 issue or pull request associated with a repository (using the
-`github.issues.createComment` method). 
+`github.issues.createComment` method).
 
 Knowing that this module handles most of the work for us between these
 two methods, we can start by writing our tests. We'll create a new
@@ -1860,10 +1859,10 @@ expectations of this method since that got that covered by prior
 tests. After we get our handler to the right state, we need to test
 that the handler works correctly with an `accept` and `decline` method
 (they don't yet exist in our handler code so we'll add them
-next). 
+next).
 
 Our accept request handler triggers our Hubot to
-contact GitHub and add a comment to the pull request noting 
+contact GitHub and add a comment to the pull request noting
 our targetted chat user accepted the request. The network
 connection to the GitHub API uses the GitHub API bindings from within
 the `node-github` module. We want to make this testable, so we should pass in the
@@ -1908,15 +1907,15 @@ happens using the reply method on our response object.
                         beforeEach ->
                                 githubBinding = { authenticate: authenticate, issues: issues }
                                 github = Handler.setApiToken( githubBinding, "ABCDEF" )
-                                req = { body: '{ "pull_request" : { "url" : "http://pr/1" }}', 
-				      	headers: { "HTTP_X_HUB_SIGNATURE" : 
+                                req = { body: '{ "pull_request" : { "url" : "http://pr/1" }}',
+				      	headers: { "HTTP_X_HUB_SIGNATURE" :
 "cd970490d83c01b678fa9af55f3c7854b5d22918" } }
                                 Handler.prHandler( robot, req, responder )
 
                         it "should tag the PR on GitHub if the user accepts", (done) ->
                                 Handler.accept( responder )
                                 expect( authenticate ).toHaveBeenCalled()
-                                expect( createComment ).toHaveBeenCalled() 
+                                expect( createComment ).toHaveBeenCalled()
                                 expect( responder.reply ).toHaveBeenCalled()
                                 done()
 
@@ -1934,7 +1933,7 @@ happens using the reply method on our response object.
                                 expect( msg.repository ).toEqual( "testing_repository" )
                                 expect( msg.number ).toEqual( "1" )
                                 done()
-                                
+
                         it "should get the username from the response object", (done) ->
                                 res = { username: { name: "Chris Dawson" } }
                                 expect( Handler.getUsernameFromResponse( res ) ).toEqual "Chris Dawson"
@@ -1958,7 +1957,7 @@ call, we just need to split the message into pieces by the slash
 character, and then retrieve the correct items by index. We probably
 could add some additional tests which cover passing in empty strings,
 or other edge cases, but we'll leave it as an exercise to the
-reader. Our code does not crash in these cases, but it would be 
+reader. Our code does not crash in these cases, but it would be
 nice to have coverage of our expectations represented in our tests.
 
 [source,coffeescript]
@@ -1985,13 +1984,13 @@ exports.accept = ( res ) ->
         msg = exports.decodePullRequest( _PR_URL )
         username = exports.getUsernameFromResponse( res )
         msg.body = "@#{username} will review this (via Probot)."
-                
+
         _GITHUB.issues.createComment msg, ( err, data ) ->
                 unless err
                         res.reply "Thanks, I've noted that in a PR comment!"
                 else
                         res.reply "Something went wrong, I could not tag you on the PR comment"
-                
+
 exports.decline = ( res ) ->
         res.reply "OK, I'll find someone else."
         console.log "Declined!"
@@ -2036,13 +2035,13 @@ module.exports = (robot) ->
 -------------
 
 If you were to look only at this code, the interface is clean, and the
-bulk of the work handled by our very testable handler. 
+bulk of the work handled by our very testable handler.
 
 ===== Peering into the Response object
 
 We need to get the username and it stands to reason the object passed
 to us when we get a respond callback might have it in there. The
-`respond` method provided by the Hubot API is documented mostly by 
+`respond` method provided by the Hubot API is documented mostly by
 way of the example scripts which come with hubot. There is very little
 information on what the parameter passed to your callback looks
 like. Let's use the `util` library to inspect the data and print it to
@@ -2050,17 +2049,17 @@ the console. We abbreviate the full output here, and show you that it
 contains information on the  user who sent the message to our
 Hubot. We can access this information by using
 `response.message.user.name` if, for example, we wanted to retrieve
-the name of the user. 
+the name of the user.
 
 [source,json]
 -----
-{ robot: 
+{ robot:
    { name: 'probot',
-     brain: 
+     brain:
       { data: [Object],
   ...
-  message: 
-   { user: 
+  message:
+   { user:
       { id: '...',
         name: 'xrd',
         real_name: 'Chris Dawson',
@@ -2068,7 +2067,7 @@ the name of the user.
      ...
      text: 'probot accept',
      rawText: 'accept',
-     rawMessage: 
+     rawMessage:
       { _client: [Object],
   ...
   match: [ 'probot accept', index: 0, input: 'probot accept' ],
@@ -2105,7 +2104,7 @@ exports.getUsernameFromResponse = ( res ) ->
 
 
 With this information in hand, we can properly comment on the pull
-request. Well, almost. 
+request. Well, almost.
 
 ===== Unifying Usernames via the Collaborators API
 
@@ -2114,7 +2113,7 @@ exact match with their GitHub username, then we can assume they are
 the same person in real life and create a comment inside the pull
 request reminding them (and anyone else) that they will be reviewing
 the PR. We can use the collaborator sub section of the Repository API
-to look up their name on GitHub. 
+to look up their name on GitHub.
 
 If we don't find them inside the list of users and there is not an
 exact match with their Slack name then we have at least one problem,
@@ -2154,7 +2153,7 @@ following the same patterns of generating spies to watch methods, and
 implementing our fake callbacks when necessary. We also can move our
 message inside the response object into the one created in our setup
 block so that we can use it inside all of our sub-tests, rather than
-creating a new object for each test inside the test body. 
+creating a new object for each test inside the test body.
 
 [source,coffeescript]
 -------------
@@ -2170,7 +2169,7 @@ repos = { getCollaborator: getCollaborator }
 it "should tag the PR on GitHub if the user accepts", (done) ->
         Handler.accept( robot, responder )
         expect( authenticate ).toHaveBeenCalled()
-        expect( createComment ).toHaveBeenCalled() 
+        expect( createComment ).toHaveBeenCalled()
         expect( responder.reply ).toHaveBeenCalled()
         expect( repos.getCollaborator ).toHaveBeenCalled()
         done()
@@ -2194,7 +2193,7 @@ exports.accept = ( robot, res ) ->
 
         _GITHUB.repos.getCollaborator msg, ( err, collaborator ) ->
                 msg.body = "@#{username} will review this (via Probot)."
-                
+
                 _GITHUB.issues.createComment msg, ( err, data ) ->
                         unless err
                                 res.reply "Thanks, I've noted that in a PR comment. " +
@@ -2203,7 +2202,7 @@ exports.accept = ( robot, res ) ->
                                 res.reply "Something went wrong."  +
 					  "I could not tag you on the PR comment: " +
 					  "#{require('util').inspect( err )}"
-                
+
 exports.decline = ( res ) ->
         res.reply "No problem, we'll go through this PR in a bug scrub"
 ...
@@ -2223,10 +2222,10 @@ the environment of the running process.
 [source,coffeescript]
 -------------
 ...
-handler.setSecret process.env.PROBOT_SECRET 
+handler.setSecret process.env.PROBOT_SECRET
 github = require 'github'
 ginst = new github version: '3.0.0'
-handler.setApiToken ginst, process.env.PROBOT_API_TOKEN 
+handler.setApiToken ginst, process.env.PROBOT_API_TOKEN
 ...
 -------------
 
@@ -2246,13 +2245,13 @@ variables using the appropriate Heroku commands.
 
 [source,bash]
 -------------
-$ heroku config:set PROBOT_API_TOKEN=926a701550d4dfae93250dbdc068cce887531 
+$ heroku config:set PROBOT_API_TOKEN=926a701550d4dfae93250dbdc068cce887531
 Adding config vars and restarting myapp... done, v12
-PROBOT_API_TOKEN=926a701550d4dfae93250dbdc068cce887531 
+PROBOT_API_TOKEN=926a701550d4dfae93250dbdc068cce887531
 
-$ heroku config:set PROBOT_SECRET=XYZABC 
+$ heroku config:set PROBOT_SECRET=XYZABC
 Adding config vars and restarting myapp... done, v12
-PROBOT_SECRET=XYZABC 
+PROBOT_SECRET=XYZABC
 -------------
 
 Don't forget that when we run our tests, we will need to specify the
@@ -2263,10 +2262,10 @@ environment variables on the command line as well.
 $ PROBOT_SECRET=XYZABC \
 PROBOT_API_TOKEN=926a701550d4dfae93250dbdc068cce887531 \
 node_modules/jasmine-node/bin/jasmine-node --coffee \
-spec/pr-delegator.spec.coffee 
+spec/pr-delegator.spec.coffee
 -------------
 
-=== Summary 
+=== Summary
 
 Our Hubot is alive! We went through building a robot which can
 interact with us inside a chat room, then refactored the robot so that its
@@ -2274,9 +2273,4 @@ functionality is contained into a highly testable module. Along
 the way, we got intimate with the Hubot API, and even discussed how to
 modify (and the drawbacks surrounding) modifying the source code to
 Hubot itself. Finally we demonstrated how to use the Activities API
-receiving (and faking data) coming from a GitHub webhook. 
-
-
-
-
-
+receiving (and faking data) coming from a GitHub webhook.

@@ -4,7 +4,7 @@
 
 This book contains stories about building software tools.
 
-If you write software on a daily basis, you will realize the act of
+If you write software on a daily basis, you realize the act of
 writing software is the craft of creating tools. Software is nothing
 more than a tool. A spreadsheet is fundamentally a tool to
 add and subtract numbers. A video game is fundamentally a tool to
@@ -15,7 +15,7 @@ call these tools that are strictly to support writing software (rather
 than software tools for the general population) meta-tools.
 
 One of the most important meta-tools in the software development world
-is Git. Git is a meta-tool which helps software developers  
+is Git. Git is a meta-tool that helps software developers  
 manage the complexity that comes from writing software. Git allows
 software developers to store snapshots of their programs (and then
 easily restore those snapshots if necessary) and to easily collaborate
@@ -30,13 +30,13 @@ in Git. Not surprisingly, one of the factors behind their success was that
 GitHub employees embraced the ethos of writing meta-tools from the
 beginning. Building meta-tools requires the courage to take a little
 extra time to build a meta-tool rather than 
-taking the easy route to get the public facing software out the
+taking the easy route to get the public-facing software out the
 door. GitHub employees are proud of this prioritization and have
-written extensively about the benefits which include easy on-boarding
+written extensively about the benefits, which include easy on-boarding
 of new hires and a transparent workflow visible to all employees. 
 
-This book looks on the tools that GitHub uses internally. The
-GitHub.com website is itself a meta-tool and we discuss the many
+This book looks at the tools GitHub uses internally. The
+GitHub.com website is itself a meta-tool, and we discuss the many
 facets of the GitHub service. Specifically these technologies are the
 GitHub API and related GitHub technologies, the Gollum wiki, Jekyll
 static  page generator, and the chat robot called Hubot (if you are
@@ -46,41 +46,41 @@ respective chapters).
 To reiterate, this book is not a reference of those technologies. This
 book is a story-book, a book that relates the process of building
 software meta-tools, explaining not only the technology specifics, but
-also the compromises, the realities of refactoring, and challenges
+also the compromises, the realities of refactoring, and the challenges
 inherent to writing meta-tools in long narrative story
 form. 
 
 Meta-tools require a different mindset than what comes from
 building software available to the general population. Meta-tools are
-generally open source and this requires a 
+generally open source, which requires a 
 different level of responsibility and usage. One could argue that
-software engineers more demanding of quality than general users
+software engineers are more demanding of quality than general users
 because software developers know they can take action to improve or
 fork software that does not work for them. Meta-tools enforce a higher
-level of contributory involvement and this makes automated tests
+level of contributory involvement, which makes automated tests
 almost a requirement. All of these concepts constitute the background
-story behind meta-tools and we show you how they play out when
-building your own meta-tools.
+story behind meta-tools, and we show you how they play out when
+building your own.
 
-=== Why APIs and why the GitHub API?
+=== Why APIs and Why the GitHub API?
 
 Using an API to back an application is a common practice today: this
 is the future of application development. APIs provide a great pattern
-for making data accessible to the multi-screen world. If your
+for making data accessible to the multiscreen world. If your
 application is backed by a remote service API, the 
 first application could be a mobile app running on Apple's iOS
 operating system. Critically, if that business model does not turn out
 to be correct, you can respond quickly to changing requirements and
 iterate to build another application for an Android wearable. Or,
 perhaps you'll build an integrated car application, or any other
-console (or even non-console) application. As long as your applications
+console (or even nonconsole) application. As long as your applications
 can send and receive data using calls to a remote API you are free to
 build whatever user interface you want on whatever platform you want.
 
 As an author, you could write and host your own API. Many frameworks
-for popular languages like Ruby, Go or Java, support building APIs
+for popular languages like Ruby, Go, or Java support building APIs
 using standard architectural styles like REST. Or, you could use a
-third party API. In this book we'll focus on a third party API: the
+third-party API. In this book we'll focus on a third-party API: the
 GitHub API. 
 
 Why the GitHub API? The GitHub API is exceedingly relevant if you are
@@ -95,15 +95,14 @@ API clients resilient to API changes, a tricky problem. The API is well
 versioned. It is comprehensive, mapping closely to most features of
 Git. It is consistent across sections and well organized. The GitHub
 API is a great API on which to build applications, serving as a
-case study for a well designed API.
+case study for a well-designed API.
 
-=== Structure of this book
+=== Structure of This book
 
 The GitHub API is extremely comprehensive, permitting access and
 modification of almost all data and metadata stored or associated with
 a Git repository. Here is a grouped summary of the sections of the API ordered
-alphabetically as they are on the GitHub API documentation site
-(https://developer.github.com/v3/): 
+alphabetically as they are on the https://developer.github.com/v3/[GitHub API documentation site]: 
 
 * Activity: notifications of interesting events in your developer life
 * Gists: programmatically create and share code snippets
@@ -114,13 +113,13 @@ alphabetically as they are on the GitHub API documentation site
 * Organizations: access and retrieve organizational membership data
 * Pull Requests: a powerful API layer on the popular merge process
 * Repositories: modify everything and anything related to repositories
-* Search: code driven search within the entire GitHub database
+* Search: code-driven search within the entire GitHub database
 * Users: access user data 
 * Enterprise: specifics about using the API when using the private
   corporate GitHub
 
 In addition, though not a part of the API, there are other important
-technologies you should know about when using GitHub which are not
+technologies you should know about when using GitHub that are not
 covered in the API documentation:
 
 * Jekyll and "gh-pages": hosting blogs and static documentation
@@ -128,8 +127,8 @@ covered in the API documentation:
 * Hubot: a programmable chat robot used extensively at GitHub
 
 Each of these sections of the GitHub technology stack are covered in
-various chapters (with two exceptions we explain below). The GitHub API 
-documentation is a stellar reference which you will use constantly
+various chapters (with two exceptions, which we explain below). The GitHub API 
+documentation is a stellar reference you will use constantly
 when writing any application that talks to the API, but the chapters
 in this book serve a different purpose: 
 these chapters are stories about building applications on top of
@@ -143,32 +142,32 @@ of more than one section.
 
 Here is a short synopsis of each chapter:
 
-* The "cURL" chapter: the chapter you are reading now covers a
+* <<introduction,The "cURL" chapter>>: the chapter you are reading now covers a
   first look at the API through the command line HTTP client called
   cURL. We talk a bit about the response format and how to parse it
   within the command line, and also document authentication. This is
-  the only chapter which does not build an application from the
+  the only chapter that does not build an application from the
   technologies presented.
-* The "Gist" chapter: covers the Gist API, as well as command line
+* <<chapter2,The "Gist" chapter>>: covers the Gist API, as well as command line
   tools and the Ruby language "Octokit" API client. We then take this
-  API and build a simple ruby server that is stored as a gist and
+  API and build a simple Ruby server that is stored as a gist and
   displays gists.
-* The "Gollum" chapter: explains usage of the Gollum command line tool
-  and associated Ruby library (gem) which is backed by Grit, the
+* <<chapter3,The "Gollum" chapter>>: explains usage of the Gollum command line tool
+  and associated Ruby library (gem), which is backed by Grit, the
   C-language bindings for accessing Git repositories. We also
   document some details of the Git storage format and how it applies
   to storing large files inside of a Git repository, and show how to
-  use the git command line tools to play with this information. We use
+  use the Git command line tools to play with this information. We use
   Gollum and the Grit libraries to build an image management tool
-  which also functions as a regular Gollum wiki which can be published
+  that also functions as a regular Gollum wiki, which can be published
   to GitHub.
-* The "Search" chapter: we explore the Search API and build a GUI
+* <<python_search_api,The "Search" chapter>>: we explore the Search API and build a GUI
   tool to search repositories on GitHub using Python.
-* The "Commit Status" chapter: documents a relatively new part of
-  the API which documents the interactions between third party tools
+* <<commit_status,The "Commit Status" chapter>>: documents a relatively new part of
+  the API that documents the interactions between third-party tools
   and your code. This chapter builds an application using C# and the
   Nancy .NET GitHub API libraries. 
-* The "Jekyll" chapter: if you push a specifically organized
+* <<Jekyll,The "Jekyll" chapter>>: if you push a specifically organized
   repository into GitHub, GitHub will host a fully featured blog,
   equivalent in most ways to a Wordpress site (well, except for the
   complexity part). This chapter documents how to format your
@@ -177,27 +176,27 @@ Here is a short synopsis of each chapter:
   then shows how to import an entire web site from the Internet
   Archive into the Jekyll format using Ruby. We show 
   how to respectfully spider a site using caching, a valuable
-  technique when using APIs or third party public information.
-* The "Android" chapter: in this chapter we create a mobile
+  technique when using APIs or third-party public information.
+* <<android_and_git_data_api,The "Android" chapter>>: in this chapter we create a mobile
   application targeting the Android OS. Our application reads and
   writes information into a Jekyll repository from the Git Data
   section of the API. We show how to create user interface tests for
-  Android which verify GitHub API responses using the Calabash UI
+  Android that verify GitHub API responses using the Calabash UI
   testing tool.
-* The "JavaScript" chapter: did you know you can host an entire
-  "single page application" on GitHub? We show how you can build an
+* <<JavaScript,The "JavaScript" chapter>>: did you know you can host an entire
+  "single-page application" on GitHub? We show how you can build a
   coffee shop information app backed by a flat file database hosted on
   GitHub written in the JavaScript language. Importantly, we show how
   you can write a testable JavaScript application that mocks out the
   GitHub API when needed. 
-* The "Hubot" chapter: Hubot is a JavaScript (NodeJS) chat robot
+* <<Hubot,The "Hubot" chapter>>: Hubot is a JavaScript (NodeJS) chat robot
   enabling technologists to go beyond developer operations ("DevOps")
   to a new frontier called "ChatOps." The Hubot chapter illustrates
   using the Activities and Pull Requests section 
-  of the API. In addition we show how you can simulate GitHub
+  of the API. In addition, we show how you can simulate GitHub
   notifications and how to write testable Hubot extensions (which is
   often a challenge when writing JavaScript code). We string all these
-  pieces together and build a robot which automates assigning pull
+  pieces together and build a robot that automates assigning pull
   request review requests.
 
 We don't cover the organization API: this is a small facet of the API
@@ -208,7 +207,7 @@ of the API will be very intuitive.
 We also don't cover the users section of the API. While you might
 expect it to be an important part of the API, the users API is really
 nothing more than an endpoint to list information about users, add or
-remove SSH keys, adjust email addresses and modify your list of
+remove SSH keys, adjust email addresses, and modify your list of
 followers. 
 
 There is not a specific chapter on issues. GitHub originally
@@ -219,16 +218,16 @@ same database and pull requests are, at least for now, just another
 type of issue. The Hubot chapter documents using pull requests and
 is a good reference for issues in that way.
 
-The enterprise API works almost exactly the same as the GitHub.com
-site API. We don't have a chapter telling a story about an enterprise
-version of the API, but we do provide an appendix which provides a few
-notes about how the examples work when using an enterprise server. We also
+The Enterprise API works almost exactly the same as the GitHub.com
+site API. We don't have a chapter telling a story about an Enterprise
+version of the API, but we do provide an appendix that provides a few
+notes about how the examples work when using an Enterprise server. We also
 provide the specific syntax for each of the languages used in the
 chapters that will make any of the examples provided work with an
-enterprise server.
+Enterprise server.
 
 Through these stories about the technologies behind GitHub we hope to
-give you an inside look into the inner workings of the brain of a
+give you an inside look at the inner workings of the brain of a
 developer building on top of the GitHub API. 
 
 === Who You Are
@@ -239,7 +238,7 @@ related to these technologies. People without any experience using
 GitHub or Git should start with an introductory book on these
 technologies.
 
-You should have a good familiarity with at least one imperative modern
+You should have good familiarity with at least one imperative modern
 programming language. You don't need to be an expert programmer to
 read this book, but having some programming experience and familiarity
 with at least one language is essential.
@@ -249,7 +248,7 @@ uses a very standard RESTful approach for its API. You should
 understand the difference between a GET request and POST request and what
 HTTP status codes mean at the very least.
 
-Familiarity with web other web APIs will make traversing these
+Familiarity with other web APIs will make traversing these
 chapters easier, although this book simultaneously aspires to provide
 a guide showing how a well thought out, well designed, and well tested
 web API creates a foundation for building fun and powerful tools. If
@@ -296,28 +295,26 @@ Almost every chapter has an associated repository hosted on GitHub
 where you can review the code discussed. Fork away and take these
 samples into your own projects and tools!
 
-Finally, we help you write testable API backed code. Even the most experienced
+Finally, we help you write testable API-backed code. Even the most experienced
 developers often find that writing tests for their code is a
 challenge, despite the massive body of literature connecting quality
 code with tests. Testing can be especially challenging when you are
 testing something backed by an API; it requires a different level of
 thinking than is found in strict unit testing. To help you get past
 this roadblock, whenever possible, this book shows you how to write
-code which interacts with the GitHub API and is testable.
+code that interacts with the GitHub API and is testable.
 
 === GitHub "First Class" Languages
 
-There are two languages which are so fundamentally linked to GitHub
+There are two languages that are so fundamentally linked to GitHub
 that you do need to install and use them in order to get the most out
 of this book.
 
-* Ruby: a simple, readable programming language which the founders of
+* Ruby: a simple, readable programming language the founders of
   GitHub used extensively early in the life of the company.
-* JavaScript: the only ubiquitous browser side programming language, its
+* JavaScript: the only ubiquitous browser-side programming language; its
   importance has grown to new heights with the introduction of
-  NodeJS, rivaling even the popularity of Ruby on Rails as a server
-  side toolkit for web applications, especially for independent
-  developers.
+  NodeJS, rivaling even the popularity of Ruby on Rails as a server-side toolkit for web applications, especially for independent developers.
 
 Undoubtedly, many of you picking up this book already have familiarity
 with Ruby or JavaScript/NodeJS. So, the basics and installation of them are in
@@ -374,11 +371,11 @@ to learn from this approach, but if you are interested in only a
 specific language and how it works with the GitHub API, this is not
 the book for you.
 
-This book strives to prove that API driven code is testable and that
+This book strives to prove that API-driven code is testable and that
 there is a benefit to doing so. This book does not intend to provide a
 manual on how to write perfectly tested code. We cover too many
 languages to end the healthy debates happening within each community
-about the right test frameworks. Instread, given our contention that most
+about the right test frameworks. Instead, given our contention that most
 software projects have zero test coverage, this book tries to help
 you get past this significant roadblock. There is something
 transformational about writing tests if you have never done so

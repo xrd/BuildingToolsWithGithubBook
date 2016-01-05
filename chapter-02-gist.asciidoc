@@ -1,3 +1,4 @@
+[[chapter2]]
 == Gists and the Gist API
 
 GitHub revolutionized software development by responding to a deep
