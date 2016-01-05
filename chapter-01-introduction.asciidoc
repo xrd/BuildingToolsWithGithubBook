@@ -11,7 +11,7 @@ inside a Git repository hosted on GitHub. This chapter, however, gives
 you a naked viewpoint of the GitHub API and  documents the details of
 the raw HTTP requests and responses. It also discusses the different
 ways to access public and private data inside of GitHub and where
-limitations exist. And, it gives you an overview of the options for
+limitations exist. And it gives you an overview of the options for
 accessing GitHub data when running inside a web browser context where
 network access is restrained.
 
@@ -22,12 +22,12 @@ the GitHub API without writing a formal program. Or, when you want to quickly
 get access to the raw HTTP request headers and content. Or, where you
 might even question the implementation of a client library and need
 confirmation it is doing the right thing from another vantage
-point. In these situations, cURL, a simple command line HTTP tool, is
-the perfect fit. cURL, like the best unix tools, is a small program
+point. In these situations, cURL, a simple command-line HTTP tool, is
+the perfect fit. cURL, like the best Unix tools, is a small program
 with a very specific and purposefully limited set of features for
 accessing HTTP servers. 
 
-cURL, like the HTTP protocol which it speaks intimately, is stateless:
+cURL, like the HTTP protocol it speaks intimately, is stateless:
 we will explore solutions to this limitation in a later chapter, but
 note that cURL works best with one-off requests. 
 
@@ -70,29 +70,26 @@ What can we learn from this API response?
 The GitHub API is a Hypermedia API. Though a discussion on what constitutes
 hypermedia deserves an entire book of its own (Check out O'Reilly's
 "Hypermedia APIs with HTML5 and Node"), you can absorb much of what
-makes hypermedia interesting by just looking at a response. First, you
-can see from the API response above that by making a request to the
-API, you receive a map, directions on how to make additional
-responses. Not all clients use this information, of course, but one
+makes hypermedia interesting by just looking at a response. First, you can see from the API response that each response contains a map with directions for the next responses you might make. Not all clients use this information, of course, but one
 goal behind Hypermedia APIs is that clients can dynamically adjust
 their endpoints without recoding the client code. If the thought of
 GitHub changing an API because clients *should* be written to handle
 new endpoints automatically sounds worriesome, don't fret too much:
 GitHub is very dilligent about maintaining and supporting their API in a way
-that most companies would do well to emulate. But, you should know
-that you can rely on having a API reference inside the API itself,
-rather than hosted externally in documentation which very easily could
+that most companies would do well to emulate. But you should know
+that you can rely on having an API reference inside the API itself,
+rather than hosted externally in documentation, which very easily could
 turn out to be out of date with the API itself. 
 
 These API maps are rich with data. For example, they are not just URLs
 to content, but also information about how to provide parameters to the
 URLs. Looking at the previous example, the `code_search_url` key 
-references a URL which obviously allows you to search within code on
+references a URL that obviously allows you to search within code on
 GitHub, but also tells you how to structure the parameters passed to
 this URL. If you have an intelligent client who can follow this
 programmatic format, you could dynamically generate the query without
 involving a developer who can read API documentation. At least that is
-the dream that Hypermedia points us to; if you are skeptical, at least know that
+the dream Hypermedia points us to; if you are skeptical, at least know that
 APIs such as GitHub encode documentation into themselves, and you can
 bet GitHub has test coverage to prove that this documentation matches
 the information delivered by the API endpoints. That's a strong
@@ -102,22 +99,22 @@ Now let's briefly discuss the format of all GitHub API responses: JSON.
 
 === The JavaScript Object Notation (JSON) Format
 
-Every response you get back from the GitHub API will be in the JSON
+Every response you get back from the GitHub API will be in the JSON (JavaScript Object Notation)
 format. JSON is a "lightweight data interchange format" (read more on
-the JSON.org website). There are other competing and effective
-formats, such as XML ("Extensible Markup Language") or YAML ("YAML
-Ain't Markup Language"), but JSON is quickly becoming the defacto 
+the <<http://www.json.org/,JSON.org website>>). There are other competing and effective
+formats, such as XML (Extensible Markup Language) or YAML (YAML
+Ain't Markup Language), but JSON is quickly becoming the de facto 
 standard for web services. 
 
 YAML
 
-A few of the reasons why JSON is so popular:
+A few of the reasons JSON is so popular:
 
 * JSON is readable: JSON has a nice balance of human readability when
   compared to serialization formats like XML.
 * JSON can be used within JavaScript with very little modification
   (and cognitive processing on the part of the programmer). A data
-  format which works equally well on both the client and server side
+  format that works equally well on both the client and server side
   was bound to be victorious, as JSON has been.
 
 You might expect that a site like GitHub, originally built on the Ruby
@@ -125,30 +122,30 @@ on Rails stack (and some of that code is still live), would support
 specifying an alternative format like XML, but XML is no longer
 supported. Long live JSON.
 
-JSON is very straightforward if you have used any other text based
+JSON is very straightforward if you have used any other text-based
 interchange format. One note about JSON that is not always obvious or
-expected to people new to JSON: the format only supports using
-double-quotes, not single-quotes.
+expected to people new to JSON is that the format only supports using
+double quotes, not single quotes.
 
-We are using a command line tool, cURL, to retrieve data from the
-API. It would be handy to have a simple command line tool that also
+We are using a command-line tool, cURL, to retrieve data from the
+API. It would be handy to have a simple command-line tool that also
 processes that JSON. Let's talk about one such tool next.
 
 ==== Parsing JSON from the Command Line
 
 JSON is a text format, so you could use any command line text processing tool, such
 as the venerable AWK, to process JSON responses. There is one fantastic JSON
-specific parsing tool which complements cURL that is worth knowing:
-"jq". If you pipe JSON content (using the `|` character for most shells)
+specific parsing tool that complements cURL that is worth knowing:
+"jq." If you pipe JSON content (using the `|` character for most shells)
 into jq, you can then easily extract pieces of the JSON using "filters."
 
 .Installing jq
 [NOTE]
 jq can be installed from source, using package managers like `brew` or
-`apt-get`, and there are binaries on the downloads page for OSX,
-Linux, Windows and Solaris (http://stedolan.github.io/jq/download/).
+`apt-get`, and there are binaries on the http://stedolan.github.io/jq/download/[downloads page] for OSX,
+Linux, Windows, and Solaris.
 
-Going deeper, in the prior example, let's pull out something
+Going deeper into the prior example, let's pull out something
 interesting from the API map that we receive when we access
 api.github.com. 
 
@@ -168,7 +165,7 @@ key/value pairs inside an associative array. It uses the
 `current_user_url` as a key into that associative array and prints out
 the value there.
 
-You also will notice that curl printed out transfer time
+You also will notice that cURL printed out transfer time
 information. cURL printed this information to "standard error" which
 is a shell convention used for messaging errors and an output stream
 which jq will correctly ignore (in other words, the JSON format stream
@@ -180,7 +177,7 @@ It should be easy to understand how the jq filter is applied to the
 response JSON. For a more complicated request (for example, we might
 want to obtain a list of public repositories for a user), we can see
 the pattern for the jq pattern parameter emerging. Let's get a more
-complicated set of information, a user's list of repositories and see
+complicated set of information, a user's list of repositories, and see
 how we can extract information from the response using jq.
 
 [source,text]
@@ -209,7 +206,7 @@ specify a numeric index, and then key into the successive associative
 arrays inside of it to reach the desired content: the owner id.
 
 Jq is a great tool for checking the validity of JSON. As mentioned
-before, JSON key/values are stored only with double-quotes, not single
+before, JSON key/values are stored only with double quotes, not single
 quotes. You can verify that JSON is valid and satisfies this
 requirement using jq.
 
@@ -225,9 +222,9 @@ parse error: Invalid numeric literal at line 1, column 7
 
 The first JSON we pass into jq works, while the second, because it
 uses invalid single quote characters, fails with an error. Jq filters
-are strings passed as arguments, and the shell which provides the
+are strings passed as arguments, and the shell that provides the
 string to jq does not care, however, if you use single quotes or
-double quotes, as you see above. The echo command, if you didn't
+double quotes, as you can see above. The echo command, if you didn't
 already know, prints out whatever string you provide to it; when we
 combine this with the pipe character we can easily provide that string
 to jq through standard input.
@@ -238,7 +235,7 @@ stedolan.github.io/jq.
 
 We now know how to retrieve some interesting information from the
 GitHub API and parse out bits of information from that response, all
-in a single line. But, there will be times when you incorrectly
+in a single line. But there will be times when you incorrectly
 specify parameters to cURL or the API, and the data is not what you
 expect. Now we'll learn about how to debug the cURL tool and the API
 service itself to provide more context when things go wrong.
@@ -248,7 +245,7 @@ service itself to provide more context when things go wrong.
 As mentioned, cURL is a great tool when you are verifying that a
 response is what you expect it to be. The response body is important,
 but often you'll want access to the headers as well. cURL makes
-getting these easy with the `-i` and `-v` switches. The `-i` switch
+getting these easy with the `-i` and `-v` switches. The pass:[<code><span class="keep-together">-i</span></code>] switch
 prints out request headers, and the `-v` switch prints out both
 request and response headers (the `>` character indicates request
 data, and the `<` character indicates response data).
@@ -301,13 +298,13 @@ confused because you are no longer providing it with pure JSON.
 This section shows us that there is interesting information not only
 in the body (the JSON data) but also in the headers. It is important
 to understand what headers are here and which ones are
-important. There are a lot of them which the HTTP specification
+important. There are a lot of them the HTTP specification
 requires, and we can often ignore those, but there are a few that are
-vital when you start making more than just a few isolated request.
+vital when you start making more than just a few isolated requests.
 
 === Important Headers
 
-Three headers are present in every GitHub API response which tell you
+Three headers are present in every GitHub API response that tell you
 about the GitHub API rate limits.  They are X-RateLimit-Limit,
 X-RateLimit-Remaining, and X-RateLimit-Reset.   These limits are
 explained in detail in <<developer-api-rates>>.
@@ -364,14 +361,13 @@ $ curl https://api.github.com/orgs/github
 
 This information allows us to do some forensics on GitHub itself. We
 get the company blog https://github.com/about. We see that GitHub
-is located in San Francisco. And, we see that the creation date of the
-organization is May 11th, 2008. Reviewing the blog, we see a blog post
-from April that indicates GitHub launched as a company a month earlier
-(https://github.com/blog/40-we-launched). Perhaps organizations were
+is located in San Francisco. And we see that the creation date of the
+organization is May 11th, 2008. Reviewing the blog, we see a https://github.com/blog/40-we-launched[blog post
+from April] that indicates GitHub launched as a company a month earlier. Perhaps organizations were
 not added to the GitHub site features until a month after the company launched?
 
 So far all of our requests have retrieved publicly available
-information. But, the GitHub API has a much richer set of information
+information. But the GitHub API has a much richer set of information
 that is available only once we authenticate and access private
 information and publicly inaccessible services. For example, if you
 are using the API to write data into GitHub, you need to know about
@@ -381,13 +377,13 @@ authentication.
 === Authentication
 
 There are two ways to authenticate when making a request to the GitHub
-API: username and passwords (HTTP Basic), and OAuth tokens. 
+API: username and passwords (HTTP Basic) and OAuth tokens. 
 
 ==== Username and Password Authentication
 
 You can access protected content inside GitHub using a username and
 password combination. Username authentication works by using the HTTP
-Basic authentication supported by the `-u` flag in curl. HTTP Basic
+Basic authentication supported by the `-u` flag in cURL. HTTP Basic
 Authentication is synonymous with username and password authentication.
 
 ----
@@ -402,11 +398,11 @@ Enter host password for user 'xrd': xxxxxxxx
 }
 ----
 
-This cURL command, authenticates into the GitHub API and then
+This cURL command authenticates into the GitHub API and then
 retrieves  information about our own specific rate limits for our user
 account, protected information only available as a logged in user.
 
-===== Benefits of Username Authentication
+===== Benefits of username authentication
 
 Almost any client library you use will support HTTP Basic
 authentication. All the GitHub API clients we looked at support
@@ -415,12 +411,12 @@ as this is a core feature of the HTTP standard, so if you use any
 standard HTTP library when building your own client, you will be able
 to access content inside the GitHub API.
 
-===== Downsides to Username Authentication
+===== Downsides to username authentication
 
-There are many reasons why username and password authentication is the
+There are many reasons username and password authentication is the
 wrong way to manage your GitHub API access. 
 
-* HTTP Basic is an old protocol which never anticipated the
+* HTTP Basic is an old protocol that never anticipated the
   granularity of web services. It is not possible to specify only
   certain features of a web service if you ask users to authenticate
   with username/passwords.
@@ -454,7 +450,7 @@ HTTP Basic. HTTP Basic requests generally only require adding an extra
 header to the HTTP request, or an extra flag to a client tool like cURL.
 
 OAuth solves the problems described above by linking tokens to scopes
-(specified subsets of functionality inside a webs service) and
+(specified subsets of functionality inside a web service) and
 issuing as many tokens as you need to multiple clients. 
 
 ===== Scopes: specified actions tied to authentication tokens
@@ -488,7 +484,7 @@ https://api.github.com/authorizations
 The JSON response, upon success, has a token you can extract and use
 for applications that need access to the GitHub API.
 
-If you are using two factor authentication, this flow requires
+If you are using two-factor authentication, this flow requires
 additional steps, all of which are documented within the <<Hubot>>.
 
 To use this token, you specify the token inside an authorization
@@ -503,11 +499,11 @@ Scopes clarify how a service or application will use data inside the
 GitHub API. This makes it easy to audit how you are using the
 information if this was a token issued for your own personal use. But,
 most importantly, this provides valuable clarity and protection for
-those times when a third party application wants to access your
+those times when a third-party application wants to access your
 information: you can be assured the application is limited in what
 data it can access, and you can revoke access easily. 
 
-===== Scope Limitations
+===== Scope limitations
 
 There is one major limitation of scopes to be aware of: you cannot do
 fine-grained access to certain repositories only. If you provide
@@ -529,32 +525,32 @@ it from the list you provide to GitHub when authorizing and consider
 escalation to a higher scope after you have developed some trust with
 your users.
 
-===== Scope Escalation
+===== Scope escalation
 
-You can ask for scope at one point which is very limited, and then
+You can ask for scope at one point that is very limited, and then
 later ask for a greater scope. For example, when a user first accesses
 your application, you could only get the user scope to create a user
 object inside your service, and only when your application needs
 repository information for a user, then request to escalate
 privileges. At this point the user will need to approve or disapprove
-your request, but asking for everything up front (before you have a
+your request, but asking for everything upfront (before you have a
 relationship with the user) often results in a user abandoning the login.
 
 Now let's get into the specifics of authentication using OAuth.
 
-===== Simplified OAuth Flow 
+===== Simplified OAuth flow 
 
 OAuth has many variants, but GitHub uses OAuth2. OAuth2 specifies a
 flow where:
 
 * the application requests access
 * the service provider (GitHub) requests authentication: username and
-  password usually.
-* if two-factor authentication is enabled, ask for the OTP (one time password) code.
+  password usually
+* if two-factor authentication is enabled, ask for the OTP (one-time password) code
 * GitHub responds with a token inside a JSON payload
-* the application uses the OAuth token to make requests of the API.
+* the application uses the OAuth token to make requests of the API
 
-A real world flow is described in full in the <<Hubot>> chapter.
+A real-world flow is described in full in <<Hubot>>
 
 Now let's look at the variety of HTTP status codes GitHub uses to
 communicate feedback when using the API. 
@@ -567,7 +563,7 @@ basic client like cURL, it will be important to validate the status
 code before you look at any of the data retrieved. If you are writing
 your own API client, pay close attention to the status code before
 anything else. If you are new to the GitHub API, it is worth reviewing
-the responses codes thoroughly until you get to are familiar with the
+the response codes thoroughly until you are familiar with the
 various conditions that can cause errors when making a request.
 
 ==== Success (200 or 201)
@@ -576,7 +572,7 @@ If you have worked with any HTTP clients whatsoever, you know what the
 HTTP status code "200" means success. GitHub will respond with a 200
 status code when your request destination URL and associated
 parameters are correct. If your request creates content on the server,
-then you will get a 201 status code, indicating a successful creation on
+then you will get a 201 status code, indicating successful creation on
 the server.
 
 [source,text]
@@ -613,7 +609,7 @@ Here we attempt to generate a new gist by using the endpoint described
 at the Gist API documentation:
 https://developer.github.com/v3/gists/#create-a-gist. We'll detail
 Gists in more detail in a later chapter. This issue fails because we
-are not using JSON (this looks it could be YAML, which we will discuss
+are not using JSON (this looks like it could be YAML, which we will discuss
 in the Jekyll chapter). The payload is sent using the `-d`
 switch. GitHub responds with advice on where to find the documentation
 for the correct format at the `documentation_url` key inside the JSON
@@ -657,7 +653,7 @@ HTTP/1.1 422 Unprocessable Entity
 
 There are two important things to note: first, we get a 422 error,
 which indicates the JSON was valid, but the fields were incorrect. We
-also get a response which indicates why: we are missing the `files`
+also get a response that indicates why: we are missing the `files`
 key inside the request payload.
 
 ==== Successful Creation (201)
@@ -689,7 +685,7 @@ HTTP/1.1 201 Created
 Success! We created a gist and got a 201 status code indicating things
 worked properly. To make our command more readable we used the
 backslash character to allow parameters to span across lines. Also,
-notice the JSON does not require whitespace which we have completely
+notice the JSON does not require whitespace, which we have completely
 removed from the string passed to the `-d` switch (in order to save
 space and make this command a little bit more readable).
 
@@ -720,7 +716,7 @@ is two orders of magnitude larger than the anonymous rate limit, it
 still presents problems if you intend to use your own GitHub
 credentials when making requests on behalf of many users.
 
-For this reason, if your web site or service uses the GitHub API to
+For this reason, if your website or service uses the GitHub API to
 request information from the GitHub API, you should consider using
 OAuth and make requests to the GitHub API using your user's shared
 authentication information. If you use a token connected to another
@@ -728,12 +724,12 @@ user's GitHub account, the rate limits count against that user, and
 not your user account.
 
 [NOTE]
-There are actually two rate limits.  The "core" rate limit and the
+There are actually two rate limits: the "core" rate limit and the
 "search" rate limit.  The rate limits explained in the previous
 paragraphs were for the core rate limit.  For search,
-requests are limited at 20 requests per minute for authenticated user
-requests and 5 request per minute for anonymous requests. The
-assumption here is that search is a more infrastructure intensive
+requests are limited to 20 requests per minute for authenticated user
+requests and 5 requests per minute for anonymous requests. The
+assumption here is that search is a more infrastructure-intensive
 request to satisfy and that tighter limits are placed on its usage.
 
 Note that GitHub tracks anonymous requests by IP address. This means
@@ -741,14 +737,14 @@ that if you are behind a firewall with other users making anonymous
 requests, all those requests will be grouped together.
 
 ==== Reading Your Rate Limits
-Reading your rate limit is straightforward, just make a GET request to
-/rate_limit.  This will return a JSON document which tells you the
+Reading your rate limit is straightforward&#x2014;just make a GET request to
+/rate_limit.  This will return a JSON document that tells you the
 limit you are subject to, the number of requests you have remaining,
 and the timestamp (in seconds since 1970).  Note that this timestamp
-has a timezone in Coordinated Universal Time (UTC).
+is in the Coordinated Universal Time (UTC) time zone.
 
-The following command listing uses curl to retrieve the rate limit
-for an anonymous request.   This response is abbreviated to save space
+The following command listing uses cURL to retrieve the rate limit
+for an anonymous request. This response is abbreviated to save space
 in this book, but you'll notice that the quota information is supplied
 twice: once in the HTTP response headers and again in the JSON
 response.  The rate limit headers are returned with every request to
@@ -778,7 +774,7 @@ $ curl https://api.github.com/rate_limit
 }
 ----
 
-60 requests over the course of an hour isn't very much, and if
+Sixty requests over the course of an hour isn't very much, and if
 you plan on doing anything interesting, you will likely exceed this
 limit quickly. If you are hitting up against the 60 requests per
 minute limit, you will likely want to investigate making authenticated
@@ -808,9 +804,9 @@ rate limit.
 The following command listing is an example of passing in the
 If-Modified-Since HTTP header to the GitHub API. Here we've
 specified that we're only interested in receiving content if the
-Twitter Boostrap repositories has been altered after 7:49 PM GMT on
+Twitter Boostrap repositories have been altered after 7:49 PM GMT on
 Sunday, August 11, 2013.  The GitHub API responds with a HTTP 304
-response code which also tells us that the last time this repository
+response code that also tells us that the last time this repository
 changed was a minute earlier than our cutoff date.
 
 ----
@@ -828,7 +824,7 @@ Last-Modified: Sun, 11 Aug 2013 19:48:39 GMT
 ----
 
 The GitHub API also understands HTTP caching tags. An ETag, or Entity Tag, is an HTTP
-header that is used to control whether or not content that you have
+header that is used to control whether or not content you have
 previously cached is the most recent version.  Here's how your systems
 would use ETag:
 
@@ -836,13 +832,13 @@ would use ETag:
 * Server returns an ETag header for a version of a content item.
 *  Your server includes this ETag in all subsequent requests.
 **  If the server has a newer version it returns new content + a new
-   ETag
-** If the server doesn't have a newer version it returns an HTTP 304
+   ETag.
+** If the server doesn't have a newer version it returns an HTTP 304.
 
 The following command listing demonstrates two commands.  The first
-curl call to the GitHub API generates an ETag value, and the second
+cURL call to the GitHub API generates an ETag value, and the second
 value passes this ETag value as an If-None-Match header.  You'll note
-that the second response is an HTTP 304 which tells the caller that
+that the second response is an HTTP 304, which tells the caller that
 there is no new content available.
 
 ----
@@ -871,7 +867,7 @@ ETag: "462c74009317cf64560b8e395b9d0cdd"
 
 Use of conditional request headers is encouraged to conserve resources
 and make sure that the infrastructure that supports GitHub's API isn't
-asked to generated content unnecessarily.
+asked to generate content unnecessarily.
 
 At this point we have been accessing the GitHub API from a cURL
 client, and as long as our network permits it, we can do whatever we
@@ -881,7 +877,7 @@ so let's discuss that next.
 
 === Accessing Content from the Web
 
-If you are using the GitHub API from a server side program or the
+If you are using the GitHub API from a server-side program or the
 command line then you are free to issue any network calls as long as
 your network permits it. If you are attempting to access the GitHub
 API from within a browser using JavaScript and the XHR
@@ -898,8 +894,8 @@ JSON-P is a browser hack, more or less, that allows retrieval of
 information from servers outside of the same-origin policy. JSON-P
 works because `<script>` tags are not checked against the same-origin
 policy; in other words, your page can include references to content on
-servers other than the from which the page originated. With JSON-P, you load
-a JavaScript file which resolves to a specially encoded data payload
+servers other than the one from which the page originated. With JSON-P, you load
+a JavaScript file that resolves to a specially encoded data payload
 wrapped in a callback function you implement. The GitHub API supports
 this syntax: you request a script with a parameter on the URL
 indicating what callback you want the script to execute once loaded.  
@@ -931,8 +927,7 @@ $ curl https://api.github.com/?callback=myCallback
 -----
 
 If you used the same URL we used above inside a script tag on a
-web page (`<script src="https://api.github.com/?callback=myCallback"
-type="text/javascript"></script>`), your browser would load the
+web page (`<script src="https://api.github.com/?callback=myCallback" type="text/javascript"></script>`), your browser would load the
 content displayed above, and then a JavaScript function you defined
 called `myCallback` would be executed with the data shown. This
 function could be implemented like this inside your web page.
@@ -953,10 +948,9 @@ function myCallback( payload ) {
 -----
 
 This example demonstrates taking the `current_user_url` from the data inside
-the payload and putting it into a DIV, one that might look like `<div
-id="success"></div>`.
+the payload and putting it into a DIV, one that might look like `<div id="success"></div>`.
 
-Because JSON-P works via <script> tags, only GET requests to the API
+Because JSON-P works via +<script>+ tags, only GET requests to the API
 are supported. If you only need read-only access to the API, JSON-P
 can fulfill that need in many cases, and it is easy to configure.
 
@@ -968,21 +962,20 @@ but official way to access external services from within a web page.
 CORS is the W3C (a web standards body) approved way to access content
 from a different domain than the original host. CORS requires that the
 server be properly configured in advance; the server must indicate
-when queried that it allows cross domain requests. If the server
+when queried that it allows cross-domain requests. If the server
 effectively says "yes, you can access my content from a different
 domain" then CORS requests are permitted. The HTML5Rocks website has a
-great tutorial explaining many details of CORS:
-http://www.html5rocks.com/en/tutorials/cors/.  
+http://www.html5rocks.com/en/tutorials/cors/[great tutorial explaining many details of CORS].  
 
-Because XHR using CORS allows the same type of XHR requests as you get
+Because XHR using CORS allows the same type of XHR requests you get
 from the same domain origin, you can make requests beyond GET to the
-GitHub API: POST, DELETE and UPDATE. Between JSON-P and CORS you have two options for accessing content
+GitHub API: POST, DELETE, and UPDATE. Between JSON-P and CORS you have two options for accessing content
 from the GitHub API inside of web browsers. The choice is between
 the simplicity of JSON-P and the power and extra configuration of CORS.
 
 We can prove using cURL that the GitHub API server is responding correctly for
-CORS request. In this case we only care about the headers, so we use
-the `-I` switch which tells cURL to make a HEAD request, telling the
+CORS requests. In this case we only care about the headers, so we use
+the `-I` switch, which tells cURL to make a HEAD request, telling the
 server not to respond with body content.
 
 [source,text]
@@ -1007,7 +1000,7 @@ We can see the "Access-Control-Allow-Credentials" header is set to
 true. It depends on the browser implementation, but some JavaScript
 host browsers will automatically make a "preflight" request to verify
 this header is set to true (and that other headers, like the
-"Access-Control-Allow-Origin" are set correctly and permit requests
+"Access-Control-Allow-Origin," are set correctly and permit requests
 from that origin to proceed). Other JavaScript host browsers will need
 you to make that request. Once the browser has used the headers to
 confirm that CORS is permitted, you can make XHR requests to the
@@ -1029,7 +1022,7 @@ for the HTML this markdown generates.  You also have the ability to
 specify this version of the GitHub API you are using.  At this point,
 you can specify either version 3 or beta of the API. 
 
-===== Retrieving Formatted Content
+===== Retrieving formatted content
 
 The Accept header you send with a request can affect the format of
 text returned by the GitHub API.  As an example, let's assume you
@@ -1077,7 +1070,7 @@ documentation.
 The GitHub team has already provided very thorough documentation on
 their API with examples using cURL. Bookmark this URL:
 https://developer.github.com/v3/. You'll use it often. Do note that
-this URL is tied, obviously, to the current API "Version 3", so this
+this URL is tied, obviously, to the current API "version 3," so this
 URL will change when a new version is released. 
 
 === Summary
