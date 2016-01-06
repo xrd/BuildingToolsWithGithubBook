@@ -49,12 +49,7 @@ benefits of branching when using gists you can branch normally
 inside a repository and the branch information is retained on the
 upstream repository after you push it up. 
 
-You can have an unlimited number of public and secret gists. Instead
-of creating a new private repository from your limited amount in a
-paid GitHub account, you can take a tiny bit of code
-and make a secret gist, sharing this with others through a URL
-instead of the more onerous process of adding collaborators to a
-regular repository. Or, you can make a gist public, and
+You can have an unlimited number of public and secret gists. Secret gists can, in many cases, replace private repositories, and these secret gists don't count against the limited amount of private repositories you have with paid GitHub accounts. Or, you can make a gist public, and
 share that URL to mailing lists or anywhere you need public feedback.
 
 [NOTE]
