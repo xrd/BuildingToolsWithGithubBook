@@ -1305,7 +1305,7 @@ tools to troubleshoot our setup.
 
 First, create a Git repository for our files. When the Jekyll tool
 runs, it generates all the files into a directory called "_site" so we
-should add a ".gitignore" file, which ignores this directory.
+should add a _.gitignore_ file, which ignores this directory.
 
 [source,text]
 ------
