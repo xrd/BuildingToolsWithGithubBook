@@ -197,7 +197,7 @@ Let's clone it now.
 $ git clone git@gist.github.com:8138797.git
 
 Once you have cloned the repository, go inside it. You'll see a list
-of files, a list that right now include only one file.
+of files, a list that right now includes only one file.
 
 [source,bash]
 ----
