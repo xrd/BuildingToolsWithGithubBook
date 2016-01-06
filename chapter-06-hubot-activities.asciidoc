@@ -1199,7 +1199,7 @@ exports.setSecret = (secret) ->
 --------
 
 <1> We define a method called `anyoneButProbot` that takes a list of
-users and finds a random one, as long as it is not the hubot.
+users and finds a random one, as long as it is not the Hubot.
 <2> The `sendPrRequest` method parses the JSON returned from the Slack
 API and then sends the members inside of the object into the
 `anyoneButProbot` call. It then uses the Hubot API to send a message
