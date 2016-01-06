@@ -4,11 +4,11 @@
 
 Most people understandably equate GitHub (the company) with github.com (the website), but it's interesting to note that they're not one and the same.
 
-The GitHub website, as important it is to modern open- and closed-source software development, is not the only product that GitHub (the company) produces.
-The single largest other product from that team is called GitHub Enterprise, and it's a version of the GitHub software that can be deployed inside a corporate firewall – like having your own private github.com.
+The GitHub website, as important as it is to modern open- and closed-source software development, is not the only product that GitHub (the company) produces.
+The single largest other product from that team is called GitHub Enterprise, and it's a version of the GitHub software that can be deployed inside a corporate firewall&#x2014;like having your own private github.com.
 
-The two products are very similar from a user point of view, but there are some important differences.
-It can sometimes be hard to imagine the kinds of difficulties that Enterprise is designed to solve, but keep in mind it's for large teams.
+The two products are very similar from a user's point of view, but there are some important differences.
+It can sometimes be hard to imagine the kinds of difficulties that Enterprise is designed to solve, but keep in mind that it's for large teams.
 
 === Installation
 
@@ -22,11 +22,11 @@ Once the machine is running, most of the configuration can be done with a web in
 
 === Administration
 
-Since you're in control of the environment in which Enterprise runs, you now have a lot of concerns that the typical github.com user does not.
+Since you're in control of the environment in which Enterprise runs, you now have a lot of concerns that the typical GitHub.com user does not.
 GitHub Enterprise has an administration interface for dealing with these issues, which doesn't exist on github.com.
 It allows management of things like system resources, reports, search, and many others.
 
-Also, while github.com has its own user system, GitHub Enterprise can optionally plug into your organization's existing authentication system.
+Also, while github.com has its own user system, GitHub Enterprise can optionally plug in to your organization's existing authentication system.
 This allows a company's IT organization to manage user identities in one single place, rather than having to duplicate a lot of effort when a new team member hires on.
 It also eases the initial transition, when perhaps thousands of people will need new accounts.
 Several systems are supported, including LDAP and SAML, as well as plain old email and password.
@@ -36,40 +36,38 @@ Several systems are supported, including LDAP and SAML, as well as plain old ema
 The complete GitHub API is also available on an Enterprise instance;
 you just need to send your requests to https://<hostname>/api/v3[]
 instead of https://api.github.com/[]. You can imagine that some users
-have accounts on both an Enterprise instance as well as github.com,
+have accounts on both an Enterprise instance as well as GitHub.com,
 and many applications have started supporting this scenario. 
 
 === Full Hostnames vs. Mount Points
 
-One of the main differences between GitHub.com and an enterprise setup
-is often in the way that hostnames are setup. GitHub.com has several
+One of the main differences between GitHub.com and an Enterprise setup
+is often in the way that hostnames are set up. GitHub.com has several
 hostnames for various content served. An incomplete list includes:
 
 * github.io: hosting Jekyll blogs for users and project pages
 * gist.github.com: hosting "gists"
 * raw.githubusercontent.com: hosting raw pages (unprocessed files)
 
-For a variety of reasons, enterprise GitHub installations often don't
-retain the same mapping. An enteprise installation might look like:
+For a variety of reasons, Enterprise GitHub installations often don't
+retain the same mapping. An Enteprise installation might look like:
 
 * github.bigdevcorp.example.com/pages/xrd/somerepo: hosting gh-pages sites
 * github.bigdevcorp.example.com/gists: hosting gists
 
-As you can see, enterprise installations often map the subdomains to a
-subdirectory rather than a different hostname. This simplifies setup
-of the enterprise installation. But it means that some tools require
+As you can see, Enterprise installations often map the subdomains to a
+subdirectory rather than a different hostname. This simplifies the setup
+of the Enterprise installation. But it means that some tools require
 reconfiguration. 
 
-For the command line link:https://github.com/defunkt/gist[Gist tool]
-(https://github.com/defunkt/gist), you need to export an environment 
-variable which specifies the gist url:
+For the command line https://github.com/defunkt/gist[Gist tool], you need to export an environment 
+variable that specifies the Gist URL:
 
 [source,bash]
 $ export GITHUB_URL=http://github.bigdevcorp.example.com/
 
-For the command line link:https://github.com/github/hub[Hub tool]
-(https://github.com/github/hub) you need to use a different
-variable: "GITHUB_HOST".
+For the command line https://github.com/github/hub[Hub tool] you need to use a different
+variable: pass:[<code>GITHUB_HOST</code>].
 
 [source,bash]
 $ GITHUB_HOST=github.bigdevcorp.example.com hub clone myproject
@@ -78,23 +76,23 @@ $ GITHUB_HOST=github.bigdevcorp.example.com hub clone myproject
 
 We show in another chapter how to use cURL to make a request against
 the API on the main GitHub.com site. If you wanted to do this against
-an enterprise site, your request would look a little different:
+an Enterprise site, your request would look a little different:
 
 [source,bash]
 -----
 $ curl -i https://github.bigdevcorp.example.com/api/v3/search/repositories?q=@ben
 -----
 
-=== Example request using a client library
+=== Example Request Using a Client Library
 
 If you use a client library, most provide a way
 to configure the library to use a different endpoint, as is required
-when you are using an enterprise GitHub instance. 
+when you are using an Enterprise GitHub instance. 
 
 This book documents connecting to GitHub using five different
-languages: Ruby, Java, JavaScript, Python and C#. Here are examples in
+languages: Ruby, Java, JavaScript, Python, and C#. Here are examples in
 each language. With these snippets in hand, any example in the book
-can be converted to work against a GitHub enterprise server.
+can be converted to work against a GitHub Enterprise server.
 
 ==== Ruby Client Configuration
 
@@ -110,7 +108,7 @@ puts github.repos.list
 
 ==== Java
 
-For the EGit Java library, this code specifies an enterprise endpoint.
+For the EGit Java library, this code specifies an Enterprise endpoint:
 
 [source,java]
 -----
@@ -119,22 +117,22 @@ UserService us = new UserService(client);
 us.getUser("internaluser");
 -----
 
-When you create a new GitHub backed service object of any type, you
+When you create a new GitHub-backed service object of any type, you
 parameterize the service constructor with the customized client
 object.
 
-Also, note that this library is specifically configured for Version 3 (v3) of the
+Also, note that this library is specifically configured for version 3 (v3) of the
 API (you cannot specify another version). If you need to use a newer
 version of the API, you will need to make sure you are using the
 correct version of the EGit libraries. And, unfortunately, there is no
 way to use an older version of the API with this Java client if you
-have an outdated enterprise server which for some reason cannot be
+have an outdated Enterprise server that for some reason cannot be
 upgraded. 
 
 ==== JavaScript
 
 The JavaScript library we write about in this book ("GitHub.js") uses the
-following syntax to specify a GitHub enterprise backend.
+following syntax to specify a GitHub enterprise backend:
 
 [source,javascript]
 -----
@@ -147,10 +145,10 @@ var github = new Github({
 ==== Python
 
 The agithub client we use in the Python chapter does not permit
-parameterizing an enterprise endpoint when creating the GitHub
-client. To use an enterprise endpoint you need to define a new class
+parameterizing an Enterprise endpoint when creating the GitHub
+client. To use an Enterprise endpoint you need to define a new class
 that overrides the built in `agithub.Github` and then use that new
-client in place of the built in one. 
+client in place of the built-in one. 
 
 [source,py]
 ----
@@ -173,7 +171,7 @@ g = GitHubEnterprise('github.mycorp.com', 'myusername', 'mypassword')
 ==== C#
 
 The default behavior of the Octokit library is to connect to
-github.com, but it's relatively straightforward to give it another API
+GitHub.com, but it's relatively straightforward to give it another API
 host instead. Simply replace the instantiation of the `GitHubClient`
 object with something like this:
 
@@ -186,7 +184,7 @@ var client = new GitHubClient(new ProductHeaderValue("my-cool-app"), ghe);
 === Management API
 
 Enterprise servers have a special additional API section that isn't
-available on github.com, called the Management Console API. It allows
+available on GitHub.com, called the Management Console API. It allows
 you to do things like check settings, maintain SSH keys, manage your
 license, and so on. Nearly anything you can do from the web management
 console, you can do through the API (so you can script management
@@ -194,5 +192,5 @@ tasks when desirable).
 
 === Documentation
 
-Documentation for the enterprise API is available at https://developer.github.com/v3/enterprise[].
+Documentation for the Enterprise API is available at https://developer.github.com/v3/enterprise[].
 

@@ -9,28 +9,28 @@ book.
 In recent years, NodeJS (JavaScript for the server side) has
 grown in popularity, and JavaScript has always been an interesting
 language because it works on both the client side and server
-side. GitHub has offered several popular open source projects written
+side. GitHub has offered several popular open-source projects written
 in NodeJS. 
 
 For these reasons, this appendix gives a little more detail
 on using these two languages.
 
 In addition, some fluency with the shell is beneficial. There are many
-GUI programs which hide the command line from you, but to truly dive
+GUI programs that hide the command line from you, but to truly dive
 deep into the GitHub API, it is worthwhile to use the command line
-inside a shell. These examples all work with BASH (the Bourne Again
-Shell), but are careful not to use any advanced features of BASH (so
+inside a shell. These examples all work with bash (the Bourne Again
+Shell), but are careful not to use any advanced features of bash (so
 they should convert to other shells if you are strongly favor another
 shell). 
 
 === GitHub and Ruby
 
-When one day they document the history of GitHub, the Ruby language will
-take its place as a major character. Tom Preston Warner (one of three
+When the history of GitHub is documented, the Ruby language will
+take its place as a major character. Tom Preston Warner (one of the three
 founders of GitHub) built the initial libraries for using git with
 Ruby, a library called Grit. You can host blogs on GitHub for free,
 and this tool called Jekyll is built using Ruby. Gollum, the
-technology which powers GitHub wikis, is built using Grit and runs on Ruby. 
+technology that powers GitHub wikis, is built using Grit and runs on Ruby. 
 
 To understand GitHub, it is best to understand a little bit of Ruby.
 You can use many of the tools used at GitHub by simply installing Ruby,
@@ -45,37 +45,36 @@ its focus on developer productivity.
 ==== Installing Ruby
 
 There are many ways to get Ruby but not all of them are created equal. 
-As a long time user I have experienced the pain of using a pre-installed Ruby 
+As a long-time user I have experienced the pain of using a preinstalled Ruby 
 or one from a package manager, and generally these installation
 methods provide a suboptimal experience. If you are not familiar with
 Ruby, use this chapter to get through installation with the least
 friction and trouble. 
 
-You might already have a version of Ruby installed. Mac OSX comes
+You might already have a version of Ruby installed. Mac OS X comes
 bundled with Ruby and various flavors of Linux do as well (or provide
 a quick and easy installation through the built in package manager
 like "apt-get"). However, I recommend that you use the method of
 installation described below rather than using the stock installed
-version of Ruby you might already have on your system. Often ruby
-packages require a specific version of ruby though there 
-is a chance it will work with other versions. The problem is that you
-might encounter subtle bugs that have never been seen before and using
+version of Ruby you might already have on your system. Often Ruby
+packages require a specific version of Ruby, though they may work with other versions. The problem is that you
+might encounter subtle bugs that have never been seen before, and using
 the methods described here will make it trivial to install any version
 of Ruby that you need side by side with any other version. You can
 guarantee you are using the correct version, and the method described
 here will not interfere with any other previously installed version of
-Ruby you have already on your system. 
+Ruby you already have on your system. 
 
 To install Ruby, use RVM. RVM stands for Ruby Version Manager. RVM allows you to install
 multiple versions of Ruby on your machine and have them interoperate
 without conflict. You will probably only need to install a single
-version of Ruby to use the examples in the book. And, RVM makes it so
+version of Ruby to use the examples in the book. And RVM makes it so
 that if you choose to install another version, you will not have to
 reconfigure any applications that relied on the other versions
 installed. 
 
 Installation of Ruby using RVM depends on your operating system. If
-you are using Mac OSX or Linux, your installation will probably be as
+you are using Mac OS X or Linux, your installation will probably be as
 simple as running these commands from a shell:
 
 [source,bash]
@@ -88,11 +87,11 @@ instructions are a little more complicated. Refer to the documentation
 to do so. A better option is to consider installing something like
 VirtualBox (a virtual machine manager). If you do this, you can
 install RVM inside a Linux Virtual Machine (VM). Windows is, sadly, a
-second class citizen with Ruby and RVM and, for this reason, it is
-often better to install RVM inside a host system like Linux which has
+second-class citizen with Ruby and RVM and, for this reason, it is
+often better to install RVM inside a host system like Linux, which has
 a wider community around it to support you. Virtual Box and Linux are
 free as in beer and as in speech, so you can try them out without cost
-(other than your time). There are many native gems for Ruby which
+(other than your time). There are many native gems for Ruby that
 don't properly compile if the host system is Windows, so you can save
 yourself considerable time by just using a completely free (as in
 beer) option like VirtualBox and a Linux virtual machine running on
@@ -103,32 +102,31 @@ Windows instead of fighting with running everything directly on Windows.
 Here are a few tips when using Ruby and RVM.
 
 * `Gemfile`: Ruby packages libraries in a format called a gem. A
-  gemfile is a manifest which describes which gems your application
+  gemfile is a manifest that describes which gems your application
   needs. Gemfiles make it simple to install all the required
   libraries: run the `bundle` command from a shell prompt and all
   libraries will be installed, which can include downloading from the
   network and building from source if compilation is required.
 * `.ruby-version` or `.rvmrc`: These two files tell your application
   (or shell) which version of Ruby to use. Often applications will
-  include this file as a part of their package. If you use RVM, RVM
+  include this file as a part of their package. If you use RVM, it
   will either switch to that version of Ruby or prompt you to install
-  that version. Imagine you have an
-  application which only runs on Ruby 2.1.3. You can create a file
-  called `.ruby-version` which contains the string `ruby-2.1.3` and
+  that version. Imagine that you have an
+  application that only runs on Ruby 2.1.3. You can create a file
+  called `.ruby-version`, which contains the string `ruby-2.1.3` and
   when your application starts, it will automatically use that version
-  of Ruby. There are other Ruby based tools (like the
-  zero-configuration web server Pow) which are aware of files
-  like .ruby-version and will properly use correct version of Ruby if
+  of Ruby. There are other Ruby-based tools (like the
+  zero-configuration web server Pow) that are aware of files
+  like .ruby-version and will properly use the correct version of Ruby if
   they see this file.
 * `config.ru`: This is a file used to run Ruby applications using
   Rack. Rack is a web server interface, compatible with many
   application servers. If you see a config.ru file, you can run this
-  application with many different servers. These can be powerful front
-  ends used in production on many large sites on the Internet, or they
+  application with many different servers. These can be powerful frontends used in production on many large sites on the Internet, or they
   can be minimal servers used just on a single laptop; Rack makes it
-  easy to setup a server. 
+  easy to set up a server. 
 
-==== Potential problems installing Ruby.
+==== Potential Problems Installing Ruby
 
 * Missing system tools: If you are running Mac OSX, you need to
   install Xcode and the command line tools. If you are a software
@@ -138,19 +136,19 @@ Here are a few tips when using Ruby and RVM.
   build tools you will ever need using this command: `sudo apt-get
   install build-essential`. This can take a while, but will ensure you
   have all the tools necessary for building RVM and any binary gems.
-* Missing developer libraries: There are some libraries which support
+* Missing developer libraries: There are some libraries that support
   Ruby (readline support, as an example, which allows you to use
   command line history inside of an interactive Ruby shell) that are
   not always installed or available to the RVM tool. RVM has greatly
   improved in detecting the correct libraries, and there are often
-  notes which tell you how to properly configure these libraries. Make
+  notes that tell you how to properly configure these libraries. Make
   sure to read the output printed to the screen as you install Ruby
   using RVM for special instructions specific to your platform.
 
-=== GitHub is excited about NodeJS
+=== GitHub is Excited about NodeJS
 
-NodeJS is the server side version of JavaScript. JavaScript is the
-only ubiquitious client side programming language for the web. Between
+NodeJS is the server-side version of JavaScript. JavaScript is the
+only ubiquitious client-side programming language for the web. Between
 Ruby and JavaScript, you can build any web application you
 need. Tools like Hubot show the benefits of using a language like
 JavaScript running on the NodeJS platform, which facilitates building
@@ -166,9 +164,9 @@ generally the best way to install the most recent version of NodeJS.
 NVM stands for "Node Version Manager" and is a direct correlate
 to RVM. Like RVM, NVM allows you to install multiple versions of
 NodeJS on a single machine and switch between them seamlessly. This
-can be very useful when using a tool like NodeJS which is iterating
+can be very useful when using a tool like NodeJS that is iterating
 rapidly (and whose modules are also often tested against only a very
-new version of NodeJS). NVM runs on OSX or Linux. To install, run
+new version of NodeJS). NVM runs on OS X or Linux. To install, run
 these commands from a shell prompt: 
 
 [source,bash]
@@ -192,7 +190,7 @@ https://github.com/creationix/nvm.
 
 ==== package.json
 
-Much like Ruby has a Gemfile which indicates required libraries, so
+Much like Ruby has a Gemfile that indicates required libraries, so
 too does NodeJS have an equivalent file. In NodeJS, this file is
 called `package.json`.  To install all required libraries for any
 project, use the `npm` tool (installed by default when you install
@@ -205,9 +203,9 @@ installation of the package has completed.
 
 === Command Line Basics and the Shell
 
-Though most chapters focus on a specific programming language (aside
+Though most chapters have focused on a specific programming language (aside
 from the cURL chapter), all of the chapters contain command line
-invocations. There are a few intricacies when using the shell that you
+invocations. There are a few intricacies when using the shell you
 might not be familiar with that we will explain here, with an actual
 example of each.
 
@@ -228,8 +226,8 @@ throughout the chapter to document shell commands.
 When a process runs in the shell, it runs within an environment, and
 this environment can be configured with key/value pairs. These are called
 environment variables. A common reason for this is that you can write
-a program which reads passwords from the environment variables and
-then specify them at run time rather than in the source code. You
+a program that reads passwords from the environment variables and
+then specify them at runtime rather than in the source code. You
 specify environment variables either as key values pairs joined by an
 equal sign in front of a command, or by using the `export` command to
 persist them across commands.
@@ -241,7 +239,7 @@ $ myProgram # PASSWORD is now a persisted key value
 
 ==== Splitting Commands into Multiple Lines
 
-The shell invokes commands when you hit the enter key. But, there are
+The shell invokes commands when you hit the enter key. But there are
 times when you want to break a command into multiple lines for
 readability. In this case, break each line up using the backslash
 character.
@@ -282,10 +280,10 @@ phtml pht php
 application/x-httpd-php-source			phps
 -----
 
-This invocation uses the "cat" program to outout the file
-/etc/mime.types, and then passes this information to the "grep"
-program which looks inside the input to find all lines which contain
-the string "http".
+This invocation uses the "cat" program to output the file
+_/etc/mime.types_, and then passes this information to the "grep"
+program, which looks inside the input to find all lines that contain
+the string "http."
 
 ==== Redirection
 
