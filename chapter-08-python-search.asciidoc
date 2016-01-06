@@ -147,12 +147,10 @@ We'll show an abridged response from each of the four, along with some discussio
 ==== Repository Search
 
 The `search/repositories` endpoint looks in the repository metadata to match your query.
-This includes the project's name and description by default, though you can also search the README file by specifying `in:readme` in the query.
+This includes the project's name and description by default, though you can also search the read me file by specifying `in:readme` in the query.
 Other qualifiers are documented at https://developer.github.com/v3/search/#search-repositories[].
 
 A query such as `search/repositories?q=foobar` might result in a response that looks something like this:
-
-<<<
 
 [source,json]
 ----
