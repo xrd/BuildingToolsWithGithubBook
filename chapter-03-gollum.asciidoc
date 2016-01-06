@@ -5,7 +5,7 @@ Wikis have revolutionized the way we create and digest
 information. It turns out that they are a great complement to technical
 projects (code repositories) because they allow nontechnical
 users to contribute in ways other than adding code. Gollum
-is an open source wiki created by GitHub. Just as Git has
+is an open-source wiki created by GitHub. Just as Git has
 revolutionized collaborative editing of code, Gollum wikis layer the
 benefits of Git onto the widely used Wiki publishing workflow. Gollum
 wikis are themselves repositories that generally annotate other
