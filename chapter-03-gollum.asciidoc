@@ -41,8 +41,8 @@ which we will talk about later).
 
 Any repository on GitHub, public or private, can have an associated Gollum wiki.
 To create a wiki linked to your repository, visit the repository
-page and then look in the rightmost colum. You'll see an icon which
-looks like a book, next to that will be the word "Wiki." 
+page and then look in the rightmost colum. You'll see an icon that
+looks like a book, next to which will be the word "Wiki." 
 
 image::images/btwg_03in01.png[Integrated Gollum Wiki in the Sidebar]
 
@@ -134,7 +134,7 @@ one point] supported inclusion of files from any GitHub repository
 -----
 
 Unfortunately, this no longer works. According to current documentation
-on for Gollum, this tag allows inclusion of files from the parent
+for Gollum, this tag allows inclusion of files from the parent
 repository: 
 
 [source,ruby]
