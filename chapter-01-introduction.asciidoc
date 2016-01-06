@@ -166,7 +166,7 @@ key/value pairs inside an associative array. It uses the
 the value there.
 
 You also will notice that cURL printed out transfer time
-information. cURL printed this information to "standard error" which
+information. cURL printed this information to _standard error_ which
 is a shell convention used for messaging errors and an output stream
 which jq will correctly ignore (in other words, the JSON format stream
 will not be corrupted by error messages). If we want to
@@ -231,7 +231,7 @@ to jq through standard input.
 
 Jq is a powerful tool for quickly retrieving content from an arbitray
 JSON request. Jq has many other powerful features, documented at
-stedolan.github.io/jq.
+https://stedolan.github.io/jq/.
 
 We now know how to retrieve some interesting information from the
 GitHub API and parse out bits of information from that response, all
