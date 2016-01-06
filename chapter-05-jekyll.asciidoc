@@ -324,7 +324,7 @@ If you wanted something more dynamic, you could imagine generating a
 JSON file with these categories and files, and then building a
 JavaScript widget that requests this file and then does something
 more interactive on the client side. Jekyll can take any template file
-and convert it to JSON (or any other format)--you are not limited to
+and convert it to JSON (or any other format)&#x2014;you are not limited to
 just generating HTML files.
 
 YFM is completely optional. A post or page can be rendered into your
