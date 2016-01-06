@@ -38,7 +38,7 @@ of new hires and a transparent workflow visible to all employees.
 This book looks at the tools GitHub uses internally. The
 GitHub.com website is itself a meta-tool, and we discuss the many
 facets of the GitHub service. Specifically these technologies are the
-GitHub API and related GitHub technologies, the Gollum wiki, Jekyll
+GitHub API and related GitHub technologies, Gollum wiki, Jekyll
 static  page generator, and the chat robot called Hubot (if you are
 not familiar with any of these, we'll explain them fully in their
 respective chapters).
