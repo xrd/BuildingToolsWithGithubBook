@@ -713,7 +713,7 @@ are using two-factor authentication or not) you will then receive an OAuth token
 Once this is completed we now have our token we can use to
 create a webhook. Make sure to use the correct repository name and
 access token before running the cURL command. We will also need the
-endpoint that we created when we published into Heroku (in our case
+endpoint we created when we published into Heroku (in our case
 `https://inqry-chatbot.herokuapp.com`).
 
 ```
