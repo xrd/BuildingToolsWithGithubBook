@@ -136,8 +136,8 @@ processes that JSON. Let's talk about one such tool next.
 JSON is a text format, so you could use any command line text processing tool, such
 as the venerable AWK, to process JSON responses. There is one fantastic JSON
 specific parsing tool that complements cURL that is worth knowing:
-"jq." If you pipe JSON content (using the `|` character for most shells)
-into jq, you can then easily extract pieces of the JSON using "filters."
+_jq_. If you pipe JSON content (using the `|` character for most shells)
+into jq, you can then easily extract pieces of the JSON using _filters_.
 
 .Installing jq
 [NOTE]
