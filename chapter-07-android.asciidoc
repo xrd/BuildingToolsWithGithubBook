@@ -242,14 +242,14 @@ Android tools, so we will stick with AVD.
 When we use the above commands to create a new android application, it
 creates a sample entry point that is the starting point of our
 Android application. All Android applications have a file called
-`AndroidManifest.xml`, which specifies this activity and also supplies
-a list of permissions to the apps. Open the `AndroidManifest.xml` file
-from within the `app/src/main` directory. We need to make one change: to
+_AndroidManifest.xml_, which specifies this activity and also supplies
+a list of permissions to the apps. Open the _AndroidManifest.xml_ file
+from within the _app/src/main_ directory. We need to make one change: to
 add a line that specifies that this app will use the Internet
 permission (required if our app will be talking to the GitHub
 API). Note that when viewing this file inside Android Studio the IDE
 can interpolate strings from resources, so you might see the
-`android:label` attribute displayed as "GhRU" with a grey tinge, when
+`android:label` attribute displayed as +GhRU+ with a grey tinge, when
 in fact the XML file itself has the value displayed below (`@string/app_name`).
 
 [source,java]
@@ -617,7 +617,7 @@ $ curl https://api.github.com/repos/burningonup/burningonup.github.io/events
 ]
 -----
 
-This is obviously JSON. We see the type is "PushEvent" for this event,
+This is obviously JSON. We see the type is +PushEvent+ for this event,
 and it has a commit message that matches our random string format. We
 could reconstitute this into a complex object structure, but scanning
 the JSON as a string works for our test.
@@ -730,8 +730,8 @@ should look like this.
 -----
 
 Make sure this is not checked into your source code by
-adding an exception to `.gitignore` (the command `echo
-"secrets.xml" >> .gitgnore` is a quick way to add this to your .gitignore file).
+adding an exception to _.gitignore_ (the command `echo
+"secrets.xml" >> .gitgnore` is a quick way to add this to your _.gitignore_ file).
 
 Our tests will not even compile yet because we have not yet written the
 other parts of the application. As such, we will skip the setup
