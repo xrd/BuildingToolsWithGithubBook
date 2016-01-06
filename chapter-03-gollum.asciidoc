@@ -556,7 +556,7 @@ a previous uploaded file). It would look to
 an untrained eye like we are adding the file multiple times. 
 However, the nature of Git permits us to add the same file
 multiple times without incurring any additional storage cost beyond
-the first addition (and the minimal cost of a tree structure). When a file is added to Git repository, an SHA hash
+the first addition (and the minimal cost of a tree structure). When a file is added to a Git repository, an SHA hash
 is generated from the file contents. For example, generating the SHA hash
 from an empty file will always return the same SHA hash.footnote:[This is explained
 beautifully in the blog
