@@ -1480,23 +1480,15 @@ HTML.
 
 === Accepting Pull Requests
 
-When someone makes an annotation to a shop, the owner of the original repository
-gets a pull-request notification on GitHub.
+When someone makes an annotation to a shop, the owner of the original repository gets a pull-request notification on GitHub.
 
 .Adding information through a pull request
-image::images/javascript-pull-request.png[Adding information through a pull request]
-
-Now we can review changes through GitHub's integrated online diff tool.
-
-.Reviewing annotation pull request diff's from within GitHub
-image::images/javascript-pull-request-diff.png[Reviewing annotation pull request diff's from within GitHub]
-=======
 image::images/btwg_09in05.png[Adding information through a pull request]
 
 Now we can review changes through GitHub's integrated online diff tool.
 
+.Reviewing annotation pull request diff's from within GitHub
 image::images/btwg_09in06.png[Reviewing annotation pull request diff's from within GitHub]
->>>>>>> 57120ebc31d6bdce61cee5e022b578451dfefb4e
 
 Here we  see a clear "diff" of the changes our contributor
 made: they added an annotation that tells us "no turtles allowed." We
