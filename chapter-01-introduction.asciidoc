@@ -550,7 +550,7 @@ flow where:
 * GitHub responds with a token inside a JSON payload
 * the application uses the OAuth token to make requests of the API
 
-A real-world flow is described in full in <<Hubot>>
+A real-world flow is described in full in <<Hubot>>.
 
 Now let's look at the variety of HTTP status codes GitHub uses to
 communicate feedback when using the API. 
@@ -996,11 +996,11 @@ Strict-Transport-Security: max-age=31536000; includeSubdomains;
 preload
 -----
 
-We can see the "Access-Control-Allow-Credentials" header is set to
+We can see the +Access-Control-Allow-Credentials+ header is set to
 true. It depends on the browser implementation, but some JavaScript
-host browsers will automatically make a "preflight" request to verify
+host browsers will automatically make a _preflight_ request to verify
 this header is set to true (and that other headers, like the
-"Access-Control-Allow-Origin," are set correctly and permit requests
++Access-Control-Allow-Origin+, are set correctly and permit requests
 from that origin to proceed). Other JavaScript host browsers will need
 you to make that request. Once the browser has used the headers to
 confirm that CORS is permitted, you can make XHR requests to the
