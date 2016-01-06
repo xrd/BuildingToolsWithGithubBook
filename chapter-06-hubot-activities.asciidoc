@@ -110,7 +110,7 @@ where our Hubot will live.
 
 ==== Creating a Slack Account
 
-Going to slack.com starts the process of creating your own Slack
+Going to https://slack.com/[slack.com] starts the process of creating your own Slack
 site. You'll need to step through creating an account. Slack sites are
 segmented by organization, and you'll want to establish a URL prefix
 for your Slack site. Typically this is the name of your organization.
