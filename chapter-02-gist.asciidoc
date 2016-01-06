@@ -250,7 +250,7 @@ public gists for any user we specify. The Octokit library is the
 the official Ruby library for accessing the GitHub API. Why would we want to make a gist
 that displays other gists? Self-referential meta code is all the rage, the
 modern-day response to René Magritte's famous work: "Ceci n'est pas une
-pipe." footnote:[http://www.bostonglobe.com/ideas/2012/05/05/dude-this-headline-meta-dude-this-headline-meta/it75G5CSqi82NtoQHIucEP/story.html?camp=pm[Explained best by Ben
+pipe."footnote:[http://www.bostonglobe.com/ideas/2012/05/05/dude-this-headline-meta-dude-this-headline-meta/it75G5CSqi82NtoQHIucEP/story.html?camp=pm[Explained best by Ben
 Zimmer]]
 
 Add a view `index.erb` at the root of our directory:
