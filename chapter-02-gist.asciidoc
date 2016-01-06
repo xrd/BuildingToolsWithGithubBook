@@ -210,10 +210,10 @@ This code is exectuable: to run it enter `ruby hi.rb`.
 
 If you have not used Sinatra with Ruby before, this will cause an
 error. This program requires a library called "sinatra" and 
-you have not yet installed it. We could write a README, or add
+you have not yet installed it. We could write a read me, or add
 documentation into this file itself. Another 
 way to guarantee the user has the proper files installed is to use a
-"Gemfile," which is a file that tells 
+_Gemfile_, which is a file that tells 
 which libraries are installed and from where. That sounds like the
 best way:
 
