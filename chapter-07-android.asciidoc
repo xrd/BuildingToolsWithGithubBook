@@ -124,7 +124,7 @@ your project by clicking on the left-hand vertical tab labeled
 "Project."
 
 [[reviewing-android-project-structure]]
-.Reviewing the Android project structure for the first time]
+.Reviewing the Android project structure for the first time
 image::images/btwg_07in02.png[Reviewing the Android project structure for the first time]
 
 If you have never seen an Android project before, this screen deserves
