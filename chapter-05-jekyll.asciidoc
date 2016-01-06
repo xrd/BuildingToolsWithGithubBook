@@ -656,7 +656,7 @@ plausible option than running against a database.
 To export the XML file, visit the export page on your Wordpress
 site. This is usually mapped to _/wp-admin/export.php_, so it will be
 something like _https://blogname.com/wp-admin/export.php_ (replacing
-blogname.com with your blog's name).
+&#x201c;blogname.com&#x201d; with your blog's name).
 
 Like many free tools, there are definitely limitations to using this
 method of export. If your Wordpress site is anything beyond the
@@ -1223,7 +1223,7 @@ with double quotes
 -----
 
 To fix this test, let's strip out the double quotes by changing one line
-in the scraper.rb file.
+in the _scraper.rb_ file.
 
 [source,ruby]
 -----
