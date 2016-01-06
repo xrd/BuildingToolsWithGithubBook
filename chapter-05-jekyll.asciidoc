@@ -132,7 +132,7 @@ Installation of a new blog
 comes with a _.gitignore_ file as well that contains one entry:
 pass:[<code>_site</code>]. When you use the Jekyll library to build your site locally,
 all files are by default built into the +_site+ directory.
-This .gitignore file prevents those files from being included inside
+This _.gitignore_ file prevents those files from being included inside
 your repository as they are overwritten by the Jekyll command on
 GitHub when your files are pushed up to GitHub.
 
