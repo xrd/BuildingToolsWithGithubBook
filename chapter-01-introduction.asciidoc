@@ -221,7 +221,7 @@ parse error: Invalid numeric literal at line 1, column 7
 -----
 
 The first JSON we pass into jq works, while the second, because it
-uses invalid single quote characters, fails with an error. Jq filters
+uses invalid single-quote characters, fails with an error. Jq filters
 are strings passed as arguments, and the shell that provides the
 string to jq does not care, however, if you use single quotes or
 double quotes, as you can see above. The echo command, if you didn't
@@ -361,7 +361,7 @@ $ curl https://api.github.com/orgs/github
 
 This information allows us to do some forensics on GitHub itself. We
 get the company blog https://github.com/about. We see that GitHub
-is located in San Francisco. And we see that the creation date of the
+is located in San Francisco, and we see that the creation date of the
 organization is May 11th, 2008. Reviewing the blog, we see a https://github.com/blog/40-we-launched[blog post
 from April] that indicates GitHub launched as a company a month earlier. Perhaps organizations were
 not added to the GitHub site features until a month after the company launched?
