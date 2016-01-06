@@ -1638,11 +1638,11 @@ Use IRB to find the author and body content. Start by searching for the author i
 -----
 
 We start by looking at the second row and converting it to raw HTML.
-We see there is a string "author:,&#x201d; which is a likely place to
+We see there is a string +author:+ which is a likely place to
 reference the author. This string is wrapped by a +font+ tag and a
 +td+ tag, so we can use these search queries to eliminate extra
 information. Then, we convert the HTML to text using the `text()` method
-and use a regular expression to pull out the text after the "author:&#x201d;
+and use a regular expression to pull out the text after the +author:+
 string. If a regular expression matches and has a captured expression,
 it will be held in the global variable `$1`. There is more than one
 way to get this information, of course.
