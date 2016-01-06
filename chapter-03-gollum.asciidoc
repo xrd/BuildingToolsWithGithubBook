@@ -28,8 +28,8 @@ This chapter demonstrates code that modifies a Git repository
 programmatically. You will be able to follow along without possessing
 a deep understanding of the internals of Git. And, a good supplement
 to this chapter (and later chapters as well) is the
-http://shop.oreilly.com/product/0636920022862.do["Version Control
-with Git"] book from O'Reilly. 
+http://shop.oreilly.com/product/0636920022862.do[_Version Control
+with Git_] book from O'Reilly. 
 
 === "The Story of Smeagol..."
 
