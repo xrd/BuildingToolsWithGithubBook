@@ -101,7 +101,7 @@ Now let's briefly discuss the format of all GitHub API responses: JSON.
 
 Every response you get back from the GitHub API will be in the JSON (JavaScript Object Notation)
 format. JSON is a "lightweight data interchange format" (read more on
-the <<http://www.json.org/,JSON.org website>>). There are other competing and effective
+the http://www.json.org/[JSON.org website]). There are other competing and effective
 formats, such as XML (Extensible Markup Language) or YAML (YAML
 Ain't Markup Language), but JSON is quickly becoming the de facto 
 standard for web services. 
