@@ -450,7 +450,7 @@ on the master branch of your Git repository. The repository should be
 named `username.github.io` on GitHub. If everything is set up correctly
 you can then publish your Jekyll blog by adding a remote for GitHub
 and pushing your files up. If you use the `hub` tool (a command for
-interacting with git and GitHub), you can go from start to finish with
+interacting with Git and GitHub), you can go from start to finish with
 a few simple commands. Make sure to change the first line to reflect
 your username.
 
