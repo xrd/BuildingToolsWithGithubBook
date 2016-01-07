@@ -1252,7 +1252,7 @@ details on YFM). This YAML specifies the "post" layout and sets
 publishing to "true." We need to terminate the YAML with two newlines.
 <4> Base64 encodes the contents of the blog post
 itself using a utility class found inside the Apache Commons
-library. Contents inside a git repository are stored either as UTF-8
+library. Contents inside a Git repository are stored either as UTF-8
 content or Base64; we could have used UTF-8 since this is text content
 but Base64 works losslessly, and you can always safely use Base64
 without concerning yourself about the content.
@@ -1270,7 +1270,7 @@ Now we will set up the services necessary to store a commit inside GitHub.
 ==== GitHub Services
 
 Next, we implement `createServices()`. There are several services
-(wrappers around git protocols) we need to instantiate. We don't
+(wrappers around Git protocols) we need to instantiate. We don't
 use them all immediately, but we will need them at various steps
 during the file save process. The `createServices` call manages these
 for us.
@@ -1299,7 +1299,7 @@ appendix for specific syntax on how to do this.
 
 ==== The Base SHA from the Repository and Branch
 
-Now we implement `retrieveBaseSha()`. A git repository is a directed
+Now we implement `retrieveBaseSha()`. A Git repository is a directed
 acrylic graph (DAG) and as such, (almost) every node in the graph points
 to another commit (or potentially two if it is a merge commit). When
 we append content to our graph, we need to determine the prior node in
@@ -1362,7 +1362,7 @@ hash is not retrieved properly.
 
 ==== Creating the Blob
 
-Contents inside a git repository are stored as blobs. `createBlob`
+Contents inside a Git repository are stored as blobs. `createBlob`
 manages storing our content as a blob object, and then uses the
 dataService to store this blob into a repository. Until we have called
 `dataService.createBlob`, we have not actually placed the object
@@ -1424,7 +1424,7 @@ account using the data service object.
 We are getting close to actually finalizing the creation of content:
 next, implement `createCommit()`. We have created
 a blob that stores the actual content, and created a tree that
-stores the path to the content (more or less), but since git is a
+stores the path to the content (more or less), but since Git is a
 version control system, we also need to store information about who
 wrote this object and why. A commit object stores this
 information. The process should look familiar coming from the previous
