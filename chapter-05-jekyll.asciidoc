@@ -788,7 +788,7 @@ scraper.run()
 
 -----
 
-Our bare bones scraper class just looks like this.
+Our barebones scraper class just looks like this.
 
 [source,ruby]
 -----
