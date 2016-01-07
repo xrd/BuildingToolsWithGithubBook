@@ -228,7 +228,7 @@ AngularJS, so we need to use `$apply()`.
 
 Github.js handles making the proper request to Github for us, and
 AngularJS handles putting the results into our web page. To modify our
-HTML to use this data, we change `index.html` to look like the following:
+HTML to use this data, we change _index.html_ to look like the following:
 
 [source,html]
 -------
