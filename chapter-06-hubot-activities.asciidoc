@@ -872,7 +872,7 @@ like the following:
 . Push the new branch into GitHub
 . Issue a pull request
 
-All of this can be automated using a combination of git commands and cURL.
+All of this can be automated using a combination of Git commands and cURL.
 We've seen some of these commands before and can reuse the previous
 command line invocations and variables we used when generating
 our webhook using the API via cURL. Our config variable is similar,
