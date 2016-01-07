@@ -996,7 +996,7 @@ So far we have built a database of cities and coffee shops in those
 cities. Google Maps or Apple Maps already provide this information.
 If we layer additional information on top of this data (like quirky
 information about the coffee shop), however, then we might have something that
-someone might find useful once they have found the coffeeshop on their
+someone might find useful once they have found the coffee shop on their
 favorite mapping application.
 
 So, to start, let's add some fake data to our coffee shop
