@@ -506,7 +506,7 @@ $ git push -u origin gh-pages
 
 You will need to always remember to work on the gh-pages branch; if
 this repository is only used as a blog, then this probably is not an
-issue. Adding the `-u` switch will make sure that git always pushes up
+issue. Adding the `-u` switch will make sure that Git always pushes up
 the gh-pages branch whenever you do a push.
 
 ===== The CNAME file
