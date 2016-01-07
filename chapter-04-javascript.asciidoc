@@ -314,7 +314,7 @@ a file named after the city, and then either use geolocation on the
 client side to retrieve a set of the data, or ask the user to choose
 their city manually.
 
-If we look at the https://github.com/michael/github[Github.js javascript documentation on Github]
+If we look at the https://github.com/michael/github[GitHub.js javascript documentation on GitHub]
 we can see that there are some
 options for us to pull content from a repository. We'll store a data
 file in JSON named after the city inside our repository and retrieve
