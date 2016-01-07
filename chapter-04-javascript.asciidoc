@@ -1385,12 +1385,12 @@ we know we are ready to start editing data.
 <2> We notify the UI that we are annotating and tell the user they
 will need to wait while the annotation request is in progress.
 <3> `JSON.stringify` converts our annotated shop object into a JSON
-object. If you have used JSON.stringify before, you might not know
+object. If you have used +JSON.stringify+ before, you might not know
 about the other two parameters (beyond just the object you want to
 serialize) you can provide to this function. These
 two extra parameters allow us to filter the object and specify certain
 elements to ignore when serializing and how and if to indent the
-resultant JSON. So, we provide the stripHashKey function to remove the
+resultant JSON. So, we provide the +stripHashKey+ function to remove the
 `$$hashKey` Angular tracking data, and an indentation count. The
 indentation count makes it much easier to read a pull request, because
 the diff'ing algorithm can diff line by line rather than as a long
