@@ -107,19 +107,19 @@ Here are a few tips when using Ruby and RVM.
   libraries: run the `bundle` command from a shell prompt and all
   libraries will be installed, which can include downloading from the
   network and building from source if compilation is required.
-* `.ruby-version` or `.rvmrc`: These two files tell your application
+* _.ruby-version_ or _.rvmrc_: These two files tell your application
   (or shell) which version of Ruby to use. Often applications will
   include this file as a part of their package. If you use RVM, it
   will either switch to that version of Ruby or prompt you to install
   that version. Imagine that you have an
   application that only runs on Ruby 2.1.3. You can create a file
-  called `.ruby-version`, which contains the string `ruby-2.1.3` and
+  called _.ruby-version_, which contains the string `ruby-2.1.3` and
   when your application starts, it will automatically use that version
   of Ruby. There are other Ruby-based tools (like the
   zero-configuration web server Pow) that are aware of files
-  like .ruby-version and will properly use the correct version of Ruby if
+  like _.ruby-version_ and will properly use the correct version of Ruby if
   they see this file.
-* `config.ru`: This is a file used to run Ruby applications using
+* _config.ru_: This is a file used to run Ruby applications using
   Rack. Rack is a web server interface, compatible with many
   application servers. If you see a config.ru file, you can run this
   application with many different servers. These can be powerful frontends used in production on many large sites on the Internet, or they
