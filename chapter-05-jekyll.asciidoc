@@ -428,7 +428,7 @@ push it into your repository.
 
 Jekyll does not support theming internally, but it is trivial to add
 any CSS files or entire CSS frameworks. You can also fork an existing
-jekyll blog which has the theming you like. We will show how and where
+Jekyll blog which has the theming you like. We will show how and where
 to add your own customized CSS later in the chapter.
 
 ==== Publishing on GitHub
