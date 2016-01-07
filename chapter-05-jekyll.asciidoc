@@ -538,7 +538,7 @@ The GitHub gem is a useful command line tool, but unfortunately it is
 tied to an older version of the GitHub API, which means the documented
 functionality is often incorrect.
 
-If your blog is correctly set up, you will see something like Figure 3
+If your blog is correctly set up, you will see something like <<settings-jekyll-blog>>
 in the middle of your settings page.
 
 [[settings-jekyll-blog]]
