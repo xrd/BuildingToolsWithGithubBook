@@ -553,12 +553,12 @@ a success callback function provided. This exactly matches the native
 browser support for Geolocation, which has the same function defined.
 <3> We then `spyOn` the function so we can assert that it was called
 in our actual tests.
-<4> Next we implement `generateMockRepositorySupport`.
-<5> Again we implement a mock object: this one to provide a method called
+<4> Next, we implement `generateMockRepositorySupport`.
+<5> Again, we implement a mock object: this one to provide a method called
 `read`. This function matches the function of the same name contained
 in the API provided by the JavaScript GitHub.js library. Just like in
 the previous mock, we `spyOn` the function so we can validate it was
-called. However, this is not the "top level" repository object, this
+called. However, this is not the "top-level" repository object&#x2014;this
 is the object returned from the call to `getRepo`. We will take this
 mock object and return it from the `getRepo` call.
 <6> We spy on the `getRepo` call, and then return our next mock
@@ -668,7 +668,7 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', 'Prompt',  // // <3>
 
 <1> We extract the Github library into an AngularJS factory. This
 allows us to inject our mocked GitHub object inside our tests; if we
-had placed the GitHub instance, creation code inside our controller,
+had placed the GitHub instance-creation code inside our controller,
 we would not have been able to easily mock it out in our tests.
 <2> We extract the geolocation support into an AngularJS factory. As
 we did with the GitHub library mock, we can now inject a fake one into
