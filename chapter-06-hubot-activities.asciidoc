@@ -210,7 +210,7 @@ pugs. Beware!
 Now that we've successfully started our Hubot locally, we can move it
 to Heroku and keep it running even when our laptop is turned off.
 
-==== Setting up Heroku
+==== Setting Up Heroku
 
 Heroku requires registration before using it. Heroku offers free plans and everything
 we'll do here can be done using one of them. Once you have created an
