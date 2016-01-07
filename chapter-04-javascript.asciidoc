@@ -126,7 +126,7 @@ Now we can install the libraries needed for this application.
 
 As we mentioned, we will use the GitHub.js library, AngularJS, and
 Bootstrap. Let's add those to our project now. Using whatever editor
-you prefer, edit the index.html file to look like this:
+you prefer, edit the _index.html_ file to look like this:
 
 [source,html]
 -------
