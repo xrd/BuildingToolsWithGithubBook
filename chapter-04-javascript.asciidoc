@@ -547,10 +547,10 @@ beforeEach( inject( function ($controller, $rootScope ) {
 -----
 
 <1> We first implement the `generateMockLocation` function.
-<2> Mock location involves creating a Geo object which has a single
-function `getCurrentPosition` that is a function that calls back into
+<2> Mock location involves creating a Geo object that has a single
+function `getCurrentPosition`, which is a function that calls back into
 a success callback function provided. This exactly matches the native
-browser support for Geolocation which has the same function defined.
+browser support for Geolocation, which has the same function defined.
 <3> We then `spyOn` the function so we can assert that it was called
 in our actual tests.
 <4> Next we implement `generateMockRepositorySupport`.
