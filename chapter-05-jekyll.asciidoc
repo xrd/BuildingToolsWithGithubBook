@@ -128,13 +128,7 @@ suit your needs. The syntax file helps when including code snippets
 and contains syntax highlighting CSS that prettifies many programming
 languages.
 
-Installation of a new blog
-comes with a _.gitignore_ file as well that contains one entry:
-+_site+. When you use the Jekyll library to build your site locally,
-all files are by default built into the +_site+ directory.
-This _.gitignore_ file prevents those files from being included inside
-your repository as they are overwritten by the Jekyll command on
-GitHub when your files are pushed up to GitHub.
+Installation of a new blogcomes with a _.gitignore_ file as well that contains one entry: pass:[<code>_site</code>]. When you use the Jekyll library to build your site locally, all files are by default built into the pass:[<code>_site</code>] directory. This _.gitignore_ file prevents those files from being included inside your repository as they are overwritten by the Jekyll command on GitHub when your files are pushed up to GitHub.
 
 [NOTE]
 ====
