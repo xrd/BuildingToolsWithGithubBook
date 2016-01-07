@@ -192,12 +192,12 @@ https://github.com/creationix/nvm.
 
 Much like Ruby has a Gemfile that indicates required libraries, so
 too does NodeJS have an equivalent file. In NodeJS, this file is
-called `package.json`.  To install all required libraries for any
+called _package.json_.  To install all required libraries for any
 project, use the `npm` tool (installed by default when you install
 NodeJS using NVM). Running `npm` without any arguments will
 install all libraries specified by the application if there is a
-`package.json` file included with the project. If you want to add a
-package to an existing `package.json` file, you can append `--save` to
+_package.json_ file included with the project. If you want to add a
+package to an existing _package.json_ file, you can append `--save` to
 the npm command and npm will update package.json for you once the
 installation of the package has completed.
 
