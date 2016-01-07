@@ -1304,7 +1304,7 @@ annotations about the shop are added.
 <2> We prompt the user three times: username and password on GitHub,
 and the text they want to annotate. If this seems like a really bad
 way to do things, don't worry, we'll fix it in a moment.
-<3> We create a new Github object with the username and password
+<3> We create a new GitHub object with the username and password
 provided. We leave it as an exercise for the reader to contend with
 mistyped or incorrect credentials.
 <4> The GitHub.js library allows you to create a repository object
