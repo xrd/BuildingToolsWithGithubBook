@@ -1095,7 +1095,7 @@ specifically the last chapter called
 http://git-scm.com/book/en/Git-Internals[Git Internals].
 
 In a nutshell, the GitHub
-API expects you to create a git "tree" and then place a "blob" object
+API expects you to create a Git "tree" and then place a "blob" object
 into that tree. You then wrap the tree in a "commit" object and then
 create that commit on GitHub using a data service wrapper. In
 addition, writing a tree into GitHub requires knowing the base SHA
@@ -1191,7 +1191,7 @@ GitHubHelper class.
 
 First, we implement `generateContent()`. The following code snippet
 shows the functions defined to generate the content we will place
-into our remote git repository stored on GitHub.
+into our remote Git repository stored on GitHub.
 
 [source,java]
 -----
