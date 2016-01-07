@@ -198,7 +198,6 @@ Fifth, and possibly most importantly, you _must_ specify a repository owner usin
 
 The JSON returned looks something like this:
 
-<<<
 [source,json]
 ----
 {
