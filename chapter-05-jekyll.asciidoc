@@ -812,7 +812,7 @@ gem "rspec"
 -----
 
 Then, install our gems using the command `bundle`. That installs the
-rspec tool, the Jekyll tool, and associated libraries.
++rspec+ tool, the Jekyll tool, and associated libraries.
 
 Finally, we can create our test harness.
 
