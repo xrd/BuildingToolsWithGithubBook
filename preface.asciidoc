@@ -183,12 +183,6 @@ Here is a short synopsis of each chapter:
   section of the API. We show how to create user interface tests for
   Android that verify GitHub API responses using the Calabash UI
   testing tool.
-* <<JavaScript,The "JavaScript" chapter>>: did you know you can host an entire
-  "single-page application" on GitHub? We show how you can build a
-  coffee shop information app backed by a flat file database hosted on
-  GitHub written in the JavaScript language. Importantly, we show how
-  you can write a testable JavaScript application that mocks out the
-  GitHub API when needed. 
 * <<Hubot,The "Hubot" chapter>>: Hubot is a JavaScript (NodeJS) chat robot
   enabling technologists to go beyond developer operations ("DevOps")
   to a new frontier called "ChatOps." The Hubot chapter illustrates
@@ -198,6 +192,12 @@ Here is a short synopsis of each chapter:
   often a challenge when writing JavaScript code). We string all these
   pieces together and build a robot that automates assigning pull
   request review requests.
+* <<JavaScript,The "JavaScript" chapter>>: did you know you can host an entire
+  "single-page application" on GitHub? We show how you can build a
+  coffee shop information app backed by a flat file database hosted on
+  GitHub written in the JavaScript language. Importantly, we show how
+  you can write a testable JavaScript application that mocks out the
+  GitHub API when needed. 
 
 ((("organization API")))We don't cover the organization API: this is a small facet of the API
 with only the ability to list organizations and modify metadata about
