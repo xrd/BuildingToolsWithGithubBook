@@ -1,7 +1,7 @@
 [[chapter2]]
 == Gists and the Gist API
 
-GitHub revolutionized software development by responding to a deep
+((("gists", id="ix_chapter-02-gist-asciidoc0", range="startofrange")))GitHub revolutionized software development by responding to a deep
 desire to share information. But calling it just "sharing" does a disservice to
 the tools GitHub provides: these tools remove barriers to
 communication and streamline workflows. These tools also arose at
@@ -17,7 +17,7 @@ gist that uses the Gist API.
 
 === Easy Code Sharing
 
-Gists are straighforward to create. You copy a snippet
+((("gists","creating")))Gists are straighforward to create. You copy a snippet
 of code into the large text box in the center, optionally enter in a
 description or filename, and then choose between a public or private
 gist. Once your gist has been created you are presented with a URL to
@@ -35,10 +35,10 @@ allow you to share code that is also a live application.
 
 === Gists are Repositories
 
-Every gist
+((("gists","as repositories")))((("repositories","gists as")))Every gist
 created is a tiny repository. You can update gists and see
-the history using `git log`. You can download gists, hack on the
-repository, and `git push` them back into the repository on
+the history using((("git log"))) `git log`. You can download gists, hack on the
+repository, and((("git push"))) `git push` them back into the repository on
 gist.github.com (which will republish them onto the publicly 
 facing web page). And, you can "fork" gists, just like
 any other repository. 
@@ -49,7 +49,7 @@ benefits of branching when using gists you can branch normally
 inside a repository and the branch information is retained on the
 upstream repository after you push it up. 
 
-You can have an unlimited number of public and secret gists. Secret gists can, in many cases, replace private repositories, and these secret gists don't count against the limited amount of private repositories you have with paid GitHub accounts. Or, you can make a gist public, and
+You can have an unlimited number of public and ((("secret gists")))secret gists. Secret gists can, in many cases, replace private repositories, and these secret gists don't count against the limited amount of private repositories you have with paid GitHub accounts. Or, you can make a((("public gists"))) gist public, and
 share that URL to mailing lists or anywhere you need public feedback.
 
 [NOTE]
@@ -66,7 +66,7 @@ snippet of code.
 
 ==== Embedding Gists Inside HTML
 
-To embed inside of an HTML page look for the "Embed this gist" box to
+((("gists","in HTML")))((("HTML","gists in")))To embed inside of an HTML page look for the "Embed this gist" box to
 the left of a gist. Copy the code listed there (which will look
 something like `<script src="https://gist.github.com/xrd/8923697.js"></script>`) and paste it
 into your HTML. 
@@ -77,7 +77,7 @@ URL specified in the src attribute.
 
 ==== Embedding Inside Jekyll Blogs
 
-Jekyll blogs (explained in <<Jekyll>>) can easily host
+((("gists","in Jekyll blogs")))((("Jekyll blogs","gists in")))Jekyll blogs (explained in <<Jekyll>>) can easily host
 gists using a special syntax. The shortcut `{% gist 8138797 %}` will
 embed a private gist, which would be found at
 `http://gist.github.com/8138797`.  If you want to use a 
@@ -91,7 +91,7 @@ using the command line.
 
 === Gist from the Command Line
 
-`gem install gist` will install a command line tool that helps create gists. You can use it simply by typing the command, and then
+((("command line","gists from")))((("gists","from command line")))`gem install gist` ((("gem install gist command")))will install a command line tool that helps create gists. You can use it simply by typing the command, and then
 entering the data you want to post as a gist.
 
 [source,bash]
@@ -137,7 +137,7 @@ https://gist.github.com/9345609
 
 Gists are often used to show interesting or troublesome code, and there
 are times when you don't want to display the entirety of a file. In
-this case the command line `grep` tool can be useful; `grep` searches
+this case the command line((("grep tool"))) `grep` tool can be useful; `grep` searches
 for a specific piece of code and with the right switches can include
 several lines of context around that code inside a gist. This command
 looks for the function `myFunction` inside the `MyJavaFile.java` file
@@ -149,13 +149,13 @@ $ grep -A 20 myFunction MyJavaFile.java | gist
 https://gist.github.com/9453069
 -----
 
-Adding the `-o` switch automatically opens the gist inside your
+Adding ((("&#8211;o switch")))the `-o` switch automatically opens the gist inside your
 default web browser. You can also copy the gist URL to the clipboard
-using the `-c` switch. Or, you can copy the contents of your clipboard
-into a gist using the `-P` switch. 
+using ((("&#8211;c switch")))the `-c` switch. Or, you can copy the contents of your clipboard
+into a gist using((("&#8211;P switch"))) the `-P` switch. 
 
 There are many other fun features of the gist command. To learn more
-run the gist command with the `--help` switch. 
+run the gist command with((("&#8211;&#8211;help switch"))) the `--help` switch. 
 
 As gists are themselves repositories, you can use them for dual
 purposes: for hosting code samples, code samples that are themselves
@@ -163,8 +163,8 @@ fully working and packaged applications inside a gist repository.
 
 === Gists as Fully Functioning Apps
 
-Let's build a simple Sinatra application to showcase how code hosted
-as a gist can also be a living application. Sinatra is a Ruby library
+((("gists","as fully functioning apps")))Let's build a simple Sinatra application to showcase how code hosted
+as a gist can also be a living application. ((("Sinatra")))Sinatra is a Ruby library
 for creating dead-simple web servers. A Sinatra program can be as
 simple as this:
 
@@ -212,7 +212,7 @@ If you have not used Sinatra with Ruby before, this will cause an
 error. This program requires a library called "sinatra" and 
 you have not yet installed it. We could write a read me, or add
 documentation into this file itself. Another 
-way to guarantee the user has the proper files installed is to use a
+way to guarantee the user has the proper files installed is to((("Gemfile"))) use a
 _Gemfile_, which is a file that tells 
 which libraries are installed and from where. That sounds like the
 best way:
@@ -245,7 +245,7 @@ code.
 
 === Gists that Render Gists
 
-Let's add to our application and use the Octokit Ruby gem to pull all
+((("gists","for rendering other gists", id="ix_chapter-02-gist-asciidoc1", range="startofrange")))Let's add to our application and use the((("Octokit")))((("Octokit Ruby"))) Octokit Ruby gem to pull all
 public gists for any user we specify. The Octokit library is the
 the official Ruby library for accessing the GitHub API. Why would we want to make a gist
 that displays other gists? Self-referential meta code is all the rage, the
@@ -311,17 +311,17 @@ image::images/btwg_02in02.png[Displaying the gist count]
 
 ==== Going Deeper into the Gist API
 
-The GitHub API uses hypermedia instead of
+((("gists","and hypermedia")))((("Hypermedia API","gist and")))The GitHub API uses hypermedia instead of
 basic resource-driven APIs. If you use a client like Octokit, the
 hypermedia details are hidden behind an elegant Ruby client. But
 there is a benefit to understanding how hypermedia works when you need
 to retrieve deeper information from the GitHub API.
 
-Most RESTful APIs come with a "sitemap," generally an API reference
+((("gists","and RESTful APIs")))((("RESTful APIs")))Most RESTful APIs come with((("sitemaps"))) a "sitemap," generally an API reference
 document that tells a user which endpoints to use. You view
 the resources available from that API and then apply some HTTP verb to
 do something to them. Hypermedia thinks of an API differently.
-Hypermedia APIs describe themselves inside their responses using
+Hypermedia APIs describe themselves inside their responses ((("affordances")))using
 "affordances." What this means is that the API might respond like this:
 
 [source,json]
@@ -369,7 +369,7 @@ Hypermedia APIs with HTML5 and Node].
 
 ==== Using Hypermedia Data from Octokit
 
-Now that you know a little about Hypermedia, let's navigate it using Octokit.
+((("gists","using hypermedia data from Octokit")))((("hypermedia data, Octokit")))((("Octokit","using hypermedia data from")))Now that you know a little about Hypermedia, let's navigate it using Octokit.
 
 * Start at a resource, with code like `user = Octokit.user "xrd"`. This
   begins the initialization of the client.
@@ -441,7 +441,7 @@ attribute. Retrieve the `raw` content using the Octokit method `.get.data`.
 
 -----
 
-Now we see the gists and the contents.
+Now we see the gists and the contents.(((range="endofrange", startref="ix_chapter-02-gist-asciidoc1")))
 
 image::images/btwg_02in03.png["Last five gists, with details"]
 
@@ -452,7 +452,7 @@ to share code snippets. We built a simple application and stored it as
 a gist. This application retrieves data from the GitHub API using our
 first higher-level language client library (the Octokit library for
 Ruby). We also went deeper into how Hypermedia works and how a client
-library implements using Hypermedia metadata.
+library implements using Hypermedia metadata.(((range="endofrange", startref="ix_chapter-02-gist-asciidoc0")))
 
 In the next chapter we will look at Gollum, the GitHub wiki. This
 chapter provides an introduction to the Rugged Ruby library for accessing Git

@@ -1,7 +1,7 @@
 [[Jekyll]]
 == Ruby and Jekyll
 
-The Jekyll project calls itself a "blog-aware, static site generator
+((("Jekyll", id="ix_chapter-05-jekyll-asciidoc0", range="startofrange")))The Jekyll project calls itself a "blog-aware, static site generator
 in Ruby." At its core, Jekyll is a very simple set of
 technologies for building web sites. Simplicity is what gives Jekyll
 its power: using Jekyll you will never have to learn about database
@@ -29,10 +29,10 @@ information into a new Jekyll blog.
 
 === What is Jekyll?
 
-Jekyll specifies a file structure format: conform to this format and
+((("Jekyll","basics", id="ix_chapter-05-jekyll-asciidoc1", range="startofrange")))Jekyll specifies a file structure format: conform to this format and
 Jekyll will compile your files into HTML. Jekyll builds on top of two
-proven tools: Markdown, a markup language that is surprisingly
-readable and expressive, and Liquid Markup, a simple programming language that
+proven tools: ((("Markdown","and Jekyll")))Markdown, a markup language that is surprisingly
+readable and expressive, and ((("Liquid Markup","Jekyll and")))Liquid Markup, a simple programming language that
 gives you just enough components to build modern web
 pages requiring conditionals and loops, but safe enough that you can
 run untrusted pages on public servers. With these two technologies and
@@ -52,7 +52,7 @@ tools.
 
 ==== Operating Jekyll Locally
 
-To really use Jekyll, you'll need the `jekyll` gem. As we explain in
+((("Jekyll","operating locally")))((("jekyll gem")))To really use Jekyll, you'll need the `jekyll` gem. As we explain in
 <<appendix>>, we could install a ruby gem using this command:
 
 [source,text]
@@ -103,11 +103,11 @@ $ bundle install
 Creating and managing your dependencies inside a Gemfile is the smart
 way to get your Jekyll tool synced with the version running on GitHub.
 
-Now we are ready to create a Jekyll blog.
+Now we are ready to create a Jekyll blog.(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc1")))
 
 === Jekyll Blog Quick Start
 
-We have our required tools installed, so let's create a simple blog. Run
+((("Jekyll blogs", id="ix_chapter-05-jekyll-asciidoc2", range="startofrange")))We have our required tools installed, so ((("Jekyll blogs","simple blog creation", id="ix_chapter-05-jekyll-asciidoc3", range="startofrange")))let's create a simple blog. Run
 these commands.
 
 [source,text]
@@ -116,7 +116,7 @@ $ jekyll new myblog
 $ cd myblog
 -----
 
-The `jekyll new` commands creates the necessary structure for a
+The((("jekyll new command", id="ix_chapter-05-jekyll-asciidoc4", range="startofrange"))) `jekyll new` command creates the necessary structure for a
 minimal Jekyll blog. Taking a look inside the directory, you'll see a
 few files that comprise the structure of a basic Jekyll blog.
 
@@ -128,7 +128,7 @@ suit your needs. The syntax file helps when including code snippets
 and contains syntax highlighting CSS that prettifies many programming
 languages.
 
-Installation of a new blogcomes with a _.gitignore_ file as well that contains one entry: pass:[<code>_site</code>]. When you use the Jekyll library to build your site locally, all files are by default built into the pass:[<code>_site</code>] directory. This _.gitignore_ file prevents those files from being included inside your repository as they are overwritten by the Jekyll command on GitHub when your files are pushed up to GitHub.
+((("gitignore file")))Installation of a new blog comes with a _.gitignore_ file as well that contains one entry: pass:[<code>_site</code>]. When you use the Jekyll library to build your site locally, all files are by default built into the pass:[<code>_site</code>] directory. This _.gitignore_ file prevents those files from being included inside your repository as they are overwritten by the Jekyll command on GitHub when your files are pushed up to GitHub.
 
 [NOTE]
 ====
@@ -138,7 +138,7 @@ use the `git init` command. The Jekyll initialization command does create the
 proper structure for you to easily add all files to a git repository;
 just use `git add .; git commit` and your gitignore file will be added
 and configure your repository to ignore unnecessary files like the
-`_site` directory.
+`_site` (((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc4")))directory.
 ====
 
 All your blog posts are stored in the `_posts` directory. Jekyll sites
@@ -166,7 +166,7 @@ inside each of the files inside the `_layouts` directory, you will see
 that each contains a placeholder with `{{ content }}`. This
 placeholder is replaced with the generated content from other files.
 
-These placeholders are actually a markup language on their own:
+These placeholders are actually a markup language on their ((("Liquid Markup","origins")))own:
 "Liquid Markup." Liquid Markup was developed and open sourced by
 Shopify.com. Liquid Markup arose from a desire to have a safe way
 to host programmatic constructs (like loops and variables) inside a
@@ -267,7 +267,7 @@ this file and investigate some of the important pieces.
 
 ==== YFM: YAML Front Matter
 
-The first thing we see in a Jekyll file is the YAML Front
+((("Jekyll blogs","YAML Front Matter")))((("YFM (YAML Front Matter)")))The first thing we see in a Jekyll file is the YAML Front
 Matter (YFM).
 
 [source,yaml]
@@ -327,7 +327,7 @@ rendered using the defaults for those variables, so make sure the
 default template, at the very least, is what you expect will wrap
 around all pages left with unspecified layouts.
 
-One important default variable for YFM is the published variable. This
+((("published variable")))One important default variable for YFM is the published variable. This
 variable is set to true by default. This means that if you create a
 file in your Jekyll repository and do not manually specify the
 published setting, it will be published automatically. If you set the
@@ -341,7 +341,7 @@ your repository if there is something you don't yet want published.
 
 ==== Jekyll Markup
 
-Going past the YFM, we can start to see the structure of
+((("Jekyll blogs","markup")))((("Markdown","and Jekyll markup")))Going past the YFM, we can start to see the structure of
 Markdown files. Markdown files can be, at their simplest, just textual
 information without any formatting characters. In fact, if your layout files are
 well done, you can definitely create great blog posts without any
@@ -350,7 +350,7 @@ fancing formatting, just pure textual content.
 But with a few small Markdown additions, you can really make posts
 shine. One of the first Markdown components we notice is the backtick
 character, which is used to wrap small spans of code (or code-ish
-information, like filenames in this case). As you use more and more
+information, like filenames in this case). ((("HTML","Markdown shortcuts for")))As you use more and more
 Markdown, you'll find Markdown to be insidiously clever in the way it
 provides formatting characters without the onerous weight that HTML
 requires to offer the same explicit formatting.
@@ -362,7 +362,7 @@ Check out the [Jekyll docs][jekyll] for more info on how to get the most out of 
 [jekyll-gh]: https://github.com/mojombo/jekyll
 -----
 
-Links can be specified using `[format][link]`, where `link` is the
+((("links","Markdown tags for")))Links can be specified using `[format][link]`, where `link` is the
 fully qualified URL (like "http://example.com"), or a reference to a
 link at the bottom of the page. In our page we have two references,
 keyed as `jekyll-gh` and `jekyll`; we can then use these inside our
@@ -370,7 +370,7 @@ page with syntax like `[Jekyll's GitHub repo][jekyll-gh]`. Using
 references has an additional benefit in that you can use the link more
 than once by its short name.
 
-Though not offered in the sample, Markdown provides an easy way to
+((("headers","Markdown tags for")))Though not offered in the sample, Markdown provides an easy way to
 generate headers of varying degrees. To add a header, use the `#`
 character, and repeat the `#` character to build smaller headers.
 These delimiters simply map to the H tag; two hash characters `##`
@@ -391,13 +391,13 @@ description of the how and why of Markdown.
 
 ==== Using the Jekyll Command
 
-Running `jekyll --help` will show you the options for running Jekyll.
+((("Jekyll","using the Jekyll command")))((("jekyll &#8211;&#8211;help command")))Running `jekyll --help` will show you the options for running Jekyll.
 You already saw the `jekyll serve` command, which builds the files into
 the `_site` directory and then starts a webserver with its root at that directory.
 If you start to use this mechanism to build your Jekyll sites then
 there are a few other switches you'll want to learn about.
 
-If you are authoring and adjusting a page often, and switching back
+((("Jekyll","watch switch")))((("watch switch")))If you are authoring and adjusting a page often, and switching back
 into your browser to see what it looks like, you'll find utility in
 the `-w` switch ("watch"). This can be used to automatically
 regenerate the entire site if you make changes to any of the source
@@ -417,7 +417,7 @@ open port 4010 (or whatever port you wish to use instead).
 
 ==== Privacy Levels with Jekyll
 
-Jekyll repositories on GitHub can be either public or private
+((("Jekyll","privacy levels with")))((("privacy, Jekyll")))Jekyll repositories on GitHub can be either public or private
 repositories. If your repository is public you can host public content
 generated from the Jekyll source files without publishing the source
 files themselves. Remember, as noted previously, that any file without
@@ -426,14 +426,14 @@ push it into your repository.
 
 ==== Themes
 
-Jekyll does not support theming internally, but it is trivial to add
+((("Jekyll","themes")))((("themes, Jekyll")))Jekyll does not support theming internally, but it is trivial to add
 any CSS files or entire CSS frameworks. You can also fork an existing
 Jekyll blog which has the theming you like. We will show how and where
 to add your own customized CSS later in the chapter.
 
 ==== Publishing on GitHub
 
-Once you have your blog created, you can easily publish it to GitHub.
+((("Jekyll blogs","publishing on GitHub")))Once you have your blog created, you can easily publish it to GitHub.
 There are two ways you can publish Jekyll blogs:
 
 * As a github.io site
@@ -445,7 +445,7 @@ little bit of configuration.
 
 ===== Using a GitHub.io Jekyll blog
 
-To create a github.io personal blog site, your Jekyll blog should be
+((("GitHub.io personal blog site")))((("Jekyll blogs","GitHub.io site creation")))To create a github.io personal blog site, your Jekyll blog should be
 on the master branch of your Git repository. The repository should be
 named `username.github.io` on GitHub. If everything is set up correctly
 you can then publish your Jekyll blog by adding a remote for GitHub
@@ -455,7 +455,7 @@ a few simple commands. Make sure to change the first line to reflect
 your username.
 
 [NOTE]
-The `hub` tool was originally written in Ruby and as such could be
+The((("hub tool"))) `hub` tool was originally written in Ruby and as such could be
 easily installed using only `gem instal hub`, but hub was recently
 rewritten in Go. Go has a somewhat more complicated installation
 process, so we won't document it here. If you have the `brew` command
@@ -485,14 +485,14 @@ pushes will be reflected immediately.
 
 ==== Hosting On Your Own Domain
 
-To host a blog on your own domain name, you need to use the `gh-pages`
+((("Jekyll blogs","hosting your own domain", id="ix_chapter-05-jekyll-asciidoc5", range="startofrange")))To host a blog on your own domain name, you need to use the `gh-pages`
 branch inside your repository. You need to create a CNAME file in your
 repository, and then finally establish DNS settings to point your domain to
 the GitHub servers.
 
 ===== The gh-pages branch
 
-To work on the gh-pages branch, check it out and create the branch
+((("gh&#8211;pages branch")))((("Jekyll blogs","hosting via gh&#8211;pages branch")))To work on the gh-pages branch, check it out and create the branch
 inside your repository.
 
 [source,text]
@@ -511,7 +511,7 @@ the gh-pages branch whenever you do a push.
 
 ===== The CNAME file
 
-The CNAME file is a simple text file with the domain name inside of
+((("CNAME file")))((("Jekyll blogs","and CNAME file")))The CNAME file is a simple text file with the domain name inside of
 it.
 
 [source,text]
@@ -551,9 +551,9 @@ however, in that we need to make sure the DNS is established for our site.
 
 ===== DNS Settings
 
-Generally, establishing DNS settings for your site is straightforward.
-It is easiest if you are setting up DNS with a *subdomain* as opposed
-to an *apex domain*. To be more concrete, an apex domain is a site
+((("DNS settings")))((("Jekyll blogs","DNS settings")))Generally, establishing DNS settings for your site is straightforward.
+((("subdomain, DNS setup with")))It is easiest if you are setting up DNS with a *subdomain* as opposed
+to an *apex domain*. To be more concrete, an ((("apex domains")))apex domain is a site
 like mypersonaldomain.com, while a subdomain would be
 blog.mypersonaldomain.com.
 
@@ -568,31 +568,31 @@ the future. For this reason, hosting on apex domains is risky. If
 GitHub needed to change their IP addresses (say during a denial-of-service attack), you would need to respond to this, and deal with the
 DNS propagation issues. If you instead use a subdomain, the CNAME
 record will automatically redirect to the correct IP even if it is
-changed by GitHub.footnote:[This is all well documented on the
+changed by GitHub(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc5"))).footnote:[This is all well documented on the
 https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages[GitHub
 blog.]]
 
 === Importing from Other Blogs
 
-There are many tools that can be used to import an existing blog into
+((("Jekyll blogs","importing from other blogs into", id="ix_chapter-05-jekyll-asciidoc6", range="startofrange")))There are many tools that can be used to import an existing blog into
 Jekyll. As Jekyll is really nothing more than a file-layout
 convention, you just need to pull the relevant pieces (the post
 itself, and associated metadata like the post title, publishing date,
 etc.) and then write out a file with those contents. Jekyll blogs
 prefer Markdown, but they work fine with HTML content, so you can
 often convert a blog with minimal effort, and there are good tools
-that automate things for you.
+that automate things for you.(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc6")))
 
 ==== From Wordpress
 
-The most popular importer is the Wordpress importer. You will need the
+((("Wordpress","importing into Jekyll blogs from")))The most popular importer is the Wordpress importer. You will need the
 'jekyll-import' gem. This gem is distributed separately from the core
 Jekyll gem, but will be installed if you use the `github-pages` gem
 inside your Gemfile and use the `bundle` command.
 
 ===== Importing with direct database access
 
-Once you have the `jekyll-import` gem, you can convert a Wordpress
+((("Wordpress","importing with direct database access")))Once you have the `jekyll-import` gem, you can convert a Wordpress
 blog using a command like this:
 
 [source,text]
@@ -630,7 +630,7 @@ false`.
 
 ===== Importing from the Wordpress XML
 
-Another alternative is to export the entire database as an XML file.
+((("Wordpress","importing database as XML file")))Another alternative is to export the entire database as an XML file.
 Then, you can run the importer on that file.
 
 [source,text]
@@ -659,7 +659,7 @@ Wordpress means you will lose much of the metadata stored inside your
 blog. This metadata can include pages, tags, custom fields, and image
 attachments.
 
-If you want to keep this metadata, then you might
+((("Exitwp")))If you want to keep this metadata, then you might
 consider another import option like Exitwp. Exitwp is a python tool
 that provides a much higher level of fidelity between the original
 Wordpress site and the final Jekyll site, but has a longer learning
@@ -671,7 +671,7 @@ If you use another blog format other than Wordpress, chances are there
 is a Jekyll importer for it. Jekyll has dozens of importers, well
 documented on the http://import.jekyllrb.com[Jekyll importer site].
 
-For example, this command line example from the importer site exports
+((("Jekyll blogs","importing from Tumblr")))((("Tumblr")))For example, this command line example from the importer site exports
 from Tumblr blogs.
 
 [source,ruby]
@@ -697,7 +697,7 @@ Jekyll paths using this configuration option.
 
 Exporting from Tumblr is considerably easier than Wordpress. The
 Tumblr exporter scrapes all public posts from the blog, and then
-converts to a Jekyll compatible post format.
+converts to a Jekyll compatible post format.(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc3")))
 
 We've seen how we can use the importers available on
 import.jekyllrb.com to import. What if we have a nonstandard site
@@ -705,7 +705,7 @@ we need to import?
 
 === Scraping Sites into Jekyll
 
-Jekyll provides various importers that make it easy to convert an
+((("Jekyll blogs","scraping sites into", id="ix_chapter-05-jekyll-asciidoc7", range="startofrange")))((("scraping","into Jekyll", id="ix_chapter-05-jekyll-asciidoc8", range="startofrange")))Jekyll provides various importers that make it easy to convert an
 existing blog into a Jekyll blog. But if you have a nonstandard
 blog, or a site that is not a blog, you still have options for
 migrating it to Jekyll. The first option is to write your own importer
@@ -735,7 +735,7 @@ the data from the site using Archive.org?
 
 ==== Jekyll Scraping Tactics
 
-We can start by looking at the structure of the archive presented on
+((("Jekyll blogs","scraping tactics")))((("scraping","tactics")))We can start by looking at the structure of the archive presented on
 Archive.org. Go to Archive.org, and enter "bytravelers.com" into the
 search box in the middle of the page,  and then click "BROWSE HISTORY."
 You will see a calendar view that shows all the pages
@@ -766,7 +766,7 @@ iterate over the first hundred or so URLs easily.
 
 ==== Setting Up
 
-A naive implementation of a scraper would be a single Ruby file in
+((("Jekyll blogs","scraper setup", id="ix_chapter-05-jekyll-asciidoc9", range="startofrange")))((("scraping","setting up a scraper", id="ix_chapter-05-jekyll-asciidoc10", range="startofrange")))A naive implementation of a scraper would be a single Ruby file in
 which the execution and functionality were contained all in one.
 However, if we expose the functionality as a class, and then
 instantiate the class in a separate file, we can also write tests
@@ -844,12 +844,12 @@ Finished in 0.00125 seconds (files took 0.12399 seconds to load)
 
 There is nothing we are explicitly testing yet, but
 our test harness displays that our code inside our tests will match
-closely the code we write inside our runner wrapper.
+closely the code we write inside our runner wrapper.(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc10")))(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc9")))
 
 ==== Scraping Titles
 
-Let's start with something simple: scraping the titles from the
-site. We'll use Ruby to scrape the site; Ruby has some intuitive gems like
+((("Ruby","for scraping titles")))((("scraping","titles")))((("titles, scraping")))Let's start with something simple: scraping the titles from the
+site. ((("Mechanize", id="ix_chapter-05-jekyll-asciidoc11", range="startofrange")))We'll use Ruby to scrape the site; Ruby has some intuitive gems like
 mechanize that simplify building web clients. There is an API for
 the Internet archive, but I found it flakey and unreliable, so we'll
 just scrape the site. Add these additional lines to the Gemfile using
@@ -932,7 +932,7 @@ pieces inside and putting them into our Jekyll posts.
 
 ==== Refinining with Interactive Ruby
 
-There are two things that make Mechanize immensely powerful as the
+((("interactive Ruby shell (IRB)")))((("Ruby IRB")))((("scraping","with Ruby IRB")))There are two things that make Mechanize immensely powerful as the
 foundation for a scraping tool: easy access to making HTTP calls, and
 a powerful searching syntax once you have a remote document. You've
 seen how Mechanize makes it simple to make a GET request. Let's
@@ -1009,11 +1009,11 @@ strip whitespace from the title to make it presentable. We can
 incorporate this into our scraper code, but this is a good moment to
 think about how we can write tests to verify this works properly. And
 when we start writing tests, we open the door for another opportunity:
-caching to our HTTP requests.
+caching to our HTTP requests.(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc11")))
 
 ==== Writing Tests and Caching
 
-Were we to run our `run.rb` script again, we would notice that it
+((("caching","and scraping", id="ix_chapter-05-jekyll-asciidoc12", range="startofrange")))((("scraping","writing tests and caching", id="ix_chapter-05-jekyll-asciidoc13", range="startofrange")))Were we to run our `run.rb` script again, we would notice that it
 prints the document title, then halts as it retrieves the content from
 the server, and then prints again, stopping and starting until
 complete. The content from Archive.org does not change at all since
@@ -1287,11 +1287,11 @@ end
 ...
 -----
 
-Now we are in a position to write out the files for our actual posts.
+Now we are in a position to write out the files for our actual posts.(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc13")))(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc12")))
 
 ==== Writing Jekyll Posts
 
-With our titles in hand, we can generate an actual Jekyll
+((("Jekyll blogs","writing posts", id="ix_chapter-05-jekyll-asciidoc14", range="startofrange")))((("posts, blog", id="ix_chapter-05-jekyll-asciidoc15", range="startofrange")))With our titles in hand, we can generate an actual Jekyll
 post. To keep things simple each post will contain nothing beyond the
 titles for now, but we will quickly add other content. Getting the
 skeleton of a post established allows us to use the Jekyll command line
@@ -1349,7 +1349,7 @@ describe "#get_filename" do
 end
 -----
 
-Let's build the `get_filename` method. This method uses the handy Ruby
+Let's build the((("get&#95;filename method"))) `get_filename` method. This method uses the handy Ruby
 `DateTime.parse` method to convert a string representation of a date
 into a date object, and then uses the `strfmtime` method to format
 that date into the format we want in our filename.
@@ -1442,11 +1442,11 @@ As you can see, for now, posts are nothing more than the YFM, but this
 is still a perfectly valid Jekyll post.
 
 Now let's use the jekyll command line tool to start looking at our
-posts and to troubleshoot any issues with our Jekyll repository.
+posts and to troubleshoot any issues with our Jekyll repository.(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc15")))(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc14")))
 
 ==== Using the Jekyll Command Line Tool
 
-Taking a moment to add our files to the Git repository, we can then
+((("command line","Jekyll command line tool", id="ix_chapter-05-jekyll-asciidoc16", range="startofrange")))((("Jekyll","command line tool", id="ix_chapter-05-jekyll-asciidoc17", range="startofrange")))((("Jekyll blogs","command line tool", id="ix_chapter-05-jekyll-asciidoc18", range="startofrange")))Taking a moment to add our files to the Git repository, we can then
 take a look at our site using the `jekyll` command line tool. Using
 the command line tool locally will spot check our new content as we
 will see errors immediately (rather than getting notification emails
@@ -1539,12 +1539,12 @@ wrapped around it. You can see that the initial post files specify the
 wrapped around the entire contents.
 
 When we add these files, the Jekyll tool will notice the filesystem has changed and regenerate files. We now have generated posts, but
-we don't have a master index file, so let's add this now.
+we don't have a master index file, so let's add this now.(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc18")))(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc17")))(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc16")))
 
 ==== Master Index File with Liquid Markup
 
-We now have the posts generated properly, but we don't have an entry
-page into the blog. We can create a `index.md` file, which just
+((("Jekyll blogs","master index file creation with Liquid Markup")))((("Liquid Markup","master index file creation with")))We now have the posts generated properly, but we don't have an entry
+page into the blog. ((("index.md file")))We can create a `index.md` file, which just
 displays an index of all the blog posts.
 
 [source,html]
@@ -1577,8 +1577,8 @@ converts into an H1 tag) with regular HTML. You are free to mix
 regular HTML inside of Markdown files when there is not a Markdown
 equivalent.
 
-Output tags use double braces surrounding the
-content (`{{ site.title }}`) while logic tags use a brace and percent
+Output ((("output tags")))tags use double braces surrounding the
+content (`{{ site.title }}`) while((("logic tags"))) logic tags use a brace and percent
 symbol (`{% if site.title %}`). As you might expect, output tags place
 some type of visible output into the page, and logic tags perform some
 logic operation, like conditionals or loops.
@@ -1615,7 +1615,7 @@ just the title. We can now add the rest of the pages from our scraper.
 
 ==== Scraping Body and Author
 
-Use IRB to find the author and body content. Start by searching for the author information.
+((("interactive Ruby shell (IRB)")))((("scraping","author and body content")))Use IRB to find the author and body content. Start by searching for the author information.
 
 [source,bash]
 -----
@@ -1694,7 +1694,7 @@ We can then run `bundle exec ./run.rb` to rewrite our post files.
 
 ==== Adding Images to Jekyll
 
-Jekyll can host any binary files as well, and Markdown files can host
+((("images","adding to Jekyll")))((("Jekyll blogs","adding images to")))Jekyll can host any binary files as well, and Markdown files can host
 the proper markup to include these assets. Let's add the images from
 the original site.
 
@@ -1757,7 +1757,7 @@ will help, so let's now modify the CSS for our site.
 
 ==== Customizing Styling (CSS)
 
-We used Bootstrap in the JavaScript chapter and will use it again
+((("CSS","for Jekyll blogs", id="ix_chapter-05-jekyll-asciidoc19", range="startofrange")))((("Jekyll blogs","custom CSS for", id="ix_chapter-05-jekyll-asciidoc20", range="startofrange")))We used ((("Bootstrap")))Bootstrap in the JavaScript chapter and will use it again
 here. We will also layer another CSS file on top of Bootstrap to
 customize the colors.
 
@@ -1856,11 +1856,11 @@ image::images/btwg_0606.png[Restoring the original images and colors]
 
 We've now entirely scraped an old site and built a new Jekyll blog, so
 there is just one thing left to do: encourage and permit
-collaboration, which GitHub makes particularly easy.
+collaboration, which GitHub makes particularly easy.(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc20")))(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc19")))
 
 ==== Inviting Contributions with GitHub "Fork"
 
-When you publish a Jekyll blog, the fact that it is a repository on
+((("forking")))When you publish a Jekyll blog, the fact that it is a repository on
 GitHub makes it simple to manage and track changes. In addition,
 because forking is a button click away, you can ask people to
 contribute or make changes with very little friction.
@@ -1897,7 +1897,7 @@ new post into our Jekyll blog.
 
 ==== Publishing Our Blog to GitHub
 
-Like any other GitHub repository, we can then publish our blog using
+((("Jekyll blogs","publishing on GitHub")))((("publishing Jekyll blogs")))Like any other GitHub repository, we can then publish our blog using
 the same commands we saw with earlier repositories. Obviously you
 should change the username and blog name to suit your own needs.
 
@@ -1910,7 +1910,7 @@ $ sleep $((10*60)) && open http://bytravelers.com
 ----
 
 And, don't forget to set up DNS records and give yourself appropriate
-time to let those records propagate out.
+time to let those records propagate out.(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc8")))(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc7")))
 
 === Summary
 
@@ -1929,7 +1929,7 @@ correct structure of a Jekyll blog. Even though this scraper application was
 built specifically for a particular site, by adding testing and
 properly structuring the components it should be evident how to reuse
 much of the scraper for anything else you want to quickly convert into
-a Jekyll blog.
+a Jekyll blog(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc2"))).(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc0")))
 
 In the next chapter we will continue looking at Jekyll by building an
 Android application that uses the Java GitHub API bindings and allows

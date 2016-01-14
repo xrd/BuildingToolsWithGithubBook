@@ -1,7 +1,7 @@
 [[commit_status]]
 == .NET and the Commit Status API
 
-At the risk of oversimplifying things too much, one way to look at a Git repository is as just a long series of commits.
+((("commit&#8211;status API", id="ix_chapter-09-commit-status-dotnet-asciidoc0", range="startofrange")))At the risk of oversimplifying things too much, one way to look at a Git repository is as just a long series of commits.
 Each commit contains quite a bit of information: the contents of the source files, who created the commit and when, the author's comments on what changes the commit introduces, and so on.
 This is all good stuff, and works very well for Git's main use case: controlling the history of a software project.
 
@@ -14,7 +14,7 @@ This feature also surfaces at the bottom of the pull-request; if the last commit
 .Commit status in the pull-request UI
 image::images/btwg_0501.png[Commit status in the pull-request UI]
 
-The most obvious application for this feature is a continuous-integration service.
+((("continuous&#8211;integration service")))The most obvious application for this feature is a continuous-integration service.
 A program like Jenkins will get a notification when new commits are pushed to a branch, run a build/test cycle using the new code, and post the results through the commit-status API.
 An application like this can even include a link back to the build results, so the user can find out which tests failed.
 This is a great way to bring together everything needed to make a decision about a proposal: what code has changed, what do people think about it, and does this change break anything?
@@ -30,18 +30,18 @@ So now that we know what the feature is, and what its intended use is, let's tak
 
 === The API
 
-First, let's talk about access control.
-The commit status API exposes the need for OAuth as few others do.
+((("commit&#8211;status API","statuses in", id="ix_chapter-09-commit-status-dotnet-asciidoc1", range="startofrange")))First, let's talk about ((("access control")))access control.
+((("OAuth","and commit&#8211;status API")))The commit status API exposes the need for OAuth as few others do.
 Making a repository private means you want complete control of what people or applications can access it.
 Naturally you trust GitHub's internal code to do the right thing with your data, but what about some random application from the Internet?
 OAuth gives you a way to grant private-repository access to an application _with limits_ – the use of OAuth scopes allows an application to ask for a specific set of permissions, but it won't be able to do just any old thing with your data.
 Plus, this way you're always in control of these permissions; you can revoke an application's access at any time.
 
-The OAuth system includes the concept of scopes, which can be requested by and granted to an application, each of which allows a certain set of actions.
+The OAuth system includes the concept of ((("scopes")))scopes, which can be requested by and granted to an application, each of which allows a certain set of actions.
 The commit-status API requires the `repo:status` OAuth scope, which allows an application read and write access to *just* commit statuses; there is no access granted to the actual contents of the repository.
 This might seem strange: how can you judge the status of a commit without being able to inspect its contents?
 Just remember that this feature has use cases beyond continuous integration, and an application may not need full access to make a decision.
-For services that do need to be able to look at the repository contents, you can request the `repo` scope, which grants read _and_ write access to the entire contents of a repository, including commit statuses.
+For services that do need to be able to look at the repository contents, you can request ((("repo scope")))the `repo` scope, which grants read _and_ write access to the entire contents of a repository, including commit statuses.
 As of this writing, there's no way to request read-only access to repositories, so if a service needs access to your data, you have to trust it with write access.
 
 You can also use this API in anonymous mode, without using OAuth at all.
@@ -59,7 +59,7 @@ Just to summarize:
 
 ==== Raw Statuses
 
-Now that we know how we get access to commit statuses, let's see what they look like.
+((("commit&#8211;status API","raw status")))Now that we know how we get access to commit statuses, let's see what they look like.
 Commit statuses exist as atomic entities, and each commit can have a practically unlimited number of them (the actual number is in the thousands).
 You can query for existing statuses by doing a GET request to the API server at `/repos/<user>/<repo>/<ref>/statuses`, and it will return a list of them that looks like this:
 
@@ -98,7 +98,7 @@ Fortunately, the API server can do it for you.
 
 ==== Combined Status
 
-If you instead do a GET to `/repos/<user>/<repo>/<ref>/status` (note that the last word is singular), you'll instead get a response that looks like this:
+((("combined status")))((("commit&#8211;status API","combined status")))If you instead do a GET to `/repos/<user>/<repo>/<ref>/status` (note that the last word is singular), you'll instead get a response that looks like this:
 
 [source,json]
 ----
@@ -134,7 +134,7 @@ This is probably exactly what you want, but if you find that your use case calls
 
 ==== Creating a Status
 
-Now obviously these statuses have to come from somewhere.
+((("commit&#8211;status API","creating a status")))Now obviously these statuses have to come from somewhere.
 This API also includes a facility for creating them.
 To do this, you simply make a POST request to `/repos/<user>/<repo>/statuses/<sha>`, and supply a JSON object for the fields you want to include with your status:
 
@@ -149,24 +149,24 @@ To do this, you simply make a POST request to `/repos/<user>/<repo>/statuses/<sh
 
 Notice how the last component in that URL is `<sha>`.
 While you can query for statuses or a combined status using a ref name (like `master`), creating a status requires you to know the full SHA-1 hash of the commit you want to annotate.
-This is to avoid race conditions: if you were targeting a ref, it may have moved between when your process started and when it finished, but the SHA of a commit will never change.
+This is to avoid race conditions: if you were targeting a ref, it may have moved between when your process started and when it finished, but the SHA of a commit will never change.(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc1")))
 
 === Let's Write an App
 
-Alright, now that we know how to read and write statuses, let's put this API to work.
+((("commit&#8211;status API","example app", id="ix_chapter-09-commit-status-dotnet-asciidoc2", range="startofrange")))((("HTTP server app example","commit&#8211;status API", id="ix_chapter-09-commit-status-dotnet-asciidoc3", range="startofrange")))Alright, now that we know how to read and write statuses, let's put this API to work.
 In this chapter, we'll build a simple HTTP service that lets you create commit statuses for repositories you have access to using the OAuth web flow for authorization.
 The system we'll build will be fairly limited in scope, but it's a great starting point to customize for your specific needs.
 
-The language this time is C#, running on the CLR (Common Language Runtime).
+The language this time is((("C&#35;")))((("CLR (Common Language Runtime)"))) C#, running on the CLR (Common Language Runtime).
 At one point in the history of computing this wouldn't have been a good choice for a book like this, since it was only available on Windows, the development tools cost quite a bit of money, and the language and libraries were fairly limited.
-However, with the advent of Mono (an open-source implementation of the .NET runtime), the open-sourcing of the CLR core, and the availability of free tools, C# is now a completely valid and rather nice option for open source or hobby developers.
+However, with the advent of((("Mono"))) Mono (an open-source implementation of the .NET runtime), the open-sourcing of the CLR core, and the availability of free tools, C# is now a completely valid and rather nice option for open source or hobby developers.
 Plus, it has a vibrant ecosystem of packages we can leverage to make our jobs easier.
 
 ==== Libraries
 
-You'll be happy to know we won't be writing an entire HTTP server from scratch in this chapter.
-There are a number of open-source packages that do this work for us, and in this project we'll be using Nancy.
-Nancy is a project that started as a CLR port of the Sinatra framework for Ruby (it takes its name from Frank Sinatra's daughter, Nancy).
+((("commit&#8211;status API","libraries for")))((("HTTP server app example","libraries for")))You'll be happy to know we won't be writing an entire HTTP server from scratch in this chapter.
+((("Nancy library", id="ix_chapter-09-commit-status-dotnet-asciidoc4", range="startofrange")))There are a number of open-source packages that do this work for us, and in this project we'll be using Nancy.
+((("Sinatra","and Nancy library")))Nancy is a project that started as a CLR port of the Sinatra framework for Ruby (it takes its name from Frank Sinatra's daughter, Nancy).
 It's very capable, but also very succinct, as you'll see.
 
 We also won't be directly implementing access to the GitHub API, because GitHub provides a CLR library for that.
@@ -179,12 +179,12 @@ If you've worked with Nancy before, and have installed NuGet packages in the pas
 
 ==== Development Environment
 
-If you'd like to follow along with the code examples, here's how to set up a development environment with all the necessary elements.
+((("commit&#8211;status API","development environment for app", id="ix_chapter-09-commit-status-dotnet-asciidoc5", range="startofrange")))((("HTTP server app example","development environment for", id="ix_chapter-09-commit-status-dotnet-asciidoc6", range="startofrange")))If you'd like to follow along with the code examples, here's how to set up a development environment with all the necessary elements.
 The process is different on Windows (using Visual Studio) and any other platforms (using Xamarin tools).
 
 ===== Visual Studio
 
-If you're running Windows, you'll want to visit https://www.visualstudio.com/[] and download the Community edition of Visual Studio.
+((("commit&#8211;status API","and Visual Studio")))((("HTTP server app example","and Visual Studio")))((("Visual Studio")))If you're running Windows, you'll want to visit https://www.visualstudio.com/[] and download the Community edition of Visual Studio.
 The installer will present you with lots of options; for this example, we'll only need the "web developer" components, but feel free to check all the boxes that look interesting to you.
 (If you have access to a higher tier of Visual Studio, or already have it installed with the web-development packages, you're all set.)
 
@@ -216,7 +216,7 @@ Visual Studio will start the server under a debugger, and open an IE instance on
 
 ===== Xamarin Studio
 
-On OS X and Linux, as of this writing the easiest way forward is to visit http://www.monodevelop.com/[] and install MonoDevelop.
+((("commit&#8211;status API","Xamarin Studio", id="ix_chapter-09-commit-status-dotnet-asciidoc7", range="startofrange")))((("HTTP server app example","Xamarin Studio", id="ix_chapter-09-commit-status-dotnet-asciidoc8", range="startofrange")))((("Xamarin Studio", id="ix_chapter-09-commit-status-dotnet-asciidoc9", range="startofrange")))On OS X and Linux, as of this writing the easiest way forward is to visit http://www.monodevelop.com/[] and install ((("MonoDevelop")))MonoDevelop.
 Mono is an open-source implementation of Microsoft's CLR specification, and MonoDevelop is a development environment that works much like Visual Studio, but is built on Mono, and is completely open source.
 If you try to download MonoDevelop on a Windows or OS X machine, you'll be prompted to install Xamarin Studio instead; this is a newer version of MonoDevelop with more capabilities, and will work just as well for these examples.
 
@@ -233,18 +233,18 @@ Next, update the target framework setting.
 Control- or right-click on the node in the solution explorer that corresponds with your project (_not_ your solution), and select "Options" from the menu.
 Under "Build>General," set the Target Framework to "Mono / .NET 4.5" (or later) and click OK.
 
-Lastly, install the Nancy and Octokit NuGet packages.
+((("NuGet")))((("Octokit NuGet")))Lastly, install the Nancy and Octokit NuGet packages.
 Go to "Project>Add NuGet Packages…" in the menu to open the package manager.
 Search for Nancy, check the box next to it, search for Octokit, check its box, and click "Add Packages" at the bottom right.
 Once the process is complete, your project is ready for our example code.
 To run it under the debugger, go to "Run>Start Debugging…," or type ⌘-Enter.
-Xamarin will start the server and open a browser window to http://127.0.0.1:80080[] (possibly with a different port), which at this point will just show the default "404 Not Found" page.
+Xamarin will start the server and open a browser window to http://127.0.0.1:80080[] (possibly with a different port), which at this point will just show the default "404 Not Found" page(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc9")))(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc8")))(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc7"))).(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc6")))(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc5")))
 
 
 [[commit_status_first_steps]]
 ==== Sending the Request
 
-Alright, now that we have a project ready for some code, let's get our Nancy application up and running.
+((("commit&#8211;status API","sending request", id="ix_chapter-09-commit-status-dotnet-asciidoc10", range="startofrange")))((("HTTP server app example","sending request", id="ix_chapter-09-commit-status-dotnet-asciidoc11", range="startofrange")))Alright, now that we have a project ready for some code, let's get our Nancy application up and running.
 Let's be good engineers, and write our tests first.
 In order to do this, generate a new unit-test project alongside your existing application project, and add a NuGet reference to the `Nancy.Testing` package.
 You can then copy and paste the test examples over the top of the default test module that comes with that template.
@@ -264,29 +264,29 @@ using Nancy.Session;
 
 namespace NancyApplication1.Tests
 {
-	[TestFixture ()]
-	public class Test
-	{
-		private Browser browser;
+  [TestFixture ()]
+  public class Test
+  {
+    private Browser browser;
 
-		[SetUp]
-		public void Setup(){
-			this.bootstrapper = new ConfigurableBootstrapper(with => {
-				with.Module<Handler>();
-			});
-			this.browser = new Browser (bootstrapper);
-		}
+    [SetUp]
+    public void Setup(){
+      this.bootstrapper = new ConfigurableBootstrapper(with => {
+        with.Module<Handler>();
+      });
+      this.browser = new Browser (bootstrapper);
+    }
 
-		[Test ()]
-		public void FetchesUserDetails ()
-		{
-			var result = this.browser.Get ("/mojombo", // <1>
-				with => with.HttpRequest ());
-			Assert.AreEqual (HttpStatusCode.OK, result.StatusCode);
-			Assert.IsTrue (result.Body.AsString()
-				.Contains("Tom Preston-Werner")); // <2>
-		}
-	}
+    [Test ()]
+    public void FetchesUserDetails ()
+    {
+      var result = this.browser.Get ("/mojombo", // <1>
+        with => with.HttpRequest ());
+      Assert.AreEqual (HttpStatusCode.OK, result.StatusCode);
+      Assert.IsTrue (result.Body.AsString()
+        .Contains("Tom Preston-Werner")); // <2>
+    }
+  }
 }
 ----
 
@@ -337,7 +337,7 @@ namespace NancyApp
 
 [NOTE]
 ====
-The `async` and `await` keywords bear special mention.
+The((("async keyword")))((("await keyword"))) `async` and `await` keywords bear special mention.
 These comprise a syntactic nicety that encapsulates a series of functions that are running on an event loop.
 The code looks like it runs in order, but really when the `await` keyword is reached, the system starts an asynchronous request, and returns control back to the main event loop.
 Once the request has finished, and the promise is fulfilled, the event loop will then call back into the code that's expecting the return value of the `await` keyword, with all the scope variables intact.
@@ -345,15 +345,15 @@ This feature was introduced in .NET 4.0 (which was released in 2012), and it let
 This is but one of the features that make C# the favorite of many developers.
 ====
 
-This example is a bit more complicated than "hello, world," but it's still fairly succinct and clear.
+This example is a bit more complicated than "hello, world," but it's still fairly succinct and clear.(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc11")))(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc10")))
 This bodes well, because we're about to introduce some complexity, in the form of OAuth.
 
 ==== OAuth Flow
 
-In order to post a status update for a commit, we're going to have to ask the user for permission.
+((("commit&#8211;status API","OAuth flow", id="ix_chapter-09-commit-status-dotnet-asciidoc12", range="startofrange")))((("OAuth","flow for commit&#8211;status API", id="ix_chapter-09-commit-status-dotnet-asciidoc13", range="startofrange")))In order to post a status update for a commit, we're going to have to ask the user for permission.
 Apart from asking for their username and password (which gives way too much control, and if two-factor authentication is enabled may not even be enough), the only way to do this is OAuth, which isn't entirely straightforward.
 
-Here's a simple outline of the OAuth process, from our little server's point of view:
+((("OAuth","authorization process outline")))Here's a simple outline of the OAuth process, from our little server's point of view:
 
 . We need an authorization token, either because we don't have one, or because the one we have is expired.
   This is just a string of characters, but we can't generate it ourselves, so we ask GitHub for one.
@@ -398,7 +398,7 @@ namespace NancyApp
 ----
 
 Nancy will automatically detect a bootstrapper class, and use it to initialize our server.
-Now, from within a `NancyModule`, we can use the `Session` property to store and retrieve values that are transmitted as cookies.
+Now, from within a `NancyModule`, we can use the((("Session property"))) `Session` property to store and retrieve values that are transmitted as cookies.
 
 Next, we have to include our application's ID and secret in some of the requests, so we embed them in the code by adding these fields to the `Handler` class.
 If you don't have an application, visit https://github.com/settings/developers[] to create one and use `http://localhost:8080/authorize` (depending in your environment, the port number might be slightly different) for the callback URL – we'll see why in a bit.
@@ -439,7 +439,7 @@ private Response RedirectToOAuth()
     Note that we're also including our CSRF token in this object; this is so GitHub can give it back to us later for verification.
 <4> Here we use Octokit to generate the redirect URL, and send the user's browser there.
 
-`RedirectToOAuth` is a method that can be called from any route handler in our module, if it's discovered that the token is missing or invalid.
+`RedirectToOAuth` ((("RedirectToOAuth method")))is a method that can be called from any route handler in our module, if it's discovered that the token is missing or invalid.
 We'll see how it's called a bit later, but for now let's follow the rest of the OAuth process.
 
 In our GitHub application settings, we specified an authorization URL.
@@ -488,19 +488,19 @@ In order to do that, we'll add this snippet to our test project's namespace:
 ----
 public static class BootstrapperExtensions
 {
-	public static void WithSession(this IPipelines pipeline,
+  public static void WithSession(this IPipelines pipeline,
                                        IDictionary<string, object> session)
-	{
-		pipeline.BeforeRequest.AddItemToEndOfPipeline(ctx =>
-			{
-				ctx.Request.Session = new Session(session);
-				return null;
-			});
-	}
+  {
+    pipeline.BeforeRequest.AddItemToEndOfPipeline(ctx =>
+      {
+        ctx.Request.Session = new Session(session);
+        return null;
+      });
+  }
 }
 ----
 
-This is an _extension method_ that allows us to provide a `Session` object for a request, something the CSRF handling uses.
+This is ((("extension methods")))an _extension method_ that allows us to provide a `Session` object for a request, something the CSRF handling uses.
 Now that that exists, we can add a test method to our test-suite class:
 
 [source,csharp]
@@ -508,26 +508,26 @@ Now that that exists, we can add a test method to our test-suite class:
 [Test]
 public void HandlesAuthorization()
 {
-	// Mismatched CSRF token
-	bootstrapper.WithSession(new Dictionary<string, object> {
-		{ "CSRF:State", "sometoken" },
-	});
-	var result = this.browser.Get ("/authorize", (with) => {
-		with.HttpRequest();
-		with.Query("state", "someothertoken");
-	});
-	Assert.AreEqual (HttpStatusCode.Unauthorized, result.StatusCode);
+  // Mismatched CSRF token
+  bootstrapper.WithSession(new Dictionary<string, object> {
+    { "CSRF:State", "sometoken" },
+  });
+  var result = this.browser.Get ("/authorize", (with) => {
+    with.HttpRequest();
+    with.Query("state", "someothertoken");
+  });
+  Assert.AreEqual (HttpStatusCode.Unauthorized, result.StatusCode);
 
-	// Matching CSRF token
-	bootstrapper.WithSession(new Dictionary<string, object> {
-		{ "CSRF:State", "sometoken" },
+  // Matching CSRF token
+  bootstrapper.WithSession(new Dictionary<string, object> {
+    { "CSRF:State", "sometoken" },
                 { "OrigUrl", "http://success" },
-	});
-	result = this.browser.Get ("/authorize", (with) => {
-		with.HttpRequest();
-		with.Query("state", "sometoken");
-	});
-	result.ShouldHaveRedirectedTo ("http://success");
+  });
+  result = this.browser.Get ("/authorize", (with) => {
+    with.HttpRequest();
+    with.Query("state", "sometoken");
+  });
+  result.ShouldHaveRedirectedTo ("http://success");
 }
 ----
 
@@ -535,11 +535,11 @@ The first part sets up a mismatched CSRF token; it's `"sometoken"` in the sessio
 The second part has matching tokens, so we assert that the response is a redirect to the URL we stored in the session.
 
 Once all that is done, we've got our token and are able to continue on our merry way.
-All our handlers have to do to trigger an OAuth sequence is to call `RedirectToOAuth()` if it's necessary, and we'll automatically return the user to where they were when the process completes.
+All our handlers have to do to trigger an OAuth sequence is to call `RedirectToOAuth()` if it's necessary, and we'll automatically return the user to where they were when the process completes.(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc13")))(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc12")))
 
 ==== Status Handler
 
-Having gone through all that OAuth business, we should now have a token that grants us permission to create commit statuses.
+((("commit&#8211;status API","status handler", id="ix_chapter-09-commit-status-dotnet-asciidoc14", range="startofrange")))((("status handler", id="ix_chapter-09-commit-status-dotnet-asciidoc15", range="startofrange")))Having gone through all that OAuth business, we should now have a token that grants us permission to create commit statuses.
 We're going to add this handler to our Nancy module constructor:
 
 [source,csharp]
@@ -599,9 +599,9 @@ Get["/{user}/{repo}/{sha}/{status}", true] = async (parms, ct) => // <1>
     Nancy sets the response's `content-type` to `text/html` by default, so the user will get a nice clickable link.
 
 That's it!
-If you've typed all this into a project of your own, you should be able to run it under the debugger, or host it in an ASP.NET server, and create commit statuses for your projects by opening URLs in your browser.
+If you've typed all this into a project of your own, you should be able to run it under the debugger, or host it in an ASP.NET server, and create commit statuses for your projects by opening URLs in your browser.(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc15")))
 
-We noted this a bit earlier, but it bears repeating: this particular example responds to GET requests for ease of testing, but for a real service like this you'd probably want creation of statuses to use a POST request.
+We noted this a bit earlier, but it bears repeating: this particular example responds to GET requests for ease of testing, but for a real service like this you'd probably want creation of statuses to use a POST request(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc14")))(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc4"))).(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc3")))(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc2")))
 
 === Summary
 
@@ -625,7 +625,7 @@ You've learned about Nancy, with which you can quickly build any HTTP service, f
 If you've never been exposed to the Sinatra view of the world, this probably makes you think about web servers a bit differently, and if you have, you'll have a new appreciation for how this model can be idiomatically implemented.
 
 And you've had an introduction to Octokit, a type-safe implementation of a REST API, with built-in asynchrony and OAuth helpers.
-This toolkit really does make working with the GitHub API as simple and straightforward as using any .NET library, including the ability to explore it using Intellisense.
+This toolkit really does make working with the GitHub API as simple and straightforward as using any .NET library, including the ability to explore it using Intellisense.(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc0")))
 
 Now it's time to switch back to Ruby.
 In our next chapter, we'll take a look at Jekyll (which is what really runs GitHub Pages), and how to use it to write a blog.

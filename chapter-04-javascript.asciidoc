@@ -1,7 +1,7 @@
 [[JavaScript]]
 == JavaScript and the Git Data API
 
-Applications utilizing the GitHub API will typically reside inside a
+((("JavaScript", id="ix_chapter-04-javascript-asciidoc0", range="startofrange")))Applications utilizing the GitHub API will typically reside inside a
 server. You are not limited, however, to accessing
 the API from within server-side programming languages exclusively.
 The GitHub API works perfectly well from within a web browser context
@@ -21,7 +21,7 @@ was, and we'll make sure to add testing to our application to verify
 the functionality works as we expect.
 
 JavaScript should be generally accessible to most people who know other
-imperative programming languages. There is one feature, however, that
+imperative programming languages. ((("callback")))There is one feature, however, that
 can be challenging: the callback function. In JavaScript, functions
 are first-class objects, meaning they can be passed as arguments to
 other functions and stored as the value of a variable. You will find
@@ -34,13 +34,13 @@ may initially look confusing.
 
 === Building a Coffee Shop Database on GitHub
 
-Like many software developers, I suffer from an almost disturbing
+((("coffee shop database app", id="ix_chapter-04-javascript-asciidoc1", range="startofrange")))Like many software developers, I suffer from an almost disturbing
 obsession with coffee. Perhaps it is really my family that suffers:
 when we travel to a new city, I drag my wife and children through
 questionable neighborhoods just to find the perfect brew and
 complementary gluten-free desserts.
 
-Google Maps is a great help on these quests, in that it will find me a
+((("Google Maps")))Google Maps is a great help on these quests, in that it will find me a
 coffee shop and reviews, but the granularity of information about that
 coffee shop is often poor and limited in scope. Do they offer rice
 milk as a dairy-free alternative?  What special details should I know
@@ -70,7 +70,7 @@ You don't need to know these technologies in advance of working on this chapter.
 
 === Set Up
 
-To create our app, let's first create our main web page and push it into our repository.
+((("coffee shop database app","setup", id="ix_chapter-04-javascript-asciidoc2", range="startofrange")))To create our app, let's first create our main web page and push it into our repository.
 
 [source,bash]
 -------
@@ -91,7 +91,7 @@ instead of the longer `git push origin gh-pages`.
 
 ==== Mapping Hostnames
 
-Once we publish these files into GitHub inside a repository we can connect the repository to a
+((("coffee shop database app","mapping hostnames")))((("hostnames, mapping")))Once we publish these files into GitHub inside a repository we can connect the repository to a
 real hostname. There are two steps to take to do this:
 
 * Add a CNAME file that tells GitHub under which server name this service should resolve.
@@ -124,7 +124,7 @@ Now we can install the libraries needed for this application.
 
 ==== Adding the Support Libraries
 
-As we mentioned, we will use the GitHub.js library, AngularJS, and
+((("AngularJS")))((("Bootstrap")))((("coffee shop database app","support libraries for")))((("GitHub.js library")))As we mentioned, we will use the GitHub.js library, AngularJS, and
 Bootstrap. Let's add those to our project now. Using whatever editor
 you prefer, edit the _index.html_ file to look like this:
 
@@ -176,11 +176,11 @@ $ wget https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css
 $ wget https://github.com/michael/github/raw/master/github.js
 -------
 
-Now we are ready to use the GitHub library inside our SPA.
+Now we are ready to use the GitHub library inside our SPA.(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc2")))
 
 === An AngularJS Application Using GitHub.js
 
-Now let's implement a file `coffeetech.js` file, which is where we will
+((("AngularJS","application using GitHub.js", id="ix_chapter-04-javascript-asciidoc3", range="startofrange")))((("coffee shop database app","AngularJS application using GitHub.js", id="ix_chapter-04-javascript-asciidoc4", range="startofrange")))((("GitHub.js library", id="ix_chapter-04-javascript-asciidoc5", range="startofrange")))Now let's implement a file `coffeetech.js` file, which is where we will
 build our single-page application functionality. Create a new file called
 `coffeetech.js` in the root of your repository.
 
@@ -301,7 +301,7 @@ our single-page app.
 
 ==== Visualize Application Data Structure
 
-We are going to be building a coffeeshop database. We want to use Git
+((("coffee shop database app","application database structure visualization")))We are going to be building a coffeeshop database. We want to use Git
 as our datastore, but Git and its associated tools (either command
 line tools or GitHub) don't offer the same features as
 a standard relational database. So, we need to think and plan how we
@@ -328,12 +328,12 @@ means adding tests to our project.
 
 ==== Making Our App Testable
 
-Testing not only builds better code by making us think
+((("coffee shop database app","testability of app")))((("testing","coffee shop database app")))Testing not only builds better code by making us think
 clearly about how our code will be used from the outside, but makes it
 easier for an outsider (meaning other team members) to use our code.
 Testing facilitates "social coding."
 
-We'll use a JavaScript testing tool called "Karma." Karma simplifies
+We'll use a JavaScript testing tool called((("Karma"))) "Karma." Karma simplifies
 writing JavaScript unit tests. We need to first install the tool, then
 write a test or two. Karma can easily be installed using NPM
 (installation of which is documented in the <<appendix>>).
@@ -408,7 +408,7 @@ AngularJS we want to call the function specified when the controller
 has finished loading. We'll call this function `init` so let's test it
 below.
 
-First, we will write the setup code for an AngularJS test written
+((("AngularJS","Jasmine test framework for")))((("Jasmine","test framework for coffee shop database app")))First, we will write the setup code for an AngularJS test written
 using the Jasmine test framework. Jasmine is a "behavior-driven
 JavaScript" library that provides functions to group and create
 expectation-based tests. Within the Jasmine framework are "matchers"
@@ -436,7 +436,7 @@ describe( "GithubCtrl", function() {
             generateMockRepositorySupport();
             scope = $rootScope.$new(); // <5>
             ctrl = $controller( "GithubCtrl",
-	       { $scope: scope, Github: gh, Geo: geo } ); // <6>
+         { $scope: scope, Github: gh, Geo: geo } ); // <6>
         } )
     );
 ...
@@ -502,7 +502,7 @@ expectations.
 
 This syntax initially can look confusing if you have never written
 Jasmine tests for JavaScript, but it actually solves a lot of problems
-in an elegant way. Most importantly, Jasmine provides a `spyOn`
+in an elegant way. Most importantly, Jasmine provides a((("spyOn function"))) `spyOn`
 function that will intercept a call to it, and then allow you to
 assert that it was called. Any place in our tests you see
 `toHaveBeenCalled()` is an assertion that `spyOn` provides to us
@@ -521,7 +521,7 @@ beforeEach( module( "coffeetech" ) );
 function generateMockGeolocationSupport( lat, lng ) { // <1>
     response = ( lat && lng ) ?
         { coords: { lat: lat, lng: lng } } :
-	{ coords: CITIES[0] };
+  { coords: CITIES[0] };
     geo = { getCurrentPosition: function( success, failure ) { // <2>
         success( response );
     } };
@@ -531,8 +531,8 @@ function generateMockGeolocationSupport( lat, lng ) { // <1>
 function generateMockRepositorySupport() { // <4>
     repo = { read: function( branch, filename, cb ) { // <5>
         cb( undefined,
-	    JSON.stringify( filename == "cities.json" ?
-	    		    CITIES : PORTLAND ) );
+      JSON.stringify( filename == "cities.json" ?
+              CITIES : PORTLAND ) );
     } };
     spyOn( repo, "read" ).andCallThrough();
 
@@ -573,11 +573,11 @@ line and watch them fail.
 $ karma start karma.conf.js
 Chrome 32.0.1700 (Mac OS X 10.9.1) GithubCtrl #init should initialize,
           grabbing current city FAILED
-	Error: [$injector:modulerr] Failed to instantiate module coffeetech due to:
-	Error: [$injector:nomod] Module 'coffeetech' is not available!
-	  You either misspelled the module name or forgot to load it.
-	  If registering a module ensure that you specify the
-	  dependencies as the second argument.
+  Error: [$injector:modulerr] Failed to instantiate module coffeetech due to:
+  Error: [$injector:nomod] Module 'coffeetech' is not available!
+    You either misspelled the module name or forgot to load it.
+    If registering a module ensure that you specify the
+    dependencies as the second argument.
 ...
 --------
 
@@ -585,7 +585,7 @@ We now need to provide some test fixtures.
 
 ==== Test Data
 
-We need to build our support fixtures, data files that have test data. Add the
+((("coffee shop database app","test data for")))We need to build our support fixtures, data files that have test data. Add the
 `fixtures-cities.js` file into the same directory as your other code.
 
 [source,javascript]
@@ -622,7 +622,7 @@ var PORTLAND = [{
 
 ==== CoffeeTech.js
 
-Then, add the `coffeetech.js` file. We'll focus just on the setup code
+((("coffee shop database app","and coffeetech.js. file", id="ix_chapter-04-javascript-asciidoc6", range="startofrange")))Then, add the `coffeetech.js` file. We'll focus just on the setup code
 and the changes to the `init` function for now.
 
 [source,javascript]
@@ -642,7 +642,7 @@ mod.factory( 'Prompt', [ '$window', function( $window ) {
 } ] );
 
 mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', 'Prompt',  // // <3>
-    		function( $scope, ghs, Geo, Prompt ) {
+        function( $scope, ghs, Geo, Prompt ) {
     $scope.messages = []
 
     $scope.init = function() { // // <4>
@@ -696,13 +696,13 @@ reconstitute this data to a JavaScript object using the `JSON.parse` method.
 <6> After we retrieve our data from the repository, we can use the
 data inside the cities array to determine our current city.
 <7> Since we are calling outside of AngularJS and returning inside a
-callback, we need to call `scope.$apply()` like we showed in prior examples.
+callback, we need to call `scope.$apply()` like we showed in prior examples(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc6"))).(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc5")))(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc4")))(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc3")))
 
 We are now ready to write our Geocoding implementation.
 
 === Geocoding Support
 
-We'll build functions
+((("coffee shop database app","geocoding support", id="ix_chapter-04-javascript-asciidoc7", range="startofrange")))((("geocoding", id="ix_chapter-04-javascript-asciidoc8", range="startofrange")))We'll build functions
 to retrieve the data for a city from the GitHub API, find the location
 of the user using their browser's Geolocation feature, use the user's
 current location to determine what cities they are close to, implement
@@ -820,11 +820,11 @@ the last `});` closing braces:
     describe( "#calculateDistance", function() {
         it( "should find distance between two points", function() {
             expect( parseInt(
-	        scope.calculateDistance( 14.599512,
-					 120.98422,
-					 10.315699,
-					 123.885437 ) * 0.61371 ) ).
-			toEqual( 354 );
+          scope.calculateDistance( 14.599512,
+           120.98422,
+           10.315699,
+           123.885437 ) * 0.61371 ) ).
+      toEqual( 354 );
         });
     });
 
@@ -839,11 +839,11 @@ showed that our distance was 571. Hmm, perhaps we calculated in kilometers, not 
 Indeed, I had forgotten this algorithm actually calculated the
 distance in kilometers, not miles. So, we need to multiply the result
 by 0.621371 to get the value in miles, which ends up being close
-enough to what Google reports the distance to be.
+enough to what Google reports the distance to be.(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc8")))(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc7")))
 
 ==== City Data
 
-Let's seed our application with some starting data and write out the
+((("coffee shop database app","city data for")))Let's seed our application with some starting data and write out the
 `cities.json` file.
 
 [source,javascript]
@@ -868,7 +868,7 @@ in place, we can move on to acquiring credentials from the user.
 
 === Adding Login
 
-If we want people to fork a repository on GitHub, we need to have them
+((("coffee shop database app","login for")))((("login","for coffee shop database app")))If we want people to fork a repository on GitHub, we need to have them
 log in to GitHub. So, we need to ask for credentials.
 
 [source,javascript]
@@ -914,7 +914,7 @@ We can now expose the new data inside the `index.html` file like so
 of items. Here we use it to iterate over the items in our
 `portland.json` file and insert a snippet of HTML with our data
 interpolated from each item in the iteration.
-<2> Bootstrap makes it easy to establish structure in our HTML. The
+<2> ((("Bootstrap")))Bootstrap makes it easy to establish structure in our HTML. The
 `col-md-6` class tells Bootstrap to build a column sized at 50% of our 12-column layout (the default for Bootstrap layouts). We set up two
 adjacent columns this way. And if we are inside a mobile device, it
 properly stacks these columns.
@@ -924,7 +924,7 @@ shop.
 
 ==== Errors Already?
 
-If you run this in your browser, you will not see the shops for our city
+((("coffee shop database app","error handling", id="ix_chapter-04-javascript-asciidoc9", range="startofrange")))((("error handling", id="ix_chapter-04-javascript-asciidoc10", range="startofrange")))If you run this in your browser, you will not see the shops for our city
 displayed. Something is broken, so
 let's investigate. I recommend using the Chrome browser to
 debug this, but you can use any browser and set of developer tools you
@@ -973,7 +973,7 @@ $ wget https://raw.github.com/dankogai/js-base64/master/base64.js
 -------
 
 Then, add the libraries to your _index.html_ so that the JavaScript
-includes look like this:
+includes look like this:(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc10")))(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc9")))
 
 [source,html]
 -----
@@ -992,8 +992,8 @@ structure of our data that will eventually come from our users.
 
 === Displaying (Soon-to-Be) User-Reported Data
 
-So far we have built a database of cities and coffee shops in those
-cities. Google Maps or Apple Maps already provide this information.
+((("coffee shop database app","displaying data", id="ix_chapter-04-javascript-asciidoc11", range="startofrange")))So far we have built a database of cities and coffee shops in those
+cities. ((("Google Maps")))Google Maps or Apple Maps already provide this information.
 If we layer additional information on top of this data (like quirky
 information about the coffee shop), however, then we might have something that
 someone might find useful once they have found the coffee shop on their
@@ -1075,7 +1075,7 @@ We'll use this to allow simple search. Add the search feature to our
 data inside each item in our `shops` array.
 <3> If we are searching (the model variable `search` is defined) then
 we show the extra information.
-<4> We alter our lat/lng information to point to a Google Maps page.
+<4> ((("Google Maps")))We alter our lat/lng information to point to a Google Maps page.
 
 Now if we type in the word `gluten` in our search box, we filter out
 anything except shops that match that, and we see the information
@@ -1086,7 +1086,7 @@ image::images/btwg_09in04.png[Filtering coffeeshops using the term gluten]
 
 ==== User-Contributed Data
 
-Now that we have a functioning application, let's allow people to add
+((("coffee shop database app","user&#8211;contributed data for", id="ix_chapter-04-javascript-asciidoc12", range="startofrange")))Now that we have a functioning application, let's allow people to add
 information themselves and help build our database. Just beneath the
 link to the map link, add a button that will allow us to annotate a
 coffee shop with extra information.
@@ -1182,10 +1182,10 @@ beforeEach( inject( function ($controller, $rootScope, $injector ) {
     $timeout = $injector.get( '$timeout' );  // // <3>
     scope = $rootScope.$new();
     ctrl = $controller( "GithubCtrl",
-	     { $scope: scope,
-	       Github: ghs,
-	       '$timeout': $timeout,
-	       '$window': prompter } );
+       { $scope: scope,
+         Github: ghs,
+         '$timeout': $timeout,
+         '$window': prompter } );
 } ) );
 ...
 -----
@@ -1384,7 +1384,7 @@ successfully (we don't see the `err` object evaluating to true) then
 we know we are ready to start editing data.
 <2> We notify the UI that we are annotating and tell the user they
 will need to wait while the annotation request is in progress.
-<3> `JSON.stringify` converts our annotated shop object into a JSON
+<3> ((("JSON.stringify")))`JSON.stringify` converts our annotated shop object into a JSON
 object. If you have used +JSON.stringify+ before, you might not know
 about the other two parameters (beyond just the object you want to
 serialize) you can provide to this function. These
@@ -1459,11 +1459,11 @@ this function filters that out so that our pull request data is clean.
 <3> `notifyWaiting` (obviously) notifies users. We create a waiting
 object, and then update the state (which our app will use to hide or
 display messages) and then a message itself. If we provide an empty
-message, we will clear the object, effectively removing the message from the UI.
+message, we will clear the object, effectively removing the message from the UI.(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc12")))
 
 
 Now we need to expose the status message in our UI by modifying the
-HTML.
+HTML.(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc11")))
 
 [source,javascript]
 -----
@@ -1480,7 +1480,7 @@ HTML.
 
 === Accepting Pull Requests
 
-When someone makes an annotation to a shop, the owner of the original repository gets a pull-request notification on GitHub.
+((("coffee shop database app","accepting pull requests")))((("pull requests","with coffee shop database app")))When someone makes an annotation to a shop, the owner of the original repository gets a pull-request notification on GitHub.
 
 .Adding information through a pull request
 image::images/btwg_09in05.png[Adding information through a pull request]
@@ -1501,7 +1501,7 @@ extra comma, but this is still a very readable diff.
 
 === Toward a Safe Login Implementation
 
-If I saw this app in the wild I would never use it to submit data. The
+((("coffee shop database app","safe login implementation for", id="ix_chapter-04-javascript-asciidoc13", range="startofrange")))((("login","for coffee shop database app", id="ix_chapter-04-javascript-asciidoc14", range="startofrange")))If I saw this app in the wild I would never use it to submit data. The
 app asks for my GitHub username and password. Asking for my username
 and password implicitly asks me to trust the authors of this
 application. Trust in this case means that I trust them to not
@@ -1512,7 +1512,7 @@ authentication process and steal my crendentials. GitHub is a large
 part of my online identity and I would never provide these
 crendentials to a web application.
 
-Fortunately, we have an alternative to asking for passwords: OAuth.
+((("OAuth","for coffee shop database app login", id="ix_chapter-04-javascript-asciidoc15", range="startofrange")))Fortunately, we have an alternative to asking for passwords: OAuth.
 
 When we use OAuth, our users enter their credentials directly into
 GitHub. If our users have turned on two-factor authentication, GitHub
@@ -1523,7 +1523,7 @@ are who we say we are, and then returns us to the application that
 requested access.
 
 [NOTE]
-There are many benefits to using OAuth. GitHub provides the
+There are many ((("OAuth","benefits of")))benefits to using OAuth. GitHub provides the
 application with what is called an OAuth token that encapsulates
 exactly what services on GitHub we have access to, and
 whether that access is read-only or whether we can add data in a
@@ -1546,7 +1546,7 @@ Let's modify our application to use OAuth.
 
 ==== Authentication Requires a Server
 
-Up until now we have been able to publish all our files into GitHub,
+((("authentication","for coffee shop database app", id="ix_chapter-04-javascript-asciidoc16", range="startofrange")))Up until now we have been able to publish all our files into GitHub,
 and they are hosted for us by GitHub. Sadly the authentication
 component cannot be hosted on GitHub. Somehow we need to safely
 authenticate our user into GitHub and retrieve an OAuth token. There
@@ -1570,7 +1570,7 @@ complexity from our system.
 
 ==== Fixing Authentication with Firebase
 
-Instead of writing our own server to manage authentication and talk to
+((("Firebase","fixing authentication with", id="ix_chapter-04-javascript-asciidoc17", range="startofrange")))Instead of writing our own server to manage authentication and talk to
 the GitHub API, we will delegate that authentication to Firebase. Firebase is a
 real-time communication toolset that integrates well with our choice
 of AngularJS. By far the simplest and safest option,
@@ -1588,7 +1588,7 @@ navigate to the "Applications" link toward the bottom. Click on the
 "Developer Applications" tab in the right center column and then click on the
 "Register new application" button. Make sure "Authorization callback URL" is set to
 `https://auth.firebase.com/auth/github/callback`. Then save the
-application by clicking on the "Register application" button.
+application by clicking on the "Register application" button.(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc17")))
 
 .A new GitHub application for OAuth
 image::images/btwg_09in07.png[A new GitHub application for oAuth]
@@ -1611,11 +1611,11 @@ We've now established a login application on GitHub, configured it
 to use the Firebase service, and have properly configured Firebase to
 use that GitHub application. We want all
 functionality, especially external services, to be covered by tests,
-so we'll write that test coverage next.
+so we'll write that test coverage next.(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc16")))
 
 ==== Testing Firebase
 
-Since we load Firebase from its CDN, we first need to mock out the
+((("Firebase","testing", id="ix_chapter-04-javascript-asciidoc18", range="startofrange")))((("testing","Firebase", id="ix_chapter-04-javascript-asciidoc19", range="startofrange")))Since we load Firebase from its CDN, we first need to mock out the
 `Firebase` constructor using a simple shim. Put the following into a
 file called `firebase-mock.js`:
 
@@ -1658,12 +1658,12 @@ beforeEach( inject( function ($controller, $rootScope, $injector ) {
     $timeout = $injector.get( '$timeout' );
     scope = $rootScope.$new();
     ctrl = $controller( "GithubCtrl",
-	     { $scope: scope,
-	       Github: ghs,
-	       '$timeout': $timeout,
-	       '$window': prompter,
-	       '$firebase': mockFirebase,
-	       '$firebaseSimpleLogin': mockSimpleLogin } ); // <3>
+       { $scope: scope,
+         Github: ghs,
+         '$timeout': $timeout,
+         '$window': prompter,
+         '$firebase': mockFirebase,
+         '$firebaseSimpleLogin': mockSimpleLogin } ); // <3>
 } ) );
 
 
@@ -1702,11 +1702,11 @@ we are changing the required injections for any controller.
 <4> We change our `#annotate` test and create the auth object
 (normally created inside the initialization).
 <5> We prompt only once for the data to annotate (we don't need to
-prompt for username and password any longer).
+prompt for username and password any longer).(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc19")))(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc18")))
 
 ==== Implementing Firebase Login
 
-Now, add Firebase support to our AngularJS application. Add the
+((("Firebase","implementing login with", id="ix_chapter-04-javascript-asciidoc20", range="startofrange")))((("login","with Firebase", id="ix_chapter-04-javascript-asciidoc21", range="startofrange")))Now, add Firebase support to our AngularJS application. Add the
 references to the Firebase support libraries right after AngularJS is loaded:
 
 [source,html]
@@ -1719,7 +1719,7 @@ references to the Firebase support libraries right after AngularJS is loaded:
 
 We need to adjust our `coffeetech.js` file in a few ways. First,
 import the Firebase into our AngularJS module. Also, our original
-Github service expected username and password as parameters, but we are now using a slightly different signature for OAuth tokens.
+((("OAuth","for coffee shop database app login")))Github service expected username and password as parameters, but we are now using a slightly different signature for OAuth tokens.
 
 [source,javascript]
 -----
@@ -1741,9 +1741,9 @@ When we instantiate our controller, we need to inject `Firebase` and
 [source,javascript]
 -----
 mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', '$window', '$timeout',
-		'$firebase', '$firebaseSimpleLogin',
-		function( $scope, ghs, Geo, $window, $timeout,
-			  $firebase, $firebaseSimpleLogin ) {
+    '$firebase', '$firebaseSimpleLogin',
+    function( $scope, ghs, Geo, $window, $timeout,
+        $firebase, $firebaseSimpleLogin ) {
 
     $scope.init = function() {
 
@@ -1806,8 +1806,8 @@ Once users have logged in, they will be redirected to the application,
 and we'll notify them that they have submitted a pull request with their
 contribution. Since their contribution is associated with their GitHub
 account, they will receive standard pull request notifications when
-their contribution is accepted, so we don't need to implement that
-ourselves.
+their contribution is accepted(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc21")))(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc20"))), so we don't need to implement that
+ourselves(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc15"))).(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc14")))(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc13")))
 
 === Summary
 
@@ -1816,7 +1816,7 @@ with a searchable coffeeshop database that accepts contributions in a
 very safe and secure way using the Pull Request API. We were able to completely ignore all the
 administrative features of a data entry system, delegating all these
 to GitHub. Our single-page app permits us to focus on one thing:
-making a powerful and useful application.
+making a powerful and useful application(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc1"))).(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc0")))
 
 In our final chapter we will use CoffeeScript to create our own chat
 robot that requests pull request reviews from chat room members

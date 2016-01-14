@@ -2,7 +2,7 @@
 [role="pagenumrestart"]
 == The Unclad GitHub API
 
-This chapter eases us into reading and writing data from the GitHub
+((("GitHub API","reading and writing data from", id="ix_chapter-01-introduction-asciidoc0", range="startofrange")))This chapter eases us into reading and writing data from the GitHub
 API. Successive chapters show you how to access information
 from the GitHub API using a variety of client libraries. These client
 libraries, by design, hide the nuts and bolts of the API from you,
@@ -17,7 +17,7 @@ network access is restrained.
 
 === cURL
 
-There will be times when you want to quickly access information from
+((("cURL")))((("GitHub API","cURL and")))There will be times when you want to quickly access information from
 the GitHub API without writing a formal program. Or, when you want to quickly
 get access to the raw HTTP request headers and content. Or, where you
 might even question the implementation of a client library and need
@@ -34,7 +34,7 @@ note that cURL works best with one-off requests.
 
 [NOTE]
 .Installing cURL
-cURL is usually installed on most OSX machines, and can easily be installed
+((("cURL","installing")))cURL is usually installed on most OSX machines, and can easily be installed
 using Linux package managers (probably one of "apt-get install curl" or "yum install
 curl"). If you are using Windows or want to manually install it, go to
 http://curl.haxx.se/download.html. 
@@ -67,7 +67,7 @@ What can we learn from this API response?
 
 === Breadcrumbs to Successive API Paths
 
-The GitHub API is a Hypermedia API. Though a discussion on what constitutes
+((("GitHub API","as Hypermedia API")))The GitHub API is a ((("Hypermedia API")))Hypermedia API. Though a discussion on what constitutes
 hypermedia deserves an entire book of its own (Check out O'Reilly's
 "Hypermedia APIs with HTML5 and Node"), you can absorb much of what
 makes hypermedia interesting by just looking at a response. First, you can see from the API response that each response contains a map with directions for the next responses you might make. Not all clients use this information, of course, but one
@@ -99,7 +99,7 @@ Now let's briefly discuss the format of all GitHub API responses: JSON.
 
 === The JavaScript Object Notation (JSON) Format
 
-Every response you get back from the GitHub API will be in the JSON (JavaScript Object Notation)
+((("GitHub API","JSON and", id="ix_chapter-01-introduction-asciidoc1", range="startofrange")))((("JSON (JavaScript Object Notation)", id="ix_chapter-01-introduction-asciidoc2", range="startofrange")))Every response you get back from the GitHub API will be in the JSON (JavaScript Object Notation)
 format. JSON is a "lightweight data interchange format" (read more on
 the http://www.json.org/[JSON.org website]). There are other competing and effective
 formats, such as XML (Extensible Markup Language) or YAML (YAML
@@ -133,11 +133,11 @@ processes that JSON. Let's talk about one such tool next.
 
 ==== Parsing JSON from the Command Line
 
-JSON is a text format, so you could use any command line text processing tool, such
+((("command line","parsing JSON from")))JSON is a text format, so you could use any command line text processing tool, such
 as the venerable AWK, to process JSON responses. There is one fantastic JSON
-specific parsing tool that complements cURL that is worth knowing:
+specific parsing tool that complements cURL that is worth ((("jq", id="ix_chapter-01-introduction-asciidoc3", range="startofrange")))knowing:
 _jq_. If you pipe JSON content (using the `|` character for most shells)
-into jq, you can then easily extract pieces of the JSON using _filters_.
+into jq, you can then easily extract pieces of the JSON ((("filters")))using _filters_.
 
 .Installing jq
 [NOTE]
@@ -166,12 +166,12 @@ key/value pairs inside an associative array. It uses the
 the value there.
 
 You also will notice that cURL printed out transfer time
-information. cURL printed this information to _standard error_ which
+information. cURL printed this information ((("standard error")))to _standard error_ which
 is a shell convention used for messaging errors and an output stream
 which jq will correctly ignore (in other words, the JSON format stream
 will not be corrupted by error messages). If we want to
-restrict that information and clean up the request we should use the
-`-s` switch, which runs cURL in "silent" mode.
+restrict that information and clean up the request we should use ((("&#8211;s switch")))the
+`-s` switch, which runs cURL in((("silent mode"))) "silent" mode.
 
 It should be easy to understand how the jq filter is applied to the
 response JSON. For a more complicated request (for example, we might
@@ -238,15 +238,15 @@ GitHub API and parse out bits of information from that response, all
 in a single line. But there will be times when you incorrectly
 specify parameters to cURL or the API, and the data is not what you
 expect. Now we'll learn about how to debug the cURL tool and the API
-service itself to provide more context when things go wrong.
+service itself to provide more context when things go(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc3"))) wrong.
 
 ==== Debugging Switches for cURL
 
-As mentioned, cURL is a great tool when you are verifying that a
+((("cURL","debugging switches for", id="ix_chapter-01-introduction-asciidoc4", range="startofrange")))((("debugging, cURL switches for", id="ix_chapter-01-introduction-asciidoc5", range="startofrange")))((("switches, cURL", id="ix_chapter-01-introduction-asciidoc6", range="startofrange")))As mentioned, cURL is a great tool when you are verifying that a
 response is what you expect it to be. The response body is important,
 but often you'll want access to the headers as well. cURL makes
-getting these easy with the `-i` and `-v` switches. The pass:[<code><span class="keep-together">-i</span></code>] switch
-prints out request headers, and the `-v` switch prints out both
+getting these easy with the `-i` and `-v` switches. The pass:[<code><span class="keep-together">-i</span></code>] switch((("&#8211;i switch")))
+prints out request headers, and((("&#8211;v switch"))) the `-v` switch prints out both
 request and response headers (the `>` character indicates request
 data, and the `<` character indicates response data).
 
@@ -300,16 +300,16 @@ in the body (the JSON data) but also in the headers. It is important
 to understand what headers are here and which ones are
 important. There are a lot of them the HTTP specification
 requires, and we can often ignore those, but there are a few that are
-vital when you start making more than just a few isolated requests.
+vital when you start making more than just a few isolated requests(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc6")))(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc5")))(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc4"))).(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc2")))(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc1")))
 
 === Important Headers
 
-Three headers are present in every GitHub API response that tell you
-about the GitHub API rate limits.  They are X-RateLimit-Limit,
+((("GitHub API","important headers")))((("headers","in GitHub API responses")))Three headers are present in every GitHub API response that tell you
+about the GitHub API ((("rate limits","headers for")))rate limits.  They are ((("X&#8211;RateLimit&#8211;Limit")))((("X&#8211;RateLimit&#8211;Remaining")))((("X&#8211;RateLimit&#8211;Reset")))X-RateLimit-Limit,
 X-RateLimit-Remaining, and X-RateLimit-Reset.   These limits are
 explained in detail in <<developer-api-rates>>.
 
-The X-GitHub-Media-Type header contains information that will come in
+The ((("X&#8211;GitHub&#8211;Media&#8211;Type header")))X-GitHub-Media-Type header contains information that will come in
 handy when you are starting to retrieve text or blob content from the
 API. When you make a request to the GitHub API you can specify the
 format you want to work with by sending an Accept header with your request.
@@ -318,7 +318,7 @@ Now, let's use a response to build another response.
 
 === Following a Hypermedia API
 
-We'll use the "map" of the API by hitting the base endpoint, and then
+((("GitHub API","following a Hypermedia API")))((("Hypermedia API","following")))We'll use the "map" of the API by hitting the base endpoint, and then
 use the response to manually generate another request.
 
 [source,text]
@@ -376,13 +376,13 @@ authentication.
 [[authentication]]
 === Authentication
 
-There are two ways to authenticate when making a request to the GitHub
+((("authentication","GitHub API", id="ix_chapter-01-introduction-asciidoc7", range="startofrange")))((("GitHub API","authentication", id="ix_chapter-01-introduction-asciidoc8", range="startofrange")))There are two ways to authenticate when making a request to the GitHub
 API: username and passwords (HTTP Basic) and OAuth tokens. 
 
 ==== Username and Password Authentication
 
-You can access protected content inside GitHub using a username and
-password combination. Username authentication works by using the HTTP
+((("authentication","username and password")))((("password authentication")))((("username authentication")))You can access protected content inside GitHub using a username and
+password combination. Username a((("HTTP Basic authentication")))uthentication works by using the HTTP
 Basic authentication supported by the `-u` flag in cURL. HTTP Basic
 Authentication is synonymous with username and password authentication.
 
@@ -404,7 +404,7 @@ account, protected information only available as a logged in user.
 
 ===== Benefits of username authentication
 
-Almost any client library you use will support HTTP Basic
+((("username authentication","benefits of")))Almost any client library you use will support HTTP Basic
 authentication. All the GitHub API clients we looked at support
 username and passwords. And, writing your own specific client is easy
 as this is a core feature of the HTTP standard, so if you use any
@@ -413,7 +413,7 @@ to access content inside the GitHub API.
 
 ===== Downsides to username authentication
 
-There are many reasons username and password authentication is the
+((("username authentication","downsides to")))There are many reasons username and password authentication is the
 wrong way to manage your GitHub API access. 
 
 * HTTP Basic is an old protocol that never anticipated the
@@ -436,7 +436,7 @@ other considerations.
 
 ==== OAuth 
 
-OAuth is an authentication mechanism where tokens are tied to
+((("authentication","OAuth for", id="ix_chapter-01-introduction-asciidoc9", range="startofrange")))((("OAuth", id="ix_chapter-01-introduction-asciidoc10", range="startofrange")))((("OAuth","tokens", id="ix_chapter-01-introduction-asciidoc11", range="startofrange")))((("tokens, OAuth", id="ix_chapter-01-introduction-asciidoc12", range="startofrange")))OAuth is an authentication mechanism where tokens are tied to
 functionality or clients. In other words, you can specify what
 features of a service you want to permit an OAuth token to carry with
 it, and you can issue multiple tokens and tie those to specific
@@ -449,13 +449,13 @@ complexity that you may not be familiar with if you have only used
 HTTP Basic. HTTP Basic requests generally only require adding an extra
 header to the HTTP request, or an extra flag to a client tool like cURL.
 
-OAuth solves the problems described above by linking tokens to scopes
+((("OAuth","scopes", id="ix_chapter-01-introduction-asciidoc13", range="startofrange")))((("scopes","OAuth and", id="ix_chapter-01-introduction-asciidoc14", range="startofrange")))OAuth solves the problems described above by linking tokens to scopes
 (specified subsets of functionality inside a web service) and
 issuing as many tokens as you need to multiple clients. 
 
 ===== Scopes: specified actions tied to authentication tokens
 
-When you generate an OAuth token, you specify the access rights you
+((("OAuth","tokens")))((("scopes","and OAuth tokens")))((("tokens, OAuth")))When you generate an OAuth token, you specify the access rights you
 require. Though our examples create the token using HTTP Basic, once
 you have the token, you no longer need to use HTTP Basic in successive
 requests. If this token is properly issued, the OAuth token will have
@@ -505,7 +505,7 @@ data it can access, and you can revoke access easily.
 
 ===== Scope limitations
 
-There is one major limitation of scopes to be aware of: you cannot do
+((("scopes","limitations of")))There is one major limitation of scopes to be aware of: you cannot do
 fine-grained access to certain repositories only. If you provide
 access to any of your private repositories, you are providing access
 to all repositories.  
@@ -527,20 +527,20 @@ your users.
 
 ===== Scope escalation
 
-You can ask for scope at one point that is very limited, and then
+((("scopes","escalation")))You can ask for scope at one point that is very limited, and then
 later ask for a greater scope. For example, when a user first accesses
 your application, you could only get the user scope to create a user
 object inside your service, and only when your application needs
 repository information for a user, then request to escalate
 privileges. At this point the user will need to approve or disapprove
 your request, but asking for everything upfront (before you have a
-relationship with the user) often results in a user abandoning the login.
+relationship with the user) often results in a user abandoning the login.(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc14")))(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc13")))
 
 Now let's get into the specifics of authentication using OAuth.
 
 ===== Simplified OAuth flow 
 
-OAuth has many variants, but GitHub uses OAuth2. OAuth2 specifies a
+((("OAuth","simplified flow")))((("OAuth2")))OAuth has many variants, but GitHub uses OAuth2. OAuth2 specifies a
 flow where:
 
 * the application requests access
@@ -550,14 +550,14 @@ flow where:
 * GitHub responds with a token inside a JSON payload
 * the application uses the OAuth token to make requests of the API
 
-A real-world flow is described in full in <<Hubot>>.
+A real-world flow is described in full in <<Hubot>>.(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc12")))(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc11")))(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc10")))(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc9")))
 
 Now let's look at the variety of HTTP status codes GitHub uses to
-communicate feedback when using the API. 
+communicate feedback when using the API.(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc8")))(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc7"))) 
 
 === Status Codes
 
-The GitHub API uses HTTP status codes to tell you definitive
+((("GitHub API","status codes", id="ix_chapter-01-introduction-asciidoc15", range="startofrange")))((("HTTP status codes", id="ix_chapter-01-introduction-asciidoc16", range="startofrange")))((("status codes", id="ix_chapter-01-introduction-asciidoc17", range="startofrange")))The GitHub API uses HTTP status codes to tell you definitive
 information about how your request was processed. If you are using a
 basic client like cURL, it will be important to validate the status
 code before you look at any of the data retrieved. If you are writing
@@ -568,7 +568,7 @@ various conditions that can cause errors when making a request.
 
 ==== Success (200 or 201)
 
-If you have worked with any HTTP clients whatsoever, you know what the
+((("200 status code")))((("201 status code")))If you have worked with any HTTP clients whatsoever, you know what the
 HTTP status code "200" means success. GitHub will respond with a 200
 status code when your request destination URL and associated
 parameters are correct. If your request creates content on the server,
@@ -583,7 +583,7 @@ Status: 200 OK
 
 ==== Naughty JSON (400)
 
-If your payload (the JSON you send to a request) is invalid, the
+((("400 status code")))((("status codes","invalid payload (400)")))If your payload (the JSON you send to a request) is invalid, the
 GitHub API will respond with a 400 error, as shown below.
 
 [source,text]
@@ -618,7 +618,7 @@ cURL to make a POST request to GitHub.
 
 ==== Improper JSON (422)
 
-If any of the fields in your request are invalid, GitHub will respond
+((("422 status code")))((("fields, invalid")))((("status codes","improper JSON (422)")))If any of the fields in your request are invalid, GitHub will respond
 with a 422 error. Let's attempt to fix the previous request. The
 documentation indicates the JSON payload should look like this:
 
@@ -658,7 +658,7 @@ key inside the request payload.
 
 ==== Successful Creation (201)
 
-We've seen what happens when the JSON is invalid, but what happens
+((("201 status code")))((("status codes","successful creation (201)")))We've seen what happens when the JSON is invalid, but what happens
 when the JSON is valid for our request?
 
 [source,text]
@@ -691,7 +691,7 @@ space and make this command a little bit more readable).
 
 ==== Nothing Has Changed (304)
 
-304s are like 200s in that they say to the client: yes, your request
+((("304 status code")))((("status codes","no change (304)")))304s are like 200s in that they say to the client: yes, your request
 succeeded. They give a little bit of extra information, however, in
 that they tell the client that the data has not changed since the last
 time the same request was made. This is valuable information if you
@@ -703,7 +703,7 @@ conditional headers.
 [[developer-api-rates]]
 ==== GitHub API Rate Limits
 
-GitHub tries to limit the rate at which users can make requests to the
+((("GitHub API","rate limits")))((("rate limits","and authenticated requests")))GitHub tries to limit the rate at which users can make requests to the
 API.  Anonymous requests (requests that haven't authenticated with
 either a username/password or OAuth information) are limited to 60
 requests an hour. If you are developing a system to integrate with the
@@ -724,7 +724,7 @@ user's GitHub account, the rate limits count against that user, and
 not your user account.
 
 [NOTE]
-There are actually two rate limits: the "core" rate limit and the
+There are actually two rate limits: ((("core rate limits")))((("search rate limits")))the "core" rate limit and the
 "search" rate limit.  The rate limits explained in the previous
 paragraphs were for the core rate limit.  For search,
 requests are limited to 20 requests per minute for authenticated user
@@ -737,13 +737,13 @@ that if you are behind a firewall with other users making anonymous
 requests, all those requests will be grouped together.
 
 ==== Reading Your Rate Limits
-Reading your rate limit is straightforward&#x2014;just make a GET request to
+((("rate limits","reading")))Reading your rate limit is straightforward&#x2014;just make a GET request to
 /rate_limit.  This will return a JSON document that tells you the
 limit you are subject to, the number of requests you have remaining,
 and the timestamp (in seconds since 1970).  Note that this timestamp
 is in the Coordinated Universal Time (UTC) time zone.
 
-The following command listing uses cURL to retrieve the rate limit
+((("cURL","and rate limit retrieval")))The following command listing uses cURL to retrieve the rate limit
 for an anonymous request. This response is abbreviated to save space
 in this book, but you'll notice that the quota information is supplied
 twice: once in the HTTP response headers and again in the JSON
@@ -782,11 +782,11 @@ requests to the GitHub API. We'll show that when we discuss
 authenticated requests.
 
 Calls to the rate limit API are not deducted from your rate
-limits. And, remember, rate limits are reset after 24 hours.
+limits. And, remember, rate limits are reset after 24 hours.(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc17")))(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc16")))(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc15")))
 
 === Conditional Requests to Avoid Rate Limitations
 
-If you are querying the GitHub APIs to obtain activity data for a user
+((("conditional requests")))((("GitHub API","conditional requests to avoid rate limitations")))((("rate limits","conditional requests to avoid")))If you are querying the GitHub APIs to obtain activity data for a user
 or a repository, there's a good chance that many of your requests
 won't return much activity.  If you check for new activity once every
 few minutes, there will be time periods over which no activity has
@@ -794,7 +794,7 @@ occurred.  These constant polls still use up requests
 in your rate limit even though there's no new activity to be
 delivered.
 
-In these cases, you can send conditional HTTP headers
+((("conditional HTTP headers")))((("If&#8211;Modified&#8211;Since header")))((("If&#8211;None&#8211;Match header")))In these cases, you can send conditional HTTP headers
 `If-Modified-Since` and `If-None-Match` to tell GitHub to return an HTTP
 304 response code telling you that nothing has been modified.  When
 you send a request with a conditional header and the GitHub API responds
@@ -823,7 +823,7 @@ Cache-Control: public, max-age=60, s-maxage=60
 Last-Modified: Sun, 11 Aug 2013 19:48:39 GMT
 ----
 
-The GitHub API also understands HTTP caching tags. An ETag, or Entity Tag, is an HTTP
+((("caching","tags")))((("HTTP caching tags")))The GitHub API also understands HTTP caching tags. An ((("Entity Tag")))((("ETag")))ETag, or Entity Tag, is an HTTP
 header that is used to control whether or not content you have
 previously cached is the most recent version.  Here's how your systems
 would use ETag:
@@ -877,10 +877,10 @@ so let's discuss that next.
 
 === Accessing Content from the Web
 
-If you are using the GitHub API from a server-side program or the
+((("GitHub API","accessing content from Web", id="ix_chapter-01-introduction-asciidoc18", range="startofrange")))((("Web content","accessing", id="ix_chapter-01-introduction-asciidoc19", range="startofrange")))If you are using the GitHub API from a server-side program or the
 command line then you are free to issue any network calls as long as
 your network permits it. If you are attempting to access the GitHub
-API from within a browser using JavaScript and the XHR
+API from within a browser using JavaScript and the((("XHR (XmlHttpRequest)"))) XHR
 (XmlHttpRequest) object, then you should be aware of limitations
 imposed by the browser's same-origin policy. In a nutshell, you are
 not able to access domains from JavaScript using standard XHR requests
@@ -890,7 +890,7 @@ clever (JSON-P) and one fully supported but slightly more onerous (CORS).
 
 ==== JSON-P 
 
-JSON-P is a browser hack, more or less, that allows retrieval of
+((("GitHub API","and JSON&#8211;P")))((("JSON&#8211;P")))((("Web content","accessing with JSON&#8211;P")))JSON-P is a browser hack, more or less, that allows retrieval of
 information from servers outside of the same-origin policy. JSON-P
 works because `<script>` tags are not checked against the same-origin
 policy; in other words, your page can include references to content on
@@ -959,7 +959,7 @@ but official way to access external services from within a web page.
 
 ==== CORS Support
 
-CORS is the W3C (a web standards body) approved way to access content
+((("CORS")))((("GitHub API","CORS support")))((("Web content","CORS requests")))CORS is the W3C (a web standards body) approved way to access content
 from a different domain than the original host. CORS requires that the
 server be properly configured in advance; the server must indicate
 when queried that it allows cross-domain requests. If the server
@@ -1014,7 +1014,7 @@ rendered content when you need it.
 
 ==== Specifying Response Content Format
 
-When you send a request to the GitHub API, you have some ability to
+((("Web content","response format specification")))When you send a request to the GitHub API, you have some ability to
 specify the format of the response you expect.  For example, if you
 are requesting content that contains text from a commit's comment
 thread, you can use the Accept header to ask for the raw markdown or
@@ -1024,7 +1024,7 @@ you can specify either version 3 or beta of the API.
 
 ===== Retrieving formatted content
 
-The Accept header you send with a request can affect the format of
+((("Web content","retrieving formatted content")))The Accept header you send with a request can affect the format of
 text returned by the GitHub API.  As an example, let's assume you
 wanted to read the body of a GitHub Issue. An issue's body is stored
 in markdown and will be sent back in the request by default. If we
@@ -1054,8 +1054,8 @@ of the body in HTML.
 
 Besides "raw" and "html" there are two other format options that
 influence how Markdown content is delivered via the GitHub API.  If
-you specify "text" as a format, the issue body would have been
-returned as plaintext.  If you specify "full" then the content will
+you specify((("text format"))) "text" as a format, the issue body would have been
+returned as plaintext.  If you specify((("full format"))) "full" then the content will
 be rendered multiple times including the raw Markdown, rendered HTML,
 and rendered plaintext.
 
@@ -1071,7 +1071,7 @@ The GitHub team has already provided very thorough documentation on
 their API with examples using cURL. Bookmark this URL:
 https://developer.github.com/v3/. You'll use it often. Do note that
 this URL is tied, obviously, to the current API "version 3," so this
-URL will change when a new version is released. 
+URL will change when a new version is released.(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc19")))(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc18"))) 
 
 === Summary
 
@@ -1082,7 +1082,7 @@ tool (jq) that when paired with cURL gives us the ability to quickly
 find information in the often large body of data the GitHub API
 provides. We learned about the different authentication schemes
 supported by GitHub, and also learned about the possibilities and
-tradeoffs when accessing the GitHub API from within a browser context. 
+tradeoffs when accessing the GitHub API from within a browser context.(((range="endofrange", startref="ix_chapter-01-introduction-asciidoc0"))) 
 
 In the next chapter we will look at Gists and the Gist API. We'll use
 Ruby to build a Gist display program, and host all source files for

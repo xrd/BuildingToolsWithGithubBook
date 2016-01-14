@@ -25,10 +25,10 @@ shell).
 
 === GitHub and Ruby
 
-When the history of GitHub is documented, the Ruby language will
+((("Ruby","GitHub and", id="ix_appendix-ruby-and-nodejs-asciidoc0", range="startofrange")))When the history of GitHub is documented, the Ruby language will
 take its place as a major character. Tom Preston Warner (one of the three
 founders of GitHub) built the initial libraries for using git with
-Ruby, a library called Grit. You can host blogs on GitHub for free,
+((("Grit","origins of")))Ruby, a library called Grit. You can host blogs on GitHub for free,
 and this tool called Jekyll is built using Ruby. Gollum, the
 technology that powers GitHub wikis, is built using Grit and runs on Ruby. 
 
@@ -44,7 +44,7 @@ its focus on developer productivity.
 
 ==== Installing Ruby
 
-There are many ways to get Ruby but not all of them are created equal. 
+((("Ruby","installation")))There are many ways to get Ruby but not all of them are created equal. 
 As a long-time user I have experienced the pain of using a preinstalled Ruby 
 or one from a package manager, and generally these installation
 methods provide a suboptimal experience. If you are not familiar with
@@ -65,7 +65,7 @@ guarantee you are using the correct version, and the method described
 here will not interfere with any other previously installed version of
 Ruby you already have on your system. 
 
-To install Ruby, use RVM. RVM stands for Ruby Version Manager. RVM allows you to install
+To install Ruby, use RVM. RVM ((("RVM (Ruby Version Manager)")))stands for Ruby Version Manager. RVM allows you to install
 multiple versions of Ruby on your machine and have them interoperate
 without conflict. You will probably only need to install a single
 version of Ruby to use the examples in the book. And RVM makes it so
@@ -84,7 +84,7 @@ This will install RVM and Ruby.
 
 If you are running Windows, you can use RVM to install Ruby, but your
 instructions are a little more complicated. Refer to the documentation
-to do so. A better option is to consider installing something like
+to do so. A better option is to consider installing something((("VirtualBox"))) like
 VirtualBox (a virtual machine manager). If you do this, you can
 install RVM inside a Linux Virtual Machine (VM). Windows is, sadly, a
 second-class citizen with Ruby and RVM and, for this reason, it is
@@ -99,9 +99,9 @@ Windows instead of fighting with running everything directly on Windows.
 
 ==== Important Ruby and RVM Concepts
 
-Here are a few tips when using Ruby and RVM.
+((("Ruby","tips for using")))Here are a few tips when using Ruby and RVM.
 
-* `Gemfile`: Ruby packages libraries in a format called a gem. A
+* (((".ruby&#8211;version")))(((".rvmrc")))((("config.ru")))((("Gemfile")))`Gemfile`: Ruby packages libraries in a format called a gem. A
   gemfile is a manifest that describes which gems your application
   needs. Gemfiles make it simple to install all the required
   libraries: run the `bundle` command from a shell prompt and all
@@ -128,7 +128,7 @@ Here are a few tips when using Ruby and RVM.
 
 ==== Potential Problems Installing Ruby
 
-* Missing system tools: If you are running Mac OSX, you need to
+* ((("Ruby","installation problems")))Missing system tools: If you are running Mac OSX, you need to
   install Xcode and the command line tools. If you are a software
   developer, you probably have these already installed. If not, review
   online documentation to install these. If you are running Linux, you
@@ -143,11 +143,11 @@ Here are a few tips when using Ruby and RVM.
   improved in detecting the correct libraries, and there are often
   notes that tell you how to properly configure these libraries. Make
   sure to read the output printed to the screen as you install Ruby
-  using RVM for special instructions specific to your platform.
+  using RVM for special instructions specific to your platform.(((range="endofrange", startref="ix_appendix-ruby-and-nodejs-asciidoc0")))
 
 === GitHub is Excited about NodeJS
 
-NodeJS is the server-side version of JavaScript. JavaScript is the
+((("NodeJS","GitHub and")))NodeJS is the server-side version of JavaScript. JavaScript is the
 only ubiquitious client-side programming language for the web. Between
 Ruby and JavaScript, you can build any web application you
 need. Tools like Hubot show the benefits of using a language like
@@ -156,12 +156,12 @@ JavaScript running on the NodeJS platform, which facilitates building
 
 ==== NodeJS Installation
 
-The nodejs.org web page offers various binary installers. These are
+((("NodeJS","installation")))The nodejs.org web page offers various binary installers. These are
 generally the best way to install the most recent version of NodeJS. 
 
 ==== Node Version Manager
 
-NVM stands for "Node Version Manager" and is a direct correlate
+((("NodeJS","version manager")))((("NVM (Node version manager)")))NVM stands for "Node Version Manager" and is a direct correlate
 to RVM. Like RVM, NVM allows you to install multiple versions of
 NodeJS on a single machine and switch between them seamlessly. This
 can be very useful when using a tool like NodeJS that is iterating
@@ -190,7 +190,7 @@ https://github.com/creationix/nvm.
 
 ==== package.json
 
-Much like Ruby has a Gemfile that indicates required libraries, so
+((("NodeJS","and package.json")))((("package.json")))Much like Ruby has a Gemfile that indicates required libraries, so
 too does NodeJS have an equivalent file. In NodeJS, this file is
 called _package.json_.  To install all required libraries for any
 project, use the `npm` tool (installed by default when you install
@@ -203,7 +203,7 @@ installation of the package has completed.
 
 === Command Line Basics and the Shell
 
-Though most chapters have focused on a specific programming language (aside
+((("command line","basics")))Though most chapters have focused on a specific programming language (aside
 from the cURL chapter), all of the chapters contain command line
 invocations. There are a few intricacies when using the shell you
 might not be familiar with that we will explain here, with an actual
@@ -211,7 +211,7 @@ example of each.
 
 ==== Shell Comments 
 
-If you type a hash character ("#") into a shell command, the rest of
+((("command line","shell comments")))((("shell","comments")))If you type a hash character ("#") into a shell command, the rest of
 the line is considered a comment. This makes it easy to document
 commands on the same line.
 
@@ -223,7 +223,7 @@ throughout the chapter to document shell commands.
 
 ==== Providing Variables to Commands
 
-When a process runs in the shell, it runs within an environment, and
+((("command line","providing variables to commands")))((("shell","providing variables to commands")))((("variables, providing to commands")))When a process runs in the shell, it runs within an environment, and
 this environment can be configured with key/value pairs. These are called
 environment variables. A common reason for this is that you can write
 a program that reads passwords from the environment variables and
@@ -239,7 +239,7 @@ $ myProgram # PASSWORD is now a persisted key value
 
 ==== Splitting Commands into Multiple Lines
 
-The shell invokes commands when you hit the enter key. But there are
+((("command line","splitting commands into multiple lines")))((("shell","splitting commands into multiple lines")))The shell invokes commands when you hit the enter key. But there are
 times when you want to break a command into multiple lines for
 readability. In this case, break each line up using the backslash
 character.
@@ -260,7 +260,7 @@ this example shows two commands that do exactly the same thing.
 
 ==== Piping Output to Successive Commands
 
-Shell commands were written long in an era when programs fulfilled
+((("command line","piping output to successive commands")))((("pipes")))((("shell","piping output to successive commands")))Shell commands were written long in an era when programs fulfilled
 upon a small set of functionality, in stark contrast to today's
 monolithic GUI programs. Each program generally did a few simple
 things and then passed information to another program for further
@@ -274,10 +274,10 @@ input.
 $ cat /etc/mime.types | grep http
 application/http
 application/vnd.httphone
-application/x-httpd-eruby			rhtml
+application/x-httpd-eruby     rhtml
 application/x-httpd-php
 phtml pht php
-application/x-httpd-php-source			phps
+application/x-httpd-php-source      phps
 -----
 
 This invocation uses the +cat+ program to output the file
@@ -287,7 +287,7 @@ the string +http+.
 
 ==== Redirection
 
-Similar to the pipe, shells support redirecting output to files using
+((("command line","redirection")))((("redirection")))((("shell","redirection")))Similar to the pipe, shells support redirecting output to files using
 the `>` and `>>` characters. `>` will overwrite an existing file (or
 create a new file if it does not exist) while the double `>>` string
 will append to a file.
