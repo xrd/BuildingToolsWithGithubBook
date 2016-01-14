@@ -818,7 +818,7 @@ image::images/btwg_07in04.png[A simple UI for making blog post entries]
 
 ((("Android application example","code for logging in to GitHub", id="ix_chapter-07-android-asciidoc14", range="startofrange")))Now we can wire in the GitHub API. Let's first work on the((("login","for Android app"))) `login()`
 function. Poking into the
-https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core[EGit
+http://bit.ly/1SQ93Qf[EGit
 libary reference], we can write GitHub login code, which is as simple as
 the following:
 
