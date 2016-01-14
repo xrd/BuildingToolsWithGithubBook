@@ -22,7 +22,7 @@
   ],
   "formats": {
     "pdf": {
-      "version": "web",
+      "version": "print",
       "index": true,
       "toc": true,
       "syntaxhighlighting": true,
