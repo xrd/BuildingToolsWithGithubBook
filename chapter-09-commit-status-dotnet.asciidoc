@@ -8,7 +8,7 @@ This is all good stuff, and works very well for Git's main use case: controlling
 GitHub's commit-status API adds another layer of metadata to a commit: what various services _say_ about that commit.
 This capability primarily shows itself in the pull-request UI, as shown in <<status_pr>>.
 Each commit in the pull request is annotated with a symbol indicating its status&#x2014;a red "&#xd7;" for failure or error, a green "&#x2713;" for success, or an amber "&#x2022;" to indicate that a decision is in the process of being made.
-This feature also surfaces at the bottom of the pull-request; if the last commit in the branch is not marked as successful, you get a warning about merging the request.
+This feature also surfaces at the bottom of the pull request; if the last commit in the branch is not marked as successful, you get a warning about merging the request.
 
 [[status_pr]]
 .Commit status in the pull-request UI
@@ -21,7 +21,7 @@ This is a great way to bring together everything needed to make a decision about
 The answer to all of these questions is available on the same page: the pull-request conversation view.
 
 But building and testing is only the beginning; the status of a commit can be used for other purposes as well.
-For example, open-source projects often have a license agreement you must sign in order to submit a contribution.
+For example, open source projects often have a license agreement you must sign in order to submit a contribution.
 These are called "contributor license agreements," and usually contain language about licensing the contribution to the maintainers of the project.
 But it's tedious to manually check every incoming pull request to see if the author has signed the CLA, so a continuous-integration-style service can be used for this.
 CLAHub is one such example: it checks to see if all of the authors of the contained commits have signed the CLA, and marks the latest commit as "error" if not.
@@ -31,14 +31,14 @@ So now that we know what the feature is, and what its intended use is, let's tak
 === The API
 
 ((("commit&#8211;status API","statuses in", id="ix_chapter-09-commit-status-dotnet-asciidoc1", range="startofrange")))First, let's talk about ((("access control")))access control.
-((("OAuth","and commit&#8211;status API")))The commit status API exposes the need for OAuth as few others do.
+((("OAuth","and commit&#8211;status API")))The commit-status API exposes the need for OAuth as few others do.
 Making a repository private means you want complete control of what people or applications can access it.
 Naturally you trust GitHub's internal code to do the right thing with your data, but what about some random application from the Internet?
-OAuth gives you a way to grant private-repository access to an application _with limits_ – the use of OAuth scopes allows an application to ask for a specific set of permissions, but it won't be able to do just any old thing with your data.
+OAuth gives you a way to grant private-repository access to an application _with limits_&#x2014;the use of OAuth scopes allows an application to ask for a specific set of permissions, but it won't be able to do just any old thing with your data.
 Plus, this way you're always in control of these permissions; you can revoke an application's access at any time.
 
 The OAuth system includes the concept of ((("scopes")))scopes, which can be requested by and granted to an application, each of which allows a certain set of actions.
-The commit-status API requires the `repo:status` OAuth scope, which allows an application read and write access to *just* commit statuses; there is no access granted to the actual contents of the repository.
+The commit-status API requires the `repo:status` OAuth scope, which allows an application read and write access to _just_ commit statuses; there is no access granted to the actual contents of the repository.
 This might seem strange: how can you judge the status of a commit without being able to inspect its contents?
 Just remember that this feature has use cases beyond continuous integration, and an application may not need full access to make a decision.
 For services that do need to be able to look at the repository contents, you can request ((("repo scope")))the `repo` scope, which grants read _and_ write access to the entire contents of a repository, including commit statuses.
@@ -51,7 +51,7 @@ Just to summarize:
 
 [options="header"]
 |=====
-| OAuth Scope      | Access to statuses | Access to repo data
+| OAuth scope      | Access to statuses | Access to repo data
 | None (anonymous) | Read-only on public repos | Read-only on public repos
 | `repo:status`    | Read/write         | None
 | `repo`           | Read/write         | Read/write
@@ -80,7 +80,7 @@ You can query for existing statuses by doing a GET request to the API server at 
 ]
 ----
 
-Most of this is self-explanatory, but a couple of fields need explaining.
+Most of this is self-explanatory, but a couple of fields need explaining:
 
 [options=header, cols="1m,4"]
 |======================
@@ -125,9 +125,9 @@ The `state` field contains an overall status that takes into account all of the 
 [options="header", cols="1m,3"]
 |======================
 | Status    | Cause
-| `failure` | any of the contexts posted a `failure` or `error` state
-| `pending` | any of the contexts' latest state is `pending`, or there are no statuses
-| `success` | latest status for every context is `success`
+| `failure` | Any of the contexts posted a `failure` or `error` state
+| `pending` | Any of the contexts' latest state is `pending`, or there are no statuses
+| `success` | Latest status for every context is `success`
 |======================
 
 This is probably exactly what you want, but if you find that your use case calls for different rules, you can always use the `statuses` endpoint to get the raw data and calculate your own combined status.
@@ -159,13 +159,13 @@ The system we'll build will be fairly limited in scope, but it's a great startin
 
 The language this time is((("C&#35;")))((("CLR (Common Language Runtime)"))) C#, running on the CLR (Common Language Runtime).
 At one point in the history of computing this wouldn't have been a good choice for a book like this, since it was only available on Windows, the development tools cost quite a bit of money, and the language and libraries were fairly limited.
-However, with the advent of((("Mono"))) Mono (an open-source implementation of the .NET runtime), the open-sourcing of the CLR core, and the availability of free tools, C# is now a completely valid and rather nice option for open source or hobby developers.
+However, with the advent of((("Mono"))) Mono (an open source implementation of the .NET runtime), the open sourcing of the CLR core, and the availability of free tools, C# is now a completely valid and rather nice option for open source or hobby developers.
 Plus, it has a vibrant ecosystem of packages we can leverage to make our jobs easier.
 
 ==== Libraries
 
 ((("commit&#8211;status API","libraries for")))((("HTTP server app example","libraries for")))You'll be happy to know we won't be writing an entire HTTP server from scratch in this chapter.
-((("Nancy library", id="ix_chapter-09-commit-status-dotnet-asciidoc4", range="startofrange")))There are a number of open-source packages that do this work for us, and in this project we'll be using Nancy.
+((("Nancy library", id="ix_chapter-09-commit-status-dotnet-asciidoc4", range="startofrange")))There are a number of open source packages that do this work for us, and in this project we'll be using Nancy.
 ((("Sinatra","and Nancy library")))Nancy is a project that started as a CLR port of the Sinatra framework for Ruby (it takes its name from Frank Sinatra's daughter, Nancy).
 It's very capable, but also very succinct, as you'll see.
 
@@ -188,13 +188,13 @@ The process is different on Windows (using Visual Studio) and any other platform
 The installer will present you with lots of options; for this example, we'll only need the "web developer" components, but feel free to check all the boxes that look interesting to you.
 (If you have access to a higher tier of Visual Studio, or already have it installed with the web-development packages, you're all set.)
 
-In order to make things just a little smoother, you'll want to install a plugin: the Nancy project templates.
+In order to make things just a little smoother, you'll want to install a plug-in: the Nancy project templates.
 Visit https://visualstudiogallery.msdn.microsoft.com/[] and search for "nancy.templates."
 Choose the search result "Nancy.Templates," which belongs to the NancyFx organization, and click "Get Now."
-This should download a `.vsix` file that you can double-click to install the templates into Visual Studio.
+This should download a _.vsix_ file that you can double-click to install the templates into Visual Studio.
 
 The next step is to create a new project using one of the newly installed templates.
-Go to "File>New Project…" and select "Visual C#>Web>Nancy Application with ASP.NET Hosting" from the template list (as shown in <<vs_new_project>>).
+Go to File->New Project… and select Visual C#->Web->Nancy Application with ASP.NET Hosting from the template list (as shown in <<vs_new_project>>).
 Make sure the path and name settings at the bottom are to your liking, and click OK.
 
 [[vs_new_project]]
@@ -202,22 +202,22 @@ Make sure the path and name settings at the bottom are to your liking, and click
 image::images/btwg_0502.png[]
 
 Next, change the target CLR framework version to something that will work with Octokit.
-Right-click on the project's node in the Solution Explorer, and select "Properties."
-In the "Application" section, set Target Framework to be ".NET 4.5" (or later), and save.
+Right-click the project's node in the Solution Explorer, and select Properties.
+In the Application"section, set Target Framework to be .NET 4.5 (or later), and save.
 You may be prompted to reload the solution.
 
 The very last step is to add NuGet packages for Octokit and Nancy.
-Right-click on the project node in Solution Explorer, and select "Manage NuGet Packages…"
-Do a search for "Nancy," and upgrade it if necessary – there's a chance the Nancy project template specifies an out-of-date version.
+Right-click the project node in Solution Explorer, and select Manage NuGet Packages…
+Do a search for "Nancy," and upgrade it if necessary&#x2014;there's a chance the Nancy project template specifies an out-of-date version.
 Then do a search for "Octokit," and install that.
 At this point, you should have an empty solution, configured and ready for our example code.
-To run it with debugging, go to "Debug>Start Debugging…," or hit F5.
+To run it with debugging, go to Debug->Start Debugging…, or hit F5.
 Visual Studio will start the server under a debugger, and open an IE instance on http://localhost:12008/[] (the port might be different), which should serve you the default Nancy "404 Not Found" page.
 
 ===== Xamarin Studio
 
 ((("commit&#8211;status API","Xamarin Studio", id="ix_chapter-09-commit-status-dotnet-asciidoc7", range="startofrange")))((("HTTP server app example","Xamarin Studio", id="ix_chapter-09-commit-status-dotnet-asciidoc8", range="startofrange")))((("Xamarin Studio", id="ix_chapter-09-commit-status-dotnet-asciidoc9", range="startofrange")))On OS X and Linux, as of this writing the easiest way forward is to visit http://www.monodevelop.com/[] and install ((("MonoDevelop")))MonoDevelop.
-Mono is an open-source implementation of Microsoft's CLR specification, and MonoDevelop is a development environment that works much like Visual Studio, but is built on Mono, and is completely open source.
+Mono is an open source implementation of Microsoft's CLR specification, and MonoDevelop is a development environment that works much like Visual Studio, but is built on Mono, and is completely open source.
 If you try to download MonoDevelop on a Windows or OS X machine, you'll be prompted to install Xamarin Studio instead; this is a newer version of MonoDevelop with more capabilities, and will work just as well for these examples.
 
 There are no Nancy-specific project templates for these IDEs, so you'll just start with an empty web project.
@@ -230,14 +230,14 @@ image::images/btwg_0503.png[]
 The rest of the wizard steps are about the project name and location; feel free to name and locate this project however you like.
 
 Next, update the target framework setting.
-Control- or right-click on the node in the solution explorer that corresponds with your project (_not_ your solution), and select "Options" from the menu.
-Under "Build>General," set the Target Framework to "Mono / .NET 4.5" (or later) and click OK.
+Control- or right-click the node in the solution explorer that corresponds with your project (_not_ your solution), and select Options from the menu.
+Under Build->General, set the Target Framework to Mono / .NET 4.5 (or later) and click OK.
 
 ((("NuGet")))((("Octokit NuGet")))Lastly, install the Nancy and Octokit NuGet packages.
-Go to "Project>Add NuGet Packages…" in the menu to open the package manager.
-Search for Nancy, check the box next to it, search for Octokit, check its box, and click "Add Packages" at the bottom right.
+Go to Project->Add NuGet Packages… in the menu to open the package manager.
+Search for Nancy, check the box next to it, search for Octokit, check its box, and click Add Packages at the bottom right.
 Once the process is complete, your project is ready for our example code.
-To run it under the debugger, go to "Run>Start Debugging…," or type ⌘-Enter.
+To run it under the debugger, go to Run->Start Debugging…, or type ⌘-Enter.
 Xamarin will start the server and open a browser window to http://127.0.0.1:80080[] (possibly with a different port), which at this point will just show the default "404 Not Found" page(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc9")))(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc8")))(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc7"))).(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc6")))(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc5")))
 
 
@@ -326,7 +326,7 @@ namespace NancyApp
 
 <1> Here we derive a class from `NancyModule`, which is all you have to do to start receiving and processing HTTP requests in Nancy.
 <2> The `GitHubClient` class is the entry point for Octokit.
-    Here we create an instance we'll use later on, using a placeholder product name – this name will not be used for the APIs we'll be accessing.
+    Here we create an instance we'll use later on, using a placeholder product name&#x2014;this name will not be used for the APIs we'll be accessing.
 <3> The module's constructor needs to set up route mappings.
     We map `/{user}` to a lambda function using the `Get` dictionary that comes with `NancyModule`.
     The second parameter to the index operator says that the handler will be asynchronous.
@@ -401,7 +401,7 @@ Nancy will automatically detect a bootstrapper class, and use it to initialize o
 Now, from within a `NancyModule`, we can use the((("Session property"))) `Session` property to store and retrieve values that are transmitted as cookies.
 
 Next, we have to include our application's ID and secret in some of the requests, so we embed them in the code by adding these fields to the `Handler` class.
-If you don't have an application, visit https://github.com/settings/developers[] to create one and use `http://localhost:8080/authorize` (depending in your environment, the port number might be slightly different) for the callback URL – we'll see why in a bit.
+If you don't have an application, visit https://github.com/settings/developers[] to create one and use `http://localhost:8080/authorize` (depending in your environment, the port number might be slightly different) for the callback URL&#x2014;we'll see why in a bit:
 
 [source,csharp]
 ----
@@ -607,13 +607,13 @@ We noted this a bit earlier, but it bears repeating: this particular example res
 
 Even if you haven't written a lot of code during this chapter, you've learned a lot of concepts.
 
-You've seen the commit status API, and you've seen how it's used by continuous integration software, but you know that it can be used for much more.
+You've seen the commit-status API, and you've seen how it's used by continuous integration software, but you know that it can be used for much more.
 You can read and write statuses, and you know how the API server coalesces many statuses into a single pass/fail value, and you also know how to write your own multistatus calculation if the default one doesn't meet your needs.
 You also know what's behind the green checkmarks and red Xs you see in your pull requests.
 
 You've learned how the OAuth web flow works, and why it's designed the way it is.
 OAuth is the key to many other capabilities of the GitHub API, and it's the right thing to do with regards to trust and permissions.
-This will allow you to write truly world-class GitHub-interfacing applications, whether running on the web or on a user's device.
+This will allow you to write truly world-class GitHub-interfacing applications, whether running on the Web or on a user's device.
 
 You've gained a passing knowledge of C#, including its package system, at least one IDE, lambda functions, object initializers, and more.
 C# really is a nice language, and if you use it for a while, you'll probably miss some of its features if you write in anything else.

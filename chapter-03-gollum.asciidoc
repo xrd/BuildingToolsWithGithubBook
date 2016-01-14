@@ -5,9 +5,9 @@
 information. It turns out that they are a great complement to technical
 projects (code repositories) because they allow nontechnical
 users to contribute in ways other than adding code. Gollum
-is an open-source wiki created by GitHub. Just as Git has
+is an open source wiki created by GitHub. Just as Git has
 revolutionized collaborative editing of code, Gollum wikis layer the
-benefits of Git onto the widely used Wiki publishing workflow. Gollum
+benefits of Git onto the widely used wiki publishing workflow. Gollum
 wikis are themselves repositories that generally annotate other
 typically code-centric repositories. GitHub makes it easy to associate
 a wiki with any 
@@ -33,7 +33,7 @@ with Git</em></a>] book from O'Reilly.
 === "The Story of Smeagol..."
 
 ((("Gollum","basics", id="ix_chapter-03-gollum-asciidoc2", range="startofrange")))At its most basic form, a Gollum wiki is a Git repository with a single file,
-`Home.ext` (`ext` would be any of the supported wiki markup formats,
+_Home.ext_ (_ext_ would be any of the supported wiki markup formats,
 which we will talk about later). 
 
 ==== Repository Linked Wikis
@@ -43,16 +43,17 @@ To create a wiki linked to your repository, visit the repository
 page and then look in the rightmost colum. You'll see an icon that
 looks like a book, next to which will be the word "Wiki." 
 
+.Integrated Gollum wiki in the sidebar
 image::images/btwg_03in01.png[Integrated Gollum Wiki in the Sidebar]
 
-Clicking on this link will bring you to a page where you are asked to
+Clicking this link will bring you to a page where you are asked to
 create a wiki for the first time. GitHub will ask you to create the
 "Home" page, which is the starting point in a Gollum wiki. GitHub will
 automatically create a page template with the project name; you can
-customize this information to suit your own needs. Clicking on the
-"Save Page" will save your first page and create the wiki for you.
+customize this information to suit your own needs. Clicking "Save Page" will save your first page and create the wiki for you.
 
-image::images/btwg_03in02.png[Starting a Gollum Wiki]
+.Starting a Gollum wiki
+image::images/btwg_03in02.png[]
 
 Your wiki is now as public as your repository is public. Public
 repositories have public wikis, accessible to anyone. Private
@@ -74,7 +75,7 @@ safe bet because it is ubiquitous across GitHub. <<Jekyll>> has a much deeper ov
 
 If you do choose Markdown, in addition to the standard vanilla
 Markdown language tags, Gollum adds its own set of wiki-specific tags. There 
-are often subtle (or conflicting) differences from other Wiki markup
+are often subtle (or conflicting) differences from other wiki markup
 so it is worth reviewing the
 https://github.com/gollum/gollum/wiki[Gollum repository documentation
 page]. We'll go over the most important ones here.
@@ -111,7 +112,7 @@ improving the lives of software developers, so it stands to reason
 Gollum wikis would support insertion of code snippets. To include a snippet of
 code, use three backticks, followed by an optional language name, and close
 the block of code using three more backticks. If you use the language
-name, Gollum will do proper syntax highlighting for most languages.
+name, Gollum will do proper syntax highlighting for most languages:
 
 [source,ruby]
 ----
@@ -148,7 +149,7 @@ repository (or any other repository) into your wiki content.
 ===== Structural components
 
 ((("footers, in Gollum wikis")))((("Gollum","adding structural components")))((("headers","in Gollum wikis")))((("sidebars, in Gollum wikis")))Gollum includes capabilities to add sidebars, headers, and footers. If
-you include a file called `_Sidebar.ext` inside your repository,
+you include a file called pass:[<em>_Sidebar.ext</em>] inside your repository,
 you'll see it as a sidebar for every file rendered. Sidebars are
 automatically added to any file and any file from subdirectories that
 do not have their own sidebar files. If you wanted to add sidebars
@@ -162,15 +163,15 @@ JavaScript from raw markup files. You can include your own JavaScript
 or CSS file when running Gollum from the command line
 (discussed momentarily) using the `--custom-css` or 
 `--custom-js` switches, but there is no way to include these files on a
-Wiki when your Gollum wiki is hosted on GitHub.
+wiki when your Gollum wiki is hosted on GitHub.
 
 ===== Inserting images
 
 ((("Gollum","inserting images")))((("images","Gollum tag format for")))Images are inserted into your document using the same tag format
-`[[ceo.png]]`: this adds the correct HTML tags to include an image
+_[[ceo.png]]_: this adds the correct HTML tags to include an image
 named ceo.png inside your page. This basic syntax is often extended
 for additional funtionality. For example, to add a frame
-and an alt tag, you could use syntax like `[[ceo.png|frame|alt=Our CEO
+and an +alt+ tag, you could use syntax like `[[ceo.png|frame|alt=Our CEO
 relaxing on the beach]]`. This creates the proper HTML tags for the
 same image, and also adds a frame and alt text (helpful for better
 context and the extra information is used by screenreaders for
@@ -182,12 +183,13 @@ You can also add images using the editor on GitHub. But you'll notice
 that either way you are adding a link to an image and that there is no
 way to upload images into GitHub from the editor. 
 
-image::images/btwg_03in03.png["No image upload, only image URLs"]
+.No image upload, only image URLs
+image::images/btwg_03in03.png[]
 
-For nontechnical users, this makes Gollum Wikis on GitHub almost
+For nontechnical users, this makes Gollum wikis on GitHub almost
 unusable if they need to add images. Let's address this problem by
 building our own customized image-centric Gollum editor that still
-interoperates with regular Gollum Wikis. We can put this editor in
+interoperates with regular Gollum wikis. We can put this editor in
 front of nontechnical users, allowing them to add images, and then
 publish the wiki into GitHub as-is(((range="endofrange", startref="ix_chapter-03-gollum-asciidoc3"))).(((range="endofrange", startref="ix_chapter-03-gollum-asciidoc2")))
 
@@ -211,7 +213,7 @@ enter data in a more powerful way than Gollum permits from its default
 interface. The data will still be compatible with Gollum and will be
 hosted on GitHub.
 
-((("Ruby","gem installation")))To begin, install the Gollum Ruby gem and then initialize our repository.
+((("Ruby","gem installation")))To begin, install the Gollum Ruby gem and then initialize our repository:
 
 [source,bash]
 $ gem install gollum
@@ -224,9 +226,10 @@ $ git commit -m "Initial commit"
 
 We've just created a wiki compatible with Gollum. Let's see what it
 looks like inside Gollum. Run the `gollum` command then open
-`http://localhost:4567/` in your browser.
+_http://localhost:4567/_ in your browser.
 
-image::images/btwg_03in04.png[Gollum running locally]
+.Gollum running locally
+image::images/btwg_03in04.png[]
 
 As you can see, this tiny set of commands was enough to create the
 basics of the Gollum wiki structure.
@@ -244,7 +247,7 @@ inside a Gollum wiki.
 
 ((("Gollum","image editor construction")))Now we will create our custom editor. ((("Sinatra","for Gollum image editor construction")))We'll use Sinatra, a Ruby
 library that provides a simple DSL (domain-specific language) for
-building web applications. First, create a file called `image.rb` and
+building web applications. First, create a file called _image.rb_ and
 put the following contents inside it:
 
 [source,ruby]
@@ -258,7 +261,7 @@ end
 ------
 
 Then, create the Gemfile, install the dependencies, and run the web
-application. 
+application.:
 
 [source,bash]
 ------
@@ -283,7 +286,7 @@ bundler context (using gems installed from this Gemfile rather than
 system gems) using the `bundle exec ruby image.rb` command.
 
 You'll see a report of the files that exist in our Gollum wiki right
-now. We've only added one file, the `Home.md` file.
+now. We've only added one file, the _Home.md_ file.
 
 === Programmatically Handling Images
 
@@ -329,7 +332,7 @@ post '/unpack' do
 end  
 -----
 
-We'll need an `index.html` file as well, so add that.
+We'll need an _index.html_ file as well, so add that:
 
 [source,ruby]
 -----
@@ -359,7 +362,7 @@ message indicating the script received the correct file we posted.
 
 ((("RubyZip")))((("Rugged library")))We need to add the new Ruby libraries (RubyZip and Rugged) to our Gemfile:
 update the required gems using the following commands, and then rerun
-our Sinatra server script.
+our Sinatra server script:
 
 [source,bash]
 $ echo "gem 'rubyzip', '1.1.7'
@@ -374,12 +377,12 @@ Git repositories). Rugged gives you access to modification of Git
 repositories in the elegance of the Ruby language but with the speed
 of C. However, as this library is based on libgit2, and libgit2
 requires a C compiler, you will need to install this toolset first to
-install Rugged. On OSX this can look like `brew install cmake` or
+install Rugged. On OS X this can look like `brew install cmake` or
 `apt-get install cmake` for Linux.
 
-Then, we can open `http://localhost:4567/` and test uploading a ZIP file
+Then, we can open _http://localhost:4567/_ and test uploading a ZIP file
 full of images. You'll see output similar to this in your console
-after uploading a ZIP file.
+after uploading a ZIP file:
 
 [source,bash]
 ----
@@ -422,7 +425,7 @@ the ZIP decode block) and instead call a new method called
 `write_file_to_repo`. And, at the end of the ZIP block, add a method 
 ((("build&#95;commit() method")))called `build_commit`, which builds the commit from our new files. Our
 new file (omitting the unchanged code at the head of the file) looks
-like this.
+like this:
 
 [source,ruby]
 -----
@@ -470,23 +473,22 @@ def write_file_to_repo( contents, filename )
 end
 -----
 
-As you can see from the code above, Rugged handles a lot of the grunt
+As you can see from the code, Rugged handles a lot of the grunt
 work required when creating a commit inside a Git repository. Rugged has a
 simple interface to creating a blob inside your Git repository
 (`write`), and adding files to the index (the `add` method), and
 also has a simple and clean interface to build the tree object
 (`write_tree`) and then build the commit (`Rugged::Commit.create`). 
 
-To ease the burden of hard coding our commit credentials, we implement
-a method called((("get&#95;credentials method"))) `get_credentials` that loads up your credentials from
-a file located in your home directory called `.gitconfig`. You
+To ease the burden of hardcoding our commit credentials, we implement
+a method called((("get&#95;credentials method"))) `get_credentials` that loads up your credentials from a file called _.gitconfig_ located in your home directory. You
 probably have this if you have used Git for anything at all on your machine, but if this
 file is missing, this method will fail. On my machine this file looks
 like the following code snippet. The `get_credentials` method simply loads up this
 file and parses it for the name and email address. If you wanted to
-load the credentials using another method, or even hard code them, you
+load the credentials using another method, or even hardcode them, you
 can just modify this method to suit your needs. The instance variables
-`@email` and `@name` are then used in the `build_commit()` method.
+`@email` and `@name` are then used in the `build_commit()` method:
 
 [source,ini]
 ----
@@ -530,7 +532,7 @@ places files can reside: the working directory, the staging
 area or index, and the repository itself. Your working directory is
 the set of local files you are working on. The `git status`
 command describes itself as "show the working tree status." Rugged
-operates on the repository itself, and the Rugged calls above operated
+operates on the repository itself, and the Rugged calls in the preceding code operated
 on the index and then built a commit. This is important to note
 because our files will not exist in our working directory if we only
 write them using the Rugged calls, and if we do this, we cannot
@@ -557,7 +559,7 @@ However, the nature of Git permits us to add the same file
 multiple times without incurring any additional storage cost beyond
 the first addition (and the minimal cost of a tree structure). When a file is added to a Git repository, an SHA hash
 is generated from the file contents. For example, generating the SHA hash
-from an empty file will always return the same SHA hash.footnote:[This is explained
+from an empty file will always return the same SHA hash:footnote:[This is explained
 beautifully in the blog
 http://alblue.bandlem.com/2011/08/git-tip-of-week-objects.html.]
 
@@ -575,9 +577,9 @@ reference the same file multiple times. Unfortunately, GitHub does not provide
 an interface for reviewing the statistics of wikis in the same way
 they do for regular repositories. We can, however, review our
 repository size from within the local repository by running the
-count-objects Git subcommand. As an example, I uploaded a ZIP file
++count-objects+ Git subcommand. As an example, I uploaded a ZIP file
 with two images inside of it. I then use the 
-count-objects command and see this:
++count-objects+ command and see this:
 
 [source,bash]
 -------
@@ -594,7 +596,7 @@ garbage: 0
 size-garbage: 0
 -------
 
-Inspecting the first ZIP file, I see these statistics about it.
+Inspecting the first ZIP file, I see these statistics about it:
 
 [source,bash]
 -----
@@ -609,7 +611,7 @@ Archive:  /Users/xrdawson/Downloads/Photos (4).zip
 -----
 
 Now let's use another ZIP file with the same two files present but
-with an additional image file added.
+with an additional image file added:
 
 [source,bash]
 -----
@@ -625,7 +627,7 @@ Archive:  /Users/xrdawson/Downloads/Photos (5).zip
 
 -----
 
-Then, I upload the second ZIP file. If I rerun the count-object
+Then, I upload the second ZIP file. If I rerun the +count-objects+
 command (after running `git gc`, a command that packs files
 efficiently and makes our output more human readable), I see this:
 
@@ -650,10 +652,10 @@ importantly, there was no impact from the other two files on our
 repository size, even though they were added at different paths. 
 
 If we upload the secondary file yet again, we will regenerate and
-commit a new version of the `Review.md` file, but no new files will
+commit a new version of the _Review.md_ file, but no new files will
 need to be created inside our Git repository object store from the
 images directory (even though their paths have changed), so our 
-impact on the repository will be minimal.
+impact on the repository will be minimal:
 
 [source,bash]
 -----
@@ -670,10 +672,10 @@ garbage: 0
 size-garbage: 0
 -----
 
-As you can see, our packed-size has barely changed, an indication that
+As you can see, our packed size has barely changed, an indication that
 the only changes were a new Git tree object and commit object. We
 still have the files located in our repository at a variety of
-paths so our review pages will work no matter what revision we are accessing.
+paths so our review pages will work no matter what revision we are accessing:
 
 [source,bash]
 -----
@@ -698,12 +700,13 @@ without overloading the repository.(((range="endofrange", startref="ix_chapter-0
 === Reviewing on GitHub
 
 ((("Gollum","reviewing wiki on GitHub", id="ix_chapter-03-gollum-asciidoc11", range="startofrange")))The raison d'etre for this wiki is to annotate a development project.
-If you follow the instructions above and create a new wiki for a
+If you follow the instructions and create a new wiki for a
 repository, you'll then be able to push up the changes we've made
-using our `image.rb` script. Once you have created a new wiki, look
+using our _image.rb_ script. Once you have created a new wiki, look
 for a box on the right that says "Clone this wiki locally." 
 
-image::images/btwg_03in05.png[Gollum git clone URL]
+.Gollum git clone URL
+image::images/btwg_03in05.png[]
 
 Copy that link, and then enter a terminal window where we can then add a remote
 URL to our local repository that allows us to synchronize our
@@ -724,38 +727,40 @@ $ git push
 -----
 
 When we pull, we will be asked to merge our changes since GitHub
-created a `Home.md` file that did not exist in our local repository.
+created a _Home.md_ file that did not exist in our local repository.
 We can just accept the merge as-is. The `git push` publishes our
 changes. If we then visit the wiki, we'll see an additional file
-listed under the pages sidebar to the right. Clicking on the review
+listed under the pages sidebar to the right. Clicking the Review
 page, we can see the images we've added most recently.
 
-image::images/btwg_03in06.png[Images displayed within a Gollum wiki]
+.Images displayed within a Gollum wiki
+image::images/btwg_03in06.png[]
 
 Not sure why our designer is providing us with an image of a couch,
 but I am sure he has his reasons.
 
-Once you have published the file, we can click on the "Review" link in the
-sidebar to see the most current version of the "Review" page. We also
-can review the revisions of this file by clicking on the "3 Commits"
+Once we have published the file, we can click the Review link in the
+sidebar to see the most current version of the Review page. We also
+can review the revisions of this file by clicking the "3 Commits"
 (or whatever number of commits have occurred with this file)
 link right underneath the page title. Jumping onto that page shows us
 the full history of this file.
 
-image::images/btwg_03in07.png[A view on the revisions from within GitHub]
+.A view on the revisions from within GitHub
+image::images/btwg_03in07.png[]
 
-Clicking on any of the SHA hashes will display the page at that
+Clicking any of the SHA hashes will display the page at that
 revision in our history and show us the state of the document at any given
 moment in history. Unfortunately, jumping back and forth between
-revisions requires two clicks, one from the review page to the list of
+revisions requires two clicks, one from the Review page to the list of
 revisions, and then another click to jump into the revision we want,
 but this permits us to review changes between the comps provided from
 our designer. 
 
 It would be nice if GitHub provided a simple way to jump
-from a revision to the parent (older) revision, but they don't expose
-this in their site at this point. We can fix this, however, by generating
-our own special link inside the review page itself, which will
+from a revision to the parent (older) revision, but it doesn't expose
+this in its site at this point. We can fix this, however, by generating
+our own special link inside the Review page itself, which will
 magically know how to navigate to a previous version of the page.(((range="endofrange", startref="ix_chapter-03-gollum-asciidoc11")))
 
 === Improving Revision Navigation
@@ -766,7 +771,7 @@ it challenging to understand the differences between revisions, which is
 critical when we are trying to understand how things have changed
 between comps. We can improve this easily.
 
-First, let's add a commit message field to our upload form.
+First, let's add a commit message field to our upload form:
 
 [source,html]
 -----
@@ -784,9 +789,9 @@ Choose a zip file:
 
 -----
 
-Then, let's adjust the commit message inside our `image.rb` script,
+Then, let's adjust the commit message inside our _image.rb_ script,
 which is a one-line change to the options hash, setting the value of
-it to the parameter we are now passing in for "commit."
+it to the parameter we are now passing in for commit:
 
 [source,ruby]
 -----
@@ -814,7 +819,7 @@ method. After the block that creates each link to the image files,
 add a line that builds a link to the parent document
 via its SHA hash using the parent SHA found in our Rugged object under
 `@repo.head.target`. This link will allow us to navigate to prior
-revisions in our history.
+revisions in our history:
 
 [source,ruby]
 -----
@@ -839,12 +844,12 @@ button to jump back to the prior page in the history stack of our
 browser. We might try to get clever
 and use a link with JavaScript to call +window.history.back()+ but
 Gollum will foil this attempt by stripping JavaScript from rendered
-markup files. This is generally is a good thing, as we don't want to
+markup files. This is generally a good thing, as we don't want to
 permit rogue markup inside our wiki pages, but it does limit our
 options in this situation. 
 
 Unfortunately, these links do not work when you are viewing the review file itself
-(clicking on them brings you to a page that asks you to create this
+(clicking them brings you to a page that asks you to create this
 as a new page). ((("Liquid tags")))Gollum, unlike Jekyll, does not support Liquid
 tags, which would permit building a link using the username and
 repository. Right now we don't have access to these variables, so our
@@ -857,8 +862,7 @@ this link.(((range="endofrange", startref="ix_chapter-03-gollum-asciidoc4")))
 
 In this chapter we learned how to create a Gollum wiki from
 scratch, both on GitHub and as a fresh repository from the command
-line. We then looked at the different ways to use the Gollum command
-line tool and learned why this is a nice option when we want to run
+line. We then looked at the different ways to use the Gollum command-line tool and learned why this is a nice option when we want to run
 our own Gollum server. Finally, we built a customized Gollum
 image-centric editor using the Rugged and Sinatra Ruby libraries.(((range="endofrange", startref="ix_chapter-03-gollum-asciidoc1")))(((range="endofrange", startref="ix_chapter-03-gollum-asciidoc0")))
 

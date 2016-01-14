@@ -7,16 +7,16 @@ When you use GitHub, you're exposed to both sides of this phenomenon: the reposi
 For the rest, the uncountable millions of public repositories that belong to other people, there's a search box, with powerful features to help you find what you're looking for.
 
 Helpfully, GitHub also exposes this capability as an API you can consume from your own applications.
-GitHub's search API gives you access to the full power of the built-in search function.
+GitHub's Search API gives you access to the full power of the built-in search function.
 This includes  the use of logical and scoping operators, like `"or"` and `"user"`.
 By integrating this feature with your application, you can provide your users a very powerful way of finding what they're looking for.
 
 In this chapter we'll take a close look at this API, and try building a useful application with it.
-We'll see how the search API is structured, what kind of results come back, and how it can help us create a feature for someone on our team.
+We'll see how the Search API is structured, what kind of results come back, and how it can help us create a feature for someone on our team.
 
 === Search API General Principles
 
-((("search API","general principles", id="ix_chapter-08-python-search-asciidoc1", range="startofrange")))The search API is split into four separate parts: repositories, code, issues, and users.
+((("search API","general principles", id="ix_chapter-08-python-search-asciidoc1", range="startofrange")))The Search API is split into four separate parts: repositories, code, issues, and users.
 These APIs all have different subject matter, and have different formats for their results, but they all behave the same in a few key ways.
 We're covering these first, because they'll help you understand the results coming back from the specific API calls that we cover later.
 There are four major areas of commonality.
@@ -28,10 +28,10 @@ We cover GitHub authentication fully in <<authentication>>, but this API is also
 However, there are a few limitations to this approach.
 
 First, you'll only be able to search public repositories.
-This is probably fine if you're primarily working with open-source software, but users of your application will probably expect to have access to their private code, as well as that of any organizations they belong to.
+This is probably fine if you're primarily working with open source software, but users of your application will probably expect to have access to their private code, as well as that of any organizations they belong to.
 Also, since _all_ Enterprise repositories are private, anonymous search is completely useless there.
 
-((("rate limits","authentication and")))Secondly, authenticating opens up your rate limit. The limits on search are stricter than other APIs anyways, because search is computationally expensive, but anonymous searches are stricter still. As of this writing, and according to the documentation, anonymous searches are limited to 5 per minute, and you can do 20 authenticated queries per minute. Take a look at <<developer-api-rates>> for more on how to work with rate limits.
+((("rate limits","authentication and")))Secondly, authenticating opens up your rate limit. The limits on search are stricter than other APIs anyway, because search is computationally expensive, but anonymous searches are stricter still. As of this writing, and according to the documentation, anonymous searches are limited to 5 per minute, and you can do 20 authenticated queries per minute. Take a look at <<developer-api-rates>> for more on how to work with rate limits.
 
 Here's that same information in tabular form:
 
@@ -63,7 +63,7 @@ Here's a sample result from a query, which has been heavily edited to focus only
 ----
 
 Starting from the top: ((("total&#95;count field")))the `total_count` field represents the total number of search results that turned up from this query.
-It's not uncommon for a fairly specific search to turn up thousands of results – remember, there are millions of repositories on GitHub.
+It's not uncommon for a fairly specific search to turn up thousands of results&#x2014;remember, there are millions of repositories on GitHub.
 By default, only the first 30 are returned, but you can customize this with `page` and `per_page` query parameters in the URL.
 For example, a GET request to this URL will return 45 items, starting with the 46th result:
 
@@ -74,12 +74,12 @@ search/repositories?q=foobar&page=2&page_size=45
 
 Page sizes are generally limited to 100.
 
-The((("incomplete&#95;results field"))) `incomplete_results` field refers to a computational limit placed on the search API.
+The((("incomplete&#95;results field"))) `incomplete_results` field refers to a computational limit placed on the Search API.
 If your search takes too long, the GitHub API will stop it partway through executing, return the results that did complete, and set this flag to `true`.
 For most queries this won't be a problem, and the `total_count` will represent all the results from the search, but if your query is complicated, you might only get a partial result set.
 
 Search results are returned in ((("items array")))the `items` array, and each item always has ((("score field")))a `score` field.
-This field is numeric, but it's only a relative measure of how well a result matches the query, and is used for the default sort order – highest score first.
+This field is numeric, but it's only a relative measure of how well a result matches the query, and is used for the default sort order&#x2014;highest score first.
 If you do pay attention to it, remember it only has meaning when compared to other results from the same query; a result with a score of 50 isn't necessarily ten times "better" than a result scored 5.
 
 Here's a summary of the important fields:
@@ -140,7 +140,7 @@ The default is `desc` ("descending"), but `asc` is also accepted, and will rever
 === Search APIs in Detail
 
 Now that we've covered how all these APIs behave the same, let's discuss their specifics.
-The search API is compartmentalized into four categories: repositories, code, issues, and users.
+The Search API is compartmentalized into four categories: repositories, code, issues, and users.
 The basic mechanism is the same for all four: send a GET request to the endpoint, and provide a URL-encoded search term as the `q` parameter.
 We'll show an abridged response from each of the four, along with some discussion of what to expect.
 
@@ -240,9 +240,12 @@ Then there's the blob of data about its repository, followed by a score, which i
 The `search/issues` endpoint looks for matches in the issues and pull requests attached to a project.
 This endpoint responds to a wide variety of search qualifiers, such as:
 
-- `type`&#x2014;either "pr" for pull requests, or "issue" for issues (the default is both)
-- `team`&#x2014;match issues whose discussions mention a specific team (only works for organizations you belong to)
-- `no`&#x2014;match issues that are missing a piece of data (as in "no:label")
+`type`::
+  either "pr" for pull requests, or "issue" for issues (the default is both)
+`team`::
+  match issues whose discussions mention a specific team (only works for organizations you belong to)
+`no`::
+  match issues that are missing a piece of data (as in "no:label")
 
 There are many more; see https://developer.github.com/v3/search/#search-issues[] for complete documentation.
 
@@ -293,7 +296,7 @@ There are a lot of useful bits of data here, such as the issue's title (`title`)
 
 ==== User Search
 
-((("search API","user search")))((("user search")))All the other search APIs are centered around repositories, but this endpoint searches a different namespace: GitHub users.
+((("search API","user search")))((("user search")))All the other Search APIs are centered around repositories, but this endpoint searches a different namespace: GitHub users.
 By default, only a user's login name and public email address are searched; the `in` qualifier can extend this to include the user's full name as well, with `in:fullname,login,email`.
 There are several other useful qualifiers available; see https://developer.github.com/v3/search/#search-users[] for complete documentation.
 
@@ -363,7 +366,7 @@ image::images/btwg_04in03.png[]
 
 The first thing we'll do is require the user to log in with GitHub credentials.
 Why?
-Partly because the search API is throttled pretty aggressively, and the rate limits are higher with authenticated access.
+Partly because the Search API is throttled pretty aggressively, and the rate limits are higher with authenticated access.
 But also because our user is going to need the ability to search issues in private repositories.
 To make this easier, our program will try to get GitHub credentials from Git's credential store, but it'll fall back to a login form, which looks like <<search_login_ui>>.
 
@@ -372,8 +375,8 @@ To make this easier, our program will try to get GitHub credentials from Git's c
 image::images/btwg_0401.png[]
 
 Once the user logs in, they'll be shown a search box.
-Typing in a search query and hitting enter will result in a scrollable list of search results, with titles and the first line of the description.
-Clicking on a search result opens the issue in the user's browser.
+Typing in a search query and hitting Enter will result in a scrollable list of search results, with titles and the first line of the description.
+Clicking a search result opens the issue in the user's browser.
 
 That's about it.
 This application only has two main screens from the user's point of view.
@@ -404,7 +407,7 @@ As is unfortunately typical with Python development, installation methods vary f
 ((("AGitHub library")))((("Python","AGitHub library")))The first thing we should mention is the library we'll use to talk to the GitHub API, which is called `agithub`.
 `agithub` is a very thin layer that converts GitHub's REST API into method calls on objects, resulting in delightfully readable code.
 
-`agithub` can be found at https://github.com/jpaugh/agithub[], and the "installation" is simply to download a copy of the `agithub.py` source file and place it alongside your project files.
+`agithub` can be found at https://github.com/jpaugh/agithub[], and the "installation" is simply to download a copy of the _agithub.py_ source file and place it alongside your project files.
 
 ==== WxPython
 
@@ -412,7 +415,7 @@ As is unfortunately typical with Python development, installation methods vary f
 It's an object-oriented Python layer over the top of a toolkit called WxWidgets, which is itself a common-code adapter for native UI toolkits.
 WxWidgets supports Linux, Mac, and Windows operating systems with native controls, so you can access all of those platforms with the same Python code.
 
-Information about the WxPython project can be found at http://www.wxpython.org[], and you'll find a download link for your platform on the left-hand side of the page.
+Information about the WxPython project can be found at http://www.wxpython.org[], and you'll find a download link for your platform on the lefthand side of the page.
 The next version of WxPython (code-named "Phoenix") will be installable via PIP, but at the time of this writing Phoenix is still prerelease software, so it's probably safer to use the stable version.
 
 [NOTE]
@@ -420,7 +423,7 @@ The next version of WxPython (code-named "Phoenix") will be installable via PIP,
 ((("Python","2.7 vs. 3")))A bit of background on Python: it's undergoing a transition.
 Currently there are two actively used versions: Python 2.7 and Python 3 (3.5 at the time of this writing).
 Most of the details are unimportant, but in order to follow along with this example, you'll have to be running Python 2.7, because WxPython doesn't currently support Python 3.
-Support for Python 3 is planned for the upcoming Phoenix release, so most of the code below is written in a "polyglot" fashion, so you shouldn't run into any trouble running it under Python 3 if Phoenix has arrived by the time you read this.
+Support for Python 3 is planned for the upcoming Phoenix release, so most of the following code is written in a "polyglot" fashion, so you shouldn't run into any trouble running it under Python 3 if Phoenix has arrived by the time you read this.
 ====
 
 ==== PyInstaller
@@ -470,7 +473,7 @@ Let's take a look at a few key things:
     We instantiate an `App` instance, create an instance of our top-level frame, and run the app's main loop.
 
 If you run this program right now, your command line will appear to hang, but it's actually waiting for GUI input.
-This is because the wx library won't create a "frame" window that has no contents.
+This is because the +wx+ library won't create a "frame" window that has no contents.
 Let's correct that, but first a quick diversion into Git internals to make our experience a bit nicer.
 
 ==== Git Credential Helper
@@ -481,7 +484,7 @@ We'll be cheating a bit, by asking Git if it has the user's login and password.
 We'll leverage ((("git credential fill command")))the `git credential fill` command.
 This is used internally by Git to avoid having to ask the user for their GitHub password every time they interact with a GitHub remote.
 The way it works is by accepting all the known facts about a connection as text lines through `stdin`, in the format `<key>=<value>`.
-Once the caller has supplied all the facts it knows, it can close the stdin stream (or supply an empty line), and Git will respond with all the facts _it_ knows about this connection.
+Once the caller has supplied all the facts it knows, it can close the +stdin+ stream (or supply an empty line), and Git will respond with all the facts _it_ knows about this connection.
 With any luck, this will include the user's login and password.
 The whole interaction looks a bit like this:
 
@@ -520,11 +523,11 @@ def git_credentials():
 ----
 
 <1> Here we set `GIT_ASKPASS` to the string `'true'`, which is a UNIX program that always succeeds, which will in turn cause `git-credential` to stop trying to get credentials when it gets to the "ask the user" stage.
-<2> `subprocess.Popen` is the way you use a program with stdin and stdout in Python.
-    The first argument is a list of arguments for the new program, and we also specify that we want stdin and stdout to be captured.
-<3> `p.communicate` does the work of writing to stdin and returning the contents of stdout.
-    It also returns the contents of stderr, which we ignore in this program.
-<4> Here we process the stdout contents by splitting each line at the '=' character and slurping it into a dictionary.
+<2> `subprocess.Popen` is the way you use a program with +stdin+ and +stdout+ in Python.
+    The first argument is a list of arguments for the new program, and we also specify that we want +stdin+ and +stdout+ to be captured.
+<3> `p.communicate` does the work of writing to +stdin+ and returning the contents of +stdout+.
+    It also returns the contents of +stderr+, which we ignore in this program.
+<4> Here we process the +stdout+ contents by splitting each line at the '=' character and slurping it into a dictionary.
 <5> So the return value from this call should be a dictionary with `'username'` and `'password'` values.
     Handy!
 
@@ -532,7 +535,7 @@ def git_credentials():
 ==== Windowing and Interface
 
 ((("GUI search API application","windowing and interface", id="ix_chapter-08-python-search-asciidoc9", range="startofrange")))((("search API","windowing and interface", id="ix_chapter-08-python-search-asciidoc10", range="startofrange")))Okay, so now we have something that can help us skip a login screen, but we don't have a way of showing that login screen to the user.
-Let's get closer to that goal by filling in the main frame's implementation.
+Let's get closer to that goal by filling in the main frame's implementation:
 
 [source,python]
 ----
@@ -561,7 +564,7 @@ class SearchFrame(wx.Frame):
     For now, just know that we're only capturing them here so we can pass them to the parent class constructor two lines down.
 
 The `__init__` method is the constructor, so this is where we start when the main function calls `SearchFrame()`.
-Here's what's happening at a high level – we'll dig into the details in a bit:
+Here's what's happening at a high level&#x2014;we'll dig into the details in a bit:
 
 . Set up some layout dimensions and pass to the parent class's constructor
 . Create the UI controls
@@ -573,7 +576,7 @@ It's responsible for maintaining the top-level "frame" (a window with a title ba
 In this case, we want to show a login UI first, and when we get valid credentials (either from Git or the user), we'll switch to a searching UI.
 
 Alright, enough background.
-((("credentials")))Let's walk through the code for getting and checking credentials.
+((("credentials")))Let's walk through the code for getting and checking credentials:
 
 [source,python]
 ----
@@ -613,7 +616,7 @@ Each of these three methods comes in at a different point during our program's e
 If our credentials are coming from Git, we proceed straight to `test_credentials`; if they're coming from the login panel (see below), they go through the `login_accepted` callback first, which then calls `test_credentials`.
 
 Either way, what we do is try to fetch a list of the user's organizations, to see if they work.
-Here you can see the usage pattern for `agithub` – the URL path is mapped to object-property notation on an instance of the `Github` class, and the HTTP verb is mapped to a method call.
+Here you can see the usage pattern for `agithub`&#x2014;the URL path is mapped to object-property notation on an instance of the `Github` class, and the HTTP verb is mapped to a method call.
 The return values are a status code and the data, which has been decoded into a dictionary object.
 If it fails&#x2014;meaning the returned status is not `200`&#x2014;we send the user to the login panel.
 If it succeeds, we call `switch_to_search_panel`.
@@ -630,7 +633,7 @@ We hope you'll forgive us this small simplification; for this use case, the sync
 The last method handles the UI switch.
 The login panel is referenced by two things: the `SearchFrame` instance (the parent window), and the sizer that's controlling its layout.
 Fortunately, calling ((("Destroy() method")))the `Destroy()` method cleans both of those up, so we can then create the `SearchPanel` instance and add it to our sizer.
-Doing this requires a specific call to the sizer's `Layout()` method; otherwise, the sizer won't know that it needs to adjust the position and size of the new panel.
+Doing this requires a specific call to the sizer's `Layout()` method; otherwise, the sizer won't know that it needs to adjust the position and size of the new panel:
 
 [source,python]
 ----
@@ -652,7 +655,7 @@ Doing this requires a specific call to the sizer's `Layout()` method; otherwise,
 ----
 
 `create_controls` ((("create&#95;controls method")))is fairly straightforward.
-It instantiates a menu that only contains File>Exit, and a login panel, whose implementation we'll cover a bit later on.
+It instantiates a menu that only contains File->Exit, and a login panel, whose implementation we'll cover a bit later on.
 Note that when we create a visible control, we pass `self` as the first parameter to the constructor.
 That's because the `SearchFrame` instance we're constructing is the parent window of that control.
 
@@ -669,7 +672,7 @@ Sizers are a complex topic, but here's all you need to know about this snippet:
 * The `wx.ALL` flag specifies which edges of the widget should have the border area.
 
 Let's make sure we're following good practices, and write some tests.
-There isn't a lot here we can verify automatedly, but what there is should be covered.
+There isn't a lot here we can verify automatedly, but what there is should be covered:
 
 [source,python]
 ----
@@ -710,7 +713,7 @@ Let's write the first of the two panels we swap in and out.(((range="endofrange"
 
 ==== GitHub Login
 
-((("GitHub login (search API GUI application)", id="ix_chapter-08-python-search-asciidoc11", range="startofrange")))((("GUI search API application","GitHub login", id="ix_chapter-08-python-search-asciidoc12", range="startofrange")))((("login","in search API", id="ix_chapter-08-python-search-asciidoc13", range="startofrange")))((("search API","GitHub login", id="ix_chapter-08-python-search-asciidoc14", range="startofrange")))The((("LoginPanel class"))) `LoginPanel` class is similar in structure to the `SearchFrame` class, with a couple of key differences, which we'll describe after the wall of code.
+((("GitHub login (search API GUI application)", id="ix_chapter-08-python-search-asciidoc11", range="startofrange")))((("GUI search API application","GitHub login", id="ix_chapter-08-python-search-asciidoc12", range="startofrange")))((("login","in search API", id="ix_chapter-08-python-search-asciidoc13", range="startofrange")))((("search API","GitHub login", id="ix_chapter-08-python-search-asciidoc14", range="startofrange")))The((("LoginPanel class"))) `LoginPanel` class is similar in structure to the `SearchFrame` class, with a couple of key differences, which we'll describe after the wall of code:
 
 [source, python]
 ----
@@ -780,13 +783,13 @@ Afterward, we just call the two other construction functions and return.
 
 `create_controls` ((("create&#95;controls method")))has more to it than `SearchFrame`'s version, because this panel has more controls.
 Every static-text, text-input, and button control gets its own line of code.
-The `wx.TE_PROCESS_ENTER` style tells the library we want an event to be triggered if the user presses the enter key while the cursor is inside that text box.
+The `wx.TE_PROCESS_ENTER` style tells the library we want an event to be triggered if the user presses the Enter key while the cursor is inside that text box.
 
 The next block binds control events to method calls.
 Every event in WxPython will call the handler with a single argument, an object that contains information about the event.
-That means we can use the same function to handle any number of different kinds of events, so we do – the `ENTER` handlers for both text boxes and the `BUTTON` handler for the button all go through `self.do_login`.
+That means we can use the same function to handle any number of different kinds of events, so we do&#x2014;the `ENTER` handlers for both text boxes and the `BUTTON` handler for the button all go through `self.do_login`.
 
-((("do&#95;layout method")))((("sizers")))`do_layout` uses a different kind of sizer – a `GridBagSizer`.
+((("do&#95;layout method")))((("sizers")))`do_layout` uses a different kind of sizer&#x2014;a `GridBagSizer`.
 Again, the topic of sizers is _way_ outside the scope of this chapter, but just know that this kind arranges things in a grid, and you can allow some of the rows or columns to stretch to fill the container.
 Here we drop all of the controls into their positions with the `pos=(r,c)` notation (here "rows" come first, which isn't like most coordinate systems), and cause one control to span two columns with the `span` parameter.
 The `flags` and `border` parameters mostly mean the same things as before, and the `AddGrowableCol` function tells the layout engine which parts of the grid should be allowed to stretch.
@@ -819,7 +822,7 @@ Again, there's not much that it's doing other than setting up WxPython stuff, bu
 
 ==== GitHub Search
 
-((("GitHub search (search API GUI application)", id="ix_chapter-08-python-search-asciidoc15", range="startofrange")))((("GUI search API application","GitHub search panel", id="ix_chapter-08-python-search-asciidoc16", range="startofrange")))((("search API","GitHub search panel", id="ix_chapter-08-python-search-asciidoc17", range="startofrange")))Once the user has successfully logged in, we destroy the `LoginPanel` instance and show the `SearchPanel`.
+((("GitHub search (search API GUI application)", id="ix_chapter-08-python-search-asciidoc15", range="startofrange")))((("GUI search API application","GitHub search panel", id="ix_chapter-08-python-search-asciidoc16", range="startofrange")))((("search API","GitHub search panel", id="ix_chapter-08-python-search-asciidoc17", range="startofrange")))Once the user has successfully logged in, we destroy the `LoginPanel` instance and show the `SearchPanel`:
 
 [source, python]
 ----
@@ -888,7 +891,7 @@ class SearchPanel(wx.Panel):
 ----
 
 There's quite a bit here, but some of it is familiar.
-We'll skip the usual walkthrough to point out a couple of interesting features.
+We'll skip the usual walkthrough to point out a couple of interesting features:
 
 <1> When creating the panel, we pass in the user's credentials and list of organizations as keyword arguments, so they show up in the `kwargs` dictionary.
     Here we use `pop` to make sure the parent class's constructor doesn't get confused by them.
@@ -1011,7 +1014,7 @@ However, our use case has a nontechnical user running this; let's see what can b
 ((("GUI search API application","packaging")))((("PyInstaller")))((("search API","packaging")))What we're not going to do is require anyone to install Python 2.7 and a bunch of packages.
 We'll use PyInstaller to bundle our application into something that's easy to distribute and run.
 
-Let's assume you wrote all the code above into a file called `search.py`, and `agithub.py` is sitting in the same directory.
+Let's assume you wrote all the preceding code into a file called _search.py_, and _agithub.py_ is sitting in the same directory.
 Here's how to tell PyInstaller to generate a single application for you:
 
 [source,console]
@@ -1021,7 +1024,7 @@ $ pyinstaller -w search.py
 
 That's it!
 The `-w` flag tells PyInstaller to create a "windowed" build of your application, rather than the default console build.
-On OS X, this generates a `search.app` application bundle, and on Windows this generates a `search.exe` file.
+On OS X, this generates a _search.app_ application bundle, and on Windows this generates a _search.exe_ file.
 You can take either of these to a computer with no Python installed, and they'll run perfectly.
 
 That's because PyInstaller has copied everything necessary for your program to run, from the Python interpreter on up, inside that file.
@@ -1046,10 +1049,10 @@ We authenticated and queried the issue search API endpoint using what looked lik
 `agithub` is a great example of how a library package can be both future-proof and idiomatic&#x2014;the library constructs a query URL by looking at the chain of properties and methods used in the call.
 This is a great jumping-off point for querying other REST APIs using the same pattern.
 
-Finally, the main thrust of this chapter was using the GitHub search API.
+Finally, the main thrust of this chapter was using the GitHub Search API.
 You've learned about its general behavior, the different categories of search, how to interpret and sort results, and ways of focusing a search to reduce the number of uninteresting results.
 Using this knowledge you should be able to find anything you're looking for on GitHub or GitHub Enterprise.(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc3")))(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc2")))
-You also know that the search UI on GitHub is just a thin layer over the search API, so the same tricks and techniques will serve you whether you're writing code or using a browser.(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc0")))
+You also know that the search UI on GitHub is just a thin layer over the Search API, so the same tricks and techniques will serve you whether you're writing code or using a browser.(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc0")))
 
 Time to switch gears a bit.
 The next chapter introduces the Commit Status API, which is a way of annotating individual commits in a Git repository with a "good" or "bad" flag.

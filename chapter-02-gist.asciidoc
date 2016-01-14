@@ -17,14 +17,15 @@ gist that uses the Gist API.
 
 === Easy Code Sharing
 
-((("gists","creating")))Gists are straighforward to create. You copy a snippet
+((("gists","creating")))Gists are straightforward to create. You copy a snippet
 of code into the large text box in the center, optionally enter in a
 description or filename, and then choose between a public or private
 gist. Once your gist has been created you are presented with a URL to
 share. Gists autodetect the language in most cases and syntax
 highlight according to the language when displayed.
 
-image::images/btwg_02in01.png[Creating a Gist on GitHub]
+.Creating a gist on GitHub
+image::images/btwg_02in01.png[]
 
 There are other services that do this: pastebin was the first, and
 there are many others that offer variances on code sharing. But gists
@@ -33,7 +34,7 @@ repositories, forkable, editable, and expansive. We'll go over the basics
 of what gists are, and how to create them, and then show how they
 allow you to share code that is also a live application.
 
-=== Gists are Repositories
+=== Gists Are Repositories
 
 ((("gists","as repositories")))((("repositories","gists as")))Every gist
 created is a tiny repository. You can update gists and see
@@ -56,7 +57,7 @@ share that URL to mailing lists or anywhere you need public feedback.
 As there are two types of gists (public and secret), it is important
 to understand the differences between them. Public gists are
 searchable. Secret gists are not searchable, but they are accessible
-to anyone who knows the URL. Don't post any code to gist you
+to anyone who knows the URL. Don't post any code to a gist you
 need to keep secret as once you put it there, it is only as safe as
 the URL is secret. 
 
@@ -73,26 +74,26 @@ into your HTML.
 
 If you wish to include only a particular file from the gist (if it
 contains multiple files), then add `?file=hi.rb` to the end of the
-URL specified in the src attribute.
+URL specified in the +src+ attribute.
 
 ==== Embedding Inside Jekyll Blogs
 
 ((("gists","in Jekyll blogs")))((("Jekyll blogs","gists in")))Jekyll blogs (explained in <<Jekyll>>) can easily host
 gists using a special syntax. The shortcut `{% gist 8138797 %}` will
 embed a private gist, which would be found at
-`http://gist.github.com/8138797`.  If you want to use a 
+_http://gist.github.com/8138797_.  If you want to use a 
 specific file within the gist, add a filename to the gist code like
 `{% gist 8138797 hi.rb %}`. Secret gists can also be embedded. If you
 use a secret gist, prefix the username of the account holder in the
 gist like so: `{% gist xrd/8138797 hi.rb %}`. 
 
 Now let's look at creating gists from outside the GitHub.com site,
-using the command line.
+using the command-line.
 
 === Gist from the Command Line
 
 ((("command line","gists from")))((("gists","from command line")))`gem install gist` ((("gem install gist command")))will install a command line tool that helps create gists. You can use it simply by typing the command, and then
-entering the data you want to post as a gist.
+entering the data you want to post as a gist:
 
 [source,bash]
 -----
@@ -102,10 +103,10 @@ $ gist
 https://gist.github.com/9106765
 -----
 
-The gist command will return the link to the gist just created. Gists
-are created anonymously by default. You can login using the `--login`
+The +gist+ command will return the link to the gist just created. Gists
+are created anonymously by default. You can log in using the `--login`
 switch. Once you do this, your gists will be linked to
-your account.
+your account:
 
 [source,bash]
 -----
@@ -118,8 +119,8 @@ GitHub password:
 Success! https://github.com/settings/applications
 -----
 
-You can pipe text to the gist command to use the contents of that
-file.
+You can pipe text to the +gist+ command to use the contents of that
+file:
 
 [source,bash]
 -----
@@ -127,7 +128,7 @@ $ echo '{ "foo" : "bar" }' | gist
 https://gist.github.com/9106799
 -----
 
-You can also `cat` a file to gist.
+You can also `cat` a file to gist:
 
 [source,bash]
 -----
@@ -137,11 +138,11 @@ https://gist.github.com/9345609
 
 Gists are often used to show interesting or troublesome code, and there
 are times when you don't want to display the entirety of a file. In
-this case the command line((("grep tool"))) `grep` tool can be useful; `grep` searches
+this case the command-line((("grep tool"))) `grep` tool can be useful; `grep` searches
 for a specific piece of code and with the right switches can include
 several lines of context around that code inside a gist. This command
-looks for the function `myFunction` inside the `MyJavaFile.java` file
-and then prints the next 20 lines of context and stores it as a gist.
+looks for the function `myFunction` inside the _MyJavaFile.java_ file
+and then prints the next 20 lines of context and stores it as a gist:
 
 [source,bash]
 -----
@@ -154,8 +155,8 @@ default web browser. You can also copy the gist URL to the clipboard
 using ((("&#8211;c switch")))the `-c` switch. Or, you can copy the contents of your clipboard
 into a gist using((("&#8211;P switch"))) the `-P` switch. 
 
-There are many other fun features of the gist command. To learn more
-run the gist command with((("&#8211;&#8211;help switch"))) the `--help` switch. 
+There are many other fun features of the +gist+ command. To learn more
+run the +gist+ command with((("&#8211;&#8211;help switch"))) the `--help` switch. 
 
 As gists are themselves repositories, you can use them for dual
 purposes: for hosting code samples, code samples that are themselves
@@ -178,7 +179,7 @@ end
 
 -----
 
-Create a gist for this by visiting gist.github.com. Enter in the text exactly as above and then choose
+Create a gist for this by visiting gist.github.com. Enter in the text exactly as shown and then choose
 public gist.
 
 You now have a share-friendly gist of code anyone can use to review.
@@ -191,13 +192,13 @@ repository using the HTTPS URL but not if you have two-factor
 authentication enabled. In most cases it is easier and more flexible
 to use the Git protocol URL.
 
-Let's clone it now.
+Let's clone it now:
 
 [source,bash]
 $ git clone git@gist.github.com:8138797.git
 
 Once you have cloned the repository, go inside it. You'll see a list
-of files, a list that right now includes only one file.
+of files, a list that right now includes only one file:
 
 [source,bash]
 ----
@@ -210,7 +211,7 @@ This code is exectuable: to run it enter `ruby hi.rb`.
 
 If you have not used Sinatra with Ruby before, this will cause an
 error. This program requires a library called "sinatra" and 
-you have not yet installed it. We could write a read me, or add
+you have not yet installed it. We could write a read me file, or add
 documentation into this file itself. Another 
 way to guarantee the user has the proper files installed is to((("Gemfile"))) use a
 _Gemfile_, which is a file that tells 
@@ -223,7 +224,7 @@ $ printf "source 'https://rubygems.org'\ngem 'sinatra'" > Gemfile
 -----
 
 The `bundle` command (from the bundler gem) will install Sinatra and
-the associated dependencies.
+the associated dependencies:
 
 [source,bash]
 -----
@@ -253,7 +254,7 @@ modern-day response to René Magritte's famous work: "Ceci n'est pas une
 pipe."footnote:[http://bit.ly/1Ot2qOd[Explained best by Ben
 Zimmer]]
 
-Add a view `index.erb` at the root of our directory:
+Add a view _index.erb_ at the root of our directory:
 
 [source,ruby]
 -----
@@ -267,14 +268,14 @@ User has <%= count %> public gists
 
 -----
 
-Add the octokit gem to our Gemfile:
+Add the +octokit+ gem to our Gemfile:
 
 [source,ruby]
 -----
 gem "octokit"
 -----
 
-Run `bundle` to install octokit. Then, modify our hi.rb app to look
+Run `bundle` to install Octokit. Then, modify our _hi.rb_ app to look
 like this:
 
 [source,ruby]
@@ -302,12 +303,13 @@ hi.rb
 index.erb
 -----
 
-Restart Sinatra by running ctrl-c and then `ruby hi.rb`. If you visit `http://localhost:4567/xrd` in
+Restart Sinatra by running Ctrl-C and then `ruby hi.rb`. If you visit _http://localhost:4567/xrd_ in
 your browser, you will see the count of public gists for user `xrd`;
 modify the username in the URL to specify any GitHub username and you will see
 their last five gists displayed.
 
-image::images/btwg_02in02.png[Displaying the gist count]
+.Displaying the gist count
+image::images/btwg_02in02.png[]
 
 ==== Going Deeper into the Gist API
 
@@ -349,16 +351,16 @@ operating on the data. RESTful APIs typically provide a mapping
 outside of the payload. You have to join the API sitemap with the data
 in an ad-hoc way when using RESTful APIs; with Hypermedia APIs your
 client can react to the payload itself correctly and intelligently
-without knowing anything about a sitemap stored in human readable
+without knowing anything about a sitemap stored in human-readable
 documentation. 
 
 This loose coupling makes APIs and their clients flexible. In theory,
 a Hypermedia API works intuitively with a Hypermedia-aware client. If
 you change the API, the client, as it understands Hypermedia, can
 react and still work as expected. Using a RESTful API means that
-clients must be updated (either a newer version of the client must be
+clients must be updated (a newer version of the client must be
 installed) or the client code must be upgraded. Hypermedia APIs can
-alter their back end, and then the client, as long as it is
+alter their backend, and then the client, as long as it is
 Hypermedia-aware, can automatically and dynamically determine
 the right way to access information from the response itself. In other
 words, with a Hypermedia client the API backend can change and your
@@ -369,7 +371,7 @@ Hypermedia APIs with HTML5 and Node</em> (O'Reilly)</a>].
 
 ==== Using Hypermedia Data from Octokit
 
-((("gists","using hypermedia data from Octokit")))((("hypermedia data, Octokit")))((("Octokit","using hypermedia data from")))Now that you know a little about Hypermedia, let's navigate it using Octokit.
+((("gists","using hypermedia data from Octokit")))((("hypermedia data, Octokit")))((("Octokit","using hypermedia data from")))Now that you know a little about Hypermedia, let's navigate it using Octokit:
 
 * Start at a resource, with code like `user = Octokit.user "xrd"`. This
   begins the initialization of the client.
@@ -383,12 +385,12 @@ Hypermedia APIs with HTML5 and Node</em> (O'Reilly)</a>].
   followers, etc.
 * Use a relationship by calling the `get.data` method to retrieve and
   access the data from the GitHub API (`followers =
-  user.rels[:followers].get.data`.)
+  user.rels[:followers].get.data`).
 * Calling `.get.data` populates an array of the followers (paged if it
   exceeds 100 items). 
 
 Let's extend our Sinatra app to retrieve actual data about the user's
-gists by using Hypermedia references.
+gists by using Hypermedia references:
 
 [source,ruby]
 -----
@@ -410,12 +412,12 @@ end
 
 -----
 
-The `index.erb` file contains code to iterate over each gist and pull
+The _index.erb_ file contains code to iterate over each gist and pull
 the content. You can see that our response object is an array of
 gists, and each has an attribute called `fields`. This `fields` attribute
 specifies the filenames available in each gist. If you reference that
 filename against the files, the response includes a Hypermedia `ref`
-attribute. Retrieve the `raw` content using the Octokit method `.get.data`.
+attribute. Retrieve the `raw` content using the Octokit method `.get.data`:
 
 [source,html]
 -----
@@ -443,7 +445,8 @@ attribute. Retrieve the `raw` content using the Octokit method `.get.data`.
 
 Now we see the gists and the contents.(((range="endofrange", startref="ix_chapter-02-gist-asciidoc1")))
 
-image::images/btwg_02in03.png["Last five gists, with details"]
+.Last five gists, with details
+image::images/btwg_02in03.png[]
 
 === Summary
 
