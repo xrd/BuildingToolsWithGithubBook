@@ -364,7 +364,7 @@ the right way to access information from the response itself. In other
 words, with a Hypermedia client the API backend can change and your
 client code should not need to.
 
-This is explained in great detail in the book pass:[<a class="orm:hideurl" href=http://shop.oreilly.com/product/0636920020530.do><em>Building
+This is explained in great detail in the book pass:[<a class="orm:hideurl" href="http://shop.oreilly.com/product/0636920020530.do"><em>Building
 Hypermedia APIs with HTML5 and Node</em> (O'Reilly)</a>].
 
 ==== Using Hypermedia Data from Octokit
