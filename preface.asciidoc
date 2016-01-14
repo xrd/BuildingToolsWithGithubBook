@@ -26,7 +26,7 @@ other before it and now dominates the SCM landscape.
 
 GitHub is a company that saw the immense potential of Git early on and
 built a layer of web services on top of the existing features found
-in Git. Not surprisingly, one of the factors behind their success was that
+in Git. Not surprisingly, one of the factors behind its success was that
 GitHub employees embraced the ethos of writing meta-tools from the
 beginning. Building meta-tools requires the courage to take a little
 extra time to build a meta-tool rather than 
@@ -91,13 +91,13 @@ layers the functionality of Git into a networked programming interface.
 
 The GitHub API is perhaps the best designed API I've ever used. ((("Hypermedia API")))It is
 a hypermedia API, which is an arguably successful attempt to make
-API clients resilient to API changes, a tricky problem. The API is well
+API clients resilient to API changes&#x2014;a tricky problem. The API is well
 versioned. It is comprehensive, mapping closely to most features of
 Git. It is consistent across sections and well organized. The GitHub
 API is a great API on which to build applications, serving as a
 case study for a well-designed API.
 
-=== Structure of This book
+=== Structure of This Book
 
 The GitHub API is extremely comprehensive, permitting access and
 modification of almost all data and metadata stored or associated with
@@ -127,13 +127,13 @@ covered in the API documentation:
 * Hubot: a programmable chat robot used extensively at GitHub
 
 Each of these sections of the GitHub technology stack are covered in
-various chapters (with two exceptions, which we explain below). The GitHub API 
+various chapters (with two exceptions, which we explain next). The GitHub API 
 documentation is a stellar reference you will use constantly
 when writing any application that talks to the API, but the chapters
 in this book serve a different purpose: 
 these chapters are stories about building applications on top of
 the technologies provided by GitHub. Within these stories you will learn
-the tradeoffs and considerations you will face when you use the GitHub
+the trade-offs and considerations you will face when you use the GitHub
 API. Chapters in this book often cover multiple pieces of the API
 when appropriate for the story we are telling. We've generally tried
 to focus on a major API section and limit exposure to other pieces as
@@ -142,57 +142,57 @@ of more than one section.
 
 Here is a short synopsis of each chapter:
 
-* <<introduction,The "cURL" chapter>>: the chapter you are reading now covers a
-  first look at the API through the command line HTTP client called
+* <<introduction>>: the chapter you are reading now covers a
+  first look at the API through the command-line HTTP client called
   cURL. We talk a bit about the response format and how to parse it
   within the command line, and also document authentication. This is
   the only chapter that does not build an application from the
   technologies presented.
-* <<chapter2,The "Gist" chapter>>: covers the Gist API, as well as command line
+* <<chapter2>>: covers the Gist API, as well as command-line
   tools and the Ruby language "Octokit" API client. We then take this
   API and build a simple Ruby server that is stored as a gist and
   displays gists.
-* <<chapter3,The "Gollum" chapter>>: explains usage of the Gollum command line tool
+* <<chapter3>>: explains usage of the Gollum command-line tool
   and associated Ruby library (gem), which is backed by Grit, the
   C-language bindings for accessing Git repositories. We also
   document some details of the Git storage format and how it applies
   to storing large files inside of a Git repository, and show how to
-  use the Git command line tools to play with this information. We use
+  use the Git command-line tools to play with this information. We use
   Gollum and the Grit libraries to build an image management tool
   that also functions as a regular Gollum wiki, which can be published
   to GitHub.
-* <<python_search_api,The "Search" chapter>>: we explore the Search API and build a GUI
+* <<python_search_api>>: we explore the Search API and build a GUI
   tool to search repositories on GitHub using Python.
-* <<commit_status,The "Commit Status" chapter>>: documents a relatively new part of
+* <<commit_status>>: covers a relatively new part of
   the API that documents the interactions between third-party tools
   and your code. This chapter builds an application using C# and the
   Nancy .NET GitHub API libraries. 
-* <<Jekyll,The "Jekyll" chapter>>: if you push a specifically organized
+* <<Jekyll>>: if you push a specifically organized
   repository into GitHub, GitHub will host a fully featured blog,
   equivalent in most ways to a Wordpress site (well, except for the
   complexity part). This chapter documents how to format your
   repository, how to use Markdown within Jekyll, how to use
   programmatic looping constructs provided by Liquid Templates, and
-  then shows how to import an entire web site from the Internet
+  then shows how to import an entire website from the Internet
   Archive into the Jekyll format using Ruby. We show 
   how to respectfully spider a site using caching, a valuable
   technique when using APIs or third-party public information.
-* <<android_and_git_data_api,The "Android" chapter>>: in this chapter we create a mobile
+* <<android_and_git_data_api>>: in this chapter we create a mobile
   application targeting the Android OS. Our application reads and
   writes information into a Jekyll repository from the Git Data
   section of the API. We show how to create user interface tests for
   Android that verify GitHub API responses using the Calabash UI
   testing tool.
-* <<Hubot,The "Hubot" chapter>>: Hubot is a JavaScript (NodeJS) chat robot
+* <<Hubot>>: Hubot is a JavaScript (NodeJS) chat robot
   enabling technologists to go beyond developer operations ("DevOps")
-  to a new frontier called "ChatOps." The Hubot chapter illustrates
+  to a new frontier called "ChatOps." This chapter illustrates
   using the Activities and Pull Requests section 
   of the API. In addition, we show how you can simulate GitHub
   notifications and how to write testable Hubot extensions (which is
   often a challenge when writing JavaScript code). We string all these
   pieces together and build a robot that automates assigning pull
   request review requests.
-* <<JavaScript,The "JavaScript" chapter>>: did you know you can host an entire
+* <<JavaScript>>: did you know you can host an entire
   "single-page application" on GitHub? We show how you can build a
   coffee shop information app backed by a flat file database hosted on
   GitHub written in the JavaScript language. Importantly, we show how
@@ -212,15 +212,15 @@ followers.
 
 ((("issues")))There is not a specific chapter on issues. GitHub originally
 grouped issues and pull requests into the same API section, but with the
-growing importance of pull requests they have separated them in the
+growing importance of pull requests GitHub has separated them in the
 API documentation. In fact, they are still internally stored in the
 same database and pull requests are, at least for now, just another
-type of issue. The Hubot chapter documents using pull requests and
+type of issue. <<Hubot>> documents using pull requests and
 is a good reference for issues in that way.
 
 ((("GitHub Enterprise","API")))The Enterprise API works almost exactly the same as the GitHub.com
 site API. We don't have a chapter telling a story about an Enterprise
-version of the API, but we do provide an appendix that provides a few
+version of the API, but we do provide an <<appendix,appendix>> that contains a few
 notes about how the examples work when using an Enterprise server. We also
 provide the specific syntax for each of the languages used in the
 chapters that will make any of the examples provided work with an
@@ -250,7 +250,7 @@ HTTP status codes mean at the very least.
 
 Familiarity with other web APIs will make traversing these
 chapters easier, although this book simultaneously aspires to provide
-a guide showing how a well thought out, well designed, and well tested
+a guide showing how a well-thought-out, well-designed, and well-tested
 web API creates a foundation for building fun and powerful tools. If
 you have not used web APIs extensively, but have experience using
 other types of APIs, you will be in good company. 
@@ -359,7 +359,7 @@ virtual machine with these two commands:
 $ vagrant init hashicorp/precise32
 $ vagrant up
 
-=== Who This Book is Not For
+=== Who This Book Is Not For
 
 If you are looking for a discussion of the GitHub API that focuses on
 a single language, you should know that we look at the API through
