@@ -488,7 +488,7 @@ acts of kindness can have immeasurable impact. And, to David J. Groom,
 though we have never met face to face, your suggestions and excitement
 about the book early on came at a critical moment in the life of this
 book, and I thank you for channeling the excitement I hoped to
-cultivate with people who would one day pick up this book.((("JavaScript", "coffee shop database app", see="coffee shop database app")))((("Ruby", libraries", see="Nancy")))((("Ruby", libraries", see="Octokit")))((("Ruby", libraries", see="Rugged")))((("Ruby", libraries", see="Sinatra")))
+cultivate with people who would one day pick up this book.((("JavaScript", "coffee shop database app", see="coffee shop database app")))((("Ruby", "libraries", see="Nancy")))((("Ruby", "libraries", see="Octokit")))((("Ruby", "libraries", see="Rugged")))((("Ruby", "libraries", see="Sinatra")))
 
 Ben would like to thank his wife, Becky, for her ongoing support and
 (when needed) push from behind. None of this would have happened
