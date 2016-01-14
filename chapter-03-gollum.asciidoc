@@ -123,7 +123,7 @@ end
 ----
 
 Gollum
-https://github.com/gollum/gollum/wiki/Home/b16ce34e46e26600dc77bdf9b5aa6efcaf42026d#github-syntax-highlighting[at
+http://bit.ly/1JMzd4m[at
 one point] supported inclusion of files from any GitHub repository
 (and any branch!) using a syntax like this: 
 
