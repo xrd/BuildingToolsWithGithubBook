@@ -131,7 +131,7 @@ _config.ru_::
 
 ==== Potential Problems Installing Ruby
 
-((("Ruby","installation problems")))Missing system tools:
+((("Ruby","installation problems")))Missing system tools::
  If you are running Mac OS X, you need to
   install Xcode and the command-line tools. If you are a software
   developer, you probably have these already installed. If not, review
