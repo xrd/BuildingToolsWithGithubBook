@@ -169,7 +169,7 @@ wiki when your Gollum wiki is hosted on GitHub.
 
 ((("Gollum","inserting images")))((("images","Gollum tag format for")))Images are inserted into your document using the same tag format
 _[[ceo.png]]_: this adds the correct HTML tags to include an image
-named ceo.png inside your page. This basic syntax is often extended
+named _ceo.png_ inside your page. This basic syntax is often extended
 for additional funtionality. For example, to add a frame
 and an +alt+ tag, you could use syntax like `[[ceo.png|frame|alt=Our CEO
 relaxing on the beach]]`. This creates the proper HTML tags for the
