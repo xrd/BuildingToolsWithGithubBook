@@ -79,7 +79,7 @@ Now let's create our Hubot and configure it to use Slack.
 ==== Creating a Vanilla Hubot
 
 ((("Hubot","basic")))((("NodeJS","and Hubot")))To build a Hubot you will need a working NodeJS installation, as
-specified in <<appendix_nodejs>>. The following commands create a
+specified in <<appendix>>. The following commands create a
 directory with a barebones Hubot:
 
 [code,bash]
