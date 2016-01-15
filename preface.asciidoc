@@ -142,7 +142,7 @@ of more than one section.
 
 Here is a short synopsis of each chapter:
 
-* <<introduction>>: the chapter you are reading now covers a
+* <<introduction>>: covers a
   first look at the API through the command-line HTTP client called
   cURL. We talk a bit about the response format and how to parse it
   within the command line, and also document authentication. This is
