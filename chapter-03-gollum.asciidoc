@@ -261,7 +261,7 @@ end
 ------
 
 Then, create the Gemfile, install the dependencies, and run the web
-application.:
+application:
 
 [source,bash]
 ------
