@@ -97,7 +97,7 @@ real hostname. There are two steps to take to do this:
 * Set up DNS records so that the hostname maps to the correct IP
   address at GitHub.
 
-Imagine you have the hostname myspecialhostname.com. If you map this
+Imagine you have the hostname _myspecialhostname.com_. If you map this
 repository to a subdomain called coffeetech, then you would do
 something like this:
 
@@ -600,7 +600,7 @@ var CITIES = [{
 }]
 --------
 
-And the _fixtures-portland.js_ file.
+And the _fixtures-portland.js_ file:
 
 [source,javascript]
 -------
@@ -1588,7 +1588,7 @@ navigate to the "Applications" link toward the bottom. Click the
 "Developer Applications" tab in the right center column and then click the
 "Register new application" button. Make sure "Authorization callback URL" is set to
 _https://auth.firebase.com/auth/github/callback_. Then save the
-application by clicking on the "Register application" button.(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc17")))
+application by clicking the "Register application" button.(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc17")))
 
 .A new GitHub application for OAuth
 image::images/btwg_09in07.png[A new GitHub application for oAuth]
