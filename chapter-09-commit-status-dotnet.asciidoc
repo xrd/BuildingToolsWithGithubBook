@@ -366,7 +366,7 @@ Apart from asking for their username and password (which gives way too much cont
 . Now we have permission, and we can use the GitHub API in authenticated mode.
 
 This might seem overly complicated, but its design achieves several goals.
-First, permission can be scoped – an application is almost never given full access to the user's account and data.
+First, permission can be scoped&#x2014;an application is almost never given full access to the user's account and data.
 Second, the whole exchange is secure; at least one part of this has to go through the user, and cannot be automated.
 Third, the access token is never transmitted to the user's browser, which avoids an entire class of security vulnerabilities.
 
