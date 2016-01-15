@@ -1539,9 +1539,9 @@ Select the &#x201c;Build Variants&#x201d; vertical tab on the left, and in Test
 Artifact select Unit Tests. Then, open the Run menu, and
 select &#x201c;Edit configurations&#x201d;. Click the plus symbol, and choose
 JUnit. You will be presented with space to create a unit test run
-configuration. First, click the &#x201c;Use classpath of module&#x201d; and
+configuration. First, click &#x201c;Use classpath of module&#x201d; and
 select &#x201c;app&#x201d;. Make sure the Test Kind is set to class, and then
-click on the selector to the right of the class field. It should
+click the selector to the right of the class field. It should
 display your test class &#x201c;GitHubHelperTest.java&#x201d;. We will need to store
 the username and password as environment variables, so click to add
 these. Your final configuration should look like <<creating-unit-tests>>.
@@ -1551,8 +1551,8 @@ these. Your final configuration should look like <<creating-unit-tests>>.
 image::images/btwg_07in05.png[Creating a unit test configuration]
 
 Now, create the UI tests configuration: switch to "Android Instrumentation Tests" in the "Test Artifact"
-of the "Build Variants" tab. Then, click on the "Run" menu, and again
-go to "Edit configurations". Click on the plus symbol, and this
+of the "Build Variants" tab. Then, click the "Run" menu, and again
+go to "Edit configurations". Click the plus symbol, and this
 time choose "Android Tests." Choose "app" as the module, and then
 select "android.support.test.runner.AndroidJUnitRunner" as the
 specific instrumentation runner. You can choose whichever target
