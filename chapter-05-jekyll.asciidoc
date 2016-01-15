@@ -530,7 +530,7 @@ $ gem install github
 $ github admin # Opens up https://github.com/username/repo/settings
 -----
 
-The GitHub gem is a useful command-line tool, but unfortunately it is
+The +github gem+ is a useful command-line tool, but unfortunately it is
 tied to an older version of the GitHub API, which means the documented
 functionality is often incorrect.
 
