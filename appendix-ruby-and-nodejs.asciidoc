@@ -132,7 +132,7 @@ _config.ru_::
 ==== Potential Problems Installing Ruby
 
 ((("Ruby","installation problems")))Missing system tools::
- If you are running Mac OS X, you need to
+  If you are running Mac OS X, you need to
   install Xcode and the command-line tools. If you are a software
   developer, you probably have these already installed. If not, review
   online documentation to install these. If you are running Linux, you
@@ -140,7 +140,7 @@ _config.ru_::
   build tools you will ever need using this command: `sudo apt-get
   install build-essential`. This can take a while, but will ensure you
   have all the tools necessary for building RVM and any binary gems.
-Missing developer libraries::
+  Missing developer libraries::
   There are some libraries that support
   Ruby (readline support, as an example, which allows you to use
   command-line history inside of an interactive Ruby shell) that are
