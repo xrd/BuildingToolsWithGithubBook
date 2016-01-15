@@ -6,7 +6,7 @@ in Ruby." At its core, Jekyll is a very simple set of
 technologies for building web sites. Simplicity is what gives Jekyll
 its power: using Jekyll you will never have to learn about database
 backends, complicated server installations, or any of the myriad
-processes involved with most monolithic web site technologies. Many
+processes involved with most monolithic website technologies. Many
 prominent technical bloggers use Jekyll as their blogging platform.
 
 Like many of the open-source technologies in heavy usage at GitHub,
