@@ -702,7 +702,7 @@ without overloading the repository.(((range="endofrange", startref="ix_chapter-0
 ((("Gollum","reviewing wiki on GitHub", id="ix_chapter-03-gollum-asciidoc11", range="startofrange")))The raison d'etre for this wiki is to annotate a development project.
 If you follow the instructions and create a new wiki for a
 repository, you'll then be able to push up the changes we've made
-using our _image.rb_ script. Once you have created a new wiki, look
+using our +image.rb+ script. Once you have created a new wiki, look
 for a box on the right that says "Clone this wiki locally." 
 
 .Gollum git clone URL
