@@ -838,7 +838,7 @@ Now, when we view the Review file history, we see a link to each prior
 version. Is it possible to provide a link to the next version in our
 history? Unfortunately, we have no way to predict the SHA hash of the
 next commit made to the repository, so we cannot build this link
-inside our `Review.md` file with our Ruby script. However, we do get
+inside our _Review.md_ file with our Ruby script. However, we do get
 something just as good for free because we can simply use the back
 button to jump back to the prior page in the history stack of our
 browser. We might try to get clever
