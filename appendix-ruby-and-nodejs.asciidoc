@@ -121,7 +121,7 @@ _.ruby-version_ or _.rvmrc_::
   zero-configuration web server Pow) that are aware of files
   like _.ruby-version_ and will properly use the correct version of Ruby if
   they see this file.
-* _config.ru_::
+_config.ru_::
   This is a file used to run Ruby applications using
   Rack. Rack is a web server interface, compatible with many
   application servers. If you see a _config.ru_ file, you can run this
