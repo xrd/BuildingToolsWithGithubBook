@@ -310,11 +310,13 @@ There are two languages that are so fundamentally linked to GitHub
 that you do need to install and use them in order to get the most out
 of this book.
 
-* ((("Ruby")))Ruby: a simple, readable programming language the founders of
+((("Ruby")))Ruby::
+  a simple, readable programming language the founders of
   GitHub used extensively early in the life of the company.
-* ((("JavaScript")))JavaScript: the only ubiquitous browser-side programming language; its
+((("JavaScript")))JavaScript::
+  the only ubiquitous browser-side programming language; its
   importance has grown to new heights with the introduction of
-  ((("NodeJS")))NodeJS, rivaling even the popularity of Ruby on Rails as a server-side toolkit for web applications, especially for independent developers.
+  ((("NodeJS")))NodeJS, rivaling even the popularity of Ruby on Rails as a server-side toolkit for web applications, especially for independent  developers.
 
 Undoubtedly, many of you picking up this book already have familiarity
 with Ruby or JavaScript/NodeJS. So, the basics and installation of them are in
