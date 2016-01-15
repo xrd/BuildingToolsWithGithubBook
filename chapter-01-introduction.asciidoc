@@ -1046,7 +1046,7 @@ $ curl -s $URL \
 representation of the data, sent as Markdown. 
 <2> Note that if we don't request the HTML representation, we
 don't see it in the JSON by default.
-<3> If we use a customized Accept header like in
+<3> If we use a customized +Accept+ header like in
 the third instance, then our JSON is populated with a rendered version
 of the body in HTML.
 
