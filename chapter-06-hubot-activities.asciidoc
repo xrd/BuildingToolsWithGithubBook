@@ -1667,7 +1667,7 @@ package manager (npm) builds out the local dependency tree for
 libraries, and this is the file Hubot uses internally to build the
 robot object and set up the express HTTP server. If we add the
 following code at line 288 (this line number might vary if you are not
-using the same version of Hubot we specify in our package.json), we
+using the same version of Hubot we specify in our _package.json_), we
 can install a custom middleware callback that will provide us with
 the raw body we can use when verifying the HMAC signature:
 
