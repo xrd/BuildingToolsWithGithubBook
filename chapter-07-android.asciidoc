@@ -1539,7 +1539,7 @@ Select the &#x201c;Build Variants&#x201d; vertical tab on the left, and in Test
 Artifact select Unit Tests. Then, open the Run menu, and
 select &#x201c;Edit configurations&#x201d;. Click the plus symbol, and choose
 JUnit. You will be presented with space to create a unit test run
-configuration. First, click on the &#x201c;Use classpath of module&#x201d; and
+configuration. First, click the &#x201c;Use classpath of module&#x201d; and
 select &#x201c;app&#x201d;. Make sure the Test Kind is set to class, and then
 click on the selector to the right of the class field. It should
 display your test class &#x201c;GitHubHelperTest.java&#x201d;. We will need to store
