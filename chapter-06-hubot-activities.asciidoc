@@ -95,7 +95,7 @@ You may not be familiar with these commands, so let's go over the
 important ones.
 
 <1> NPM is the tool that installs packages for NodeJS (documented in
-<<appendix_nodejs>>). The `npm install -g
+<<appendix>>). The `npm install -g
 generator-hubot` command installs a command-line tool called yeoman
 and a plug-in for yeoman that scaffolds Hubot.
 <2> You should create a new directory and enter it so that when you
@@ -977,7 +977,7 @@ issue another PR.(((range="endofrange", startref="ix_chapter-06-hubot-activities
 
 ==== Handling PR Notifications as Post Requests over HTTP
 
-((("HTTP handler, handling PR notifications as post requests over", id="ix_chapter-06-hubot-activities-asciidoc17", range="startofrange")))((("Hubot","handling PR notifications as post requests over HTTP", id="ix_chapter-06-hubot-activities-asciidoc18", range="startofrange")))((("post requests, handling PR notifications as", id="ix_chapter-06-hubot-activities-asciidoc19", range="startofrange")))((("pull requests","handling notifications as post requests over HTTP", id="ix_chapter-06-hubot-activities-asciidoc20", range="startofrange")))Let's build our HTTP handler when PRs notifications arrive from
+((("HTTP handler, handling PR notifications as post requests over", id="ix_chapter-06-hubot-activities-asciidoc17", range="startofrange")))((("Hubot","handling PR notifications as post requests over HTTP", id="ix_chapter-06-hubot-activities-asciidoc18", range="startofrange")))((("post requests, handling PR notifications as", id="ix_chapter-06-hubot-activities-asciidoc19", range="startofrange")))((("pull requests","handling notifications as post requests over HTTP", id="ix_chapter-06-hubot-activities-asciidoc20", range="startofrange")))Let's build our HTTP handler when PR notifications arrive from
 GitHub. At first glance, we might take the easy route, adding it
 directly into the top-level script. But given the fact that
 JavaScript handles events inside of callbacks and the fact that Hubot
