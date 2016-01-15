@@ -47,7 +47,7 @@ will be transformed into a robot that...
 * has functionality fully described by automated tests;
 * allows easy simulation of inputs and outputs that map to the
   inputs and outputs it gets from APIs and services; and
-* runs with ease host on a major PaaS (Heroku).
+* runs with ease on a major PaaS (Heroku).
 
 Hubot provides the skeleton for our chat robot. We'll add the preceding
 functionality to Hubot and see how easy it is to combine these
