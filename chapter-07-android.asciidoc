@@ -187,7 +187,7 @@ dependencies {
 
 <1> First, we load the Android gradle plug-in. This extends our project
 to allow an `android` block, which we specify next.
-<4> Next, we configure our Android block, with things like the target
+<4> Next, we configure our +android+ block, with things like the target
 version (which we choose when setting up our project) and the actual
 SDK, which we are using to compile the application.
 <2> In order to run UI tests, we need to specify a test runner
@@ -215,9 +215,9 @@ mode.(((range="endofrange", startref="ix_chapter-07-android-asciidoc5")))(((rang
 ===== Creating AVDs for development
 
 ((("Android Virtual Devices (AVDs)")))Android Studio makes creating AVD (Android Virtual Devices) simple. To
-start, under the Tools menu, click Android and then select
-AVD Manager. To create a new AVD, click the Create Virtual
-Device button and follow the prompts. You are generally free to
+start, under the &#x201c;Tools&#x201d; menu, click &#x201c;Android&#x201d; and then select
+&#x201c;AVD Manager.&#x201d; To create a new AVD, click the &#x201c;Create Virtual
+Device&#x201d; button and follow the prompts. You are generally free to
 choose whatever settings you like. Google produces a real device
 called the Nexus 5. This is the Android reference device, and is a
 good option for a generic device with good support across all
