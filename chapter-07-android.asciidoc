@@ -283,7 +283,7 @@ declaratively described.
 
 Android Studio created a default layout for us (called
 _activity_main.xml_), but let's ignore that and create our own
-layout. To do so, right-click (Ctril-click on OS X) on the _layouts_
+layout. To do so, right-click (Ctrl-click on OS X) on the _layouts_
 directory, and then choose "New" and then "Layout resource file" at
 the very top of the list (Android Studio nicely chooses the most
 likely candidate given the context of the click). Enter "main.xml" as
@@ -1297,7 +1297,7 @@ enterprise endpoint instead of GitHub.com. Refer to the <<appendix_b>> for speci
 ==== The Base SHA from the Repository and Branch
 
 ((("Android application example","base SHA implementation")))((("SHA (secure hash algorithm)")))Now we implement((("directed acylic graphs (DAG)")))((("retrieveBaseSha() function"))) `retrieveBaseSha()`. A Git repository is a directed
-acrylic graph (DAG) and as such, (almost) every node in the graph points
+acyclic graph (DAG) and as such, (almost) every node in the graph points
 to another commit (or potentially two if it is a merge commit). When
 we append content to our graph, we need to determine the prior node in
 that graph and attach the new node. `retrieveBaseSha` does this: it
