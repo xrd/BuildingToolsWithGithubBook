@@ -60,7 +60,7 @@ subdirectory rather than a different hostname. This simplifies the setup
 of the Enterprise installation. But it means that some tools require
 reconfiguration. 
 
-For the command line https://github.com/defunkt/gist[Gist tool], you need to export an environment 
+For the command-line https://github.com/defunkt/gist[Gist tool], you need to export an environment 
 variable that specifies the Gist URL:
 
 [source,bash]
@@ -132,7 +132,7 @@ upgraded.
 ==== JavaScript
 
 ((("GitHub Enterprise","and JavaScript library")))((("JavaScript","GitHub Enterprise and")))The JavaScript library we write about in this book ("GitHub.js") uses the
-following syntax to specify a GitHub enterprise backend:
+following syntax to specify a GitHub Enterprise backend:
 
 [source,javascript]
 -----
