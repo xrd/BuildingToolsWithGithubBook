@@ -1,4 +1,4 @@
-[[appendix]]
+[[appendix_b]]
 == GitHub Enterprise
 
 
@@ -39,21 +39,21 @@ instead of https://api.github.com/[]. You can imagine that some users
 have accounts on both an Enterprise instance as well as GitHub.com,
 and many applications have started supporting this scenario. 
 
-=== Full Hostnames vs. Mount Points
+=== Full Hostnames Versus Mount Points
 
 ((("GitHub Enterprise","full hostnames vs. mount points")))One of the main differences between GitHub.com and an Enterprise setup
 is often in the way that hostnames are set up. GitHub.com has several
 hostnames for various content served. An incomplete list includes:
 
-* github.io: hosting Jekyll blogs for users and project pages
-* gist.github.com: hosting "gists"
-* raw.githubusercontent.com: hosting raw pages (unprocessed files)
+* _github.io_: hosting Jekyll blogs for users and project pages
+* _gist.github.com_: hosting "gists"
+* _raw.githubusercontent.com_: hosting raw pages (unprocessed files)
 
 For a variety of reasons, Enterprise GitHub installations often don't
 retain the same mapping. An Enteprise installation might look like:
 
-* github.bigdevcorp.example.com/pages/xrd/somerepo: hosting gh-pages sites
-* github.bigdevcorp.example.com/gists: hosting gists
+* _github.bigdevcorp.example.com/pages/xrd/somerepo_: hosting gh-pages sites
+* _github.bigdevcorp.example.com/gists_: hosting gists
 
 As you can see, Enterprise installations often map the subdomains to a
 subdirectory rather than a different hostname. This simplifies the setup
@@ -66,15 +66,15 @@ variable that specifies the Gist URL:
 [source,bash]
 $ export GITHUB_URL=http://github.bigdevcorp.example.com/
 
-For the command line https://github.com/github/hub[Hub tool] you need to use a different
-variable: pass:[<code>GITHUB_HOST</code>].
+For the command-line https://github.com/github/hub[Hub tool], you need to use a different
+variable&#x2014;pass:[<code>GITHUB_HOST</code>]:
 
 [source,bash]
 $ GITHUB_HOST=github.bigdevcorp.example.com hub clone myproject
 
-=== Command Line Client Tools: cURL
+=== Command-Line Client Tools: cURL
 
-((("cURL","and GitHub Enterprise")))((("GitHub Enterprise","and cURL")))We show in another chapter how to use cURL to make a request against
+((("cURL","and GitHub Enterprise")))((("GitHub Enterprise","and cURL")))We show in <<introduction>> how to use cURL to make a request against
 the API on the main GitHub.com site. If you wanted to do this against
 an Enterprise site, your request would look a little different:
 
@@ -144,11 +144,11 @@ var github = new Github({
 
 ==== Python
 
-((("GitHub Enterprise","and Python")))((("Python","and GitHub Enterprise")))The agithub client we use in the Python chapter does not permit
+((("GitHub Enterprise","and Python")))((("Python","and GitHub Enterprise")))The agithub client we use in <<python_search_api>> does not permit
 parameterizing an Enterprise endpoint when creating the GitHub
 client. To use an Enterprise endpoint you need to define a new class
-that overrides the built in `agithub.Github` and then use that new
-client in place of the built-in one. 
+that overrides the built-in `agithub.Github` and then use that new
+client in place of the built-in one:
 
 [source,py]
 ----

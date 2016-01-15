@@ -29,12 +29,12 @@ are writing tests to verify our application works as advertisted, so
 we need a sandbox blog against which we can run commands. There are
 various ways to create a new Jekyll blog. The simplest is to run a
 series of Ruby commands documented here; if you want to know more
-about Jekyll, it is covered in more depth in the Jekyll chapter.
+about Jekyll, it is covered in more depth in <<Jekyll>>.
 There are a few items of note when establishing a Jekyll blog that
 have some complexity, things like mapping a hostname properly and using the
-correct branch inside git. For our purposes here, however, we won't need
+correct branch inside Git. For our purposes here, however, we won't need
 to make all that is established. All we need is to make sure
-we have a sandbox repository that has the structure of a Jekyll blog.
+we have a sandbox repository that has the structure of a Jekyll blog:
 
 [source,bash]
 -----
@@ -48,8 +48,7 @@ $ git push -u origin master
 -----
 
 These commands install the correct libraries for using Jekyll (and one
-for our tests as well), generate a new blog using the Jekyll command
-line tool, and then create a blog on GitHub with those files. On the
+for our tests as well), generate a new blog using the Jekyll command-line tool, and then create a blog on GitHub with those files. On the
 second line we specify the name of the blog; you are welcome to change
 this to any name you'd like, just make sure the tests match the name.
 
@@ -72,7 +71,7 @@ development and testing on a virtual device.
 ((("Android","Java SDK installation")))((("Java","SDK installation")))Unfortunately there is no simple shell command to install Java in the
 same way as there is for Ruby and NodeJS using RVM or NVM.
 Oracle controls the Java language and distribution of official SDKs,
-and they restrict access to downloads other than from java.oracle.com.
+and it restricts access to downloads other than from java.oracle.com.
 Java is freely available, but you need to visit java.oracle.com and
 find the correct download for your needs. Android works with the 1.7
 versions of Java or better.
@@ -90,9 +89,9 @@ building Android applications.(((range="endofrange", startref="ix_chapter-07-and
 
 ((("Android application example","creating new project", id="ix_chapter-07-android-asciidoc3", range="startofrange")))Let's now create our Android project. ((("Android Studio")))When you first open Android
 Studio, you will see an option in the right pane inviting you to
-create a new project. Click on the "Start a new Android Studio
+create a new project. Click the "Start a new Android Studio
 project" option. In the next step, you will see a screen for
-configuring your new project. Enter in GhRU ("GitHub R U?") into the
+configuring your new project. Enter GhRU ("GitHub R U?") into the
 Application Name and use `example.com` as the Company Domain (or use
 your own domain, but be aware that this will make the directory structure
 presented in this chapter different than yours). Android Studio should
@@ -117,10 +116,10 @@ the activity. Accept the defaults of "MainActivity" as the Activity
 Name and the associated files for the layout, title, and menu resource
 name. Then click the "Finish" button to generate the project.
 
-After completing these steps, Android Studio will create gradle
+After completing these steps, Android Studio will create Gradle
 configuration files and generate the structure of your
 application. Once this has completed, you can review the file tree of
-your project by clicking on the left-hand vertical tab labeled
+your project by clicking the lefthand vertical tab labeled
 "Project."
 
 [[reviewing-android-project-structure]]
@@ -128,16 +127,16 @@ your project by clicking on the left-hand vertical tab labeled
 image::images/btwg_07in02.png[Reviewing the Android project structure for the first time]
 
 If you have never seen an Android project before, this screen deserves
-some explanation. The "app" directory contains your application code and
-resources (layout files, images, and strings). Inside the "app"
-directory you will see several other directories: The "java" directory
+some explanation. The _app_ directory contains your application code and
+resources (layout files, images, and strings). Inside the _app_
+directory you will see several other directories: The _java_ directory
 contains, quite obviously, any Java code for the project, which
 includes the application files, and also programs that do not reside
 in the app when it is published to the app store but perform testing
-on the app. The "res" directory contains the resources we
-mentioned. Android Studio lists all build files under the "Gradle
-Scripts" section, and groups them regardless of their directory
-placement. You can see two "build.gradle" files, the first of which
+on the app. The _res_ directory contains the resources we
+mentioned. Android Studio lists all build files under the Gradle
+Scripts section, and groups them regardless of their directory
+placement. You can see two _build.gradle_ files, the first of which
 you can generally ignore, though the second we will need to adjust.
 
 Now we are ready to start editing our project.
@@ -146,9 +145,8 @@ Now we are ready to start editing our project.
 
 ((("Android application example","Gradle build file editing", id="ix_chapter-07-android-asciidoc4", range="startofrange")))((("Gradle", id="ix_chapter-07-android-asciidoc5", range="startofrange")))First, we need to add to our Gradle build file and specify the
 dependent libraries. Gradle is a build system for Java and has become
-the offical build system for the Android platform. Open the
-`build.gradle` within the `app` module (the second of the two
-`build.gradle` files).
+the offical build system for the Android platform. Open the _build.gradle_ within the `app` module (the second of the two
+_build.gradle_ files):
 
 [source,groovy]
 -----
@@ -187,7 +185,7 @@ dependencies {
 }
 -----
 
-<1> First, we load the Android gradle plugin. This extends our project
+<1> First, we load the Android gradle plug-in. This extends our project
 to allow an `android` block, which we specify next.
 <4> Next, we configure our Android block, with things like the target
 version (which we choose when setting up our project) and the actual
@@ -195,7 +193,7 @@ SDK, which we are using to compile the application.
 <2> In order to run UI tests, we need to specify a test runner
 called the `AndroidJUnitRunner`.
 <1> Android Studio automatically adds a configuration to our build
-file that loads any JARS (Java libraries) from the `lib`
+file that loads any JARS (Java libraries) from the _lib_
 directory. We also install the support compatibility library for older
 Android devices, and most importantly, the EGit library that manages
 connections to GitHub for us. The commons CODEC library from the
@@ -208,18 +206,18 @@ on the local development machine, and for this situation we need the
 ((("JUnit library")))((("OkHttp library")))JUnit library, and the OkHttp library from Square, which helps us
 validate that our request for a new commit has made it all the way
 into the GitHub API.
-<1> Lastly, we install the espresso libraries, the Google UI testing
+<1> Lastly, we install the Espresso libraries, the Google UI testing
 framework. The first line (of the three libraries) installs the test
-runner we configured above. We use `androidTestCompile`, which
+runner we configured earlier. We use `androidTestCompile`, which
 compiles against these libraries when the code runs on Android in test
 mode.(((range="endofrange", startref="ix_chapter-07-android-asciidoc5")))(((range="endofrange", startref="ix_chapter-07-android-asciidoc4")))
 
 ===== Creating AVDs for development
 
 ((("Android Virtual Devices (AVDs)")))Android Studio makes creating AVD (Android Virtual Devices) simple. To
-start, under the "Tools" menu, click on "Android" and then select
-"AVD Manager." To create a new AVD, click on the "Create Virtual
-Device" button and follow the prompts. You are generally free to
+start, under the Tools menu, click Android and then select
+AVD Manager. To create a new AVD, click the Create Virtual
+Device button and follow the prompts. You are generally free to
 choose whatever settings you like. Google produces a real device
 called the Nexus 5. This is the Android reference device, and is a
 good option for a generic device with good support across all
@@ -239,7 +237,7 @@ Android tools, so we will stick with AVD.
 
 ==== Default Android Main
 
-((("Android application example","default main for", id="ix_chapter-07-android-asciidoc6", range="startofrange")))When we use the above commands to create a new android application, it
+((("Android application example","default main for", id="ix_chapter-07-android-asciidoc6", range="startofrange")))When we use the preceding commands to create a new Android application, it
 creates a sample entry point that is the starting point of our
 Android application. ((("AndroidManifest.xml file")))All Android applications have a file called
 _AndroidManifest.xml_, which specifies this activity and also supplies
@@ -250,7 +248,7 @@ permission (required if our app will be talking to the GitHub
 API). Note that when viewing this file inside Android Studio the IDE
 can interpolate strings from resources, so you might see the
 `android:label` attribute displayed as +GhRU+ with a grey tinge, when
-in fact the XML file itself has the value displayed below (`@string/app_name`).
+in fact the XML file itself has the value displayed here (`@string/app_name`):
 
 [source,java]
 -----
@@ -284,21 +282,21 @@ are XML files in which the UI of an Android application is
 declaratively described.
 
 Android Studio created a default layout for us (called
-`activity_main.xml`), but let's ignore that and create our own
-layout. To do so, right-click (control-click on OS X) on the `layouts`
+_activity_main.xml_), but let's ignore that and create our own
+layout. To do so, right-click (Ctril-click on OS X) on the _layouts_
 directory, and then choose "New" and then "Layout resource file" at
 the very top of the list (Android Studio nicely chooses the most
 likely candidate given the context of the click). Enter "main.xml" as
-the file name, and accept the other defaults.
+the filename, and accept the other defaults.
 
 This application requires that we log in, so we know we at least need a field and a
 descriptive label for the username, a password field (and associated
 descriptive label) for the password, a button to click that tells our
 app to attempt to log in, and a status field that indicates success or
-failure of the login. So, let's modify the generated `main.xml` to
-specify this user interface. To edit this file as text, click on the
-tab labeled "Text" next to the tab labeled "Design" at the very bottom
-of the `main.xml` pane to switch to text view. Then, edit the file to
+failure of the login. So, let's modify the generated _main.xml_ to
+specify this user interface. To edit this file as text, click the
+tab labeled Text next to the tab labeled Design at the very bottom
+of the _main.xml_ pane to switch to text view. Then, edit the file to
 look like the following:
 
 ++++
@@ -361,7 +359,7 @@ positions each element stacked vertically inside it. We set the
 height and width layout attributes to <code>match_parent</code>, which means this
 layout occupies the entire space of the screen.</p></dd>
 <dt><a class="co" id="acallout_android_and_the_git_data_api_CO2-2" href="#aco_android_and_the_git_data_api_CO2-2"><img src="callouts/2.png" alt="2"/></a></dt>
-<dd><p>We then add the elements we described above: pairs of <code>TextView</code>
+<dd><p>We then add the elements we described previously: pairs of <code>TextView</code>
 and <code>EditView</code> for the label and entry options necessary for the
 username and password.</p></dd>
 <dt><a class="co" id="acallout_android_and_the_git_data_api_CO2-3" href="#aco_android_and_the_git_data_api_CO2-3"><img src="callouts/3.png" alt="3"/></a></dt>
@@ -380,12 +378,12 @@ You can review the visual structure of this XML file by clicking
 the "Design" tab to switch back to design mode.
 
 We also need a layout once we have logged in. Create a file called
-`logged_in.xml` using the same set of steps. Once
+_logged_in.xml_ using the same set of steps. Once
 logged in, the user is presented with a layout asking him to choose
-which repository to save into, to enter their blog post into
+which repository to save into, to enter his blog post into
 a large text field, and then to click a button to submit that blog
 post. We also leave an empty status box beneath the button to
-provide context while saving the post.
+provide context while saving the post:
 
 [source,java]
 -----
@@ -438,7 +436,7 @@ provide context while saving the post.
 
 -----
 
-Most of this should be familiar once you have reviewed the `main.xml`
+Most of this should be familiar once you have reviewed the _main.xml_
 file (and be sure to copy this from the associated sample repository
 on GitHub if you don't want to copy it in yourself).(((range="endofrange", startref="ix_chapter-07-android-asciidoc6")))
 
@@ -454,7 +452,7 @@ larger pieces of the whole. On Android, integration tests generally
 mean instantiation of data managers or code that interacts with
 multiple components inside the app, while UI testing permits testing
 of user-facing elements like buttons or text fields.
-In this chapter we will create a unit test and UI test.
+In this chapter we will create a unit test and a UI test.
 
 One important note: Unit tests run on your development machine, not the Android
 device itself. UI tests run on the Android device (or emulator). There
@@ -477,22 +475,22 @@ validates our calls to GitHub produce the right results.
 
 [NOTE]
 You might legitimately ask: is a unit test the right place to verify
-an API call? Will this type of test be fast, given that slow running
+an API call? Will this type of test be fast, given that slow-running
 unit tests are quickly ignored by software developers? Would it be
 better to mock out the response data inside our unit tests? These are
 all good questions!
 
 To set up unit tests, we need to switch the build variant to unit
-tests. Look for a vertical tab on the left-hand side of Android
-Studio. Click on this, and then where it says "Test Artifact" switch
-to "Unit Tests." From the project view (click on the "Project" vertical tab if
+tests. Look for a vertical tab on the lefthand side of Android
+Studio. Click this, and then where it says "Test Artifact" switch
+to "Unit Tests." From the project view (click the "Project" vertical tab if
 project view is not already selected) you can expand the "java"
 directory, and you should then see a directory with "(test)" in
 parentheses indicating this is where tests go. If this directory is
 not there, create a directory using the command line (this command
-would work `mkdir -p app/src/test/java/com/example/ghru`).
+would work: `mkdir -p app/src/test/java/com/example/ghru`).
 
-Then, create a test file called `GitHubHelperTest.java` that looks like the following.
+Then, create a test file called _GitHubHelperTest.java_ that looks like the following:
 
 [source,java]
 -----
@@ -581,7 +579,7 @@ don't require authentication against the GitHub API to see this data.
 the commit message is there.
 
 The final steps deserve a bit more investigation. If we load the event
-URL from cURL, we see data like this.
+URL from cURL, we see data like this:
 
 [source,bash]
 -----
@@ -640,7 +638,7 @@ In Android Studio, from the "Build Variant" window, select "Android
 Instrumentation Test," which will then display a test directory called
 "androidTest." These are tests that will run on the emulator or
 actual device. Inside the directory, make a new file called
-`MainActivityTest.java`.
+_MainActivityTest.java_:
 
 [source,java]
 -----
@@ -686,13 +684,13 @@ tests of our app), the base class, and matchers that will be used to
 make assertions in our tests.
 <3> We create a test class that derives from the
 `ActivityInstrumentationTestCase2` generic.
-<4> The constructor of an Espresso tests implementation needs to call
-the parent constructor with the class of the Activity for test, in
+<4> The constructor of an Espresso test implementation needs to call
+the parent constructor with the class of the activity for test, in
 this case `MainActivity`.
 <5> Our test verifies that we can log in to GitHub, so we name it accordingly.
 <5> We then load the((("instrumentation registry"))) instrumentation registry, and also call
 `getActivity`, which actually instantiates and starts the activity. In
-many espresso tests these two steps will occur in a function annotated as
+many Espresso tests these two steps will occur in a function annotated as
 a `@Before` function if they are used across multiple tests (in which
 case they will be run before each test). Here to simplify our function
 count we can call them inside the single test function.
@@ -711,13 +709,13 @@ into the first text field.
 <9> We then complete our interaction with the UI, entering in the
 password and then clicking the login button.
 <10> If all is successful, we should see the text "Logged into
-GitHub." Under the hood, this test will verify that we are logged into
+GitHub." Under the hood, this test will verify that we are logged in to
 GitHub and display the successful result.
 
 To provide a username and password to our test and to keep these
-credentials out of our source code, create a file called `secrets.xml`
-inside our `strings` directory inside the resource folder. This file
-should look like this.
+credentials out of our source code, create a file called _secrets.xml_
+inside our _strings_ directory inside the resource folder. This file
+should look like this:
 
 [source,java]
 -----
@@ -743,7 +741,7 @@ Let's now build the application itself to pass these tests.
 
 ((("Android application example","implementation", id="ix_chapter-07-android-asciidoc13", range="startofrange")))Now we can start writing some Java code for our application. Let's
 make it so our `MainActivity` class will inflate the layouts we
-defined earlier.
+defined earlier:
 
 [source,java]
 -----
@@ -799,7 +797,7 @@ exactly what the UI will look like once that code is completed.
 
 <1> We register a click handler for our login button.
 <2> When the login button is clicked, we call the `login()` function that triggers a login flow.
-<3> Once we have logged in, we inflate the logged in layout, suitable
+<3> Once we have logged in, we inflate the logged-in layout, suitable
 for making a blog post.
 <4> We then set up another click handler for the submit button; when
 clicked, we call the `doPost()` function.
@@ -808,7 +806,7 @@ of our application.
 
 Even though our code is not functionally complete, this application will
 compile. This is a good time to play with this application and verify
-that the UI looks appropriate. Our login form looks like this:
+that the UI looks appropriate. Our login form looks like <<simple-ui-blog-posts>>.
 
 [[simple-ui-blog-posts]]
 .A simple UI for making blog post entries
@@ -836,7 +834,7 @@ threads with Java sounds daunting, dispell your worries. The
 Android SDK provides a great class for managing background tasks
 called `AsyncTask`. This class provides several entry points into the
 lifecycle of a thread that is managed by the Android OS. We implement
-a class and then override two functions provided by AsyncTask: the
+a class and then override two functions provided by +AsyncTask+: the
 first function is((("doInBackground() function"))) `doInBackground()`, which handles operations off the
 main thread (our background thread code), and the second function is
 `onPostExecute()`, which runs on the UI thread and allows us to update
@@ -845,7 +843,7 @@ the UI with the results of the code that ran inside `doInBackground()`.
 Before we implement the login, we need to update our((("onCreate function"))) `onCreate`
 function of the `MainActivity`. Our login button handles logging in,
 so let's register a click handler on the login button that will call
-the login task we will define inside our class based off AsyncTask.
+the login task we will define inside our class based off +AsyncTask+:
 
 [source,java]
 -----
@@ -880,7 +878,7 @@ syntax creates a new thread for us with the username and password as
 parameters. Android will manage the lifecycle of this thread for us,
 including starting the new thread separate from the main UI thread.
 
-Now we can implement `LoginTask`.
+Now we can implement `LoginTask`:
 
 [source,java]
 -----
@@ -913,10 +911,10 @@ Now we can implement `LoginTask`.
 ...
 -----
 
-<2> Here we define our class derived from AsyncTask. You see three
+<2> Here we define our class derived from +AsyncTask+. You see three
 types in the generics ((("Booleans")))((("String type")))((("Void type")))signature: `String`, `Void`, and
 `Boolean`. These are the parameters to our entry point, an
-intermediate callback and the final callback which returns control to
+intermediate callback and the final callback, which returns control to
 the calling thread. The first type allows us to parameterize our
 instantiated task; we need to provide a username and password to the
 background task, and the first type in the signature allows us to pass
@@ -934,7 +932,7 @@ to do that.
 <6> We wrap the call to `getUser()` in a try block as the function
 signature can throw an error (if the network were down, for example).
 We don't really need to retrieve information about the user using the
-User object, but this call verifies that our username and password are
++User+ object, but this call verifies that our username and password are
 correct, and we store this result in our return value.
 GitHub will not use the credentials you set until you make an API
 call, so we need to use our credentials to access something in order
@@ -947,7 +945,7 @@ because our credentials were incorrect, we indicate this in the status
 message. A user can retry if they wish.
 
 `loggedIn` updates the UI once logging in has completed and then initiates
-the post on GitHub.
+the post on GitHub:
 
 [source,java]
 -----
@@ -979,7 +977,7 @@ the post on GitHub.
 ...
 -----
 
-<1> Inflate the logged in layout to reflect the fact we are now logged
+<1> Inflate the logged-in layout to reflect the fact we are now logged
 in.
 <2> Then, install a click handler on the submit button so that when we
 submit our post information, we can start the process to create the
@@ -990,9 +988,9 @@ post body, the post title, and the repository name.
 and initiate the asynchronous task.
 
 Building out((("doPost() function"))) `doPost()` should be more familiar now that we have
-experience with AsyncTask. `doPost()` makes the commit inside of
+experience with +AsyncTask+. `doPost()` makes the commit inside of
 GitHub, and it performs the network activity it needs to run on a
-background thread.
+background thread:
 
 [source,java]
 -----
@@ -1064,13 +1062,13 @@ make sure we handle errors; these will most likely be network errors.
 <4> `onPostExecute()` is ((("onPostExecute() function")))the function we (optionally) return to once
 our background task has completed. It receives the return value from
 our previous function. If we have a true value returned from
-`doInBackground()` then our save file succeeded and we can update the
+`doInBackground()`, then our save file succeeded and we can update the
 UI of our application.
 
 We need to import the support classes. The JARs and classes for EGit
 have already been added to our project automatically using
-gradle. Make sure you add these `import` statements to the top of the
-file, under the other imports.
+Gradle. Make sure you add these `import` statements to the top of the
+file, under the other imports:
 
 [source,java]
 -----
@@ -1090,7 +1088,7 @@ Now(((range="endofrange", startref="ix_chapter-07-android-asciidoc14"))) we are 
 ((("Android application example","code for putting content into GitHub", id="ix_chapter-07-android-asciidoc15", range="startofrange")))Our last step is to write the code that handles putting content into GitHub.
 This is not a simple function, because the GitHub API requires you
 build out the structure used internally by Git. A great reference for learning more about
-this structure is the free and open-source book called "Pro Git" and
+this structure is the free and open-source book called https://progit.org/[_Pro Git_] and
 specifically the last chapter called
 http://git-scm.com/book/en/Git-Internals[Git Internals].
 
@@ -1102,7 +1100,7 @@ addition, writing a tree into GitHub requires knowing the base SHA
 identifier, so you'll see code that retrieves the last SHA in the
 tree associated with our current branch. This code will work
 regardless of whether we are pushing code into the master branch, or
-into the gh-pages branch, so this utility class works with real
+into the +gh-pages+ branch, so this utility class works with real
 Jekyll blogs.
 
 We'll write a helper class called `GitHubHelper` and add a single
@@ -1112,12 +1110,12 @@ The GitHub API requires that files stored in repositories be
 either Base64 encoded or UTF-8. The Apache Foundation provides a suite of tools
 published to((("Maven"))) Maven (the same software repository where we grabbed the
 EGit libraries), which can do this encoding for us, and which were
-already installed in our Gradle file above (the "commons-codec" declaration).
+already installed in our Gradle file previously (the "commons-codec" declaration).
 
 We will start by defining a series of high-level functions inside
 `SaveFile` to get through building a commit inside of GitHub. Each
 function itself contains some complexity so let's look first at the
-overview of what it takes to put data into GitHub using the Git Data API.
+overview of what it takes to put data into GitHub using the Git Data API:
 
 [source,java]
 -----
@@ -1185,13 +1183,13 @@ functions. As you can see, the `SaveFile` function has the same
 signature as the function we call inside our unit test.(((range="endofrange", startref="ix_chapter-07-android-asciidoc15")))
 
 Let's implement each of the functions specified in the
-GitHubHelper class.
++GitHubHelper+ class.
 
 ==== Writing the Blog Content
 
 ((("Android application example","writing blog content")))First, we implement((("generateContent() function"))) `generateContent()`. The following code snippet
 shows the functions defined to generate the content we will place
-into our remote Git repository stored on GitHub.
+into our remote Git repository stored on GitHub:
 
 [source,java]
 -----
@@ -1235,14 +1233,14 @@ into our remote Git repository stored on GitHub.
 -----
 
 You will notice many similarities between this Java code and the
-Ruby code we used in the Jekyll chapter when generating filenames
+Ruby code we used in <<Jekyll>> when generating filenames
 and escaping whitespace.
 
 <1> First, we set up several instance variables we will use when
 storing the data into GitHub: the commit message, the full post
 including the YAML Front Matter (YFM), the post contents encoded as
 Base64, the filename, and then the three parameters we saved from the
-call to `SaveFile()` function: the post itself, the title, and the
+call to `SaveFile()`: the post itself, the title, and the
 repository name.
 <2> The `generateContent` function creates the necessary components for our
 new post: the full content Base64 encoded, and the filename we will
@@ -1273,7 +1271,7 @@ Now we will set up the services necessary to store a commit inside GitHub.
 (wrappers around Git protocols) we need to instantiate. We don't
 use them all immediately, but we will need them at various steps
 during the file save process. The `createServices` call manages these
-for us.
+for us:
 
 [source,java]
 -----
@@ -1294,22 +1292,21 @@ for us.
 -----
 
 As a side note, writing things this way would allow us to specify an
-enterprise endpoint instead of GitHub.com. Refer to the entprise
-appendix for specific syntax on how to do this.
+enterprise endpoint instead of GitHub.com. Refer to the <<appendix_b>> for specific syntax on how to do this.
 
 ==== The Base SHA from the Repository and Branch
 
-((("Android application example","base SHA implementation")))((("SHA (secure hash algorithm)")))Now we implement((("directed acrylic graphs (DAG)")))((("retrieveBaseSha() function"))) `retrieveBaseSha()`. A Git repository is a directed
+((("Android application example","base SHA implementation")))((("SHA (secure hash algorithm)")))Now we implement((("directed acylic graphs (DAG)")))((("retrieveBaseSha() function"))) `retrieveBaseSha()`. A Git repository is a directed
 acrylic graph (DAG) and as such, (almost) every node in the graph points
 to another commit (or potentially two if it is a merge commit). When
 we append content to our graph, we need to determine the prior node in
 that graph and attach the new node. `retrieveBaseSha` does this: it
 finds the SHA hash for our last commit, a SHA hash that is
 functionally an address inside our tree. To determine this address,
-our applications needs to have a reference to the repository, and we
+our application needs to have a reference to the repository, and we
 use the repository service we instantiated earlier to get this
 reference. Once we have the repository, we need to look inside the
-correct branch: `getBranch` does this for us.
+correct branch: `getBranch` does this for us:
 
 [source,java]
 -----
@@ -1364,11 +1361,11 @@ hash is not retrieved properly.
 
 ((("Android application example","blob creation for")))Contents inside a Git repository are stored as((("createBlob function"))) blobs. `createBlob`
 manages storing our content as a blob object, and then uses the
-dataService to store this blob into a repository. Until we have called
++dataService+ to store this blob into a repository. Until we have called
 `dataService.createBlob`, we have not actually placed the object
 inside GitHub. Also, remember that blobs are not linked into our DAG
 by themselves; they need to be associated with our DAG vis-a-vis a
-tree and commit object, which we do next.
+tree and commit object, which we do next:
 
 [source,java]
 -----
@@ -1397,7 +1394,7 @@ repository. Once we have a tree, we fill out the necessary tree
 attributes, like tree type (blob) and
 tree mode (blob), and set the SHA from the previously created blob
 object along with the size. Then we store the tree into our GitHub
-account using the data service object.
+account using the data service object:
 
 [source,java]
 -----
@@ -1431,7 +1428,7 @@ information. The process should look familiar coming from the previous
 steps: we create the commit and then add relevant metadata, in this case the
 commit message. We also need to provide the commit user with the
 commit. We then use the data service to create the commit
-inside our repository in GitHub at the correct SHA address.
+inside our repository in GitHub at the correct SHA address:
 
 [source,java]
 -----
@@ -1475,12 +1472,12 @@ inside our repository in GitHub at the correct SHA address.
 -----
 
 <1> Create a user service object. We will use this to get back user
-data for the logged in user from GitHub.
+data for the logged-in user from GitHub.
 <2> We then create a commit user. This will be used to annotate the
 commit object (twice in fact, as we will use it for both the author
 and committer).
 <3> Retrieve the user from the service, loading it from GitHub.
-<4> Now, attempt to get the name for the logged in user. If the name
+<4> Now, attempt to get the name for the logged-in user. If the name
 does not exist (the user has not set a name in their GitHub profile)
 set the name to unknown. Then, store the name in the commit user
 object.
@@ -1498,8 +1495,8 @@ and then indicate in our new commit that it is the parent.
 
 ==== Updating the Master Resource
 
-((("Android application example","master resource updating")))Our final step is to take the new commit SHA and update your branch
-reference to point to it.
+((("Android application example","master resource updating")))Our final step is to take the new commit SHA and update our branch
+reference to point to it:
 
 [source,java]
 -----
@@ -1538,16 +1535,16 @@ API. Good work!
 ((("Android application example","testing", id="ix_chapter-07-android-asciidoc16", range="startofrange")))((("testing","Android app", id="ix_chapter-07-android-asciidoc17", range="startofrange")))Our code is complete. Let's make sure our tests run successfully.
 
 We need to set up our test configuration to run within Android Studio.
-Select the "Build Variants" vertical tab on the left, and in "Test
-Artifact" select "Unit Tests." Then, open the "Run" menu, and
-select "Edit configurations...". Click the plus symbol, and choose
+Select the &#x201c;Build Variants&#x201d; vertical tab on the left, and in Test
+Artifact select Unit Tests. Then, open the Run menu, and
+select &#x201c;Edit configurations&#x201d;. Click the plus symbol, and choose
 JUnit. You will be presented with space to create a unit test run
-configuration. First, click on the "Use classpath of module" and
-select "app." Make sure the "Test Kind" is set to class, and then
-click on the selector to the right of the "class" field. It should
-display your test class "GitHubHelperTest.java." We will need to store
+configuration. First, click on the &#x201c;Use classpath of module&#x201d; and
+select &#x201c;app&#x201d;. Make sure the Test Kind is set to class, and then
+click on the selector to the right of the class field. It should
+display your test class &#x201c;GitHubHelperTest.java&#x201d;. We will need to store
 the username and password as environment variables, so click to add
-these. Your final configuration should look like the following.
+these. Your final configuration should look like <<creating-unit-tests>>.
 
 [[creating-unit-tests]]
 .Creating a unit test configuration
@@ -1555,7 +1552,7 @@ image::images/btwg_07in05.png[Creating a unit test configuration]
 
 Now, create the UI tests configuration: switch to "Android Instrumentation Tests" in the "Test Artifact"
 of the "Build Variants" tab. Then, click on the "Run" menu, and again
-go to "Edit configurations...". Click on the plus symbol, and this
+go to "Edit configurations". Click on the plus symbol, and this
 time choose "Android Tests." Choose "app" as the module, and then
 select "android.support.test.runner.AndroidJUnitRunner" as the
 specific instrumentation runner. You can choose whichever target
@@ -1563,13 +1560,13 @@ device you prefer, an emulator, or a physical device if you have
 one. Give the configuration a name like "Android Test."
 
 To run your tests, switch to the appropriate test artifact and then
-from the "Run" menu, select "Debug..." and choose the proper test
+from the "Run" menu, select "Debug" and choose the proper test
 configuration. You can set breakpoints and step through code in your
 test or implementation from within Android Studio.
 
 I personally find it annoying to switch between build variants when I
 want to run my tests, so if you prefer, you can use the command line
-instead (and ignore the need to change build variants).
+instead (and ignore the need to change build variants):
 
 [source,bash]
 -----
@@ -1613,6 +1610,6 @@ application manages quite a few things: formatting the filename
 correctly, encoding the data for submission to GitHub, and we have a
 unit test and UI test that help to verify the functionality.(((range="endofrange", startref="ix_chapter-07-android-asciidoc1")))(((range="endofrange", startref="ix_chapter-07-android-asciidoc0")))
 
-In the next chapter we will look at building a single page application
-that edits information inside a GitHub repository using JavaScript and
-the GitHub.js library talking to the Pull Request API.
+In the next chapter we will use CoffeeScript to create our own chat
+robot that requests pull request reviews from chat room members
+using the Activities API.

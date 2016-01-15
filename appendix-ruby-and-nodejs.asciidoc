@@ -1,6 +1,6 @@
 [[appendix]]
 [appendix]
-== Ruby, NodeJS (and the Shell) at GitHub
+== Ruby, NodeJS, (and the Shell) at GitHub
 
 The founders of GitHub all had deep ties and contributions to the Ruby
 programming language, so we cover it more than other languages in this
@@ -9,7 +9,7 @@ book.
 In recent years, NodeJS (JavaScript for the server side) has
 grown in popularity, and JavaScript has always been an interesting
 language because it works on both the client side and server
-side. GitHub has offered several popular open-source projects written
+side. GitHub has offered several popular open source projects written
 in NodeJS. 
 
 For these reasons, this appendix gives a little more detail
@@ -20,14 +20,14 @@ GUI programs that hide the command line from you, but to truly dive
 deep into the GitHub API, it is worthwhile to use the command line
 inside a shell. These examples all work with bash (the Bourne Again
 Shell), but are careful not to use any advanced features of bash (so
-they should convert to other shells if you are strongly favor another
+they should convert to other shells if you strongly favor another
 shell). 
 
 === GitHub and Ruby
 
 ((("Ruby","GitHub and", id="ix_appendix-ruby-and-nodejs-asciidoc0", range="startofrange")))When the history of GitHub is documented, the Ruby language will
 take its place as a major character. Tom Preston Warner (one of the three
-founders of GitHub) built the initial libraries for using git with
+founders of GitHub) built the initial libraries for using Git with
 ((("Grit","origins of")))Ruby, a library called Grit. You can host blogs on GitHub for free,
 and this tool called Jekyll is built using Ruby. Gollum, the
 technology that powers GitHub wikis, is built using Grit and runs on Ruby. 
@@ -48,14 +48,14 @@ its focus on developer productivity.
 As a long-time user I have experienced the pain of using a preinstalled Ruby 
 or one from a package manager, and generally these installation
 methods provide a suboptimal experience. If you are not familiar with
-Ruby, use this chapter to get through installation with the least
+Ruby, use this appendix to get through installation with the least
 friction and trouble. 
 
 You might already have a version of Ruby installed. Mac OS X comes
 bundled with Ruby and various flavors of Linux do as well (or provide
-a quick and easy installation through the built in package manager
+a quick and easy installation through the built-in package manager
 like "apt-get"). However, I recommend that you use the method of
-installation described below rather than using the stock installed
+installation described here rather than using the stock installed
 version of Ruby you might already have on your system. Often Ruby
 packages require a specific version of Ruby, though they may work with other versions. The problem is that you
 might encounter subtle bugs that have never been seen before, and using
@@ -89,7 +89,7 @@ VirtualBox (a virtual machine manager). If you do this, you can
 install RVM inside a Linux Virtual Machine (VM). Windows is, sadly, a
 second-class citizen with Ruby and RVM and, for this reason, it is
 often better to install RVM inside a host system like Linux, which has
-a wider community around it to support you. Virtual Box and Linux are
+a wider community around it to support you. VirtualBox and Linux are
 free as in beer and as in speech, so you can try them out without cost
 (other than your time). There are many native gems for Ruby that
 don't properly compile if the host system is Windows, so you can save
@@ -99,15 +99,17 @@ Windows instead of fighting with running everything directly on Windows.
 
 ==== Important Ruby and RVM Concepts
 
-((("Ruby","tips for using")))Here are a few tips when using Ruby and RVM.
+((("Ruby","tips for using")))Here are a few tips when using Ruby and RVM:
 
-* (((".ruby&#8211;version")))(((".rvmrc")))((("config.ru")))((("Gemfile")))`Gemfile`: Ruby packages libraries in a format called a gem. A
+(((".ruby&#8211;version")))(((".rvmrc")))((("config.ru")))((("Gemfile")))`Gemfile`::
+  Ruby packages libraries in a format called a gem. A
   gemfile is a manifest that describes which gems your application
   needs. Gemfiles make it simple to install all the required
   libraries: run the `bundle` command from a shell prompt and all
   libraries will be installed, which can include downloading from the
   network and building from source if compilation is required.
-* _.ruby-version_ or _.rvmrc_: These two files tell your application
+_.ruby-version_ or _.rvmrc_::
+  These two files tell your application
   (or shell) which version of Ruby to use. Often applications will
   include this file as a part of their package. If you use RVM, it
   will either switch to that version of Ruby or prompt you to install
@@ -119,36 +121,39 @@ Windows instead of fighting with running everything directly on Windows.
   zero-configuration web server Pow) that are aware of files
   like _.ruby-version_ and will properly use the correct version of Ruby if
   they see this file.
-* _config.ru_: This is a file used to run Ruby applications using
+* _config.ru_::
+  This is a file used to run Ruby applications using
   Rack. Rack is a web server interface, compatible with many
-  application servers. If you see a config.ru file, you can run this
+  application servers. If you see a _config.ru_ file, you can run this
   application with many different servers. These can be powerful frontends used in production on many large sites on the Internet, or they
   can be minimal servers used just on a single laptop; Rack makes it
   easy to set up a server. 
 
 ==== Potential Problems Installing Ruby
 
-* ((("Ruby","installation problems")))Missing system tools: If you are running Mac OSX, you need to
-  install Xcode and the command line tools. If you are a software
+* ((("Ruby","installation problems")))Missing system tools:
+ If you are running Mac OS X, you need to
+  install Xcode and the command-line tools. If you are a software
   developer, you probably have these already installed. If not, review
   online documentation to install these. If you are running Linux, you
   might not have installed the compiler chain; you can install all the
   build tools you will ever need using this command: `sudo apt-get
   install build-essential`. This can take a while, but will ensure you
   have all the tools necessary for building RVM and any binary gems.
-* Missing developer libraries: There are some libraries that support
+* Missing developer libraries::
+  There are some libraries that support
   Ruby (readline support, as an example, which allows you to use
-  command line history inside of an interactive Ruby shell) that are
+  command-line history inside of an interactive Ruby shell) that are
   not always installed or available to the RVM tool. RVM has greatly
   improved in detecting the correct libraries, and there are often
   notes that tell you how to properly configure these libraries. Make
   sure to read the output printed to the screen as you install Ruby
   using RVM for special instructions specific to your platform.(((range="endofrange", startref="ix_appendix-ruby-and-nodejs-asciidoc0")))
 
-=== GitHub is Excited about NodeJS
+=== GitHub Is Excited about NodeJS
 
 ((("NodeJS","GitHub and")))NodeJS is the server-side version of JavaScript. JavaScript is the
-only ubiquitious client-side programming language for the web. Between
+only ubiquitious client-side programming language for the Web. Between
 Ruby and JavaScript, you can build any web application you
 need. Tools like Hubot show the benefits of using a language like
 JavaScript running on the NodeJS platform, which facilitates building
@@ -176,7 +181,7 @@ bash
 
 This will install NVM for you. You then might need to run `source
 ~/.bash_profile` to load the NVM scripts. Once this is completed, you
-are able to run NVM commands.
+are able to run NVM commands:
 
 [source,bash]
 -----
@@ -198,13 +203,13 @@ NodeJS using NVM). Running `npm` without any arguments will
 install all libraries specified by the application if there is a
 _package.json_ file included with the project. If you want to add a
 package to an existing _package.json_ file, you can append `--save` to
-the npm command and npm will update _package.json_ for you once the
+the +npm+ command and +npm+ will update _package.json_ for you once the
 installation of the package has completed.
 
-=== Command Line Basics and the Shell
+=== Command-Line Basics and the Shell
 
 ((("command line","basics")))Though most chapters have focused on a specific programming language (aside
-from the cURL chapter), all of the chapters contain command line
+from <<introduction>>), all of the chapters contain command-line
 invocations. There are a few intricacies when using the shell you
 might not be familiar with that we will explain here, with an actual
 example of each.
@@ -213,13 +218,13 @@ example of each.
 
 ((("command line","shell comments")))((("shell","comments")))If you type a hash character ("#") into a shell command, the rest of
 the line is considered a comment. This makes it easy to document
-commands on the same line.
+commands on the same line:
 
 [source,bash]
 $ cat file.txt # This prints out the file "file.txt"
 
 This command ends after the `file.txt` string. We use this often
-throughout the chapter to document shell commands.
+throughout the appendix to document shell commands.
 
 ==== Providing Variables to Commands
 
@@ -228,9 +233,9 @@ this environment can be configured with key/value pairs. These are called
 environment variables. A common reason for this is that you can write
 a program that reads passwords from the environment variables and
 then specify them at runtime rather than in the source code. You
-specify environment variables either as key values pairs joined by an
+specify environment variables either as key/value pairs joined by an
 equal sign in front of a command, or by using the `export` command to
-persist them across commands.
+persist them across commands:
 
 [source,bash]
 $ PASSWORD=MyPwd123 myProgram  # myProgram retrieves the variable PASSWORD
@@ -239,10 +244,10 @@ $ myProgram # PASSWORD is now a persisted key value
 
 ==== Splitting Commands into Multiple Lines
 
-((("command line","splitting commands into multiple lines")))((("shell","splitting commands into multiple lines")))The shell invokes commands when you hit the enter key. But there are
+((("command line","splitting commands into multiple lines")))((("shell","splitting commands into multiple lines")))The shell invokes commands when you hit the Enter key. But there are
 times when you want to break a command into multiple lines for
 readability. In this case, break each line up using the backslash
-character.
+character:
 
 [source,bash]
 ------
@@ -260,7 +265,7 @@ this example shows two commands that do exactly the same thing.
 
 ==== Piping Output to Successive Commands
 
-((("command line","piping output to successive commands")))((("pipes")))((("shell","piping output to successive commands")))Shell commands were written long in an era when programs fulfilled
+((("command line","piping output to successive commands")))((("pipes")))((("shell","piping output to successive commands")))Shell commands were written long ago in an era when programs fulfilled
 upon a small set of functionality, in stark contrast to today's
 monolithic GUI programs. Each program generally did a few simple
 things and then passed information to another program for further
@@ -290,14 +295,14 @@ the string +http+.
 ((("command line","redirection")))((("redirection")))((("shell","redirection")))Similar to the pipe, shells support redirecting output to files using
 the `>` and `>>` characters. `>` will overwrite an existing file (or
 create a new file if it does not exist) while the double `>>` string
-will append to a file.
+will append to a file:
 
 [source,bash]
 -----
 $ cat /etc/mime.types | grep http > saved-output.txt
 -----
 
-After running this command, the file `saved-output.txt` will contain
+After running this command, the file _saved-output.txt_ will contain
 the same text as was produced in the prior example for the pipe. The
 file will be overwritten if it existed already.
 
