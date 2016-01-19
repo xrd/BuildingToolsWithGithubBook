@@ -215,14 +215,14 @@ the index as shown in <<bare-jekyll-site>>.
 
 [[bare-jekyll-site]]
 .A bare Jekyll site
-image::images/btwg_0601.png["A bare Jekyll site"]
+image::images/btwg_0601.png[]
 
 Clicking into the link inside the "Blog Posts" section, you will then
 see your first post as in <<a-sample-post>>.
 
 [[a-sample-post]]
 .A sample post
-image::images/btwg_0602.png["A sample post co-authored by Tom Preston-Warner"]
+image::images/btwg_0602.png[]
 
 Our Jekyll initialization command created this new post for us. This page
 is backed by the Markdown file inside the pass:[<em>_posts</em>] directory we saw earlier:
@@ -538,7 +538,7 @@ If your blog is correctly set up, you will see something like <<settings-jekyll-
 
 [[settings-jekyll-blog]]
 .Settings for a Jekyll blog
-image::images/btwg_0603.png["Settings for a Jekyll blog"]
+image::images/btwg_0603.png[]
 
 GitHub has properly recognized the CNAME file and will accept requests
 made to that host on its servers. We are still not yet complete,
@@ -738,7 +738,7 @@ scraped by the Internet Archive for this site as shown in <<calendar-view-archiv
 
 [[calendar-view-archive]]
 .Calendar view of Archive.org
-image::images/btwg_0604.png["The calendar view for Archive.org"]
+image::images/btwg_0604.png[]
 
 In the middle of 2003 I took down the server, intending to
 upgrade it to another set of technologies, and never got around to
@@ -750,7 +750,7 @@ site is functionally archived inside Archive.org (<<calendar-view-bytravelers>>)
 
 [[calendar-view-bytravelers]]
 .Archive of ByTravelers.com on Archive.org
-image::images/btwg_0605.png["Archive of Bytravelers.com on Archive.org"]
+image::images/btwg_0605.png[]
 
 Taking the URL from our browser, we can use this as our starting point for
 scraping. Clicking around throughout the site, it becomes evident that
@@ -1847,7 +1847,7 @@ If we reload, we will see a much prettier version of the site (<<jekyll-now-live
 
 [[jekyll-now-livelier]]
 .Restoring the original colors and images
-image::images/btwg_0606.png["Restoring the original images and colors"]
+image::images/btwg_0606.png[]
 
 We've now entirely scraped an old site and built a new Jekyll blog, so
 there is just one thing left to do: encourage and permit
