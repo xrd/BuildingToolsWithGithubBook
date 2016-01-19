@@ -47,8 +47,3 @@ section[data-type="titlepage"] p.author {
 }
 ----*/
 
-/*Attempting to fix missing figure border*/
-figure div.border-box {
-  border: 0.25pt solid cmyk(0%,0%,0%,100%);
-  width: 100%;
-}
