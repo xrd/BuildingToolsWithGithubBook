@@ -24,9 +24,8 @@ gist. Once your gist has been created you are presented with a URL to
 share. Gists autodetect the language in most cases and syntax
 highlight according to the language when displayed.
 
-++++
-<figure><img src=images/btwg_02in01.png /><figcaption>Creating a gist on GitHub</figcaption></figure>
-++++
+
+pass:[<figure><img src=images/btwg_02in01.png /><figcaption>Creating a gist on GitHub</figcaption></figure>]
 
 There are other services that do this: pastebin was the first, and
 there are many others that offer variances on code sharing. But gists
