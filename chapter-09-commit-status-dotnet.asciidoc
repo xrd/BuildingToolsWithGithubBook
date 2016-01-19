@@ -12,7 +12,7 @@ This feature also surfaces at the bottom of the pull request; if the last commit
 
 [[status_pr]]
 .Commit status in the pull-request UI
-image::images/btwg_0501.png["Commit status in the pull-request UI"]
+image::images/btwg_0501.png[]
 
 ((("continuous&#8211;integration service")))The most obvious application for this feature is a continuous-integration service.
 A program like Jenkins will get a notification when new commits are pushed to a branch, run a build/test cycle using the new code, and post the results through the commit-status API.
