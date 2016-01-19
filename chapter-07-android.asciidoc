@@ -108,7 +108,7 @@ Android devices in the world.
 
 [[choose-android-sdk]]
 .Choose an Android SDK
-image::images/btwg_07in01.png["Choose an Android SDK"]
+image::images/btwg_07in01.png[]
 
 You will then be presented with a choice of activities. Choose "Blank
 Activity." You will be taken to a screen that allows you to customize
@@ -124,7 +124,7 @@ your project by clicking the lefthand vertical tab labeled
 
 [[reviewing-android-project-structure]]
 .Reviewing the Android project structure for the first time
-image::images/btwg_07in02.png["Reviewing the Android project structure for the first time"]
+image::images/btwg_07in02.png[]
 
 If you have never seen an Android project before, this screen deserves
 some explanation. The _app_ directory contains your application code and
@@ -226,7 +226,7 @@ use.
 
 [[creating-new-avd]]
 .Creating a new AVD
-image::images/btwg_07in03.png["Creating a new Android Virtual Device"]
+image::images/btwg_07in03.png[]
 
 Once you have created an AVD, start it up. It will take a few minutes
 to boot; AVDs emulate the chipset in software and
@@ -810,7 +810,7 @@ that the UI looks appropriate. Our login form looks like <<simple-ui-blog-posts>
 
 [[simple-ui-blog-posts]]
 .A simple UI for making blog post entries
-image::images/btwg_07in04.png["A simple UI for making blog post entries"]
+image::images/btwg_07in04.png[]
 
 ==== Code to Log In to GitHub
 
@@ -1548,7 +1548,7 @@ these. Your final configuration should look like <<creating-unit-tests>>.
 
 [[creating-unit-tests]]
 .Creating a unit test configuration
-image::images/btwg_07in05.png["Creating a unit test configuration"]
+image::images/btwg_07in05.png[]
 
 Now, create the UI tests configuration: switch to "Android Instrumentation Tests" in the "Test Artifact"
 of the "Build Variants" tab. Then, click the "Run" menu, and again
