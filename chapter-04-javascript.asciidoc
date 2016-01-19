@@ -260,7 +260,7 @@ If you load this up in your browser, you will see something like <<the_whole_mes
 
 [[the_whole_messy_json]]
 .The whole messy JSON
-image::images/btwg_09in01.png["The Whole Messy JSON"]
+image::images/btwg_09in01.png[]
 
 That is a lot of data. AngularJS's JSON filter pretty-printed
 it for us, but this is a bit too much. Let's change the HTML to reduce
@@ -294,7 +294,7 @@ something more palatable (<<pulling_out_what_we_want>>).
 
 [[pulling_out_what_we_want]]
 .Pulling out what we want
-image::images/btwg_09in02.png["Pulling Out What We Want"]
+image::images/btwg_09in02.png[]
 
 We've just extracted the subscriber and network count from the Gollum
 repository hosted on GitHub using the GitHub API and placed it into
@@ -942,7 +942,7 @@ If you click the link to the right for GitHub.js, you'll see something like <<an
 
 [[an_unexpected_error]]
 .An unexpected error
-image::images/btwg_09in03.png["An Unexpected Error"]
+image::images/btwg_09in03.png[]
 
 You see at the point of error that we are calling `select` on the tree. +select+ appears to be a method defined on an underscore character. If
 you use JavaScript frequently, you'll recognize that the underscore
@@ -1080,7 +1080,7 @@ pieces formatted as labels underneath the shop name (<<filtering_coffeeshops_usi
 
 [[filtering_coffeeshops_using_the_term_gluten]]
 .Filtering coffee shops using the term gluten
-image::images/btwg_09in04.png["Filtering coffeeshops using the term gluten"]
+image::images/btwg_09in04.png[]
 
 ==== User-Contributed Data
 
@@ -1482,13 +1482,13 @@ HTML:(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc11")))
 
 [[adding_information_through_a_pull_request]]
 .Adding information through a pull request
-image::images/btwg_09in05.png["Adding information through a pull request"]
+image::images/btwg_09in05.png[]
 
 Now we can review changes through GitHub's integrated online diff tool (<<reviewing_annotation_pull_request_diffs_from_within_github>>).
 
 [[reviewing_annotation_pull_request_diffs_from_within_github]]
 .Reviewing annotation pull request diffs from within GitHub
-image::images/btwg_09in06.png["Reviewing annotation pull request diff's from within GitHub"]
+image::images/btwg_09in06.png[]
 
 Here we  see a clear "diff" of the changes our contributor
 made: they added an annotation that tells us "no turtles allowed." We
@@ -1591,7 +1591,7 @@ _https://auth.firebase.com/auth/github/callback_. Then save the
 application by clicking the "Register application" button.(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc17")))
 
 .A new GitHub application for OAuth
-image::images/btwg_09in07.png["A new GitHub application for oAuth"]
+image::images/btwg_09in07.png[]
 
 Now, create an account on Firebase. Once you have done this, create
 a new app called "CoffeeTech" inside Firebase. The APP URL needs be unique, so use
@@ -1601,7 +1601,7 @@ then see a settings screen, and click "Simple Login" and then
 "GitHub."
 
 .Creating the Firebase hosted login
-image::images/btwg_09in08.png["Creating the Firebase Hosted Login"]
+image::images/btwg_09in08.png[]
 
 Then, copy your GitHub client ID and secret to the sections inside the
 Firebase Simple Login settings for the GitHub provider. Make sure the
@@ -1795,7 +1795,7 @@ we'll get a dialog like <<the_final_step_in_the_permission_flow>> indicating we 
 
 [[the_final_step_in_the_permission_flow]]
 .The final step in the permission flow for GitHub access using Firebase
-image::images/btwg_09in09.png["The final step in the permission flow for GitHub access using Firebase"]
+image::images/btwg_09in09.png[]
 
 After you authorize the application, the execution flow is identical to
 the prior authentication flow (using username and password). As an optimization
