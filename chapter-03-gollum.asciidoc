@@ -44,7 +44,7 @@ page and then look in the rightmost colum. You'll see an icon that
 looks like a book, next to which will be the word "Wiki." 
 
 .Integrated Gollum wiki in the sidebar
-image::images/btwg_03in01.png[Integrated Gollum Wiki in the Sidebar]
+image::images/btwg_03in01.png["Integrated Gollum Wiki in the Sidebar"]
 
 Clicking this link will bring you to a page where you are asked to
 create a wiki for the first time. GitHub will ask you to create the
