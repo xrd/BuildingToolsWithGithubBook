@@ -4,6 +4,10 @@
 		xmlns="http://www.w3.org/1999/xhtml"
 		exclude-result-prefixes="h">
 
+
+ <!-- Do add border div for figure images in animal series -->
+ <xsl:param name="figure.border.div" select="1"/>
+  
 <xsl:template match="h:img/@src">
   <xsl:choose>
   <xsl:when test="starts-with(., 'callouts/')">
