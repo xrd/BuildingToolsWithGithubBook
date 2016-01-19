@@ -25,7 +25,7 @@ share. Gists autodetect the language in most cases and syntax
 highlight according to the language when displayed.
 
 
-pass:[<figure><img src="images/btwg_02in01.png" /><figcaption>Creating a gist on GitHub</figcaption></figure>]
+pass:[<figure id="creating_a_gist_on_github"><img src="images/btwg_02in01.png" /><figcaption>Creating a gist on GitHub</figcaption></figure>]
 
 There are other services that do this: pastebin was the first, and
 there are many others that offer variances on code sharing. But gists
