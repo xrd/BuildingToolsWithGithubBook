@@ -745,7 +745,7 @@ in this book, but you'll notice that the quota information is supplied
 twice: once in the HTTP response headers and again in the JSON
 response.  The rate limit headers are returned with every request to
 the GitHub API, so there is little need to make a direct call to the
-/rate_limit API:
+pass:[<span class="keep-together"><code>/rate_limit</code></span>] API:
 
 ----
 $ curl https://api.github.com/rate_limit
