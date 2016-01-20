@@ -736,8 +736,9 @@ created a _Home.md_ file that did not exist in our local repository.
 We can just accept the merge as is. The `git push` publishes our
 changes. If we then visit the wiki, we'll see an additional file
 listed under the pages sidebar to the right. Clicking the Review
-page, we can see the images we've added most recently.
+page, as in <<images_displayed_within_a_gollum_wiki>>, we can see the images we've added most recently.
 
+[[images_displayed_within_a_gollum_wiki]]
 .Images displayed within a Gollum wiki
 image::images/btwg_03in06.png[]
 
