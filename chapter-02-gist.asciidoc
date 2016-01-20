@@ -314,10 +314,10 @@ image::images/btwg_02in02.png[]
 
 ==== Going Deeper into the Gist API
 
-((("gists","and hypermedia")))((("Hypermedia API","gist and")))The GitHub API uses hypermedia instead of
+((("gists","and hypermedia")))((("Hypermedia API","gist and")))The GitHub API uses Hypermedia instead of
 basic resource-driven APIs. If you use a client like Octokit, the
-hypermedia details are hidden behind an elegant Ruby client. But
-there is a benefit to understanding how hypermedia works when you need
+Hypermedia details are hidden behind an elegant Ruby client. But
+there is a benefit to understanding how Hypermedia works when you need
 to retrieve deeper information from the GitHub API.
 
 ((("gists","and RESTful APIs")))((("RESTful APIs")))Most RESTful APIs come with((("sitemaps"))) a "sitemap," generally an API reference
