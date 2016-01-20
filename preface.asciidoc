@@ -90,7 +90,7 @@ GitHub, and the GitHub API is useful to know there as well, as it
 layers the functionality of Git into a networked programming interface.
 
 The GitHub API is perhaps the best designed API I've ever used. ((("Hypermedia API")))It is
-a hypermedia API, which is an arguably successful attempt to make
+a Hypermedia API, which is an arguably successful attempt to make
 API clients resilient to API changes&#x2014;a tricky problem. The API is well
 versioned. It is comprehensive, mapping closely to most features of
 Git. It is consistent across sections and well organized. The GitHub
