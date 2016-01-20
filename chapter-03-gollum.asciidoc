@@ -67,7 +67,7 @@ Let's review the markup options for Gollum wikis now.
 ==== Markup and Structure
 
 ((("Gollum","markup options", id="ix_chapter-03-gollum-asciidoc3", range="startofrange")))Gollum files can be written in any of the supported ((("GitHub Markup formats")))"Github Markup" formats, which
-includes ASCIIdoc, Creole, Markdown, Org Mode, Pod, RDoc,
+include ASCIIdoc, Creole, Markdown, Org Mode, Pod, RDoc,
 ReStructuredText, Textile, and MediaWiki. The variety of markup
 languages brings flexibility but it can be difficult to know which one
 to use. ((("Markdown")))Markdown (and its variant cousins) is the most popular markup
@@ -170,7 +170,7 @@ wiki when your Gollum wiki is hosted on GitHub.
 ===== Inserting images
 
 ((("Gollum","inserting images")))((("images","Gollum tag format for")))Images are inserted into your document using the same tag format
-_[[ceo.png]]_: this adds the correct HTML tags to include an image
++&#x5b;&#x5b;ceo.png&#x5d;&#x5d;+: this adds the correct HTML tags to include an image
 named _ceo.png_ inside your page. This basic syntax is often extended
 for additional funtionality. For example, to add a frame
 and an +alt+ tag, you could use syntax like `[[ceo.png|frame|alt=Our CEO
