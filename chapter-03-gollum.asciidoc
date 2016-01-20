@@ -49,10 +49,11 @@ image::images/btwg_03in01.png[]
 
 Clicking this link will bring you to a page where you are asked to
 create a wiki for the first time. GitHub will ask you to create the
-"Home" page, which is the starting point in a Gollum wiki. GitHub will
+"Home" page, which is the starting point in a Gollum wiki (<<starting_a_gollum_wiki>>). GitHub will
 automatically create a page template with the project name; you can
 customize this information to suit your own needs. Clicking "Save Page" will save your first page and create the wiki for you.
 
+[[starting_a_gollum_wiki]]
 .Starting a Gollum wiki
 image::images/btwg_03in02.png[]
 
