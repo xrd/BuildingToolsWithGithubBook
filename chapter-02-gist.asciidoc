@@ -45,7 +45,7 @@ facing web page). And, you can "fork" gists, just like
 any other repository. 
 
 You are allowed to branch within gist repositories; however, branches
-are not displayed inside of gist.github.com. But if you need the
+are not displayed inside of _https://gist.github.com/_. But if you need the
 benefits of branching when using gists you can branch normally
 inside a repository and the branch information is retained on the
 upstream repository after you push it up. 
