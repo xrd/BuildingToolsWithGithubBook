@@ -40,12 +40,12 @@ allow you to share code that is also a live application.
 created is a tiny repository. You can update gists and see
 the history using((("git log"))) `git log`. You can download gists, hack on the
 repository, and((("git push"))) `git push` them back into the repository on
-gist.github.com (which will republish them onto the publicly 
+_gist.github.com_ (which will republish them onto the publicly 
 facing web page). And, you can "fork" gists, just like
 any other repository. 
 
 You are allowed to branch within gist repositories; however, branches
-are not displayed inside of _https://gist.github.com/_. But if you need the
+are not displayed inside of _gist.github.com/_. But if you need the
 benefits of branching when using gists you can branch normally
 inside a repository and the branch information is retained on the
 upstream repository after you push it up. 
@@ -179,7 +179,7 @@ end
 
 -----
 
-Create a gist for this by visiting gist.github.com. Enter in the text exactly as shown and then choose
+Create a gist for this by visiting _gist.github.com_. Enter in the text exactly as shown and then choose
 public gist.
 
 You now have a share-friendly gist of code anyone can use to review.
@@ -268,7 +268,7 @@ User has <%= count %> public gists
 
 -----
 
-Add the +octokit+ gem to our Gemfile:
+Add the Octokit gem to our Gemfile:
 
 [source,ruby]
 -----
