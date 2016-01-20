@@ -304,10 +304,11 @@ index.erb
 -----
 
 Restart Sinatra by running Ctrl-C and then `ruby hi.rb`. If you visit _http://localhost:4567/xrd_ in
-your browser, you will see the count of public gists for user `xrd`;
+your browser, you will see the count of public gists for user `xrd` (<<displaying_the_gist_count>>);
 modify the username in the URL to specify any GitHub username and you will see
 their last five gists displayed.
 
+[[displaying_the_gist_count]]
 .Displaying the gist count
 image::images/btwg_02in02.png[]
 
@@ -443,8 +444,9 @@ attribute. Retrieve the `raw` content using the Octokit method `.get.data`:
 
 -----
 
-Now we see the gists and the contents.(((range="endofrange", startref="ix_chapter-02-gist-asciidoc1")))
+Now we see the gists and the contents, as in <<last_five_gists_with_details>>.(((range="endofrange", startref="ix_chapter-02-gist-asciidoc1")))
 
+[[last_five_gists_with_details]]
 .Last five gists, with details
 image::images/btwg_02in03.png[]
 
