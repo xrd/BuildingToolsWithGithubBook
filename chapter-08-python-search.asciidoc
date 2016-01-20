@@ -241,11 +241,11 @@ The `search/issues` endpoint looks for matches in the issues and pull requests a
 This endpoint responds to a wide variety of search qualifiers, such as:
 
 `type`::
-  either "pr" for pull requests, or "issue" for issues (the default is both)
+  Either "pr" for pull requests, or "issue" for issues (the default is both).
 `team`::
-  match issues whose discussions mention a specific team (only works for organizations you belong to)
+  Match issues whose discussions mention a specific team (only works for organizations you belong to).
 `no`::
-  match issues that are missing a piece of data (as in "no:label")
+  Match issues that are missing a piece of data (as in "no:label").
 
 There are many more; see https://developer.github.com/v3/search/#search-issues[] for complete documentation.
 
