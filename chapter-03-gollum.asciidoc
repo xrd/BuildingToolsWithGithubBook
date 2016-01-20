@@ -707,8 +707,9 @@ without overloading the repository.(((range="endofrange", startref="ix_chapter-0
 If you follow the instructions and create a new wiki for a
 repository, you'll then be able to push up the changes we've made
 using our +image.rb+ script. Once you have created a new wiki, look
-for a box on the right that says "Clone this wiki locally." 
+for a box on the right that says "Clone this wiki locally," as seen in <<gollum_git_clone_url>>. 
 
+[[gollum_git_clone_url]]
 .Gollum git clone URL
 image::images/btwg_03in05.png[]
 
