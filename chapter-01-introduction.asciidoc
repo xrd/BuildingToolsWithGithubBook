@@ -42,7 +42,7 @@ http://curl.haxx.se/download.html.
 Let's make a request. We'll start with the most basic GitHub API
 endpoint found at _https://api.github.com_:
 
-[source,text]
+[source,JSON]
 -----
 $ curl https://api.github.com
 {
