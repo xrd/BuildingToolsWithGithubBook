@@ -183,8 +183,9 @@ options.
 
 You can also add images using the editor on GitHub. But you'll notice
 that either way you are adding a link to an image and that there is no
-way to upload images into GitHub from the editor. 
+way to upload images into GitHub from the editor (<<no_image_upload_only_image_urls>>). 
 
+[[no_image_upload_only_image_urls]]
 .No image upload, only image URLs
 image::images/btwg_03in03.png[]
 
