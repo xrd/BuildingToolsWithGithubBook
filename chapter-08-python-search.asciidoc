@@ -103,11 +103,11 @@ Qualifiers and operators can help narrow your search results to fewer pages, hop
 Most of the query will be free text, but the API also supports some powerful syntax, such as these forms:
 
 - `x AND y`, as well as `OR` and `NOT`
-- `user:<name>`, where _name_ is a user or organization
-- `repo:<name>`
-- `language:<name>`
-- `created:<date(s)>`
-- `extension:<pattern>` matches file extensions (like "py" or "ini")
+- pass:[<code>user:<em>&#x3c;name&#x3e;</em></code>], where _++name++_ is a user or organization
+- pass:[<code>repo:<em>&#x3c;name&#x3e;</em></code>]
+- pass:[<code>language:<em>&#x3c;name&#x3e;</em></code>]
+- pass:[<code>created:<em>&#x3c;date(s)&#x3e;</em></code>]
+- pass:[<code>extension:<em>&#x3c;pattern&#x3e;</em></code>] matches file extensions (like "py" or "ini")
 
 ((("numerical values, in search queries")))Numerical values and dates can have ranges:
 
