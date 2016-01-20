@@ -733,7 +733,7 @@ $ git push
 
 When we pull, we will be asked to merge our changes since GitHub
 created a _Home.md_ file that did not exist in our local repository.
-We can just accept the merge as-is. The `git push` publishes our
+We can just accept the merge as is. The `git push` publishes our
 changes. If we then visit the wiki, we'll see an additional file
 listed under the pages sidebar to the right. Clicking the Review
 page, we can see the images we've added most recently.
