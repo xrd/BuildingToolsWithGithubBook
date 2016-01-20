@@ -750,8 +750,9 @@ sidebar to see the most current version of the Review page. We also
 can review the revisions of this file by clicking the "3 Commits"
 (or whatever number of commits have occurred with this file)
 link right underneath the page title. Jumping onto that page shows us
-the full history of this file.
+the full history of this file,as shown in <<a_view_on_the_revisions_from_within_github>>.
 
+[[a_view_on_the_revisions_from_within_github]]
 .A view on the revisions from within GitHub
 image::images/btwg_03in07.png[]
 
