@@ -604,8 +604,7 @@ Status: 400 Bad Request
 -----
 
 Here we attempt to generate a new gist by using the endpoint described
-at the https://developer.github.com/v3/gists/#create-a-gist[Gist API documentation]. We'll detail
-gists in more detail in a later chapter. This issue fails because we
+at the https://developer.github.com/v3/gists/#create-a-gist[Gist API documentation]. We'll discuss gists in more detail in a later chapter. This issue fails because we
 are not using JSON (this looks like it could be YAML, which we will discuss
 in <<Jekyll>>). The payload is sent using the `-d`
 switch. GitHub responds with advice on where to find the documentation
