@@ -211,7 +211,7 @@ own workflow tool that allows designers to manage images and coders to
 easily see those changes in a source-code repository. 
 
 This will be a dual-purpose repository. We can use the repository with
-Gollum as a standard wiki. And, we can use it with our application to
+Gollum as a standard wiki, and we can use it with our application to
 enter data in a more powerful way than Gollum permits from its default
 interface. The data will still be compatible with Gollum and will be
 hosted on GitHub.
