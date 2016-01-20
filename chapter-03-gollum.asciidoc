@@ -229,8 +229,9 @@ $ git commit -m "Initial commit"
 
 We've just created a wiki compatible with Gollum. Let's see what it
 looks like inside Gollum. Run the `gollum` command then open
-_http://localhost:4567/_ in your browser.
+_http://localhost:4567/_ in your browser, as shown in <<gollum_running_locally>>.
 
+[[gollum_running_locally]]
 .Gollum running locally
 image::images/btwg_03in04.png[]
 
