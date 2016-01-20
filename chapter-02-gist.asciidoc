@@ -349,7 +349,7 @@ The important thing to note about Hypermedia APIs is that payloads contain
 metadata about data itself and metadata about the possible options of
 operating on the data. RESTful APIs typically provide a mapping
 outside of the payload. You have to join the API sitemap with the data
-in an ad-hoc way when using RESTful APIs; with Hypermedia APIs your
+in an ad hoc way when using RESTful APIs; with Hypermedia APIs your
 client can react to the payload itself correctly and intelligently
 without knowing anything about a sitemap stored in human-readable
 documentation. 
