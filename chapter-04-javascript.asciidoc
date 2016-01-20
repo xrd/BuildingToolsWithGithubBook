@@ -933,7 +933,7 @@ the developer console. Then select the
 console window. Refresh the browser window, and you'll see this in the
 console:
 
-[source,error]
+[source,text]
 ------
 Uncaught TypeError: Cannot call method 'select' of undefined
 ------
