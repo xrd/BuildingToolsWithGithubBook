@@ -745,7 +745,7 @@ in this book, but you'll notice that the quota information is supplied
 twice: once in the HTTP response headers and again in the JSON
 response.  The rate limit headers are returned with every request to
 the GitHub API, so there is little need to make a direct call to the
-pass:[<span class="keep-together"><code>/rate_limit</code></span>] API:
+pass:[<span class="keep-together">/rate_limit</span>] API:
 
 ----
 $ curl https://api.github.com/rate_limit
@@ -923,7 +923,7 @@ $ curl https://api.github.com/?callback=myCallback
 -----
 
 If you used the same URL we used in the preceding code inside a script tag on a
-web page (`<script src="https://api.github.com/?callback=myCallback" type="text/javascript"></script>`), your browser would load the
+web page (`<script src="https://api.github.com/?callback=myCallback" type= "text/javascript"></script>`), your browser would load the
 content displayed in the preceding code, and then a JavaScript function you defined
 called `myCallback` would be executed with the data shown. This
 function could be implemented like this inside your web page:
