@@ -41,8 +41,9 @@ which we will talk about later).
 ((("Gollum","and repository&#8211;linked wikis")))((("repositories","and associated Gollum wikis")))Any repository on GitHub, public or private, can have an associated Gollum wiki.
 To create a wiki linked to your repository, visit the repository
 page and then look in the rightmost colum. You'll see an icon that
-looks like a book, next to which will be the word "Wiki." 
+looks like a book, next to which will be the word "Wiki," as in <<integrated_gollum_wiki_in_the_sidebar>>. 
 
+[[integrated_gollum_wiki_in_the_sidebar]]
 .Integrated Gollum wiki in the sidebar
 image::images/btwg_03in01.png[]
 
