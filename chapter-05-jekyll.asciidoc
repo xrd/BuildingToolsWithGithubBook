@@ -453,7 +453,7 @@ your username.
 
 [NOTE]
 The((("hub tool"))) hub tool was originally written in Ruby and as such could be
-easily installed using only `gem instal hub`, but hub was recently
+easily installed using only `gem install hub`, but hub was recently
 rewritten in Go. Go has a somewhat more complicated installation
 process, so we won't document it here. If you have the `brew` command
 installed for OS X, you can install hub with the `brew install hub`
