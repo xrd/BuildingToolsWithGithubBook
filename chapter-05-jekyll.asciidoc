@@ -145,7 +145,7 @@ are not required to have a pass:[<em>_posts</em>] directory (you can use Jekyll 
 any kind of static site) but if you do include files in this directory
 Jekyll handles them in a special way. If you look in the pass:[<em>_posts</em>]
 directory now, you see that the Jekyll initialization command has
-created your first post for you, something like
+created pass:[<span class="keep-together">your first</span>] post for you, something like
 `_posts/2014-03-03-welcome-to-jekyll.Markdown`. These posts have a
 special naming format: the title of the post (with any whitespace replaced with
 hyphens) trailed by the date and then an extension (either _.Markdown_
