@@ -1014,7 +1014,7 @@ However, our use case has a nontechnical user running this; let's see what can b
 ((("GUI search API application","packaging")))((("PyInstaller")))((("search API","packaging")))What we're not going to do is require anyone to install Python 2.7 and a bunch of packages.
 We'll use PyInstaller to bundle our application into something that's easy to distribute and run.
 
-Let's assume you wrote all the preceding code into a file called _search.py_, and _agithub.py_ is sitting in the same directory.
+Let's assume you wrote all the preceding code into a file called _search.py_, and pass:[<em><span class="keep-together">agithub.py</span></em>] is sitting in the same directory.
 Here's how to tell PyInstaller to generate a single application for you:
 
 [source,console]
