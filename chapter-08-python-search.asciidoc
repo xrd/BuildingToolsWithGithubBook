@@ -777,7 +777,7 @@ class LoginPanel(wx.Panel):
 There's some structure that's similar to above.
 We'll start with the constructor.
 
-Recall that this panel is created with a keyword argument in `SearchFrame`'s `create_controls` method, like `LoginPanel(self, onlogin=self.login_accepted)`.
+Recall that this panel is created with a keyword argument in `SearchFrame`'s pass:[<code><span class="keep-together">create</span>_controls</code>] method, like `LoginPanel(self, onlogin=self.login_accepted)`.
 In the constructor definition, we pull that callback out and store it for later.
 Afterward, we just call the two other construction functions and return.
 
