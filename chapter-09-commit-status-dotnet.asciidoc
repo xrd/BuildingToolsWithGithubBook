@@ -221,7 +221,7 @@ Mono is an open source implementation of Microsoft's CLR specification, and Mono
 If you try to download MonoDevelop on a Windows or OS X machine, you'll be prompted to install Xamarin Studio instead; this is a newer version of MonoDevelop with more capabilities, and will work just as well for these examples.
 
 There are no Nancy-specific project templates for these IDEs, so you'll just start with an empty web project.
-Go to "File->New->Solution", and choose "ASP.NET->Empty ASP.NET Project" from the template chooser, as shown in <<xamarin_new_project>>.
+Go to "File->New->Solution," and choose "ASP.NET->Empty ASP.NET Project" from the template chooser, as shown in <<xamarin_new_project>>.
 
 [[xamarin_new_project]]
 .Creating an empty ASP.NET application in Xamarin Studio
@@ -231,13 +231,13 @@ The rest of the wizard steps are about the project name and location; feel free 
 
 Next, update the target framework setting.
 Control- or right-click the node in the solution explorer that corresponds with your project (_not_ your solution), and select Options from the menu.
-Under Build->General, set the Target Framework to Mono / .NET 4.5 (or later) and click OK.
+Under &#x201c;Build->General,&#x201d; set the Target Framework to &#x201c;Mono / .NET 4.5&#x201d; (or later) and click OK.
 
 ((("NuGet")))((("Octokit NuGet")))Lastly, install the Nancy and Octokit NuGet packages.
-Go to Project->Add NuGet Packages… in the menu to open the package manager.
-Search for Nancy, check the box next to it, search for Octokit, check its box, and click Add Packages at the bottom right.
+Go to &#x201c;Project->Add NuGet Packages&#x201d; in the menu to open the package manager.
+Search for Nancy, check the box next to it, search for Octokit, check its box, and click &#x201c;Add Packages&#x201d; at the bottom right.
 Once the process is complete, your project is ready for our example code.
-To run it under the debugger, go to Run->Start Debugging…, or type ⌘-Enter.
+To run it under the debugger, go to &#x201c;Run->Start Debugging,&#x201d; or type ⌘-Enter.
 Xamarin will start the server and open a browser window to http://127.0.0.1:80080[] (possibly with a different port), which at this point will just show the default "404 Not Found" page(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc9")))(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc8")))(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc7"))).(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc6")))(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc5")))
 
 
