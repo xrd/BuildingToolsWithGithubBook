@@ -1028,7 +1028,7 @@ On OS X, this generates a _search.app_ application bundle, and on Windows this g
 You can take either of these to a computer with no Python installed, and they'll run perfectly.
 
 That's because PyInstaller has copied everything necessary for your program to run, from the Python interpreter on up, inside that file.
-The one I just generated is 67MB, which seems large for such a simple program, but that number is more reasonable when you consider what's inside the package.
+The one I just generated is 67 MB, which seems large for such a simple program, but that number is more reasonable when you consider what's inside the package.
 
 === Summary
 
