@@ -527,7 +527,7 @@ def git_credentials():
     The first argument is a list of arguments for the new program, and we also specify that we want +stdin+ and +stdout+ to be captured.
 <3> `p.communicate` does the work of writing to +stdin+ and returning the contents of +stdout+.
     It also returns the contents of +stderr+, which we ignore in this program.
-<4> Here we process the +stdout+ contents by splitting each line at the '=' character and slurping it into a dictionary.
+<4> Here we process the +stdout+ contents by splitting each line at the +=+ character and slurping it into a dictionary.
 <5> So the return value from this call should be a dictionary with `'username'` and `'password'` values.
     Handy!
 
