@@ -194,7 +194,7 @@ Choose the search result "Nancy.Templates," which belongs to the NancyFx organiz
 This should download a _.vsix_ file that you can double-click to install the templates into Visual Studio.
 
 The next step is to create a new project using one of the newly installed templates.
-Go to File->New Project… and select Visual C#->Web->Nancy Application with ASP.NET Hosting from the template list (as shown in <<vs_new_project>>).
+Go to File->New Project and select Visual C#->Web->Nancy Application with ASP.NET Hosting from the template list (as shown in <<vs_new_project>>).
 Make sure the path and name settings at the bottom are to your liking, and click OK.
 
 [[vs_new_project]]
