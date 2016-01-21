@@ -1,12 +1,12 @@
 [[commit_status]]
 == .NET and the Commit Status API
 
-((("commit&#8211;status API", id="ix_chapter-09-commit-status-dotnet-asciidoc0", range="startofrange")))At the risk of oversimplifying things too much, one way to look at a Git repository is as just a long series of commits.
+((("Commit Status API", id="ix_chapter-09-commit-status-dotnet-asciidoc0", range="startofrange")))At the risk of oversimplifying things too much, one way to look at a Git repository is as just a long series of commits.
 Each commit contains quite a bit of information: the contents of the source files, who created the commit and when, the author's comments on what changes the commit introduces, and so on.
 This is all good stuff, and works very well for Git's main use case: controlling the history of a software project.
 
 GitHub's Commit Status API adds another layer of metadata to a commit: what various services _say_ about that commit.
-This capability primarily shows itself in the pull-request UI, as shown in <<status_pr>>.
+This capability primarily shows itself in the pull request UI, as shown in <<status_pr>>.
 Each commit in the pull request is annotated with a symbol indicating its status&#x2014;a red "&#xd7;" for failure or error, a green "&#x2713;" for success, or an amber "&#x2022;" to indicate that a decision is in the process of being made.
 This feature also surfaces at the bottom of the pull request; if the last commit in the branch is not marked as successful, you get a warning about merging the request.
 
@@ -15,7 +15,7 @@ This feature also surfaces at the bottom of the pull request; if the last commit
 image::images/btwg_0501.png[]
 
 ((("continuous&#8211;integration service")))The most obvious application for this feature is a continuous-integration service.
-A program like Jenkins will get a notification when new commits are pushed to a branch, run a build/test cycle using the new code, and post the results through the commit-status API.
+A program like Jenkins will get a notification when new commits are pushed to a branch, run a build/test cycle using the new code, and post the results through the Commit Status API.
 An application like this can even include a link back to the build results, so the user can find out which tests failed.
 This is a great way to bring together everything needed to make a decision about a proposal: what code has changed, what do people think about it, and does this change break anything?
 The answer to all of these questions is available on the same page: the pull-request conversation view.
@@ -30,15 +30,15 @@ So now that we know what the feature is, and what its intended use is, let's tak
 
 === The API
 
-((("commit&#8211;status API","statuses in", id="ix_chapter-09-commit-status-dotnet-asciidoc1", range="startofrange")))First, let's talk about ((("access control")))access control.
-((("OAuth","and commit&#8211;status API")))The commit-status API exposes the need for OAuth as few others do.
+((("Commit Status API","statuses in", id="ix_chapter-09-commit-status-dotnet-asciidoc1", range="startofrange")))First, let's talk about ((("access control")))access control.
+((("OAuth","and Commit Status API")))The Commit Status API exposes the need for OAuth as few others do.
 Making a repository private means you want complete control of what people or applications can access it.
 Naturally you trust GitHub's internal code to do the right thing with your data, but what about some random application from the Internet?
 OAuth gives you a way to grant private-repository access to an application _with limits_&#x2014;the use of OAuth scopes allows an application to ask for a specific set of permissions, but it won't be able to do just any old thing with your data.
 Plus, this way you're always in control of these permissions; you can revoke an application's access at any time.
 
 The OAuth system includes the concept of ((("scopes")))scopes, which can be requested by and granted to an application, each of which allows a certain set of actions.
-The commit-status API requires the `repo:status` OAuth scope, which allows an application read and write access to _just_ commit statuses; there is no access granted to the actual contents of the repository.
+The Commit Status API requires the `repo:status` OAuth scope, which allows an application read and write access to _just_ commit statuses; there is no access granted to the actual contents of the repository.
 This might seem strange: how can you judge the status of a commit without being able to inspect its contents?
 Just remember that this feature has use cases beyond continuous integration, and an application may not need full access to make a decision.
 For services that do need to be able to look at the repository contents, you can request ((("repo scope")))the `repo` scope, which grants read _and_ write access to the entire contents of a repository, including commit statuses.
@@ -59,7 +59,7 @@ Just to summarize:
 
 ==== Raw Statuses
 
-((("commit&#8211;status API","raw status")))Now that we know how we get access to commit statuses, let's see what they look like.
+((("Commit Status API","raw status")))Now that we know how we get access to commit statuses, let's see what they look like.
 Commit statuses exist as atomic entities, and each commit can have a practically unlimited number of them (the actual number is in the thousands).
 You can query for existing statuses by doing a GET request to the API server at `/repos/<user>/<repo>/<ref>/statuses`, and it will return a list of them that looks like this:
 
@@ -98,7 +98,7 @@ Fortunately, the API server can do it for you.
 
 ==== Combined Status
 
-((("combined status")))((("commit&#8211;status API","combined status")))If you instead do a GET to `/repos/<user>/<repo>/<ref>/status` (note that the last word is singular), you'll instead get a response that looks like this:
+((("combined status")))((("Commit Status API","combined status")))If you instead do a GET to `/repos/<user>/<repo>/<ref>/status` (note that the last word is singular), you'll instead get a response that looks like this:
 
 [source,json]
 ----
@@ -134,7 +134,7 @@ This is probably exactly what you want, but if you find that your use case calls
 
 ==== Creating a Status
 
-((("commit&#8211;status API","creating a status")))Now obviously these statuses have to come from somewhere.
+((("Commit Status API","creating a status")))Now obviously these statuses have to come from somewhere.
 This API also includes a facility for creating them.
 To do this, you simply make a POST request to `/repos/<user>/<repo>/statuses/<sha>`, and supply a JSON object for the fields you want to include with your status:
 
@@ -153,7 +153,7 @@ This is to avoid race conditions: if you were targeting a ref, it may have moved
 
 === Let's Write an App
 
-((("commit&#8211;status API","example app", id="ix_chapter-09-commit-status-dotnet-asciidoc2", range="startofrange")))((("HTTP server app example","commit&#8211;status API", id="ix_chapter-09-commit-status-dotnet-asciidoc3", range="startofrange")))Alright, now that we know how to read and write statuses, let's put this API to work.
+((("Commit Status","example app", id="ix_chapter-09-commit-status-dotnet-asciidoc2", range="startofrange")))((("HTTP server app example","Commit Status API", id="ix_chapter-09-commit-status-dotnet-asciidoc3", range="startofrange")))Alright, now that we know how to read and write statuses, let's put this API to work.
 In this chapter, we'll build a simple HTTP service that lets you create commit statuses for repositories you have access to using the OAuth web flow for authorization.
 The system we'll build will be fairly limited in scope, but it's a great starting point to customize for your specific needs.
 
@@ -164,7 +164,7 @@ Plus, it has a vibrant ecosystem of packages we can leverage to make our jobs ea
 
 ==== Libraries
 
-((("commit&#8211;status API","libraries for")))((("HTTP server app example","libraries for")))You'll be happy to know we won't be writing an entire HTTP server from scratch in this chapter.
+((("Commit Status API","libraries for")))((("HTTP server app example","libraries for")))You'll be happy to know we won't be writing an entire HTTP server from scratch in this chapter.
 ((("Nancy library", id="ix_chapter-09-commit-status-dotnet-asciidoc4", range="startofrange")))There are a number of open source packages that do this work for us, and in this project we'll be using Nancy.
 ((("Sinatra","and Nancy library")))Nancy is a project that started as a CLR port of the Sinatra framework for Ruby (it takes its name from Frank Sinatra's daughter, Nancy).
 It's very capable, but also very succinct, as you'll see.
@@ -179,12 +179,12 @@ If you've worked with Nancy before, and have installed NuGet packages in the pas
 
 ==== Development Environment
 
-((("commit&#8211;status API","development environment for app", id="ix_chapter-09-commit-status-dotnet-asciidoc5", range="startofrange")))((("HTTP server app example","development environment for", id="ix_chapter-09-commit-status-dotnet-asciidoc6", range="startofrange")))If you'd like to follow along with the code examples, here's how to set up a development environment with all the necessary elements.
+((("Commit Status API","development environment for app", id="ix_chapter-09-commit-status-dotnet-asciidoc5", range="startofrange")))((("HTTP server app example","development environment for", id="ix_chapter-09-commit-status-dotnet-asciidoc6", range="startofrange")))If you'd like to follow along with the code examples, here's how to set up a development environment with all the necessary elements.
 The process is different on Windows (using Visual Studio) and any other platforms (using Xamarin tools).
 
 ===== Visual Studio
 
-((("commit&#8211;status API","and Visual Studio")))((("HTTP server app example","and Visual Studio")))((("Visual Studio")))If you're running Windows, you'll want to visit https://www.visualstudio.com/[] and download the Community edition of Visual Studio.
+((("Commit Status API","and Visual Studio")))((("HTTP server app example","and Visual Studio")))((("Visual Studio")))If you're running Windows, you'll want to visit https://www.visualstudio.com/[] and download the Community edition of Visual Studio.
 The installer will present you with lots of options; for this example, we'll only need the "web developer" components, but feel free to check all the boxes that look interesting to you.
 (If you have access to a higher tier of Visual Studio, or already have it installed with the web-development packages, you're all set.)
 
@@ -216,7 +216,7 @@ Visual Studio will start the server under a debugger, and open an IE instance on
 
 ===== Xamarin Studio
 
-((("commit&#8211;status API","Xamarin Studio", id="ix_chapter-09-commit-status-dotnet-asciidoc7", range="startofrange")))((("HTTP server app example","Xamarin Studio", id="ix_chapter-09-commit-status-dotnet-asciidoc8", range="startofrange")))((("Xamarin Studio", id="ix_chapter-09-commit-status-dotnet-asciidoc9", range="startofrange")))On OS X and Linux, as of this writing the easiest way forward is to visit http://www.monodevelop.com/[] and install ((("MonoDevelop")))MonoDevelop.
+((("Commit Status API","Xamarin Studio", id="ix_chapter-09-commit-status-dotnet-asciidoc7", range="startofrange")))((("HTTP server app example","Xamarin Studio", id="ix_chapter-09-commit-status-dotnet-asciidoc8", range="startofrange")))((("Xamarin Studio", id="ix_chapter-09-commit-status-dotnet-asciidoc9", range="startofrange")))On OS X and Linux, as of this writing the easiest way forward is to visit http://www.monodevelop.com/[] and install ((("MonoDevelop")))MonoDevelop.
 Mono is an open source implementation of Microsoft's CLR specification, and MonoDevelop is a development environment that works much like Visual Studio, but is built on Mono, and is completely open source.
 If you try to download MonoDevelop on a Windows or OS X machine, you'll be prompted to install Xamarin Studio instead; this is a newer version of MonoDevelop with more capabilities, and will work just as well for these examples.
 
@@ -244,7 +244,7 @@ Xamarin will start the server and open a browser window to http://127.0.0.1:8008
 [[commit_status_first_steps]]
 ==== Sending the Request
 
-((("commit&#8211;status API","sending request", id="ix_chapter-09-commit-status-dotnet-asciidoc10", range="startofrange")))((("HTTP server app example","sending request", id="ix_chapter-09-commit-status-dotnet-asciidoc11", range="startofrange")))Alright, now that we have a project ready for some code, let's get our Nancy application up and running.
+((("Commit Status API","sending request", id="ix_chapter-09-commit-status-dotnet-asciidoc10", range="startofrange")))((("HTTP server app example","sending request", id="ix_chapter-09-commit-status-dotnet-asciidoc11", range="startofrange")))Alright, now that we have a project ready for some code, let's get our Nancy application up and running.
 Let's be good engineers, and write our tests first.
 In order to do this, generate a new unit-test project alongside your existing application project, and add a NuGet reference to the `Nancy.Testing` package.
 You can then copy and paste the test examples over the top of the default test module that comes with that template.
@@ -350,7 +350,7 @@ This bodes well, because we're about to introduce some complexity, in the form o
 
 ==== OAuth Flow
 
-((("commit&#8211;status API","OAuth flow", id="ix_chapter-09-commit-status-dotnet-asciidoc12", range="startofrange")))((("OAuth","flow for commit&#8211;status API", id="ix_chapter-09-commit-status-dotnet-asciidoc13", range="startofrange")))In order to post a status update for a commit, we're going to have to ask the user for permission.
+((("Commit Status API","OAuth flow", id="ix_chapter-09-commit-status-dotnet-asciidoc12", range="startofrange")))((("OAuth","flow for Commit Status API", id="ix_chapter-09-commit-status-dotnet-asciidoc13", range="startofrange")))In order to post a status update for a commit, we're going to have to ask the user for permission.
 Apart from asking for their username and password (which gives way too much control, and if two-factor authentication is enabled may not even be enough), the only way to do this is OAuth, which isn't entirely straightforward.
 
 ((("OAuth","authorization process outline")))Here's a simple outline of the OAuth process, from our little server's point of view:
@@ -539,7 +539,7 @@ All our handlers have to do to trigger an OAuth sequence is to call `RedirectToO
 
 ==== Status Handler
 
-((("commit&#8211;status API","status handler", id="ix_chapter-09-commit-status-dotnet-asciidoc14", range="startofrange")))((("status handler", id="ix_chapter-09-commit-status-dotnet-asciidoc15", range="startofrange")))Having gone through all that OAuth business, we should now have a token that grants us permission to create commit statuses.
+((("Commit Status API","status handler", id="ix_chapter-09-commit-status-dotnet-asciidoc14", range="startofrange")))((("status handler", id="ix_chapter-09-commit-status-dotnet-asciidoc15", range="startofrange")))Having gone through all that OAuth business, we should now have a token that grants us permission to create commit statuses.
 We're going to add this handler to our Nancy module constructor:
 
 [source,csharp]
