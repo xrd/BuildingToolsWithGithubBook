@@ -221,7 +221,7 @@ Mono is an open source implementation of Microsoft's CLR specification, and Mono
 If you try to download MonoDevelop on a Windows or OS X machine, you'll be prompted to install Xamarin Studio instead; this is a newer version of MonoDevelop with more capabilities, and will work just as well for these examples.
 
 There are no Nancy-specific project templates for these IDEs, so you'll just start with an empty web project.
-Go to "File>New>Solution…", and choose "ASP.NET>Empty ASP.NET Project" from the template chooser, as shown in <<xamarin_new_project>>.
+Go to "File->New->Solution", and choose "ASP.NET->Empty ASP.NET Project" from the template chooser, as shown in <<xamarin_new_project>>.
 
 [[xamarin_new_project]]
 .Creating an empty ASP.NET application in Xamarin Studio
