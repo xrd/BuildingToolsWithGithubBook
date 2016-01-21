@@ -211,14 +211,14 @@ This command builds the entirety of your Jekyll directory, and then
 starts a mini web server to serve the files up to you. If you then
 visit _http://localhost:4000_ in your web browser, you will see
 something on the front page of your site and a single blog post listed in
-the index as shown in <<bare-jekyll-site>>.
+the index, as shown in <<bare-jekyll-site>>.
 
 [[bare-jekyll-site]]
 .A bare Jekyll site
 image::images/btwg_0601.png[]
 
 Clicking into the link inside the "Blog Posts" section, you will then
-see your first post as in <<a-sample-post>>.
+see your first post, as in <<a-sample-post>>.
 
 [[a-sample-post]]
 .A sample post
