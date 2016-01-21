@@ -694,7 +694,7 @@ Tumblr exporter scrapes all public posts from the blog, and then
 converts to a Jekyll-compatible post format.(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc3")))
 
 We've seen how we can use the importers available on
-import.jekyllrb.com to import. What if we have a nonstandard site
+_import.jekyllrb.com_ to import. What if we have a nonstandard site
 we need to import?
 
 === Scraping Sites into Jekyll
