@@ -548,8 +548,8 @@ however, in that we need to make sure the DNS is established for our site.
 ((("DNS settings")))((("Jekyll blogs","DNS settings")))Generally, establishing DNS settings for your site is straightforward.
 ((("subdomain, DNS setup with")))It is easiest if you are setting up DNS with a _subdomain_ as opposed
 to an _apex domain_. To be more concrete, an ((("apex domains")))apex domain is a site
-like mypersonaldomain.com, while a subdomain would be
-blog.mypersonaldomain.com.
+like _mypersonaldomain.com_, while a subdomain would be
+_blog.mypersonaldomain.com_.
 
 Setting up a blog on a subdomain is simple: create a CNAME record in DNS that points
 to _username.github.io_.
