@@ -827,7 +827,7 @@ GitHubClient client = new GitHubClient();
 client.setCredentials("us3r", "passw0rd");
 -----
 
-The context in which the code runs makes as much a difference as the
+The context in which the code runs makes as much of a difference as the
 code. The Android OS disallows any code from making network
 connections unless it runs inside a background thread.
 If you are not a Java developer already, and the thought of using
