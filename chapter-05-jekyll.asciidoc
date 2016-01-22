@@ -1862,7 +1862,7 @@ You might have seen the banner saying "Fork me on GitHub" on many a
 software project page hosted on GitHub. We can motivate others to
 participate in our blog using pull requests. Let's add that as a final touch and
 invite people to make contributions the GitHub way. The https://github.com/blog/273-github-ribbons[GitHub blog
-first posted these banners], and we'll use its code almost as-is inside our
+first posted these banners], and we'll use its code almost as is inside our
 _default.html_ page, just changing the reference to our repository in
 the link tag:
 
