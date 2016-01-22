@@ -1636,7 +1636,7 @@ it will be held in the global variable `$1`. There is more than one
 way to get this information, of course.
 
 Next, we retrieve our body from the scraped page. Add a method called
-`process_body` and insert this into our processed hash:
+pass:[<code><span class="keep-together">process</span>_body</code>] and insert this into our processed hash:
 
 [source,ruby]
 -----
