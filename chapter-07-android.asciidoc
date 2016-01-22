@@ -835,7 +835,7 @@ threads with Java sounds daunting, dispell your worries. The
 Android SDK provides a great class for managing background tasks
 called `AsyncTask`. This class provides several entry points into the
 lifecycle of a thread that is managed by the Android OS. We implement
-a class and then override two functions provided by +AsyncTask+: the
+a class and then override two functions provided by pass:[<code><span class="keep-together">Async</span>Task</code>]: the
 first function is((("doInBackground() function"))) `doInBackground()`, which handles operations off the
 main thread (our background thread code), and the second function is
 `onPostExecute()`, which runs on the UI thread and allows us to update
