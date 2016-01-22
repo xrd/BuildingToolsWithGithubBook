@@ -191,7 +191,7 @@ to allow an `android` block, which we specify next.
 version (which we choose when setting up our project) and the actual
 SDK, which we are using to compile the application.
 <2> In order to run UI tests, we need to specify a test runner
-called the `AndroidJUnitRunner`.
+called the pass:[<code>AndroidJ<span class="keep-together">Unit</span>Runner</code>].
 <1> Android Studio automatically adds a configuration to our build
 file that loads any JARS (Java libraries) from the _lib_
 directory. We also install the support compatibility library for older
