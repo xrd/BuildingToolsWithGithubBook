@@ -197,7 +197,7 @@ file that loads any JARS (Java libraries) from the _lib_
 directory. We also install the support compatibility library for older
 Android devices, and most importantly, the EGit library that manages
 connections to GitHub for us. The commons CODEC library from the
-Apache Foundation proides tools that help to encode content into
+Apache Foundation provides tools that help to encode content into
 Base64, one of the options for storing data inside a GitHub repository
 using the API.
 <1> Next, we install libraries that are only used when we run unit
