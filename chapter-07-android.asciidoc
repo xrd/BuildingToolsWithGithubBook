@@ -844,7 +844,7 @@ the UI with the results of the code that ran inside `doInBackground()`.
 Before we implement the login, we need to update our((("onCreate function"))) `onCreate`
 function of the `MainActivity`. Our login button handles logging in,
 so let's register a click handler on the login button that will call
-the login task we will define inside our class based off +AsyncTask+:
+the login task we will define inside our class based off pass:[<code><span class="keep-together">Async</span>Task</code>]:
 
 [source,java]
 -----
