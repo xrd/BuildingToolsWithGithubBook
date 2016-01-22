@@ -92,7 +92,7 @@ Studio, you will see an option in the right pane inviting you to
 create a new project. Click the "Start a new Android Studio
 project" option. In the next step, you will see a screen for
 configuring your new project. Enter GhRU ("GitHub R U?") into the
-Application Name and use `example.com` as the Company Domain (or use
+Application Name and use _example.com_ as the Company Domain (or use
 your own domain, but be aware that this will make the directory structure
 presented in this chapter different than yours). Android Studio should
 automatically generate the "package name" for you as
