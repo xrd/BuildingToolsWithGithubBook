@@ -1301,7 +1301,7 @@ enterprise endpoint instead of GitHub.com. Refer to the <<appendix_b>> for speci
 acyclic graph (DAG) and as such, (almost) every node in the graph points
 to another commit (or potentially two if it is a merge commit). When
 we append content to our graph, we need to determine the prior node in
-that graph and attach the new node. `retrieveBaseSha` does this: it
+that graph and attach the new node. pass:[<code>retrieve<span class="keep-together">Base</span>Sha</code>] does this: it
 finds the SHA hash for our last commit, a SHA hash that is
 functionally an address inside our tree. To determine this address,
 our application needs to have a reference to the repository, and we
