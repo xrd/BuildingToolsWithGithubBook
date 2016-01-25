@@ -43,7 +43,7 @@ will be transformed into a robot that...
 * invites people in the chat room to comment on those pull requests;
 * guarantees that communication between it and GitHub is securely
   delivered (with an unfortunate bug as caveat);
-* retrieves vital information from an external service (the Slack.com API);
+* retrieves vital information from an external service (the Slack API);
 * has functionality fully described by automated tests;
 * allows easy simulation of inputs and outputs that map to the
   inputs and outputs it gets from APIs and services; and
@@ -119,7 +119,7 @@ for your Slack site. Typically this is the name of your organization.
 
 ((("Hubot","channel creation", id="ix_chapter-06-hubot-activities-asciidoc3", range="startofrange")))Once you have your slack site created, you need to create a channel.
 
-.Creating the #generic channel
+.Creating the #general channel
 image::images/btwg_08in01.png[]
 
 You can name the channel anything you want, but it is often a good
@@ -137,7 +137,7 @@ image::images/btwg_08in02.png[]
 Slack supports many different service integrations, and one of them is
 Hubot.
 
-.Choosing Hubot from the man Slack integration options
+.Choosing Hubot from the many Slack integration options
 image::images/btwg_08in03.png[]
 
 Choosing Hubot takes you to a settings screen for your Hubot integration.
@@ -229,7 +229,7 @@ have Ruby set up as explained in <<introduction>>.
 If your chatbot is working per the instructions given in the previous
 section, then it is almost ready to deploy to Heroku. You'll need to
 add the same environment variable using the Heroku tools. In addition
-to the authentication token for slack, you will need to configure a
+to the authentication token for Slack, you will need to configure a
 URL for your site. Heroku will generate a URL for you from the name of
 your project (in this case `inqry-chatbot`); so as long as the name has
 not been claimed already by someone else, you can name it as you will:
