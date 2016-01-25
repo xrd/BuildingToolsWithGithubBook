@@ -362,18 +362,18 @@ a robot object you program using several API methods.
 an example of each of these methods inside the _example.coffee_ file
 inside the _scripts_ directory:
 
-* Hubots have a "brain." This is an internal state object, which means
+* Hubot has a "brain." This is an internal state object, which means
   these values persist across chat messages. This state is not
   persisted into a database by default, so this state is not restored
   if you restart Hubot. However, a persistence mechanism is exposed
   via Redis, though this is optional and requires configuration. The
   brain is the way you set and get values that are saved across
   discrete messages.
-* Hubots have different response mechanisms. They can choose to respond
+* Hubot has different response mechanisms. They can choose to respond
   only when they hear exact phrases or when keywords are found in any
   message, and you don't need to do the grunt work inside your code to
   determine the differences between these communication types.
-* Hubots include an HTTP server. You might need your Hubot to accept
+* Hubot includes an HTTP server. You might need your Hubot to accept
   requests from additional services beyond the chat service, and Hubot
   makes it easy to accept these kinds of requests.
 * Hubot has a built-in HTTP client. You can easily access HTTP
@@ -382,11 +382,11 @@ inside the _scripts_ directory:
 * Hubot commands can include parameters. You can tell a Hubot to
   do something multiple times and write a generic function that
   accepts options.
-* Hubots can handle events. Each chat service has a generalized set of
+* Hubot can handle events. Each chat service has a generalized set of
   events that are normalized to a common API. Hubots can be programmed
   to interact with these events. For example, Hubots can perform
   actions when a room topic changes or when users leave rooms.
-* Hubots can handle generic errors at the top level. Hubot can be
+* Hubot can handle generic errors at the top level. Hubot can be
   programmed with a catch-all error handler so that no matter where
   your code failed, you can catch it without crashing your bot.
 
@@ -502,7 +502,7 @@ If Hubot is running, you will need to restart it to reload any
 scripts. Kill Hubot (using Ctrl-C), and then restart it, and then
 play with commands inside your Slack site. Enter the commands
 `probot accept` and `probot decline` and you'll see Hubot
-respoding inside the channel. You'll also see the message `Accepted!` or
+responding inside the channel. You'll also see the message `Accepted!` or
 `Declined!` printed to the console on which Hubot is
 running.
 
@@ -584,7 +584,7 @@ and make sure to add a comma to the tuple above it. Adding this code
 specifies that the minimum version of Jasmine node we will use is
 "1.14.5".
 
-[source,javascript]
+[source,json]
 -----
 ...
   "hubot-shipit": "^0.1.1",
