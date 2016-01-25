@@ -26,7 +26,7 @@ embetterment robot."
 * Events (a higher-level activity stream useful for following actions of users)
 
 [NOTE]
-The Activity API section also includes((("feeds"))) "feeds." While feeds are
+The Activity API section also includes((("feeds"))) _feeds_. While feeds are
 grouped within the Activity API, they are not programmatic in the same
 way an API is, and we won't cover them in depth here. Feeds are
 actually Atom feeds and not interactive beyond that. Atom feeds are
