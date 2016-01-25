@@ -1000,7 +1000,7 @@ instructions, namely inviting some user to review this pull
 request. Our handler then needs to expose two methods:
 pass:[<code><span class="keep-together">prHandler</span></code>], which is where we delegate any information coming from an
 HTTP request to the `/pr` route, and a method where we can configure
-the secret, which we call `setSecret`. Once we have established this
+the secret, which we call pass:[<code>set<span class="keep-together">Secret</span>]. Once we have established this
 internal signature for our handler library, we can add two simple
 tests and then our library.
 
