@@ -98,7 +98,7 @@ real hostname. There are two steps to take to do this:
   address at GitHub.
 
 Imagine you have the hostname _myspecialhostname.com_. If you map this
-repository to a subdomain called coffeetech, then you would do
+repository to a subdomain called _coffeetech_, then you would do
 something like this:
 
 [source,bash]
