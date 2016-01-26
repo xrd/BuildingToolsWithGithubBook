@@ -1167,9 +1167,9 @@ the code to build our Hubot as we described earlier. But I think it
 is a worthwhile read for general Hubot understanding.
 
 To find a user in the room, one option is to go
-outside the Hubot API and use the Slack.com API to query for a list of
-users. The Slack.com API provides an endpoint, giving you all
-users currently in a room. To access the Slack.com API, we will
+outside the Hubot API and use the Slack API to query for a list of
+users. The Slack API provides an endpoint, giving you all
+users currently in a room. To access the Slack API, we will
 use the built-in Hubot HTTP client. Once we have the
 list of members in the room we can look over this list
 and randomly choose a member and deliver the PR request to them:
@@ -1843,8 +1843,8 @@ like the one for setting our secret key.
 ((("node&#8211;github module")))We'll use a GitHub API NodeJs module called `node-github`, found on
 GitHub at https://github.com/mikedeboer/node-github. If we look
 at the API documentation, we see that it supports authentication using
-an OAuth token (using the `github.authenticate( {  'type' : 'oauth':
-'token' : '...' }` syntax), and has methods we can use to add a comment to an
+an OAuth token (using the pass:[<code>github.<span class="keep-together">authenticate</span>( {  'type' : 'oauth':
+'token' : '...' }</code>] syntax), and has methods we can use to add a comment to an
 issue or pull request associated with a repository (using the
 `github.issues.createComment` method).
 
