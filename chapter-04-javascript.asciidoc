@@ -1000,7 +1000,7 @@ So, to start, let's add some fake data to our coffee shop
 information. Add a file called _portland.json_ that looks like
 this:
 
-[source,html]
+[source,json]
 -----
 [
    {
