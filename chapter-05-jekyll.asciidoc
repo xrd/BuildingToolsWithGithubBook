@@ -1720,7 +1720,7 @@ switch to tell cURL to follow redirects, because these images URLs are
 transparently redirected inside the browser.
 
 We need to customize our run method to invoke the `process_image` call:
-add pass:[<code><span class="keep-together">processed</span>&#x5b;'image'&#x5d; = process_image( rows[0] )</code>] after any of the
+add pass:[<code><span class="keep-together">processed</span>&#x5b;'image'&#x5d; = process_image( rows&#x5b;0&#x5d; )</code>] after any of the
 other process methods.
 
 [WARNING]
