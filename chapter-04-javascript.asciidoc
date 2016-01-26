@@ -149,7 +149,7 @@ I am assuming you have a firm grasp on most HTML concepts, but a few
 of the advanced topics are included here:
 
 <1> The `meta` tag makes our page work well with mobile browsers and
-  enables the resposive features of Bootstrap.
+  enables the responsive features of Bootstrap.
 <2> The `ng-app` attribute in the body tag tells AngularJS to initialize
   and compile our page from the body tag downward.
 <3> The `{{ }}` (double brackets) are an AngularJS two-way data binding
