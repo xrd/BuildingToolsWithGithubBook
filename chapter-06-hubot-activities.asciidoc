@@ -2007,7 +2007,7 @@ exports.setSecret = (secret) ->
 
 To summarize, we added an internal variable called `_GITHUB` where we will store a
 reference to our instantiation of the GitHub API binding. Our
-interface to the `setApiToken` call passes in the instantiation; this
+interface to the pass:[<code>setApi<span class="keep-together">Token</span></code>] call passes in the instantiation; this
 method takes our OAuth token and the binding because using an
 interface like this means we can pass in a mocked binding inside our
 tests. When we are not running inside a test, this method call
