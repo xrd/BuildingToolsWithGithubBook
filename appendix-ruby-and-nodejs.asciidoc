@@ -190,8 +190,7 @@ $ nvm use 0.10     # Use version 0.10
 -----
 
 There are many more commands available with NVM, all of which can be
-found at the repository where the tool is hosted:
-https://github.com/creationix/nvm. 
+found at the https://github.com/creationix/nvm[repository where the tool is hosted]. 
 
 ==== package.json
 
