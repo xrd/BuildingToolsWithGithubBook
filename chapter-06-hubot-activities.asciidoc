@@ -94,7 +94,7 @@ $ npm install hubot-slack --save # <4>
 You may not be familiar with these commands, so let's go over the
 important ones.
 
-<1> NPM is the tool that installs packages for NodeJS (documented in
+<1> +npm+ is the tool that installs packages for NodeJS (documented in
 <<appendix>>). The `npm install -g
 generator-hubot` command installs a command-line tool called yeoman
 and a plug-in for yeoman that scaffolds Hubot.
