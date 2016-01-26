@@ -335,7 +335,7 @@ Testing facilitates "social coding."
 
 We'll use a JavaScript testing tool called((("Karma"))) "Karma." Karma simplifies
 writing JavaScript unit tests. We need to first install the tool, then
-write a test or two. Karma can easily be installed using NPM
+write a test or two. Karma can easily be installed using +npm+
 (installation of which is documented in <<appendix>>):
 
 [source,bash]
