@@ -449,7 +449,7 @@ different inside our setup code and the actual tests.
 method inside a `beforeEach` call, code that is executed before our
 tests run.
 <3> `inject` is the AngularJS way to provide our before functions with
-the `$controller` and `$rootScope` objects, which we use to set up our tests.
+the pass:[<code><span class="keep-together">$controller</span></code>] and `$rootScope` objects, which we use to set up our tests.
 <3> We will be creating two functions that generate the mock objects
 required for our tests. We'll discuss these two functions in a bit.
 <4> Scope is the AngularJS convention for the object into which all
@@ -493,7 +493,7 @@ our injected objects: `getCurrentPosition` on the Geo object, and `read`
 on the repository object.
 <4> Then we assert that the data is properly loaded. Our test verifies that
 there are two cities, that a default city has been loaded and the name
-of the default city is equal to the string "Portland". In addition,
+of the default city is equal to the string +Portland+. In addition,
 the test verifies there are three shops loaded for the default
 city. Behind the scenes in our implementation we will load these via
 JSON, but all we care about is that the interface and data matches our
