@@ -1100,7 +1100,7 @@ their username and password. If you are grimacing at the thought of a
 webapp asking for GitHub credentials, don't fret&#x2014;we'll find a safe
 way to achieve the same thing shortly.
 
-The implementation we will use starts with adding an "annotate" button
+The implementation we will use starts with adding an +annotate+ button
 to our HTML:
 
 [source,html]
