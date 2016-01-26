@@ -1,5 +1,5 @@
 [[Hubot]]
-== CoffeeScript, Hubot, and the Activities API
+== CoffeeScript, Hubot, and the Activity API
 
 Though the phrase has now been removed from its marketing materials,
 GitHub used to call itself a tool for "social coding." This idea is
@@ -13,12 +13,12 @@ API, but this is a social robot. GitHubbers use an
 extensible chat robot called Hubot to record and automate their tasks,
 and to have fun on the Internet. If there were any robot suited for
 interacting with the GitHub Activity API, it's Hubot, described on the
-site hubot.github.io as "a customizable, kegerator-powered life
+site https://hubot.github.com/ as "a customizable, kegerator-powered life
 embetterment robot."
 
-=== The Activities API
+=== The Activity API
 
-((("Activities API","contents of")))The Activities API includes:
+((("Activity API","contents of")))The Activity API includes:
 
 * Notifications (comments issued to users through various events)
 * Stargazing tools (Facebook has "likes" while GitHub has "stars" to indicate approval or interest)
@@ -39,7 +39,7 @@ client.
 will be transformed into a robot that...
 
 * listens for pull request events from GitHub by subscribing to
-  notifications using the GitHub Activities API;
+  notifications using the GitHub Activity API;
 * invites people in the chat room to comment on those pull requests;
 * guarantees that communication between it and GitHub is securely
   delivered (with an unfortunate bug as caveat);
@@ -289,11 +289,11 @@ locally, and then push into Heroku using the ease of the Git workflow
 as a deployment layer.
 
 Now that we have created and installed Hubot, let's look at the
-Activities API and determine how we want to code our extension.(((range="endofrange", startref="ix_chapter-06-hubot-activities-asciidoc5")))(((range="endofrange", startref="ix_chapter-06-hubot-activities-asciidoc4")))
+Activity API and determine how we want to code our extension.(((range="endofrange", startref="ix_chapter-06-hubot-activities-asciidoc5")))(((range="endofrange", startref="ix_chapter-06-hubot-activities-asciidoc4")))
 
-=== Activities API Overview
+=== Activity API Overview
 
-((("Activities API","overview")))The Activities API centers around ((("notifications")))notifications: notifications are similar
+((("Activity API","overview")))The Activity API centers around ((("notifications")))notifications: notifications are similar
 to the notifications you see on social networking sites, events that
 occur that document important points of interest inside a timeline of
 activity. GitHub activity events are often tied to important
@@ -436,7 +436,7 @@ involved in a project is a better (and more efficient) way to review
 code than asking the developer who created the code to determine these people.
 
 Hubot will assign active chat room users to do code
-reviews when a new pull request is created. ((("Activities API","and pull requests")))We will use the GitHub
+reviews when a new pull request is created. ((("Activity API","and pull requests")))We will use the GitHub
 Activities API to subscribe to pull request events. When Hubot
 becomes aware that a pull request needs review, it will randomly
 assign a user in the chat room to do the review and then ask that user
@@ -2273,7 +2273,7 @@ interact with us inside a chat room, then refactored the robot so that its
 functionality is contained into a highly testable module. Along
 the way, we got intimate with the Hubot API, and even discussed how to
 modify (and the drawbacks surrounding) modifying the source code to
-Hubot itself. Finally, we demonstrated how to use the Activities API
+Hubot itself. Finally, we demonstrated how to use the Activity API
 receiving (and faking data) coming from a GitHub webhook.(((range="endofrange", startref="ix_chapter-06-hubot-activities-asciidoc0")))
 
 In the next chapter we will look at building a single-page application
