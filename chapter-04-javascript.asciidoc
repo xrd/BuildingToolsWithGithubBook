@@ -1161,7 +1161,7 @@ items from the GitHub.js library.
 username, password, and the annotating data, and we will use the native
 browser prompt mechanism to do this.
 <2> We added three new methods to our mock GitHub object: `fork`,
-`write`, and `createPullRequest`. We verify that these are called.
+`write`, and pass:[<code><span class="keep-together">create</span>PullRequest</code>]. We verify that these are called.
 <3> When we call the `getRepo` function we want to spy on it so we can
 assure it is called, but we also want to return the fake repository we
 provide inside our test, and this syntax does that.
