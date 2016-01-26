@@ -1478,7 +1478,7 @@ HTML:(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc11")))
 
 === Accepting Pull Requests
 
-((("coffee shop database app","accepting pull requests")))((("pull requests","with coffee shop database app")))When someone makes an annotation to a shop, the owner of the original repository gets a pull-request notification on GitHub (<<adding_information_through_a_pull_request>>).
+((("coffee shop database app","accepting pull requests")))((("pull requests","with coffee shop database app")))When someone makes an annotation to a shop, the owner of the original repository gets a pull request notification on GitHub (<<adding_information_through_a_pull_request>>).
 
 [[adding_information_through_a_pull_request]]
 .Adding information through a pull request
