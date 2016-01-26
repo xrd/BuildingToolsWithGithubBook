@@ -1080,7 +1080,7 @@ of our response to the calling client is the same regardless of
 whether they provided a correct secret or not. We don't want to
 provide an attacker with anything extra if they pass in an incorrect secret.
 
-If we run our tests we will see them all pass:
+If we run our tests we will see them all pass&#x3a;
 
 [source,bash]
 ------
@@ -1843,8 +1843,7 @@ like the one for setting our secret key.
 ((("node&#8211;github module")))We'll use a GitHub API NodeJs module called `node-github`, found on
 GitHub at https://github.com/mikedeboer/node-github. If we look
 at the API documentation, we see that it supports authentication using
-an OAuth token (using the pass:[<code>github.<span class="keep-together">authenticate</span>( {  'type' : 'oauth':
-'token' : '...' }</code>] syntax), and has methods we can use to add a comment to an
+an OAuth token (using the pass:[<code>github.<span class="keep-together">authenticate</span>( {  'type' : 'oauth': 'token' : '...' }</code>] syntax), and has methods we can use to add a comment to an
 issue or pull request associated with a repository (using the
 `github.issues.createComment` method).
 
