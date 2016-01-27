@@ -599,7 +599,7 @@ Status: 400 Bad Request
 {
   "message": "Problems parsing JSON",
   "documentation_url":
-  "https://developer.github.com/v3/oauth_authorizations/#create-a-new-authorization"
+  "https://developer.github.com/v3/oauth_authorizations/#create...authorization"
 }
 -----
 

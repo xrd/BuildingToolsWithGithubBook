@@ -237,8 +237,10 @@ categories: jekyll update
 ---
 ----
 
-You'll find this post in your pass:[<em>_posts</em>] directory&#x2014;edit this post and re-build (or run with the `-w` switch) to see your changes!
-To add new posts, simply add a file in the pass:[<em>_posts</em>] directory that follows the convention: YYYY-MM-DD-name-of-post.ext.
+You'll find this post in your pass:[<em>_posts</em>] directory&#x2014;edit this 
+post and re-build (or run with the `-w` switch) to see your changes!
+To add new posts, simply add a file in the pass:[<em>_posts</em>] directory 
+that follows the convention: YYYY-MM-DD-name-of-post.ext.
 
 Jekyll also offers powerful support for code snippets:
 
@@ -253,7 +255,9 @@ print_hi('Tom')
 {% endhighlight %}
 ----
 
-Check out the http://jekyllrb.com[Jekyll docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at https://github.com/mojombo/jekyll[Jekyll's GitHub repo].
+Check out the http://jekyllrb.com[Jekyll docs] for more info on how to get 
+the most out of Jekyll. File all bugs/feature requests at 
+https://github.com/mojombo/jekyll[Jekyll's GitHub repo].
 
 Hopefully you agree that this is a fairly intuitive and readable
 alternative to raw HTML. This simplicity and readability is one of the
@@ -264,8 +268,8 @@ this file and investigate some of the important pieces.
 
 ==== YFM: YAML Front Matter
 
-((("Jekyll blogs","YAML Front Matter")))((("YFM (YAML Front Matter)")))The first thing we see in a Jekyll file is the YAML Front
-Matter (YFM):
+((("Jekyll blogs","YAML Front Matter")))((("YFM (YAML Front Matter)")))The first thing we see in a 
+Jekyll file is the YAML Front Matter (YFM):
 
 [source,yaml]
 -----
@@ -354,7 +358,9 @@ requires to offer the same explicit formatting.
 
 [source,yaml]
 -----
-Check out the [Jekyll docs][jekyll] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll's GitHub repo][jekyll-gh].
+Check out the [Jekyll docs][jekyll] for more info on how to get the most 
+out of Jekyll. File all bugs/feature requests at 
+[Jekyll's GitHub repo][jekyll-gh].
 
 [jekyll-gh]: https://github.com/mojombo/jekyll
 -----
@@ -1331,7 +1337,7 @@ look like good places to write tests, so we can start there:
 -----
 describe "#get_filename" do
   it "should take 'Cuba - the good and bad' on January 12th, 2001" +
-  " and get a proper filename" do
+      " and get a proper filename" do
     input = 'Cuba - the good and bad'
     date = "January 12th, 2001"
     output = "2001-01-12-cuba-the-good-and-bad.md"
@@ -1463,7 +1469,7 @@ Configuration file: none
        Destination: /home/xrdawson/bytravelers/_site
       Generating...
      Build Warning: Layout 'post' requested in _posts/2000-05-23-third-day-in...
-     Build Warning: Layout 'post' requested in _posts/2000-08-28-the-hill-trib...
+     Build Warning: Layout 'post' requested in _posts/2000-08-28-the-hill-tri...
      ...
                     done.
  Auto-regeneration: enabled for '/home/xrdawson/bytravelers'
@@ -1620,9 +1626,9 @@ just the title. We can now add the rest of the pages from our scraper.
 2.0.0-p481 :037 > rows[2].to_s
 => "<tr>\n<td align=\"center\">\n\n\n\n<font size=\"+1\">author:..."
 2.0.0-p481 :038 > ( rows[2] / "td font" )[0].text()
-=> "author: \n\nMD \n\n\nread more from this author | \nsee maps from this au...
+=> "author: \n\nMD \n\n\nread more from this author | \nsee maps from this..."
 2.0.0-p481 :039 > author = ( rows[2] / "td font" )[0].text()
-=> "author: \n\nMD \n\n\nread more from this author | \nsee maps from this au...
+=> "author: \n\nMD \n\n\nread more from this author | \nsee maps from this..."
 2.0.0-p481 :040 > author =~ /author:\s+\n\n([^\s]+)\n\n/
 => 0
 2.0.0-p481 :041 > $1
@@ -1869,7 +1875,6 @@ invite people to make contributions the GitHub way. The https://github.com/blog/
 first posted these banners], and we'll use its code almost as is inside our
 _default.html_ page, just changing the reference to our repository in
 the link tag:
-
 
 [source,html]
 -----

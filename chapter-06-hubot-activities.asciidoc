@@ -269,7 +269,7 @@ as hubot
 2014-11-18T07:07:18.576287+00:00 app[web.1]: Tue, 18 Nov 2014 07:07:18
 GMT connect deprecated limit: Restrict request size at location of
 read at
-node_modules/hubot/node_modules/express/node_modules/connect/lib/middleware/multipart.js:86:15
+node_modules/hubot/.../express/.../connect/.../middleware/multipart.js:86:15
 ...
 ----
 
@@ -1181,7 +1181,8 @@ _SECRET = undefined
 anyoneButProbot = (members) ->  # <1>
         user = undefined
         while not user
-                user = members[ parseInt( Math.random() * members.length ) ].name
+                user = members[ parseInt( Math.random() * \
+		     members.length ) ].name
                 user = undefined if "probot" == user
         user
 
@@ -1201,7 +1202,8 @@ exports.prHandler = ( robot, req, res ) ->
                 room = "general"
                 robot.http( slack_users_url ) # <5>
                         .get() (err, response, body) ->
-                                sendPrRequest( robot, body, room, url ) unless err
+                                sendPrRequest( robot, body, \ 
+					       room, url ) unless err
         else
                 console.log "Invalid secret or no URL specified"
         res.send "OK\n"
@@ -1411,7 +1413,8 @@ anyoneButProbot = ( users ) ->
         user = undefined
         flattened = flattenUsers( users )
         while not user
-                user = flattened[ parseInt( Math.random() * flattened.length ) ].name
+                user = flattened[ parseInt( Math.random() * \
+		     flattened.length ) ].name
                 user = undefined if "probot" == user
         user
 
@@ -1531,14 +1534,16 @@ exports.prHandler = ( robot, req, res ) ->
         pr = JSON.parse body if body
         url = pr.pull_request.html_url if pr
         secureHash = getSecureHash( body, _SECRET ) if body
-        webhookProvidedHash = req.headers['HTTP_X_HUB_SIGNATURE' ] if req?.headers
+        webhookProvidedHash = req.headers['HTTP_X_HUB_SIGNATURE' ] \
+			    if req?.headers
         secureCompare = require 'secure-compare'
 
         if secureCompare( secureHash, webhookProvidedHash ) and url
                 room = "general"
                 robot.http( slack_users_url ) ->
                         .get() (err, response, body) ->
-                                sendPrRequest( robot, body, room, url ) unless err
+                                sendPrRequest( robot, body, \
+					       room, url ) unless err
         else
 ...
 -----
@@ -1717,7 +1722,8 @@ it "should allow calls with the secret and url", (done) ->
         payload =  '{ "pull_request" : { "html_url" : "http://pr/1" } }'
         bodyPayload = "payload=#{encodeURIComponent(payload)}"
         req = { rawBody: bodyPayload,
-        headers: { "x-hub-signature" : "sha1=dc827de09c5b57da3ee54dcfc8c5d09a3d3e6109" } }
+        headers: { "x-hub-signature" : \
+		 "sha1=dc827de09c5b57da3ee54dcfc8c5d09a3d3e6109" } }
 
         Handler.prHandler( robot, req, res )
         expect( robot.messageRoom ).toHaveBeenCalled()
@@ -1896,52 +1902,60 @@ happens using the reply method on our response object:
 [source,coffeescript]
 -------------
 ...
-                describe "#response", ->
-                        createComment = jasmine.createSpy( 'createComment' ).and.
-                                callFake( ( msg, cb ) -> cb( false, "some data" ) )
-                        issues = { createComment: createComment }
-                        authenticate = jasmine.createSpy( 'ghAuthenticate' )
-                        responder = { reply: jasmine.createSpy( 'reply' ),
-                        send: jasmine.createSpy( 'send' ) }
+describe "#response", ->
+        createComment = jasmine.createSpy( 'createComment' ).and.
+                callFake( ( msg, cb ) -> cb( false, "some data" ) )
+        issues = { createComment: createComment }
+        authenticate = jasmine.createSpy( 'ghAuthenticate' )
+        responder = { reply: jasmine.createSpy( 'reply' ),
+        send: jasmine.createSpy( 'send' ) }
 
-                        beforeEach ->
-                                githubBinding = { authenticate: authenticate, issues: issues }
-                                github = Handler.setApiToken( githubBinding, "ABCDEF" )
-                                req = { body: '{ "pull_request" : { "url" : "http://pr/1" }}',
-                headers: { "HTTP_X_HUB_SIGNATURE" :
-"cd970490d83c01b678fa9af55f3c7854b5d22918" } }
-                                Handler.prHandler( robot, req, responder )
+        beforeEach ->
+                githubBinding = { authenticate: authenticate, \
+					      	  issues: issues }
+                github = Handler.setApiToken( githubBinding, \
+				       	 		      "ABCDEF" )
+                req = { body: '{ "pull_request" : \
+				    { url : "http://pr/1" } }', \
+				      headers: { "HTTP_X_HUB_SIGNATURE" : \
+				        "cd970490d83c01b678fa9af55f3c7854b5d22918" } }
+                Handler.prHandler( robot, req, responder )
 
-                        it "should tag the PR on GitHub if the user accepts", (done) ->
-                                Handler.accept( responder )
-                                expect( authenticate ).toHaveBeenCalled()
-                                expect( createComment ).toHaveBeenCalled()
-                                expect( responder.reply ).toHaveBeenCalled()
-                                done()
+        it "should tag the PR on GitHub if the user accepts", (done) ->
+                Handler.accept( responder )
+                expect( authenticate ).toHaveBeenCalled()
+                expect( createComment ).toHaveBeenCalled()
+                expect( responder.reply ).toHaveBeenCalled()
+                done()
 
-                        it "should not tag the PR on GitHub if the user declines", (done) ->
-                                Handler.decline( responder )
-                                expect( authenticate ).toHaveBeenCalled()
-                                expect( createComment ).not.toHaveBeenCalledWith()
-                                expect( responder.reply ).toHaveBeenCalled()
-                                done()
+        it "should not tag the PR on GitHub if the user declines", \
+	   	   (done) ->
+                Handler.decline( responder )
+                expect( authenticate ).toHaveBeenCalled()
+                expect( createComment ).not.toHaveBeenCalledWith()
+                expect( responder.reply ).toHaveBeenCalled()
+                done()
 
-                        it "should decode the URL into a proper message object for the createMessage call", (done) ->
-                                url = "https://github.com/xrd/testing_repository/pull/1"
-                                msg = Handler.decodePullRequest( url )
-                                expect( msg.user ).toEqual( "xrd" )
-                                expect( msg.repository ).toEqual( "testing_repository" )
-                                expect( msg.number ).toEqual( "1" )
-                                done()
+        it "should decode the URL into a proper message object " + \
+	   	   "for the createMessage call", (done) ->
+                url = "https://github.com/xrd/testing_repository/pull/1"
+                msg = Handler.decodePullRequest( url )
+                expect( msg.user ).toEqual( "xrd" )
+                expect( msg.repository ).toEqual( "testing_repository" )
+                expect( msg.number ).toEqual( "1" )
+                done()
 
-                        it "should get the username from the response object", (done) ->
-                                res = { username: { name: "Chris Dawson" } }
-                                expect( Handler.getUsernameFromResponse( res ) ).toEqual "Chris Dawson"
-                                done()
-
-
+        it "should get the username from the response object", (done) ->
+                res = { username: { name: "Chris Dawson" } }
+                expect( Handler.getUsernameFromResponse( res ) ).toEqual \
+							 "Chris Dawson"
+                done()
 
 -------------
+
+Note that this code was indented to save space, but yours will be 
+nested in several deeper levels of indentation. 
+Refer to the sample repository for the exact code if there is confusion.
 
 Our tests will fail if we run them now. So, let's write the code at
 the end of our delegator extension. We need code that parses the URL into the
@@ -1989,7 +2003,8 @@ exports.accept = ( res ) ->
                 unless err
                         res.reply "Thanks, I've noted that in a PR comment!"
                 else
-                        res.reply "Something went wrong, I could not tag you on the PR comment"
+                        res.reply "Something went wrong, " + \
+				  "I could not tag you on the PR comment."
 
 exports.decline = ( res ) ->
         res.reply "OK, I'll find someone else."
@@ -2196,11 +2211,13 @@ exports.accept = ( robot, res ) ->
 
                 _GITHUB.issues.createComment msg, ( err, data ) ->
                         unless err
-                                res.reply "Thanks, I've noted that in a PR comment. " +
-            "Review the PR here: #{url}"
+                                res.reply "Thanks, I've noted that " + \
+					  "in a PR comment. " + \
+				          "Review the PR here: #{url}"
                         else
-                                res.reply "Something went wrong."  +
-            "I could not tag you on the PR comment: " +
+                                res.reply "Something went wrong."  + \
+				          "I could not tag you " + \
+					  "on the PR comment: " +
             "#{require('util').inspect( err )}"
 
 exports.decline = ( res ) ->

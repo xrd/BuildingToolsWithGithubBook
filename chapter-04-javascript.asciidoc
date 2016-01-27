@@ -572,7 +572,7 @@ line and watch them fail:
 $ karma start karma.conf.js
 Chrome 32.0.1700 (Mac OS X 10.9.1) GithubCtrl #init should initialize,
           grabbing current city FAILED
-  Error: [$injector:modulerr] Failed to instantiate module coffeetech due to:
+  Error: [$injector:modulerr] Failed to instantiate module...:
   Error: [$injector:nomod] Module 'coffeetech' is not available!
     You either misspelled the module name or forgot to load it.
     If registering a module ensure that you specify the
@@ -649,7 +649,8 @@ mod.controller( 'GithubCtrl', [ '$scope', 'Github', 'Geo', 'Prompt',  // // <3>
             $scope.latitude = position.coords.latitude;
             $scope.longitude = position.coords.longitude;
             $scope.repo = ghs.getRepo( "xrd", "spa.coffeete.ch" );  // // <5>
-            $scope.repo.read( "gh-pages", "cities.json", function(err, data) {  // // <6>
+            $scope.repo.read( "gh-pages", "cities.json", 
+	      function(err, data) {  // // <6>
                 $scope.cities = JSON.parse( data );  // // <7>
                 // Determine our current city
                 $scope.detectCurrentCity();  // // <8>
@@ -714,7 +715,8 @@ First, we can implement the city-loading functions:
 [source,javascript]
 -------
 $scope.retrieveCity = function() { // <1>
-    $scope.repo.read( "gh-pages", $scope.city.name + ".json", function(err, data) {
+    $scope.repo.read( "gh-pages", $scope.city.name + ".json", 
+      function(err, data) {
         $scope.shops = JSON.parse( data );
         $scope.$apply();
     });
@@ -1039,7 +1041,8 @@ _index.html_:
 
 <h1>CoffeeTe.ch</h1>
 
-<input style="width: 20em;" ng-model="search" placeholder="Enter search parameters..."/> <!--1-->
+<input style="width: 20em;" ng-model="search" 
+       placeholder="Enter search parameters..."/> <!--1-->
 
 <h3 ng-show="city">Current city: {{city.name}}</h3>
 
@@ -1115,7 +1118,8 @@ _coffeetech.annotate.spec.js_ with these contents:
 -----
 describe( "GithubCtrl", function() {
 
-    var scope = undefined, gh = undefined, repo = undefined, prompter = undefined;
+    var scope = undefined, gh = undefined, 
+    	repo = undefined, prompter = undefined;
 
     function generateMockPrompt() {
         prompter = { prompt: function() { return "ABC" } }; // <1>
@@ -1136,7 +1140,9 @@ describe( "GithubCtrl", function() {
                 cb( false, PR_ID );
             },
             read: function( branch, filename, cb ) {
-                cb( undefined, JSON.stringify( filename == "cities.json" ? CITIES : PORTLAND ) );
+                cb( undefined, 
+		    JSON.stringify( filename == "cities.json" ? 
+		    		    CITIES : PORTLAND ) );
             }
         };
         spyOn( repo, "fork" ).andCallThrough();
@@ -1286,7 +1292,8 @@ $scope.annotate = function( shop ) { // <1>
     toFork = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <4>
     toFork.fork( function( err ) {
         if( !err ) { // <5>
-            $scope.notifyWaiting( "forking", "Forking in progress on GitHub, please wait" );// <6>
+            $scope.notifyWaiting( "forking", 
+	      "Forking in progress on GitHub, please wait" );// <6>
             $timeout( $scope.annotateAfterForkCompletes, 10000 );// <7>
             $scope.$apply();
         }
@@ -1339,7 +1346,8 @@ $scope.annotateAfterForkCompletes = function() {// <1>
             $timeout( $scope.annotateAfterForkCompletes, 10000 );
         }
         else {
-            $scope.notifyWaiting( "annotating", "Annotating data on GitHub" ); // <2>
+            $scope.notifyWaiting( "annotating", 
+	      "Annotating data on GitHub" ); // <2>
             // Write the new data into our repository
             $scope.appendQuirkToShop();
 
@@ -1351,16 +1359,22 @@ $scope.annotateAfterForkCompletes = function() {// <1>
                 if( !err ) {
                     // Annotate our data using a pull request
                     var pull = { // <5>
-                        title: "Adding quirky information to " + $scope.shopToAnnotate.name,
+                        title: "Adding quirky information to " + 
+			  $scope.shopToAnnotate.name,
                         body: "Created by :" + $scope.username,
                         base: "gh-pages",
                         head: $scope.username + ":" + "gh-pages"
                     };
                     target = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <6>
-                    target.createPullRequest( pull, function( err, pullRequest ) { // <7>
+                    target.createPullRequest( pull, 
+		      function( err, pullRequest ) { // <7>
                         if( !err ) {
-                            $scope.notifyWaiting( "annotated", "Successfully sent annotation request" );// <8>
-                            $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 );
+                            $scope.notifyWaiting( "annotated", 
+			      "Successfully sent annotation request" );// <8>
+                            $timeout( 
+			      function() { 
+			       $scope.notifyWaiting( undefined ) 
+			      }, 5000 );
                             $scope.$apply(); // <9>
                         }
                     } );
@@ -1466,7 +1480,8 @@ HTML:(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc11")))
 [source,javascript]
 -----
 ...
-<input class="ctinput" ng-model="search" placeholder="Enter search parameters..."/>
+<input class="ctinput" ng-model="search" 
+       placeholder="Enter search parameters..."/>
 
 <h3 ng-show="city">Current city: {{city.name}}</h3>
 
@@ -1713,8 +1728,12 @@ references to the Firebase support libraries right after AngularJS is loaded:
 -----
 <script src="angular.js"></script>
 <script src='https://cdn.firebase.com/v0/firebase.js'></script>
-<script src='https://cdn.firebase.com/libs/angularfire/0.6.0/angularfire.min.js'></script>
-<script src='https://cdn.firebase.com/js/simple-login/1.2.5/firebase-simple-login.js'></script>
+<script 
+  src='https://cdn.firebase.com/libs/angularfire/0.6.0/angularfire.min.js'>
+</script>
+<script 
+  src='https://cdn.firebase.com/js/simple-login/1.2.5/firebase-simple-login.js'>
+</script>
 -----
 
 We need to adjust our _coffeetech.js_ file in a few ways. First,
@@ -1764,7 +1783,8 @@ change in our flow:
 $scope.annotate = function( shop ) {
     $scope.shopToAnnotate = shop;
 
-    $scope.auth.$login( 'github', { scope: 'repo' } ).then( function( user ) { // <1>
+    $scope.auth.$login( 'github', { scope: 'repo' } ).then( 
+      function( user ) { // <1>
 
         $scope.me = user;
         $scope.username = user.name;

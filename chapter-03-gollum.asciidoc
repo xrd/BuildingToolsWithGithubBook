@@ -521,9 +521,9 @@ On branch master
 Changes to be committed:
   (use "git reset HEAD <file>..." to unstage)
 
-  deleted:    images/3190a7759f7f6688b5e08526301e14d115292a6e/IMG_20120825_164703.jpg
-  deleted:    images/3190a7759f7f6688b5e08526301e14d115292a6e/IMG_20130704_151522.jpg
-  deleted:    images/3190a7759f7f6688b5e08526301e14d115292a6e/IMG_20130704_174217.jpg
+  deleted:    images/3190a7759f7f668.../IMG_20120825_164703.jpg
+  deleted:    images/3190a7759f7f668.../IMG_20130704_151522.jpg
+  deleted:    images/3190a7759f7f668.../IMG_20130704_174217.jpg
 
 -----
 
