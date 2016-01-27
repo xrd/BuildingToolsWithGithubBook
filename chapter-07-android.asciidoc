@@ -254,7 +254,8 @@ in fact the XML file itself has the value displayed here (`@string/app_name`):
 
 [source,java]
 -----
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.ghru">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" 
+package="com.example.ghru">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -521,7 +522,8 @@ public class GitHubHelperTest { //  <3>
 
         int randomNumber = (int)(Math.random() * 10000000);
         String randomString = String.valueOf( randomNumber );
-        String randomAndDate = randomString + " " + (new Date()).toString() ; //  <5>
+        String randomAndDate = randomString + " " + 
+        (new Date()).toString() ; //  <5>
 
         GitHubHelper ghh = new GitHubHelper( login, password ); //  <6>
         ghh.SaveFile(repoName,
@@ -609,7 +611,7 @@ $ curl https://api.github.com/repos/burningonup/burningonup.github.io/events
           "message": "207925 Thu Oct 15 23:06:09 PDT 2015",
           "distinct": true,
           "url":
-      "https://api.github.com/repos/BurningOnUp/BurningOnUp.github.io/commits/28f247973e73e3128737cab33e1000a7c281ff4b"
+      "https://api.github.com/repos/BurningOnUp/BurningOnUp.github.io/com..."
         }
       ]
     }
@@ -864,7 +866,8 @@ the login task we will define inside our class based off pass:[<code><span class
                     EditText ptv = (EditText)findViewById( R.id.password );
                     username = (String)utv.getText().toString();
                     password = (String)ptv.getText().toString(); // // <1>
-                    TextView status = (TextView)findViewById( R.id.login_status );
+                    TextView status = 
+                        (TextView)findViewById( R.id.login_status );
                     status.setText( "Logging in, please wait..." ); // // <2>
                     new LoginTask().execute( username, password );  // // <3>
                 }
@@ -1015,7 +1018,8 @@ background thread:
             Boolean rv = false; // // <2>
             GitHubHelper ghh = new GitHubHelper(login, password); // // <3>
             try {
-                rv = ghh.SaveFile(repoName, titleText, postContents, "GhRu Update"); // // <4>
+                rv = ghh.SaveFile(repoName, titleText, 
+                postContents, "GhRu Update"); // // <4>
             } catch (IOException ioe) { // // <5>
                 Log.d(ioe.getStackTrace().toString(), "GhRu");
             }
@@ -1334,7 +1338,8 @@ correct branch: `getBranch` does this for us:
     }
 
     public RepositoryBranch getBranch() throws IOException {
-        List<RepositoryBranch> branches = repositoryService.getBranches(repository);
+        List<RepositoryBranch> branches = 
+        repositoryService.getBranches(repository);
         RepositoryBranch master = null;
         // Iterate over the branches and find gh-pages or master
         for( RepositoryBranch i : branches ) {
@@ -1413,7 +1418,8 @@ account using the data service object:
         treeEntry.setSize(blob.getContent().length());
         Collection<TreeEntry> entries = new ArrayList<TreeEntry>();
         entries.add(treeEntry);
-        newTree = dataService.createTree( repository, entries, baseTree.getSha() );
+        newTree = dataService.createTree( repository, entries, 
+        baseTree.getSha() );
     }
 
 ...
