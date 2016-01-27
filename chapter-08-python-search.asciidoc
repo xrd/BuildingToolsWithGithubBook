@@ -351,17 +351,19 @@ Plus, the user would have to remember to add that option every single time they 
 
 The Search API can make this a bit easier.
 Let's make a GUI application with just a single search box, which makes it dead simple for a nontechnical user to search all the issues in all the repositories in a single organization.
-It'll end up looking a bit like <<search_app>>.
+It'll end up looking a bit like Figures pass:[<a data-type="xref" data-xrefstyle="select:labelnumber" href="#github_search_app_windows">#github_search_app_windows</a>, <a data-type="xref" data-xrefstyle="select:labelnumber" href="#github_search_app_mac">#github_search_app_mac</a>, and <a data-type="xref" data-xrefstyle="select:labelnumber" href="#github_search_app_linux">#github_search_app_linux</a>].
 
-[[search_app]]
-.GitHub search application on three platforms
-====
+[[github_search_app_windows]]
+.GitHub search application on Windows
 image::images/btwg_04in01.png[]
 
+[[github_search_app_mac]]
+.GitHub search application on Mac
 image::images/btwg_04in02.png[]
 
+[[github_search_app_linux]]
+.GitHub search application on Linux
 image::images/btwg_04in03.png[]
-====
 
 ==== User Flow
 
