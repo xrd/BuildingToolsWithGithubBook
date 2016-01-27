@@ -42,7 +42,7 @@ http://curl.haxx.se/download.html.
 Let's make a request. We'll start with the most basic GitHub API
 endpoint found at _https://api.github.com_:
 
-[source,JSON]
+[source,bash]
 -----
 $ curl https://api.github.com
 {
@@ -148,7 +148,7 @@ Going deeper into the prior example, let's pull out something
 interesting from the API map that we receive when we access
 _api.github.com_:
 
-[source,text]
+[source,bash]
 ------
 $ curl https://api.github.com | jq '.current_user_url'
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
@@ -179,7 +179,7 @@ the pattern for the jq pattern parameter emerging. Let's get a more
 complicated set of information, a user's list of repositories, and see
 how we can extract information from the response using jq:
 
-[source,text]
+[source,bash]
 ------
 $ curl -s https://api.github.com/users/xrd/repos
 [ 
@@ -209,7 +209,7 @@ before, JSON key/values are stored only with double quotes, not single
 quotes. You can verify that JSON is valid and satisfies this
 requirement using jq:
 
-[source,text]
+[source,bash]
 -----
 $ echo '{ "a" : "b" }' | jq '.'
 {
@@ -249,7 +249,7 @@ prints out request headers, and((("&#8211;v switch"))) the `-v` switch prints ou
 request and response headers (the `>` character indicates request
 data, and the `<` character indicates response data):
 
-[source,text]
+[source,bash]
 -----
 $ curl -i https://api.github.com                                                     
 HTTP/1.1 200 OK
@@ -319,7 +319,7 @@ Now, let's use a response to build another response.
 ((("GitHub API","following a Hypermedia API")))((("Hypermedia API","following")))We'll use the "map" of the API by hitting the base endpoint, and then
 use the response to manually generate another request:
 
-[source,text]
+[source,bash]
 ----
 $ curl -i https://api.github.com/
 HTTP/1.1 200 OK
@@ -336,7 +336,7 @@ Date: Sat, 25 Apr 2015 05:36:16 GMT
 
 We can use the organizational URL and substitute "github" in the placeholder:
 
-[source,text]
+[source,bash]
 -----
 $ curl https://api.github.com/orgs/github
 {
@@ -462,7 +462,7 @@ permissions to read and write to public repositories owned by that user.
 The following cURL command uses HTTP Basic to initiate the token
 request process:
 
-[source,text]
+[source,bash]
 -----
 $ curl -u username -d '{"scopes":["public_repo"]}' \
 https://api.github.com/authorizations
@@ -488,7 +488,7 @@ additional steps, all of which are documented within <<Hubot>>.
 To use this token, you specify the token inside an authorization
 header: 
 
-[source,text]
+[source,bash]
 -------
 $ curl -H "Authorization: token abcdef87654321" ...
 -------
@@ -573,7 +573,7 @@ parameters are correct. If your request creates content on the server,
 then you will get a 201 status code, indicating successful creation on
 the server.
 
-[source,text]
+[source,bash]
 -----
 $ curl -s -i https://api.github.com | grep Status
 Status: 200 OK
@@ -584,7 +584,7 @@ Status: 200 OK
 ((("400 status code")))((("status codes","invalid payload (400)")))If your payload (the JSON you send to a request) is invalid, the
 GitHub API will respond with a 400 error, as shown here:
 
-[source,text]
+[source,bash]
 -----
 $ curl -i -u xrd -d 'yaml: true' -X POST https://api.github.com/gists
 Enter host password for user 'xrd':
@@ -618,7 +618,7 @@ cURL to make a POST request to GitHub.
 with a 422 error. Let's attempt to fix the previous request. The
 documentation indicates the JSON payload should look like this:
 
-[source,json]
+[source,bash]
 -----
 {
   "description": "the description for this gist",
@@ -633,7 +633,7 @@ documentation indicates the JSON payload should look like this:
 
 What happens if the JSON is valid, but the fields are incorrect?
 
-[source,json]
+[source,bash]
 -----
 $ curl -i -u chris@burningon.com -d '{ "a" : "b" }' -X POST
 https://api.github.com/gists
@@ -657,7 +657,7 @@ key inside the request payload.
 ((("201 status code")))((("status codes","successful creation (201)")))We've seen what happens when the JSON is invalid, but what happens
 when the JSON is valid for our request?
 
-[source,text]
+[source,bash]
 -----
 $ curl -i -u xrd \
 -d '{"description":"A","public":true,"files":{"a.txt":{"content":"B"}}} \
@@ -898,7 +898,7 @@ indicating what callback you want the script to execute once loaded.
 
 We can simulate this request in cURL:
 
-[source,text]
+[source,bash]
 -----
 $ curl https://api.github.com/?callback=myCallback                                    
 /**/myCallback({
@@ -974,7 +974,7 @@ CORS requests. In this case we only care about the headers, so we use
 the `-I` switch, which tells cURL to make a HEAD request, telling the
 server not to respond with body content:
 
-[source,text]
+[source,bash]
 -----
 curl -I https://api.github.com
 HTTP/1.1 200 OK
