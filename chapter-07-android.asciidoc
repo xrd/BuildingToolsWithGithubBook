@@ -104,7 +104,7 @@ devices that can run the application. The code in this chapter will
 work with older SDKs, so let's make a balanced choice and use Android
 4.4 (KitKat), which runs on phones and tablets. At the moment this means,
 according to Android Studio, that our application will run on 49.5% of
-Android devices in the world.
+Android devices in the world as shown in <<choose-android-sdk>>.
 
 [[choose-android-sdk]]
 .Choose an Android SDK
