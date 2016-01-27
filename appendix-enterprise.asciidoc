@@ -47,19 +47,19 @@ is often in the way that hostnames are set up. GitHub.com has several
 hostnames for various content served. An incomplete list includes:
 
 _github.io_::
- hosting Jekyll blogs for users and project pages
+ Hosting Jekyll blogs for users and project pages
 _gist.github.com_::
- hosting gists
+ Hosting gists
 _raw.githubusercontent.com_::
- hosting raw pages (unprocessed files)
+ Hosting raw pages (unprocessed files)
 
 For a variety of reasons, Enterprise GitHub installations often don't
 retain the same mapping. An Enterprise installation might look like:
 
 _github.bigdevcorp.example.com/pages/xrd/somerepo_::
- hosting gh-pages sites
+ Hosting gh-pages sites
 _github.bigdevcorp.example.com/gists_:
- hosting gists
+ Hosting gists
 
 As you can see, Enterprise installations often map the subdomains to a
 subdirectory rather than a different hostname. This simplifies the setup
