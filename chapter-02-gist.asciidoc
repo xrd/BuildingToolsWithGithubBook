@@ -160,7 +160,7 @@ There are many other fun features of the +gist+ command. To learn more
 run the +gist+ command with((("&#8211;&#8211;help switch"))) the `--help` switch. 
 
 As gists are themselves repositories, you can use them for dual
-purposes: for hosting code samples, code samples that are themselves
+purposes: for hosting code samples, and for code samples that are themselves
 fully working and packaged applications inside a gist repository.
 
 === Gists as Fully Functioning Apps
