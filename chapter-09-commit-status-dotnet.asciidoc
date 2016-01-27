@@ -207,7 +207,7 @@ In the Application section, set Target Framework to be .NET 4.5 (or later), and 
 You may be prompted to reload the solution.
 
 The very last step is to add NuGet packages for Octokit and Nancy.
-Right-click the project node in Solution Explorer, and select Manage NuGet Packages
+Right-click the project node in Solution Explorer, and select &#x201c;Manage NuGet Packages.&#x201d;
 Do a search for "Nancy," and upgrade it if necessary&#x2014;there's a chance the Nancy project template specifies an out-of-date version.
 Then do a search for "Octokit," and install that.
 At this point, you should have an empty solution, configured and ready for our example code.
