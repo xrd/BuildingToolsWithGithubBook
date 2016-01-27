@@ -120,7 +120,7 @@ After completing these steps, Android Studio will create Gradle
 configuration files and generate the structure of your
 application. Once this has completed, you can review the file tree of
 your project by clicking the lefthand vertical tab labeled
-"Project."
+"Project" as shown in <<reviewing-android-project-structure>>.
 
 [[reviewing-android-project-structure]]
 .Reviewing the Android project structure for the first time
@@ -162,12 +162,14 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner" //  <3>
+        testInstrumentationRunner 
+            "android.support.test.runner.AndroidJUnitRunner" //  <3>
     }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 
+            'proguard-rules.pro'
         }
     }
 }
