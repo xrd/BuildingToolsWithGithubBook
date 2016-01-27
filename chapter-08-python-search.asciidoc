@@ -354,17 +354,17 @@ Let's make a GUI application with just a single search box, which makes it dead 
 It'll end up looking a bit like Figures pass:[<a data-type="xref" data-xrefstyle="select:labelnumber" href="#github_search_app_windows">#github_search_app_windows</a>, <a data-type="xref" data-xrefstyle="select:labelnumber" href="#github_search_app_mac">#github_search_app_mac</a>, and <a data-type="xref" data-xrefstyle="select:labelnumber" href="#github_search_app_linux">#github_search_app_linux</a>].
 
 [[github_search_app_windows]]
-[role="smallereighty"]
+[role="smallerseventy"]
 .GitHub search application on Windows
 image::images/btwg_04in01.png[]
 
 [[github_search_app_mac]]
-[role="smallereighty"]
+[role="smallerseventy"]
 .GitHub search application on Mac
 image::images/btwg_04in02.png[]
 
 [[github_search_app_linux]]
-[role="smallereighty"]
+[role="smallerseventy"]
 .GitHub search application on Linux
 image::images/btwg_04in03.png[]
 
