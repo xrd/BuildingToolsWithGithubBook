@@ -123,7 +123,8 @@ That would be encoded in a URL like so:
 search/repositories?q=user%3Atpope+created%3A2012-07-01..2015-07-31
 ----
 
-To constrain this search to Python, we could add ` language=python`, URL encoded as `+language%3Apython`, to the end of the URL.
+To constrain this search to only Python code, we could add ` language=python`, 
+URL encoded as `+language%3Apython`, to the end of the URL.
 
 There are many other options.
 Check out https://github.com/search/advanced[] for a UI that can help you construct a query.
