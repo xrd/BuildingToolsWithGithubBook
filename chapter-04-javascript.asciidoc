@@ -1359,7 +1359,8 @@ $scope.annotateAfterForkCompletes = function() {// <1>
                     target = gh.getRepo( "xrd", "spa.coffeete.ch" ); // <6>
                     target.createPullRequest( pull, function( err, pullRequest ) { // <7>
                         if( !err ) {
-                            $scope.notifyWaiting( "annotated", "Successfully sent annotation request" );// <8>
+                            $scope.notifyWaiting( "annotated",
+                            "Successfully sent annotation request" );// <8>
                             $timeout( function() { $scope.notifyWaiting( undefined ) }, 5000 );
                             $scope.$apply(); // <9>
                         }
@@ -1588,8 +1589,9 @@ navigate to the "Applications" link toward the bottom. Click the
 "Developer Applications" tab in the right center column and then click the
 "Register new application" button. Make sure "Authorization callback URL" is set to
 _https://auth.firebase.com/auth/github/callback_. Then save the
-application by clicking the "Register application" button.(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc17")))
+application by clicking the "Register application" button as shown in <<a_new_github_application_for_oauth>>.(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc17")))
 
+[[a_new_github_application_for_oauth]]
 .A new GitHub application for OAuth
 image::images/btwg_09in07.png[]
 
@@ -1598,8 +1600,9 @@ a new app called "CoffeeTech" inside Firebase. The APP URL needs be unique, so u
 "coffeetech-<USERNAME>", replacing USERNAME with your GitHub username.
 Once you have created the app, click the "View Firebase" button. You'll
 then see a settings screen, and click "Simple Login" and then
-"GitHub."
+"GitHub" as shown in <<creating_the_firebase_hosted_login>>.
 
+[[creating_the_firebase_hosted_login]]
 .Creating the Firebase hosted login
 image::images/btwg_09in08.png[]
 
