@@ -1018,7 +1018,8 @@ background thread:
             Boolean rv = false; // // <2>
             GitHubHelper ghh = new GitHubHelper(login, password); // // <3>
             try {
-                rv = ghh.SaveFile(repoName, titleText, postContents, "GhRu Update"); // // <4>
+                rv = ghh.SaveFile(repoName, titleText, 
+                postContents, "GhRu Update"); // // <4>
             } catch (IOException ioe) { // // <5>
                 Log.d(ioe.getStackTrace().toString(), "GhRu");
             }
