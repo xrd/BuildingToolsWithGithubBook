@@ -915,7 +915,7 @@ We'll skip the usual walkthrough to point out a couple of interesting features:
     This isn't a great approach, but doing it better is left as an exercise for the reader.
 
 Again, there's a fair amount of code here, but most of it should look familiar.
-Here's the test code that covers the above:(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc17")))(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc16")))(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc15")))
+Here's the test code that covers the previous code:(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc17")))(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc16")))(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc15")))
 
 [source,python]
 ----
