@@ -175,6 +175,7 @@ created, and Hubot behind the firewall cannot receive those
 events. But, for almost all other functionality, running Hubot locally
 speeds up development cadence.
 
+[role="pagebreak-before"]
 To run your bot locally, make sure you specify the variables on
 the command line:
 
