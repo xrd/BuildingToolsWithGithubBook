@@ -813,7 +813,7 @@ compile. This is a good time to play with this application and verify
 that the UI looks appropriate. Our login form looks like <<simple-ui-blog-posts>>.
 
 [[simple-ui-blog-posts]]
-[role="smallerninety"]
+[role="smallereighty"]
 .A simple UI for making blog post entries
 image::images/btwg_07in04.png[]
 
