@@ -71,8 +71,8 @@ development and testing on a virtual device.
 ((("Android","Java SDK installation")))((("Java","SDK installation")))Unfortunately there is no simple shell command to install Java in the
 same way as there is for Ruby and NodeJS using RVM or NVM.
 Oracle controls the Java language and distribution of official SDKs,
-and it restricts access to downloads other than from _java.oracle.com_.
-Java is freely available, but you need to visit _java.oracle.com_ and
+and it restricts access to downloads other than from pass:[<a href="java.oracle.com"><em>java.oracle.com</em></a>].
+Java is freely available, but you need to visit pass:[<a href="java.oracle.com"><em>java.oracle.com</em></a>] and
 find the correct download for your needs. Android works with the 1.7
 versions of Java or better.
 
