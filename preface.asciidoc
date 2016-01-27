@@ -142,17 +142,17 @@ of more than one section.
 
 Here is a short synopsis of each chapter:
 
-* <<introduction>>: covers a
+* <<introduction>>: This chapter covers a
   first look at the API through the command-line HTTP client called
   cURL. We talk a bit about the response format and how to parse it
   within the command line, and also document authentication. This is
   the only chapter that does not build an application from the
   technologies presented.
-* <<chapter2>>: covers the Gist API, as well as command-line
+* <<chapter2>>: This chapter covers the Gist API, as well as command-line
   tools and the Ruby language "Octokit" API client. We then take this
   API and build a simple Ruby server that is stored as a gist and
   displays gists.
-* <<chapter3>>: explains usage of the Gollum command-line tool
+* <<chapter3>>: This chapter explains usage of the Gollum command-line tool
   and associated Ruby library (gem), which is backed by Grit, the
   C-language bindings for accessing Git repositories. We also
   document some details of the Git storage format and how it applies
@@ -161,13 +161,13 @@ Here is a short synopsis of each chapter:
   Gollum and the Grit libraries to build an image management tool
   that also functions as a regular Gollum wiki, which can be published
   to GitHub.
-* <<python_search_api>>: we explore the Search API and build a GUI
+* <<python_search_api>>: In this chapter we explore the Search API and build a GUI
   tool to search repositories on GitHub using Python.
-* <<commit_status>>: covers a relatively new part of
+* <<commit_status>>: This chapter covers a relatively new part of
   the API that documents the interactions between third-party tools
   and your code. This chapter builds an application using C# and the
   Nancy .NET GitHub API libraries. 
-* <<Jekyll>>: if you push a specifically organized
+* <<Jekyll>>: If you push a specifically organized
   repository into GitHub, GitHub will host a fully featured blog,
   equivalent in most ways to a Wordpress site (well, except for the
   complexity part). This chapter documents how to format your
@@ -177,7 +177,7 @@ Here is a short synopsis of each chapter:
   Archive into the Jekyll format using Ruby. We show 
   how to respectfully spider a site using caching, a valuable
   technique when using APIs or third-party public information.
-* <<android_and_git_data_api>>: in this chapter we create a mobile
+* <<android_and_git_data_api>>: In this chapter we create a mobile
   application targeting the Android OS. Our application reads and
   writes information into a Jekyll repository from the Git Data
   section of the API. We show how to create user interface tests for
@@ -192,7 +192,7 @@ Here is a short synopsis of each chapter:
   often a challenge when writing JavaScript code). We string all these
   pieces together and build a robot that automates assigning pull
   request review requests.
-* <<JavaScript>>: did you know you can host an entire
+* <<JavaScript>>: Did you know you can host an entire
   "single-page application" on GitHub? We show how you can build a
   coffee shop information app backed by a flat file database hosted on
   GitHub written in the JavaScript language. Importantly, we show how
