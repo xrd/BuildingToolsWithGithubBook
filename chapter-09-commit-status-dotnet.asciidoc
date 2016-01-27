@@ -202,8 +202,8 @@ Make sure the path and name settings at the bottom are to your liking, and click
 image::images/btwg_0502.png[]
 
 Next, change the target CLR framework version to something that will work with Octokit.
-Right-click the project's node in the Solution Explorer, and select Properties.
-In the Application"section, set Target Framework to be .NET 4.5 (or later), and save.
+Right-click the project's node in the Solution Explorer, and select &#x201c;Properties.&#x201d;
+In the Application section, set Target Framework to be .NET 4.5 (or later), and save.
 You may be prompted to reload the solution.
 
 The very last step is to add NuGet packages for Octokit and Nancy.
@@ -608,7 +608,7 @@ We noted this a bit earlier, but it bears repeating: this particular example res
 
 Even if you haven't written a lot of code during this chapter, you've learned a lot of concepts.
 
-You've seen the commit-status API, and you've seen how it's used by continuous integration software, but you know that it can be used for much more.
+You've seen the Commit Status API, and you've seen how it's used by continuous integration software, but you know that it can be used for much more.
 You can read and write statuses, and you know how the API server coalesces many statuses into a single pass/fail value, and you also know how to write your own multistatus calculation if the default one doesn't meet your needs.
 You also know what's behind the green checkmarks and red Xs you see in your pull requests.
 
