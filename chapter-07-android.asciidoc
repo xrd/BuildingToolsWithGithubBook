@@ -224,7 +224,7 @@ choose whatever settings you like. Google produces a real device
 called the Nexus 5. This is the Android reference device, and is a
 good option for a generic device with good support across all
 features. You can choose this one if you are confused about which to
-use.
+use as shown in <<creating-new-avd>>.
 
 [[creating-new-avd]]
 .Creating a new AVD
