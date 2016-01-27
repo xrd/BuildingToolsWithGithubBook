@@ -387,6 +387,7 @@ not done so before. Some of the associated repositories have much
 greater test suites than are documented in this book, but we don't
 cover all the entire set of edge cases in every situation. 
 
+[role="pagebreak-before"]
 === Conventions Used in This Book
 
 The following typographical conventions are used in this book:
