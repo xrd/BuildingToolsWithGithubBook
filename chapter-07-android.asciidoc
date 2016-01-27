@@ -33,7 +33,7 @@ about Jekyll, it is covered in more depth in <<Jekyll>>.
 There are a few items of note when establishing a Jekyll blog that
 have some complexity, things like mapping a hostname properly and using the
 correct branch inside Git. For our purposes here, however, we won't need
-to make all that is established. All we need is to make sure
+to make sure all that is established. All we need is to make sure
 we have a sandbox repository that has the structure of a Jekyll blog:
 
 [source,bash]
