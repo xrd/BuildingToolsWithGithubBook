@@ -1942,7 +1942,8 @@ happens using the reply method on our response object:
 
                         it "should get the username from the response object", (done) ->
                                 res = { username: { name: "Chris Dawson" } }
-                                expect( Handler.getUsernameFromResponse( res ) ).toEqual "Chris Dawson"
+                                expect( Handler.getUsernameFromResponse( res ) )
+                                   .toEqual "Chris Dawson"
                                 done()
 
 
