@@ -867,7 +867,8 @@ class Scraper
   attr_accessor :agent
 
   def initialize # # <3>
-    @root = "http://web.archive.org/web/20030820233527/http://bytravelers.com/journal/entry/" # # <4>
+    @root = "http://web.archive.org/web/20030820233527/" +
+    "http://bytravelers.com/journal/entry/" # # <4>
     @agent = Mechanize.new
   end
 
@@ -1036,7 +1037,8 @@ class Scraper
   attr_accessor :pages # # <3>
 
   def initialize
-    @root = "http://web.archive.org/web/20030820233527/http://bytravelers.com/journal/entry/"
+    @root = "http://web.archive.org/web/20030820233527/" +
+    "http://bytravelers.com/journal/entry/"
     @agent = Mechanize.new
     @pages = [] # # <4>
   end
@@ -1266,7 +1268,8 @@ Finished in 0.00701 seconds
 
 Failed examples:
 
-rspec ./scraper_spec.rb:19 # #run #process_titles should not crash if the title is nil
+rspec ./scraper_spec.rb:19 # #run #process_titles should not crash if the title 
+# is nil
 ------
 
 We can fix it with this one simple change:
@@ -1327,7 +1330,8 @@ look like good places to write tests, so we can start there:
 [source,ruby]
 -----
 describe "#get_filename" do
-  it "should take 'Cuba - the good and bad' on January 12th, 2001 and get a proper filename" do
+  it "should take 'Cuba - the good and bad' on January 12th, 2001" +
+  " and get a proper filename" do
     input = 'Cuba - the good and bad'
     date = "January 12th, 2001"
     output = "2001-01-12-cuba-the-good-and-bad.md"
@@ -1458,8 +1462,8 @@ Configuration file: none
             Source: /home/xrdawson/bytravelers
        Destination: /home/xrdawson/bytravelers/_site
       Generating...
-     Build Warning: Layout 'post' requested in _posts/2000-05-23-third-day-in-salvador.md does not exist.
-     Build Warning: Layout 'post' requested in _posts/2000-08-28-the-hill-tribes-of-northern-thailand.md does not exist.
+     Build Warning: Layout 'post' requested in _posts/2000-05-23-third-day-in...
+     Build Warning: Layout 'post' requested in _posts/2000-08-28-the-hill-trib...
      ...
                     done.
  Auto-regeneration: enabled for '/home/xrdawson/bytravelers'
@@ -1595,7 +1599,7 @@ If we open _http://localhost:4000_ in our browser, we will see a
 simple index page with the titles of our posts, like <<austere_but_a_step_in_the_right_direction>>.
 
 [[austere_but_a_step_in_the_right_direction]]
-.Austere but a step in the right direction
+.The Index Page, for a naked Jekyll blog
 image::images/btwg_06in01.png[]
 
 This index page lists every post: let's make it display only the last
@@ -1616,9 +1620,9 @@ just the title. We can now add the rest of the pages from our scraper.
 2.0.0-p481 :037 > rows[2].to_s
 => "<tr>\n<td align=\"center\">\n\n\n\n<font size=\"+1\">author:..."
 2.0.0-p481 :038 > ( rows[2] / "td font" )[0].text()
-=> "author: \n\nMD \n\n\nread more from this author | \nsee maps from this author\n"
+=> "author: \n\nMD \n\n\nread more from this author | \nsee maps from this au...
 2.0.0-p481 :039 > author = ( rows[2] / "td font" )[0].text()
-=> "author: \n\nMD \n\n\nread more from this author | \nsee maps from this author\n"
+=> "author: \n\nMD \n\n\nread more from this author | \nsee maps from this au...
 2.0.0-p481 :040 > author =~ /author:\s+\n\n([^\s]+)\n\n/
 => 0
 2.0.0-p481 :041 > $1
@@ -1876,7 +1880,7 @@ the link tag:
     <img style="position: absolute; top: 0; right: 0; border: 0;"
 	   src="https://..."
 	   alt="Fork me on GitHub"
-	   data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+	   data-canonical-src="https://.../forkme_right_gray_6d6d6d.png"></a>
 
   <div class="container">
     <div class="jumbotron">
