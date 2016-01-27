@@ -106,8 +106,6 @@ formats, such as XML (Extensible Markup Language) or YAML (YAML
 Ain't Markup Language), but JSON is quickly becoming the de facto 
 standard for web services. 
 
-YAML
-
 A few of the reasons JSON is so popular:
 
 * JSON is readable. JSON has a nice balance of human readability when
