@@ -271,7 +271,8 @@ namespace NancyApplication1.Tests
 
     [SetUp]
     public void Setup(){
-      this.bootstrapper = new ConfigurableBootstrapper(with => {
+      this.bootstrapper = 
+        new ConfigurableBootstrapper(with => {
         with.Module<Handler>();
       });
       this.browser = new Browser (bootstrapper);
