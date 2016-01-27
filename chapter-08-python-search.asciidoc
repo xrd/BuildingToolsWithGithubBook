@@ -931,7 +931,7 @@ Here's the test code that covers the above:(((range="endofrange", startref="ix_c
 ((("GUI search API application","displaying results", id="ix_chapter-08-python-search-asciidoc18", range="startofrange")))((("search API","displaying results", id="ix_chapter-08-python-search-asciidoc19", range="startofrange")))((("search results, displaying", id="ix_chapter-08-python-search-asciidoc20", range="startofrange")))So now we have our login panel, and a way for the user to enter a search query, but no way to display results.
 Let's fix that.
 
-Whenever search results are retrieved, we create a new instance of pass:[<code>SearchResults<span class="keep-together">Panel</span></code>], which then creates a series of `SearchResult` instances.
+Whenever search results are retrieved, we create a new instance of pass:[<code>Search<span class="keep-together">Results</span><span class="keep-together">Panel</span></code>], which then creates a series of `SearchResult` instances.
 Let's look at both of them together:
 
 [source,python]
