@@ -283,7 +283,7 @@ The result of a call to this endpoint looks like this:
       "created_at": "2015-04-20T20:18:56Z",
       "updated_at": "2015-04-20T20:18:56Z",
       "closed_at": null,
-      "body": "There should be an option to add classes to the ul and li being generated. ",
+      "body": "There should be an option to add classes to the ul and li...",
       "score": 22.575937
     },
   ]
