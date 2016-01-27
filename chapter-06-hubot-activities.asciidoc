@@ -442,7 +442,7 @@ code than asking the developer who created the code to determine these people.
 
 Hubot will assign active chat room users to do code
 reviews when a new pull request is created. ((("Activity API","and pull requests")))We will use the GitHub
-Activities API to subscribe to pull request events. When Hubot
+Activity API to subscribe to pull request events. When Hubot
 becomes aware that a pull request needs review, it will randomly
 assign a user in the chat room to do the review and then ask that user
 if they want to accept the challenge. If they accept, we will note
