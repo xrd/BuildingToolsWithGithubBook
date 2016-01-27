@@ -22,9 +22,10 @@ of code into the large text box in the center, optionally enter in a
 description or filename, and then choose between a public or private
 gist. Once your gist has been created you are presented with a URL to
 share. Gists autodetect the language in most cases and syntax
-highlight according to the language when displayed.
+highlight according to the language when displayed as in <<documenting_json_using_a_gist>>.
 
-
+[[documenting_json_using_a_gist]]
+.Documenting JSON using a gist
 image::images/btwg_02in01.png[]
 
 There are other services that do this: pastebin was the first, and
