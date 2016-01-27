@@ -439,6 +439,7 @@ to add your own customized CSS later in the chapter.
 ((("Jekyll blogs","publishing on GitHub")))Once you have your blog created, you can easily publish it to GitHub.
 There are two ways you can publish Jekyll blogs:
 
+[role="pagebreak-before"]
 * As a github.io site
 * On a domain you own
 
