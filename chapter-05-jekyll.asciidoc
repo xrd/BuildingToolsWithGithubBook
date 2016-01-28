@@ -356,15 +356,6 @@ Markdown, you'll find Markdown to be insidiously clever in the way it
 provides formatting characters without the onerous weight that HTML
 requires to offer the same explicit formatting.
 
-[source,yaml]
------
-Check out the [Jekyll docs][jekyll] for more info on how to get the most 
-out of Jekyll. File all bugs/feature requests at 
-[Jekyll's GitHub repo][jekyll-gh].
-
-[jekyll-gh]: https://github.com/mojombo/jekyll
------
-
 ((("links","Markdown tags for")))Links can be specified using `[format][link]`, where `link` is the
 fully qualified URL (like "http://example.com"), or a reference to a
 link at the bottom of the page. In our page we have two references,
@@ -439,7 +430,6 @@ to add your own customized CSS later in the chapter.
 ((("Jekyll blogs","publishing on GitHub")))Once you have your blog created, you can easily publish it to GitHub.
 There are two ways you can publish Jekyll blogs:
 
-[role="pagebreak-before"]
 * As a github.io site
 * On a domain you own
 
