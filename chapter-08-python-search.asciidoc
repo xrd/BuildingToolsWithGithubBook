@@ -621,7 +621,7 @@ Alright, enough background.
     Here we're only really interested in the names of the organization, so we use((("list comprehension"))) a _list comprehension_, where we tell Python to only keep the value of the `"login"` field from each dictionary in the `data` list.
 
 Each of these three methods comes in at a different point during our program's execution.
-If our credentials are coming from Git, we proceed straight to `test_credentials`; if they're coming from the login panel (see below), they go through the `login_accepted` callback first, which then calls `test_credentials`.
+If our credentials are coming from Git, we proceed straight to `test_credentials`; if they're coming from the login panel (see <<github_login_panel_section>>), they go through the `login_accepted` callback first, which then calls `test_credentials`.
 
 Either way, what we do is try to fetch a list of the user's organizations, to see if they work.
 Here you can see the usage pattern for `agithub`&#x2014;the URL path is mapped to object-property notation on an instance of the `Github` class, and the HTTP verb is mapped to a method call.
@@ -719,6 +719,7 @@ That's it!
 Aside from managing a couple of fields, most of this code is managing the UI, which is almost exactly what we'd want from a UI class.
 Let's write the first of the two panels we swap in and out.(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc10")))(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc9")))
 
+[[github_login_panel_section]]
 ==== GitHub Login
 
 ((("GitHub login (search API GUI application)", id="ix_chapter-08-python-search-asciidoc11", range="startofrange")))((("GUI search API application","GitHub login", id="ix_chapter-08-python-search-asciidoc12", range="startofrange")))((("login","in search API", id="ix_chapter-08-python-search-asciidoc13", range="startofrange")))((("search API","GitHub login", id="ix_chapter-08-python-search-asciidoc14", range="startofrange")))The((("LoginPanel class"))) `LoginPanel` class is similar in structure to the `SearchFrame` class, with a couple of key differences, which we'll describe after the wall of code:
