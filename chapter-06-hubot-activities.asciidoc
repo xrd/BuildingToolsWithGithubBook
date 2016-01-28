@@ -1922,9 +1922,9 @@ describe "#response", ->
                 github = Handler.setApiToken( githubBinding, \
 				       	 		      "ABCDEF" )
                 req = { body: '{ "pull_request" : \
-				    { url : "http://pr/1" } }', \
-				      headers: { "HTTP_X_HUB_SIGNATURE" : \
-				        "cd970490d83c01b678fa9af55f3c7854b5d22918" } }
+                         { url : "http://pr/1" } }', \
+                         headers: { "HTTP_X_HUB_SIGNATURE" : \
+                         "cd970490d83c01b678fa9af55f3c7854b5d22918" } }
                 Handler.prHandler( robot, req, responder )
 
         it "should tag the PR on GitHub if the user accepts", (done) ->
