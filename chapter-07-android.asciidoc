@@ -38,7 +38,9 @@ we have a sandbox repository that has the structure of a Jekyll blog:
 
 [source,bash]
 -----
-$ printf "source 'https://rubygems.org'\n\ngem 'github-pages'\ngem 'hub'" >> Gemfile
+$ echo "source 'https://rubygems.org'" >> Gemfile
+$ echo "gem 'github-pages'" >> Gemfile
+$ echo "gem 'hub'" >> Gemfile
 $ export BLOG_NAME=mytestblog
 $ bundle
 $ jekyll new $BLOG_NAME
@@ -663,7 +665,8 @@ public class MainActivityTest  // // <2>
     }
 
     public void testLogin() { // // <4>
-        injectInstrumentation( InstrumentationRegistry.getInstrumentation() ); // // <5>
+        injectInstrumentation( InstrumentationRegistry.
+        getInstrumentation() ); // // <5>
         MainActivity mainActivity = getActivity();
         String username = mainActivity // // <6>
                 .getString( R.string.github_helper_username );
