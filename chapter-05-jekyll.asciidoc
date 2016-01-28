@@ -1098,7 +1098,6 @@ whitespace.
 <7> Inside of `run` we now call `scrape` to load the pages, and then
 iterate over each page, searching inside them and processing the titles.
 
-[role="pagebreak-before"]
 We need to install the VCR and webmock libraries, so add them to the
 Gemfile:
 
