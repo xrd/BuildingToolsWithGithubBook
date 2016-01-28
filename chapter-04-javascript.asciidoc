@@ -1206,6 +1206,8 @@ follow that by mocking our prompt calls.
 <1> As mentioned earlier, we need to get `$timeout`, and we can use the
 injector to retrieve the mocked one AngularJS provides for testing using this call.
 
+Now we can write our tests for the +annotate+ function.
+
 [source,javascript]
 -----
 ...
