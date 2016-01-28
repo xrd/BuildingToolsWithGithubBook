@@ -75,6 +75,7 @@ language on GitHub, and is well liked on other popular sites like
 Stack Overflow. If you are unsure about which language to use, Markdown is a
 safe bet because it is ubiquitous across GitHub. <<Jekyll>> has a much deeper overview of Markdown.
 
+[role="pagebreak-before"]
 If you do choose Markdown, in addition to the standard vanilla
 Markdown language tags, Gollum adds its own set of wiki-specific tags. There 
 are often subtle (or conflicting) differences from other wiki markup
