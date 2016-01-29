@@ -110,7 +110,6 @@ foobar|http://foobar.com]]`, so caveat emptor.
 
 ===== Code snippets
 
-[role="pagebreak-before"]
 ((("code snippets")))((("Gollum","code snippets in wikis")))Gollum (the wiki) was invented at GitHub, a company dedicated to
 improving the lives of software developers, so it stands to reason
 Gollum wikis would support insertion of code snippets. To include a snippet of
@@ -127,6 +126,7 @@ end
 ```
 ----
 
+[role="pagebreak-before"]
 Gollum
 http://bit.ly/1JMzd4m[at
 one point] supported inclusion of files from any GitHub repository
