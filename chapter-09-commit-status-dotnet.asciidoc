@@ -61,7 +61,7 @@ Just to summarize:
 
 ((("Commit Status API","raw status")))Now that we know how we get access to commit statuses, let's see what they look like.
 Commit statuses exist as atomic entities, and each commit can have a practically unlimited number of them (the actual number is in the thousands).
-You can query for existing statuses by doing a GET request to the API server at `/repos/<user>/<repo>/<ref>/statuses`, and it will return a list of them that looks like this:
+You can query for existing statuses by doing a GET request to the API server at pass:[<code>/repos/<em>&#x3c;user&#x3e;</em>/<em>&#x3c;repo&#x3e;</em>/<em>&#x3c;ref&#x3e;</em>/statuses</code>], and it will return a list of them that looks like this:
 
 [source,json]
 ----
@@ -98,7 +98,7 @@ Fortunately, the API server can do it for you.
 
 ==== Combined Status
 
-((("combined status")))((("Commit Status API","combined status")))If you instead do a GET to `/repos/<user>/<repo>/<ref>/status` (note that the last word is singular), you'll instead get a response that looks like this:
+((("combined status")))((("Commit Status API","combined status")))If you instead do a GET to pass:[<code>/repos/<em>&#x3c;user&#x3e;</em>/<em>&#x3c;repo&#x3e;</em>/<em>&#x3c;ref&#x3e;</em>/status</code>] (note that the last word is singular), you'll instead get a response that looks like this:
 
 [source,json]
 ----
