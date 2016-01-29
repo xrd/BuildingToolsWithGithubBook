@@ -151,8 +151,7 @@ What just happened? The jq tool parsed the JSON, and using the
 `.current_user_url` filter, it retrieved content from the JSON
 response. If you look at the response again, you'll notice it has
 key/value pairs inside an associative array. It uses the
-pass:[<code><span class="keep-together">current</span>_user_url</code>] as a key into that associative array and prints out
-the value there.
+pass:[<code><span class="keep-together">current</span>_user_url</code>] as a key into that associative array and prints out the value there.
 
 You also will notice that cURL printed out transfer time
 information. cURL printed this information ((("standard error")))to _standard error_, which
@@ -324,7 +323,7 @@ Date: Sat, 25 Apr 2015 05:36:16 GMT
 }
 ----
 
-We can use the organizational URL and substitute "github" in the placeholder:
+We can use the organizational URL and substitute +"github"+ in the placeholder:
 
 [source,bash]
 -----
@@ -710,8 +709,8 @@ user's GitHub account, the rate limits count against that user, and
 not your user account.
 
 [NOTE]
-There are actually two rate limits: ((("core rate limits")))((("search rate limits")))the "core" rate limit and the
-"search" rate limit.  The rate limits explained in the previous
+There are actually two rate limits: ((("core rate limits")))((("search rate limits")))the _core_ rate limit and the
+_search_ rate limit.  The rate limits explained in the previous
 paragraphs were for the core rate limit.  For search,
 requests are limited to 20 requests per minute for authenticated user
 requests and 5 requests per minute for anonymous requests. The
@@ -934,7 +933,7 @@ function myCallback( payload ) {
 -----
 
 This example demonstrates taking the `current_user_url` from the data inside
-the payload and putting it into a DIV, one that might look like `<div id="success"></div>`.
+the payload and putting it into a DIV, one that might look like pass:[<code>&#x3c;div id="success"&#x3e;<span class="keep-together">&#x3c;/div&#x3e;</span></code>].
 
 Because JSON-P works via +<script>+ tags, only GET requests to the API
 are supported. If you only need read-only access to the API, JSON-P
