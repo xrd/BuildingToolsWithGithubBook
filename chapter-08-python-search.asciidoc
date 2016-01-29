@@ -346,7 +346,7 @@ Useful items here are the user's avatar (`avatar_url`), several links to other A
 Imagine that your development team uses GitHub to store their Git repositories, and that there are lots of little repositories for parts of the application that work together at runtime.
 This kind of situation ends up being fairly difficult to work with for your nontechnical colleagues; if they want to report an issue, they don't know where to go, and they don't know how to find issues that already exist.
 
-Search can make this possible, but doing a search across an entire organization's repositories involves using the `user:<organization>` operator, which is obtusely named, and kind of scary for nonprogrammers.
+Search can make this possible, but doing a search across an entire organization's repositories involves using the pass:[<code>user:<em>&#x3c;organization&#x3e;</em></code>] operator, which is obtusely named, and kind of scary for nonprogrammers.
 Plus, the user would have to remember to add that option every single time they wanted to search for issues.
 
 The Search API can make this a bit easier.
