@@ -110,7 +110,7 @@ where our Hubot will live.
 
 ==== Creating a Slack Account
 
-((("Hubot","Slack account for", id="ix_chapter-06-hubot-activities-asciidoc1", range="startofrange")))((("Slack", id="ix_chapter-06-hubot-activities-asciidoc2", range="startofrange")))Going to https://slack.com/[slack.com] starts the process of creating your own Slack
+((("Hubot","Slack account for", id="ix_chapter-06-hubot-activities-asciidoc1", range="startofrange")))((("Slack", id="ix_chapter-06-hubot-activities-asciidoc2", range="startofrange")))Going to https://slack.com/ starts the process of creating your own Slack
 site. You'll need to step through creating an account. Slack sites are
 segmented by organization, and you'll want to establish a URL prefix
 for your Slack site. Typically this is the name of your organization.
@@ -196,7 +196,7 @@ variable at the beginning of the line.
 Slack site. Go to the #general room. Then, you can test that Hubot
 is properly connectd by typing in the name of your Hubot
 and then a command like `the rules`. For example, if our Hubot is
-named `probot`, then we would type `probot the rules`, which then displays the following conversation as shown in <<hubots_built_in_repartee>>.
+named probot, then we would type `probot the rules`, which then displays the following conversation as shown in <<hubots_built_in_repartee>>.
 
 [[hubots_built_in_repartee]]
 .Hubot's built-in repartee
@@ -208,7 +208,7 @@ short story in 1942).
 
 ===== Exploring the Hubot vocabulary
 
-((("Hubot","exploring vocabulary of")))Hubot out-of-the-box supports many commands. To get a list, type "help" to see a list like that shown in <<listing_the_hubot_vocabulary>>.
+((("Hubot","exploring vocabulary of")))Hubot out-of-the-box supports many commands. To get a list, type +help+ to see a list like that shown in <<listing_the_hubot_vocabulary>>.
 
 [[listing_the_hubot_vocabulary]]
 .Listing the Hubot vocabulary
@@ -315,7 +315,7 @@ rules. GitHub will automatically send out notification emails when a
 user has watched a repository and issues or comments are added, a pull
 request is made, or there are comments made on a commit. In addition,
 even if a user has not watched a repository, they will be notified if
-that user is _@mentioned_ (prefixing the `@` character to a team
+that user is _@mentioned_ (prefixing the @ character to a team
 member's name inside a comment), when an issue is assigned to them, or
 when that user participates in a discussion associated with any
 repository.
@@ -389,8 +389,8 @@ inside the _scripts_ directory:
   do something multiple times and write a generic function that
   accepts options.
 * Hubot can handle events. Each chat service has a generalized set of
-  events that are normalized to a common API. Hubots can be programmed
-  to interact with these events. For example, Hubots can perform
+  events that are normalized to a common API. Hubot can be programmed
+  to interact with these events. For example, Hubot can perform
   actions when a room topic changes or when users leave rooms.
 * Hubot can handle generic errors at the top level. Hubot can be
   programmed with a catch-all error handler so that no matter where
@@ -401,7 +401,7 @@ Hubot will use the first five of these features:
 * We will use the Hubot brain to store a PR review request. If Hubot
   asks a user to review a PR, it needs to keep track of this so that
   when the user responds it has some context of the request.
-* We will use the respond method to program our Hubot to handle a
+* We will use the +respond+ method to program our Hubot to handle a
   request when a user accepts or declines the review request.
 * We will use the HTTP server to accept PR notifications from GitHub
   webhooks.
@@ -478,18 +478,18 @@ This is a dense piece of code and can be confusing if you are new to
 CoffeeScript. At the same time, hopefully you will agree that this is
 amazingly powerful code for such a small snippet after reading these notes.
 
-<1> All NodeJS modules work start by defining entrypoints using the
+<1> All NodeJS modules start by defining entrypoints using the
 `exports` syntax. This code defines a function that expects a single
 parameter; when the function is executed, the parameter will be called a
-robot. The Hubot framework will pass in a robot object for us that we
+robot. The Hubot framework will pass in a +robot+ object for us that we
 will program further down.
-<2> The Hubot API defines a method on the robot object called
+<2> The Hubot API defines a method on the +robot+ object called
 `respond`, which we use here. It takes two parameters: a regular
 expression to match against and a function that receives an instance of
 the chat response object (called `res` here). The second line uses
 the API for this response object to call a method `accept` with the
 response object. We define +accept+ in a moment.
-<3> We setup a response matcher for a "decline" response.
+<3> We setup a response matcher for a +decline+ response.
 <4> Now we define the `accept` method. The +accept+ method receives the
 response object generated by the Hubot framework and calls the `reply`
 method, which, you guessed it, sends a message back into the chat
@@ -525,7 +525,7 @@ run. Jasmine tests are typically written in JavaScript, but the latest versions 
 ((("CoffeeScript","Jasmine support tests")))Jasmine support tests are also written in CoffeeScript. Hubot is written
 in CoffeeScript, so let's write our tests in CoffeeScript as
 well. We need to put our tests inside a
-directory called "spec" and make sure our filename ends with
+directory called _spec_ and make sure our filename ends with
 _.spec.coffee_. Let's use _spec/pr-delegator.spec.coffee_ as the
 complete filename. Jasmine expects spec files to have _.spec._ at the
 end of their filename (before the extension, either _.js_ or
@@ -563,25 +563,25 @@ function, which is an organizing function to group tests. `describe`
 functions take an indentifier (in this case `#probot`) and a function
 that contains multiple `it` calls. In addition, a `describe` function
 can also contain a `beforeEach` function that configures common
-elements inside our `it` calls; in this case we create a faked robot
+elements inside our `it` calls; in this case we create a faked +robot+
 object we will pass into our `Probot` function call. When we are
-running Hubot itself, Hubot creates the robot and passes it into the
+running Hubot itself, Hubot creates the +robot+ and passes it into the
 `Probot` function, but when we run our tests, we generate a fake one
 and query it to make sure it is receiving the proper
 configuration. If we make a change inside our actual Hubot code and
 forget to update our tests to verify those changes, our tests will
 fail and we'll know we need to either augment our tests, or something
-broke inside our robot, a good automated sanity check for us when we
+broke inside our +robot+, a good automated sanity check for us when we
 are feverishly coding away, animating our helpful Hubot.
 
-You should see some similarities between the calls made to our robot
+You should see some similarities between the calls made to our +robot+
 (`robot.respond` and `robot.router.post`) and the tests. We set up
 "spies" using Jasmine that generate fake function calls capable of
 recording any interaction from outside sources (either our production
 code or the test code harness). Inside our `it` call, we
 then verify that those calls were made. We use the `expect` function
 to verify that we made two calls to the `respond` function
-defined on the robot, and that `robot.router.post` has been called as
+defined on the +robot+, and that `robot.router.post` has been called as
 well.
 
 ((("Jasmine","installation")))We need to install Jasmine, and we do this by adding to our
@@ -795,7 +795,7 @@ the Slack service) from behind a firewall and have it talk with other
 chat room participants, but any webhook request will fail unless the
 chat client is running on a publicly available server.
 
-Be careful to make sure you use the `content_type` set to "form" (which
+Be careful to make sure you use the `content_type` set to +"form"+ (which
 is the default, so you could leave it blank). Setting this to `json` will
 make it difficult to retrieve the raw body inside your Hubot when the
 post request is received and validate the request using a secure
@@ -894,8 +894,8 @@ We've seen some of these commands before and can reuse the previous
 command-line invocations and variables we used when generating
 our webhook using the API via cURL. Our config variable is similar,
 but the required fields in this case are: the title and body for the
-pull request, the "head" key that matches the name of the branch, and
-where to merge it to using the "base" key.
+pull request, the +"head"+ key that matches the name of the branch, and
+where to merge it to using the +"base"+ key.
 
 Creating a new branch, adding some content, and then issuing a pull
 request against the branch might be something we need to do several
@@ -999,7 +999,7 @@ test, a separate module, which we require in our main extension script.
 We start by writing our tests. We've already created a test that
 verifies the call to `robot.router.post`. Our new functionality will
 actually handle the PR notification, so let's add a new grouping using
-the describe syntax and call it "#pr." The new functionality is
+the describe syntax and call it +"#pr"+. The new functionality is
 simple: if the Hubot receives the proper parameters (most importantly
 that the internal secret matches the secret sent on the request) then
 we accept the PR as valid and message our room with further
@@ -1013,8 +1013,8 @@ tests and then our library.
 
 We have two tests: one that handles the correct flow and one that
 handles the incorrect flow. In a before block (this happens before
-each test) we set up a fake robot, and set the secret on our handler
-module. Our faked robot implements the same methods a real Hubot
+each test) we set up a fake +robot+, and set the secret on our handler
+module. Our faked +robot+ implements the same methods a real Hubot
 robot does (the +messageRoom+ and +send+ methods), but we create
 Jasmine spies to verify these functions are called inside our
 implementation code:
@@ -1249,7 +1249,7 @@ PR? http://pr/1` (and the Slack client will format that link as a
 clickable URL).
 
 Unfortunately, our tests are now broken: we now have the failure `TypeError:
-Object #<Object> has no method 'http'`. Our mocked Robot object that
+Object #<Object> has no method 'http'`. Our mocked +robot+ object that
 we pass into our tests does not have the HTTP interface that comes
 with Hubot, so we should add it to our custom Robot. The method
 signature for the HTTP client (which comes from the
@@ -1261,7 +1261,7 @@ testable (said another way, it was challenging for me to understand
 what the faked test implementation should look like), but the setup
 code does work and the test itself documents an interface to our robot,
 which is easily understandable. We simulate the
-same chain, defining an `http` attribute on the mocked robot object, an
+same chain, defining an `http` attribute on the mocked +robot+ object, an
 attribute that resolves to a function call itself. Calling that function
 returns an object that has a `get` method, and calling that function
 returns a function callback that when called executes that function
@@ -1333,7 +1333,7 @@ API takes a callback, but the `brain.users` call does not, which
 simplifies our code. We do verify inside our tests that we make a call to
 the HTTP Jasmine spy on the `get` function, so we will want to remove
 that inside our tests. We will need to provide a new function called
-`users` to the Hubot inside the faked brain we created.
+`users` to the Hubot inside the faked +brain+ we created.
 
 Unfortunately, things don't just work when we change our code to this:
 
@@ -1392,7 +1392,7 @@ refactor our inputs to the test to take an associative array instead
 of an array, and then we need a function to flatten it
 out (after that our code will work the same as before). We will return
 that when the user calls `robot.brain.users` so add a new spy as the
-`users` key inside our fake robot:
+`users` key inside our fake +robot+:
 
 [source,coffeescript]
 -----
@@ -1681,7 +1681,7 @@ _robot.coffee_ inside the pass:[<em>node_modules/hubot/src/</em>] directory. The
 pass:[<em>node_modules</em>] directory, in case memory fails, is where the NodeJS
 package manager (npm) builds out the local dependency tree for
 libraries, and this is the file Hubot uses internally to build the
-robot object and set up the express HTTP server. If we add the
++robot+ object and set up the express HTTP server. If we add the
 following code at line 288 (this line number might vary if you are not
 using the same version of Hubot we specify in our _package.json_), we
 can install a custom middleware callback that will provide us with
@@ -2101,6 +2101,7 @@ specifically the username and email. So, let's update our test and
 our handler code. The last test in our spec file can be modified to
 look like this:
 
+[role="pagebreak-before"]
 [source,coffeescript]
 -------------
 ...
