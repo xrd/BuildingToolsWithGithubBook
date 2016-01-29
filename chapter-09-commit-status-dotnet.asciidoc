@@ -432,7 +432,7 @@ private Response RedirectToOAuth()
 }
 ----
 
-<1> CSRF stands for "cross-site request forgery."
+<1> CSRF stands for _cross-site request forgery_.
     This is a mechanism by which we can be sure the OAuth request process really did originate from our site.
     The GitHub OAuth API will pass this value back to us when the user authorizes access, so we store it in the cookie for later reference.
 <2> Storing the original URL in the session cookie is a UX feature; once the OAuth process has completed, we want to send the user back to what they were trying to do in the first place.
@@ -582,7 +582,7 @@ Get["/{user}/{repo}/{sha}/{status}", true] = async (parms, ct) => // <1>
     };
 ----
 
-<1> Note the request path for this handler: a GET request to `localhost:8080/user/repo/<sha>/<status>` will create a new status.
+<1> Note the request path for this handler: a GET request to pass:[<code>localhost:8080/user/repo/<em>&#x3c;sha&#x3e;</em>/<em>&#x3c;status&#x3e;</em></code>] will create a new status.
     This is easy to test with the browser, but also makes it easy for web crawlers to unknowingly trigger this API.
     For this example it's okay, but for a real application you'd probably want to require this to be a POST request.
 <2> Here's where our OAuth helper comes in.
