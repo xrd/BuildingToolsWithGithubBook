@@ -737,6 +737,7 @@ response.  The rate limit headers are returned with every request to
 the GitHub API, so there is little need to make a direct call to the
 pass:[<span class="keep-together">/rate_limit</span>] API:
 
+[source,bash]
 ----
 $ curl https://api.github.com/rate_limit
 {
