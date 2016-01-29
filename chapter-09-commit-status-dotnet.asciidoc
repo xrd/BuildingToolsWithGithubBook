@@ -136,7 +136,7 @@ This is probably exactly what you want, but if you find that your use case calls
 
 ((("Commit Status API","creating a status")))Now obviously these statuses have to come from somewhere.
 This API also includes a facility for creating them.
-To do this, you simply make a POST request to `/repos/<user>/<repo>/statuses/<sha>`, and supply a JSON object for the fields you want to include with your status:
+To do this, you simply make a POST request to pass:[<code>/repos/<em>&#x3c;user&#x3e;</em>/<em>&#x3c;repo&#x3e;</em>/statuses/<em>&#x3c;sha&#x3e;</em></code>], and supply a JSON object for the fields you want to include with your status:
 
 [options="header", cols="1m,3"]
 |======================
@@ -147,7 +147,7 @@ To do this, you simply make a POST request to `/repos/<user>/<repo>/statuses/<sh
 | `context`     | An application-specific string to allow the API to manage multiple services contributing to a single commit's status.
 |======================
 
-Notice how the last component in that URL is `<sha>`.
+Notice how the last component in that URL is pass:[<code><em>&#x3c;sha&#x3e;</em></code>].
 While you can query for statuses or a combined status using a ref name (like `master`), creating a status requires you to know the full SHA-1 hash of the commit you want to annotate.
 This is to avoid race conditions: if you were targeting a ref, it may have moved between when your process started and when it finished, but the SHA of a commit will never change.(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc1")))
 
