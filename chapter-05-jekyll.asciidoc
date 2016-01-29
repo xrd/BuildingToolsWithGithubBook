@@ -238,7 +238,7 @@ categories: jekyll update
 ----
 
 You'll find this post in your pass:[<em>_posts</em>] directory&#x2014;edit this 
-post and re-build (or run with the `-w` switch) to see your changes!
+post and rebuild (or run with the `-w` switch) to see your changes!
 To add new posts, simply add a file in the pass:[<em>_posts</em>] directory 
 that follows the convention: YYYY-MM-DD-name-of-post.ext.
 
@@ -357,7 +357,7 @@ provides formatting characters without the onerous weight that HTML
 requires to offer the same explicit formatting.
 
 ((("links","Markdown tags for")))Links can be specified using `[format][link]`, where `link` is the
-fully qualified URL (like "http://example.com"), or a reference to a
+fully qualified URL (like "_http://example.com_"), or a reference to a
 link at the bottom of the page. In our page we have two references,
 keyed as `jekyll-gh` and `jekyll`; we can then use these inside our
 page with syntax like `[Jekyll's GitHub repo][jekyll-gh]`. Using
@@ -1083,8 +1083,8 @@ pages into this array (and get them for free once the information is
 cached).
 <4> Initialize the +pages+ array here.
 <5> To use the VCR recording feature, we wrap any code that makes
-HTTP requests inside a VCR block with a name specifying the "cassette"
-to save it under. In this case, we use a cassette named "bt" (for
+HTTP requests inside a VCR block with a name specifying the +cassette+
+to save it under. In this case, we use a cassette named +bt+ (for
 ByTravelers) with the index of the page. The first time we use the
 scraper to request the page, it is retrieved and stored inside the
 cache. Successive calls to the scraper `get` method are retrieved from
@@ -1313,7 +1313,7 @@ parsed the pages from Archive.org.
 Jekyll posts are stored inside the pass:[<em>_posts</em>] directory. As a
 convention, filenames are generated with the date and title,
 lowercased, converted to a string without any characters beyond a-z
-and the hyphen, and terminated by the extension (usually ".md" for
+and the hyphen, and terminated by the extension (usually _.md_ for
 Markdown). In order to properly generate the filename, we will need to
 scrape the date, so we will do that as well.
 
@@ -1411,7 +1411,7 @@ sure the pass:[<em>_posts</em>] directory is available, and if not, creates it. 
 then writes out the file using our `get_filename` method to get the
 path, prefixed with the pass:[<em>_posts</em>] directory.
 <3> `process_creation_date` takes a piece from the scraped page and
-breaks it apart by the string "last updated on:" and uses the second
+breaks it apart by the string "+last updated on:+" and uses the second
 item in the resultant array.
 <4> Inside our +run+ method we now build out the processed hash, finding
 the date and title using rows from the query path we used before.
@@ -1584,7 +1584,7 @@ process the entire posts directory and provide it to pages inside the
 over them. If we use a `{% for ... %}` tag we need to "close" the tag
 with a matching `{% endfor %}` tag. Inside of our for
 loop we have several output tags: `{{ post.url }}` outputs the post
-URL associated with a post, for example. We also have "filters," which
+URL associated with a post, for example. We also have _filters_, which
 are methods defined to process data. One such filter is the
 `strip_html` filter, which you might guess strips out HTML text,
 converting it to escaped text. This is necessary when your text could
