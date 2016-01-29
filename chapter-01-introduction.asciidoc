@@ -34,10 +34,7 @@ note that cURL works best with one-off requests.
 
 [NOTE]
 .Installing cURL
-((("cURL","installing")))cURL is usually installed on most OS X machines, and can easily be installed
-using Linux package managers (probably one of "apt-get install curl" or "yum install
-curl"). If you are using Windows or want to manually install it, go to
-http://curl.haxx.se/download.html. 
+((("cURL","installing")))cURL is usually installed on most OS X machines, and can easily be installed using Linux package managers (probably one of +apt-get install curl+ or +yum install curl+). If you are using Windows or want to manually install it, go to http://curl.haxx.se/download.html. 
 
 Let's make a request. We'll start with the most basic GitHub API
 endpoint found at _https://api.github.com_:
