@@ -933,7 +933,7 @@ function myCallback( payload ) {
 -----
 
 This example demonstrates taking the `current_user_url` from the data inside
-the payload and putting it into a DIV, one that might look like pass:[<code>&#x3c;div id="success"&#x3e;<span class="keep-together">&#x3c;/div&#x3e;</span></code>].
+the payload and putting it into a DIV, one that might look like pass:[<code>&#x3c;div id="success"&#x3e; <span class="keep-together">&#x3c;/div&#x3e;</span></code>].
 
 Because JSON-P works via +<script>+ tags, only GET requests to the API
 are supported. If you only need read-only access to the API, JSON-P
