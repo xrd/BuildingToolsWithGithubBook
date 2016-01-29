@@ -180,7 +180,7 @@ end
 
 -----
 
-Create a gist for this by visiting _gist.github.com_. Enter in the text exactly as shown and then choose
+Create a gist for this by visiting pass:[<a class="orm:hideurl" href="https://gist.github.com/"><em>gist.github.com</em></a>]. Enter in the text exactly as shown and then choose
 public gist.
 
 You now have a share-friendly gist of code anyone can use to review.
