@@ -1411,7 +1411,7 @@ sure the pass:[<em>_posts</em>] directory is available, and if not, creates it. 
 then writes out the file using our `get_filename` method to get the
 path, prefixed with the pass:[<em>_posts</em>] directory.
 <3> `process_creation_date` takes a piece from the scraped page and
-breaks it apart by the string &#x201c;+last updated on:+&#x201d; and uses the second
+breaks it apart by the string pass:[&#x201c;<code>last updated</code> on:&#x201d;] and uses the second
 item in the resultant array.
 <4> Inside our +run+ method we now build out the processed hash, finding
 the date and title using rows from the query path we used before.
