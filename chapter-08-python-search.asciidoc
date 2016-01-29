@@ -667,7 +667,7 @@ It instantiates a menu that only contains File->Exit, and a login panel, whose i
 Note that when we create a visible control, we pass `self` as the first parameter to the constructor.
 That's because the `SearchFrame` instance we're constructing is the parent window of that control.
 
-((("sizers")))((("WxWidgets")))`do_layout` uses a WxWidgets feature called "sizers" to do some automated layout.
+((("sizers")))((("WxWidgets")))`do_layout` uses a WxWidgets feature called _sizers_ to do some automated layout.
 Sizers are a complex topic, but here's all you need to know about this snippet:
 
 * A `BoxSizer` stacks widgets in a single direction, in this case vertically.
@@ -713,7 +713,7 @@ class TestApp:
 <2> Nose will automatically find these `setUp` and `tearDown` methods, and call them before and after each test method is run.
     In this case, we're just managing the frames we want to test, as well as an `App` instance for all of them to belong to.
 <3> Here's a test method that Nose will find and run.
-    We ensure the subpanels are the right type, and that we've auto-transitioned to the SearchPanel by finding credentials in Git's storage.
+    We ensure the subpanels are the right type, and that we've auto-transitioned to the +SearchPanel+ by finding credentials in Git's storage.
 
 That's it!
 Aside from managing a couple of fields, most of this code is managing the UI, which is almost exactly what we'd want from a UI class.
