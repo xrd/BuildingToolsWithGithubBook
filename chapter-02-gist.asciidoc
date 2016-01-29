@@ -315,10 +315,10 @@ image::images/btwg_02in02.png[]
 
 ==== Going Deeper into the Gist API
 
-((("gists","and hypermedia")))((("Hypermedia API","gist and")))The GitHub API uses Hypermedia instead of
+((("gists","and hypermedia")))((("Hypermedia API","gist and")))The GitHub API uses hypermedia instead of
 basic resource-driven APIs. If you use a client like Octokit, the
-Hypermedia details are hidden behind an elegant Ruby client. But
-there is a benefit to understanding how Hypermedia works when you need
+hypermedia details are hidden behind an elegant Ruby client. But
+there is a benefit to understanding how hypermedia works when you need
 to retrieve deeper information from the GitHub API.
 
 ((("gists","and RESTful APIs")))((("RESTful APIs")))Most RESTful APIs come with((("sitemaps"))) a "sitemap," generally an API reference
@@ -341,31 +341,31 @@ Hypermedia APIs describe themselves inside their responses ((("affordances")))us
 }
 -----
 
-In this payload, you can see that there is an id ("xrd") and a name
-("Chris Dawson").  This particular payload was forked from the HAL explanation at the
+In this payload, you can see that there is an id (+"xrd"+) and a name
+(+"Chris Dawson"+). This particular payload was forked from the HAL explanation at the
 https://phlyrestfully.readthedocs.org/en/latest/halprimer.html[HAL
 Primer document], and you can find a more detailed explanation of these concepts
 there. 
 
-The important thing to note about Hypermedia APIs is that payloads contain
+The important thing to note about hypermedia APIs is that payloads contain
 metadata about data itself and metadata about the possible options of
 operating on the data. RESTful APIs typically provide a mapping
 outside of the payload. You have to join the API sitemap with the data
-in an ad hoc way when using RESTful APIs; with Hypermedia APIs your
+in an ad hoc way when using RESTful APIs; with hypermedia APIs your
 client can react to the payload itself correctly and intelligently
 without knowing anything about a sitemap stored in human-readable
 documentation. 
 
 This loose coupling makes APIs and their clients flexible. In theory,
-a Hypermedia API works intuitively with a Hypermedia-aware client. If
-you change the API, the client, as it understands Hypermedia, can
+a hypermedia API works intuitively with a hypermedia-aware client. If
+you change the API, the client, as it understands hypermedia, can
 react and still work as expected. Using a RESTful API means that
 clients must be updated (a newer version of the client must be
 installed) or the client code must be upgraded. Hypermedia APIs can
 alter their backend, and then the client, as long as it is
-Hypermedia-aware, can automatically and dynamically determine
+hypermedia-aware, can automatically and dynamically determine
 the right way to access information from the response itself. In other
-words, with a Hypermedia client the API backend can change and your
+words, with a hypermedia client the API backend can change and your
 client code should not need to.
 
 This is explained in great detail in the book pass:[<a class="orm:hideurl" href="http://shop.oreilly.com/product/0636920020530.do"><em>Building
@@ -373,16 +373,16 @@ Hypermedia APIs with HTML5 and Node</em> (O'Reilly)</a>].
 
 ==== Using Hypermedia Data from Octokit
 
-((("gists","using hypermedia data from Octokit")))((("hypermedia data, Octokit")))((("Octokit","using hypermedia data from")))Now that you know a little about Hypermedia, let's navigate it using Octokit:
+((("gists","using hypermedia data from Octokit")))((("hypermedia data, Octokit")))((("Octokit","using hypermedia data from")))Now that you know a little about hypermedia, let's navigate it using Octokit:
 
 * Start at a resource, with code like `user = Octokit.user "xrd"`. This
   begins the initialization of the client.
 * `user` now is an object filled with the actual data of the resource.
   In this case, you could call a method like `user.followers` to see a
   meager follower count.
-* `user` also has Hypermedia references. You can see these by calling
+* `user` also has hypermedia references. You can see these by calling
   `user.rels`. This retrieves the relationships described in the
-  Hypermedia links. 
+  hypermedia links. 
 * Relationships (found by calling `user.rels`) include avatar, self,
   followers, etc.
 * Use a relationship by calling the `get.data` method to retrieve and
@@ -392,7 +392,7 @@ Hypermedia APIs with HTML5 and Node</em> (O'Reilly)</a>].
   exceeds 100 items). 
 
 Let's extend our Sinatra app to retrieve actual data about the user's
-gists by using Hypermedia references:
+gists by using hypermedia references:
 
 [source,ruby]
 -----
@@ -418,7 +418,7 @@ The _index.erb_ file contains code to iterate over each gist and pull
 the content. You can see that our response object is an array of
 gists, and each has an attribute called `fields`. This `fields` attribute
 specifies the filenames available in each gist. If you reference that
-filename against the files, the response includes a Hypermedia `ref`
+filename against the files, the response includes a hypermedia `ref`
 attribute. Retrieve the `raw` content using the Octokit method `.get.data`:
 
 [source,html]
@@ -457,8 +457,8 @@ In this chapter we looked at gists and learned how they can be used
 to share code snippets. We built a simple application and stored it as
 a gist. This application retrieves data from the GitHub API using our
 first higher-level language client library (the Octokit library for
-Ruby). We also went deeper into how Hypermedia works and how a client
-library implements using Hypermedia metadata.(((range="endofrange", startref="ix_chapter-02-gist-asciidoc0")))
+Ruby). We also went deeper into how hypermedia works and how a client
+library implements using hypermedia metadata.(((range="endofrange", startref="ix_chapter-02-gist-asciidoc0")))
 
 In the next chapter we will look at Gollum, the GitHub wiki. This
 chapter provides an introduction to the Rugged Ruby library for accessing Git
