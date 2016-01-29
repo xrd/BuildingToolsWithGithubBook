@@ -186,7 +186,7 @@ Here is a short synopsis of each chapter:
 * <<Hubot>>: Hubot is a JavaScript (NodeJS) chat robot
   enabling technologists to go beyond developer operations ("DevOps")
   to a new frontier called "ChatOps." This chapter illustrates
-  using the Activities and Pull Requests section 
+  using the Activity and Pull Requests section 
   of the API. In addition, we show how you can simulate GitHub
   notifications and how to write testable Hubot extensions (which is
   often a challenge when writing JavaScript code). We string all these
@@ -199,13 +199,13 @@ Here is a short synopsis of each chapter:
   you can write a testable JavaScript application that mocks out the
   GitHub API when needed. 
 
-((("organization API")))We don't cover the organization API: this is a small facet of the API
+((("Organizations API")))We don't cover the Organizations API: this is a small facet of the API
 with only the ability to list organizations and modify metadata about
 your organization; once you have used other parts of the API this nook
 of the API will be very intuitive.
 
-((("users API")))We also don't cover the users section of the API. While you might
-expect it to be an important part of the API, the users API is really
+((("Users API")))We also don't cover the Users section of the API. While you might
+expect it to be an important part of the API, the Users API is really
 nothing more than an endpoint to list information about users, add or
 remove SSH keys, adjust email addresses, and modify your list of
 followers. 
@@ -311,10 +311,10 @@ that you do need to install and use them in order to get the most out
 of this book.
 
 ((("Ruby")))Ruby::
-  a simple, readable programming language the founders of
+  A simple, readable programming language the founders of
   GitHub used extensively early in the life of the company.
 ((("JavaScript")))JavaScript::
-  the only ubiquitous browser-side programming language; its
+  The only ubiquitous browser-side programming language; its
   importance has grown to new heights with the introduction of
   ((("NodeJS")))NodeJS, rivaling even the popularity of Ruby on Rails as a server-side toolkit for web applications, especially for independent  developers.
 
