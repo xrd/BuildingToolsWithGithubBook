@@ -373,6 +373,7 @@ password combination. Username a((("HTTP Basic authentication")))uthentication w
 Basic authentication supported by the `-u` flag in cURL. HTTP Basic
 Authentication is synonymous with username and password authentication:
 
+[source,bash]
 ----
 $ curl -u xrd https://api.github.com/rate_limit
 Enter host password for user 'xrd': xxxxxxxx
