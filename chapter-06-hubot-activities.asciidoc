@@ -1015,7 +1015,7 @@ We have two tests: one that handles the correct flow and one that
 handles the incorrect flow. In a before block (this happens before
 each test) we set up a fake +robot+, and set the secret on our handler
 module. Our faked +robot+ implements the same methods a real Hubot
-robot does (the +messageRoom+ and +send+ methods), but we create
++robot+ does (the +messageRoom+ and +send+ methods), but we create
 Jasmine spies to verify these functions are called inside our
 implementation code:
 
