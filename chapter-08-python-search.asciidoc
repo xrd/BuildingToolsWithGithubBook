@@ -107,7 +107,7 @@ Most of the query will be free text, but the API also supports some powerful syn
 - pass:[<code>repo:<em>&#x3c;name&#x3e;</em></code>]
 - pass:[<code>language:<em>&#x3c;name&#x3e;</em></code>]
 - pass:[<code>created:<em>&#x3c;date(s)&#x3e;</em></code>]
-- pass:[<code>extension:<em>&#x3c;pattern&#x3e;</em></code>] matches file extensions (like "py" or "ini")
+- pass:[<code>extension:<em>&#x3c;pattern&#x3e;</em></code>] matches file extensions (like _py_ or _ini_)
 
 ((("numerical values, in search queries")))Numerical values and dates can have ranges:
 
@@ -197,7 +197,7 @@ First, it requires that you provide a general search term (a phrase to match); s
 Second, any wildcard characters in the query will be ignored.
 Third, files above a certain size will not be searched.
 Fourth, it only searches the default branch of any given project, which is usually `master`.
-Fifth, and possibly most importantly, you _must_ specify a repository owner using the `user:<name>` qualifier; you cannot search all repositories with one query.
+Fifth, and possibly most importantly, you _must_ specify a repository owner using the pass:[<code>user:<em>&#x3c;name&#x3e;</em></code>] qualifier; you cannot search all repositories with one query.
 
 The JSON returned looks something like this:
 
