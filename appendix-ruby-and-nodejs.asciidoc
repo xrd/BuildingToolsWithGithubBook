@@ -215,7 +215,7 @@ example of each.
 
 ==== Shell Comments 
 
-((("command line","shell comments")))((("shell","comments")))If you type a hash character ("#") into a shell command, the rest of
+((("command line","shell comments")))((("shell","comments")))If you type a hash character (+#+) into a shell command, the rest of
 the line is considered a comment. This makes it easy to document
 commands on the same line:
 
