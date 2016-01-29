@@ -845,7 +845,7 @@ lifecycle of a thread that is managed by the Android OS. We implement
 a class and then override two functions provided by pass:[<code><span class="keep-together">Async</span>Task</code>]: the
 first function is((("doInBackground() function"))) `doInBackground()`, which handles operations off the
 main thread (our background thread code), and the second function is
-`onPostExecute()`, which runs on the UI thread and allows us to update
+pass:[<code>onPost<span class="keep-together">Execute()</span></code>], which runs on the UI thread and allows us to update
 the UI with the results of the code that ran inside `doInBackground()`.
 
 Before we implement the login, we need to update our((("onCreate function"))) `onCreate`
