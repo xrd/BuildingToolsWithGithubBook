@@ -64,16 +64,15 @@ What can we learn from this API response?
 
 === Breadcrumbs to Successive API Paths
 
-((("GitHub API","as Hypermedia API")))The GitHub API is a ((("Hypermedia API")))Hypermedia API. Though a discussion on what constitutes
+((("GitHub API","as hypermedia API")))The GitHub API is a ((("hypermedia API")))hypermedia API. Though a discussion on what constitutes
 hypermedia deserves an entire book of its own (check out O'Reilly's
 pass:[<a class="orm:hideurl" href="http://shop.oreilly.com/product/0636920020530.do"><em>Building Hypermedia APIs with HTML5 and Node</em></a>]), you can absorb much of what
 makes hypermedia interesting by just looking at a response. First, you can see from the API response that each response contains a map with directions for the next responses you might make. Not all clients use this information, of course, but one
-goal behind Hypermedia APIs is that clients can dynamically adjust
+goal behind hypermedia APIs is that clients can dynamically adjust
 their endpoints without recoding the client code. If the thought of
 GitHub changing an API because clients _should_ be written to handle
 new endpoints automatically sounds worrisome, don't fret too much:
-GitHub is very dilligent about maintaining and supporting its API in a way
-that most companies would do well to emulate. But you should know
+GitHub is very dilligent about maintaining and supporting its API in a way that most companies would do well to emulate. But you should know
 that you can rely on having an API reference inside the API itself,
 rather than hosted externally in documentation, which very easily could
 turn out to be out of date with the API itself. 
@@ -86,11 +85,7 @@ GitHub, but also tells you how to structure the parameters passed to
 this URL. If you have an intelligent client who can follow this
 programmatic format, you could dynamically generate the query without
 involving a developer who can read API documentation. At least that is
-the dream Hypermedia points us to; if you are skeptical, at least know that
-APIs such as GitHub encode documentation into themselves, and you can
-bet GitHub has test coverage to prove that this documentation matches
-the information delivered by the API endpoints. That's a strong
-guarantee that is sadly missing from many other APIs.
+the dream hypermedia points us to; if you are skeptical, at least know that APIs such as GitHub encode documentation into themselves, and you can bet GitHub has test coverage to prove that this documentation matches the information delivered by the API endpoints. That's a strong guarantee that is sadly missing from many other APIs.
 
 Now let's briefly discuss the format of all GitHub API responses: JSON.
 
@@ -156,7 +151,7 @@ What just happened? The jq tool parsed the JSON, and using the
 `.current_user_url` filter, it retrieved content from the JSON
 response. If you look at the response again, you'll notice it has
 key/value pairs inside an associative array. It uses the
-`current_user_url` as a key into that associative array and prints out
+pass:[<code><span class="keep-together">current</span>_user_url</code>] as a key into that associative array and prints out
 the value there.
 
 You also will notice that cURL printed out transfer time
