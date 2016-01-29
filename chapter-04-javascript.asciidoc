@@ -204,10 +204,10 @@ application inside this module.
 <2> We define a controller called `GithubCtrl` that bundles up
 functions and data. When we use the controller syntax, we name the
 controller, and then define a function with at least a single
-parameter: the scope object. I think of scope as the "world" available
+parameter: the +scope+ object. I think of +scope+ as the "world" available
 to the controller. The controller knows only of data and functions
-defined on its scope, and AngularJS does its magic as long as your
-functions or variables are defined on the scope.
+defined on its +scope+, and AngularJS does its magic as long as your
+functions or variables are defined on the +scope+.
 <3> We create a new `Github()` object using the constructor. This
 constructor can take user credentials, but for now, we can just
 create it without those since we are accessing a public repository.
@@ -221,7 +221,7 @@ public repository to display some sample data.
 <6> Once we have loaded the repository data, we need to call `$apply`
 to tell AngularJS a change has occurred to data stored within the
 scope variable. As we mentioned before, AngularJS knows only about
-functions and data defined on its scope. The `show` function is
+functions and data defined on its +scope+. The `show` function is
 defined on the GitHub object, and any changes are not tracked by
 AngularJS, so we need to use `$apply()`.
 
@@ -302,7 +302,7 @@ our single-page app.
 
 ==== Visualize Application Data Structure
 
-((("coffee shop database app","application database structure visualization")))We are going to be building a coffeeshop database. We want to use Git
+((("coffee shop database app","application database structure visualization")))We are going to be building a coffee shop database. We want to use Git
 as our datastore, but Git and its associated tools (either command-line tools or GitHub) don't offer the same features as
 a standard relational database. So, we need to think and plan how we
 will structure our data inside our repository to make it easily searchable.
@@ -452,14 +452,14 @@ tests run.
 the pass:[<code><span class="keep-together">$controller</span></code>] and `$rootScope` objects, which we use to set up our tests.
 <3> We will be creating two functions that generate the mock objects
 required for our tests. We'll discuss these two functions in a bit.
-<4> Scope is the AngularJS convention for the object into which all
-functionality and state is stored. We create a new scope using the
+<4> +scope+ is the AngularJS convention for the object into which all
+functionality and state is stored. We create a new +scope+ using the
 AngularJS utility function `$rootScope.$new()` and store a
-reference to this scope so we can test functionality we've implemented
+reference to this +scope+ so we can test functionality we've implemented
 in our actual code.
 <5> We pass in the mocked objects (created by the mocked function
-calls) as well as the scope object and instantiate a controller
-object. This controller uses the scope to define functions and data,
+calls) as well as the +scope+ object and instantiate a controller
+object. This controller uses the +scope+ to define functions and data,
 and since we have a reference to it, we can call those functions and
 inspect that data and assert our implementation is correct.
 
@@ -489,7 +489,7 @@ code that is run as a test.
 <2> Our controller code begins with an `init` call, so we mimic that
 inside our test to set up the controller state.
 <3> We assert that our code uses the various interfaces we defined on
-our injected objects: `getCurrentPosition` on the Geo object, and `read`
+our injected objects: `getCurrentPosition` on the +geo+ object, and `read`
 on the repository object.
 <4> Then we assert that the data is properly loaded. Our test verifies that
 there are two cities, that a default city has been loaded and the name
@@ -546,7 +546,7 @@ beforeEach( inject( function ($controller, $rootScope ) {
 -----
 
 <1> We first implement the `generateMockLocation` function.
-<2> Mock location involves creating a Geo object that has a single
+<2> Mock location involves creating a +geo+ object that has a single
 function pass:[<code>get<span class="keep-together">Current</span>Position</code>], which is a function that calls back into
 a success callback function provided. This exactly matches the native
 browser support for Geolocation, which has the same function defined.
@@ -674,7 +674,7 @@ we would not have been able to easily mock it out in our tests.
 we did with the GitHub library mock, we can now inject a fake one into
 our tests.
 <2> Our new controller "injects" the various objects we need. We have
-extracted the GitHub API object and a Geo object into dependencies,
+extracted the GitHub API object and a +Geo+ object into dependencies,
 and this syntax finds the proper objects and provides them to our
 controller. You'll also notice a slightly different syntax for
 creating the controller: `controller( "CtrlName", [ 'dependency1',
@@ -698,7 +698,7 @@ data inside the cities array to determine our current city.
 <7> Since we are calling outside of AngularJS and returning inside a
 callback, we need to call `scope.$apply()` like we showed in prior examples(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc6"))).(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc5")))(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc4")))(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc3")))
 
-We are now ready to write our Geocoding implementation.
+We are now ready to write our geocoding implementation.
 
 === Geocoding Support
 
@@ -809,7 +809,7 @@ function.
 <6> Finally, we build our distance calculation function.
 
 At first glance, the calculate distance function looks confusing, no?
-This was code I developed after reading a post on Geocoding using a
+This was code I developed after reading a post on geocoding using a
 stored procedure within the PostgreSQL database, and I converted the
 code to JavaScript. Unless you are a geocoding geek, how do we know
 this works as advertised? Well, let's write some tests to prove it.
@@ -1077,7 +1077,7 @@ data inside each item in our `shops` array.
 we show the extra information.
 <4> ((("Google Maps")))We alter our lat/lng information to point to a Google Maps page.
 
-Now if we type the word `gluten` in our search box, we filter out
+Now if we type the word &#x201c;gluten&#x201d; in our search box, we filter out
 anything except shops that match that, and we see the information
 pieces formatted as labels underneath the shop name (<<filtering_coffeeshops_using_the_term_gluten>>).
 
@@ -1172,6 +1172,7 @@ browser prompt mechanism to do this.
 assure it is called, but we also want to return the fake repository we
 provide inside our test, and this syntax does that.
 
+[role="pagebreak-before"]
 We have some setup code that is called in a before function to load
 the mock objects and establish a controller and scope for testing:
 
@@ -1206,7 +1207,7 @@ follow that by mocking our prompt calls.
 <1> As mentioned earlier, we need to get `$timeout`, and we can use the
 injector to retrieve the mocked one AngularJS provides for testing using this call.
 
-Now we can write our tests for the +annotate+ function.
+Now we can write our tests for the +annotate+ function:
 
 [source,javascript]
 -----
@@ -1239,10 +1240,10 @@ describe( "#annotate", function() {  // <1>
 ...
 -----
 
-<2> We create a new describe block to organize our tests, calling it
+<2> We create a new +describe+ block to organize our tests, calling it
 `#annotate`. We then implement one `it` function, which is the single
 test we are creating: "annotate a shop."
-<3> After setting up the preconditions that our scope object should
+<3> After setting up the preconditions that our +scope+ object should
 have a city selected, and creating a shop to annotate, we then call
 our `annotate` method.
 <4> Once we have called `annotate`, our code should request our
@@ -1250,12 +1251,12 @@ credentials for the GitHub API, and then ask us for the information
 to use in annotating the shop. If this were happening in the browser,
 we would get three prompts. Our test mocks out the `prompt` object
 here, and we should therefore see three calls made to our mocked +prompt+ object. We also
-validate some state we should see on the scope object like holding a
+validate some state we should see on the +scope+ object like holding a
 username and annotation for usage later.
 <5> We should then see the first of our GitHub API calls being made:
 GitHub.js should issue a request to `fork` the repository.
 <6> We should then enter in our waiting state; we will tell the user
-we are waiting and our UI will use the scope `waiting.state` to notify
+we are waiting and our UI will use the +scope.waiting.state+ to notify
 them of that.
 <7> Once we have flushed the timeout that simulates completion of the
 fork, we will then see our code storing the result of the forked repo
@@ -1306,7 +1307,7 @@ $scope.annotate = function( shop ) { // <1>
 -----
 
 <1> We start by creating our annotation function. As we specified in
-our tests, this function takes a shop object, an object into which
+our tests, this function takes a +shop+ object, an object into which
 annotations about the shop are added.
 <2> We prompt the user three times: username and password on GitHub,
 and the text they want to annotate. If this seems like a really bad
@@ -1326,7 +1327,7 @@ no way of registering for a notification, and as such, must poll
 GitHub to determine whether our fork has completed. In the real world,
 we probably would need to redo this request if we see it fail as this
 could just mean it was still pending on GitHub.
-<6> We register a message using a key called "forking," which we can
+<6> We register a message using a key called +"forking"+ which we can
 use inside our HTML template to display to the user that our fork has
 completed. We'll build this function out soon; it basically stores
 the value and a string for display, and allows us to clear it when the
@@ -1420,7 +1421,7 @@ need to provide to the pull request method inside of GitHub.js.
 original repository.
 <8> We then issue the pull request against the target. This takes the pull request
 specification object we created earlier, and a callback function that
-has an error code if the request failed, and otherwise, a pull-request
+has an error code if the request failed, and otherwise, a pull request
 object.
 <6> Once the request has succeeded, we can notify the UI that the
 annotation process has completed, and then issue a timeout to remove
@@ -1837,7 +1838,7 @@ ourselves(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc15"))
 === Summary
 
 We've built an application in JavaScript that requires no server and provides users
-with a searchable coffeeshop database that accepts contributions in a
+with a searchable coffee shop database that accepts contributions in a
 very safe and secure way using the Pull Request API. We were able to completely ignore all the
 administrative features of a data entry system, delegating all these
 to GitHub. Our single-page app permits us to focus on one thing:
