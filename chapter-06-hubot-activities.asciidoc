@@ -606,6 +606,7 @@ Runing the following commands will then install Jasmine (the library
 and a test runner command-line tool) and run our tests. We abbreviate
 some of the installation output to save space:
 
+[source,bash]
 ```
 $ npm install
 ...
