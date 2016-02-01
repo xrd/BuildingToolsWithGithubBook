@@ -1449,7 +1449,7 @@ from GitHub after publishing there). Errors can occur if our scraper
 does not correctly process the HTML retrieved from Archive.org and
 subsequently generates incorrect Markdown content, for example.
 
-[source,text]
+[source,bash]
 ----
 $ git add .
 $ git commit -m "Make this into a Jekyll site"
@@ -1732,7 +1732,7 @@ and international copyright laws.
 
 Then, modify our post layout to include the image:
 
-[source,ruby]
+[source,html]
 -----
 ---
 layout: default
@@ -1759,7 +1759,7 @@ customize the colors.
 First, add a reference to Bootstrap and our custom CSS inside of the
 master layout file, _default.html_:
 
-[source,ruby]
+[source,html]
 -----
 <html>
 <head>
@@ -1893,7 +1893,7 @@ Now anyone can fork our repository, add their own post to the pass:[<em>_posts</
 the same commands we saw with earlier repositories. Obviously you
 should change the username and blog name to suit your own needs:
 
-[source,text]
+[source,bash]
 ----
 $ export BLOG_NAME=xrd/bytravelers.com
 $ gem install hub
