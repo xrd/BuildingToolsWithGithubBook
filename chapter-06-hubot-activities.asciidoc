@@ -695,7 +695,7 @@ recovery codes that you printed out). If you
 use text messaging, check your text messages and then resend the
 request appending a header using cURL:
 
-[source,bash
+[source,bash]
 ----
 $ curl https://api.github.com/authorizations --user $USERNAME --data
 '{"scopes":["repo"], "note": "Probot access to PRs" }' -X POST
