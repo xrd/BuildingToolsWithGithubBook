@@ -796,6 +796,7 @@ Sunday, August 11, 2013.  The GitHub API responds with an HTTP 304
 response code that also tells us that the last time this repository
 changed was a minute earlier than our cutoff date:
 
+[source,bash]
 ----
 $ curl -i https://api.github.com/repos/twbs/bootstrap \
           -H "If-Modified-Since: Sun, 11 Aug 2013 19:48:59 GMT"
@@ -828,6 +829,7 @@ value passes this ETag value as an +If-None-Match+ header.  You'll note
 that the second response is an HTTP 304, which tells the caller that
 there is no new content available:
 
+[source,bash]
 ----
 $ curl -i https://api.github.com/repos/twbs/bootstrap
 HTTP/1.1 200 OK
