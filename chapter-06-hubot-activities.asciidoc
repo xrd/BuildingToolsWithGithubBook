@@ -607,7 +607,7 @@ and a test runner command-line tool) and run our tests. We abbreviate
 some of the installation output to save space:
 
 [source,bash]
-```
+----
 $ npm install
 ...
 hubot-slack@3.2.1 node_modules/hubot-slack
@@ -620,7 +620,7 @@ $ ./node_modules/.bin/jasmine-node --coffee spec/
 Finished in 0.009 seconds
 1 test, 1 assertions, 0 failures, 0 skipped
 
-```
+----
 
 Our tests pass and we now have a way to document and verify that our
 code does what we think it does.(((range="endofrange", startref="ix_chapter-06-hubot-activities-asciidoc10")))(((range="endofrange", startref="ix_chapter-06-hubot-activities-asciidoc9")))
@@ -637,30 +637,31 @@ token, and then we can use that token to create a webhook.
 To create the token, run this command, setting the proper variables
 for your username instead of mine ("xrd"):
 
-```
+[source,bash]
+----
 $ export USERNAME=xrd
 $ curl https://api.github.com/authorizations --user $USERNAME --data
 '{"scopes":["repo"], "note": "Probot access to PRs" }' -X POST
-```
+----
 
 This call can return in one of three ways. If your username or
 password is incorrect, you will get an error response message like
 this:
 
 [source,json]
-```
+----
 {
   "message": "Bad credentials",
   "documentation_url": "https://developer.github.com/v3"
 }
-```
+----
 
 If your username and password are correct and you don't have
 two-factor authentication turned on, the request will succeed and you
 will get back a token inside the JSON response:
 
 [source,json]
-```
+----
 {
   "id": 238749874,
   "url": "https://api.github.com/authorizations/9876533",
@@ -672,19 +673,19 @@ will get back a token inside the JSON response:
   "token": "fakedtoken1234",
   "hashed_token": "fakedhashedtoken7654",
   ...
-```
+----
 
 If you are using two-factor authentication then you will see a
 response message like this:
 
 [source,json]
-```
+----
 {
   "message": "Must specify two-factor authentication OTP code.",
   "documentation_url":
   "https://developer.github.com/v3/auth#working-with-two-factor-authentication"
 }
-```
+----
 
 If you get this message in response to the prior cURL command, then
 you will be receiving a one-time password via
@@ -694,18 +695,19 @@ recovery codes that you printed out). If you
 use text messaging, check your text messages and then resend the
 request appending a header using cURL:
 
-```
+[source,bash
+----
 $ curl https://api.github.com/authorizations --user $USERNAME --data
 '{"scopes":["repo"], "note": "Probot access to PRs" }' -X POST
 --header "X-GitHub-OTP: 423584"
 Enter host password for user 'xrd':
-```
+----
 
 If all these steps complete successfully (regardless of whether you
 are using two-factor authentication or not) you will then receive an OAuth token:(((range="endofrange", startref="ix_chapter-06-hubot-activities-asciidoc8")))(((range="endofrange", startref="ix_chapter-06-hubot-activities-asciidoc7")))(((range="endofrange", startref="ix_chapter-06-hubot-activities-asciidoc6")))
 
 [source,json]
-```
+----
 {
   "id": 1234567,
   "url": "https://api.github.com/authorizations/1234567",
@@ -724,7 +726,7 @@ are using two-factor authentication or not) you will then receive an OAuth token
   ]
 }
 
-```
+----
 
 ==== Using the OAuth Token to Register for Events
 
@@ -734,7 +736,8 @@ access token before running the cURL command. We will also need the
 endpoint we created when we published into Heroku (in our case
 `https://inqry-chatbot.herokuapp.com`):
 
-```
+[source,bash]
+----
 $ REPOSITORY=testing_repostory
 $ TOKEN=ad5a36c3b7322c4ae8bb9069d4f20fdf2e454266
 $ WEBHOOK_URL=https://inqry-chatbot.herokuapp.com/pr
@@ -779,7 +782,7 @@ $ curl -H "Authorization: token $TOKEN" \
   "updated_at": "2015-01-14T06:23:59Z",
   "created_at": "2015-01-14T06:23:59Z"
 }
-```
+----
 
 There is a bit of bash cleverness here, but nothing to be overly
 disturbed by. We create a few variables we use in the final
@@ -841,7 +844,7 @@ but if you want to receive pull requests on the router you have set up,
 remember that you need to publish your files into Heroku so the
 endpoint is public.
 
-[source.bash]
+[source,bash]
 ------
 $ ./node_modules/.bin/jasmine-node --coffee spec/
 ..
