@@ -485,7 +485,6 @@ Get["/authorize", true] = async (parms, ct) => // <1>
 This last endpoint is something we can test, but we'll need to be able to handle sessions.
 In order to do that, we'll add this snippet to our test project's namespace:
 
-[role="pagebreak-before"]
 [source,csharp]
 ----
 public static class BootstrapperExtensions
