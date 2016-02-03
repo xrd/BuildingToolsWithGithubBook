@@ -343,7 +343,7 @@ Hypermedia APIs describe themselves inside their responses ((("affordances")))us
 
 In this payload, you can see that there is an id (+"xrd"+) and a name
 (+"Chris Dawson"+). This particular payload was forked from the HAL explanation at the
-https://phlyrestfully.readthedocs.org/en/latest/halprimer.html[HAL
+http://bit.ly/1SGLDw3[HAL
 Primer document], and you can find a more detailed explanation of these concepts
 there. 
 
