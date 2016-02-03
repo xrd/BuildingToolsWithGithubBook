@@ -909,7 +909,7 @@ into thinking that it all went exactly as we expected the first time.
 Given that, these are commands you might want to perform multiple times as you are
 experimenting, so let's put the commands described in the previous paragraph
 into a bash script that is generic and can be run multiple times. We
-can call it _issue-pull-request.sh_ and place the script inside the
+can call it +issue-pull-request.sh+ and place the script inside the
 test directory:
 
 [source,bash]
