@@ -101,7 +101,7 @@ Windows instead of fighting with running everything directly on Windows.
 
 ((("Ruby","tips for using")))Here are a few tips when using Ruby and RVM:
 
-(((".ruby&#8211;version")))(((".rvmrc")))((("config.ru")))((("Gemfile")))`Gemfile`::
+(((".ruby&#8211;version")))(((".rvmrc")))((("config.ru")))((("Gemfile")))Gemfile::
   Ruby packages libraries in a format called a gem. A
   gemfile is a manifest that describes which gems your application
   needs. Gemfiles make it simple to install all the required
