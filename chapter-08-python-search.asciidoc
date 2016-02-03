@@ -335,7 +335,7 @@ Querying the `search/users` endpoint gives you this kind of response:
 }
 ----
 
-The list of items in this case look like the results from a query of the `users/<name>` endpoint.
+The list of items in this case look like the results from a query of the pass:[<code>users/<em>&#x3c;name&#x3e;</em></code>] endpoint.
 Useful items here are the user's avatar (`avatar_url`), several links to other API endpoints (`repos_url`, `url`), and the type of result (user or organization, in `type`).
 
 
