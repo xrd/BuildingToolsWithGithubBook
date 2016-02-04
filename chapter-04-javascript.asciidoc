@@ -1172,7 +1172,6 @@ browser prompt mechanism to do this.
 assure it is called, but we also want to return the fake repository we
 provide inside our test, and this syntax does that.
 
-[role="pagebreak-before"]
 We have some setup code that is called in a before function to load
 the mock objects and establish a controller and scope for testing:
 
