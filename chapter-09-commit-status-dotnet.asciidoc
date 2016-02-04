@@ -447,6 +447,7 @@ In our GitHub application settings, we specified an authorization URL.
 In this case, we've specified `http://localhost:8080/authorize`, and that's where GitHub will redirect the user's browser if they decide to grant our application the permissions it's asking for.
 Here's the handler for that endpoint, which has been inserted into the module constructor:
 
+[role="pagebreak-before"]
 [source,csharp]
 ----
 Get["/authorize", true] = async (parms, ct) => // <1>
