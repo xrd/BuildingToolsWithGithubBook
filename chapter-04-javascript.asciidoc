@@ -1835,6 +1835,7 @@ account, they will receive standard pull request notifications when
 their contribution is accepted(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc21")))(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc20"))), so we don't need to implement that
 ourselves(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc15"))).(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc14")))(((range="endofrange", startref="ix_chapter-04-javascript-asciidoc13")))
 
+[role="pagebreak-before"]
 === Summary
 
 We've built an application in JavaScript that requires no server and provides users
