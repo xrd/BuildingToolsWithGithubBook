@@ -1648,6 +1648,7 @@ angular.module( 'firebase', [] );
 
 -----
 
+[role="pagebreak-before"]
 To test our code, we make the following changes to our
 _coffeetech-annotate.spec.js_:
 
