@@ -1867,6 +1867,7 @@ first posted these banners], and we'll use its code almost as is inside our
 _default.html_ page, just changing the reference to our repository in
 the link tag:
 
+[role="pagebreak-before"]
 [source,html]
 -----
 ...
