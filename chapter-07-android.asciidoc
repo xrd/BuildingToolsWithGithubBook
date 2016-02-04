@@ -1624,4 +1624,4 @@ unit test and UI test that help to verify the functionality.(((range="endofrange
 
 In the next chapter we will use CoffeeScript to create our own chat
 robot that requests pull request reviews from chat room members
-using the Activities API.
+using the Activity API.
