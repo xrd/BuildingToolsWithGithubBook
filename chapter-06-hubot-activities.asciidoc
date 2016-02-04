@@ -1163,7 +1163,9 @@ exactly as we need it to if you were to disregard any code from this
 section. ((("Slack API", id="ix_chapter-06-hubot-activities-asciidoc22", range="startofrange")))As I was writing this book, I mistakenly missed the fact that
 the Hubot `brain` contains a list of users and found another avenue to
 get that data, the Slack API. I wrote the chapter using the Slack
-API, and then discovered my mistake. Initially I planned to remove
+API, and then discovered my mistake.
++
+Initially I planned to remove
 this entire section. However, it does demonstrate the ease of using an
 external service through the built-in HTTP client, which is a powerful
 feature of Hubot. And it also demonstrates how powerful tests aid you
