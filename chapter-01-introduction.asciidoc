@@ -34,10 +34,7 @@ note that cURL works best with one-off requests.
 
 [NOTE]
 .Installing cURL
-((("cURL","installing")))cURL is usually installed on most OS X machines, and can easily be installed
-using Linux package managers (probably one of "apt-get install curl" or "yum install
-curl"). If you are using Windows or want to manually install it, go to
-http://curl.haxx.se/download.html. 
+((("cURL","installing")))cURL is usually installed on most OS X machines, and can easily be installed using Linux package managers (probably one of +apt-get install curl+ or +yum install curl+). If you are using Windows or want to manually install it, go to http://curl.haxx.se/download.html. 
 
 Let's make a request. We'll start with the most basic GitHub API
 endpoint found at _https://api.github.com_:
@@ -67,16 +64,15 @@ What can we learn from this API response?
 
 === Breadcrumbs to Successive API Paths
 
-((("GitHub API","as Hypermedia API")))The GitHub API is a ((("Hypermedia API")))Hypermedia API. Though a discussion on what constitutes
+((("GitHub API","as hypermedia API")))The GitHub API is a ((("hypermedia API")))hypermedia API. Though a discussion on what constitutes
 hypermedia deserves an entire book of its own (check out O'Reilly's
 pass:[<a class="orm:hideurl" href="http://shop.oreilly.com/product/0636920020530.do"><em>Building Hypermedia APIs with HTML5 and Node</em></a>]), you can absorb much of what
 makes hypermedia interesting by just looking at a response. First, you can see from the API response that each response contains a map with directions for the next responses you might make. Not all clients use this information, of course, but one
-goal behind Hypermedia APIs is that clients can dynamically adjust
+goal behind hypermedia APIs is that clients can dynamically adjust
 their endpoints without recoding the client code. If the thought of
 GitHub changing an API because clients _should_ be written to handle
 new endpoints automatically sounds worrisome, don't fret too much:
-GitHub is very dilligent about maintaining and supporting its API in a way
-that most companies would do well to emulate. But you should know
+GitHub is very dilligent about maintaining and supporting its API in a way that most companies would do well to emulate. But you should know
 that you can rely on having an API reference inside the API itself,
 rather than hosted externally in documentation, which very easily could
 turn out to be out of date with the API itself. 
@@ -89,11 +85,7 @@ GitHub, but also tells you how to structure the parameters passed to
 this URL. If you have an intelligent client who can follow this
 programmatic format, you could dynamically generate the query without
 involving a developer who can read API documentation. At least that is
-the dream Hypermedia points us to; if you are skeptical, at least know that
-APIs such as GitHub encode documentation into themselves, and you can
-bet GitHub has test coverage to prove that this documentation matches
-the information delivered by the API endpoints. That's a strong
-guarantee that is sadly missing from many other APIs.
+the dream hypermedia points us to; if you are skeptical, at least know that APIs such as GitHub encode documentation into themselves, and you can bet GitHub has test coverage to prove that this documentation matches the information delivered by the API endpoints. That's a strong guarantee that is sadly missing from many other APIs.
 
 Now let's briefly discuss the format of all GitHub API responses: JSON.
 
@@ -105,8 +97,6 @@ the http://www.json.org/[JSON.org website]). There are other competing and effec
 formats, such as XML (Extensible Markup Language) or YAML (YAML
 Ain't Markup Language), but JSON is quickly becoming the de facto 
 standard for web services. 
-
-YAML
 
 A few of the reasons JSON is so popular:
 
@@ -161,8 +151,7 @@ What just happened? The jq tool parsed the JSON, and using the
 `.current_user_url` filter, it retrieved content from the JSON
 response. If you look at the response again, you'll notice it has
 key/value pairs inside an associative array. It uses the
-`current_user_url` as a key into that associative array and prints out
-the value there.
+pass:[<code><span class="keep-together">current</span>_user_url</code>] as a key into that associative array and prints out the value there.
 
 You also will notice that cURL printed out transfer time
 information. cURL printed this information ((("standard error")))to _standard error_, which
@@ -334,7 +323,7 @@ Date: Sat, 25 Apr 2015 05:36:16 GMT
 }
 ----
 
-We can use the organizational URL and substitute "github" in the placeholder:
+We can use the organizational URL and substitute +"github"+ in the placeholder:
 
 [source,bash]
 -----
@@ -384,6 +373,7 @@ password combination. Username a((("HTTP Basic authentication")))uthentication w
 Basic authentication supported by the `-u` flag in cURL. HTTP Basic
 Authentication is synonymous with username and password authentication:
 
+[source,bash]
 ----
 $ curl -u xrd https://api.github.com/rate_limit
 Enter host password for user 'xrd': xxxxxxxx
@@ -720,8 +710,8 @@ user's GitHub account, the rate limits count against that user, and
 not your user account.
 
 [NOTE]
-There are actually two rate limits: ((("core rate limits")))((("search rate limits")))the "core" rate limit and the
-"search" rate limit.  The rate limits explained in the previous
+There are actually two rate limits: ((("core rate limits")))((("search rate limits")))the _core_ rate limit and the
+_search_ rate limit.  The rate limits explained in the previous
 paragraphs were for the core rate limit.  For search,
 requests are limited to 20 requests per minute for authenticated user
 requests and 5 requests per minute for anonymous requests. The
@@ -747,6 +737,7 @@ response.  The rate limit headers are returned with every request to
 the GitHub API, so there is little need to make a direct call to the
 pass:[<span class="keep-together">/rate_limit</span>] API:
 
+[source,bash]
 ----
 $ curl https://api.github.com/rate_limit
 {
@@ -805,6 +796,7 @@ Sunday, August 11, 2013.  The GitHub API responds with an HTTP 304
 response code that also tells us that the last time this repository
 changed was a minute earlier than our cutoff date:
 
+[source,bash]
 ----
 $ curl -i https://api.github.com/repos/twbs/bootstrap \
           -H "If-Modified-Since: Sun, 11 Aug 2013 19:48:59 GMT"
@@ -837,6 +829,7 @@ value passes this ETag value as an +If-None-Match+ header.  You'll note
 that the second response is an HTTP 304, which tells the caller that
 there is no new content available:
 
+[source,bash]
 ----
 $ curl -i https://api.github.com/repos/twbs/bootstrap
 HTTP/1.1 200 OK
@@ -944,7 +937,7 @@ function myCallback( payload ) {
 -----
 
 This example demonstrates taking the `current_user_url` from the data inside
-the payload and putting it into a DIV, one that might look like `<div id="success"></div>`.
+the payload and putting it into a DIV, one that might look like pass:[<code>&#x3c;div id="success"&#x3e; <span class="keep-together">&#x3c;/div&#x3e;</span></code>].
 
 Because JSON-P works via +<script>+ tags, only GET requests to the API
 are supported. If you only need read-only access to the API, JSON-P

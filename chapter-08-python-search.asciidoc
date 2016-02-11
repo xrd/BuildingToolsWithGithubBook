@@ -107,7 +107,7 @@ Most of the query will be free text, but the API also supports some powerful syn
 - pass:[<code>repo:<em>&#x3c;name&#x3e;</em></code>]
 - pass:[<code>language:<em>&#x3c;name&#x3e;</em></code>]
 - pass:[<code>created:<em>&#x3c;date(s)&#x3e;</em></code>]
-- pass:[<code>extension:<em>&#x3c;pattern&#x3e;</em></code>] matches file extensions (like "py" or "ini")
+- pass:[<code>extension:<em>&#x3c;pattern&#x3e;</em></code>] matches file extensions (like _py_ or _ini_)
 
 ((("numerical values, in search queries")))Numerical values and dates can have ranges:
 
@@ -197,7 +197,7 @@ First, it requires that you provide a general search term (a phrase to match); s
 Second, any wildcard characters in the query will be ignored.
 Third, files above a certain size will not be searched.
 Fourth, it only searches the default branch of any given project, which is usually `master`.
-Fifth, and possibly most importantly, you _must_ specify a repository owner using the `user:<name>` qualifier; you cannot search all repositories with one query.
+Fifth, and possibly most importantly, you _must_ specify a repository owner using the pass:[<code>user:<em>&#x3c;name&#x3e;</em></code>] qualifier; you cannot search all repositories with one query.
 
 The JSON returned looks something like this:
 
@@ -335,7 +335,7 @@ Querying the `search/users` endpoint gives you this kind of response:
 }
 ----
 
-The list of items in this case look like the results from a query of the `users/<name>` endpoint.
+The list of items in this case look like the results from a query of the pass:[<code>users/<em>&#x3c;name&#x3e;</em></code>] endpoint.
 Useful items here are the user's avatar (`avatar_url`), several links to other API endpoints (`repos_url`, `url`), and the type of result (user or organization, in `type`).
 
 
@@ -346,22 +346,27 @@ Useful items here are the user's avatar (`avatar_url`), several links to other A
 Imagine that your development team uses GitHub to store their Git repositories, and that there are lots of little repositories for parts of the application that work together at runtime.
 This kind of situation ends up being fairly difficult to work with for your nontechnical colleagues; if they want to report an issue, they don't know where to go, and they don't know how to find issues that already exist.
 
-Search can make this possible, but doing a search across an entire organization's repositories involves using the `user:<organization>` operator, which is obtusely named, and kind of scary for nonprogrammers.
+Search can make this possible, but doing a search across an entire organization's repositories involves using the pass:[<code>user:<em>&#x3c;organization&#x3e;</em></code>] operator, which is obtusely named, and kind of scary for nonprogrammers.
 Plus, the user would have to remember to add that option every single time they wanted to search for issues.
 
 The Search API can make this a bit easier.
 Let's make a GUI application with just a single search box, which makes it dead simple for a nontechnical user to search all the issues in all the repositories in a single organization.
-It'll end up looking a bit like <<search_app>>.
+It'll end up looking a bit like Figures pass:[<a data-type="xref" data-xrefstyle="select:labelnumber" href="#github_search_app_windows">#github_search_app_windows</a>, <a data-type="xref" data-xrefstyle="select:labelnumber" href="#github_search_app_mac">#github_search_app_mac</a>, and <a data-type="xref" data-xrefstyle="select:labelnumber" href="#github_search_app_linux">#github_search_app_linux</a>].
 
-[[search_app]]
-.GitHub search application on three platforms
-====
+[[github_search_app_windows]]
+[role="smallerseventy"]
+.GitHub search application on Windows
 image::images/btwg_04in01.png[]
 
+[[github_search_app_mac]]
+[role="smallerseventy"]
+.GitHub search application on Mac
 image::images/btwg_04in02.png[]
 
+[[github_search_app_linux]]
+[role="smallerseventy"]
+.GitHub search application on Linux
 image::images/btwg_04in03.png[]
-====
 
 ==== User Flow
 
@@ -398,7 +403,7 @@ Surprisingly, this is a fairly unique feature among modern high-level programmin
 If you want this capability elsewhere, you usually have to use a high-complexity framework, a lower-level language like C++, or both.
 
 Thirdly, this will help make it easy to distribute.
-There is a Python package that bundles an entire Python program and all of its dependencies into a single file (or `.app` bundle on OS X).
+There is a Python package that bundles an entire Python program and all of its dependencies into a single file (or _.app_ bundle on OS X).
 So giving this program to a colleague is as easy as emailing her a ZIP file, which will help with our use case: a nontechnical user might not be totally comfortable clicking through an installer (or even have permissions to do so on their machine).
 
 Let's take a quick look at the libraries we'll be using in our application's code.
@@ -575,7 +580,7 @@ Here's what's happening at a high level&#x2014;we'll dig into the details in a b
 . Change the title and display the application to the user
 
 Before we get to _how_ all those things are done, let's step back a bit and talk about this class's job.
-It's responsible for maintaining the top-level "frame" (a window with a title bar, a menu, and so on), and deciding what's displayed in that frame.
+It's responsible for maintaining the top-level _frame_ (a window with a title bar, a menu, and so on), and deciding what's displayed in that frame.
 In this case, we want to show a login UI first, and when we get valid credentials (either from Git or the user), we'll switch to a searching UI.
 
 Alright, enough background.
@@ -616,12 +621,12 @@ Alright, enough background.
     Here we're only really interested in the names of the organization, so we use((("list comprehension"))) a _list comprehension_, where we tell Python to only keep the value of the `"login"` field from each dictionary in the `data` list.
 
 Each of these three methods comes in at a different point during our program's execution.
-If our credentials are coming from Git, we proceed straight to `test_credentials`; if they're coming from the login panel (see below), they go through the `login_accepted` callback first, which then calls `test_credentials`.
+If our credentials are coming from Git, we proceed straight to pass:[<code>test_<span class="keep-together">credentials</span></code>]; if they're coming from the login panel (see <<github_login_panel_section>>), they go through the `login_accepted` callback first, which then calls `test_credentials`.
 
 Either way, what we do is try to fetch a list of the user's organizations, to see if they work.
 Here you can see the usage pattern for `agithub`&#x2014;the URL path is mapped to object-property notation on an instance of the `Github` class, and the HTTP verb is mapped to a method call.
 The return values are a status code and the data, which has been decoded into a dictionary object.
-If it fails&#x2014;meaning the returned status is not `200`&#x2014;we send the user to the login panel.
+If it fails&#x2014;meaning the returned status is pass:[<span class="keep-together">not <code>200</code></span>]&#x2014;we send the user to the login panel.
 If it succeeds, we call `switch_to_search_panel`.
 
 [NOTE]
@@ -662,7 +667,7 @@ It instantiates a menu that only contains File->Exit, and a login panel, whose i
 Note that when we create a visible control, we pass `self` as the first parameter to the constructor.
 That's because the `SearchFrame` instance we're constructing is the parent window of that control.
 
-((("sizers")))((("WxWidgets")))`do_layout` uses a WxWidgets feature called "sizers" to do some automated layout.
+((("sizers")))((("WxWidgets")))`do_layout` uses a WxWidgets feature called _sizers_ to do some automated layout.
 Sizers are a complex topic, but here's all you need to know about this snippet:
 
 * A `BoxSizer` stacks widgets in a single direction, in this case vertically.
@@ -708,12 +713,13 @@ class TestApp:
 <2> Nose will automatically find these `setUp` and `tearDown` methods, and call them before and after each test method is run.
     In this case, we're just managing the frames we want to test, as well as an `App` instance for all of them to belong to.
 <3> Here's a test method that Nose will find and run.
-    We ensure the subpanels are the right type, and that we've auto-transitioned to the SearchPanel by finding credentials in Git's storage.
+    We ensure the subpanels are the right type, and that we've auto-transitioned to the +SearchPanel+ by finding credentials in Git's storage.
 
 That's it!
 Aside from managing a couple of fields, most of this code is managing the UI, which is almost exactly what we'd want from a UI class.
 Let's write the first of the two panels we swap in and out.(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc10")))(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc9")))
 
+[[github_login_panel_section]]
 ==== GitHub Login
 
 ((("GitHub login (search API GUI application)", id="ix_chapter-08-python-search-asciidoc11", range="startofrange")))((("GUI search API application","GitHub login", id="ix_chapter-08-python-search-asciidoc12", range="startofrange")))((("login","in search API", id="ix_chapter-08-python-search-asciidoc13", range="startofrange")))((("search API","GitHub login", id="ix_chapter-08-python-search-asciidoc14", range="startofrange")))The((("LoginPanel class"))) `LoginPanel` class is similar in structure to the `SearchFrame` class, with a couple of key differences, which we'll describe after the wall of code:
@@ -777,7 +783,7 @@ class LoginPanel(wx.Panel):
             self.callback(u, p)
 ----
 
-There's some structure that's similar to above.
+There's some structure that's similar to the preceding code.
 We'll start with the constructor.
 
 Recall that this panel is created with a keyword argument in `SearchFrame`'s pass:[<code><span class="keep-together">create</span>_controls</code>] method, like `LoginPanel(self, onlogin=self.login_accepted)`.
@@ -910,7 +916,7 @@ We'll skip the usual walkthrough to point out a couple of interesting features:
     This isn't a great approach, but doing it better is left as an exercise for the reader.
 
 Again, there's a fair amount of code here, but most of it should look familiar.
-Here's the test code that covers the above:(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc17")))(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc16")))(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc15")))
+Here's the test code that covers the previous code:(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc17")))(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc16")))(((range="endofrange", startref="ix_chapter-08-python-search-asciidoc15")))
 
 [source,python]
 ----
@@ -929,7 +935,7 @@ Here's the test code that covers the above:(((range="endofrange", startref="ix_c
 ((("GUI search API application","displaying results", id="ix_chapter-08-python-search-asciidoc18", range="startofrange")))((("search API","displaying results", id="ix_chapter-08-python-search-asciidoc19", range="startofrange")))((("search results, displaying", id="ix_chapter-08-python-search-asciidoc20", range="startofrange")))So now we have our login panel, and a way for the user to enter a search query, but no way to display results.
 Let's fix that.
 
-Whenever search results are retrieved, we create a new instance of pass:[<code>SearchResults<span class="keep-together">Panel</span></code>], which then creates a series of `SearchResult` instances.
+Whenever search results are retrieved, we create a new instance of pass:[<code>Search<span class="keep-together">Results</span><span class="keep-together">Panel</span></code>], which then creates a series of `SearchResult` instances.
 Let's look at both of them together:
 
 [source,python]

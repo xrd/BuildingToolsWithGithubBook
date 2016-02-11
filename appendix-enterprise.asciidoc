@@ -24,7 +24,7 @@ Once the machine is running, most of the configuration can be done with a web in
 === Administration
 
 ((("GitHub Enterprise","administration")))Since you're in control of the environment in which Enterprise runs, you now have a lot of concerns that the typical GitHub.com user does not.
-GitHub Enterprise has an administration interface for dealing with these issues, which doesn't exist on github.com.
+GitHub Enterprise has an administration interface for dealing with these issues, which doesn't exist on GitHub.com.
 It allows management of things like system resources, reports, search, and many others.
 
 Also, while GitHub.com has its own user system, GitHub Enterprise can optionally plug in to your organization's existing authentication system.
@@ -47,19 +47,19 @@ is often in the way that hostnames are set up. GitHub.com has several
 hostnames for various content served. An incomplete list includes:
 
 _github.io_::
- hosting Jekyll blogs for users and project pages
+ Hosting Jekyll blogs for users and project pages
 _gist.github.com_::
- hosting gists
+ Hosting gists
 _raw.githubusercontent.com_::
- hosting raw pages (unprocessed files)
+ Hosting raw pages (unprocessed files)
 
 For a variety of reasons, Enterprise GitHub installations often don't
 retain the same mapping. An Enterprise installation might look like:
 
 _github.bigdevcorp.example.com/pages/xrd/somerepo_::
- hosting gh-pages sites
+ Hosting gh-pages sites
 _github.bigdevcorp.example.com/gists_:
- hosting gists
+ Hosting gists
 
 As you can see, Enterprise installations often map the subdomains to a
 subdirectory rather than a different hostname. This simplifies the setup

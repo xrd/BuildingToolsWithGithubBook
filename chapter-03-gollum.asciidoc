@@ -75,6 +75,7 @@ language on GitHub, and is well liked on other popular sites like
 Stack Overflow. If you are unsure about which language to use, Markdown is a
 safe bet because it is ubiquitous across GitHub. <<Jekyll>> has a much deeper overview of Markdown.
 
+[role="pagebreak-before"]
 If you do choose Markdown, in addition to the standard vanilla
 Markdown language tags, Gollum adds its own set of wiki-specific tags. There 
 are often subtle (or conflicting) differences from other wiki markup
@@ -125,6 +126,7 @@ end
 ```
 ----
 
+[role="pagebreak-before"]
 Gollum
 http://bit.ly/1JMzd4m[at
 one point] supported inclusion of files from any GitHub repository
@@ -194,7 +196,7 @@ unusable if they need to add images. Let's address this problem by
 building our own customized image-centric Gollum editor that still
 interoperates with regular Gollum wikis. We can put this editor in
 front of nontechnical users, allowing them to add images, and then
-publish the wiki into GitHub as-is(((range="endofrange", startref="ix_chapter-03-gollum-asciidoc3"))).(((range="endofrange", startref="ix_chapter-03-gollum-asciidoc2")))
+publish the wiki into GitHub as is(((range="endofrange", startref="ix_chapter-03-gollum-asciidoc3"))).(((range="endofrange", startref="ix_chapter-03-gollum-asciidoc2")))
 
 === Hacking Gollum
 
@@ -737,7 +739,7 @@ listed under the pages sidebar to the right. Clicking the Review
 page, as in <<images_displayed_within_a_gollum_wiki>>, we can see the images we've added most recently.
 
 [[images_displayed_within_a_gollum_wiki]]
-.An Image Review Page
+.An image review page
 image::images/btwg_03in06.png[]
 
 Not sure why our designer is providing us with an image of a couch,
@@ -748,10 +750,10 @@ sidebar to see the most current version of the Review page. We also
 can review the revisions of this file by clicking the "3 Commits"
 (or whatever number of commits have occurred with this file)
 link right underneath the page title. Jumping onto that page shows us
-the full history of this file,as shown in <<a_view_on_the_revisions_from_within_github>>.
+the full history of this file, as shown in <<a_view_on_the_revisions_from_within_github>>.
 
 [[a_view_on_the_revisions_from_within_github]]
-.Wiki History Review via the Commit Log
+.Wiki history review via the Commit Log
 image::images/btwg_03in07.png[]
 
 Clicking any of the SHA hashes will display the page at that

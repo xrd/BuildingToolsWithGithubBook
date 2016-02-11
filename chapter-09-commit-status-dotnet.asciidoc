@@ -61,7 +61,7 @@ Just to summarize:
 
 ((("Commit Status API","raw status")))Now that we know how we get access to commit statuses, let's see what they look like.
 Commit statuses exist as atomic entities, and each commit can have a practically unlimited number of them (the actual number is in the thousands).
-You can query for existing statuses by doing a GET request to the API server at `/repos/<user>/<repo>/<ref>/statuses`, and it will return a list of them that looks like this:
+You can query for existing statuses by doing a GET request to the API server at pass:[<code>/repos/<em>&#x3c;user&#x3e;</em>/<em>&#x3c;repo&#x3e;</em>/<em>&#x3c;ref&#x3e;</em>/statuses</code>], and it will return a list of them that looks like this:
 
 [source,json]
 ----
@@ -98,7 +98,7 @@ Fortunately, the API server can do it for you.
 
 ==== Combined Status
 
-((("combined status")))((("Commit Status API","combined status")))If you instead do a GET to `/repos/<user>/<repo>/<ref>/status` (note that the last word is singular), you'll instead get a response that looks like this:
+((("combined status")))((("Commit Status API","combined status")))If you instead do a GET to pass:[<code>/repos/<em>&#x3c;user&#x3e;</em>/<em>&#x3c;repo&#x3e;</em>/<em>&#x3c;ref&#x3e;</em>/status</code>] (note that the last word is singular), you'll instead get a response that looks like this:
 
 [source,json]
 ----
@@ -136,7 +136,7 @@ This is probably exactly what you want, but if you find that your use case calls
 
 ((("Commit Status API","creating a status")))Now obviously these statuses have to come from somewhere.
 This API also includes a facility for creating them.
-To do this, you simply make a POST request to `/repos/<user>/<repo>/statuses/<sha>`, and supply a JSON object for the fields you want to include with your status:
+To do this, you simply make a POST request to pass:[<code>/repos/<em>&#x3c;user&#x3e;</em>/<em>&#x3c;repo&#x3e;</em>/statuses/<em>&#x3c;sha&#x3e;</em></code>], and supply a JSON object for the fields you want to include with your status:
 
 [options="header", cols="1m,3"]
 |======================
@@ -147,7 +147,7 @@ To do this, you simply make a POST request to `/repos/<user>/<repo>/statuses/<sh
 | `context`     | An application-specific string to allow the API to manage multiple services contributing to a single commit's status.
 |======================
 
-Notice how the last component in that URL is `<sha>`.
+Notice how the last component in that URL is pass:[<code><em>&#x3c;sha&#x3e;</em></code>].
 While you can query for statuses or a combined status using a ref name (like `master`), creating a status requires you to know the full SHA-1 hash of the commit you want to annotate.
 This is to avoid race conditions: if you were targeting a ref, it may have moved between when your process started and when it finished, but the SHA of a commit will never change.(((range="endofrange", startref="ix_chapter-09-commit-status-dotnet-asciidoc1")))
 
@@ -194,7 +194,7 @@ Choose the search result "Nancy.Templates," which belongs to the NancyFx organiz
 This should download a _.vsix_ file that you can double-click to install the templates into Visual Studio.
 
 The next step is to create a new project using one of the newly installed templates.
-Go to File->New Project and select Visual C#->Web->Nancy Application with ASP.NET Hosting from the template list (as shown in <<vs_new_project>>).
+Go to &#x201c;File->New Project&#x201d; and select &#x201c;Visual C#->Web->Nancy Application with ASP.NET Hosting&#x201d; from the template list (as shown in <<vs_new_project>>).
 Make sure the path and name settings at the bottom are to your liking, and click OK.
 
 [[vs_new_project]]
@@ -202,16 +202,16 @@ Make sure the path and name settings at the bottom are to your liking, and click
 image::images/btwg_0502.png[]
 
 Next, change the target CLR framework version to something that will work with Octokit.
-Right-click the project's node in the Solution Explorer, and select Properties.
-In the Application"section, set Target Framework to be .NET 4.5 (or later), and save.
+Right-click the project's node in the Solution Explorer, and select &#x201c;Properties.&#x201d;
+In the Application section, set Target Framework to be .NET 4.5 (or later), and save.
 You may be prompted to reload the solution.
 
 The very last step is to add NuGet packages for Octokit and Nancy.
-Right-click the project node in Solution Explorer, and select Manage NuGet Packages
+Right-click the project node in Solution Explorer, and select &#x201c;Manage NuGet Packages.&#x201d;
 Do a search for "Nancy," and upgrade it if necessary&#x2014;there's a chance the Nancy project template specifies an out-of-date version.
 Then do a search for "Octokit," and install that.
 At this point, you should have an empty solution, configured and ready for our example code.
-To run it with debugging, go to Debug->Start Debugging, or hit F5.
+To run it with debugging, go to &#x201c;Debug->Start Debugging,&#x201d; or hit F5.
 Visual Studio will start the server under a debugger, and open an IE instance on http://localhost:12008/[] (the port might be different), which should serve you the default Nancy "404 Not Found" page.
 
 ===== Xamarin Studio
@@ -432,7 +432,7 @@ private Response RedirectToOAuth()
 }
 ----
 
-<1> CSRF stands for "cross-site request forgery."
+<1> CSRF stands for _cross-site request forgery_.
     This is a mechanism by which we can be sure the OAuth request process really did originate from our site.
     The GitHub OAuth API will pass this value back to us when the user authorizes access, so we store it in the cookie for later reference.
 <2> Storing the original URL in the session cookie is a UX feature; once the OAuth process has completed, we want to send the user back to what they were trying to do in the first place.
@@ -447,6 +447,7 @@ In our GitHub application settings, we specified an authorization URL.
 In this case, we've specified `http://localhost:8080/authorize`, and that's where GitHub will redirect the user's browser if they decide to grant our application the permissions it's asking for.
 Here's the handler for that endpoint, which has been inserted into the module constructor:
 
+[role="pagebreak-before"]
 [source,csharp]
 ----
 Get["/authorize", true] = async (parms, ct) => // <1>
@@ -582,7 +583,7 @@ Get["/{user}/{repo}/{sha}/{status}", true] = async (parms, ct) => // <1>
     };
 ----
 
-<1> Note the request path for this handler: a GET request to `localhost:8080/user/repo/<sha>/<status>` will create a new status.
+<1> Note the request path for this handler: a GET request to pass:[<code>localhost:8080/user/repo/<em>&#x3c;sha&#x3e;</em>/<em>&#x3c;status&#x3e;</em></code>] will create a new status.
     This is easy to test with the browser, but also makes it easy for web crawlers to unknowingly trigger this API.
     For this example it's okay, but for a real application you'd probably want to require this to be a POST request.
 <2> Here's where our OAuth helper comes in.
@@ -608,7 +609,7 @@ We noted this a bit earlier, but it bears repeating: this particular example res
 
 Even if you haven't written a lot of code during this chapter, you've learned a lot of concepts.
 
-You've seen the commit-status API, and you've seen how it's used by continuous integration software, but you know that it can be used for much more.
+You've seen the Commit Status API, and you've seen how it's used by continuous integration software, but you know that it can be used for much more.
 You can read and write statuses, and you know how the API server coalesces many statuses into a single pass/fail value, and you also know how to write your own multistatus calculation if the default one doesn't meet your needs.
 You also know what's behind the green checkmarks and red Xs you see in your pull requests.
 

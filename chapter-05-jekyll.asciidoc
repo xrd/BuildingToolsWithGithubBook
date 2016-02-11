@@ -54,7 +54,7 @@ tools.
 ((("Jekyll","operating locally")))((("jekyll gem")))To really use Jekyll, you'll need the `jekyll` gem. As we explain in
 <<appendix>>, we could install a ruby gem using this command:
 
-[source,text]
+[source,bash]
 ------
 $ gem install jekyll
 ------
@@ -93,7 +93,7 @@ to make sure that everything is properly set up and synchronized and
 generally this will reproduce the issues on your local setup, which is
 a much faster place to fix them:
 
-[source,text]
+[source,bash]
 ------
 $ printf "gem 'github-pages' >> Gemfile
 $ bundle install
@@ -109,7 +109,7 @@ Now we are ready to create a Jekyll blog.(((range="endofrange", startref="ix_cha
 ((("Jekyll blogs", id="ix_chapter-05-jekyll-asciidoc2", range="startofrange")))We have our required tools installed, so ((("Jekyll blogs","simple blog creation", id="ix_chapter-05-jekyll-asciidoc3", range="startofrange")))let's create a simple blog. Run
 these commands:
 
-[source,text]
+[source,bash]
 -----
 $ jekyll new myblog
 $ cd myblog
@@ -146,7 +146,7 @@ any kind of static site) but if you do include files in this directory
 Jekyll handles them in a special way. If you look in the pass:[<em>_posts</em>]
 directory now, you see that the Jekyll initialization command has
 created pass:[<span class="keep-together">your first</span>] post for you, something like
-`_posts/2014-03-03-welcome-to-jekyll.Markdown`. These posts have a
+pass:[<em>_posts/2014-03-03-welcome-to-jekyll.Markdown</em>]. These posts have a
 special naming format: the title of the post (with any whitespace replaced with
 hyphens) trailed by the date and then an extension (either _.Markdown_
 or _.md_ for Markdown files, or _.textile_ for Textile).
@@ -202,7 +202,7 @@ Jekyll command, and whether to use `pygments` to do syntax highlighting.
 
 To view this site locally run this command:
 
-[source,text]
+[source,bash]
 -----
 $ jekyll serve
 -----
@@ -238,7 +238,7 @@ categories: jekyll update
 ----
 
 You'll find this post in your pass:[<em>_posts</em>] directory&#x2014;edit this 
-post and re-build (or run with the `-w` switch) to see your changes!
+post and rebuild (or run with the `-w` switch) to see your changes!
 To add new posts, simply add a file in the pass:[<em>_posts</em>] directory 
 that follows the convention: YYYY-MM-DD-name-of-post.ext.
 
@@ -356,17 +356,8 @@ Markdown, you'll find Markdown to be insidiously clever in the way it
 provides formatting characters without the onerous weight that HTML
 requires to offer the same explicit formatting.
 
-[source,yaml]
------
-Check out the [Jekyll docs][jekyll] for more info on how to get the most 
-out of Jekyll. File all bugs/feature requests at 
-[Jekyll's GitHub repo][jekyll-gh].
-
-[jekyll-gh]: https://github.com/mojombo/jekyll
------
-
 ((("links","Markdown tags for")))Links can be specified using `[format][link]`, where `link` is the
-fully qualified URL (like "http://example.com"), or a reference to a
+fully qualified URL (like "_http://example.com_"), or a reference to a
 link at the bottom of the page. In our page we have two references,
 keyed as `jekyll-gh` and `jekyll`; we can then use these inside our
 page with syntax like `[Jekyll's GitHub repo][jekyll-gh]`. Using
@@ -468,7 +459,7 @@ to determine the best way for your system.
 
 Use these commands to install your github.io hosted Jekyll blog:
 
-[source,text]
+[source,bash]
 ------
 $ export USERNAME=xrd
 $ jekyll new $USERNAME.github.io
@@ -498,7 +489,7 @@ the GitHub servers.
 ((("gh&#8211;pages branch")))((("Jekyll blogs","hosting via gh&#8211;pages branch")))To work on the +gh-pages+ branch, check it out and create the branch
 inside your repository:
 
-[source,text]
+[source,bash]
 -----
 $ git checkout -b gh-pages
 $ rake post title="My next big blog post"
@@ -516,7 +507,7 @@ the +gh-pages+ branch whenever you do a push.
 
 ((("CNAME file")))((("Jekyll blogs","and CNAME file")))The CNAME file is a simple text file with the domain name inside of it:
 
-[source,text]
+[source,bash]
 -----
 $ echo 'mydomain.com' > CNAME
 $ git add CNAME
@@ -529,7 +520,7 @@ that GitHub thinks the blog is established correctly by visiting the
 admin page of your repository. An easy way to get there is using the
 `github` gem, which is no longer actively maintained but is still a useful command-line tool:
 
-[source,text]
+[source,bash]
 -----
 $ gem install github
 $ github admin # Opens up https://github.com/username/repo/settings
@@ -595,7 +586,7 @@ inside your Gemfile and use the `bundle` command.
 ((("Wordpress","importing with direct database access")))Once you have the `jekyll-import` gem, you can convert a Wordpress
 blog using a command like this:
 
-[source,text]
+[source,bash]
 ----
 $ ruby -rubygems -e 'require "jekyll-import";
     JekyllImport::Importers::WordPress.run({
@@ -633,7 +624,7 @@ false`.
 ((("Wordpress","importing database as XML file")))Another alternative is to export the entire database as an XML file.
 Then, you can run the importer on that file:
 
-[source,text]
+[source,bash]
 ----
 ruby -rubygems -e 'require "jekyll-import";
     JekyllImport::Importers::WordpressDotCom.run({
@@ -700,7 +691,7 @@ Tumblr exporter scrapes all public posts from the blog, and then
 converts to a Jekyll-compatible post format.(((range="endofrange", startref="ix_chapter-05-jekyll-asciidoc3")))
 
 We've seen how we can use the importers available on
-_import.jekyllrb.com_ to import. What if we have a nonstandard site
+pass:[<a href="http://import.jekyllrb.com"><em>import.jekyllrb.com</em></a>] to import. What if we have a nonstandard site
 we need to import?
 
 === Scraping Sites into Jekyll
@@ -1092,8 +1083,8 @@ pages into this array (and get them for free once the information is
 cached).
 <4> Initialize the +pages+ array here.
 <5> To use the VCR recording feature, we wrap any code that makes
-HTTP requests inside a VCR block with a name specifying the "cassette"
-to save it under. In this case, we use a cassette named "bt" (for
+HTTP requests inside a VCR block with a name specifying the +cassette+
+to save it under. In this case, we use a cassette named +bt+ (for
 ByTravelers) with the index of the page. The first time we use the
 scraper to request the page, it is retrieved and stored inside the
 cache. Successive calls to the scraper `get` method are retrieved from
@@ -1304,7 +1295,7 @@ First, create a Git repository for our files. When the Jekyll tool
 runs, it generates all the files into a directory called pass:[<em>_site</em>] so we
 should add a _.gitignore_ file, which ignores this directory:
 
-[source,text]
+[source,bash]
 ------
 $ git init
 $ mkdir _posts
@@ -1322,7 +1313,7 @@ parsed the pages from Archive.org.
 Jekyll posts are stored inside the pass:[<em>_posts</em>] directory. As a
 convention, filenames are generated with the date and title,
 lowercased, converted to a string without any characters beyond a-z
-and the hyphen, and terminated by the extension (usually ".md" for
+and the hyphen, and terminated by the extension (usually _.md_ for
 Markdown). In order to properly generate the filename, we will need to
 scrape the date, so we will do that as well.
 
@@ -1420,7 +1411,7 @@ sure the pass:[<em>_posts</em>] directory is available, and if not, creates it. 
 then writes out the file using our `get_filename` method to get the
 path, prefixed with the pass:[<em>_posts</em>] directory.
 <3> `process_creation_date` takes a piece from the scraped page and
-breaks it apart by the string "last updated on:" and uses the second
+breaks it apart by the string pass:[&#x201c;<code>last updated</code> on:&#x201d;] and uses the second
 item in the resultant array.
 <4> Inside our +run+ method we now build out the processed hash, finding
 the date and title using rows from the query path we used before.
@@ -1458,7 +1449,7 @@ from GitHub after publishing there). Errors can occur if our scraper
 does not correctly process the HTML retrieved from Archive.org and
 subsequently generates incorrect Markdown content, for example.
 
-[source,text]
+[source,bash]
 ----
 $ git add .
 $ git commit -m "Make this into a Jekyll site"
@@ -1593,7 +1584,7 @@ process the entire posts directory and provide it to pages inside the
 over them. If we use a `{% for ... %}` tag we need to "close" the tag
 with a matching `{% endfor %}` tag. Inside of our for
 loop we have several output tags: `{{ post.url }}` outputs the post
-URL associated with a post, for example. We also have "filters," which
+URL associated with a post, for example. We also have _filters_, which
 are methods defined to process data. One such filter is the
 `strip_html` filter, which you might guess strips out HTML text,
 converting it to escaped text. This is necessary when your text could
@@ -1741,7 +1732,7 @@ and international copyright laws.
 
 Then, modify our post layout to include the image:
 
-[source,ruby]
+[source,html]
 -----
 ---
 layout: default
@@ -1768,7 +1759,7 @@ customize the colors.
 First, add a reference to Bootstrap and our custom CSS inside of the
 master layout file, _default.html_:
 
-[source,ruby]
+[source,html]
 -----
 <html>
 <head>
@@ -1876,6 +1867,7 @@ first posted these banners], and we'll use its code almost as is inside our
 _default.html_ page, just changing the reference to our repository in
 the link tag:
 
+[role="pagebreak-before"]
 [source,html]
 -----
 ...
@@ -1902,7 +1894,7 @@ Now anyone can fork our repository, add their own post to the pass:[<em>_posts</
 the same commands we saw with earlier repositories. Obviously you
 should change the username and blog name to suit your own needs:
 
-[source,text]
+[source,bash]
 ----
 $ export BLOG_NAME=xrd/bytravelers.com
 $ gem install hub

@@ -33,12 +33,14 @@ about Jekyll, it is covered in more depth in <<Jekyll>>.
 There are a few items of note when establishing a Jekyll blog that
 have some complexity, things like mapping a hostname properly and using the
 correct branch inside Git. For our purposes here, however, we won't need
-to make all that is established. All we need is to make sure
+to make sure all that is established. All we need is to make sure
 we have a sandbox repository that has the structure of a Jekyll blog:
 
 [source,bash]
 -----
-$ printf "source 'https://rubygems.org'\n\ngem 'github-pages'\ngem 'hub'" >> Gemfile
+$ echo "source 'https://rubygems.org'" >> Gemfile
+$ echo "gem 'github-pages'" >> Gemfile
+$ echo "gem 'hub'" >> Gemfile
 $ export BLOG_NAME=mytestblog
 $ bundle
 $ jekyll new $BLOG_NAME
@@ -71,8 +73,8 @@ development and testing on a virtual device.
 ((("Android","Java SDK installation")))((("Java","SDK installation")))Unfortunately there is no simple shell command to install Java in the
 same way as there is for Ruby and NodeJS using RVM or NVM.
 Oracle controls the Java language and distribution of official SDKs,
-and it restricts access to downloads other than from _java.oracle.com_.
-Java is freely available, but you need to visit _java.oracle.com_ and
+and it restricts access to downloads other than from pass:[<a class="orm:hideurl" href="http://java.oracle.com"><em>java.oracle.com</em></a>].
+Java is freely available, but you need to visit pass:[<a class="orm:hideurl" href="http://java.oracle.com"><em>java.oracle.com</em></a>] and
 find the correct download for your needs. Android works with the 1.7
 versions of Java or better.
 
@@ -663,7 +665,8 @@ public class MainActivityTest  // // <2>
     }
 
     public void testLogin() { // // <4>
-        injectInstrumentation( InstrumentationRegistry.getInstrumentation() ); // // <5>
+        injectInstrumentation( InstrumentationRegistry.
+        getInstrumentation() ); // // <5>
         MainActivity mainActivity = getActivity();
         String username = mainActivity // // <6>
                 .getString( R.string.github_helper_username );
@@ -842,7 +845,7 @@ lifecycle of a thread that is managed by the Android OS. We implement
 a class and then override two functions provided by pass:[<code><span class="keep-together">Async</span>Task</code>]: the
 first function is((("doInBackground() function"))) `doInBackground()`, which handles operations off the
 main thread (our background thread code), and the second function is
-`onPostExecute()`, which runs on the UI thread and allows us to update
+pass:[<code>onPost<span class="keep-together">Execute()</span></code>], which runs on the UI thread and allows us to update
 the UI with the results of the code that ran inside `doInBackground()`.
 
 Before we implement the login, we need to update our((("onCreate function"))) `onCreate`
@@ -1621,4 +1624,4 @@ unit test and UI test that help to verify the functionality.(((range="endofrange
 
 In the next chapter we will use CoffeeScript to create our own chat
 robot that requests pull request reviews from chat room members
-using the Activities API.
+using the Activity API.
