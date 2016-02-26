@@ -47,13 +47,13 @@
       "show_comments": false,
       "downsample_images": false
     },
-    "html": {
-      "index": true,
-      "toc": true,
+    "html" : {
+      "files" : ["chapter-09-commit-status-dotnet.asciidoc"],
+      "fragment": true,
+      "demote": true,
       "syntaxhighlighting": false,
-      "show_comments": false,
-      "consolidated": false
-    }
+      "consolidated": true
+}
   },
   "theme": "oreillymedia/animal_theme",
   "title": "Building Tools with GitHub",
