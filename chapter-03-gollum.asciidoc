@@ -551,6 +551,49 @@ the working index and the repository (using the Rugged library `write`
 call). Then we can generate a Review file that details all the images
 uploaded.(((range="endofrange", startref="ix_chapter-03-gollum-asciidoc8")))(((range="endofrange", startref="ix_chapter-03-gollum-asciidoc7")))
 
+=== Adding Images to a Review File
+
+Now that we have successfully unzipped and processed the images, we can add them to a file
+for review. We will call this file `Review.md`. The code looks to write the
+review file looks like this:
+
+[source,ruby]
+----
+def write_review_file( files, dir )
+   review_filename = "Review.md"
+   contents = "## Review Images\n\n"
+   files.each do |f|
+      contents += "### #{f} \n[[#{dir}/#{f}]]\n\n"
+   end
+
+  File.write review_filename, contents
+  oid = @repo.write( contents, :blob )
+  @index.add(:path => review_filename, :oid => oid, :mode => 0100644)
+end
+----
+
+The method is straightforward: we pass in the list of files and a
+subdirectory where we wrote out the image files to disk. Then, we generate
+a Markdown file with a header (using the two hash formatting characters) stating
+"Review Images," and then iterate over the list of images, entering in the filename
+as a subheader. We then use the Gollum image markup tag (two braces, then the image
+filename, then closing with two more braces). We write out the file to disk. And,
+finally, we add the file to the repository and add it to the index. The commit which
+we built for the images will include this review file as well since it is added to the index
+before the images are processed as long as we place the call to `write_review_file` before the
+call to `build_commit` like so:
+
+[source,ruby]
+-----
+ ...
+  write_review_file files, dir # write out a review file
+  build_commit() # Build a commit from the new files
+ ...
+-----
+
+Now let's take a look at how images are stored inside our repository, particularly if the same image
+is uploaded twice.
+
 === Optimizing for Image Storage
 
 ((("Gollum","optimizing for image storage", id="ix_chapter-03-gollum-asciidoc9", range="startofrange")))((("images","optimizing repository for storage of", id="ix_chapter-03-gollum-asciidoc10", range="startofrange")))If a designer uploads the same image twice, what happens? Our code
@@ -839,6 +882,7 @@ contents += "[Prior revision (only when viewing history)]" +
 
 File.write review_filename, contents
 oid = @repo.write( contents, :blob )
+@index.add(:path => review_filename, :oid => oid, :mode => 0100644)
   ...
 -----
 
