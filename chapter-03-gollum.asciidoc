@@ -554,7 +554,7 @@ uploaded.(((range="endofrange", startref="ix_chapter-03-gollum-asciidoc8")))(((r
 === Adding Images to a Review File
 
 Now that we have successfully unzipped and processed the images, we can add them to a file
-for review. We will call this file `Review.md`. The code looks to write the
+for review. We will call this file `Review.md`. The code to write the
 review file looks like this:
 
 [source,ruby]
@@ -575,12 +575,11 @@ end
 The method is straightforward: we pass in the list of files and a
 subdirectory where we wrote out the image files to disk. Then, we generate
 a Markdown file with a header (using the two hash formatting characters) stating
-"Review Images," and then iterate over the list of images, entering in the filename
+"Review Images," and then iterate over the list of images, entering the filename
 as a subheader. We then use the Gollum image markup tag (two braces, then the image
-filename, then closing with two more braces). We write out the file to disk. And,
-finally, we add the file to the repository and add it to the index. The commit which
-we built for the images will include this review file as well since it is added to the index
-before the images are processed as long as we place the call to `write_review_file` before the
+filename, then closing with two more braces). We write out the file to disk. Finally, we add the file to the repository and then to the index. The commit that
+we built for the images will include this review file as well, since it is added to the index
+before the images are processed—as long as we place the call to `write_review_file` before the
 call to `build_commit` like so:
 
 [source,ruby]
@@ -591,7 +590,7 @@ call to `build_commit` like so:
  ...
 -----
 
-Now let's take a look at how images are stored inside our repository, particularly if the same image
+Now, let's take a look at how images are stored inside our repository, particularly if the same image
 is uploaded twice.
 
 === Optimizing for Image Storage
