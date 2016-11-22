@@ -454,7 +454,7 @@ request process:
 
 [source,bash]
 -----
-$ curl -u username -d '{"scopes":["public_repo"]}' \
+$ curl -u username -d '{"scopes":["public_repo"], "note": "A new authorization"}' \
 https://api.github.com/authorizations
 {
   "id": 1234567,
