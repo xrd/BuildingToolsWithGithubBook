@@ -23,7 +23,7 @@
   ],
   "formats": {
     "pdf": {
-      "version": "web",
+      "version": "print",
       "index": true,
       "toc": true,
       "syntaxhighlighting": true,
@@ -47,17 +47,23 @@
       "show_comments": false,
       "downsample_images": false
     },
-    "html" : {
-      "files" : ["chapter-09-commit-status-dotnet.asciidoc"],
+    "html": {
+      "files": [
+        "chapter-09-commit-status-dotnet.asciidoc"
+      ],
       "fragment": true,
       "demote": true,
       "syntaxhighlighting": false,
-      "consolidated": true
-}
+      "consolidated": true,
+      "index": false,
+      "toc": false,
+      "show_comments": false
+    }
   },
   "theme": "oreillymedia/animal_theme",
   "title": "Building Tools with GitHub",
   "templating": false,
   "print_isbn13": "",
-  "lang": "en"
+  "lang": "en",
+  "accent_color": ""
 }
