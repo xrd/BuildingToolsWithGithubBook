@@ -9,6 +9,6 @@ repos = publisher.verify_all_repositories()
 if ( !vars || !repos )
   abort "Not all parameters could be satisfied, exiting".red
 else
-  puts "Hey, it all worked out."
+  puts "Publishing...".yellow
   publisher.build()
 end
