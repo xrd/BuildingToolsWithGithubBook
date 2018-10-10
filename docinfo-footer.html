@@ -1,0 +1,92 @@
+
+<div onclick="openCustomization()" class="fab-left">☃</div>
+
+<div class="loginWrapper">
+  <div style="display: none" class="fab-left">👽</div>
+  <div onclick="loginToGithub()" style="display: none" class="login">First, login!</div>
+</div>
+
+<div onclick="showLogin()" class="fab">✏️</div>
+
+<div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+    <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+      <header class="modal__header">
+	<h2 class="modal__title" id="modal-1-title">
+	  Add a comment or change request
+	</h2>
+	<button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+      </header>
+      <main class="modal__content" id="modal-1-content">
+	Add a comment or change to this text
+	<p id="selectedText">
+	</p>
+
+	<input name="change" type="text" placeholder="Enter your comment or edit request..."/>
+      </main>
+      <footer class="modal__footer">
+	<button onclick="storeIt()" class="modal__btn modal__btn-primary">Store comment</button>
+	<button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<div class="modal micromodal-slide" id="modal-2" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+    <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-2-title">
+      <header class="modal__header">
+	<h2 class="modal__title" id="modal-2-title">
+	  Customize this book for you.
+	</h2>
+	<button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+      </header>
+      <main class="modal__content" id="modal-2-content">
+	
+	<div  class="customization">
+	  <input type="checkbox" name="checkbox" id="checkbox_id" value="value">
+	  <label for="checkbox_id">Minimize callouts</label>
+	  <div class="explanation">If a chapter contains callouts with code, don't show those. 
+	    You can display these individually by clicking the summary text when needed.
+	  </div>
+	</div>
+
+	<div class="customization">
+	  <input type="checkbox" name="checkbox" id="checkbox_id2" value="value">
+	  <label for="checkbox_id2">Minimize setup instructions</label>
+	  <div class="explanation">If a chapter contains setup instructions, don't show those. 
+	    You can display these individually by clicking the summary text when needed.
+	  </div>
+	</div>
+
+	<div class="customization">
+	  <input type="checkbox" name="checkbox" id="checkbox_id3" value="value">
+	  <label for="checkbox_id3">Show quizes</label>
+	  <div class="explanation">
+	    At certain points in the discussion, present quizes which test your knowledge!
+	  </div>
+	</div>
+	
+	<div class="customization">
+	  <input type="checkbox" name="checkbox" id="checkbox_id4" value="value">
+	  <label for="checkbox_id4">Show mistakes</label>
+	  <div class="explanation">
+	    At times the author may have made mistakes in writing the code. You can read about the techniques 
+	    used to figure out something was wrong, or only see the final solution.
+	  </div>
+	</div>
+
+      </main>
+      <footer class="modal__footer">
+	<button  class="modal__btn modal__btn-primary">Save Customizations</button>
+	<button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<div id="filedIssue">
+  Thanks for your contribution!
+  <div id="issueUrl"></div>.
+  You've been tagged on it, so you will get updates automatically.
+</div>

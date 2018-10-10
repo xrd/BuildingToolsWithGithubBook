@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'asciidoctor'
 require 'erb'
 require 'oreilly/snippets'
@@ -59,7 +60,9 @@ class Publisher
   end
 
   def asciidoc_to_html(contents)
-    return Asciidoctor.render( contents,
+    # append the special editing sauce
+
+    return Asciidoctor.render( ":docinfo1: shared\n\n" + contents,
                                :header_footer => true,
 			       :line_numbers => true,
 			       :src_numbered => 'numbered',
@@ -72,6 +75,11 @@ class Publisher
     puts "All files: #{all_files}"
     # Now, write up the index.html file
     write_index(all_files)
+
+    # Copy in the extras
+    FileUtils.copy "extras/fab.css", @root
+    FileUtils.copy "extras/edit.js", @root
+    FileUtils.copy "extras/micromodal.css", @root
   end
 
   def process_all_files
@@ -112,35 +120,45 @@ class Publisher
   end
   
   def write_index(all_files)
-    toc = ""
+    toc = <<"END"
+[[introduction]]
+[role="pagenumrestart"]
+== Building Tools with GitHub
+
+=== By Chris Dawson and Ben Straub
+
+If you find value, http://shop.oreilly.com/product/0636920043027.do[buy the book from O'Reilly here]
+
+Thank you to O'Reilly for allowing us to republish this under creative commons.
+
+END
+        
     all_files.select { |f| f.include?("chapter") }.sort.uniq.each do |f|
-      toc += "<li><a href=\"#{f}\">#{f}</a></li>\n"
+      # Get the title from the file, read in the first ten lines and get the header...
+      puts "Processing file: #{f}"
+      # Get the original and the header
+      original = File.exists?( f.gsub('.html', '.asciidoc.snippet') ) ? f.gsub('.html', '.asciidoc.snippet') : f.gsub('.html', '.asciidoc' )
+      title = ""
+      if File.exists?(original)
+        puts "Grabbing original contents from #{original}".green
+        title = File.read( original ).split( "\n" )[0..10].find { |l| '='.eql?(l[0]) && '='.eql?(l[1]) }[2..-1]
+      else
+        puts "No file found: #{f}".red
+      end
+      # puts "Title: #{title}".green
+      toc += "1. link:#{f}[#{title}]\n"
     end
     
-    index = <<"END"
-<html>
-
-<body>
-
-<h1>Building Tools with GitHub</h1>
-<small>By Chris Dawson and Ben Staub</small>
-
-If you find value, <a href="http://shop.oreilly.com/product/0636920043027.do">buy the book from O'Reilly here</a>.
-
-Thank you to O'Reilly for allowing me to republish this as creative commons.
-
-<ul>
-#{toc}
-</ul>
-</body>
-
-</html>
-END
-
+    contents = Asciidoctor.render( toc,
+                                   :header_footer => true,
+			           :line_numbers => true,
+			           :src_numbered => 'numbered',
+                                   :safe => Asciidoctor::SafeMode::SAFE,
+                                   :attributes => {'linkcss!' => ''})
+    
     File.open( File.join( @root, "index.html"), "w+" ) do |f|
-      f.write( index )
-    end     
-
+      f.write( contents )
+    end    
+    
   end
-
 end
