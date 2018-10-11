@@ -137,10 +137,7 @@ function toggleEditing() {
   }
   else {
     if( !user ) {
-      let els = document.getElementsByClassName("fab-user");
-      els[0].style.display = "inline";
-      els = document.getElementsByClassName("login");
-      els[0].style.display = "inline";
+      toggleLoginInformation(true);
     }
     else {
       turnOffLoginAndEnableEditing();

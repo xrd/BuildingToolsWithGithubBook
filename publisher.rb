@@ -142,8 +142,14 @@ A huge thank you to O'Reilly for allowing us to republish this under creative co
 
 END
 
-    # Get all the chapters, plus the preface as the first file.
-    all_files.select { |f| f.include?("chapter") }.sort.uniq.unshift( "preface.html" ).each do |f|
+    # Get all the chapters, plus the preface as the first file and the appendix as the last
+    all_files
+      .select { |f| f.include?("chapter") }
+      .sort
+      .uniq
+      .unshift( "preface.html" )
+      .push( "appendix-ruby-and-nodejs.html" )
+      .each do |f|
       # Get the title from the file, read in the first ten lines and get the header...
       puts "Processing file: #{f}"
       # Get the original and the header

@@ -16,14 +16,16 @@ gist that uses the Gist API.
 
 === Easy Code Sharing
 
-Gists are straighforward to create. You copy a snippet
+((("gists","creating")))Gists are straightforward to create. You copy a snippet
 of code into the large text box in the center, optionally enter in a
 description or filename, and then choose between a public or private
 gist. Once your gist has been created you are presented with a URL to
 share. Gists autodetect the language in most cases and syntax
-highlight according to the language when displayed.
+highlight according to the language when displayed as in <<documenting_json_using_a_gist>>.
 
-image::images/gists-easy-sharing.png[Creating a gist on GitHub]
+[[documenting_json_using_a_gist]]
+.Documenting JSON using a gist
+image::images/btwg_02in01.png[]
 
 There are other services that do this: pastebin was the first, and
 there are many others that offer variances on code sharing. But gists
@@ -295,12 +297,14 @@ hi.rb
 index.erb
 -----
 
-Restart Sinatra by running ctrl-c, and then `ruby hi.rb`. If you visit `http://localhost:4567/xrd` in
-your browser, you will see the count of public gists for user `xrd`;
-modify the username in the URL to any specify any GitHub username and you will see
+Restart Sinatra by running Ctrl-C and then `ruby hi.rb`. If you visit _http://localhost:4567/xrd_ in
+your browser, you will see the count of public gists for user `xrd` (<<displaying_the_gist_count>>);
+modify the username in the URL to specify any GitHub username and you will see
 their last five gists displayed.
 
-image::images/gists-gist-count.png[Displaying the gist count]
+[[displaying_the_gist_count]]
+.Displaying the gist count
+image::images/btwg_02in02.png[]
 
 ==== Going deeper into the Gist API
 
@@ -406,9 +410,11 @@ To be replaced
 snippet~~~~~
 -----
 
-Now we see the gists and the contents.
+Now we see the gists and the contents, as in <<last_five_gists_with_details>>.(((range="endofrange", startref="ix_chapter-02-gist-asciidoc1")))
 
-image::images/gists-last-five.png[Last five gists, with details]
+[[last_five_gists_with_details]]
+.Last five gists, with details
+image::images/btwg_02in03.png[]
 
 === Summary
 

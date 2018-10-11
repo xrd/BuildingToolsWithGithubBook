@@ -118,25 +118,31 @@ for your Slack site. Typically this is the name of your organization.
 
 ===== Naming the channel
 
-Once you have your slack site created, you need to create a channel.
+((("Hubot","channel creation", id="ix_chapter-06-hubot-activities-asciidoc3", range="startofrange")))Once you have your slack site created, you need to create a channel as in <<creating_a_channel_from_the_slack_sidebar>>.
 
-image::images/hubot-create-channel.png[Creating the #generic channel]
+[[creating_a_channel_from_the_slack_sidebar]]
+.Creating a channel from the Slack sidebar
+image::images/btwg_08in01.png[]
 
 You can name the channel anything you want, but it is often a good
-mnemonic to use a name which suggests this is a channel where more
+mnemonic to use a name that suggests this is a channel where more
 serious work gets done. You could use a name like "PR Discussion" to
 indicate this is the channel where PRs are discussed. To keep things
-simple, we will use the name "#general". Once you click on
+simple, we will use the name "#general." Once you click
 the link to create a channel, you'll see a popup asking for the name
 and an optional description. After you have created the channel,
-you will see a link to "Add a service integration." 
+you will see a link to "Add a service integration" as shown in <<adding_service_integrations_to_slack>>.
 
-image::images/hubot-add-service-integration.png[Adding service integrations to Slack]
+[[adding_service_integrations_to_slack]]
+.Adding service integrations to Slack
+image::images/btwg_08in02.png[]
 
 Slack supports many different service integrations, and one of them is
-Hubot.  
+Hubot as shown in <<service_integration_options_for_slack>>.
 
-image::images/hubot-choose-hubot-integration.png[Choosing Hubot from the man Slack integration options]
+[[service_integration_options_for_slack]]
+.Service integration options for Slack
+image::images/btwg_08in03.png[]
 
 Choosing Hubot takes you to a settings screen for your Hubot integration.
 
@@ -148,9 +154,11 @@ Slack. If you ever accidentally publicize this token, you can easily
 revoke and reassign a token to your Hubot on this screen.
 
 You will also need to specify a name. Use "probot" and if you'd like,
-change the avatar associated with the Hubot.
+change the avatar associated with the Hubot (these options are shown in <<choose_hubots_name>>).
 
-image::images/hubot-choose-username.png[Choose Hubot's name]
+[[choose_hubots_name]]
+.Hubot configuration page for Slack
+image::images/btwg_08in04.png[]
 
 Make sure you save your integration before continuing.
 
@@ -184,13 +192,15 @@ variable at the beginning of the line.
 
 ===== A First Conversation
 
-Your bot should be setup and waiting in the #general room inside your
-Slack site. Go to the #general room. Then, you can test that hubot
+((("Hubot","first conversation")))Your bot should be set up and waiting in the #general room inside your
+Slack site. Go to the #general room. Then, you can test that Hubot
 is properly connectd by typing in the name of your Hubot
 and then a command like `the rules`. For example, if our Hubot is
-named `probot`, then we would type `probot the rules`. 
+named probot, then we would type `probot the rules`, which then displays the following conversation as shown in <<hubots_built_in_repartee>>.
 
-image::images/hubot-verify.png[Hubot telling us the rules]
+[[hubots_built_in_repartee]]
+.Hubot's built-in repartee
+image::images/btwg_08in05.png[]
 
 We see that our hubot printed out the rules it
 abides by (published originally by Isaac Asimov in his "Runaround"
@@ -198,9 +208,11 @@ short story in 1942).
 
 ===== Exploring the Hubot Vocabulary
 
-Hubot out of the box supports many commands. To get a list, type "help".
+((("Hubot","exploring vocabulary of")))Hubot out-of-the-box supports many commands. To get a list, type +help+ to see a list like that shown in <<listing_the_hubot_vocabulary>>.
 
-image::images/hubot-help.png[The built-in Hubot commands]
+[[listing_the_hubot_vocabulary]]
+.Listing the Hubot vocabulary
+image::images/btwg_08in06.png[]
 
 The `pug me` command is a favorite. Many people new to Hubot
 quickly get sucked into spending hours looking at cute pictures of
@@ -939,9 +951,11 @@ To see more context on what is happening with this pull request, once
 we are looking at this pull request inside of GitHub, we can then navigate to the
 settings for our repository, follow the link to "Webhooks and
 Services" on the left navigation bar, and we will then find at the
-very bottom of the page a list of recent deliveries to our webhook.
+very bottom of the page a list of recent deliveries to our webhook, as in <<recent_failed_deliveries_from_our_webhook>>.
 
-image::images/hubot-recent-deliveries.png[A list of failed webhook deliveries]
+[[recent_failed_deliveries_from_our_webhook]]
+.Recent failed deliveries from our webhook
+image::images/btwg_08in07.png[]
 
 These requests all failed; our Hubot is not correctly configured
 to handle real HTTP requests from GitHub. This does show that GitHub is

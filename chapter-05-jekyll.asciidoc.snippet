@@ -216,22 +216,22 @@ To view this site locally run this command:
 $ jekyll serve
 -----
 
-This command builds the entirety of your jekyll directory, and then
+This command builds the entirety of your Jekyll directory, and then
 starts a mini web server to serve the files up to you. If you then
-visit `http://localhost:4000` in your web browser, you will see
-something the front page of your site and a single blog post listed in
-the index.
+visit _http://localhost:4000_ in your web browser, you will see
+something on the front page of your site and a single blog post listed in
+the index, as shown in <<bare-jekyll-site>>.
 
 [[bare-jekyll-site]]
 .A bare Jekyll site
-image::images/jekyll-bare.png[A bare Jekyll site]
+image::images/btwg_0601.png[]
 
 Clicking into the link inside the "Blog Posts" section, you will then
-see your first post.
+see your first post, as in <<a-sample-post>>.
 
 [[a-sample-post]]
 .A sample post
-image::images/jekyll-welcome.png[A sample post co-authored by Tom Preston-Warner]
+image::images/btwg_0602.png[]
 
 Our jekyll initialization command created this new post for us. This page
 is backed by the Markdown file inside the `_posts` directory which we
@@ -525,12 +525,11 @@ The github gem is a useful command line tool, but unfortunately it is
 tied to an older version of the GitHub API, which means the documented
 functionality is often incorrect. 
 
-If your blog is correctly setup, you will see something like Figure 3
-in the middle of your settings page.
+If your blog is correctly set up, you will see something like <<settings-jekyll-blog>> in the middle of your settings page.
 
 [[settings-jekyll-blog]]
 .Settings for a Jekyll blog
-image::images/jekyll-settings.png[Settings for a Jekyll blog]
+image::images/btwg_0603.png[]
 
 GitHub has properly recognized the CNAME file and will accept requests
 made to that host on its servers. We are still not yet complete,
@@ -723,27 +722,27 @@ the data from the site using Archive.org?
 
 ==== Jekyll Scraping Tactics
 
-We can start by looking at the structure of the archive presented on
-Archive.org. Go to Archive.org, and enter "bytravelers.com" into the
-search box in the middle of the page,  and then click "BROWSE HISTORY"
-we will be presented with a calendar view which shows all the pages
-scraped by the Internet Archive for this site. 
+((("Jekyll blogs","scraping tactics")))((("scraping","tactics")))We can start by looking at the structure of the archive presented on
+Archive.org. Go to Archive.org, enter "bytravelers.com" into the
+search box in the middle of the page, and then click "BROWSE HISTORY."
+You will see a calendar view that shows all the pages
+scraped by the Internet Archive for this site as shown in <<calendar-view-archive>>.
 
 [[calendar-view-archive]]
 .Calendar view of Archive.org
-image::images/jekyll-bytravelers-archive.png[The calendar view for Archive.org ]
+image::images/btwg_0604.png[]
 
 In the middle of 2003 I took down the server, intending to
 upgrade it to another set of technologies, and never got around to
-completing this migration, and then lost the data. If we click on the
+completing this migration, and then lost the data. If we click the
 calendar item on June 6th, 2003, we will see a view of the data that
 was more or less complete at the height of the site's functionality
 and data. There are a few broken links to images, but otherwise the
-site is functionally archived inside Archive.org
+site is functionally archived inside Archive.org (<<calendar-view-bytravelers>>).
 
 [[calendar-view-bytravelers]]
 .Archive of ByTravelers.com on Archive.org
-image::images/jekyll-bytravelers-jun6.png[Archive of Bytravelers.com on Archive.org]
+image::images/btwg_0605.png[]
 
 Taking the URL from our browser, we can use this as our starting point for
 scraping. Clicking around throughout the site, it becomes evident that
@@ -1427,10 +1426,12 @@ include HTML tags. You'll also notice that filters can be "chained";
 we process the body with the `strip_html` filter and then truncate the
 text by 40 characters using the `truncatewords:40` filter.
 
-If we open `http://localhost:4000` in our browser, we will see a
-simple index page with the titles of our posts.
+If we open _http://localhost:4000_ in our browser, we will see a
+simple index page with the titles of our posts, like <<austere_but_a_step_in_the_right_direction>>.
 
-image::images/jekyll-unformatted-index.png[Austere but a step in the right direction]
+[[austere_but_a_step_in_the_right_direction]]
+.The Index Page, for a naked Jekyll blog
+image::images/btwg_06in01.png[]
 
 This index page lists every post: let's make it display only the last
 ten posts. Copy the `index.md` file to a file named `archive.md`.
@@ -1593,11 +1594,11 @@ To be replaced
 snippet~~~~~
 -----
 
-If we reload, we will see a much prettier version of the site.
+If we reload, we will see a much prettier version of the site (<<jekyll-now-livelier>>).
 
 [[jekyll-now-livelier]]
 .Restoring the original colors and images
-image::images/jekyll-now-livelier.png[Restoring the original images and colors]
+image::images/btwg_0606.png[]
 
 We've now entirely scraped an old site and built a new Jekyll blog, so
 there is just one thing left to do: encourage and permit
