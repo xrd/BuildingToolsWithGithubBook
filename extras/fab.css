@@ -16,7 +16,25 @@
     top: 20px;
 }
 
-.fab-left {
+.fab-customization {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px 0 #666;
+    transition: all 0.1s ease-in-out;
+
+    font-size: 30px;
+    color: black;
+    text-align: center;
+    line-height: 30px;
+
+    position: fixed;
+    right: 20px;
+    top: 90px;
+}
+
+.fab-user {
     width: 30px;
     height: 30px;
     background-color: white;
@@ -34,19 +52,23 @@
     top: 20px;
 }
 
-.login {
-    width: 200px;
-    height: 30px;
+.smaller {
+    font-size: 0.8em;
+}
+
+.informational {
     background-color: grey;
     box-shadow: 0 2px 6px 0 #666;
     transition: all 0.1s ease-in-out;
-    font-size: 30px;
+    font-size: 1em;
     color: white;
     text-align: center;
     line-height: 30px;
     position: fixed;
-    left: 70px;
+    left: 40px;
+    right: 40px;
     top: 20px;
+    padding: 0.3em;
 }
 
 
@@ -72,13 +94,15 @@
     padding-top: 1em;
 }
 
-    .paragraph {
-	border: 1px solid white;
-	margin-bottom: 0.1em;
-    }
-    .dotted {
-	margin-bottom: 0.1em;
-	border: 1px dotted black;																															       }
+.paragraph, .content, li p {
+    border: 1px solid white;
+    margin-bottom: 0.1em;
+}
+
+.dotted {
+    margin-bottom: 0.1em;
+    border: 1px dotted black;
+}
 
 .modal {
   display: none;
@@ -104,4 +128,8 @@
 #issueUrl {
     padding: 0.2em;
     display: block;
+}
+
+#excerpt {
+    padding: 1em;
 }

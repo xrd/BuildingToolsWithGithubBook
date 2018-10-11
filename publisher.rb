@@ -62,7 +62,8 @@ class Publisher
   def asciidoc_to_html(contents)
     # append the special editing sauce
 
-    return Asciidoctor.render( ":docinfo1: shared\n\n" + contents,
+    return Asciidoctor.render( ( ENV['BTWG_EXTRAS'] ? ":docinfo1: shared\n\n" : "" ) +
+                               contents,
                                :header_footer => true,
 			       :line_numbers => true,
 			       :src_numbered => 'numbered',
@@ -125,15 +126,21 @@ class Publisher
 [role="pagenumrestart"]
 == Building Tools with GitHub
 
-=== By Chris Dawson and Ben Straub
+==== By Chris Dawson and Ben Straub
 
-If you find value, http://shop.oreilly.com/product/0636920043027.do[buy the book from O'Reilly here]
+If you find value in the material here, 
+consider supporting the authors by buying the book from http://shop.oreilly.com/product/0636920043027.do[O'Reilly] 
+or on https://www.amazon.com/Building-Tools-GitHub-Customize-Workflow/dp/149193350X[Amazon]
+
+The repository with this book contents can be 
+found at https://github.com/xrd/BuildingToolsWithGithubBook[https://github.com/xrd/BuildingToolsWithGithubBook].
 
 Thank you to O'Reilly for allowing us to republish this under creative commons.
 
 END
-        
-    all_files.select { |f| f.include?("chapter") }.sort.uniq.each do |f|
+
+    # Get all the chapters, plus the preface as the first file.
+    all_files.select { |f| f.include?("chapter") }.sort.uniq.unshift( "preface.html" ).each do |f|
       # Get the title from the file, read in the first ten lines and get the header...
       puts "Processing file: #{f}"
       # Get the original and the header

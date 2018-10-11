@@ -4,6 +4,12 @@
 Thanks for checking out the book. This document is worth reading if you want to remix and/or build your
 own copy of the book.
 
+There are three major sections here:
+
+* Quickstart: build everything in just a few minutes.
+* Remix Details: learn a little bit about the structure of this repository
+* Extensions: learn how to add your own CSS and JS, and an example of adding a "contribute!" button.
+
 ## Quickstart
 
 First things first, you will need Ruby. If you are on Mac OSX, you probably want to use brew to install Ruby.
@@ -32,6 +38,8 @@ code samples, so follow along with the extra commands to run and fully setup the
 
 Note that you need to create a directory where the files are written. Once things are all setup, then you run the
 command that slurps in the files and processes them into that directory.
+
+
 
 ## Remix/Hacking Details
 
@@ -78,3 +86,8 @@ This pulls the file `scraper.rb` at the repository history defined by the SHA ha
 the lines specified in the callouts, and adds a prefix to those callouts so you could copy and paste the code
 without modification into a script (without this, the pasted code would have invalid syntax...)
 
+## Extensions
+
+If you want to include the docinfo.html and docinfo-footer.html file, which reference files in the extras directory
+add the `BTWG_EXTRAS=1` flag to your build command. This enables cryptocurrency micro-contributions, customizations and
+easy mobile friendly editing.

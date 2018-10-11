@@ -1,12 +1,18 @@
 
-<div onclick="openCustomization()" class="fab-left">☃</div>
+<div onclick="openCustomization()" class="fab-customization">☃</div>
 
 <div class="loginWrapper">
-  <div style="display: none" class="fab-left">👽</div>
-  <div onclick="loginToGithub()" style="display: none" class="login">First, login!</div>
+  <div style="display: none" class="fab-user">👽</div>
+  <div onclick="loginToGithub()" style="display: none" class="informational">Please login to GitHub</div>
 </div>
 
-<div onclick="showLogin()" class="fab">✏️</div>
+<div class="informationalWrapper" style="display: none">
+  <div class="informational smaller">
+    Click on any dotted section to provide a comment or suggestion. Click on the edit button to cancel.
+  </div>
+</div>
+    
+<div onclick="toggleEditing()" class="fab">✏️</div>
 
 <div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
   <div class="modal__overlay" tabindex="-1" data-micromodal-close>
@@ -42,6 +48,9 @@
 	<button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
       </header>
       <main class="modal__content" id="modal-2-content">
+
+	FYI: This does not yet work!
+	<a target="_new" href="https://goo.gl/forms/8o5NgerENFqgm6vH3">Can you help provide feedback on what you like and want?</a>
 	
 	<div  class="customization">
 	  <input type="checkbox" name="checkbox" id="checkbox_id" value="value">
@@ -90,3 +99,30 @@
   <div id="issueUrl"></div>.
   You've been tagged on it, so you will get updates automatically.
 </div>
+
+
+<script
+  src="https://cdn.teddyhyde.com/0.0.1/teddyhyde-client-0.0.1.js"></script>
+    
+  
+
+<iframe height="150px" width="100%"
+	frameborder="0" id="th"
+	src="https://tx.teddyhyde.com/contribution/btwg2.teddyhyde.io"></iframe>
+
+<script>
+  TeddyHydeClient.onContribution( function() {
+  revealContent();
+  });
+  
+  function setDisplayById( id, display ) {
+  const el = document.getElementById(id);
+  if (el) { el.style.display = display; }
+  }
+  
+  function revealContent(){
+  setDisplayById("excerpt", "none" );
+  setDisplayById("content", "inline-block" );
+  }
+  
+</script>
