@@ -100,29 +100,42 @@
   You've been tagged on it, so you will get updates automatically.
 </div>
 
-
-<script
-  src="https://cdn.teddyhyde.com/0.0.1/teddyhyde-client-0.0.1.js"></script>
-    
-  
 <iframe height="150px" width="100%"
 	style="background-color: white !important"
 	frameborder="0" id="th"
 	src="https://tx.teddyhyde.com/contribution/btwg2.teddyhyde.io"></iframe>
 
-<script>
-  TeddyHydeClient.onContribution( function() {
-  revealContent();
-  });
-  
-  function setDisplayById( id, display ) {
-  const el = document.getElementById(id);
-  if (el) { el.style.display = display; }
-  }
-  
-  function revealContent(){
-  setDisplayById("excerpt", "none" );
-  setDisplayById("content", "inline-block" );
-  }
-  
-</script>
+<div class="faked">NB: This "contribution" button is a only a simulation, no actual money is required. 
+You can safely click the contribute button to see what would happen if you actually made a micro-contribution.
+</div>
+
+<div id="wrapper">
+  <div id="personal_ad_wrapper">
+    <!-- Add content to the popup -->
+    <div id="personal_ad_popup">
+      <h2>Thanks for your visit.</h2>
+      
+      <div>
+	You aren't interesting in contributing. I get that, everyone has
+	moments where it just doesn't work. Thanks for visiting.
+      </div>
+      
+      <div>
+	Please watch this ad for 15 seconds and
+	then you'll have full access to the post.
+      </div>
+      
+      <div>
+	While you wait:
+	<a target="_new" href="https://admin.teddyhyde.com">
+	  <h3 class="underline">Why not create your own blog here?</h3>
+	</a>
+	Create your <strong>FREE Jekyll blog</strong> hosted on GitHub:
+	<strong>fast and secure over HTTPS</strong>,
+	with <strong>PWA notifications</strong> so your users never miss a post,
+	and collect <strong>cryptocurrency micro-contributions</strong> with ease.
+    </div>
+    
+  </div>
+</div>
+</div>

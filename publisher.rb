@@ -133,9 +133,12 @@ consider supporting the authors by buying the book from http://shop.oreilly.com/
 or on https://www.amazon.com/Building-Tools-GitHub-Customize-Workflow/dp/149193350X[Amazon]
 
 The repository with this book contents can be 
-found at https://github.com/xrd/BuildingToolsWithGithubBook[https://github.com/xrd/BuildingToolsWithGithubBook].
+found at https://github.com/xrd/BuildingToolsWithGithubBook[github.com/xrd/BuildingToolsWithGithubBook].
 
-Thank you to O'Reilly for allowing us to republish this under creative commons.
+If you would like to offer your comments and suggestions on the book while reading, try visiting the 
+https://btwg2.teddyhyde.io[experimental site].
+
+A huge thank you to O'Reilly for allowing us to republish this under creative commons.
 
 END
 

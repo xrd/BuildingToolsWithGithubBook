@@ -105,11 +105,11 @@
 }
 
 .modal {
-  display: none;
+    display: none;
 }
 
 .modal.is-open {
-  display: block;
+    display: block;
 }
 
 #filedIssue {
@@ -132,4 +132,98 @@
 
 #excerpt {
     padding: 1em;
+}
+
+.outer {
+    position: fixed;
+    height: 3em;
+    bottom: 5em;
+    text-align: center;
+}
+
+#thanks {
+    width: 80%;
+    display: none;
+    background-color: yellow;
+    padding: 1em;
+    font-size: 1.3em;
+}
+
+#myad {
+    display: none;
+    background-color: green;
+    width: 80%;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+#personal_ad_background {
+    opacity: 0;
+    visibility: hidden;
+    background-color: white;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    z-index: 100000;
+    transition: 0.3s;
+}
+
+#personal_ad_popup div {
+    padding-bottom: 1em;
+}
+
+#personal_ad_wrapper {
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    overflow: auto;
+    z-index: 100001;
+    transition: 0.3s;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    text-align: center;
+    display: none;
+}
+
+#wrapper {
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    overflow: auto;
+    z-index: 100001;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    text-align: center;
+    display: none;
+}
+
+#personal_ad_popup {
+    transform: scale(0.8);
+    padding: 2em;
+}
+.popup_visible #personal_ad_popup {
+    transform: scale(1);
+}
+
+#footer {
+    background-color: white;
+    position: relative;
+}
+
+#footer-text {
+    color: grey;
+    position: absolute;
+    bottom: -30px;
+}
+
+.faked {
+    font-size: 0.7em;
 }

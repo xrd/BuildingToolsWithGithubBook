@@ -223,3 +223,53 @@ window.onload = function() {
   content.style.display = "none";
 }
 
+TeddyHydeClient.onContribution( function() {
+  revealContent();
+});
+
+function showAltMessage() {
+  console.log( "Popping popup" );
+  $('#personal_ad_popup').popup(
+    {
+      color: 'white',
+      opacity: 1,
+      transition: '0.3s',
+      scrolllock: true
+    }
+  ).popup('show');
+  
+  setTimeout( function()  {
+    console.log( "Hiding popup" );
+    $('#personal_ad_popup').popup('hide');
+    setTimeout( revealContent, 1000 );
+  }, 15*1000 );
+  
+  // setDisplayById( "myad", "inline-block" );
+  // setDisplayById("th", "none" );
+  // setTimeout( function() {
+  // 	revealContent();
+  // 	setDisplayById( "myad", "none" );
+  // }, 10*1000 );
+  // console.log( "Hmm, you won't contribute, OK" );
+}
+
+TeddyHydeClient.onDecline( function() {
+  showAltMessage();
+  console.log( "Hey, we declined to pay!!!" );
+});
+
+TeddyHydeClient.onAlreadyPaid( function() {
+  revealContent();
+});
+
+
+function setDisplayById( id, display ) {
+  const el = document.getElementById(id);
+  if (el) { el.style.display = display; }
+}
+
+function revealContent(){
+  setDisplayById("excerpt", "none" );
+  setDisplayById("content", "inline-block" );
+}
+
