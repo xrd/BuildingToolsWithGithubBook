@@ -192,35 +192,6 @@ function turnOffLoginAndEnableEditing() {
     };
 }
   
-window.onload = function() {
-  // Hide the body, and create a new excerpt
-  const ps = document.getElementsByClassName( "paragraph" );
-  const h2s = document.getElementsByTagName( "h2" );
-  // Use the first one.
-
-  const title = document.createElement("h2");
-  title.innerHTML = h2s[0].innerHTML;
-
-  var text = document.createElement("div");
-  text.classList.add("paragraph");
-  text.innerHTML = ps[0].innerHTML;
-
-  const sectionbody = document.createElement("div");
-  sectionbody.classList.add("sectionbody");
-  sectionbody.appendChild(text);
-  
-  const wrapper = document.createElement("div");
-  wrapper.classList.add("sect1");
-  wrapper.id = "excerpt";
-  wrapper.appendChild(title);
-  wrapper.appendChild(sectionbody);
-  
-  document.body.insertBefore(wrapper, document.body.firstChild);
-  
-  const content = document.getElementById( "content" );
-  content.style.display = "none";
-}
-
 TeddyHydeClient.onContribution( function() {
   revealContent();
 });
@@ -241,14 +212,6 @@ function showAltMessage() {
     $('#personal_ad_popup').popup('hide');
     setTimeout( revealContent, 1000 );
   }, 15*1000 );
-  
-  // setDisplayById( "myad", "inline-block" );
-  // setDisplayById("th", "none" );
-  // setTimeout( function() {
-  // 	revealContent();
-  // 	setDisplayById( "myad", "none" );
-  // }, 10*1000 );
-  // console.log( "Hmm, you won't contribute, OK" );
 }
 
 TeddyHydeClient.onDecline( function() {
@@ -271,3 +234,6 @@ function revealContent(){
   setDisplayById("content", "inline-block" );
 }
 
+setTimeout( () => {
+    revealContent();
+}, 3000 );
