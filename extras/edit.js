@@ -89,7 +89,7 @@ function loginToGithub() {
 	user = result.user;
 	// ...
 	console.log( "User: ", user );
-	loggedIn();
+	toggleEditing();
     }).catch(function(error) {
 	// Handle Errors here.
 	var errorCode = error.code;
@@ -131,19 +131,20 @@ function storeIt() {
 let editing = false;
 function toggleEditing() {
   if( editing ) {
-    toggleLoginInformation(false);
-    toggleEditingInformation(false);
-    cleanupEditing();
+      toggleLoginInformation(false);
+      toggleEditingInformation(false);
+      cleanupEditing();
+      editing = false;
   }
   else {
-    if( !user ) {
-      toggleLoginInformation(true);
-    }
-    else {
-      turnOffLoginAndEnableEditing();
-    }
+      if( !user ) {
+	  toggleLoginInformation(true);
+      }
+      else {
+	  turnOffLoginAndEnableEditing();
+	  editing = true;
+      }
   }
-  editing = !editing;
 }
 
 function toggleLoginInformation(onOff) {

@@ -1,16 +1,11 @@
 .fab {
     width: 30px;
     height: 30px;
-    background-color: red;
-    border-radius: 50%;
-    box-shadow: 0 2px 6px 0 #666;
     transition: all 0.1s ease-in-out;
-
     font-size: 30px;
     color: white;
     text-align: center;
     line-height: 30px;
-
     position: fixed;
     right: 20px;
     top: 20px;
@@ -19,34 +14,24 @@
 .fab-customization {
     width: 30px;
     height: 30px;
-    background-color: white;
-    border-radius: 50%;
-    box-shadow: 0 2px 6px 0 #666;
     transition: all 0.1s ease-in-out;
-
     font-size: 30px;
     color: black;
     text-align: center;
     line-height: 30px;
-
     position: fixed;
     right: 20px;
-    top: 90px;
+    top: 70px;
 }
 
 .fab-user {
     width: 30px;
     height: 30px;
-    background-color: white;
-    border-radius: 50%;
-    box-shadow: 0 2px 6px 0 #666;
     transition: all 0.1s ease-in-out;
-
     font-size: 30px;
     color: black;
     text-align: center;
     line-height: 30px;
-
     position: fixed;
     left: 20px;
     top: 20px;
@@ -72,8 +57,7 @@
 }
 
 
-.fab:hover {
-    box-shadow: 0 6px 14px 0 #666;
+.fab:hover, .fab-customization:hover, .fab-user:hover {
     transform: scale(1.05);
 }
 
@@ -83,7 +67,6 @@
     font-style: italic;
     padding: 0.2em;
 }
-
 
 .explanation {
     font-style: italic;
