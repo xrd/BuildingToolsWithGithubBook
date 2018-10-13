@@ -70,35 +70,39 @@ class Publisher
                                :safe => Asciidoctor::SafeMode::SAFE,
                                :attributes => {'linkcss!' => ''})
 
-    doc = Nokogiri::HTML::DocumentFragment.parse rendered
-    title = Nokogiri::XML::Node.new "h2", doc
-    title.content = doc.search( "h2" )[0].content
-    puts "TITLE: #{title}".yellow
-    paragraph = Nokogiri::XML::Node.new "div", doc
-    paragraph.add_class 'paragraph'
-    p = Nokogiri::XML::Node.new "p", doc
-    p.content = doc.search( ".paragraph" )[0].content
-    paragraph.add_child p
-    puts "Excerpt: #{paragraph}".yellow
-
-    excerpt_wrapper = Nokogiri::XML::Node.new "div", doc
-    excerpt_wrapper.set_attribute :id, 'excerpt'
-    sect1 = Nokogiri::XML::Node.new "div", doc
-    sect1.add_class( 'sect1' )
-    sectionbody = Nokogiri::XML::Node.new "div", doc
-    sectionbody.add_class( 'sectionbody' )
-    sectionbody.add_child paragraph
-    sect1.add_child title
-    sect1.add_child sectionbody
-    
-    excerpt_wrapper.add_child sect1
-    
-    body = doc.search('body').first
-    body.prepend_child excerpt_wrapper
-    full = body.search( '#content').first
-    full.set_attribute( 'style', "display: none" )
-
-    return doc.to_html
+    if ENV['BTWG_EXTRAS']
+      doc = Nokogiri::HTML::DocumentFragment.parse rendered
+      title = Nokogiri::XML::Node.new "h2", doc
+      title.content = doc.search( "h2" )[0].content
+      puts "TITLE: #{title}".yellow
+      paragraph = Nokogiri::XML::Node.new "div", doc
+      paragraph.add_class 'paragraph'
+      p = Nokogiri::XML::Node.new "p", doc
+      p.content = doc.search( ".paragraph" )[0].content
+      paragraph.add_child p
+      puts "Excerpt: #{paragraph}".yellow
+      
+      excerpt_wrapper = Nokogiri::XML::Node.new "div", doc
+      excerpt_wrapper.set_attribute :id, 'excerpt'
+      sect1 = Nokogiri::XML::Node.new "div", doc
+      sect1.add_class( 'sect1' )
+      sectionbody = Nokogiri::XML::Node.new "div", doc
+      sectionbody.add_class( 'sectionbody' )
+      sectionbody.add_child paragraph
+      sect1.add_child title
+      sect1.add_child sectionbody
+      
+      excerpt_wrapper.add_child sect1
+      
+      body = doc.search('body').first
+      body.prepend_child excerpt_wrapper
+      full = body.search( '#content').first
+      full.set_attribute( 'style', "display: none" )
+      
+      return doc.to_html
+    else
+      return rendered
+    end
   end
   
   def build

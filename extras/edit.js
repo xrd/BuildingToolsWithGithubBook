@@ -234,6 +234,3 @@ function revealContent(){
   setDisplayById("content", "inline-block" );
 }
 
-setTimeout( () => {
-    revealContent();
-}, 3000 );
