@@ -1,4 +1,4 @@
-= Building Tools with GitHub
+# Building Tools with GitHub
 
 If you find value in the material here, consider supporting the authors by buying the book from [O’Reilly](http://shop.oreilly.com/product/0636920043027.do) or on [Amazon](https://www.amazon.com/Building-Tools-GitHub-Customize-Workflow/dp/149193350X)
 
